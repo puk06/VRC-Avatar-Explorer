@@ -1,0 +1,143 @@
+<Application xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        x:Class="AvatarExplorer.UI.App"
+        RequestedThemeVariant="Dark">
+        <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="Background.TransparentMain" Color="#B8E8E8E8"/>
+                    <SolidColorBrush x:Key="Background.BorderBrush" Color="#54000000"/>
+                    <SolidColorBrush x:Key="Background.Panel" Color="#81EAEAEA"/>
+
+                    <SolidColorBrush x:Key="BorderBrush.Main" Color="#FFE0E0E0"/>
+                    <SolidColorBrush x:Key="Background.Main" Color="#FFE3E3E3"/>
+                    <SolidColorBrush x:Key="Background.Sub" Color="#FFEAEAEA"/>
+
+                    <SolidColorBrush x:Key="Text.Primary" Color="#FF1A1A1A"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF666666"/>
+                    <SolidColorBrush x:Key="Text.Disabled" Color="#FF9E9E9E"/>
+
+                    <SolidColorBrush x:Key="Button.Background" Color="#33EAEAEA"/>
+                    <SolidColorBrush x:Key="Button.BorderBrush" Color="#54000000"/>
+                    <SolidColorBrush x:Key="Button.Selected" Color="#8600A900"/>
+                    
+                    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FFC8C8C8"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="Background.TransparentMain" Color="#DB333333"/>
+                    <SolidColorBrush x:Key="Background.BorderBrush" Color="#00000000"/>
+                    <SolidColorBrush x:Key="Background.Panel" Color="#6C414141"/>
+
+                    <SolidColorBrush x:Key="BorderBrush.Main" Color="#FF2A2A2A"/>
+                    <SolidColorBrush x:Key="Background.Main" Color="#FF333333"/>
+                    <SolidColorBrush x:Key="Background.Sub" Color="#FF1E1E1E"/>
+
+                    <SolidColorBrush x:Key="Text.Primary" Color="#FFF2F2F2"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FFB0B0B0"/>
+                    <SolidColorBrush x:Key="Text.Disabled" Color="#FF777777"/>
+
+                    <SolidColorBrush x:Key="Button.Background" Color="#33FFFFFF"/>
+                    <SolidColorBrush x:Key="Button.BorderBrush" Color="#00000000"/>
+                    <SolidColorBrush x:Key="Button.Selected" Color="#8600A900"/>
+
+                    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF646464"/>
+                </ResourceDictionary>
+
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <Style Selector="Border.overlaybackground">
+            <Setter Property="Background" Value="#80000000"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+
+        <Style Selector="Border.tagborder">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
+        </Style>
+
+        <Style Selector="Border.panelbackground">
+            <Setter Property="Background" Value="{DynamicResource Background.Panel}"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Button.BorderBrush}"/>
+        </Style>
+
+        <Style Selector="Border.overlay">
+            <Setter Property="Background" Value="{DynamicResource Background.Main}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Padding" Value="20"/>
+        </Style>
+
+        <Style Selector="Button.button">
+            <Setter Property="Background" Value="{DynamicResource Button.Background}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Button.BorderBrush}"/>
+        </Style>
+
+        <Style Selector="Button.pagebutton">
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.sidepanelbutton">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <Style Selector="ScrollBar /template/ Rectangle#TrackRect">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+
+        <Style Selector="ScrollBar">
+            <Setter Property="HideDelay" Value="00:00:00"/>
+            <Setter Property="ShowDelay" Value="00:00:00"/>
+        </Style>
+
+        <Style Selector="TextBlock.settingslabel">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style Selector="TextBlock.settingslabel.title">
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
+        </Style>
+
+        <Style Selector="TextBlock.settingslabel.description">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text.Secondary}"/>
+        </Style>
+
+        <materialIcons:MaterialIconStyles/>
+        
+        <FluentTheme/>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+    </Application.Styles>
+
+</Application>

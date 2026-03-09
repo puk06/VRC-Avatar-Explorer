@@ -1,0 +1,13 @@
+using System.Text.Json.Serialization;
+using AvatarExplorer.Core.Models.External.KonoAsset.Items;
+
+namespace AvatarExplorer.Core.Models.External.KonoAsset.Databases;
+
+public class KonoAssetWorldDatabase
+{
+    [JsonPropertyName("version")]
+    public int Version { get; set; } = 3;
+
+    [JsonPropertyName("data")]
+    public List<KonoAssetWorldItem> Data { get; set; } = new List<KonoAssetWorldItem>();
+}

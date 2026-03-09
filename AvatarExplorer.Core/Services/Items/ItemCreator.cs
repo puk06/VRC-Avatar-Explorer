@@ -1,0 +1,76 @@
+using AvatarExplorer.Core.Data.Paths;
+using AvatarExplorer.Core.Extensions;
+using AvatarExplorer.Core.Models.External.KonoAsset;
+using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Models.System;
+using AvatarExplorer.Core.Services.IO;
+using AvatarExplorer.Core.Services.Network;
+using ErrorOr;
+
+namespace AvatarExplorer.Core.Services.Items;
+
+public sealed class ItemCreationResult
+{
+    public Item? Item { get; set; }
+    public required ExtractResult ExtractResult { get; set; }
+}
+
+internal static class ItemCreator
+{
+    internal static async Task<ErrorOr<ItemCreationResult>> FromItemCreationContext(ItemCreationContext itemCreationContext, RuntimeSettings runtimeSettings)
+    {
+        ErrorOr<ExtractResult> extractResult = await FileSystemService.ExtractItemFolders(itemCreationContext, runtimeSettings.DataRootDirectory, runtimeSettings);
+        if (extractResult.IsError) return Error.Failure(extractResult.Errors.ToErrorString());
+
+        Item item = new()
+        {
+            Title = itemCreationContext.Title,
+            Author = itemCreationContext.Author,
+            AuthorId = itemCreationContext.AuthorId,
+            BoothId = itemCreationContext.BoothId,
+            ItemPath = extractResult.Value.ItemParentFolder,
+            Type = itemCreationContext.ItemType,
+            CustomCategory = itemCreationContext.CustomCategory
+        };
+
+        if (!string.IsNullOrEmpty(itemCreationContext.ThumbnailUrl))
+        {
+            string itemThumbnailFileName = item.Id + ".png";
+            bool thumbnailResult = await ImageDownloader.Fetch(itemCreationContext.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, itemThumbnailFileName), true);
+            if (thumbnailResult) item.ThumbnmailFileName = itemThumbnailFileName;
+        }
+
+        if (!string.IsNullOrEmpty(itemCreationContext.AuthorId) && !string.IsNullOrEmpty(itemCreationContext.AuthorThumbnailUrl))
+        {
+            string authorThumbnailFileName = itemCreationContext.AuthorId + ".png";
+            bool authorThumbnailResult = await ImageDownloader.Fetch(itemCreationContext.AuthorThumbnailUrl, Path.Combine(SystemPath.AuthorThumbnailsPath, authorThumbnailFileName), false);
+            if (authorThumbnailResult) item.AuthorThumbnmailFileName = authorThumbnailFileName;
+        }
+
+        item.UpdateSupportedAvatars(itemCreationContext.SupportedAvatars);
+
+        return new ItemCreationResult()
+        {
+            Item = item,
+            ExtractResult = extractResult.Value
+        };
+    }
+
+    internal static Item FromKonoAssetDescription(KonoAssetDescription konoAssetDescription)
+    {
+        Item newItem = new()
+        {
+            Title = konoAssetDescription.Name,
+            Author = konoAssetDescription.Creator,
+            ThumbnmailFileName = konoAssetDescription.ImageFilename ?? string.Empty,
+            ItemMemo = konoAssetDescription.Memo ?? string.Empty,
+            BoothId = konoAssetDescription.BoothItemId ?? -1,
+            CreatedDate = konoAssetDescription.CreatedAt.ToString(),
+            UpdatedDate = konoAssetDescription.CreatedAt.ToString()
+        };
+
+        newItem.UpdateTags(konoAssetDescription.Tags);
+
+        return newItem;
+    }
+}

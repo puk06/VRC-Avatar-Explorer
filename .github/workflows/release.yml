@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*' # stable: v1.0.0 | pre-release: v1.0.0-beta.1
+
+jobs:
+  build-and-release:
+    if: github.event.base_ref == 'refs/heads/main'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            runtime: win-x64
+            extension: zip
+            
+          - os: macos-latest
+            runtime: osx-arm64
+            extension: zip
+            
+          - os: ubuntu-latest
+            runtime: linux-x64
+            extension: tar.gz
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Publish Application
+        run: |
+          dotnet publish -c Release \
+            -r ${{ matrix.runtime }} \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -o ./publish
+
+      - name: Compress
+        shell: bash
+        run: |
+          APP_NAME="VRC-Avatar-Explorer"
+          VERSION="${{ github.ref_name }}"
+          RUNTIME="${{ matrix.runtime }}"
+          EXTENSION="${{ matrix.extension }}"
+          OUTPUT_NAME="${APP_NAME}_${VERSION#v}-${RUNTIME}.${EXTENSION}"
+          
+          cd publish
+          if [ "${EXTENSION}" == "zip" ]; then
+            zip -r "../${OUTPUT_NAME}" .
+          else
+            tar -czvf "../${OUTPUT_NAME}" .
+          fi
+
+          echo "ASSET_PATH=${OUTPUT_NAME}" >> $GITHUB_ENV
+
+      - name: Create or Update Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: ${{ contains(github.ref_name, 'beta') }}
+          files: ${{ env.ASSET_PATH }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
