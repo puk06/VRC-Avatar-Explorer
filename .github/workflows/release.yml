@@ -35,11 +35,7 @@ jobs:
 
       - name: Publish Application
         run: |
-          dotnet publish "./AvatarExplorer.UI/AvatarExplorer.UI.csproj" -c Release \
-            -r ${{ matrix.runtime }} \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -o ./publish
+          dotnet publish "./AvatarExplorer.UI/AvatarExplorer.UI.csproj" -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishSingleFile=true -o ./publish
 
       - name: Compress
         shell: bash
