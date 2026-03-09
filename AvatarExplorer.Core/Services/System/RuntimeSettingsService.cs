@@ -8,7 +8,7 @@ internal static class RuntimeSettingsService
 {
     internal static RuntimeSettings Load(string path)
     {
-        return FileSystemService.DeserializeClass<RuntimeSettings>(path).Value;
+        return FileSystemService.DeserializeClass<RuntimeSettings>(path).Value ?? new();
     }
 
     internal static void Save(RuntimeSettings settings)

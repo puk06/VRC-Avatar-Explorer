@@ -8,7 +8,7 @@ internal static class UserPreferencesService
 {
     internal static UserPreferences Load(string path)
     {
-        return FileSystemService.DeserializeClass<UserPreferences>(path).Value;
+        return FileSystemService.DeserializeClass<UserPreferences>(path).Value ?? new();
     }
 
     internal static void Save(UserPreferences userPreferences)
