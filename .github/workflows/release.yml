@@ -1,13 +1,28 @@
 name: Release
-
 on:
   push:
     tags:
-      - 'v*' # stable: v1.0.0 | pre-release: v1.0.0-beta.1
+      - 'v*'
 
 jobs:
-  build-and-release:
+  create-release:
     if: github.event.base_ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: ${{ contains(github.ref_name, 'beta') }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  build-and-upload:
+    needs: create-release
+    permissions:
+      contents: write
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -15,15 +30,12 @@ jobs:
           - os: windows-latest
             runtime: win-x64
             extension: zip
-            
           - os: macos-latest
             runtime: osx-arm64
             extension: zip
-            
           - os: ubuntu-latest
             runtime: linux-x64
             extension: tar.gz
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45,21 +57,17 @@ jobs:
           RUNTIME="${{ matrix.runtime }}"
           EXTENSION="${{ matrix.extension }}"
           OUTPUT_NAME="${APP_NAME}_${VERSION#v}-${RUNTIME}.${EXTENSION}"
-          
           cd publish
           if [ "${EXTENSION}" == "zip" ]; then
             zip -r "../${OUTPUT_NAME}" .
           else
             tar -czvf "../${OUTPUT_NAME}" .
           fi
-
           echo "ASSET_PATH=${OUTPUT_NAME}" >> $GITHUB_ENV
 
-      - name: Create or Update Release
+      - name: Upload Asset
         uses: softprops/action-gh-release@v2
         with:
-          prerelease: ${{ contains(github.ref_name, 'beta') }}
           files: ${{ env.ASSET_PATH }}
-          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
