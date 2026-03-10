@@ -309,7 +309,7 @@
     "AddItem.FetchInfo": "情報取得",
     "AddItem.Title": "タイトル",
     "AddItem.Author": "作者",
-    "AddItem.Type": "タイプ",
+    "AddItem.Category": "カテゴリ",
     "AddItem.SupportedAvatars": "対応アバター",
     "AddItem.ShowInternalInfo": "詳細な内部情報を表示する",
     "AddItem.AuthorId": "作者ID",

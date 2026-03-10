@@ -309,7 +309,7 @@
     "AddItem.FetchInfo": "Fetch Info",
     "AddItem.Title": "Title",
     "AddItem.Author": "Author",
-    "AddItem.Type": "Type",
+    "AddItem.Category": "Category",
     "AddItem.SupportedAvatars": "Supported Avatars",
     "AddItem.ShowInternalInfo": "Show Detailed Internal Info",
     "AddItem.AuthorId": "Author ID",

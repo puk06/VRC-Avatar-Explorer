@@ -152,7 +152,7 @@ public static class LocalizationKey
         public const string FetchInfo = "AddItem.FetchInfo";
         public const string Title = "AddItem.Title";
         public const string Author = "AddItem.Author";
-        public const string Type = "AddItem.Type";
+        public const string Category = "AddItem.Category";
         public const string SupportedAvatars = "AddItem.SupportedAvatars";
         public const string ShowInternalInfo = "AddItem.ShowInternalInfo";
         public const string AuthorId = "AddItem.AuthorId";
