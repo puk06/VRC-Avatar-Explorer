@@ -17,7 +17,7 @@ namespace AvatarExplorer.Core.Services.System;
 
 public partial class AvatarExplorerApp
 {
-    public static readonly string CurrentVersion = "2.0.0-beta.0";
+    public static readonly string CurrentVersion = "2.0.0-beta.1";
 
     private readonly ItemDatabaseManager _itemDatabaseManager = new();
     private readonly CommonAvatarDatabaseManager _commonAvatarDatabaseManager = new();
