@@ -39,9 +39,6 @@ jobs:
           - os: macos-latest
             runtime: osx-arm64
             extension: zip
-          - os: macos-13
-            runtime: osx-x64
-            extension: zip
 
           - os: ubuntu-latest
             runtime: linux-x64
