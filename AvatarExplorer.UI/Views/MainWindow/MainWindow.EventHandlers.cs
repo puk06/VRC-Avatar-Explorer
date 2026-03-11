@@ -36,7 +36,7 @@ public partial class MainWindow
 
     #region Drag and Drop
     private string _main_lastDragAndDropItem = string.Empty;
-    private async void ItemButton_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private async void Main_ItemButton_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (sender is not Button button) return;
 

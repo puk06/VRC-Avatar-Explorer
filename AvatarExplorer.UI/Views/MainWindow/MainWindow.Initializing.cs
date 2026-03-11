@@ -15,11 +15,11 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private void InitializeTitle()
+    private void Main_InitializeTitle()
     {
         Title = string.Format("VRC Avatar Explorer v{0}", AvatarExplorerApp.CurrentVersion);
     }
-    private void CheckAdministratorMode()
+    private void Main_CheckAdministratorMode()
     {
         try
         {
@@ -34,7 +34,7 @@ public partial class MainWindow
             ErrorManager.Instance.PostInternalError("Failed to determine whether the process is running with administrator privileges.", ex);
         }
     }
-    private void InitializeAvatarExplorer()
+    private void Main_InitializeAvatarExplorer()
     {
         try
         {
@@ -49,36 +49,36 @@ public partial class MainWindow
             ErrorManager.Instance.PostInternalError("Failed to initialize Avatar Explorer.", ex);
         }
     }
-    private void InitializeUserPreferences()
+    private void Main_InitializeUserPreferences()
     {
         _userPreferences = UserPreferencesService.Load(SystemPath.UserPreferencesFilePath);
     }
-    private void InitializeContextMenuHandlers()
+    private void Main_InitializeContextMenuHandlers()
     {
         _contextMenuHandlers = new()
         {
-            { ActionKey.OpenItemFolder, ItemButton_ContextMenu_OpenItemFolder },
-            { ActionKey.CopyBoothLink, ItemButton_ContextMenu_CopyBoothLink },
-            { ActionKey.OpenBoothLink, ItemButton_ContextMenu_OpenBoothLink },
-            { ActionKey.ShowOtherItemsByAuthor, ItemButton_ContextMenu_ShowOtherItemsByAuthor },
-            { ActionKey.ChangeThumbnail, ItemButton_ContextMenu_ChangeThumbnail },
-            { ActionKey.FetchThumbnail, ItemButton_ContextMenu_FetchThumbnail },
-            { ActionKey.EditItem, ItemButton_ContextMenu_EditItem },
-            { ActionKey.EditItemTitle, ItemButton_ContextMenu_EditItemTitle },
-            { ActionKey.EditItemMemo, ItemButton_ContextMenu_EditMemo },
-            { ActionKey.AddToBulkImportList, ItemButton_ContextMenu_AddToBulkImportList },
-            { ActionKey.AddItemFile, ItemButton_ContextMenu_AddItemFile },
-            { ActionKey.AddItemFolder, ItemButton_ContextMenu_AddItemFolder },
-            { ActionKey.EditImplementedAvatar, ItemButton_ContextMenu_EditImplementedAvatar },
-            { ActionKey.EditItemTag, ItemButton_ContextMenu_EditItemTag },
-            { ActionKey.RemoveItem, ItemButton_ContextMenu_RemoveItem },
-            { ActionKey.OpenFile, ItemButton_ContextMenu_OpenFile },
-            { ActionKey.AddFileToBulkImportList, ItemButton_ContextMenu_AddFileToBulkImportList },
-            { ActionKey.OpenFileInExplorer, ItemButton_ContextMenu_OpenFileInExplorer },
-            { ActionKey.RemovePreset, ItemButton_ContextMenu_RemovePreset }
+            { ActionKey.OpenItemFolder, Main_ItemButton_ContextMenu_OpenItemFolder },
+            { ActionKey.CopyBoothLink, Main_ItemButton_ContextMenu_CopyBoothLink },
+            { ActionKey.OpenBoothLink, Main_ItemButton_ContextMenu_OpenBoothLink },
+            { ActionKey.ShowOtherItemsByAuthor, Main_ItemButton_ContextMenu_ShowOtherItemsByAuthor },
+            { ActionKey.ChangeThumbnail, Main_ItemButton_ContextMenu_ChangeThumbnail },
+            { ActionKey.FetchThumbnail, Main_ItemButton_ContextMenu_FetchThumbnail },
+            { ActionKey.EditItem, Main_ItemButton_ContextMenu_EditItem },
+            { ActionKey.EditItemTitle, Main_ItemButton_ContextMenu_EditItemTitle },
+            { ActionKey.EditItemMemo, Main_ItemButton_ContextMenu_EditMemo },
+            { ActionKey.AddToBulkImportList, Main_ItemButton_ContextMenu_AddToBulkImportList },
+            { ActionKey.AddItemFile, Main_ItemButton_ContextMenu_AddItemFile },
+            { ActionKey.AddItemFolder, Main_ItemButton_ContextMenu_AddItemFolder },
+            { ActionKey.EditImplementedAvatar, Main_ItemButton_ContextMenu_EditImplementedAvatar },
+            { ActionKey.EditItemTag, Main_ItemButton_ContextMenu_EditItemTag },
+            { ActionKey.RemoveItem, Main_ItemButton_ContextMenu_RemoveItem },
+            { ActionKey.OpenFile, Main_ItemButton_ContextMenu_OpenFile },
+            { ActionKey.AddFileToBulkImportList, Main_ItemButton_ContextMenu_AddFileToBulkImportList },
+            { ActionKey.OpenFileInExplorer, Main_ItemButton_ContextMenu_OpenFileInExplorer },
+            { ActionKey.RemovePreset, Main_ItemButton_ContextMenu_RemovePreset }
         };
     }
-    private void InitializeLanguageBox()
+    private void Main_InitializeLanguageBox()
     {
         Localizer.Instance.LoadFromFolder("locales");
 
@@ -91,7 +91,7 @@ public partial class MainWindow
         InitialSetupOverlay_LanguageComboBox.Items.AddRange(languages);
     }
 
-    private void InitializePipeServer()
+    private void Main_InitializePipeServer()
     {
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
         SingleInstanceService.StartServer();
@@ -105,7 +105,7 @@ public partial class MainWindow
         });
     }
 
-    private async Task CheckSchemeAsync()
+    private async Task Main_CheckSchemeAsync()
     {
         try
         {
