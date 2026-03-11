@@ -65,7 +65,7 @@ public partial class MainWindow : Window
         SettingsOverlay_ApplySettingsValues();
 
         // 一括インポートプリセットの読み込み
-        ReloadBulkImportItemPresetButtons();
+        BulkImportPresetPanel_DrawItemButtons();
     }
 
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
@@ -375,7 +375,7 @@ public partial class MainWindow : Window
             Main_RenderRightPanel();
         }
 
-        ReloadBulkImportItemButtons();
+        BulkImportPresetPanel_DrawItemButtons();
     }
 
     private void Main_CheckPageStates()
@@ -410,7 +410,7 @@ public partial class MainWindow : Window
         else
         {
             ErrorOr<Success> result = await LauncherService.OpenFile(this, filePath);
-            if (result.IsError) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
+            if (result.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
         }
     }
     private async Task Main_OpenUnitypackageInternalAsync(string itemPath)
@@ -435,11 +435,11 @@ public partial class MainWindow : Window
         if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
         {
             ErrorOr<Success> result = await LauncherService.OpenFile(this, importResult.ModifiedUnitypackagePath);
-            if (result.IsError) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
+            if (result.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
         }
         else
         {
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ImportUnitypackageFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ImportUnitypackageFailed]);
         }
     }
     #endregion

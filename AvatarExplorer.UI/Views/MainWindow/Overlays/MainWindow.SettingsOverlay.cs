@@ -140,7 +140,7 @@ public partial class MainWindow
     private async Task SettingsOverlay_CheckDataCopy(string previousPath, string currentPath)
     {
         // データをコピーするか
-        YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.StoragePathChange.CopyData]);
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.StoragePathChange.CopyData]);
         if (result == null || result != YesNoResult.Yes) return;
         
         async Task progressAction((string localizationKey, int progress) tuple)
@@ -158,16 +158,16 @@ public partial class MainWindow
         if (result1.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to copy directory.", tag: result1.Errors.ToErrorString());
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CopyDirectoryFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CopyDirectoryFailed]);
         }
         else if (result1.Value.Failures.Count > 0)
         {
             result1.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError(string.Format("Failed to copy file: '{0}' to '{1}'", i.SourcePath, i.DestinationPath), tag: i.ErrorMessage));
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.FoundProcessingFailedPath]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.FoundProcessingFailedPath]);
         }
         else
         {
-            Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.CopyDirectory]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.CopyDirectory]);
         }
     }
 
@@ -259,20 +259,20 @@ public partial class MainWindow
 
         Dictionary<ItemType, string> localizedItemTypesMapping = Enum.GetValues<ItemType>().ToDictionary(i => i, i => Localizer.Instance[i.GetLocalizationKey() ?? i.ToString()]);
 
-        YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported]);
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported]);
         if (result == null) return;
 
         ErrorOr<Success> exportResult;
         if (result == YesNoResult.Yes) exportResult = await _avatarExplorerApp.ExportToCsv(filePath, localizedItemTypesMapping, true);
         else exportResult = await _avatarExplorerApp.ExportToCsv(filePath, localizedItemTypesMapping, false);
         
-        if (!exportResult.IsError) Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Export]);
-        else Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed]);
+        if (!exportResult.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Export]);
+        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed]);
     }
     private async void SettingsOverlay_EditCommonAvatars_Click(object? sender, RoutedEventArgs e) => EditCommonAvatarsOverlay_Show();
     private async void SettingsOverlay_ResetItemDatabase_Click(object? sender, RoutedEventArgs e)
     {
-        YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetItemDatabase]);
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetItemDatabase]);
         if (result == null || result != YesNoResult.Yes) return;
 
         _avatarExplorerApp.ResetItemDatabase();
@@ -281,7 +281,7 @@ public partial class MainWindow
 
     private async void SettingsOverlay_ResetCommonAvatarDatabase_Click(object? sender, RoutedEventArgs e)
     {
-        YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetCommonAvatarDatabase]);
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetCommonAvatarDatabase]);
         if (result == null || result != YesNoResult.Yes) return;
 
         _avatarExplorerApp.ResetCommonAvatarDatabase();
@@ -298,7 +298,7 @@ public partial class MainWindow
 
         if (backupResult.IsError)
         {
-            YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ContinueRestoreFromBackup]);
+            YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ContinueRestoreFromBackup]);
             if (result == null || result == YesNoResult.No) return;
         }
 

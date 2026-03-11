@@ -39,7 +39,7 @@ public partial class MainWindow
         catch (Exception ex)
         {
             ErrorManager.Instance.PostError("Failed to open dialog.", ex);
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenDialogFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenDialogFailed]);
             return null;
         }
     }

@@ -12,7 +12,7 @@ public partial class MainWindow
 {
     private TaskCompletionSource<YesNoResult>? _yesNoTcs;
 
-    private Task<YesNoResult> Main_ShowYesNoDialogAsync(string title, string content)
+    private Task<YesNoResult> YesNoDialogOverlay_ShowAsync(string title, string content)
     {
         if (_yesNoTcs != null) throw new InvalidOperationException("YesNoDialog is already shown.");
 
@@ -25,16 +25,16 @@ public partial class MainWindow
         return _yesNoTcs.Task;
     }
 
-    private async Task<YesNoResult?> ShowYesNoDialogSafeAsync(string title, string message)
+    private async Task<YesNoResult?> YesNoDialogOverlay_ShowSafeAsync(string title, string message)
     {
         try
         {
-            return await Main_ShowYesNoDialogAsync(title, message);
+            return await YesNoDialogOverlay_ShowAsync(title, message);
         }
         catch (Exception ex)
         {
             ErrorManager.Instance.PostError("Failed to open dialog.", ex);
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenDialogFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenDialogFailed]);
             return null;
         }
     }

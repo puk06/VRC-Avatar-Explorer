@@ -14,7 +14,7 @@ public partial class MainWindow
     private async Task InitialSetupOverlay_ShowAsync()
     {
         _languageSelectionTcs?.TrySetResult(false);
-        _languageSelectionTcs = new TaskCompletionSource<bool>();
+        _languageSelectionTcs = new();
 
         InitialSetupOverlay_LanguageComboBox.SelectedIndex = _userPreferences.Language;
         InitialSetupOverlay_ItemsFolderPathTextBox.Text = RuntimeSettings.DataRootDirectory;

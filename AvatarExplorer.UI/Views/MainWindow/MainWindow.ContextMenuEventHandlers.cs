@@ -37,7 +37,7 @@ public partial class MainWindow
     private Item? ItemButton_ContextMenu_GetItemById(string itemId)
     {
         Item? item = _avatarExplorerApp.GetItemById(itemId);
-        if (item == null) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
+        if (item == null) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
 
         return item;
     }
@@ -85,11 +85,11 @@ public partial class MainWindow
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to edit item thumbnail.", tag: result.Errors.ToErrorString());
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemThumbnailEditFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemThumbnailEditFailed]);
         }
         else
         {
-            Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemThumbnailEdit]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemThumbnailEdit]);
             Main_ReloadCurrentWindow();
         }
     }
@@ -99,11 +99,11 @@ public partial class MainWindow
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to fetch item thumbnail.", tag: result.Errors.ToErrorString());
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.FetchItemThumbnailFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.FetchItemThumbnailFailed]);
         }
         else
         {
-            Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.FetchItemThumbnail]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.FetchItemThumbnail]);
             Main_ReloadCurrentWindow();
         }
     }
@@ -120,7 +120,7 @@ public partial class MainWindow
         Item? item = ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return;
 
-        string? newTitle = await ShowTextDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewItemTitle], item.Title);
+        string? newTitle = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewItemTitle], item.Title);
         if (string.IsNullOrEmpty(newTitle)) return;
         item.Title = newTitle;
         
@@ -142,7 +142,7 @@ public partial class MainWindow
     }
     private Task ItemButton_ContextMenu_AddToBulkImportList(string itemId)
     {
-        BulkImportItem_Add(itemId);
+        BulkImportPanel_AddItem(itemId);
         return Task.CompletedTask;
     }
     private async Task ItemButton_ContextMenu_AddItemFile(string itemId)
@@ -155,9 +155,9 @@ public partial class MainWindow
 
         ErrorOr<ExtractResult> result = await ItemButton_ContextMenu_AddItemPathsInternal(item, files);
 
-        if (result.IsError) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.AddItemFileFailed]);
-        else if (result.Value.ProcessingFailedPaths.Count > 0) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()));
-        else Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemFileAdd]);
+        if (result.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.AddItemFileFailed]);
+        else if (result.Value.ProcessingFailedPaths.Count > 0) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()));
+        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemFileAdd]);
     }
     private async Task ItemButton_ContextMenu_AddItemFolder(string itemId)
     {
@@ -169,9 +169,9 @@ public partial class MainWindow
 
         ErrorOr<ExtractResult> result = await ItemButton_ContextMenu_AddItemPathsInternal(item, folders);
 
-        if (result.IsError) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.AddItemFolderFailed]);
-        else if (result.Value.ProcessingFailedPaths.Count > 0) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()));
-        else Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemFolderAdd]);
+        if (result.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.AddItemFolderFailed]);
+        else if (result.Value.ProcessingFailedPaths.Count > 0) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()));
+        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemFolderAdd]);
     }
     private async Task<ErrorOr<ExtractResult>> ItemButton_ContextMenu_AddItemPathsInternal(Item item, string[] itemPaths)
     {
@@ -210,10 +210,10 @@ public partial class MainWindow
         Item? item = ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return;
 
-        YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
         if (result == null || result != YesNoResult.Yes) return;
 
-        YesNoResult? result2 = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
+        YesNoResult? result2 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
         if (result2 == null) return;
 
         bool removeItemFromSupportedAndImplemented = result2 == YesNoResult.Yes;
@@ -221,14 +221,14 @@ public partial class MainWindow
 
         Main_ReloadCurrentWindow();
 
-        if (removed) Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Remove]);
-        else Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RemoveFailed]);
+        if (removed) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Remove]);
+        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RemoveFailed]);
     }
 
     private async Task ItemButton_ContextMenu_OpenFile(string filePath)
     {
         ErrorOr<Success> result = await LauncherService.OpenFile(this, filePath);
-        if (result.IsError) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
+        if (result.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
     }
     private Task ItemButton_ContextMenu_OpenFileInExplorer(string filePath)
     {
@@ -250,14 +250,14 @@ public partial class MainWindow
         string? itemId = _avatarExplorerApp.GetSelectedItem()?.Id;
         if (itemId == null) return Task.CompletedTask;
 
-        BulkImportItem_Add(itemId, filePath);
+        BulkImportPanel_AddItem(itemId, filePath);
         return Task.CompletedTask;
     }
 
     private BulkImportPreset? ItemButton_ContextMenu_GetBulkImportPresetById(string id)
     {
         BulkImportPreset? bulkImportPreset = _avatarExplorerApp.GetBulkImportPresetById(id);
-        if (bulkImportPreset == null) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.PresetNotFound]);
+        if (bulkImportPreset == null) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.PresetNotFound]);
 
         return bulkImportPreset;
     }
@@ -267,15 +267,15 @@ public partial class MainWindow
         BulkImportPreset? bulkImportPreset = ItemButton_ContextMenu_GetBulkImportPresetById(id);
         if (bulkImportPreset == null) return;
 
-        YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemovePreset, bulkImportPreset.PresetName));
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemovePreset, bulkImportPreset.PresetName));
         if (result == null || result != YesNoResult.Yes) return;
 
         bool removed = _avatarExplorerApp.RemoveBulkImportPreset(bulkImportPreset.Id);
 
-        ReloadBulkImportItemPresetButtons();
+        BulkImportPresetPanel_DrawItemButtons();
 
-        if (removed) Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Remove]);
-        else Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RemoveFailed]);
+        if (removed) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Remove]);
+        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RemoveFailed]);
     }
     #endregion
 }

@@ -11,7 +11,7 @@ public partial class MainWindow
 {
     private TaskCompletionSource<string?>? _textTcs;
 
-    private Task<string?> Main_ShowTextDialogAsync(string title, string initialText = "")
+    private Task<string?> TextDialogOverlay_ShowAsync(string title, string initialText = "")
     {
         if (_textTcs != null) throw new InvalidOperationException("TextDialog is already shown.");
 
@@ -24,16 +24,16 @@ public partial class MainWindow
         return _textTcs.Task;
     }
 
-    private async Task<string?> ShowTextDialogSafeAsync(string title, string initialText = "")
+    private async Task<string?> TextDialogOverlay_ShowSafeAsync(string title, string initialText = "")
     {
         try
         {
-            return await Main_ShowTextDialogAsync(title, initialText);
+            return await TextDialogOverlay_ShowAsync(title, initialText);
         }
         catch (Exception ex)
         {
             ErrorManager.Instance.PostError("Failed to open dialog.", ex);
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenDialogFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenDialogFailed]);
             return null;
         }
     }

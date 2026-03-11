@@ -922,7 +922,7 @@
                     </Grid>
 
                     <!-- OKボタン -->
-                    <Button Classes="accent" FontWeight="Bold" Content="{Binding [DialogResult.OK]}" Width="150" VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="Dialog_OK_Click"/>
+                    <Button Classes="accent" FontWeight="Bold" Content="{Binding [DialogResult.OK]}" Width="150" VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="DialogOverlay_OK_Click"/>
                 </StackPanel>
             </Border>
         </Border>

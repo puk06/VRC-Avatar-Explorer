@@ -21,7 +21,7 @@ public partial class MainWindow
         Item? item = _avatarExplorerApp.GetItemById(_contextMenu_selectedItemId);
         if (item == null)
         {
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
             return;
         }
 

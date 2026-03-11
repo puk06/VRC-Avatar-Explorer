@@ -239,7 +239,7 @@ public partial class MainWindow
     {
         string errorMessage = _addItemOverlay_addItemWindowValues.Validate();
         bool result = string.IsNullOrEmpty(errorMessage);
-        if (!result) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[errorMessage]);
+        if (!result) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[errorMessage]);
 
         return result;
     }
@@ -252,7 +252,7 @@ public partial class MainWindow
 
         if (_avatarExplorerApp.IsApiCooldownNow)
         {
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.BoothApiCooldown]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.BoothApiCooldown]);
             return;
         }
 
@@ -262,7 +262,7 @@ public partial class MainWindow
 
         if (fetchResult.IsError)
         {
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RetrieveBoothItemFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RetrieveBoothItemFailed]);
             return;
         }
         
@@ -271,7 +271,7 @@ public partial class MainWindow
     }
     private async void AddItemOverlay_AddCustomCategory_Click(object? sender, RoutedEventArgs e)
     {
-        string? customCategory = await ShowTextDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.AddCustomCategory]);
+        string? customCategory = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.AddCustomCategory]);
         if (string.IsNullOrEmpty(customCategory)) return;
 
         int index = AddItemOverlay_ItemTypeComboBox.Items.Add(customCategory);
@@ -337,19 +337,19 @@ public partial class MainWindow
 
             if (itemCreationResult.IsError)
             {
-                Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemAddFailed]);
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemAddFailed]);
             }
             else if (itemCreationResult.Value.ExtractResult.ProcessingFailedPaths.Count > 0)
             {
-                Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, itemCreationResult.Value.ExtractResult.ProcessingFailedPaths.Count.ToString()));
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, itemCreationResult.Value.ExtractResult.ProcessingFailedPaths.Count.ToString()));
             }
             else if (itemCreationResult.Value.Item != null)
             {
-                Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemAdd]);
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemAdd]);
             }
             else
             {
-                Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemAddFailed]);
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemAddFailed]);
             }
         }
         else
@@ -358,8 +358,8 @@ public partial class MainWindow
             bool result = await _avatarExplorerApp.EditItem(_addItemOverlay_selectedItemId, itemCreationContext);
             ProgressOverlay_Hide();
 
-            if (result) Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemEdit]);
-            else Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemEditFailed]);
+            if (result) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemEdit]);
+            else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemEditFailed]);
         }
 
         AddItemOverlay_Hide();

@@ -26,7 +26,7 @@ public partial class MainWindow
             if (ProcessUtils.IsWindows() && SchemeService.IsRunAsAdmin())
             {
                 Title = string.Format("VRC Avatar Explorer v{0} - [{1}]", AvatarExplorerApp.CurrentVersion, Localizer.Instance[LocalizationKey.Title.AdministratorMode]);
-                Dialog_Show(Localizer.Instance[LocalizationKey.Warning.Default], Localizer.Instance[LocalizationKey.Warning.RunningInAdministratorMode]);
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Warning.Default], Localizer.Instance[LocalizationKey.Warning.RunningInAdministratorMode]);
             }
         }
         catch (Exception ex)
@@ -112,7 +112,7 @@ public partial class MainWindow
             void skipScheme()
             {
                 SchemeService.MarkSchemeSkipped();
-                Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterSkipped]);
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterSkipped]);
             }
 
             if (SchemeService.IsSchemeRegistered())
@@ -121,7 +121,7 @@ public partial class MainWindow
 
                 if (!string.IsNullOrEmpty(currentInternalSchemePath) && !SchemeService.IsSkipped(currentInternalSchemePath) && currentInternalSchemePath != ProcessUtils.GetCurrentProcessPath())
                 {
-                    YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.PathChanged]);
+                    YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.PathChanged]);
                     if (result == null) return;
                     
                     if (result == YesNoResult.Yes) await Main_RegisterSchemeAsync();
@@ -129,7 +129,7 @@ public partial class MainWindow
                 }
                 else if (string.IsNullOrEmpty(currentInternalSchemePath))
                 {
-                    YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterAgain]);
+                    YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterAgain]);
                     if (result == null) return;
                     
                     if (result == YesNoResult.Yes) await Main_RegisterSchemeAsync();
@@ -138,7 +138,7 @@ public partial class MainWindow
             }
             else
             {
-                YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.Register]);
+                YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.Register]);
                 if (result == null) return;
                 
                 if (result == YesNoResult.Yes) await Main_RegisterSchemeAsync();
@@ -148,7 +148,7 @@ public partial class MainWindow
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError("The scheme data could not be fully validated due to an internal error.", ex);
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CheckSchemeFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CheckSchemeFailed]);
         }
     }
 
@@ -158,19 +158,19 @@ public partial class MainWindow
         {
             if (!SchemeService.IsRunAsAdmin())
             {
-                YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RestartAsAdmin]);
+                YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RestartAsAdmin]);
                 if (result != null && result == YesNoResult.Yes) SchemeService.RestartAsAdmin();
             }
             else
             {
                 SchemeService.RegisterScheme();
-                Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterSuccess]);
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterSuccess]);
             }
         }
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError("Failed to register scheme.", ex);
-            Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RegisterSchemeFailed]);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RegisterSchemeFailed]);
         }
     }
 }

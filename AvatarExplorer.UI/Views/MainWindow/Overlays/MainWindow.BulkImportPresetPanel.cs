@@ -9,18 +9,18 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private void ReloadBulkImportItemPresetButtons()
+    private void BulkImportPresetPanel_DrawItemButtons()
     {
         SidePanel_BulkImportPresetPanel.Children.Clear();
 
         foreach (BulkImportPreset bulkImportPreset in _avatarExplorerApp.GetAllBulkImportPresets())
         {
             ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(bulkImportPreset), ItemButton_ContextMenuItem_Click);
-            ItemButtonFactory.AddItemButton(SidePanel_BulkImportPresetPanel, new UISelectableItem(bulkImportPreset, 0), RuntimeSettings, _userPreferences, itemContextMenu, BulkImportPreset_Button_Click);
+            ItemButtonFactory.AddItemButton(SidePanel_BulkImportPresetPanel, new UISelectableItem(bulkImportPreset, 0), RuntimeSettings, _userPreferences, itemContextMenu, BulkImportPresetPanel_ItemButton_Click);
         }
     }
 
-    private void BulkImportPreset_Focus()
+    private void BulkImportPresetPanel_Focus()
     {
         SidePanel_Show();
 
@@ -28,7 +28,7 @@ public partial class MainWindow
         if (bulkImportPresetPanelTabIndex != -1 && SidePanel_TabControl.SelectedIndex != bulkImportPresetPanelTabIndex) SidePanel_TabControl.SelectedIndex = bulkImportPresetPanelTabIndex;
     }
 
-    private async void BulkImportPreset_Button_Click(object? sender, RoutedEventArgs e)
+    private async void BulkImportPresetPanel_ItemButton_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is not Button button) return;
 
@@ -37,7 +37,7 @@ public partial class MainWindow
             BulkImportPreset? bulkImportPreset = _avatarExplorerApp.GetBulkImportPresetById(itemTagInfo.Value);
             if (bulkImportPreset == null) return;
 
-            BulkImportItem_Add(bulkImportPreset.ItemsView);
+            BulkImportPanel_AddItem(bulkImportPreset.ItemsView);
         }
     }
 }
