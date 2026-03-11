@@ -13,7 +13,9 @@ internal static class ContextMenuCreator
     {
         if (selectableItem is Item item) return CreateFromItem(item);
         if (selectableItem is ItemFile itemFile) return CreateFromItemFile(itemFile);
-        else return [];
+        if (selectableItem is BulkImportPreset bulkImportPreset) return CreateFromBulkImportPreset(bulkImportPreset);
+        
+        return [];
     }
 
     private static ContextMenuAction[] CreateFromItem(Item item)
@@ -68,6 +70,16 @@ internal static class ContextMenuCreator
         {
             contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, itemFile.FullPath));
         }
+
+        return contextMenuActions.ToArray();
+    }
+
+    private static ContextMenuAction[] CreateFromBulkImportPreset(BulkImportPreset bulkImportPreset)
+    {
+        List<ContextMenuAction> contextMenuActions =
+        [
+            new ContextMenuAction(LocalizationKey.ContextMenu.BulkImportPreset.RemovePreset, ActionKey.RemovePreset, ContextMenuIconType.Delete, bulkImportPreset.Id),
+        ];
 
         return contextMenuActions.ToArray();
     }

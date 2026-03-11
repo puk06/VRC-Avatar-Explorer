@@ -76,6 +76,10 @@ public static class LocalizationKey
             {
                 public const string Count = "Button.Description.CommonAvatar.Count";
             }
+            public static class BulkImportItem
+            {
+                public const string Count = "Button.Description.BulkImportItem.Count";
+            }
         }
         public static class Tag
         {
@@ -105,6 +109,7 @@ public static class LocalizationKey
             public const string RemoveAvatarFromSupportedAndImplemented = "Dialog.Confirmation.RemoveAvatarFromSupportedAndImplemented";
             public const string RemoveCommonAvatarGroup = "Dialog.Confirmation.RemoveCommonAvatarGroup";
             public const string ContinueRestoreFromBackup = "Dialog.Confirmation.ContinueRestoreFromBackup";
+            public const string RemovePreset = "Dialog.Confirmation.RemovePreset";
             public static class ExportToCsv
             {
                 public const string IncludeImplementedToSupported = "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported";
@@ -125,6 +130,7 @@ public static class LocalizationKey
             public const string AddCustomCategory = "Dialog.Title.AddCustomCategory";
             public const string AddCommonAvatarGroup = "Dialog.Title.AddCommonAvatarGroup";
             public const string NewCommonAvatarGroupName = "Dialog.Title.NewCommonAvatarGroupName";
+            public const string NewBulkImportPresetName = "Dialog.Title.NewBulkImportPresetName";
         }
         public static class Update
         {
@@ -251,6 +257,10 @@ public static class LocalizationKey
             public const string BulkImportList = "ContextMenu.ItemFile.BulkImportList";
             public const string OpenFileInExplorer = "ContextMenu.ItemFile.OpenFileInExplorer";
         }
+        public static class BulkImportPreset
+        {
+            public const string RemovePreset = "ContextMenu.BulkImportPreset.RemovePreset";
+        }
     }
     public static class SearchFilter
     {
@@ -299,6 +309,7 @@ public static class LocalizationKey
         public const string BoothApiCooldown = "Error.BoothApiCooldown";
         public const string ItemNotFound = "Error.ItemNotFound";
         public const string CommonAvatarNotFound = "Error.CommonAvatarNotFound";
+        public const string PresetNotFound = "Error.PresetNotFound";
         public static class Validation
         {
             public const string NoFolders = "Error.Validation.NoFolders";
@@ -519,6 +530,7 @@ public static class LocalizationKey
     {
         public const string AdvancedSearch = "SidePanel.AdvancedSearch";
         public const string BulkImport = "SidePanel.BulkImport";
+        public const string BulkImportPreset = "SidePanel.BulkImportPreset";
     }
     public static class AdvancedSearch
     {
@@ -540,6 +552,7 @@ public static class LocalizationKey
     public static class BulkImport
     {
         public const string Import = "BulkImport.Import";
+        public const string Save = "BulkImport.Save";
         public const string Reset = "BulkImport.Reset";
     }
     public static class EditSupportedAvatars

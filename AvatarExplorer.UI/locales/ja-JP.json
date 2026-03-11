@@ -33,6 +33,7 @@
     "Button.Description.Item.Count": "{0}個の項目",
     "Button.Description.File.Extension": "{0} ファイル",
     "Button.Description.CommonAvatar.Count": "合計アバター数: {0}",
+    "Button.Description.BulkImportItem.Count": "{0}個のアイテム",
     
     "Button.Tag.CommonAvatar": "共通素体: {0}",
 
@@ -50,6 +51,7 @@
     "Dialog.Confirmation.RemoveAvatarFromSupportedAndImplemented": "このアバターを対応アバターとしているアイテムの対応アバターからこのアバターを削除しますか？",
     "Dialog.Confirmation.RemoveCommonAvatarGroup": "共通素体グループを削除しますか？\n共通素体グループ名: {0}",
     "Dialog.Confirmation.ContinueRestoreFromBackup": "現在の設定のバックアップに失敗しましたが、バックアップからの復元処理を続行しますか？",
+    "Dialog.Confirmation.RemovePreset": "プリセット名: {0}\n\n本当にこのプリセットを削除しますか？",
     
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "対応アバターの欄に共通素体アバターを含めますか？",
 
@@ -62,6 +64,7 @@
     "Dialog.Title.AddCustomCategory": "新しいカスタムカテゴリ",
     "Dialog.Title.AddCommonAvatarGroup": "新しい共通素体グループ",
     "Dialog.Title.NewCommonAvatarGroupName": "新しい共通素体グループ名",
+    "Dialog.Title.NewBulkImportPresetName": "新しい一括インポートプリセット",
 
     "Dialog.Update.Available": "アップデートが利用可能です",
     "Dialog.Update.VersionText": "新しいバージョン: {0} (現在のバージョン: {1})\nリリース日: {2}",
@@ -120,6 +123,7 @@
     "ContextMenu.ItemFile.OpenFile": "ファイルを開く",
     "ContextMenu.ItemFile.BulkImportList": "一括インポートに追加する",
     "ContextMenu.ItemFile.OpenFileInExplorer": "エクスプローラーで表示する",
+    "ContextMenu.BulkImportPreset.RemovePreset": "プリセットを削除する",
 
     "SearchFilter.Default": "検索中... - {0}",
     "SearchFilter.Title": "タイトル: {0}",
@@ -160,6 +164,7 @@
     "Error.BoothApiCooldown": "情報を取得する間隔が短すぎます",
     "Error.ItemNotFound": "アイテムが見つかりませんでした",
     "Error.CommonAvatarNotFound": "共通素体グループが見つかりませんでした",
+    "Error.PresetNotFound": "プリセットが見つかりませんでした",
     "Error.Validation.NoFolders": "フォルダが選択されていません",
     "Error.Validation.EmptyTitle": "アイテムのタイトル欄が空です",
     "Error.Validation.EmptyAuthor": "アイテムの作者欄が空です",
@@ -282,6 +287,7 @@
 
     "SidePanel.AdvancedSearch": "詳細検索",
     "SidePanel.BulkImport": "一括インポート",
+    "SidePanel.BulkImportPreset": "一括インポートプリセット",
 
     "AdvancedSearch.Enable": "有効化",
     "AdvancedSearch.OrSearch": "OR検索",
@@ -299,6 +305,7 @@
     "AdvancedSearch.CommonAvatar": "共通素体",
 
     "BulkImport.Import": "一括インポート",
+    "BulkImport.Save": "保存",
     "BulkImport.Reset": "リセット",
 
     "AddItem.BoothItemInfo": "Booth アイテム情報",

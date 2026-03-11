@@ -22,5 +22,7 @@ internal enum ActionKey
 
     OpenFile,
     AddFileToBulkImportList,
-    OpenFileInExplorer
+    OpenFileInExplorer,
+
+    RemovePreset
 }

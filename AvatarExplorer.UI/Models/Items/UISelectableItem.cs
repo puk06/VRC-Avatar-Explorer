@@ -41,6 +41,7 @@ internal class UISelectableItem
         else if (source is FileCategoryItem fileCategoryItem) FromFileCategoryItem(fileCategoryItem);
         else if (source is ItemFile itemFile) FromFileItemFile(itemFile);
         else if (source is CommonAvatar commonAvatar) FromCommonAvatar(commonAvatar);
+        else if (source is BulkImportPreset bulkImportPreset) FromBulkImportPreset(bulkImportPreset);
     }
 
     internal UISelectableItem(ItemCountInfo itemCountInfo)
@@ -114,6 +115,15 @@ internal class UISelectableItem
         Description = (LocalizationKey.Button.Description.CommonAvatar.Count, [commonAvatar.AvatarsView.Count.ToString()]);
         ImageFileName = SystemIconKey.GroupIcon;
         Tag = new(ItemTagStates.None, commonAvatar.GetInternalId());
+        IconType = IconType.None;
+    }
+
+    private void FromBulkImportPreset(BulkImportPreset bulkImportPreset)
+    {
+        Title = bulkImportPreset.PresetName;
+        Description = (LocalizationKey.Button.Description.BulkImportItem.Count, [bulkImportPreset.ItemsView.Count.ToString()]);
+        ImageFileName = SystemIconKey.FolderIcon;
+        Tag = new(ItemTagStates.None, bulkImportPreset.Id);
         IconType = IconType.None;
     }
 }

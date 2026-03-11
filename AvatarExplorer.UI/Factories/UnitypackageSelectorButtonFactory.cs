@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -20,8 +21,8 @@ internal static class UnitypackageSelectorButtonFactory
         StackPanel parent,
         UISelectableItem item,
         RuntimeSettings runtimeSettings, UserPreferences userPreferences,
-        int itemIndex, int selectedIndex,
-        Action<int>? onCopyClick = null, Action<int>? onRemoveClick = null, Action<int, int>? onSelectionChanged = null
+        string id, string selectedFilePath,
+        Action<string>? onCopyClick = null, Action<string>? onRemoveClick = null, Action<string, string>? onSelectionChanged = null
     )
     {
         Button itemButton = ItemButtonFactory.CreateBaseButton(item);
@@ -36,14 +37,14 @@ internal static class UnitypackageSelectorButtonFactory
         Grid.SetColumn(itemIconBorder, 0);
 
         // タイトルリスト
-        Grid textGrid = CreateTextAndIconGrid(item, runtimeSettings, itemIndex, onCopyClick, onRemoveClick);
+        Grid textGrid = CreateTextAndIconGrid(item, runtimeSettings, id, onCopyClick, onRemoveClick);
         contentGrid.Children.Add(textGrid);
         Grid.SetColumn(textGrid, 1);
 
         contentStackPanel.Children.Add(contentGrid);
 
         Panel unitypackagePanel = new();
-        unitypackagePanel.Children.Add(CreateUnitypackageList(item, runtimeSettings, itemIndex, selectedIndex, onSelectionChanged));
+        unitypackagePanel.Children.Add(CreateUnitypackageList(item, id, selectedFilePath, runtimeSettings, onSelectionChanged));
 
         contentStackPanel.Children.Add(unitypackagePanel);
 
@@ -54,7 +55,7 @@ internal static class UnitypackageSelectorButtonFactory
         return itemButton;
     }
 
-    internal static Grid CreateTextAndIconGrid(UISelectableItem item, RuntimeSettings runtimeSettings, int itemIndex, Action<int>? onCopyClick = null, Action<int>? onRemoveClick = null)
+    internal static Grid CreateTextAndIconGrid(UISelectableItem item, RuntimeSettings runtimeSettings, string id, Action<string>? onCopyClick = null, Action<string>? onRemoveClick = null)
     {
         Grid textGrid = new() { RowDefinitions = new("Auto,Auto,5,*") };
 
@@ -84,7 +85,7 @@ internal static class UnitypackageSelectorButtonFactory
                 Opacity = 0
             }
         };
-        if (onCopyClick != null) copyButton.Click += (_, e) => onCopyClick(itemIndex);
+        if (onCopyClick != null) copyButton.Click += (_, e) => onCopyClick(id);
 
         iconStackPanel.Children.Add(copyButton);
 
@@ -102,7 +103,7 @@ internal static class UnitypackageSelectorButtonFactory
                 Opacity = 0
             }
         };
-        if (onRemoveClick != null) removeButton.Click += (_, e) => onRemoveClick(itemIndex);
+        if (onRemoveClick != null) removeButton.Click += (_, e) => onRemoveClick(id);
 
         iconStackPanel.Children.Add(removeButton);
 
@@ -113,12 +114,19 @@ internal static class UnitypackageSelectorButtonFactory
         return textGrid;
     }
 
-    internal static ComboBox CreateUnitypackageList(UISelectableItem item, RuntimeSettings runtimeSettings, int itemIndex, int selectedIndex, Action<int, int>? onSelectedIndexChanged = null)
+    internal static ComboBox CreateUnitypackageList(UISelectableItem item, string id, string selectedFilePath, RuntimeSettings runtimeSettings, Action<string, string>? onSelectedIndexChanged = null)
     {
         ComboBox unitypackageComboBox = new() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch, CornerRadius = new(8), FontSize = 14 };
 
-        foreach (string filePath in UnitypackageService.GetUnitypackagePaths(ItemUtils.GetItemPath(runtimeSettings.DataRootDirectory, item.ItemPath)))
+        int selectedIndex = 0;
+
+        IReadOnlyList<string> unitypackageFilePaths = UnitypackageService.GetUnitypackagePaths(ItemUtils.GetItemPath(runtimeSettings.DataRootDirectory, item.ItemPath));
+        for (int i = 0; i < unitypackageFilePaths.Count; i++)
         {
+            string filePath = unitypackageFilePaths[i];
+
+            if (filePath == selectedFilePath) selectedIndex = i;
+
             ComboBoxItem unitypackageFileItem = new()
             {
                 Content = Path.GetFileName(filePath),
@@ -130,7 +138,7 @@ internal static class UnitypackageSelectorButtonFactory
             ToolTip.SetBetweenShowDelay(unitypackageFileItem, -1);
         }
 
-        if (onSelectedIndexChanged != null) unitypackageComboBox.SelectionChanged += (s, e) => onSelectedIndexChanged(itemIndex, unitypackageComboBox.SelectedIndex);
+        if (onSelectedIndexChanged != null) unitypackageComboBox.SelectionChanged += (s, e) => onSelectedIndexChanged(id, (unitypackageComboBox.SelectedItem as ComboBoxItem)?.Tag as string ?? string.Empty);
         unitypackageComboBox.SelectedIndex = selectedIndex;
 
         return unitypackageComboBox;

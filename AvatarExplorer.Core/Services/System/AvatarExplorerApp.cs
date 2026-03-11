@@ -21,6 +21,7 @@ public partial class AvatarExplorerApp
 
     private readonly ItemDatabaseManager _itemDatabaseManager = new();
     private readonly CommonAvatarDatabaseManager _commonAvatarDatabaseManager = new();
+    private readonly BulkImportPresetDatabaseManager _bulkImportPresetDatabaseManager = new();
 
     private readonly Dictionary<string, string> _itemSearchIndexDictionary = new();
 
@@ -64,8 +65,17 @@ public partial class AvatarExplorerApp
         _commonAvatarDatabaseManager.Update(database);
     }
 
+    public void LoadBulkImportPresetDatabase(string? path = null)
+    {
+        string loadPath = path ?? _bulkImportPresetDatabaseManager.DatabaseFilePath;
+        IEnumerable<BulkImportPreset> database = DatabaseService<BulkImportPreset>.Load(loadPath);
+
+        _bulkImportPresetDatabaseManager.Update(database);
+    }
+
     public void SaveItemDatabase() => DatabaseService<Item>.Save(_itemDatabaseManager.Items, _itemDatabaseManager.DatabaseFilePath);
     public void SaveCommonAvatarDatabase() => DatabaseService<CommonAvatar>.Save(_commonAvatarDatabaseManager.Items, _commonAvatarDatabaseManager.DatabaseFilePath);
+    public void SaveBulkImportPresetDatabase() => DatabaseService<BulkImportPreset>.Save(_bulkImportPresetDatabaseManager.Items, _bulkImportPresetDatabaseManager.DatabaseFilePath);
 
     public void ResetItemDatabase()
     {
@@ -148,6 +158,18 @@ public partial class AvatarExplorerApp
         if (commonAvatar == null) ErrorManager.Instance.PostInternalError($"The common avatar group with the specified ID '{groupId}' was not found.");
 
         return commonAvatar;
+    }
+
+    public IReadOnlyList<BulkImportPreset> GetAllBulkImportPresets() => _bulkImportPresetDatabaseManager.Items;
+
+    public BulkImportPreset? GetBulkImportPresetById(string? id)
+    {
+        if (id == null) return null;
+
+        BulkImportPreset? bulkImportPreset = _bulkImportPresetDatabaseManager.Items.FirstOrDefault(i => i.Id == id);
+        if (bulkImportPreset == null) ErrorManager.Instance.PostInternalError($"The bulk import preset with the specified ID '{id}' was not found.");
+
+        return bulkImportPreset;
     }
 
     #region Current State Internal Handler
@@ -356,6 +378,22 @@ public partial class AvatarExplorerApp
 
         SaveCommonAvatarDatabase();
     }
+    public void AddBulkImportPreset(string presetName, IEnumerable<BulkImportItem>? items = null)
+    {
+        BulkImportPreset bulkImportPreset = new()
+        {
+            PresetName = presetName
+        };
+
+        if (items != null)
+        {
+            bulkImportPreset.UpdateItems(items);
+        }
+
+        _bulkImportPresetDatabaseManager.Add(bulkImportPreset);
+
+        SaveBulkImportPresetDatabase();
+    }
     public async Task<ErrorOr<ItemCreationResult>> AddItem(ItemCreationContext itemCreationContext)
     {
         ErrorOr<ItemCreationResult> itemCreationResult = await ItemCreator.FromItemCreationContext(itemCreationContext, _runtimeSettings);
@@ -507,6 +545,14 @@ public partial class AvatarExplorerApp
     {
         bool removed = _commonAvatarDatabaseManager.Remove(commonAvatarId);
         SaveCommonAvatarDatabase();
+        
+        return removed;
+    }
+
+    public bool RemoveBulkImportPreset(string id)
+    {
+        bool removed = _bulkImportPresetDatabaseManager.Remove(id);
+        SaveBulkImportPresetDatabase();
         
         return removed;
     }

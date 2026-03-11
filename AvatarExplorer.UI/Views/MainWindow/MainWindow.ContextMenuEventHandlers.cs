@@ -253,5 +253,29 @@ public partial class MainWindow
         BulkImportItem_Add(itemId, filePath);
         return Task.CompletedTask;
     }
+
+    private BulkImportPreset? ItemButton_ContextMenu_GetBulkImportPresetById(string id)
+    {
+        BulkImportPreset? bulkImportPreset = _avatarExplorerApp.GetBulkImportPresetById(id);
+        if (bulkImportPreset == null) Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.PresetNotFound]);
+
+        return bulkImportPreset;
+    }
+
+    private async Task ItemButton_ContextMenu_RemovePreset(string id)
+    {
+        BulkImportPreset? bulkImportPreset = ItemButton_ContextMenu_GetBulkImportPresetById(id);
+        if (bulkImportPreset == null) return;
+
+        YesNoResult? result = await ShowYesNoDialogSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemovePreset, bulkImportPreset.PresetName));
+        if (result == null || result != YesNoResult.Yes) return;
+
+        bool removed = _avatarExplorerApp.RemoveBulkImportPreset(bulkImportPreset.Id);
+
+        ReloadBulkImportItemPresetButtons();
+
+        if (removed) Dialog_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Remove]);
+        else Dialog_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RemoveFailed]);
+    }
     #endregion
 }

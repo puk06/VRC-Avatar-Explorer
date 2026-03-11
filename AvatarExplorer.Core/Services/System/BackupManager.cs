@@ -67,7 +67,8 @@ internal class BackupManager
         SystemPath.ItemDatabasePath,
         SystemPath.CommonAvatarDatabasePath,
         SystemPath.RuntimeSettingsFilePath,
-        SystemPath.UserPreferencesFilePath
+        SystemPath.UserPreferencesFilePath,
+        SystemPath.BulkImportPresetDatabasePath
     ];
 
     internal async Task<ErrorOr<Success>> ExecuteBackup(string backupRootFolderPath, CancellationToken token = default)
