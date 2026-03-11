@@ -1,12 +1,10 @@
 using System.Text.Json.Serialization;
-using AvatarExplorer.Core.Interfaces.Database;
 using AvatarExplorer.Core.Models.Common;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class BulkImportPreset : ISelectableItem, IDatabaseItem
+public class BulkImportPreset : AbstractDatabaseItem, ISelectableItem
 {
-    [JsonInclude] public string Id { get; private set; } = Guid.NewGuid().ToString();
     public string PresetName { get; set; } = string.Empty;
     [JsonInclude] private List<BulkImportItem> Items { get; set; } = new List<BulkImportItem>();
     public IReadOnlyList<BulkImportItem> ItemsView => Items;

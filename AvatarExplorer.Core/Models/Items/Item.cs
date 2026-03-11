@@ -1,13 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Models.Common;
-using AvatarExplorer.Core.Interfaces.Database;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class Item : ISelectableItem, IDatabaseItem
+public class Item : AbstractDatabaseItem, ISelectableItem
 {
-    [JsonInclude] public string Id { get; private set; } = Guid.NewGuid().ToString();
     public string Title { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
     public string AuthorId { get; set; } = string.Empty;

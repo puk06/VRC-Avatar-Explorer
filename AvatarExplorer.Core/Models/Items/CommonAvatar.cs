@@ -1,12 +1,10 @@
 ﻿using System.Text.Json.Serialization;
-using AvatarExplorer.Core.Interfaces.Database;
 using AvatarExplorer.Core.Models.Common;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class CommonAvatar : ISelectableItem, IDatabaseItem
+public class CommonAvatar : AbstractDatabaseItem, ISelectableItem
 {
-    [JsonInclude] public string Id { get; private set; } = Guid.NewGuid().ToString();
     public string GroupName { get; set; } = string.Empty;
     [JsonInclude] private List<string> Avatars { get; set; } = new List<string>();
 
