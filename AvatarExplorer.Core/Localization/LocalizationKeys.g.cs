@@ -110,6 +110,7 @@ public static class LocalizationKey
             public const string RemoveCommonAvatarGroup = "Dialog.Confirmation.RemoveCommonAvatarGroup";
             public const string ContinueRestoreFromBackup = "Dialog.Confirmation.ContinueRestoreFromBackup";
             public const string RemovePreset = "Dialog.Confirmation.RemovePreset";
+            public const string AddToExistingItem = "Dialog.Confirmation.AddToExistingItem";
             public static class ExportToCsv
             {
                 public const string IncludeImplementedToSupported = "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported";
