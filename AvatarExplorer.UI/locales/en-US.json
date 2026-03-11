@@ -33,7 +33,7 @@
     "Button.Description.Item.Count": "{0} items",
     "Button.Description.File.Extension": "{0} file",
     "Button.Description.CommonAvatar.Count": "Total Avatars: {0}",
-    "Button.Description.BulkImportItem.Count": "{0} items",
+    "Button.Description.BulkImportPreset.Count": "{0} items",
     
     "Button.Tag.CommonAvatar": "Common Avatar: {0}",
 

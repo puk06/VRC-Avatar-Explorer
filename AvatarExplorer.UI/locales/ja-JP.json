@@ -33,7 +33,7 @@
     "Button.Description.Item.Count": "{0}個の項目",
     "Button.Description.File.Extension": "{0} ファイル",
     "Button.Description.CommonAvatar.Count": "合計アバター数: {0}",
-    "Button.Description.BulkImportItem.Count": "{0}個のアイテム",
+    "Button.Description.BulkImportPreset.Count": "{0}個のアイテム",
     
     "Button.Tag.CommonAvatar": "共通素体: {0}",
 

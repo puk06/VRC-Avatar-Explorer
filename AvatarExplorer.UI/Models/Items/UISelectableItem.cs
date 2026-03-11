@@ -121,7 +121,7 @@ internal class UISelectableItem
     private void FromBulkImportPreset(BulkImportPreset bulkImportPreset)
     {
         Title = bulkImportPreset.PresetName;
-        Description = (LocalizationKey.Button.Description.BulkImportItem.Count, [bulkImportPreset.ItemsView.Count.ToString()]);
+        Description = (LocalizationKey.Button.Description.BulkImportPreset.Count, [bulkImportPreset.ItemsView.Count.ToString()]);
         ImageFileName = SystemIconKey.FolderIcon;
         Tag = new(ItemTagStates.None, bulkImportPreset.Id);
         IconType = IconType.None;

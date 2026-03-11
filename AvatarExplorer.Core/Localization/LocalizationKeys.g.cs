@@ -76,9 +76,9 @@ public static class LocalizationKey
             {
                 public const string Count = "Button.Description.CommonAvatar.Count";
             }
-            public static class BulkImportItem
+            public static class BulkImportPreset
             {
-                public const string Count = "Button.Description.BulkImportItem.Count";
+                public const string Count = "Button.Description.BulkImportPreset.Count";
             }
         }
         public static class Tag
