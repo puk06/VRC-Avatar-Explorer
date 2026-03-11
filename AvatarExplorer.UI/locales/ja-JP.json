@@ -64,7 +64,7 @@
     "Dialog.Title.AddCustomCategory": "新しいカスタムカテゴリ",
     "Dialog.Title.AddCommonAvatarGroup": "新しい共通素体グループ",
     "Dialog.Title.NewCommonAvatarGroupName": "新しい共通素体グループ名",
-    "Dialog.Title.NewBulkImportPresetName": "新しい一括インポートプリセット",
+    "Dialog.Title.NewBulkImportPresetName": "新しい一括インポートプリセット名",
 
     "Dialog.Update.Available": "アップデートが利用可能です",
     "Dialog.Update.VersionText": "新しいバージョン: {0} (現在のバージョン: {1})\nリリース日: {2}",
