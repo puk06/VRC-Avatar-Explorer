@@ -418,6 +418,10 @@ public partial class AvatarExplorerApp
         if (item == null) return Error.NotFound(description: "Item not found.");
 
         ExtractResult extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath), paths, _runtimeSettings);
+
+        item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
+        SaveItemDatabase();
+
         return extractResult;
     }
     #endregion
@@ -452,7 +456,9 @@ public partial class AvatarExplorerApp
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
         item.ThumbnmailFileName = Path.GetFileName(imageFilePath);
+        item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
         SaveItemDatabase();
+
         return Result.Success;
     }
     public async Task<ErrorOr<Success>> UpdateAuthorThumbnail(string itemId, string imageFilePath)
@@ -464,7 +470,9 @@ public partial class AvatarExplorerApp
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
         item.AuthorThumbnmailFileName = Path.GetFileName(imageFilePath);
+        item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
         SaveItemDatabase();
+
         return Result.Success;
     }
     #endregion
