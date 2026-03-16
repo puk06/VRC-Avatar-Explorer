@@ -51,6 +51,8 @@ public partial class MainWindow
         }
 
         item.UpdateImplementedAvatars(_editImplementedAvatarsOverlay_selectedAvatars);
+        _avatarExplorerApp.UpdateItemUpdatedDate(item.Id);
+
         _avatarExplorerApp.SaveItemDatabase();
 
         EditImplementedAvatarsOverlay_Close();

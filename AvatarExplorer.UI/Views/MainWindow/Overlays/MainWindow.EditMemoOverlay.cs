@@ -26,6 +26,8 @@ public partial class MainWindow
         }
 
         item.ItemMemo = EditMemoOverlay_MemoTextBox.Text ?? string.Empty;
+        _avatarExplorerApp.UpdateItemUpdatedDate(item.Id);
+        
         _avatarExplorerApp.UpdateSearchIndex(item.Id);
         _avatarExplorerApp.SaveItemDatabase();
 

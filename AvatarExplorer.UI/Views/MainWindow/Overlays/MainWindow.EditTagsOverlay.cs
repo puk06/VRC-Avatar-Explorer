@@ -115,6 +115,8 @@ public partial class MainWindow
         }
 
         item.UpdateTags(_editTagsOverlay_selectedTags);
+        _avatarExplorerApp.UpdateItemUpdatedDate(item.Id);
+        
         _avatarExplorerApp.UpdateSearchIndex(item.Id);
         _avatarExplorerApp.SaveItemDatabase();
 

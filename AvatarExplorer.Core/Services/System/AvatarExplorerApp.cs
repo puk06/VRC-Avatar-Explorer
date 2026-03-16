@@ -421,7 +421,7 @@ public partial class AvatarExplorerApp
 
         ExtractResult extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath), paths, _runtimeSettings);
 
-        item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
+        UpdateItemUpdatedDate(itemId);
         SaveItemDatabase();
 
         return extractResult;
@@ -439,12 +439,22 @@ public partial class AvatarExplorerApp
         // １個より多い場合は追加のアイテムとしてインポートしてあげる(0がRootフォルダー想定)
         if (itemCreationContext.ItemPaths.Count > 1) await AddItemPaths(item.Id, itemCreationContext.ItemPaths.Skip(1).ToArray());
 
-        item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
+        UpdateItemUpdatedDate(itemId);
         UpdateSearchIndex();
 
         SaveItemDatabase();
 
         return true;
+    }
+    #endregion
+
+    #region Update API
+    public void UpdateItemUpdatedDate(string id)
+    {
+        Item? item = GetItemById(id);
+        if (item == null) return;
+
+        item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
     }
     #endregion
 
@@ -458,7 +468,8 @@ public partial class AvatarExplorerApp
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
         item.ThumbnmailFileName = Path.GetFileName(imageFilePath);
-        item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
+        UpdateItemUpdatedDate(itemId);
+        
         SaveItemDatabase();
 
         return Result.Success;
@@ -472,7 +483,8 @@ public partial class AvatarExplorerApp
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
         item.AuthorThumbnmailFileName = Path.GetFileName(imageFilePath);
-        item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
+        UpdateItemUpdatedDate(itemId);
+
         SaveItemDatabase();
 
         return Result.Success;
