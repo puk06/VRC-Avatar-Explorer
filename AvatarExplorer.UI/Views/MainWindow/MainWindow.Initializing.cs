@@ -100,8 +100,10 @@ public partial class MainWindow
     {
         Dispatcher.UIThread.Post(async () =>
         {
+            Topmost = true;
             Activate();
             await SetApplicationArgs(args);
+            Topmost = false;
         });
     }
 
