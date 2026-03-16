@@ -18,7 +18,17 @@ namespace AvatarExplorer.Core.Services.IO;
 
 internal static class DataImporter
 {
-    internal static async Task<ErrorOr<DataImportResult>> FromV1(string dataFolderPath, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    internal static async Task<ErrorOr<DataImportResult>> Import(DataImportType importType, string dataFolderPath, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    {
+        return importType switch
+        {
+            DataImportType.V1 => await FromV1(dataFolderPath, runtimeSettings, reportProgress),
+            DataImportType.KonoAsset => await FromKonoAsset(dataFolderPath, runtimeSettings, reportProgress),
+            _ => Error.Unexpected(description: $"Unexpected import type: {importType}")
+        };
+    }
+    
+    private static async Task<ErrorOr<DataImportResult>> FromV1(string dataFolderPath, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
     {
         try
         {
@@ -157,7 +167,7 @@ internal static class DataImporter
         return path;
     }
 
-    internal static async Task<ErrorOr<DataImportResult>> FromKonoAsset(string dataFolderPath, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<ErrorOr<DataImportResult>> FromKonoAsset(string dataFolderPath, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
     {
         try
         {

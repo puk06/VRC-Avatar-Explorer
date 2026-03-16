@@ -575,22 +575,9 @@ public partial class AvatarExplorerApp
     #endregion
 
     #region Data Importer API
-    public async Task<ErrorOr<Success>> ImportFromV1(string dataFolderPath, Func<(string, int), Task>? reportProgress = null)
+    public async Task<ErrorOr<Success>> Import(DataImportType importType, string dataFolderPath, Func<(string, int), Task>? reportProgress = null)
     {
-        ErrorOr<DataImportResult> result = await DataImporter.FromV1(dataFolderPath, _runtimeSettings, reportProgress);
-        if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
-
-        _itemDatabaseManager.AddRange(result.Value.Items);
-        _commonAvatarDatabaseManager.AddRange(result.Value.CommonAvatars);
-
-        SaveItemDatabase();
-        SaveCommonAvatarDatabase();
-
-        return Result.Success;
-    }
-    public async Task<ErrorOr<Success>> ImportFromKonoAsset(string dataFolderPath, Func<(string, int), Task>? reportProgress = null)
-    {
-        ErrorOr<DataImportResult> result = await DataImporter.FromKonoAsset(dataFolderPath, _runtimeSettings, reportProgress);
+        ErrorOr<DataImportResult> result = await DataImporter.Import(importType, dataFolderPath, _runtimeSettings, reportProgress);
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
         _itemDatabaseManager.AddRange(result.Value.Items);
@@ -604,7 +591,7 @@ public partial class AvatarExplorerApp
     #endregion
 
     #region Data Exporter API
-    public async Task<ErrorOr<Success>> ExportToCsv(string filePath, Dictionary<ItemType, string> localizedItemTypesMapping, bool includeCommonToSupported) => await DataExporter.ToCsv(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, localizedItemTypesMapping, _runtimeSettings, filePath, includeCommonToSupported);
+    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string filePath, Dictionary<ItemType, string> localizedItemTypesMapping, bool includeCommonToSupported) => await DataExporter.Export(exportType, _itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, localizedItemTypesMapping, _runtimeSettings, filePath, includeCommonToSupported);
     #endregion
 
     #region Clear API

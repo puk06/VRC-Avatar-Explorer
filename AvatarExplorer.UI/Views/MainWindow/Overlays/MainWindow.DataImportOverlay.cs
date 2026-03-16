@@ -3,9 +3,9 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
-using AvatarExplorer.UI.Models.External;
 using AvatarExplorer.UI.Services.Utilities;
 using ErrorOr;
 
@@ -34,10 +34,7 @@ public partial class MainWindow
             });
         }
 
-        ErrorOr<Success> result;
-        if (dataImportType == DataImportType.V1) result = await _avatarExplorerApp.ImportFromV1(selectedFolder, progressAction);
-        else if (dataImportType == DataImportType.KonoAsset) result = await _avatarExplorerApp.ImportFromKonoAsset(selectedFolder, progressAction);
-        else return;
+        ErrorOr<Success> result = await _avatarExplorerApp.Import(dataImportType, selectedFolder, progressAction);
 
         if (result.IsError)
         {

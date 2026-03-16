@@ -1,4 +1,5 @@
 using System.Text;
+using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Avatars;
@@ -10,7 +11,16 @@ namespace AvatarExplorer.Core.Services.IO;
 
 internal static class DataExporter
 {
-    internal static async Task<ErrorOr<Success>> ToCsv(IReadOnlyList<Item> items, IReadOnlyList<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
+    internal static async Task<ErrorOr<Success>> Export(DataExportType exportType, IReadOnlyList<Item> items, IReadOnlyList<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
+    {
+        return exportType switch
+        {
+            DataExportType.Csv => await ToCsv(items, commonAvatars, localizedItemTypesMapping, runtimeSettings, filePath, includeCommonToSupported),
+            _ => Error.Unexpected(description: $"Unexpected export type: {exportType}")
+        };
+    }
+    
+    private static async Task<ErrorOr<Success>> ToCsv(IReadOnlyList<Item> items, IReadOnlyList<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
     {
         try
         {

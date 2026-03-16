@@ -12,6 +12,7 @@ using Avalonia.Threading;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Models.Updates;
@@ -261,9 +262,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported]);
         if (result == null) return;
 
-        ErrorOr<Success> exportResult;
-        if (result == YesNoResult.Yes) exportResult = await _avatarExplorerApp.ExportToCsv(filePath, localizedItemTypesMapping, true);
-        else exportResult = await _avatarExplorerApp.ExportToCsv(filePath, localizedItemTypesMapping, false);
+        ErrorOr<Success> exportResult = await _avatarExplorerApp.Export(DataExportType.Csv, filePath, localizedItemTypesMapping, includeCommonToSupported: result == YesNoResult.Yes);
         
         if (!exportResult.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Export]);
         else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed]);
