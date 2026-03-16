@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
@@ -26,7 +27,7 @@ internal class UISelectableItem
     internal string CreatedDate { get; private set; } = string.Empty; // アイテムTooltip表記用
     internal string UpdatedDate { get; private set; } = string.Empty; // アイテムTooltip表記用
     private List<string> ItemTags { get; set; } = new(); // アイテムのタグ
-    internal IReadOnlyList<string> ItemTagsView => ItemTags;
+    internal ImmutableArray<string> ItemTagsView => ItemTags.ToImmutableArray();
     internal string ItemMemo { get; private set; } = string.Empty; // アイテムTooltip表記用
     internal string ItemPath { get; private set; } = string.Empty; // Unitypackageの一覧を取得するためのアイテムのパス
 
@@ -112,7 +113,7 @@ internal class UISelectableItem
     private void FromCommonAvatar(CommonAvatar commonAvatar)
     {
         Title = Localizer.Instance.Get(LocalizationKey.Button.Tag.CommonAvatar, commonAvatar.GroupName);
-        Description = (LocalizationKey.Button.Description.CommonAvatar.Count, [commonAvatar.AvatarsView.Count.ToString()]);
+        Description = (LocalizationKey.Button.Description.CommonAvatar.Count, [commonAvatar.AvatarsView.Length.ToString()]);
         ImageFileName = SystemIconKey.GroupIcon;
         Tag = new(ItemTagStates.None, commonAvatar.GetInternalId());
         IconType = IconType.None;
@@ -121,7 +122,7 @@ internal class UISelectableItem
     private void FromBulkImportPreset(BulkImportPreset bulkImportPreset)
     {
         Title = bulkImportPreset.PresetName;
-        Description = (LocalizationKey.Button.Description.BulkImportPreset.Count, [bulkImportPreset.ItemsView.Count.ToString()]);
+        Description = (LocalizationKey.Button.Description.BulkImportPreset.Count, [bulkImportPreset.ItemsView.Length.ToString()]);
         ImageFileName = SystemIconKey.FolderIcon;
         Tag = new(ItemTagStates.None, bulkImportPreset.Id);
         IconType = IconType.None;

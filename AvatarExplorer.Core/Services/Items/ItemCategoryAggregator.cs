@@ -1,10 +1,11 @@
+using System.Collections.Immutable;
 using AvatarExplorer.Core.Models.Items;
 
 namespace AvatarExplorer.Core.Services.Items;
 
 internal static class ItemCategoryAggregator
 {
-    internal static IReadOnlyList<ItemCountInfo> Aggregate(IEnumerable<Item> items, bool includeEmptyCategory = false)
+    internal static ImmutableArray<ItemCountInfo> Aggregate(IEnumerable<Item> items, bool includeEmptyCategory = false)
     {
         List<ItemCountInfo> categories = new();
 
@@ -33,6 +34,6 @@ internal static class ItemCategoryAggregator
                 .Select(i => new ItemCountInfo(new ItemCategory(i), itemsByCustomCategory[i]))
         );
 
-        return categories;
+        return categories.ToImmutableArray();
     }
 }

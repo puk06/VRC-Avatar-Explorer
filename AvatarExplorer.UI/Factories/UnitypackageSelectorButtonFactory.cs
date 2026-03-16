@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -120,8 +121,8 @@ internal static class UnitypackageSelectorButtonFactory
 
         int selectedIndex = 0;
 
-        IReadOnlyList<string> unitypackageFilePaths = UnitypackageService.GetUnitypackagePaths(ItemUtils.GetItemPath(runtimeSettings.DataRootDirectory, item.ItemPath));
-        for (int i = 0; i < unitypackageFilePaths.Count; i++)
+        ImmutableArray<string> unitypackageFilePaths = UnitypackageService.GetUnitypackagePaths(ItemUtils.GetItemPath(runtimeSettings.DataRootDirectory, item.ItemPath));
+        for (int i = 0; i < unitypackageFilePaths.Length; i++)
         {
             string filePath = unitypackageFilePaths[i];
 

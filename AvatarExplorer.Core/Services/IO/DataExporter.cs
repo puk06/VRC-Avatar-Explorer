@@ -11,7 +11,7 @@ namespace AvatarExplorer.Core.Services.IO;
 
 internal static class DataExporter
 {
-    internal static async Task<ErrorOr<Success>> Export(DataExportType exportType, IReadOnlyList<Item> items, IReadOnlyList<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
+    internal static async Task<ErrorOr<Success>> Export(DataExportType exportType, IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
     {
         return exportType switch
         {
@@ -20,7 +20,7 @@ internal static class DataExporter
         };
     }
     
-    private static async Task<ErrorOr<Success>> ToCsv(IReadOnlyList<Item> items, IReadOnlyList<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
+    private static async Task<ErrorOr<Success>> ToCsv(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
     {
         try
         {

@@ -14,14 +14,14 @@ public partial class MainWindow
 {
     private readonly List<string> _editImplementedAvatarsOverlay_selectedAvatars = new();
 
-    private void EditImplementedAvatarsOverlay_Open(IReadOnlyList<string>? avatars = null)
+    private void EditImplementedAvatarsOverlay_Open(IEnumerable<string>? avatars = null)
     {
         EditImplementedAvatarsOverlay.IsVisible = true;
         EditImplementedAvatarsOverlay_Initialize(avatars);
     }
     private void EditImplementedAvatarsOverlay_Close() => EditImplementedAvatarsOverlay.IsVisible = false;
 
-    private void EditImplementedAvatarsOverlay_Initialize(IReadOnlyList<string>? avatars = null)
+    private void EditImplementedAvatarsOverlay_Initialize(IEnumerable<string>? avatars = null)
     {
         _editImplementedAvatarsOverlay_selectedAvatars.Clear();
         if (avatars != null) _editImplementedAvatarsOverlay_selectedAvatars.AddRange(avatars);

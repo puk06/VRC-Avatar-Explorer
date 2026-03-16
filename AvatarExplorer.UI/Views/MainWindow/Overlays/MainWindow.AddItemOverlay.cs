@@ -197,7 +197,7 @@ public partial class MainWindow
         int totalAvatarsCount = 0;
         foreach (string avatar in _addItemOverlay_addItemWindowValues.SupportedAvatarsView)
         {
-            if (avatar.StartsWith(CommonAvatar.InternalPathPrefix)) totalAvatarsCount += _avatarExplorerApp.GetCommonAvatarById(CommonAvatar.GetGroupId(avatar))?.AvatarsView.Count ?? 0;
+            if (avatar.StartsWith(CommonAvatar.InternalPathPrefix)) totalAvatarsCount += _avatarExplorerApp.GetCommonAvatarById(CommonAvatar.GetGroupId(avatar))?.AvatarsView.Length ?? 0;
             else totalAvatarsCount++;
         }
 

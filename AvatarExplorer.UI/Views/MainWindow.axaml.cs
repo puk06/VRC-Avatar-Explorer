@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -71,7 +72,7 @@ public partial class MainWindow : Window
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
         // 初回起動かチェック
-        if (_avatarExplorerApp.GetAllItems().Count == 0) await InitialSetupOverlay_ShowAsync();
+        if (_avatarExplorerApp.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
 
         Main_ReloadCurrentWindow();
 
@@ -177,13 +178,13 @@ public partial class MainWindow : Window
         if (Main_RightPanel == null) return;
         Main_RightPanel.Children.Clear();
 
-        IReadOnlyList<ItemCountInfo> items = _avatarExplorerApp.GetItemsForCurrentState();
+        ImmutableArray<ItemCountInfo> items = _avatarExplorerApp.GetItemsForCurrentState();
 
-        if (items.Count == 0) Main_ShowNoItemsLabel();
+        if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
 
         ItemTagStates itemTagState = ItemTagStates.None;
-        if (items.Count > 0) itemTagState = new UISelectableItem(items[0]).Tag.State;
+        if (items.Length > 0) itemTagState = new UISelectableItem(items[0]).Tag.State;
         _main_lastRightPanelItemTagState = itemTagState;
 
         // スクロール位置をDictionaryから復元してあげる
@@ -200,10 +201,10 @@ public partial class MainWindow : Window
             if (StateFlagUtils.IsDraggableState(itemTagState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
         }
 
-        if (currentPage != -1 && items.Count != 0)
+        if (currentPage != -1 && items.Length != 0)
         {
             Main_RightPanelPageInfo.Children.Clear();
-            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(itemTagState, currentPage, ItemsPerPage, items.Count, RightPanel_ItemButton_Click);
+            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(itemTagState, currentPage, ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
             if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_RightPanelPageInfo.Children.Clear();
@@ -287,9 +288,9 @@ public partial class MainWindow : Window
 
         Main_RightPanel.Children.Clear();
 
-        IReadOnlyList<Item> items = _avatarExplorerApp.SearchItems(searchFilter);
+        ImmutableArray<Item> items = _avatarExplorerApp.SearchItems(searchFilter);
 
-        if (items.Count == 0) Main_ShowNoItemsLabel();
+        if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
 
         // スクロール位置をDictionaryから復元してあげる
@@ -306,10 +307,10 @@ public partial class MainWindow : Window
             itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
         }
 
-        if (items.Count != 0)
+        if (items.Length != 0)
         {
             Main_RightPanelPageInfo.Children.Clear();
-            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(ItemTagStates.SearchItem, currentPage, ItemsPerPage, items.Count, RightPanel_ItemButton_Click);
+            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(ItemTagStates.SearchItem, currentPage, ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
             if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_RightPanelPageInfo.Children.Clear();
@@ -339,7 +340,7 @@ public partial class MainWindow : Window
             selectionNodes.Add(node);
         }
 
-        IReadOnlyList<Item> items = _avatarExplorerApp.GetAllItems();
+        ImmutableArray<Item> items = _avatarExplorerApp.GetAllItems();
         Main_PathTextBox.Text = string.Join(" > ", selectionNodes.Select(i => PathService.BuildPath(items, i, RuntimeSettings.RemoveBrackets)));
     }
     #endregion

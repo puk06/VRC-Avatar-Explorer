@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using AvatarExplorer.Core.Interfaces.Database;
 
 namespace AvatarExplorer.Core.Services.Database;
@@ -6,7 +7,7 @@ internal abstract class AbstractDatabaseManager<T> : IDatabaseManager<T>
     where T : IDatabaseItem
 {
     private List<T> _items { get; set; } = new();
-    public IReadOnlyList<T> Items => _items;
+    public ImmutableArray<T> Items => _items.ToImmutableArray();
 
     public abstract string DatabaseFilePath { get; }
     public void Add(T item) => _items.Add(item);

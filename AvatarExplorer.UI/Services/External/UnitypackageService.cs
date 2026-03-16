@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -23,10 +24,11 @@ internal static class UnitypackageService
         return await AvatarExplorerApp.ModifyUnitypackageFilePaths(itemPathCategoryDictionary, progressAction);
     }
 
-    internal static IReadOnlyList<string> GetUnitypackagePaths(string itemPath)
+    internal static ImmutableArray<string> GetUnitypackagePaths(string itemPath)
     {
+        if (!Directory.Exists(itemPath)) return [];
+
         List<string> unitypackageFilePaths = new();
-        if (!Directory.Exists(itemPath)) return unitypackageFilePaths;
 
         foreach (string filePath in FileSystemService.EnumerateFiles(itemPath))
         {
@@ -36,6 +38,6 @@ internal static class UnitypackageService
             unitypackageFilePaths.Add(filePath);
         }
 
-        return unitypackageFilePaths;
+        return unitypackageFilePaths.ToImmutableArray();
     }
 }

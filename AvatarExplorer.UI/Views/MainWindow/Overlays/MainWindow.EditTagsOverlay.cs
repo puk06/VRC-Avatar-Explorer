@@ -17,7 +17,7 @@ public partial class MainWindow
 {
     private readonly List<string> _editTagsOverlay_selectedTags = new();
 
-    private void EditTagsOverlay_Open(IReadOnlyList<string>? tags = null)
+    private void EditTagsOverlay_Open(IEnumerable<string>? tags = null)
     {
         EditTagsOverlay.IsVisible = true;
         EditTagsOverlay_TagTextBox.Text = string.Empty;
@@ -25,7 +25,7 @@ public partial class MainWindow
     }
     private void EditTagsOverlay_Close() => EditTagsOverlay.IsVisible = false;
 
-    private void EditTagsOverlay_Initialize(IReadOnlyList<string>? tags = null)
+    private void EditTagsOverlay_Initialize(IEnumerable<string>? tags = null)
     {
         _editTagsOverlay_selectedTags.Clear();
         if (tags != null) _editTagsOverlay_selectedTags.AddRange(tags);

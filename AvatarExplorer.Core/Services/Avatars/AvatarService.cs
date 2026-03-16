@@ -1,10 +1,11 @@
+using System.Collections.Immutable;
 using AvatarExplorer.Core.Models.Items;
 
 namespace AvatarExplorer.Core.Services.Avatars;
 
 public static class AvatarService
 {
-    public static IReadOnlyList<string> GetAllSupportedAvatarIds(IEnumerable<string> avatars, IReadOnlyList<CommonAvatar> commonAvatars, bool includeCommonAvatarToSupported = false)
+    public static ImmutableArray<string> GetAllSupportedAvatarIds(IEnumerable<string> avatars, IEnumerable<CommonAvatar> commonAvatars, bool includeCommonAvatarToSupported = false)
     {
         List<string> avatarIds = new();
 
@@ -32,6 +33,6 @@ public static class AvatarService
             }
         }
 
-        return avatarIds.Distinct().ToList();
+        return avatarIds.Distinct().ToImmutableArray();
     }
 }

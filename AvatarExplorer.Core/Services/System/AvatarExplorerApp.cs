@@ -1,4 +1,5 @@
-﻿using AvatarExplorer.Core.Data.Paths;
+﻿using System.Collections.Immutable;
+using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.External.Booth;
@@ -26,7 +27,7 @@ public partial class AvatarExplorerApp
     private readonly Dictionary<string, string> _itemSearchIndexDictionary = new();
 
     private readonly SelectionState _selectionState = new();
-    private readonly Dictionary<ItemTagStates, Func<SelectionNode, IReadOnlyList<ItemCountInfo>>> _stateHandlers;
+    private readonly Dictionary<ItemTagStates, Func<SelectionNode, ImmutableArray<ItemCountInfo>>> _stateHandlers;
     private RuntimeSettings _runtimeSettings = new();
 
     public AvatarExplorerApp()
@@ -124,11 +125,11 @@ public partial class AvatarExplorerApp
     #endregion
 
     #region Get API
-    public IReadOnlyList<ItemCountInfo> GetAvatars(bool includeCommonAvatar = false) => ItemAvatarAggregator.Aggregate(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _runtimeSettings, includeCommonAvatar);
-    public IReadOnlyList<ItemCountInfo> GetAuthors() => ItemAuthorAggregator.Aggregate(_itemDatabaseManager.Items);
-    public IReadOnlyList<ItemCountInfo> GetCategories(bool includeEmptyCategory = false) => ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items, includeEmptyCategory);
+    public ImmutableArray<ItemCountInfo> GetAvatars(bool includeCommonAvatar = false) => ItemAvatarAggregator.Aggregate(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _runtimeSettings, includeCommonAvatar);
+    public ImmutableArray<ItemCountInfo> GetAuthors() => ItemAuthorAggregator.Aggregate(_itemDatabaseManager.Items);
+    public ImmutableArray<ItemCountInfo> GetCategories(bool includeEmptyCategory = false) => ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items, includeEmptyCategory);
 
-    public IReadOnlyList<Item> GetAllItems() => _itemDatabaseManager.Items;
+    public ImmutableArray<Item> GetAllItems() => _itemDatabaseManager.Items;
     public Item? GetItemById(string? itemId)
     {
         if (itemId == null) return null;
@@ -138,18 +139,18 @@ public partial class AvatarExplorerApp
 
         return item;
     }
-    public IReadOnlyList<ItemCountInfo> GetItemsForCurrentState()
+    public ImmutableArray<ItemCountInfo> GetItemsForCurrentState()
     {
         SelectionNode? current = _selectionState.Current;
-        if (current == null) return Array.Empty<ItemCountInfo>();
+        if (current == null) return [];
 
         if (_stateHandlers.TryGetValue(current.State, out var handler))
             return handler(current);
 
-        return Array.Empty<ItemCountInfo>();
+        return [];
     }
 
-    public IReadOnlyList<CommonAvatar> GetAllCommonAvatars() => _commonAvatarDatabaseManager.Items;
+    public ImmutableArray<CommonAvatar> GetAllCommonAvatars() => _commonAvatarDatabaseManager.Items;
     public CommonAvatar? GetCommonAvatarById(string? groupId)
     {
         if (groupId == null) return null;
@@ -160,7 +161,7 @@ public partial class AvatarExplorerApp
         return commonAvatar;
     }
 
-    public IReadOnlyList<BulkImportPreset> GetAllBulkImportPresets() => _bulkImportPresetDatabaseManager.Items;
+    public ImmutableArray<BulkImportPreset> GetAllBulkImportPresets() => _bulkImportPresetDatabaseManager.Items;
 
     public BulkImportPreset? GetBulkImportPresetById(string? id)
     {
@@ -173,29 +174,29 @@ public partial class AvatarExplorerApp
     }
 
     #region Current State Internal Handler
-    private IReadOnlyList<ItemCountInfo> HandleRootAvatar(SelectionNode selectionNode)
+    private ImmutableArray<ItemCountInfo> HandleRootAvatar(SelectionNode selectionNode)
     {
         string avatarId = selectionNode.Key;
         return ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items.Where(i => AvatarStatusResolver.Resolve(i, avatarId, _commonAvatarDatabaseManager.Items).IsSupportedOrCommon));
     }
-    private IReadOnlyList<ItemCountInfo> HandleRootAuthor(SelectionNode selectionNode)
+    private ImmutableArray<ItemCountInfo> HandleRootAuthor(SelectionNode selectionNode)
     {
         string authorName = selectionNode.Key;
         return ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items.Where(i => i.Author == authorName));
     }
-    private IReadOnlyList<ItemCountInfo> HandleRootCategory(SelectionNode selectionNode)
+    private ImmutableArray<ItemCountInfo> HandleRootCategory(SelectionNode selectionNode)
     {
         string category = selectionNode.Key;
         return _itemDatabaseManager.Items
             .Where(i => i.IsCategoryMatch(category))
             .GetSortedItems(_runtimeSettings)
             .Select(i => new ItemCountInfo(i, 0))
-            .ToList();
+            .ToImmutableArray();
     }
-    private IReadOnlyList<ItemCountInfo> HandleRootSelectedCategory(SelectionNode selectionNode)
+    private ImmutableArray<ItemCountInfo> HandleRootSelectedCategory(SelectionNode selectionNode)
     {
         SelectionNode? rootSelectionNode = _selectionState.Root;
-        if (rootSelectionNode == null) return new List<ItemCountInfo>();
+        if (rootSelectionNode == null) return [];
 
         if (rootSelectionNode.State == ItemTagStates.RootAvatar)
         {
@@ -213,7 +214,7 @@ public partial class AvatarExplorerApp
 
             return filteredResult
                 .GetSortedItemsFromCountInfo(_runtimeSettings)
-                .ToList();
+                .ToImmutableArray();
         }
         else if (rootSelectionNode.State == ItemTagStates.RootAuthor)
         {
@@ -221,26 +222,26 @@ public partial class AvatarExplorerApp
                 .Where(i => i.IsCategoryMatch(selectionNode.Key) && i.Author == rootSelectionNode.Key)
                 .GetSortedItems(_runtimeSettings)
                 .Select(i => new ItemCountInfo(i, 0))
-                .ToList();
+                .ToImmutableArray();
         }
 
-        return new List<ItemCountInfo>();
+        return [];
     }
-    private IReadOnlyList<ItemCountInfo> HandleRootSelectedItem(SelectionNode selectionNode)
+    private ImmutableArray<ItemCountInfo> HandleRootSelectedItem(SelectionNode selectionNode)
     {
         Item? item = GetItemById(selectionNode.Key);
-        if (item == null) return new List<ItemCountInfo>();
+        if (item == null) return [];
 
         return GetCategoryItemsFromPathInternal(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath));
     }
-    private IReadOnlyList<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
+    private ImmutableArray<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
     {
         SelectionNode? fileSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem);
-        if (fileSelectionNode == null) return new List<ItemCountInfo>();
+        if (fileSelectionNode == null) return [];
 
         Item? item = GetItemById(fileSelectionNode.Key);
-        if (item == null) return new List<ItemCountInfo>();
-
+        if (item == null) return [];
+        
         return GetFilesFromPathInternal(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath), selectionNode.Key);
     }
     #endregion
@@ -257,12 +258,12 @@ public partial class AvatarExplorerApp
         return _itemDatabaseManager.Items.FirstOrDefault(i => i.Id == itemSelectionNode.Key);
     }
 
-    private static IReadOnlyList<ItemCountInfo> GetCategoryItemsFromPathInternal(string itemPath)
+    private static ImmutableArray<ItemCountInfo> GetCategoryItemsFromPathInternal(string itemPath)
     {
         if (!Directory.Exists(itemPath))
         {
             ErrorManager.Instance.PostInternalError(string.Join("Directory not found: '{0}'.", itemPath));
-            return new List<ItemCountInfo>();
+            return [];
         }
 
         List<ItemFileCategoryDefinition> categoryDefinitions = Enum.GetValues<ItemFileCategoryType>()
@@ -300,24 +301,25 @@ public partial class AvatarExplorerApp
             result.Add(new ItemCountInfo(unknownItem, unknownFiles.Count));
         }
 
-        return result;
+        return result.ToImmutableArray();
     }
-    private static IReadOnlyList<ItemCountInfo> GetFilesFromPathInternal(string itemPath, string category)
+    private static ImmutableArray<ItemCountInfo> GetFilesFromPathInternal(string itemPath, string category)
     {
         ItemFileCategoryType targetCategory = Enum.GetValues<ItemFileCategoryType>()
             .FirstOrDefault(i => i.GetLocalizationKey() == category);
 
-        if (targetCategory == default) return Array.Empty<ItemCountInfo>();
+        if (targetCategory == default) return [];
 
         string[]? extensionFilters = targetCategory.GetExtensionFilters();
         string[]? fileNameFilters = targetCategory.GetFileNameFilters();
 
-        List<ItemCountInfo> result = new();
         if (!Directory.Exists(itemPath))
         {
             ErrorManager.Instance.PostInternalError(string.Join("Directory not found: '{0}'.", itemPath));
-            return result;
+            return [];
         }
+        
+        List<ItemCountInfo> result = new();
 
         foreach (string file in FileSystemService.EnumerateFiles(itemPath))
         {
@@ -344,7 +346,7 @@ public partial class AvatarExplorerApp
             if (isMatch) result.Add(new ItemCountInfo(new ItemFile(Path.GetFullPath(file)), 0));
         }
 
-        return result;
+        return result.ToImmutableArray();
     }
 
     public RuntimeSettings GetRuntimeSettings() => _runtimeSettings;
@@ -567,7 +569,7 @@ public partial class AvatarExplorerApp
     #endregion
 
     #region Search API
-    public IReadOnlyList<Item> SearchItems(SearchFilter searchFilter) => ItemSearchService.ExecuteSearch(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _itemSearchIndexDictionary, _runtimeSettings, searchFilter);
+    public ImmutableArray<Item> SearchItems(SearchFilter searchFilter) => ItemSearchService.ExecuteSearch(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _itemSearchIndexDictionary, _runtimeSettings, searchFilter);
     #endregion
 
     #region Save API

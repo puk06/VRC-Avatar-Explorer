@@ -18,7 +18,7 @@ public partial class MainWindow
     private readonly List<string> _editSupportedAvatarsOverlay_selectedAvatars = new();
     private TaskCompletionSource<List<string>?>? _editSupportedAvatarsOverlay_tcs;
 
-    private Task<List<string>?> EditSupportedAvatarsOverlay_OpenAsync(IReadOnlyList<string>? avatars = null)
+    private Task<List<string>?> EditSupportedAvatarsOverlay_OpenAsync(IEnumerable<string>? avatars = null)
     {
         if (_editSupportedAvatarsOverlay_tcs != null) throw new InvalidOperationException("EditSupportedAvatarsOverlay is already shown.");
 
@@ -29,7 +29,7 @@ public partial class MainWindow
 
         return _editSupportedAvatarsOverlay_tcs.Task;
     }
-    private async Task<List<string>?> EditSupportedAvatarsOverlay_OpenAsyncSafe(IReadOnlyList<string>? avatars = null)
+    private async Task<List<string>?> EditSupportedAvatarsOverlay_OpenAsyncSafe(IEnumerable<string>? avatars = null)
     {
         try
         {
@@ -52,7 +52,7 @@ public partial class MainWindow
         tcs?.TrySetResult(result);
     }
 
-    private void EditSupportedAvatarsOverlay_Initialize(IReadOnlyList<string>? avatars = null)
+    private void EditSupportedAvatarsOverlay_Initialize(IEnumerable<string>? avatars = null)
     {
         _editSupportedAvatarsOverlay_selectedAvatars.Clear();
         if (avatars != null) _editSupportedAvatarsOverlay_selectedAvatars.AddRange(avatars);

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Models.Common;
 
@@ -22,9 +23,9 @@ public class Item : AbstractDatabaseItem, ISelectableItem
     public string CreatedDate { get; set; } = string.Empty;
     public string UpdatedDate { get; set; } = string.Empty;
 
-    [JsonIgnore] public IReadOnlyList<string> SupportedAvatarsView => SupportedAvatars;
-    [JsonIgnore] public IReadOnlyList<string> ImplementedAvatarsView => ImplementedAvatars;
-    [JsonIgnore] public IReadOnlyList<string> TagsView => Tags;
+    [JsonIgnore] public ImmutableArray<string> SupportedAvatarsView => SupportedAvatars.ToImmutableArray();
+    [JsonIgnore] public ImmutableArray<string> ImplementedAvatarsView => ImplementedAvatars.ToImmutableArray();
+    [JsonIgnore] public ImmutableArray<string> TagsView => Tags.ToImmutableArray();
 
     public void UpdateSupportedAvatars(IEnumerable<string> newList) => SupportedAvatars = newList.ToList();
     public void UpdateImplementedAvatars(IEnumerable<string> newList) => ImplementedAvatars = newList.ToList();

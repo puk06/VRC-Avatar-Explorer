@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External.Booth;
@@ -18,7 +19,7 @@ internal class AddItemOverlayWindowValues
     internal int BoothId { get; set; } = -1;
     internal ItemType ItemType { get; set; } = ItemType.Avatar;
     private List<string> SupportedAvatars { get; set; } = new();
-    internal IReadOnlyList<string> SupportedAvatarsView => SupportedAvatars;
+    internal ImmutableArray<string> SupportedAvatarsView => SupportedAvatars.ToImmutableArray();
 
     internal void Reset()
     {

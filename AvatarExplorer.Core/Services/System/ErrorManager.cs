@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using AvatarExplorer.Core.Models.Common;
 
 namespace AvatarExplorer.Core.Services.System;
@@ -6,7 +7,7 @@ public class ErrorManager
 {
     private readonly List<ErrorContext> _errorContexts = new();
     public static ErrorManager Instance { get; } = new();
-    public IReadOnlyList<ErrorContext> ErrorContexts => _errorContexts;
+    public ImmutableArray<ErrorContext> ErrorContexts => _errorContexts.ToImmutableArray();
 
     public event Action<string, Exception?, string>? OnErrorOccured;
     public event Action<string, Exception?, string>? OnInternalErrorOccured;

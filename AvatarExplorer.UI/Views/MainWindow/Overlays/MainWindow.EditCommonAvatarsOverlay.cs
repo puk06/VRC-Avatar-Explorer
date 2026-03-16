@@ -83,7 +83,7 @@ public partial class MainWindow
         EditCommonAvatarsOverlay_DrawItemButtons();
 
         // 追加された共通素体グループを選択してあげる
-        EditCommonAvatarsOverlay_GroupComboBox.SelectedIndex = _avatarExplorerApp.GetAllCommonAvatars().Count - 1;
+        EditCommonAvatarsOverlay_GroupComboBox.SelectedIndex = _avatarExplorerApp.GetAllCommonAvatars().Length - 1;
 
         EditCommonAvatarsOverlay_DrawItemButtons();
     }

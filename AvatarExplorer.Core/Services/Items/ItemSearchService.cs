@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
@@ -9,7 +10,7 @@ namespace AvatarExplorer.Core.Services.Items;
 
 internal static class ItemSearchService
 {
-    internal static IReadOnlyList<Item> ExecuteSearch(IReadOnlyList<Item> items, IReadOnlyList<CommonAvatar> commonAvatars, Dictionary<string, string> searchIndexDictionary, RuntimeSettings runtimeSettings, SearchFilter searchFilter)
+    internal static ImmutableArray<Item> ExecuteSearch(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, Dictionary<string, string> searchIndexDictionary, RuntimeSettings runtimeSettings, SearchFilter searchFilter)
     {
         Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Type == ItemType.Avatar));
 
@@ -25,9 +26,9 @@ internal static class ItemSearchService
 
         return matchedItems
             .OrderByDescending(i => !searchIndexDictionary.TryGetValue(i.Id, out string? value) ? 0 : SearchUtils.GetScore(value, searchFilter.SearchWords))
-            .ToList();
+            .ToImmutableArray();
     }
-    private static bool Matches(Item item, SearchFilter searchFilter, string searchIndex, Dictionary<string, string> avatarTitleMaps, IReadOnlyList<CommonAvatar> commonAvatars, string parentFolder)
+    private static bool Matches(Item item, SearchFilter searchFilter, string searchIndex, Dictionary<string, string> avatarTitleMaps, IEnumerable<CommonAvatar> commonAvatars, string parentFolder)
     {
         bool matchTitle = searchFilter.Titles.Count == 0 || SearchUtils.MatchesFilter(
             [item.Title], searchFilter.Titles,
@@ -150,7 +151,7 @@ internal static class ItemSearchService
             && matchWord;
     }
 
-    internal static string BuildItemSearchIndex(Item item, Dictionary<string, string> avatarTitleMaps, IReadOnlyList<CommonAvatar> commonAvatars)
+    internal static string BuildItemSearchIndex(Item item, Dictionary<string, string> avatarTitleMaps, IEnumerable<CommonAvatar> commonAvatars)
     {
         IEnumerable<string> avatars = AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
             .Concat(item.ImplementedAvatarsView)
