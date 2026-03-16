@@ -29,12 +29,12 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private void SettingsOverlay_Show()
+    private void SettingsOverlay_Open()
     {
         SettingsOverlay_SetUiValueFromCurrentSettings();
         SettingsOverlay.IsVisible = true;
     }
-    private void SettingsOverlay_Hide() => SettingsOverlay.IsVisible = false;
+    private void SettingsOverlay_Close() => SettingsOverlay.IsVisible = false;
 
     private void SettingsOverlay_SetUiValueFromCurrentSettings()
     {
@@ -178,7 +178,6 @@ public partial class MainWindow
         SettingsOverlay_ApplyBackgroundImage(_userPreferences);
         SettingsOverlay_ApplyLanguage(_userPreferences.Language);
     }
-
     private void SettingsOverlay_SetApplicationTheme(Application? application, Theme theme)
     {
         if (application == null) return;
@@ -237,7 +236,7 @@ public partial class MainWindow
     }
     private async void SettingsOverlay_RegisterScheme_Click(object? sender, RoutedEventArgs e) => await Main_RegisterSchemeAsync();
 
-    private void SettingsOverlay_Close_Click(object? sender, RoutedEventArgs e) => SettingsOverlay_Hide();
+    private void SettingsOverlay_Close_Click(object? sender, RoutedEventArgs e) => SettingsOverlay_Close();
     private void SettingsOverlay_Apply_Click(object? sender, RoutedEventArgs e)
     {
         SettingsOverlay_ApplySettingsValues();
@@ -269,7 +268,7 @@ public partial class MainWindow
         if (!exportResult.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Export]);
         else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed]);
     }
-    private async void SettingsOverlay_EditCommonAvatars_Click(object? sender, RoutedEventArgs e) => EditCommonAvatarsOverlay_Show();
+    private async void SettingsOverlay_EditCommonAvatars_Click(object? sender, RoutedEventArgs e) => EditCommonAvatarsOverlay_Open();
     private async void SettingsOverlay_ResetItemDatabase_Click(object? sender, RoutedEventArgs e)
     {
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetItemDatabase]);
@@ -345,6 +344,6 @@ public partial class MainWindow
 
         Main_ReloadCurrentWindow();
     }
-    private async void SettingsOverlay_ShowErrorLog_Click(object? sender, RoutedEventArgs e) => ErrorLogOverlay_Show();
+    private async void SettingsOverlay_ShowErrorLog_Click(object? sender, RoutedEventArgs e) => ErrorLogOverlay_Open();
     #endregion
 }

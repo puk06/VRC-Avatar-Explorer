@@ -8,23 +8,22 @@ public partial class MainWindow
     {
         if (ProgressOverlay.IsVisible)
         {
-            ProgressBarTitle.Text = title;
+            ProgressOverlay_Title.Text = title;
             return;
         }
 
-        ProgressBarTitle.Text = title;
+        ProgressOverlay_Title.Text = title;
         ProgressOverlay.IsVisible = true;
 
         if (value != -1) ProgressOverlay_Update(value);
     }
-    private void ProgressOverlay_Hide()
-    {
-        ProgressOverlay.IsVisible = false;
-    }
+    private void ProgressOverlay_Hide() => ProgressOverlay.IsVisible = false;
+    
     private void ProgressOverlay_Update(int value)
     {
         if (!ProgressOverlay.IsVisible) return;
-        ProgressBar.IsIndeterminate = value == 0;
-        ProgressBar.Value = Math.Clamp(value, 0, 100);
+        
+        ProgressOverlay_Bar.IsIndeterminate = value == 0;
+        ProgressOverlay_Bar.Value = Math.Clamp(value, 0, 100);
     }
 }

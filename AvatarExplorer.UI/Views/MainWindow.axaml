@@ -106,9 +106,9 @@
                     <Panel x:Name="Main_SidePanel" Grid.Column="4" HorizontalAlignment="Stretch">
                         <Border Classes="panelbackground" IsVisible="{Binding !#Main_SidePanelBorder.IsVisible}" CornerRadius="12,0,0,12" Width="50">
                             <StackPanel Spacing="10">
-                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=TextSearch}" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch]}" Tag="0" Click="SidePanel_Show_Click"/>
-                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=DownloadMultiple}" ToolTip.Tip="{Binding [SidePanel.BulkImport]}" Tag="1" Click="SidePanel_Show_Click"/>
-                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset]}" Tag="2" Click="SidePanel_Show_Click"/>
+                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=TextSearch}" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch]}" Tag="0" Click="SidePanel_Item_Click"/>
+                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=DownloadMultiple}" ToolTip.Tip="{Binding [SidePanel.BulkImport]}" Tag="1" Click="SidePanel_Item_Click"/>
+                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset]}" Tag="2" Click="SidePanel_Item_Click"/>
                             </StackPanel>
                         </Border>
 
@@ -742,7 +742,7 @@
                         <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditSupportedAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
                         
                         <!-- 検索バー -->
-                        <TextBox x:Name="EditSupportedAvatarsOverlay_SearchTextBox" Grid.Row="2" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditSupportedAvatarsOverlay_SearchTextBox_Changed"/>
+                        <TextBox x:Name="EditSupportedAvatarsOverlay_SearchTextBox" Grid.Row="2" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditSupportedAvatarsOverlay_SearchTextBox_TextChanged"/>
 
                         <!-- アバターリスト -->
                         <ScrollViewer Grid.Row="4" Height="500">
@@ -769,7 +769,7 @@
                         <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditImplementedAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
                         
                         <!-- 検索バー -->
-                        <TextBox x:Name="EditImplementedAvatarsOverlay_SearchTextBox" Grid.Row="2" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditImplementedAvatarsOverlay_SearchTextBox_Changed"/>
+                        <TextBox x:Name="EditImplementedAvatarsOverlay_SearchTextBox" Grid.Row="2" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditImplementedAvatarsOverlay_SearchTextBox_TextChanged"/>
 
                         <!-- アバターリスト -->
                         <ScrollViewer Grid.Row="4" Height="500">
@@ -798,14 +798,14 @@
                         <!-- グループ選択欄 -->
                         <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="10,0,10,0" Grid.Row="2" ColumnSpacing="10">
                             <TextBlock Text="{Binding [EditCommonAvatars.Group]}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold"/>
-                            <ComboBox x:Name="EditCommonAvatarsOverlay_GroupComboBox" Grid.Column="1" SelectedIndex="0" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="10,0,10,0" SelectionChanged="EditCommonAvatarsOverlay_GroupComboBox_Changed"/>
+                            <ComboBox x:Name="EditCommonAvatarsOverlay_GroupComboBox" Grid.Column="1" SelectedIndex="0" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="10,0,10,0" SelectionChanged="EditCommonAvatarsOverlay_GroupComboBox_SelectionChanged"/>
                             <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [EditCommonAvatars.AddGroup]}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Click="EditCommonAvatarsOverlay_AddGroup_Click"/>
                             <Button Classes="button" FontWeight="Bold" Grid.Column="3" Content="{Binding [EditCommonAvatars.RenameGroup]}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Click="EditCommonAvatarsOverlay_RenameGroup_Click"/>
                             <Button Classes="button" FontWeight="Bold" Grid.Column="4" Content="{Binding [EditCommonAvatars.RemoveGroup]}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Click="EditCommonAvatarsOverlay_RemoveGroup_Click"/>
                         </Grid>
                         
                         <!-- 検索バー -->
-                        <TextBox x:Name="EditCommonAvatarsOverlay_SearchTextBox" Grid.Row="4" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditCommonAvatarsOverlay_SearchTextBox_Changed"/>
+                        <TextBox x:Name="EditCommonAvatarsOverlay_SearchTextBox" Grid.Row="4" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditCommonAvatarsOverlay_SearchTextBox_TextChanged"/>
 
                         <!-- アバターリスト -->
                         <ScrollViewer Grid.Row="6" Height="400">
@@ -900,10 +900,10 @@
                 <StackPanel Spacing="20">
 
                     <!-- タイトル -->
-                    <TextBlock x:Name="ProgressBarTitle" Text="{Binding [Progress.Loading]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Margin="0,5,0,5"/>
+                    <TextBlock x:Name="ProgressOverlay_Title" Text="{Binding [Progress.Loading]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Margin="0,5,0,5"/>
 
                     <!-- 進捗バー -->
-                    <ProgressBar x:Name="ProgressBar" Value="0" IsIndeterminate="True"/>
+                    <ProgressBar x:Name="ProgressOverlay_Bar" Value="0" IsIndeterminate="True"/>
                 </StackPanel>
             </Border>
         </Border>
@@ -914,11 +914,11 @@
                 <StackPanel Spacing="15">
 
                     <!-- タイトル -->
-                    <TextBlock x:Name="DialogTitle" Text="Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="DialogOverlay_Title" Text="Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
 
                     <!-- 内容 -->
                     <Grid RowDefinitions="Auto" ColumnDefinitions="*" Margin="0,10,0,10">
-                        <TextBlock x:Name="DialogContent" Text="Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="DialogOverlay_Content" Text="Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left"/>
                     </Grid>
 
                     <!-- OKボタン -->
@@ -941,7 +941,7 @@
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [AddItem.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="TextDialogOverlay_Cancel_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [AddItem.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="TextDialogOverlay_Add_Click"/>
+                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [AddItem.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="TextDialogOverlay_Confirm_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -953,17 +953,17 @@
                 <StackPanel Spacing="15">
 
                     <!-- タイトル -->
-                    <TextBlock x:Name="YesNoDialogTitle" Text="{Binding [Dialog.Title]}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="YesNoDialogOverlay_Title" Text="{Binding [Dialog.Title]}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
 
                     <!-- 内容 -->
                     <Grid RowDefinitions="Auto" ColumnDefinitions="*" Margin="0,10,0,10">
-                        <TextBlock x:Name="YesNoDialogContent" Text="{Binding [Dialog.Content]}" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="YesNoDialogOverlay_Content" Text="{Binding [Dialog.Content]}" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left"/>
                     </Grid>
                     
                     <!-- Yes/Noボタン -->
                     <Grid ColumnDefinitions="100,*,100">
-                        <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [DialogResult.No]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="YesNoDialog_No_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.Yes]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="YesNoDialog_Yes_Click"/>
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [DialogResult.No]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="YesNoDialogOverlay_No_Click"/>
+                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.Yes]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="YesNoDialogOverlay_Yes_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>

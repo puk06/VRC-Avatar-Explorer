@@ -16,25 +16,24 @@ namespace AvatarExplorer.UI;
 public partial class MainWindow
 {
     private readonly List<string> _editSupportedAvatarsOverlay_selectedAvatars = new();
-    private TaskCompletionSource<List<string>?>? _editSupportedAvatarsTcs;
+    private TaskCompletionSource<List<string>?>? _editSupportedAvatarsOverlay_tcs;
 
-    private Task<List<string>?> EditSupportedAvatarsOverlay_ShowAsync(IReadOnlyList<string>? avatars = null)
+    private Task<List<string>?> EditSupportedAvatarsOverlay_OpenAsync(IReadOnlyList<string>? avatars = null)
     {
-        if (_editSupportedAvatarsTcs != null) throw new InvalidOperationException("EditSupportedAvatarsOverlay is already shown.");
+        if (_editSupportedAvatarsOverlay_tcs != null) throw new InvalidOperationException("EditSupportedAvatarsOverlay is already shown.");
 
-        _editSupportedAvatarsTcs = new();
+        _editSupportedAvatarsOverlay_tcs = new();
 
         EditSupportedAvatarsOverlay.IsVisible = true;
-        EditSupportedAvatarsOverlay_InitializeList(avatars);
+        EditSupportedAvatarsOverlay_Initialize(avatars);
 
-        return _editSupportedAvatarsTcs.Task;
+        return _editSupportedAvatarsOverlay_tcs.Task;
     }
-
-    private async Task<List<string>?> EditSupportedAvatarsOverlay_ShowAsyncSafe(IReadOnlyList<string>? avatars = null)
+    private async Task<List<string>?> EditSupportedAvatarsOverlay_OpenAsyncSafe(IReadOnlyList<string>? avatars = null)
     {
         try
         {
-            return await EditSupportedAvatarsOverlay_ShowAsync(avatars);
+            return await EditSupportedAvatarsOverlay_OpenAsync(avatars);
         }
         catch (Exception ex)
         {
@@ -43,24 +42,23 @@ public partial class MainWindow
             return null;
         }
     }
-
-    private void EditSupportedAvatarsOverlay_Hide(List<string>? result)
+    private void EditSupportedAvatarsOverlay_Close(List<string>? result)
     {
         EditSupportedAvatarsOverlay.IsVisible = false;
 
-        TaskCompletionSource<List<string>?>? tcs = _editSupportedAvatarsTcs;
-        _editSupportedAvatarsTcs = null;
+        TaskCompletionSource<List<string>?>? tcs = _editSupportedAvatarsOverlay_tcs;
+        _editSupportedAvatarsOverlay_tcs = null;
 
         tcs?.TrySetResult(result);
     }
 
-    private void EditSupportedAvatarsOverlay_InitializeList(IReadOnlyList<string>? avatars = null)
+    private void EditSupportedAvatarsOverlay_Initialize(IReadOnlyList<string>? avatars = null)
     {
         _editSupportedAvatarsOverlay_selectedAvatars.Clear();
         if (avatars != null) _editSupportedAvatarsOverlay_selectedAvatars.AddRange(avatars);
-        EditSupportedAvatarsOverlay_RefleshList();
+        EditSupportedAvatarsOverlay_DrawItemButtons();
     }
-    private void EditSupportedAvatarsOverlay_RefleshList()
+    private void EditSupportedAvatarsOverlay_DrawItemButtons()
     {
         EditSupportedAvatarsOverlay_AvatarsList.Children.Clear();
         IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp.GetAvatars(includeCommonAvatar: true).Where(i => string.IsNullOrEmpty(EditSupportedAvatarsOverlay_SearchTextBox.Text) || (i.Item is Item item && item.Title.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text)) || (i.Item is CommonAvatar commonAvatar && commonAvatar.GroupName.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text)));
@@ -79,8 +77,8 @@ public partial class MainWindow
     }
 
     #region Event Handler
-    private void EditSupportedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Hide(null);
-    private void EditSupportedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Hide(_editSupportedAvatarsOverlay_selectedAvatars);
+    private void EditSupportedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(null);
+    private void EditSupportedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(_editSupportedAvatarsOverlay_selectedAvatars);
     
     private void EditSupportedAvatarsOverlay_ItemButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -89,8 +87,8 @@ public partial class MainWindow
         if (_editSupportedAvatarsOverlay_selectedAvatars.Contains(itemTagInfo.Value)) _editSupportedAvatarsOverlay_selectedAvatars.RemoveAll(i => i == itemTagInfo.Value);
         else _editSupportedAvatarsOverlay_selectedAvatars.Add(itemTagInfo.Value);
 
-        EditSupportedAvatarsOverlay_RefleshList();
+        EditSupportedAvatarsOverlay_DrawItemButtons();
     }
-    private void EditSupportedAvatarsOverlay_SearchTextBox_Changed(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_RefleshList();
+    private void EditSupportedAvatarsOverlay_SearchTextBox_TextChanged(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_DrawItemButtons();
     #endregion
 }

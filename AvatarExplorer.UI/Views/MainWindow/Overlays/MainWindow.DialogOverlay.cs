@@ -6,8 +6,8 @@ public partial class MainWindow
 {
     private void DialogOverlay_Show(string title, string content)
     {
-        DialogTitle.Text = title;
-        DialogContent.Text = content;
+        DialogOverlay_Title.Text = title;
+        DialogOverlay_Content.Text = content;
 
         DialogOverlay.IsVisible = true;
     }

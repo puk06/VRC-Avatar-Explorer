@@ -9,21 +9,20 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private TaskCompletionSource<string?>? _textTcs;
+    private TaskCompletionSource<string?>? _textDialogOverlay_tcs;
 
     private Task<string?> TextDialogOverlay_ShowAsync(string title, string initialText = "")
     {
-        if (_textTcs != null) throw new InvalidOperationException("TextDialog is already shown.");
+        if (_textDialogOverlay_tcs != null) throw new InvalidOperationException("TextDialog is already shown.");
 
-        _textTcs = new();
+        _textDialogOverlay_tcs = new();
 
         TextDialogOverlay_Title.Text = title;
         if (!string.IsNullOrEmpty(initialText)) TextDialogOverlay_Content.Text = initialText;
         TextDialogOverlay.IsVisible = true;
 
-        return _textTcs.Task;
+        return _textDialogOverlay_tcs.Task;
     }
-
     private async Task<string?> TextDialogOverlay_ShowSafeAsync(string title, string initialText = "")
     {
         try
@@ -37,18 +36,18 @@ public partial class MainWindow
             return null;
         }
     }
-
     private void TextDialogOverlay_Close(string? result)
     {
         TextDialogOverlay.IsVisible = false;
 
-        TaskCompletionSource<string?>? tcs = _textTcs;
-        _textTcs = null;
+        TaskCompletionSource<string?>? tcs = _textDialogOverlay_tcs;
+        _textDialogOverlay_tcs = null;
 
         tcs?.TrySetResult(result);
     }
 
-    private void TextDialogOverlay_Add_Click(object? sender, RoutedEventArgs e) => TextDialogOverlay_Close(TextDialogOverlay_Content.Text);
-
+    #region Event Handler
+    private void TextDialogOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => TextDialogOverlay_Close(TextDialogOverlay_Content.Text);
     private void TextDialogOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => TextDialogOverlay_Close(null);
+    #endregion
 }

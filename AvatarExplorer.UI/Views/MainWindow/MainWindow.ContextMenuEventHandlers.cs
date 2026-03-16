@@ -20,7 +20,7 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    internal Dictionary<ActionKey, Func<string, Task>>? _contextMenuHandlers;
+    internal Dictionary<ActionKey, Func<string, Task>>? _main_contextMenuHandlers;
 
     private async void Main_ItemButton_ContextMenuItem_Click(object? sender, RoutedEventArgs e)
     {
@@ -29,7 +29,7 @@ public partial class MainWindow
     }
     private async Task Main_ItemButton_ExecuteContextMenuItemCommand(ContextMenuAction contextMenuAction)
     {
-        if (_contextMenuHandlers!.TryGetValue(contextMenuAction.ActionKey, out var handler))
+        if (_main_contextMenuHandlers!.TryGetValue(contextMenuAction.ActionKey, out var handler))
             await handler(contextMenuAction.Tag);
     }
 
@@ -112,7 +112,8 @@ public partial class MainWindow
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return Task.CompletedTask;
 
-        AddItemOverlay_Show(item);
+        AddItemOverlay_Open(item);
+
         return Task.CompletedTask;
     }
     private async Task Main_ItemButton_ContextMenu_EditItemTitle(string itemId)
@@ -136,7 +137,7 @@ public partial class MainWindow
 
         _contextMenu_selectedItemId = item.Id;
 
-        EditMemoOverlay_Show(item.ItemMemo);
+        EditMemoOverlay_Open(item.ItemMemo);
 
         return Task.CompletedTask;
     }
@@ -182,7 +183,7 @@ public partial class MainWindow
         return extractResult;
     }
 
-    internal string? _contextMenu_selectedItemId = null;
+    private string? _contextMenu_selectedItemId = null;
     private Task Main_ItemButton_ContextMenu_EditImplementedAvatar(string itemId)
     {
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
@@ -190,7 +191,7 @@ public partial class MainWindow
 
         _contextMenu_selectedItemId = item.Id;
 
-        EditImplementedAvatarsOverlay_Show(item.ImplementedAvatarsView);
+        EditImplementedAvatarsOverlay_Open(item.ImplementedAvatarsView);
 
         return Task.CompletedTask;
     }
@@ -201,7 +202,7 @@ public partial class MainWindow
 
         _contextMenu_selectedItemId = item.Id;
 
-        EditTagsOverlay_Show(item.TagsView);
+        EditTagsOverlay_Open(item.TagsView);
 
         return Task.CompletedTask;
     }
@@ -213,10 +214,10 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
         if (result == null || result != YesNoResult.Yes) return;
 
-        YesNoResult? result2 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
-        if (result2 == null) return;
+        YesNoResult? result1 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
+        if (result1 == null) return;
 
-        bool removeItemFromSupportedAndImplemented = result2 == YesNoResult.Yes;
+        bool removeItemFromSupportedAndImplemented = result1 == YesNoResult.Yes;
         bool removed = _avatarExplorerApp.RemoveItem(item.Id, removeItemFromSupportedAndImplemented);
 
         Main_ReloadCurrentWindow();
@@ -251,6 +252,7 @@ public partial class MainWindow
         if (itemId == null) return Task.CompletedTask;
 
         BulkImportPanel_AddItem(itemId, filePath);
+        
         return Task.CompletedTask;
     }
 

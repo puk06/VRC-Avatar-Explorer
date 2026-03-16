@@ -27,12 +27,12 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    internal string? _addItemOverlay_selectedItemId = null;
-    internal readonly AddItemOverlayWindowValues _addItemOverlay_addItemWindowValues = new();
+    private string? _addItemOverlay_selectedItemId = null;
+    private readonly AddItemOverlayWindowValues _addItemOverlay_addItemWindowValues = new();
 
-    private void AddItemOverlay_Show(Item item)
+    private void AddItemOverlay_Open(Item item)
     {
-        AddItemOverlay_InitializeAddItemWindowCategories();
+        AddItemOverlay_InitializeCategories();
 
         _addItemOverlay_selectedItemId = item.Id;
         AddItemOverlay_BoothLinkTextBox.Text = item.BoothId == -1 ? string.Empty : item.GetBoothLink();
@@ -40,32 +40,32 @@ public partial class MainWindow
         _addItemOverlay_addItemWindowValues.ItemPaths.Clear();
         _addItemOverlay_addItemWindowValues.ItemPaths.Add(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
         _addItemOverlay_addItemWindowValues.FromItem(item);
-        AddItemOverlay_UpdateItemPathsList();
+        AddItemOverlay_DrawFilePathsList();
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
 
         AddItemOverlay.IsVisible = true;
 
         AddItemOverlay_UpdateSupportedAvatarsLabel();
     }
-    private void AddItemOverlay_Show(IEnumerable<string>? itemPaths = null)
+    private void AddItemOverlay_Open(IEnumerable<string>? paths = null)
     {
         // もし表示されてる状態でD&Dされたら、アイテムパスの追加だけしてあげる
-        if (AddItemOverlay.IsVisible && itemPaths != null)
+        if (AddItemOverlay.IsVisible && paths != null)
         {
-            _addItemOverlay_addItemWindowValues.ItemPaths.AddRange(itemPaths);
-            AddItemOverlay_UpdateItemPathsList();
+            _addItemOverlay_addItemWindowValues.ItemPaths.AddRange(paths);
+            AddItemOverlay_DrawFilePathsList();
             return;
         }
 
-        AddItemOverlay_InitializeAddItemWindowCategories();
+        AddItemOverlay_InitializeCategories();
 
         _addItemOverlay_selectedItemId = null;
         AddItemOverlay_BoothLinkTextBox.Text = string.Empty;
 
         _addItemOverlay_addItemWindowValues.Reset();
 
-        if (itemPaths != null) _addItemOverlay_addItemWindowValues.ItemPaths.AddRange(itemPaths);
-        AddItemOverlay_UpdateItemPathsList();
+        if (paths != null) _addItemOverlay_addItemWindowValues.ItemPaths.AddRange(paths);
+        AddItemOverlay_DrawFilePathsList();
 
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
 
@@ -73,9 +73,9 @@ public partial class MainWindow
 
         AddItemOverlay_UpdateSupportedAvatarsLabel();
     }
-    private async Task AddItemOverlay_Show(LaunchInfo launchInfo)
+    private async Task AddItemOverlay_Open(LaunchInfo launchInfo)
     {
-        AddItemOverlay_InitializeAddItemWindowCategories();
+        AddItemOverlay_InitializeCategories();
 
         _addItemOverlay_selectedItemId = null;
         AddItemOverlay_BoothLinkTextBox.Text = string.Format(BoothLink.ItemURLWithoutAuthorFormat, launchInfo.BoothId);
@@ -87,13 +87,13 @@ public partial class MainWindow
 
         AddItemOverlay.IsVisible = true;
 
-        AddItemOverlay_UpdateItemPathsList();
+        AddItemOverlay_DrawFilePathsList();
 
         AddItemOverlay_UpdateSupportedAvatarsLabel();
 
         await AddItemOverlay_GetBoothItemData();
     }
-    private void AddItemOverlay_Hide()
+    private void AddItemOverlay_Close()
     {
         _addItemOverlay_selectedItemId = null;
         _addItemOverlay_addItemWindowValues.Reset();
@@ -101,7 +101,7 @@ public partial class MainWindow
         AddItemOverlay.IsVisible = false;
     }
 
-    internal void AddItemOverlay_UpdateItemPathsList()
+    private void AddItemOverlay_DrawFilePathsList()
     {
         AddItemOverlay_ItemPathsList.Children.Clear();
         AddItemOverlay_ItemPathsList.RowDefinitions.Clear();
@@ -109,10 +109,10 @@ public partial class MainWindow
         for (int i = 0; i < _addItemOverlay_addItemWindowValues.ItemPaths.Count; i++)
         {
             string itemPath = _addItemOverlay_addItemWindowValues.ItemPaths[i];
-            AddItemOverlay_AddItemPathRow(AddItemOverlay_ItemPathsList, i, itemPath);
+            AddItemOverlay_DrawFilePathRow(AddItemOverlay_ItemPathsList, i, itemPath);
         }
     }
-    private void AddItemOverlay_AddItemPathRow(Grid folderListPanel, int index, string folder)
+    private void AddItemOverlay_DrawFilePathRow(Grid folderListPanel, int index, string folder)
     {
         Border rowBorder = new()
         {
@@ -163,7 +163,7 @@ public partial class MainWindow
             Tag = folder
         };
         Grid.SetColumn(itemRemoveButton, 3);
-        itemRemoveButton.Click += AddItemOverlay_RemoveButton_Click;
+        itemRemoveButton.Click += AddItemOverlay_FilePath_RemoveButton_Click;
         itemPathGrid.Children.Add(itemRemoveButton);
 
         if (_addItemOverlay_selectedItemId != null && index == 0)
@@ -175,16 +175,16 @@ public partial class MainWindow
         folderListPanel.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
         folderListPanel.Children.Add(rowBorder);
     }
-    private void AddItemOverlay_RemoveButton_Click(object? sender, RoutedEventArgs e)
+    private void AddItemOverlay_FilePath_RemoveButton_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is Button button && button.Tag is string itemPath)
         {
             _addItemOverlay_addItemWindowValues.ItemPaths.RemoveAll(i => i == itemPath);
-            AddItemOverlay_UpdateItemPathsList();
+            AddItemOverlay_DrawFilePathsList();
         }
     }
 
-    private void AddItemOverlay_InitializeAddItemWindowCategories()
+    private void AddItemOverlay_InitializeCategories()
     {
         AddItemOverlay_ItemTypeComboBox.Items.Clear();
         AddItemOverlay_ItemTypeComboBox.Items.AddRange(_avatarExplorerApp.GetCategories(includeEmptyCategory: true).Select(i => Localizer.Instance[((ItemCategory)i.Item).ToString()]));
@@ -225,7 +225,7 @@ public partial class MainWindow
         addItemWindowValues.BoothAuthorThumbnailUrl = AddItemOverlay_InternalAuthorImageURLTextBox.Text ?? string.Empty;
     }
 
-    private ItemCategory AddItemOverlay_GetCategoryFromItemWindow()
+    private ItemCategory AddItemOverlay_GetCurrentCategory()
     {
         int selectedIndex = AddItemOverlay_ItemTypeComboBox.SelectedIndex;
 
@@ -237,7 +237,7 @@ public partial class MainWindow
 
         return new ItemCategory((ItemType)selectedIndex);
     }
-    private bool AddItemOverlay_ValidateAddItemWindowValues()
+    private bool AddItemOverlay_ValidateValues()
     {
         string errorMessage = _addItemOverlay_addItemWindowValues.Validate();
         bool result = string.IsNullOrEmpty(errorMessage);
@@ -246,8 +246,6 @@ public partial class MainWindow
         return result;
     }
 
-    #region Event Handler
-    private async void AddItemOverlay_GetBoothItemData_Click(object? sender, RoutedEventArgs e) => await AddItemOverlay_GetBoothItemData();
     private async Task AddItemOverlay_GetBoothItemData()
     {
         string boothUrl = AddItemOverlay_BoothLinkTextBox.Text ?? string.Empty;
@@ -271,6 +269,15 @@ public partial class MainWindow
         _addItemOverlay_addItemWindowValues.FromBoothItem(fetchResult.Value);
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
     }
+
+    private void AddItemOverlay_AddItemPaths(IEnumerable<string> paths)
+    {
+        _addItemOverlay_addItemWindowValues.ItemPaths.AddRange(paths);
+        AddItemOverlay_DrawFilePathsList();
+    }
+
+    #region Event Handler
+    private async void AddItemOverlay_GetBoothItemData_Click(object? sender, RoutedEventArgs e) => await AddItemOverlay_GetBoothItemData();
     private async void AddItemOverlay_AddCustomCategory_Click(object? sender, RoutedEventArgs e)
     {
         string? customCategory = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.AddCustomCategory]);
@@ -281,7 +288,7 @@ public partial class MainWindow
     }
     private async void AddItemOverlay_EditSupportedAvatars_Click(object? sender, RoutedEventArgs e)
     {
-        List<string>? supportedAvatars = await EditSupportedAvatarsOverlay_ShowAsyncSafe(_addItemOverlay_addItemWindowValues.SupportedAvatarsView);
+        List<string>? supportedAvatars = await EditSupportedAvatarsOverlay_OpenAsyncSafe(_addItemOverlay_addItemWindowValues.SupportedAvatarsView);
         if (supportedAvatars != null)
         {
             _addItemOverlay_addItemWindowValues.UpdateSupportedAvatars(supportedAvatars);
@@ -293,28 +300,22 @@ public partial class MainWindow
         string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], true);
         if (folders == null || folders.Length == 0) return;
 
-        AddItemOverlay_AddItemPathsInternal(folders);
+        AddItemOverlay_AddItemPaths(folders);
     }
     private async void AddItemOverlay_AddFile_Click(object? sender, RoutedEventArgs e)
     {
         string[]? files = await StorageService.OpenFileDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], true);
         if (files == null || files.Length == 0) return;
 
-        AddItemOverlay_AddItemPathsInternal(files);
+        AddItemOverlay_AddItemPaths(files);
     }
-    private void AddItemOverlay_AddItemPathsInternal(IEnumerable<string> itemPaths)
-    {
-        _addItemOverlay_addItemWindowValues.ItemPaths.AddRange(itemPaths);
-        AddItemOverlay_UpdateItemPathsList();
-    }
-
     private async void AddItemOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
         if (_addItemOverlay_addItemWindowValues == null) return;
 
         AddItemOverlay_SetValuesFromUi(_addItemOverlay_addItemWindowValues);
 
-        if (!AddItemOverlay_ValidateAddItemWindowValues()) return;
+        if (!AddItemOverlay_ValidateValues()) return;
 
         ItemCreationContext itemCreationContext = new();
         itemCreationContext.ItemPaths.AddRange(_addItemOverlay_addItemWindowValues.ItemPaths);
@@ -325,7 +326,7 @@ public partial class MainWindow
         itemCreationContext.AuthorThumbnailUrl = _addItemOverlay_addItemWindowValues.BoothAuthorThumbnailUrl;
         itemCreationContext.BoothId = _addItemOverlay_addItemWindowValues.BoothId;
 
-        ItemCategory itemCategory = AddItemOverlay_GetCategoryFromItemWindow();
+        ItemCategory itemCategory = AddItemOverlay_GetCurrentCategory();
         itemCreationContext.ItemType = itemCategory.Type;
         itemCreationContext.CustomCategory = itemCategory.CustomCategory;
 
@@ -352,7 +353,7 @@ public partial class MainWindow
                     else if (extractResult.Value.ProcessingFailedPaths.Count > 0) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, extractResult.Value.ProcessingFailedPaths.Count.ToString()));
                     else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemFileAdd]);
 
-                    AddItemOverlay_Hide();
+                    AddItemOverlay_Close();
                     Main_ReloadCurrentWindow();
 
                     return;
@@ -390,10 +391,9 @@ public partial class MainWindow
             else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemEditFailed]);
         }
 
-        AddItemOverlay_Hide();
+        AddItemOverlay_Close();
         Main_ReloadCurrentWindow();
     }
-
-    private void AddItemOverlay_Close_Click(object? sender, RoutedEventArgs e) => AddItemOverlay_Hide();
+    private void AddItemOverlay_Close_Click(object? sender, RoutedEventArgs e) => AddItemOverlay_Close();
     #endregion
 }

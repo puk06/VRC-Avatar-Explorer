@@ -10,21 +10,20 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private TaskCompletionSource<YesNoResult>? _yesNoTcs;
+    private TaskCompletionSource<YesNoResult>? _yesNoDialogOverlay_tcs;
 
     private Task<YesNoResult> YesNoDialogOverlay_ShowAsync(string title, string content)
     {
-        if (_yesNoTcs != null) throw new InvalidOperationException("YesNoDialog is already shown.");
+        if (_yesNoDialogOverlay_tcs != null) throw new InvalidOperationException("YesNoDialog is already shown.");
 
-        _yesNoTcs = new();
+        _yesNoDialogOverlay_tcs = new();
 
-        YesNoDialogTitle.Text = title;
-        YesNoDialogContent.Text = content;
+        YesNoDialogOverlay_Title.Text = title;
+        YesNoDialogOverlay_Content.Text = content;
         YesNoDialogOverlay.IsVisible = true;
 
-        return _yesNoTcs.Task;
+        return _yesNoDialogOverlay_tcs.Task;
     }
-
     private async Task<YesNoResult?> YesNoDialogOverlay_ShowSafeAsync(string title, string message)
     {
         try
@@ -38,18 +37,18 @@ public partial class MainWindow
             return null;
         }
     }
-
-    private void CloseDialog(YesNoResult result)
+    private void YesNoDialogOverlay_Close(YesNoResult result)
     {
         YesNoDialogOverlay.IsVisible = false;
 
-        TaskCompletionSource<YesNoResult>? tcs = _yesNoTcs;
-        _yesNoTcs = null;
+        TaskCompletionSource<YesNoResult>? tcs = _yesNoDialogOverlay_tcs;
+        _yesNoDialogOverlay_tcs = null;
 
         tcs?.TrySetResult(result);
     }
 
-    private void YesNoDialog_Yes_Click(object? sender, RoutedEventArgs e) => CloseDialog(YesNoResult.Yes);
-
-    private void YesNoDialog_No_Click(object? sender, RoutedEventArgs e) => CloseDialog(YesNoResult.No);
+    #region Event Handler
+    private void YesNoDialogOverlay_Yes_Click(object? sender, RoutedEventArgs e) => YesNoDialogOverlay_Close(YesNoResult.Yes);
+    private void YesNoDialogOverlay_No_Click(object? sender, RoutedEventArgs e) => YesNoDialogOverlay_Close(YesNoResult.No);
+    #endregion
 }

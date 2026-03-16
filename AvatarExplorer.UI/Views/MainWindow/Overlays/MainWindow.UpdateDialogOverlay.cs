@@ -13,6 +13,7 @@ namespace AvatarExplorer.UI;
 public partial class MainWindow
 {
     private string? _updateDialogOverlay_latestVersion = null;
+    
     private async Task UpdateDialogOverlay_CheckAsync(UpdateChannel updateChannel = UpdateChannel.Stable, bool silent = true)
     {
         VersionRelease? latestVersionRelease = await UpdateChecker.GetLatestUpdateReleaseInfo(updateChannel);
@@ -26,6 +27,7 @@ public partial class MainWindow
             _updateDialogOverlay_latestVersion = latestVersionRelease.Version;
         }
     }
+    
     private void UpdateDialogOverlay_Show(VersionRelease versionRelease)
     {
         UpdateDialogOverlay_VersionText.Text = Localizer.Instance.Get(LocalizationKey.Dialog.Update.VersionText, [$"v{versionRelease.Version}", $"v{AvatarExplorerApp.CurrentVersion}", versionRelease.ReleaseDate]);

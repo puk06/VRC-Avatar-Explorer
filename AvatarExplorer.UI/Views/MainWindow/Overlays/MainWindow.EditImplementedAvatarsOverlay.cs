@@ -14,20 +14,20 @@ public partial class MainWindow
 {
     private readonly List<string> _editImplementedAvatarsOverlay_selectedAvatars = new();
 
-    private void EditImplementedAvatarsOverlay_Show(IReadOnlyList<string>? avatars = null)
+    private void EditImplementedAvatarsOverlay_Open(IReadOnlyList<string>? avatars = null)
     {
         EditImplementedAvatarsOverlay.IsVisible = true;
-        EditImplementedAvatarsOverlay_InitializeList(avatars);
+        EditImplementedAvatarsOverlay_Initialize(avatars);
     }
-    private void EditImplementedAvatarsOverlay_Hide() => EditImplementedAvatarsOverlay.IsVisible = false;
+    private void EditImplementedAvatarsOverlay_Close() => EditImplementedAvatarsOverlay.IsVisible = false;
 
-    private void EditImplementedAvatarsOverlay_InitializeList(IReadOnlyList<string>? avatars = null)
+    private void EditImplementedAvatarsOverlay_Initialize(IReadOnlyList<string>? avatars = null)
     {
         _editImplementedAvatarsOverlay_selectedAvatars.Clear();
         if (avatars != null) _editImplementedAvatarsOverlay_selectedAvatars.AddRange(avatars);
-        EditImplementedAvatarsOverlay_RefleshList();
+        EditImplementedAvatarsOverlay_DrawItemButtons();
     }
-    private void EditImplementedAvatarsOverlay_RefleshList()
+    private void EditImplementedAvatarsOverlay_DrawItemButtons()
     {
         EditImplementedAvatarsOverlay_AvatarsList.Children.Clear();
         IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp.GetAvatars().Where(i => string.IsNullOrEmpty(EditImplementedAvatarsOverlay_SearchTextBox.Text) || ((Item)i.Item).Title.Contains(EditImplementedAvatarsOverlay_SearchTextBox.Text));
@@ -40,7 +40,7 @@ public partial class MainWindow
     }
 
     #region Event Handler
-    private void EditImplementedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_Hide();
+    private void EditImplementedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_Close();
     private void EditImplementedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
         Item? item = _avatarExplorerApp.GetItemById(_contextMenu_selectedItemId);
@@ -53,7 +53,7 @@ public partial class MainWindow
         item.UpdateImplementedAvatars(_editImplementedAvatarsOverlay_selectedAvatars);
         _avatarExplorerApp.SaveItemDatabase();
 
-        EditImplementedAvatarsOverlay_Hide();
+        EditImplementedAvatarsOverlay_Close();
     }
     private void EditImplementedAvatarsOverlay_ItemButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -62,8 +62,8 @@ public partial class MainWindow
         if (_editImplementedAvatarsOverlay_selectedAvatars.Contains(itemTagInfo.Value)) _editImplementedAvatarsOverlay_selectedAvatars.RemoveAll(i => i == itemTagInfo.Value);
         else _editImplementedAvatarsOverlay_selectedAvatars.Add(itemTagInfo.Value);
 
-        EditImplementedAvatarsOverlay_RefleshList();
+        EditImplementedAvatarsOverlay_DrawItemButtons();
     }
-    private void EditImplementedAvatarsOverlay_SearchTextBox_Changed(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_RefleshList();
+    private void EditImplementedAvatarsOverlay_SearchTextBox_TextChanged(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_DrawItemButtons();
     #endregion
 }

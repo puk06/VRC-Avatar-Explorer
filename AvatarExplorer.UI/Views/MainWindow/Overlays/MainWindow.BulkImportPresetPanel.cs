@@ -9,6 +9,14 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
+    private void BulkImportPresetPanel_Focus()
+    {
+        SidePanel_Show();
+
+        int bulkImportPresetPanelTabIndex = SidePanel_TabControl.Items.IndexOf(SidePanel_BulkImportPresetPanelTab);
+        if (bulkImportPresetPanelTabIndex != -1 && SidePanel_TabControl.SelectedIndex != bulkImportPresetPanelTabIndex) SidePanel_TabControl.SelectedIndex = bulkImportPresetPanelTabIndex;
+    }
+    
     private void BulkImportPresetPanel_DrawItemButtons()
     {
         SidePanel_BulkImportPresetPanel.Children.Clear();
@@ -20,14 +28,7 @@ public partial class MainWindow
         }
     }
 
-    private void BulkImportPresetPanel_Focus()
-    {
-        SidePanel_Show();
-
-        int bulkImportPresetPanelTabIndex = SidePanel_TabControl.Items.IndexOf(SidePanel_BulkImportPresetPanelTab);
-        if (bulkImportPresetPanelTabIndex != -1 && SidePanel_TabControl.SelectedIndex != bulkImportPresetPanelTabIndex) SidePanel_TabControl.SelectedIndex = bulkImportPresetPanelTabIndex;
-    }
-
+    #region Event Handler
     private async void BulkImportPresetPanel_ItemButton_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is not Button button) return;
@@ -40,4 +41,5 @@ public partial class MainWindow
             BulkImportPanel_AddItem(bulkImportPreset.ItemsView);
         }
     }
+    #endregion
 }

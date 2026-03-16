@@ -17,23 +17,23 @@ public partial class MainWindow
 {
     private readonly List<string> _editTagsOverlay_selectedTags = new();
 
-    private void EditTagsOverlay_Show(IReadOnlyList<string>? tags = null)
+    private void EditTagsOverlay_Open(IReadOnlyList<string>? tags = null)
     {
         EditTagsOverlay.IsVisible = true;
         EditTagsOverlay_TagTextBox.Text = string.Empty;
-        EditTagsOverlay_InitializeList(tags);
+        EditTagsOverlay_Initialize(tags);
     }
-    private void EditTagsOverlay_Hide() => EditTagsOverlay.IsVisible = false;
+    private void EditTagsOverlay_Close() => EditTagsOverlay.IsVisible = false;
 
-    private void EditTagsOverlay_InitializeList(IReadOnlyList<string>? tags = null)
+    private void EditTagsOverlay_Initialize(IReadOnlyList<string>? tags = null)
     {
         _editTagsOverlay_selectedTags.Clear();
         if (tags != null) _editTagsOverlay_selectedTags.AddRange(tags);
 
-        EditTagsOverlay_RefleshList();
-        EditTagsOverlay_ReloadTagList();
+        EditTagsOverlay_RefleshTagsList();
+        EditTagsOverlay_DrawTags();
     }
-    private void EditTagsOverlay_RefleshList()
+    private void EditTagsOverlay_RefleshTagsList()
     {
         EditTagsOverlay_TagComboBox.Items.Clear();
         EditTagsOverlay_TagComboBox.Items.AddRange(
@@ -43,7 +43,7 @@ public partial class MainWindow
                 .Select(i => new ComboBoxItem() { Content = i })
         );
     }
-    private void EditTagsOverlay_ReloadTagList()
+    private void EditTagsOverlay_DrawTags()
     {
         EditTagsOverlay_TagList.Children.Clear();
 
@@ -71,7 +71,7 @@ public partial class MainWindow
         if (sender is Border border && border.Child is TextBlock taglabel && taglabel.Text is string tag)
         {
             _editTagsOverlay_selectedTags.RemoveAll(i => i == tag);
-            EditTagsOverlay_ReloadTagList();
+            EditTagsOverlay_DrawTags();
         }
     }
     private void EditTagsOverlay_TagTextBox_KeyDown(object? sender, KeyEventArgs e)
@@ -87,7 +87,7 @@ public partial class MainWindow
             _editTagsOverlay_selectedTags.Add(EditTagsOverlay_TagTextBox.Text);
         }
 
-        EditTagsOverlay_ReloadTagList();
+        EditTagsOverlay_DrawTags();
         EditTagsOverlay_TagTextBox.Text = string.Empty;
     }
     private void EditTagsOverlay_TagComboBox_SelectionChanged(object? sender, RoutedEventArgs e)
@@ -100,11 +100,11 @@ public partial class MainWindow
         }
 
         _editTagsOverlay_selectedTags.Add(selectedTag);
-        EditTagsOverlay_ReloadTagList();
+        EditTagsOverlay_DrawTags();
 
         EditTagsOverlay_TagComboBox.SelectedIndex = -1;
     }
-    private void EditTagsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditTagsOverlay_Hide();
+    private void EditTagsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditTagsOverlay_Close();
     private void EditTagsOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
         Item? item = _avatarExplorerApp.GetItemById(_contextMenu_selectedItemId);
@@ -118,7 +118,7 @@ public partial class MainWindow
         _avatarExplorerApp.UpdateSearchIndex(item.Id);
         _avatarExplorerApp.SaveItemDatabase();
 
-        EditTagsOverlay_Hide();
+        EditTagsOverlay_Close();
         Main_ReloadCurrentWindow();
     }
     #endregion

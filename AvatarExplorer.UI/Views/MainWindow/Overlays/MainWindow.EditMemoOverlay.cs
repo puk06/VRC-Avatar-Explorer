@@ -7,15 +7,15 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private void EditMemoOverlay_Show(string initialMemo = "")
+    private void EditMemoOverlay_Open(string memo = "")
     {
         EditMemoOverlay.IsVisible = true;
-        if (!string.IsNullOrEmpty(initialMemo)) EditMemoOverlay_MemoTextBox.Text = initialMemo;
+        EditMemoOverlay_MemoTextBox.Text = memo;
     }
-    private void EditMemoOverlay_Hide() => EditMemoOverlay.IsVisible = false;
+    private void EditMemoOverlay_Close() => EditMemoOverlay.IsVisible = false;
 
     #region Event Handler
-    private void EditMemoOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditMemoOverlay_Hide();
+    private void EditMemoOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditMemoOverlay_Close();
     private void EditMemoOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
         Item? item = _avatarExplorerApp.GetItemById(_contextMenu_selectedItemId);
@@ -29,7 +29,7 @@ public partial class MainWindow
         _avatarExplorerApp.UpdateSearchIndex(item.Id);
         _avatarExplorerApp.SaveItemDatabase();
 
-        EditMemoOverlay_Hide();
+        EditMemoOverlay_Close();
         Main_ReloadCurrentWindow();
     }
     #endregion

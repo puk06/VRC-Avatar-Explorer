@@ -92,7 +92,7 @@ public partial class MainWindow : Window
         LaunchInfo? launchInfo = LaunchInfoService.GetLaunchInfo(args[0]);
         if (launchInfo == null) return;
 
-        if (launchInfo.AssetPaths.Length != 0 && !string.IsNullOrEmpty(launchInfo.BoothId)) await AddItemOverlay_Show(launchInfo);
+        if (launchInfo.AssetPaths.Length != 0 && !string.IsNullOrEmpty(launchInfo.BoothId)) await AddItemOverlay_Open(launchInfo);
     }
 
     #region Left Panel

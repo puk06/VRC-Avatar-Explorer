@@ -35,7 +35,6 @@ public partial class MainWindow
 
         SidePanel_BulkImportPanelScrollViewer.Offset = AvaloniaVectorUtils.MaxValue;
     }
-
     private void BulkImportPanel_AddItem(IEnumerable<BulkImportItem> bulkImportItems)
     {
         BulkImportPanel_Focus();
@@ -53,7 +52,27 @@ public partial class MainWindow
         int bulkImportPanelTabIndex = SidePanel_TabControl.Items.IndexOf(SidePanel_BulkImportPanelTab);
         if (bulkImportPanelTabIndex != -1 && SidePanel_TabControl.SelectedIndex != bulkImportPanelTabIndex) SidePanel_TabControl.SelectedIndex = bulkImportPanelTabIndex;
     }
+    
+    private void BulkImportPanel_DrawItemButtons()
+    {
+        SidePanel_BulkImportPanel.Children.Clear();
 
+        foreach (BulkImportItem bulkImportItem in _bulkImportPanel_bulkImportItems)
+        {
+            Item? item = _avatarExplorerApp.GetItemById(bulkImportItem.ItemId);
+            if (item == null) continue;
+
+            UnitypackageSelectorButtonFactory.AddItemButton(
+                SidePanel_BulkImportPanel,
+                new UISelectableItem(new ItemCountInfo(item, 0)),
+                RuntimeSettings, _userPreferences,
+                bulkImportItem.Id, bulkImportItem.FilePath,
+                BulkImportPanel_ItemButton_Copy_Click, BulkImportPanel_ItemButton_Remove_Click, BulkImportPanel_ItemButton_SelectionChanged
+            );
+        }
+    }
+
+    #region Event Handler
     private void BulkImportPanel_ItemButton_Copy_Click(string id)
     {
         BulkImportItem? item = _bulkImportPanel_bulkImportItems.FirstOrDefault(i => i.Id == id);
@@ -61,19 +80,17 @@ public partial class MainWindow
 
         BulkImportPanel_AddItem(item.ItemId);
     }
-
     private void BulkImportPanel_ItemButton_Remove_Click(string id)
     {
         _bulkImportPanel_bulkImportItems.RemoveAll(i => i.Id == id);
         BulkImportPanel_DrawItemButtons();
     }
-
     private void BulkImportPanel_ItemButton_SelectionChanged(string id, string filePath)
     {
         BulkImportItem? item = _bulkImportPanel_bulkImportItems.FirstOrDefault(i => i.Id == id);
         if (item != null) item.FilePath = filePath;
     }
-
+    
     private async void BulkImportPanel_Import_Click(object? sender, RoutedEventArgs e)
     {
         Dictionary<string, string> itemPathCategoryDictionary = new();
@@ -111,7 +128,6 @@ public partial class MainWindow
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.BulkImportFailed]);
         }
     }
-
     private async void BulkImportPanel_Save_Click(object? sender, RoutedEventArgs e)
     {
         string? presetName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewBulkImportPresetName]);
@@ -122,30 +138,10 @@ public partial class MainWindow
         
         BulkImportPresetPanel_Focus();
     }
-
     private void BulkImportPanel_Reset_Click(object? sender, RoutedEventArgs e)
     {
         _bulkImportPanel_bulkImportItems.Clear();
         BulkImportPanel_DrawItemButtons();
-    }
-
-    private void BulkImportPanel_DrawItemButtons()
-    {
-        SidePanel_BulkImportPanel.Children.Clear();
-
-        foreach (BulkImportItem bulkImportItem in _bulkImportPanel_bulkImportItems)
-        {
-            Item? item = _avatarExplorerApp.GetItemById(bulkImportItem.ItemId);
-            if (item == null) continue;
-
-            UnitypackageSelectorButtonFactory.AddItemButton(
-                SidePanel_BulkImportPanel,
-                new UISelectableItem(new ItemCountInfo(item, 0)),
-                RuntimeSettings, _userPreferences,
-                bulkImportItem.Id, bulkImportItem.FilePath,
-                BulkImportPanel_ItemButton_Copy_Click, BulkImportPanel_ItemButton_Remove_Click, BulkImportPanel_ItemButton_SelectionChanged
-            );
-        }
     }
 
     private void BulkImportPanel_DragDrop_Drop(object? sender, DragEventArgs e)
@@ -171,4 +167,5 @@ public partial class MainWindow
             }
         }
     }
+    #endregion
 }

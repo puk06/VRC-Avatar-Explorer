@@ -55,7 +55,7 @@ public partial class MainWindow
     }
     private void Main_InitializeContextMenuHandlers()
     {
-        _contextMenuHandlers = new()
+        _main_contextMenuHandlers = new()
         {
             { ActionKey.OpenItemFolder, Main_ItemButton_ContextMenu_OpenItemFolder },
             { ActionKey.CopyBoothLink, Main_ItemButton_ContextMenu_CopyBoothLink },
@@ -93,10 +93,10 @@ public partial class MainWindow
 
     private void Main_InitializePipeServer()
     {
-        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
+        SingleInstanceService.OnPipeMessageReceived += Main_OnPipeMessageReceived;
         SingleInstanceService.StartServer();
     }
-    private void OnPipeMessageReceived(string[] args)
+    private void Main_OnPipeMessageReceived(string[] args)
     {
         Dispatcher.UIThread.Post(async () =>
         {

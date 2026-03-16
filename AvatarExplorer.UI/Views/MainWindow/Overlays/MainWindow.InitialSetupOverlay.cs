@@ -9,21 +9,22 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private TaskCompletionSource<bool>? _initialSetupTcs;
+    private TaskCompletionSource<bool>? _initialSetupOverlay_tcs;
 
     private async Task InitialSetupOverlay_ShowAsync()
     {
-        _initialSetupTcs?.TrySetResult(false);
-        _initialSetupTcs = new();
+        _initialSetupOverlay_tcs?.TrySetResult(false);
+        _initialSetupOverlay_tcs = new();
 
         InitialSetupOverlay_LanguageComboBox.SelectedIndex = _userPreferences.Language;
         InitialSetupOverlay_ItemsFolderPathTextBox.Text = RuntimeSettings.DataRootDirectory;
 
         InitialSetupOverlay.IsVisible = true;
 
-        await _initialSetupTcs.Task;
+        await _initialSetupOverlay_tcs.Task;
     }
 
+    #region Event Handler
     private void InitialSetupOverlay_LanguageComboBox_SelectionChanged(object? sender, RoutedEventArgs e)
     {
         if (InitialSetupOverlay == null || !InitialSetupOverlay.IsVisible) return;
@@ -61,6 +62,7 @@ public partial class MainWindow
         _avatarExplorerApp.SaveRuntimeSettings();
 
         InitialSetupOverlay.IsVisible = false;
-        _initialSetupTcs?.TrySetResult(true);
+        _initialSetupOverlay_tcs?.TrySetResult(true);
     }
+    #endregion
 }
