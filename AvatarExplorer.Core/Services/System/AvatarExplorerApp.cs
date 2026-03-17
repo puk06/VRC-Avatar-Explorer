@@ -20,6 +20,8 @@ public partial class AvatarExplorerApp
 {
     public static readonly string CurrentVersion = "2.0.0-beta.3";
 
+    private bool _initialized = false;
+
     private readonly ItemDatabaseManager _itemDatabaseManager = new();
     private readonly CommonAvatarDatabaseManager _commonAvatarDatabaseManager = new();
     private readonly TempAvatarsDatabaseManager _tempAvatarsDatabaseManager = new();
@@ -46,47 +48,45 @@ public partial class AvatarExplorerApp
 
         ErrorManager.Instance.OnErrorOccured += ErrorLogWriter.Instance.Write;
         ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;
+
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        if (_initialized) return;
+
+        LoadItemDatabase();
+        LoadCommonAvatarDatabase();
+        LoadBulkImportPresetDatabase();
+        LoadTempAvatarsDatabase();
+        LoadRuntimeSettings();
+        StartAutoBackup();
+
+        UpdateSearchIndex();
+
+        _initialized = true;
     }
 
     #region Database
     public void LoadItemDatabase(string? path = null)
     {
-        string loadPath = path ?? _itemDatabaseManager.DatabaseFilePath;
-        IEnumerable<Item> database = DatabaseService<Item>.Load(loadPath);
-
-        _itemDatabaseManager.Update(database);
-
+        _itemDatabaseManager.Load(path);
         UpdateSearchIndex();
     }
 
-    public void LoadCommonAvatarDatabase(string? path = null)
-    {
-        string loadPath = path ?? _commonAvatarDatabaseManager.DatabaseFilePath;
-        IEnumerable<CommonAvatar> database = DatabaseService<CommonAvatar>.Load(loadPath);
-
-        _commonAvatarDatabaseManager.Update(database);
-    }
-
-    public void LoadBulkImportPresetDatabase(string? path = null)
-    {
-        string loadPath = path ?? _bulkImportPresetDatabaseManager.DatabaseFilePath;
-        IEnumerable<BulkImportPreset> database = DatabaseService<BulkImportPreset>.Load(loadPath);
-
-        _bulkImportPresetDatabaseManager.Update(database);
-    }
-
+    public void LoadCommonAvatarDatabase(string? path = null) => _commonAvatarDatabaseManager.Load(path);
+    public void LoadBulkImportPresetDatabase(string? path = null) => _bulkImportPresetDatabaseManager.Load(path);
     public void LoadTempAvatarsDatabase(string? path = null)
     {
-        string loadPath = path ?? _tempAvatarsDatabaseManager.DatabaseFilePath;
-        IEnumerable<TempAvatar> database = DatabaseService<TempAvatar>.Load(loadPath);
-
-        _tempAvatarsDatabaseManager.Update(database);
+        _tempAvatarsDatabaseManager.Load(path);
+        UpdateSearchIndex();
     }
 
-    public void SaveItemDatabase() => DatabaseService<Item>.Save(_itemDatabaseManager.Items, _itemDatabaseManager.DatabaseFilePath);
-    public void SaveCommonAvatarDatabase() => DatabaseService<CommonAvatar>.Save(_commonAvatarDatabaseManager.Items, _commonAvatarDatabaseManager.DatabaseFilePath);
-    public void SaveBulkImportPresetDatabase() => DatabaseService<BulkImportPreset>.Save(_bulkImportPresetDatabaseManager.Items, _bulkImportPresetDatabaseManager.DatabaseFilePath);
-    public void SaveTempAvatarsDatabase() => DatabaseService<TempAvatar>.Save(_tempAvatarsDatabaseManager.Items, _tempAvatarsDatabaseManager.DatabaseFilePath);
+    public void SaveItemDatabase() => _itemDatabaseManager.Save();
+    public void SaveCommonAvatarDatabase() => _commonAvatarDatabaseManager.Save();
+    public void SaveBulkImportPresetDatabase() => _bulkImportPresetDatabaseManager.Save();
+    public void SaveTempAvatarsDatabase() => _tempAvatarsDatabaseManager.Save();
 
     public void ResetItemDatabase()
     {

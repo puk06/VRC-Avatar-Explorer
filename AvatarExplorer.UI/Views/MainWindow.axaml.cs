@@ -56,7 +56,6 @@ public partial class MainWindow : Window
 
         Main_InitializeTitle();
         Main_InitializeLanguageBox();
-        Main_InitializeAvatarExplorer();
         Main_InitializeUserPreferences();
 
         Main_InitializePipeServer();

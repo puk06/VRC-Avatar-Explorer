@@ -34,22 +34,6 @@ public partial class MainWindow
             ErrorManager.Instance.PostInternalError("Failed to determine whether the process is running with administrator privileges.", ex);
         }
     }
-    private void Main_InitializeAvatarExplorer()
-    {
-        try
-        {
-            _avatarExplorerApp.LoadItemDatabase();
-            _avatarExplorerApp.LoadCommonAvatarDatabase();
-            _avatarExplorerApp.LoadBulkImportPresetDatabase();
-            _avatarExplorerApp.LoadTempAvatarsDatabase();
-            _avatarExplorerApp.LoadRuntimeSettings();
-            _avatarExplorerApp.StartAutoBackup();
-        }
-        catch (Exception ex)
-        {
-            ErrorManager.Instance.PostInternalError("Failed to initialize Avatar Explorer.", ex);
-        }
-    }
     private void Main_InitializeUserPreferences()
     {
         _userPreferences = UserPreferencesService.Load(SystemPath.UserPreferencesFilePath);
