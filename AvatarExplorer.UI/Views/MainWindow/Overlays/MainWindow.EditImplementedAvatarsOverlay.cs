@@ -30,7 +30,7 @@ public partial class MainWindow
     private void EditImplementedAvatarsOverlay_DrawItemButtons()
     {
         EditImplementedAvatarsOverlay_AvatarsList.Children.Clear();
-        IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp.GetAvatars().Where(i => string.IsNullOrEmpty(EditImplementedAvatarsOverlay_SearchTextBox.Text) || ((Item)i.Item).Title.Contains(EditImplementedAvatarsOverlay_SearchTextBox.Text));
+        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars().Where(i => string.IsNullOrEmpty(EditImplementedAvatarsOverlay_SearchTextBox.Text) || ((Item)i.Item).Title.Contains(EditImplementedAvatarsOverlay_SearchTextBox.Text));
 
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
@@ -43,7 +43,7 @@ public partial class MainWindow
     private void EditImplementedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_Close();
     private void EditImplementedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
-        Item? item = _avatarExplorerApp.GetItemById(_contextMenu_selectedItemId);
+        Item? item = AvatarExplorer.GetItemById(_contextMenu_selectedItemId);
         if (item == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
@@ -51,9 +51,9 @@ public partial class MainWindow
         }
 
         item.UpdateImplementedAvatars(_editImplementedAvatarsOverlay_selectedAvatars);
-        _avatarExplorerApp.UpdateItemUpdatedDate(item.Id);
+        AvatarExplorer.UpdateItemUpdatedDate(item.Id);
 
-        _avatarExplorerApp.SaveItemDatabase();
+        AvatarExplorer.SaveItemDatabase();
 
         EditImplementedAvatarsOverlay_Close();
     }

@@ -47,7 +47,7 @@ public partial class MainWindow
 
         if (InitialSetupOverlay_ItemsFolderPathTextBox != null)
         {
-            _avatarExplorerApp.SetRuntimeSettings(RuntimeSettings with
+            AvatarExplorer.SetRuntimeSettings(RuntimeSettings with
             {
                 DataRootDirectory = folders[0]
             });
@@ -59,7 +59,7 @@ public partial class MainWindow
     private void InitialSetupOverlay_OK_Click(object? sender, RoutedEventArgs e)
     {
         UserPreferencesService.Save(_userPreferences);
-        _avatarExplorerApp.SaveRuntimeSettings();
+        AvatarExplorer.SaveRuntimeSettings();
 
         InitialSetupOverlay.IsVisible = false;
         _initialSetupOverlay_tcs?.TrySetResult(true);

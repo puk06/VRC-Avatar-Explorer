@@ -29,7 +29,7 @@ public partial class MainWindow
     private void EditCommonAvatarsOverlay_RefleshGroupList()
     {
         EditCommonAvatarsOverlay_GroupComboBox.Items.Clear();
-        foreach (CommonAvatar commonAvatar in _avatarExplorerApp.GetAllCommonAvatars())
+        foreach (CommonAvatar commonAvatar in AvatarExplorer.GetAllCommonAvatars())
         {
             EditCommonAvatarsOverlay_GroupComboBox.Items.Add(new ComboBoxItem
             {
@@ -43,14 +43,14 @@ public partial class MainWindow
     {
         if (EditCommonAvatarsOverlay_AvatarsList == null) return;
         EditCommonAvatarsOverlay_AvatarsList.Children.Clear();
-        IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp.GetAvatars(includeTempAvatar: true)
+        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars(includeTempAvatar: true)
             .Where(i =>
                 string.IsNullOrEmpty(EditCommonAvatarsOverlay_SearchTextBox.Text) ||
                 (i.Item is Item item && item.Title.Contains(EditCommonAvatarsOverlay_SearchTextBox.Text)) ||
                 (i.Item is TempAvatar tempAvatar && tempAvatar.AvatarName.Contains(EditCommonAvatarsOverlay_SearchTextBox.Text))
             );
 
-        CommonAvatar? commonAvatar = _avatarExplorerApp.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null) return;
 
         foreach (ItemCountInfo itemCountInfo in avatars)
@@ -67,7 +67,7 @@ public partial class MainWindow
         if (_editCommonAvatarsOverlay_selectedGroupId == null) return;
         if (sender is not Button button || button.Tag is not ItemTagInfo itemTagInfo) return;
 
-        CommonAvatar? commonAvatar = _avatarExplorerApp.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null) return;
 
         if (commonAvatar.AvatarsView.Contains(itemTagInfo.Value)) commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != itemTagInfo.Value));
@@ -80,19 +80,19 @@ public partial class MainWindow
         string? commonAvatarGroupName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.AddCommonAvatarGroup]);
         if (string.IsNullOrEmpty(commonAvatarGroupName)) return;
 
-        _avatarExplorerApp.AddCommonAvatar(commonAvatarGroupName);
+        AvatarExplorer.AddCommonAvatar(commonAvatarGroupName);
 
         EditCommonAvatarsOverlay_RefleshGroupList();
         EditCommonAvatarsOverlay_DrawItemButtons();
 
         // 追加された共通素体グループを選択してあげる
-        EditCommonAvatarsOverlay_GroupComboBox.SelectedIndex = _avatarExplorerApp.GetAllCommonAvatars().Length - 1;
+        EditCommonAvatarsOverlay_GroupComboBox.SelectedIndex = AvatarExplorer.GetAllCommonAvatars().Length - 1;
 
         EditCommonAvatarsOverlay_DrawItemButtons();
     }
     private async void EditCommonAvatarsOverlay_RenameGroup_Click(object? sender, RoutedEventArgs e)
     {
-        CommonAvatar? commonAvatar = _avatarExplorerApp.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CommonAvatarNotFound]);
@@ -103,7 +103,7 @@ public partial class MainWindow
         if (string.IsNullOrEmpty(commonAvatarGroupName)) return;
         
         commonAvatar.GroupName = commonAvatarGroupName;
-        _avatarExplorerApp.SaveCommonAvatarDatabase();
+        AvatarExplorer.SaveCommonAvatarDatabase();
 
         int previousIndex = EditCommonAvatarsOverlay_GroupComboBox.SelectedIndex;
         EditCommonAvatarsOverlay_RefleshGroupList();
@@ -114,7 +114,7 @@ public partial class MainWindow
     }
     private async void EditCommonAvatarsOverlay_ReplaceAvatarsToGroup_Click(object? sender, RoutedEventArgs e)
     {
-        CommonAvatar? commonAvatar = _avatarExplorerApp.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CommonAvatarNotFound]);
@@ -124,13 +124,13 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup));
         if (result == null || result != YesNoResult.Yes) return;
 
-        _avatarExplorerApp.ReplaceSupportedAvatarsToCommonAvatarGroup(commonAvatar.Id);
-        _avatarExplorerApp.SaveItemDatabase();
+        AvatarExplorer.ReplaceSupportedAvatarsToCommonAvatarGroup(commonAvatar.Id);
+        AvatarExplorer.SaveItemDatabase();
         Main_ReloadCurrentWindow();
     }
     private async void EditCommonAvatarsOverlay_RemoveGroup_Click(object? sender, RoutedEventArgs e)
     {
-        CommonAvatar? commonAvatar = _avatarExplorerApp.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CommonAvatarNotFound]);
@@ -141,9 +141,9 @@ public partial class MainWindow
         if (result == null || result != YesNoResult.Yes) return;
 
         YesNoResult? result1 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars));
-        if (result1 != null && result1 == YesNoResult.Yes) _avatarExplorerApp.ReplaceCommonAvatarGroupToSupportedAvatars(commonAvatar.Id);
+        if (result1 != null && result1 == YesNoResult.Yes) AvatarExplorer.ReplaceCommonAvatarGroupToSupportedAvatars(commonAvatar.Id);
 
-        _avatarExplorerApp.RemoveCommonAvatar(commonAvatar.GetInternalId());
+        AvatarExplorer.RemoveCommonAvatar(commonAvatar.GetInternalId());
 
         EditCommonAvatarsOverlay_RefleshGroupList();
         if (EditCommonAvatarsOverlay_GroupComboBox.Items.Count > 0) EditCommonAvatarsOverlay_GroupComboBox.SelectedIndex = 0;

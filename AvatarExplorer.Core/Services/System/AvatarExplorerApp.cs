@@ -16,9 +16,11 @@ using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
 
-public partial class AvatarExplorerApp
+public class AvatarExplorerApp
 {
     public static readonly string CurrentVersion = "2.0.0-beta.3";
+
+    public static AvatarExplorerApp Instance { get; private set; } = new AvatarExplorerApp();
 
     private bool _initialized = false;
 
@@ -33,7 +35,7 @@ public partial class AvatarExplorerApp
     private readonly Dictionary<ItemTagStates, Func<SelectionNode, ImmutableArray<ItemCountInfo>>> _stateHandlers;
     private RuntimeSettings _runtimeSettings = new();
 
-    public AvatarExplorerApp()
+    private AvatarExplorerApp()
     {
         _stateHandlers = new()
         {
@@ -45,11 +47,6 @@ public partial class AvatarExplorerApp
             { ItemTagStates.RootSelectedItem, HandleRootSelectedItem },
             { ItemTagStates.ItemFileCategory, HandleItemFileCategory }
         };
-
-        ErrorManager.Instance.OnErrorOccured += ErrorLogWriter.Instance.Write;
-        ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;
-
-        Initialize();
     }
 
     public void Initialize()
@@ -64,6 +61,9 @@ public partial class AvatarExplorerApp
         StartAutoBackup();
 
         UpdateSearchIndex();
+
+        ErrorManager.Instance.OnErrorOccured += ErrorLogWriter.Instance.Write;
+        ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;
 
         _initialized = true;
     }

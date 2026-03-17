@@ -36,7 +36,7 @@ public partial class MainWindow
     #region Context Menu Commands
     private Item? Main_ItemButton_ContextMenu_GetItemById(string itemId)
     {
-        Item? item = _avatarExplorerApp.GetItemById(itemId);
+        Item? item = AvatarExplorer.GetItemById(itemId);
         if (item == null) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
 
         return item;
@@ -81,7 +81,7 @@ public partial class MainWindow
 
         string selectedFile = files[0];
 
-        ErrorOr<Success> result = await _avatarExplorerApp.UpdateItemThumbnail(item.Id, selectedFile);
+        ErrorOr<Success> result = await AvatarExplorer.UpdateItemThumbnail(item.Id, selectedFile);
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to edit item thumbnail.", tag: result.Errors.ToErrorString());
@@ -95,7 +95,7 @@ public partial class MainWindow
     }
     private async Task Main_ItemButton_ContextMenu_FetchThumbnail(string itemId)
     {
-        ErrorOr<Success> result = await _avatarExplorerApp.FetchAndUpdateThumbnailImage(itemId);
+        ErrorOr<Success> result = await AvatarExplorer.FetchAndUpdateThumbnailImage(itemId);
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to fetch item thumbnail.", tag: result.Errors.ToErrorString());
@@ -125,10 +125,10 @@ public partial class MainWindow
         if (string.IsNullOrEmpty(newTitle)) return;
 
         item.Title = newTitle;
-        _avatarExplorerApp.UpdateItemUpdatedDate(item.Id);
-        
-        _avatarExplorerApp.SaveItemDatabase();
-        _avatarExplorerApp.UpdateSearchIndex();
+        AvatarExplorer.UpdateItemUpdatedDate(item.Id);
+
+        AvatarExplorer.SaveItemDatabase();
+        AvatarExplorer.UpdateSearchIndex();
 
         Main_ReloadCurrentWindow();
     }
@@ -179,7 +179,7 @@ public partial class MainWindow
     private async Task<ErrorOr<ExtractResult>> Main_ItemButton_ContextMenu_AddItemPathsInternal(Item item, string[] itemPaths)
     {
         ProgressOverlay_Show(Localizer.Instance[LocalizationKey.Processing.ItemAdd.Copying], 0);
-        ErrorOr<ExtractResult> extractResult = await _avatarExplorerApp.AddItemPaths(item.Id, itemPaths);
+        ErrorOr<ExtractResult> extractResult = await AvatarExplorer.AddItemPaths(item.Id, itemPaths);
         ProgressOverlay_Hide();
 
         return extractResult;
@@ -216,7 +216,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
         if (result == null || result != YesNoResult.Yes) return;
 
-        bool removed = _avatarExplorerApp.RemoveItem(item.Id);
+        bool removed = AvatarExplorer.RemoveItem(item.Id);
 
         Main_ReloadCurrentWindow();
 
@@ -246,7 +246,7 @@ public partial class MainWindow
     }
     private Task Main_ItemButton_ContextMenu_AddFileToBulkImportList(string filePath)
     {
-        string? itemId = _avatarExplorerApp.GetSelectedItem()?.Id;
+        string? itemId = AvatarExplorer.GetSelectedItem()?.Id;
         if (itemId == null) return Task.CompletedTask;
 
         BulkImportPanel_AddItem(itemId, filePath);
@@ -256,7 +256,7 @@ public partial class MainWindow
 
     private BulkImportPreset? Main_ItemButton_ContextMenu_GetBulkImportPresetById(string id)
     {
-        BulkImportPreset? bulkImportPreset = _avatarExplorerApp.GetBulkImportPresetById(id);
+        BulkImportPreset? bulkImportPreset = AvatarExplorer.GetBulkImportPresetById(id);
         if (bulkImportPreset == null) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.PresetNotFound]);
 
         return bulkImportPreset;
@@ -270,7 +270,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemovePreset, bulkImportPreset.PresetName));
         if (result == null || result != YesNoResult.Yes) return;
 
-        bool removed = _avatarExplorerApp.RemoveBulkImportPreset(bulkImportPreset.Id);
+        bool removed = AvatarExplorer.RemoveBulkImportPreset(bulkImportPreset.Id);
 
         BulkImportPresetPanel_DrawItemButtons();
 
@@ -280,7 +280,7 @@ public partial class MainWindow
 
     private TempAvatar? Main_ItemButton_ContextMenu_GetTempAvatarById(string id)
     {
-        TempAvatar? tempAvatar = _avatarExplorerApp.GetTempAvatarById(TempAvatar.GetAvatarId(id));
+        TempAvatar? tempAvatar = AvatarExplorer.GetTempAvatarById(TempAvatar.GetAvatarId(id));
         if (tempAvatar == null) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound]);
 
         return tempAvatar;
@@ -297,8 +297,8 @@ public partial class MainWindow
 
         tempAvatar.AvatarName = newAvatarName;
 
-        _avatarExplorerApp.SaveTempAvatarsDatabase();
-        _avatarExplorerApp.UpdateSearchIndex();
+        AvatarExplorer.SaveTempAvatarsDatabase();
+        AvatarExplorer.UpdateSearchIndex();
 
         Main_ReloadCurrentWindow();
     }
@@ -310,7 +310,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveTempAvatar, tempAvatar.AvatarName));
         if (result == null || result != YesNoResult.Yes) return;
 
-        bool removed = _avatarExplorerApp.RemoveTempAvatar(tempAvatar.GetInternalId());
+        bool removed = AvatarExplorer.RemoveTempAvatar(tempAvatar.GetInternalId());
 
         Main_ReloadCurrentWindow();
 

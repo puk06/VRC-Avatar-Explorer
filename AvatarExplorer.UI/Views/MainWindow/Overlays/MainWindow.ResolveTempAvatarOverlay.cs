@@ -26,7 +26,7 @@ public partial class MainWindow
     private void ResolveTempAvatarOverlay_DrawItemButtons()
     {
         ResolveTempAvatarOverlay_AvatarsList.Children.Clear();
-        IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp.GetAvatars().Where(i => string.IsNullOrEmpty(ResolveTempAvatarOverlay_SearchTextBox.Text) || ((Item)i.Item).Title.Contains(ResolveTempAvatarOverlay_SearchTextBox.Text));
+        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars().Where(i => string.IsNullOrEmpty(ResolveTempAvatarOverlay_SearchTextBox.Text) || ((Item)i.Item).Title.Contains(ResolveTempAvatarOverlay_SearchTextBox.Text));
 
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
@@ -46,14 +46,14 @@ public partial class MainWindow
             return;
         }
 
-        TempAvatar? tempAvatar = _avatarExplorerApp.GetTempAvatarById(TempAvatar.GetAvatarId(_resolveTempAvatarOverlay_selectedAvatar));
+        TempAvatar? tempAvatar = AvatarExplorer.GetTempAvatarById(TempAvatar.GetAvatarId(_resolveTempAvatarOverlay_selectedAvatar));
         if (tempAvatar == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound]);
             return;
         }
 
-        Item? targetAvatar = _avatarExplorerApp.GetItemById(itemTagInfo.Value);
+        Item? targetAvatar = AvatarExplorer.GetItemById(itemTagInfo.Value);
         if (targetAvatar == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
@@ -63,7 +63,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.ResolveTempAvatar, [tempAvatar.AvatarName, targetAvatar.Title]));
         if (result == null || result != YesNoResult.Yes) return;
 
-        _avatarExplorerApp.ResolveTempAvatar(tempAvatar.GetInternalId(), targetAvatar.Id);
+        AvatarExplorer.ResolveTempAvatar(tempAvatar.GetInternalId(), targetAvatar.Id);
 
         ResolveTempAvatarOverlay_Close();
         Main_ReloadCurrentWindow();

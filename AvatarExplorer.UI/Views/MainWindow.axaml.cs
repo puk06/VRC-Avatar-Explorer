@@ -32,7 +32,6 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow : Window
 {
-    private readonly AvatarExplorerApp _avatarExplorerApp = new();
     private readonly PageManager _main_pageManager = new();
     private readonly ScrollManager _main_scrollManager = new();
 
@@ -45,11 +44,13 @@ public partial class MainWindow : Window
     private UserPreferences _userPreferences = new();
     private int ItemsPerPage => _userPreferences.ItemsPerPage;
 
-    private RuntimeSettings RuntimeSettings => _avatarExplorerApp.GetRuntimeSettings();
+    private static AvatarExplorerApp AvatarExplorer => AvatarExplorerApp.Instance;
+    private static RuntimeSettings RuntimeSettings => AvatarExplorer.GetRuntimeSettings();
 
     public MainWindow()
     {
         DataContext = Localizer.Instance;
+        AvatarExplorer.Initialize();
 
         InitializeComponent();
         Main_InitializeContextMenuHandlers();
@@ -71,7 +72,7 @@ public partial class MainWindow : Window
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
         // 初回起動かチェック
-        if (_avatarExplorerApp.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
+        if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
 
         Main_ReloadCurrentWindow();
 
@@ -108,19 +109,19 @@ public partial class MainWindow : Window
         {
             case 0:
                 {
-                    items.AddRange(_avatarExplorerApp.GetAvatars(includeTempAvatar: true));
+                    items.AddRange(AvatarExplorer.GetAvatars(includeTempAvatar: true));
                     customState = ItemTagStates.RootAvatar;
                     break;
                 }
             case 1:
                 {
-                    items.AddRange(_avatarExplorerApp.GetAuthors());
+                    items.AddRange(AvatarExplorer.GetAuthors());
                     customState = ItemTagStates.RootAuthor;
                     break;
                 }
             case 2:
                 {
-                    items.AddRange(_avatarExplorerApp.GetCategories());
+                    items.AddRange(AvatarExplorer.GetCategories());
                     customState = ItemTagStates.RootCategory;
                     break;
                 }
@@ -154,8 +155,8 @@ public partial class MainWindow : Window
 
         if (button.Tag is ItemTagInfo itemTagInfo)
         {
-            _avatarExplorerApp.SelectClear();
-            _avatarExplorerApp.Select(itemTagInfo.State, itemTagInfo.Value);
+            AvatarExplorer.SelectClear();
+            AvatarExplorer.Select(itemTagInfo.State, itemTagInfo.Value);
             Main_CheckPageStates();
             _main_scrollManager.ResetAllScrollValues(); // 左のパネルのボタンは全てRootのため、スクロール状況を全てリセットしてしまう
 
@@ -177,7 +178,7 @@ public partial class MainWindow : Window
         if (Main_RightPanel == null) return;
         Main_RightPanel.Children.Clear();
 
-        ImmutableArray<ItemCountInfo> items = _avatarExplorerApp.GetItemsForCurrentState();
+        ImmutableArray<ItemCountInfo> items = AvatarExplorer.GetItemsForCurrentState();
 
         if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
@@ -224,7 +225,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                _avatarExplorerApp.Select(itemTagInfo.State, itemTagInfo.Value);
+                AvatarExplorer.Select(itemTagInfo.State, itemTagInfo.Value);
                 Main_CheckPageStates();
                 _main_scrollManager.SetScroll(itemTagInfo.State, Main_RightPanelScrollViewer.Offset); // 次の画面に行くため、今のStateのスクロール位置を保存する
 
@@ -287,7 +288,7 @@ public partial class MainWindow : Window
 
         Main_RightPanel.Children.Clear();
 
-        ImmutableArray<Item> items = _avatarExplorerApp.SearchItems(searchFilter);
+        ImmutableArray<Item> items = AvatarExplorer.SearchItems(searchFilter);
 
         if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
@@ -325,7 +326,7 @@ public partial class MainWindow : Window
     {
         if (Main_PathTextBox == null) return;
 
-        IEnumerable<SelectionNode> currentSelectionNodes = _avatarExplorerApp.GetCurrentSelectionNodes();
+        IEnumerable<SelectionNode> currentSelectionNodes = AvatarExplorer.GetCurrentSelectionNodes();
         if (!currentSelectionNodes.Any())
         {
             Main_PathTextBox.Text = string.Empty;
@@ -339,8 +340,8 @@ public partial class MainWindow : Window
             selectionNodes.Add(node);
         }
 
-        ImmutableArray<Item> items = _avatarExplorerApp.GetAllItems();
-        ImmutableArray<TempAvatar> tempAvatars = _avatarExplorerApp.GetAllTempAvatars();
+        ImmutableArray<Item> items = AvatarExplorer.GetAllItems();
+        ImmutableArray<TempAvatar> tempAvatars = AvatarExplorer.GetAllTempAvatars();
         Main_PathTextBox.Text = string.Join(" > ", selectionNodes.Select(i => PathService.BuildPath(items, tempAvatars, i, RuntimeSettings.RemoveBrackets)));
     }
     #endregion
@@ -349,17 +350,17 @@ public partial class MainWindow : Window
     private void Main_ExecuteUndo()
     {
         // 選択されていたアイテムが検索結果時のものだったら、キャッシュを元にもう一度検索してあげる
-        bool isCurrentSearchNode = _avatarExplorerApp.GetCurrentNode()?.State == ItemTagStates.SearchItem;
+        bool isCurrentSearchNode = AvatarExplorer.GetCurrentNode()?.State == ItemTagStates.SearchItem;
 
         Main_CheckPageStates(); // SelectUndoより前にやってあげないと、戻った先の画面のページ情報がリセットされる
-        if (!_main_isLastWindowSearch) _avatarExplorerApp.SelectUndo(); // 最後の画面が検索画面だったら、検索だけやめて戻るようにする
+        if (!_main_isLastWindowSearch) AvatarExplorer.SelectUndo(); // 最後の画面が検索画面だったら、検索だけやめて戻るようにする
 
         if (isCurrentSearchNode) Main_ExecuteSearchItems();
         else Main_RenderRightPanel();
     }
     private void Main_ExecuteHome()
     {
-        _avatarExplorerApp.SelectClear();
+        AvatarExplorer.SelectClear();
         _main_pageManager.ResetAllPageValues();
         Main_RenderRightPanel();
     }
@@ -383,7 +384,7 @@ public partial class MainWindow : Window
     {
         List<ItemTagStates> selectedItemTagStates = new();
 
-        foreach (SelectionNode selectionNode in _avatarExplorerApp.GetCurrentSelectionNodes().Where(i => !selectedItemTagStates.Contains(i.State)))
+        foreach (SelectionNode selectionNode in AvatarExplorer.GetCurrentSelectionNodes().Where(i => !selectedItemTagStates.Contains(i.State)))
         {
             selectedItemTagStates.Add(selectionNode.State);
         }
@@ -416,7 +417,7 @@ public partial class MainWindow : Window
     }
     private async Task Main_OpenUnitypackageInternalAsync(string itemPath)
     {
-        Item? selectedItem = _avatarExplorerApp.GetSelectedItem();
+        Item? selectedItem = AvatarExplorer.GetSelectedItem();
         if (selectedItem == null) return;
 
         ModifiedUnitypackagesResult importResult = await UnitypackageService.Import(

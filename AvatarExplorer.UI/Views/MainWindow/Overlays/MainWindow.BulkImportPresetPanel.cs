@@ -21,7 +21,7 @@ public partial class MainWindow
     {
         SidePanel_BulkImportPresetPanel.Children.Clear();
 
-        foreach (BulkImportPreset bulkImportPreset in _avatarExplorerApp.GetAllBulkImportPresets())
+        foreach (BulkImportPreset bulkImportPreset in AvatarExplorer.GetAllBulkImportPresets())
         {
             ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(bulkImportPreset), Main_ItemButton_ContextMenuItem_Click);
             ItemButtonFactory.AddItemButton(SidePanel_BulkImportPresetPanel, new UISelectableItem(bulkImportPreset, 0), RuntimeSettings, _userPreferences, itemContextMenu, BulkImportPresetPanel_ItemButton_Click);
@@ -35,7 +35,7 @@ public partial class MainWindow
 
         if (button.Tag is ItemTagInfo itemTagInfo)
         {
-            BulkImportPreset? bulkImportPreset = _avatarExplorerApp.GetBulkImportPresetById(itemTagInfo.Value);
+            BulkImportPreset? bulkImportPreset = AvatarExplorer.GetBulkImportPresetById(itemTagInfo.Value);
             if (bulkImportPreset == null) return;
 
             BulkImportPanel_AddItem(bulkImportPreset.ItemsView);

@@ -34,7 +34,7 @@ public partial class MainWindow
             });
         }
 
-        ErrorOr<Success> result = await _avatarExplorerApp.Import(dataImportType, selectedFolder, progressAction);
+        ErrorOr<Success> result = await AvatarExplorer.Import(dataImportType, selectedFolder, progressAction);
 
         if (result.IsError)
         {

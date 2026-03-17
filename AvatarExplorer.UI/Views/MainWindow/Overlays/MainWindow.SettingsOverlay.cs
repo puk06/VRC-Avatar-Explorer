@@ -39,7 +39,7 @@ public partial class MainWindow
 
     private void SettingsOverlay_SetUiValueFromCurrentSettings()
     {
-        RuntimeSettings runtimeSettings = _avatarExplorerApp.GetRuntimeSettings();
+        RuntimeSettings runtimeSettings = AvatarExplorer.GetRuntimeSettings();
         UserPreferences userPreferences = _userPreferences;
 
         // 基本
@@ -130,7 +130,7 @@ public partial class MainWindow
         };
 
         _userPreferences = userPreferences;
-        _avatarExplorerApp.SetRuntimeSettings(runtimeSettings);
+        AvatarExplorer.SetRuntimeSettings(runtimeSettings);
 
         SettingsOverlay_ApplyPreferenceSettingsToUi();
         SettingsOverlay_SetUiValueFromCurrentSettings();
@@ -243,7 +243,7 @@ public partial class MainWindow
         SettingsOverlay_ApplySettingsValues();
 
         // 適用時は自動で保存する
-        _avatarExplorerApp.SaveRuntimeSettings();
+        AvatarExplorer.SaveRuntimeSettings();
         UserPreferencesService.Save(_userPreferences);
 
         Main_ReloadCurrentWindow();
@@ -262,7 +262,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported]);
         if (result == null) return;
 
-        ErrorOr<Success> exportResult = await _avatarExplorerApp.Export(DataExportType.Csv, filePath, localizedItemTypesMapping, includeCommonToSupported: result == YesNoResult.Yes);
+        ErrorOr<Success> exportResult = await AvatarExplorer.Export(DataExportType.Csv, filePath, localizedItemTypesMapping, includeCommonToSupported: result == YesNoResult.Yes);
         
         if (!exportResult.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Export]);
         else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed]);
@@ -273,7 +273,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetItemDatabase]);
         if (result == null || result != YesNoResult.Yes) return;
 
-        _avatarExplorerApp.ResetItemDatabase();
+        AvatarExplorer.ResetItemDatabase();
         Main_ReloadCurrentWindow();
     }
 
@@ -282,7 +282,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetCommonAvatarDatabase]);
         if (result == null || result != YesNoResult.Yes) return;
 
-        _avatarExplorerApp.ResetCommonAvatarDatabase();
+        AvatarExplorer.ResetCommonAvatarDatabase();
         Main_ReloadCurrentWindow();
     }
 
@@ -292,7 +292,7 @@ public partial class MainWindow
         if (folderPaths == null || folderPaths.Length == 0) return;
 
         // バックアップを復元する前に、今の状態をバックアップしておく
-        ErrorOr<Success> backupResult = await _avatarExplorerApp.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+        ErrorOr<Success> backupResult = await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
 
         if (backupResult.IsError)
         {
@@ -311,32 +311,32 @@ public partial class MainWindow
 
         if (File.Exists(itemDatabasePath))
         {
-            _avatarExplorerApp.LoadItemDatabase(itemDatabasePath);
-            _avatarExplorerApp.SaveItemDatabase();
+            AvatarExplorer.LoadItemDatabase(itemDatabasePath);
+            AvatarExplorer.SaveItemDatabase();
         }
 
         if (File.Exists(commonAvatarDatabasePath))
         {
-            _avatarExplorerApp.LoadCommonAvatarDatabase(commonAvatarDatabasePath);
-            _avatarExplorerApp.SaveCommonAvatarDatabase();
+            AvatarExplorer.LoadCommonAvatarDatabase(commonAvatarDatabasePath);
+            AvatarExplorer.SaveCommonAvatarDatabase();
         }
 
         if (File.Exists(bulkImportPresetDatabasePath))
         {
-            _avatarExplorerApp.LoadBulkImportPresetDatabase(bulkImportPresetDatabasePath);
-            _avatarExplorerApp.SaveBulkImportPresetDatabase();
+            AvatarExplorer.LoadBulkImportPresetDatabase(bulkImportPresetDatabasePath);
+            AvatarExplorer.SaveBulkImportPresetDatabase();
         }
 
         if (File.Exists(tempAvatarsDatabasePath))
         {
-            _avatarExplorerApp.LoadTempAvatarsDatabase(tempAvatarsDatabasePath);
-            _avatarExplorerApp.SaveTempAvatarsDatabase();
+            AvatarExplorer.LoadTempAvatarsDatabase(tempAvatarsDatabasePath);
+            AvatarExplorer.SaveTempAvatarsDatabase();
         }
 
         if (File.Exists(runtimeSettingsFilePath))
         {
-            _avatarExplorerApp.LoadRuntimeSettings(runtimeSettingsFilePath);
-            _avatarExplorerApp.SaveRuntimeSettings();
+            AvatarExplorer.LoadRuntimeSettings(runtimeSettingsFilePath);
+            AvatarExplorer.SaveRuntimeSettings();
         }
 
         if (File.Exists(userPreferencesFilePath))

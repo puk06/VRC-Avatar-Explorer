@@ -18,7 +18,7 @@ public partial class MainWindow
     private void EditMemoOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditMemoOverlay_Close();
     private void EditMemoOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
-        Item? item = _avatarExplorerApp.GetItemById(_contextMenu_selectedItemId);
+        Item? item = AvatarExplorer.GetItemById(_contextMenu_selectedItemId);
         if (item == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
@@ -26,10 +26,10 @@ public partial class MainWindow
         }
 
         item.ItemMemo = EditMemoOverlay_MemoTextBox.Text ?? string.Empty;
-        _avatarExplorerApp.UpdateItemUpdatedDate(item.Id);
-        
-        _avatarExplorerApp.UpdateSearchIndex(item.Id);
-        _avatarExplorerApp.SaveItemDatabase();
+        AvatarExplorer.UpdateItemUpdatedDate(item.Id);
+
+        AvatarExplorer.UpdateSearchIndex(item.Id);
+        AvatarExplorer.SaveItemDatabase();
 
         EditMemoOverlay_Close();
         Main_ReloadCurrentWindow();

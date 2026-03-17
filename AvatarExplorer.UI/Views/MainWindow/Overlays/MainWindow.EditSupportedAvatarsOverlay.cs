@@ -61,7 +61,7 @@ public partial class MainWindow
     private void EditSupportedAvatarsOverlay_DrawItemButtons()
     {
         EditSupportedAvatarsOverlay_AvatarsList.Children.Clear();
-        IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp
+        IEnumerable<ItemCountInfo> avatars = AvatarExplorer
             .GetAvatars(includeCommonAvatar: true, includeTempAvatar: true)
             .Where(
                 i =>
@@ -93,7 +93,7 @@ public partial class MainWindow
         string? tempAvatarName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewTempAvatarName]);
         if (string.IsNullOrEmpty(tempAvatarName)) return;
 
-        _avatarExplorerApp.AddTempAvatar(tempAvatarName);
+        AvatarExplorer.AddTempAvatar(tempAvatarName);
 
         EditSupportedAvatarsOverlay_DrawItemButtons();
         Main_ReloadCurrentWindow();

@@ -59,7 +59,7 @@ public partial class MainWindow
 
         foreach (BulkImportItem bulkImportItem in _bulkImportPanel_bulkImportItems)
         {
-            Item? item = _avatarExplorerApp.GetItemById(bulkImportItem.ItemId);
+            Item? item = AvatarExplorer.GetItemById(bulkImportItem.ItemId);
             if (item == null) continue;
 
             UnitypackageSelectorButtonFactory.AddItemButton(
@@ -97,7 +97,7 @@ public partial class MainWindow
 
         foreach (BulkImportItem bulkImportItem in _bulkImportPanel_bulkImportItems)
         {
-            Item? item = _avatarExplorerApp.GetItemById(bulkImportItem.ItemId);
+            Item? item = AvatarExplorer.GetItemById(bulkImportItem.ItemId);
             if (item == null) continue;
 
             if (!itemPathCategoryDictionary.ContainsKey(bulkImportItem.FilePath))
@@ -133,7 +133,7 @@ public partial class MainWindow
         string? presetName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewBulkImportPresetName]);
         if (string.IsNullOrEmpty(presetName)) return;
 
-        _avatarExplorerApp.AddBulkImportPreset(presetName, _bulkImportPanel_bulkImportItems);
+        AvatarExplorer.AddBulkImportPreset(presetName, _bulkImportPanel_bulkImportItems);
         BulkImportPresetPanel_DrawItemButtons();
         
         BulkImportPresetPanel_Focus();
@@ -149,7 +149,7 @@ public partial class MainWindow
         if (!(e.DataTransfer.Contains(DataFormat.Text) || e.DataTransfer.Contains(DataFormat.File))) return;
 
         string? text = e.DataTransfer.TryGetText();
-        if (!string.IsNullOrEmpty(text) && _avatarExplorerApp.GetItemById(text) != null)
+        if (!string.IsNullOrEmpty(text) && AvatarExplorer.GetItemById(text) != null)
         {
             BulkImportPanel_AddItem(text);
             return;
@@ -158,7 +158,7 @@ public partial class MainWindow
         string? file = e.DataTransfer.TryGetFile()?.TryGetLocalPath();
         if (!string.IsNullOrEmpty(file))
         {
-            Item? currentSelectedItem = _avatarExplorerApp.GetSelectedItem();
+            Item? currentSelectedItem = AvatarExplorer.GetSelectedItem();
             if (currentSelectedItem == null) return;
 
             if (UnitypackageService.GetUnitypackagePaths(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, currentSelectedItem.ItemPath)).Contains(file))
