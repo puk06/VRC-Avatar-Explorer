@@ -35,6 +35,7 @@ public partial class MainWindow
         }
 
         ErrorOr<Success> result = await AvatarExplorer.Import(dataImportType, selectedFolder, progressAction);
+        ProgressOverlay_Hide();
 
         if (result.IsError)
         {
