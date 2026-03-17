@@ -297,7 +297,7 @@ public partial class MainWindow
         if (backupResult.IsError)
         {
             YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ContinueRestoreFromBackup]);
-            if (result == null || result == YesNoResult.No) return;
+            if (result == null || result != YesNoResult.Yes) return;
         }
 
         string backupRootPath = folderPaths[0];
