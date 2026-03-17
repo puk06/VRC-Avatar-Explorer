@@ -615,17 +615,17 @@ public partial class AvatarExplorerApp
         return removed;
     }
 
-    public bool RemoveCommonAvatar(string id)
+    public bool RemoveCommonAvatar(string internalId)
     {
-        string? groupId = CommonAvatar.GetGroupId(id);
-        if (groupId == null) return false;
+        string? id = CommonAvatar.GetGroupId(internalId);
+        if (id == null) return false;
 
-        bool removed = _commonAvatarDatabaseManager.Remove(groupId);
+        bool removed = _commonAvatarDatabaseManager.Remove(id);
 
         foreach (Item item in _itemDatabaseManager.Items)
         {
-            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != id));
-            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != id));
+            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != internalId));
+            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != internalId));
         }
 
         SaveItemDatabase();
@@ -642,22 +642,22 @@ public partial class AvatarExplorerApp
         return removed;
     }
 
-    public bool RemoveTempAvatar(string id)
+    public bool RemoveTempAvatar(string internalId)
     {
-        string? avatarId = TempAvatar.GetAvatarId(id);
-        if (avatarId == null) return false;
+        string? id = TempAvatar.GetAvatarId(internalId);
+        if (id == null) return false;
 
-        bool removed = _tempAvatarsDatabaseManager.Remove(avatarId);
+        bool removed = _tempAvatarsDatabaseManager.Remove(id);
 
         foreach (Item item in _itemDatabaseManager.Items)
         {
-            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != id));
-            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != id));
+            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != internalId));
+            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != internalId));
         }
 
         foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
         {
-            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != id));
+            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != internalId));
         }
 
         SaveTempAvatarsDatabase();
