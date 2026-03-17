@@ -19,12 +19,12 @@ namespace AvatarExplorer.Core.Services.IO;
 
 internal static class DataImporter
 {
-    internal static async Task<ErrorOr<DataImportResult>> Import(DataImportType importType, string dataFolderPath, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    internal static async Task<ErrorOr<DataImportResult>> Import(DataImportType importType, string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
     {
         return importType switch
         {
             DataImportType.V1 => await FromV1(dataFolderPath, runtimeSettings, reportProgress),
-            DataImportType.KonoAsset => await FromKonoAsset(dataFolderPath, runtimeSettings, reportProgress),
+            DataImportType.KonoAsset => await FromKonoAsset(dataFolderPath, localizedItemTypesMapping, runtimeSettings, reportProgress),
             _ => Error.Unexpected(description: $"Unexpected import type: {importType}")
         };
     }
@@ -168,7 +168,7 @@ internal static class DataImporter
         return path;
     }
 
-    private static async Task<ErrorOr<DataImportResult>> FromKonoAsset(string dataFolderPath, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<ErrorOr<DataImportResult>> FromKonoAsset(string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
     {
         try
         {
@@ -229,6 +229,22 @@ internal static class DataImporter
                 }
 
                 item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => supportedAvatarMaps[i]));
+
+                bool categoryFoundFlag = false;
+                foreach (var itemTypeKpv in localizedItemTypesMapping)
+                {
+                    if (item.CustomCategory == itemTypeKpv.Value)
+                    {
+                        item.Type = itemTypeKpv.Key;
+                        item.CustomCategory = string.Empty;
+
+                        categoryFoundFlag = true;
+                        break;
+                    }
+                }
+
+                if (!categoryFoundFlag) item.CustomCategory += " (From KonoAsset)";
+
                 dataImportResult.Items.Add(item);
 
                 int percent = (int)(100.0 * i / konoAssetItems.Count);

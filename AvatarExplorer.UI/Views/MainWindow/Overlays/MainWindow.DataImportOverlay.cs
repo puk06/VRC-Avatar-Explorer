@@ -1,9 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
+using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.Utilities;
@@ -34,7 +38,8 @@ public partial class MainWindow
             });
         }
 
-        ErrorOr<Success> result = await AvatarExplorer.Import(dataImportType, selectedFolder, progressAction);
+        Dictionary<ItemType, string> localizedItemTypesMapping = Enum.GetValues<ItemType>().ToDictionary(i => i, i => Localizer.Instance[i.GetLocalizationKey() ?? i.ToString()]);
+        ErrorOr<Success> result = await AvatarExplorer.Import(dataImportType, selectedFolder, localizedItemTypesMapping, progressAction);
         ProgressOverlay_Hide();
 
         if (result.IsError)
