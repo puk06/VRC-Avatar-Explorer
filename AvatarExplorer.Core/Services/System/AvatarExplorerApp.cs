@@ -403,7 +403,7 @@ public class AvatarExplorerApp
     #endregion
 
     #region Add API
-    public void AddCommonAvatar(string groupName, IEnumerable<string>? avatars = null)
+    public string AddCommonAvatar(string groupName, IEnumerable<string>? avatars = null)
     {
         CommonAvatar commonAvatar = new()
         {
@@ -419,16 +419,20 @@ public class AvatarExplorerApp
         _commonAvatarDatabaseManager.Add(commonAvatar);
 
         SaveCommonAvatarDatabase();
+
+        return commonAvatar.Id;
     }
-    public void AddTempAvatar(string avatarName)
+    public string AddTempAvatar(string avatarName)
     {
         TempAvatar tempAvatar = new TempAvatar(avatarName);
 
         _tempAvatarsDatabaseManager.Add(tempAvatar);
 
         SaveTempAvatarsDatabase();
+
+        return tempAvatar.Id;
     }
-    public void AddBulkImportPreset(string presetName, IEnumerable<BulkImportItem>? items = null)
+    public string AddBulkImportPreset(string presetName, IEnumerable<BulkImportItem>? items = null)
     {
         BulkImportPreset bulkImportPreset = new()
         {
@@ -443,6 +447,8 @@ public class AvatarExplorerApp
         _bulkImportPresetDatabaseManager.Add(bulkImportPreset);
 
         SaveBulkImportPresetDatabase();
+
+        return bulkImportPreset.Id;
     }
     public async Task<ErrorOr<ItemCreationResult>> AddItem(ItemCreationContext itemCreationContext)
     {
