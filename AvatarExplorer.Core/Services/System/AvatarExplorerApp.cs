@@ -594,26 +594,41 @@ public partial class AvatarExplorerApp
     #endregion
 
     #region Remove API
-    public bool RemoveItem(string itemId, bool removeItemFromSupportedAndImplemented = false)
+    public bool RemoveItem(string id)
     {
-        bool removed = _itemDatabaseManager.Remove(itemId);
-        if (removeItemFromSupportedAndImplemented)
+        bool removed = _itemDatabaseManager.Remove(id);
+        
+        foreach (Item item in _itemDatabaseManager.Items)
         {
-            foreach (Item item in _itemDatabaseManager.Items)
-            {
-                item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(a => a != itemId));
-                item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(a => a != itemId));
-            }
+            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != id));
+            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != id));
+        }
+
+        foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
+        {
+            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != id));
         }
 
         SaveItemDatabase();
+        SaveCommonAvatarDatabase();
 
         return removed;
     }
 
-    public bool RemoveCommonAvatar(string commonAvatarId)
+    public bool RemoveCommonAvatar(string id)
     {
-        bool removed = _commonAvatarDatabaseManager.Remove(commonAvatarId);
+        string? groupId = CommonAvatar.GetGroupId(id);
+        if (groupId == null) return false;
+
+        bool removed = _commonAvatarDatabaseManager.Remove(groupId);
+
+        foreach (Item item in _itemDatabaseManager.Items)
+        {
+            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != id));
+            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != id));
+        }
+
+        SaveItemDatabase();
         SaveCommonAvatarDatabase();
         
         return removed;
@@ -627,23 +642,27 @@ public partial class AvatarExplorerApp
         return removed;
     }
 
-    public bool RemoveTempAvatar(string id, bool removeItemFromSupportedAndImplemented = false)
+    public bool RemoveTempAvatar(string id)
     {
         string? avatarId = TempAvatar.GetAvatarId(id);
         if (avatarId == null) return false;
 
         bool removed = _tempAvatarsDatabaseManager.Remove(avatarId);
-        if (removeItemFromSupportedAndImplemented)
+
+        foreach (Item item in _itemDatabaseManager.Items)
         {
-            foreach (Item item in _itemDatabaseManager.Items)
-            {
-                item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(a => a != id));
-                item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(a => a != id));
-            }
+            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != id));
+            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != id));
+        }
+
+        foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
+        {
+            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != id));
         }
 
         SaveTempAvatarsDatabase();
         SaveItemDatabase();
+        SaveCommonAvatarDatabase();
         
         return removed;
     }

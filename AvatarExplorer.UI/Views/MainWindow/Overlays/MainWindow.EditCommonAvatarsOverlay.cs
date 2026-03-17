@@ -143,8 +143,7 @@ public partial class MainWindow
         YesNoResult? result1 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars));
         if (result1 != null && result1 == YesNoResult.Yes) _avatarExplorerApp.ReplaceCommonAvatarGroupToSupportedAvatars(commonAvatar.Id);
 
-        _avatarExplorerApp.RemoveCommonAvatar(commonAvatar.Id);
-        _avatarExplorerApp.SaveCommonAvatarDatabase();
+        _avatarExplorerApp.RemoveCommonAvatar(commonAvatar.GetInternalId());
 
         EditCommonAvatarsOverlay_RefleshGroupList();
         if (EditCommonAvatarsOverlay_GroupComboBox.Items.Count > 0) EditCommonAvatarsOverlay_GroupComboBox.SelectedIndex = 0;

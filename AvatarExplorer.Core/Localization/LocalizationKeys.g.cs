@@ -107,7 +107,6 @@ public static class LocalizationKey
             public const string RemoveItem = "Dialog.Confirmation.RemoveItem";
             public const string ResetItemDatabase = "Dialog.Confirmation.ResetItemDatabase";
             public const string ResetCommonAvatarDatabase = "Dialog.Confirmation.ResetCommonAvatarDatabase";
-            public const string RemoveAvatarFromSupportedAndImplemented = "Dialog.Confirmation.RemoveAvatarFromSupportedAndImplemented";
             public const string RemoveCommonAvatarGroup = "Dialog.Confirmation.RemoveCommonAvatarGroup";
             public const string RemoveTempAvatar = "Dialog.Confirmation.RemoveTempAvatar";
             public const string ContinueRestoreFromBackup = "Dialog.Confirmation.ContinueRestoreFromBackup";

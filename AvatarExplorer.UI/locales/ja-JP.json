@@ -49,7 +49,6 @@
     "Dialog.Confirmation.RemoveItem": "アイテム名: {0}\n\n本当にこのアイテムを削除しますか？",
     "Dialog.Confirmation.ResetItemDatabase": "本当にアイテムデータベースをリセットしますか？\n※アセットデータは削除されません。自動バックアップから復元可能です。",
     "Dialog.Confirmation.ResetCommonAvatarDatabase": "本当に共通素体データベースをリセットしますか？\n※アセットデータは削除されません。自動バックアップから復元可能です。",
-    "Dialog.Confirmation.RemoveAvatarFromSupportedAndImplemented": "このアバターを対応アバターとしているアイテムの対応アバターからこのアバターを削除しますか？",
     "Dialog.Confirmation.RemoveCommonAvatarGroup": "共通素体グループを削除しますか？\n共通素体グループ名: {0}",
     "Dialog.Confirmation.RemoveTempAvatar": "仮アバター名: {0}\n\n本当にこのアバターを削除しますか？",
     "Dialog.Confirmation.ContinueRestoreFromBackup": "現在の設定のバックアップに失敗しましたが、バックアップからの復元処理を続行しますか？",
