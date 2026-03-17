@@ -123,7 +123,9 @@ public partial class MainWindow
 
         string? newTitle = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewItemTitle], item.Title);
         if (string.IsNullOrEmpty(newTitle)) return;
+
         item.Title = newTitle;
+        _avatarExplorerApp.UpdateItemUpdatedDate(item.Id);
         
         _avatarExplorerApp.SaveItemDatabase();
         _avatarExplorerApp.UpdateSearchIndex();
