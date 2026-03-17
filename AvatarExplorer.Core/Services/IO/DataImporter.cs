@@ -44,10 +44,10 @@ internal static class DataImporter
             List<CommonAvatarV1> v1CommonAvatars = FileSystemService.DeserializeClass<List<CommonAvatarV1>>(SystemPathV1.CommonAvatarDatabasePath(dataFolderPath)).Value ?? [];
 
             // １個１個チェックしながらコピーしても良いかも
-            reportProgress?.Invoke((LocalizationKey.Processing.Import.Copying, 10));
+            if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 10));
             await FileSystemService.CopyDirectoryAsync(SystemPathV1.AuthorThumbnailsPath(dataFolderPath), SystemPath.AuthorThumbnailsPath, runtimeSettings.MaxDegreeOfParallelism);
 
-            reportProgress?.Invoke((LocalizationKey.Processing.Import.Copying, 20));
+            if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 20));
             await FileSystemService.CopyDirectoryAsync(SystemPathV1.ItemThumbnailsPath(dataFolderPath), SystemPath.ItemThumbnailsPath, runtimeSettings.MaxDegreeOfParallelism);
 
             List<Item> items = new();
