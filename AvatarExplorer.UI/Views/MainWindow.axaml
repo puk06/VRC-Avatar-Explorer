@@ -750,9 +750,10 @@
                         </ScrollViewer>
 
                         <!-- 下のボタン -->
-                        <Grid ColumnDefinitions="*,150,150" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
-                            <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [EditSupportedAvatars.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_Cancel_Click"/>
-                            <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [EditSupportedAvatars.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_Confirm_Click"/>
+                        <Grid ColumnDefinitions="200,*,150,150" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
+                            <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [EditSupportedAvatars.AddTempAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_AddTempAvatar_Click"/>
+                            <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [EditSupportedAvatars.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_Cancel_Click"/>
+                            <Button Classes="accent" FontWeight="Bold" Grid.Column="3" Content="{Binding [EditSupportedAvatars.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_Confirm_Click"/>
                         </Grid>
                     </Grid>
                 </StackPanel>
@@ -778,8 +779,33 @@
 
                         <!-- 下のボタン -->
                         <Grid ColumnDefinitions="*,180,180" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
-                            <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [AddItem.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditImplementedAvatarsOverlay_Cancel_Click"/>
+                            <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [EditImplementedAvatars.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditImplementedAvatarsOverlay_Cancel_Click"/>
                             <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [EditImplementedAvatars.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditImplementedAvatarsOverlay_Confirm_Click"/>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
+
+        <!-- 仮アバター解決画面 -->
+        <Border x:Name="ResolveTempAvatarOverlay" Classes="overlaybackground" IsVisible="False">
+            <Border Classes="overlay" Width="800">
+                <StackPanel Spacing="10">
+                    <Grid RowDefinitions="Auto,20,Auto,10,Auto,20,Auto">
+
+                        <!-- タイトル -->
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [ResolveTempAvatar.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                        
+                        <!-- 検索バー -->
+                        <TextBox x:Name="ResolveTempAvatarOverlay_SearchTextBox" Grid.Row="2" Watermark="{Binding [ResolveTempAvatar.Search]}" TextChanged="ResolveTempAvatarOverlay_SearchTextBox_TextChanged"/>
+
+                        <!-- アバターリスト -->
+                        <ScrollViewer Grid.Row="4" Height="500">
+                            <StackPanel x:Name="ResolveTempAvatarOverlay_AvatarsList" Spacing="8" Margin="0,0,10,0"/>
+                        </ScrollViewer>
+
+                        <Grid ColumnDefinitions="*,180" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
+                            <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [ResolveTempAvatar.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ResolveTempAvatarOverlay_Cancel_Click"/>
                         </Grid>
                     </Grid>
                 </StackPanel>

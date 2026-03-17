@@ -109,7 +109,7 @@ public partial class MainWindow : Window
         {
             case 0:
                 {
-                    items.AddRange(_avatarExplorerApp.GetAvatars());
+                    items.AddRange(_avatarExplorerApp.GetAvatars(includeTempAvatar: true));
                     customState = ItemTagStates.RootAvatar;
                     break;
                 }
@@ -341,7 +341,8 @@ public partial class MainWindow : Window
         }
 
         ImmutableArray<Item> items = _avatarExplorerApp.GetAllItems();
-        Main_PathTextBox.Text = string.Join(" > ", selectionNodes.Select(i => PathService.BuildPath(items, i, RuntimeSettings.RemoveBrackets)));
+        ImmutableArray<TempAvatar> tempAvatars = _avatarExplorerApp.GetAllTempAvatars();
+        Main_PathTextBox.Text = string.Join(" > ", selectionNodes.Select(i => PathService.BuildPath(items, tempAvatars, i, RuntimeSettings.RemoveBrackets)));
     }
     #endregion
 

@@ -11,20 +11,20 @@ namespace AvatarExplorer.Core.Services.IO;
 
 internal static class DataExporter
 {
-    internal static async Task<ErrorOr<Success>> Export(DataExportType exportType, IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
+    internal static async Task<ErrorOr<Success>> Export(DataExportType exportType, IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, IEnumerable<TempAvatar> tempAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
     {
         return exportType switch
         {
-            DataExportType.Csv => await ToCsv(items, commonAvatars, localizedItemTypesMapping, runtimeSettings, filePath, includeCommonToSupported),
+            DataExportType.Csv => await ToCsv(items, commonAvatars, tempAvatars, localizedItemTypesMapping, runtimeSettings, filePath, includeCommonToSupported),
             _ => Error.Unexpected(description: $"Unexpected export type: {exportType}")
         };
     }
     
-    private static async Task<ErrorOr<Success>> ToCsv(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
+    private static async Task<ErrorOr<Success>> ToCsv(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, IEnumerable<TempAvatar> tempAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
     {
         try
         {
-            Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Type == ItemType.Avatar));
+            Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Type == ItemType.Avatar), tempAvatars);
 
             FileSystemService.PrepareFileDirectory(filePath);
             using StreamWriter sw = new(filePath, false, Encoding.UTF8);

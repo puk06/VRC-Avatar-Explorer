@@ -14,6 +14,7 @@ internal static class ContextMenuCreator
         if (selectableItem is Item item) return CreateFromItem(item);
         if (selectableItem is ItemFile itemFile) return CreateFromItemFile(itemFile);
         if (selectableItem is BulkImportPreset bulkImportPreset) return CreateFromBulkImportPreset(bulkImportPreset);
+        if (selectableItem is TempAvatar tempAvatar) return CreateFromTempAvatar(tempAvatar);
         
         return [];
     }
@@ -79,6 +80,18 @@ internal static class ContextMenuCreator
         List<ContextMenuAction> contextMenuActions =
         [
             new ContextMenuAction(LocalizationKey.ContextMenu.BulkImportPreset.RemovePreset, ActionKey.RemovePreset, ContextMenuIconType.Delete, bulkImportPreset.Id),
+        ];
+
+        return contextMenuActions.ToArray();
+    }
+
+    private static ContextMenuAction[] CreateFromTempAvatar(TempAvatar tempAvatar)
+    {
+        List<ContextMenuAction> contextMenuActions =
+        [
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit, tempAvatar.GetInternalId()),
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, tempAvatar.GetInternalId(), addSeparator: true),
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete, tempAvatar.GetInternalId()),
         ];
 
         return contextMenuActions.ToArray();

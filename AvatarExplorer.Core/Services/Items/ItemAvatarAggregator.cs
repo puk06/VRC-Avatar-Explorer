@@ -7,7 +7,7 @@ namespace AvatarExplorer.Core.Services.Items;
 
 internal static class ItemAvatarAggregator
 {
-    internal static ImmutableArray<ItemCountInfo> Aggregate(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, RuntimeSettings runtimeSettings, bool includeCommonAvatar)
+    internal static ImmutableArray<ItemCountInfo> Aggregate(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, IEnumerable<TempAvatar> tempAvatars, RuntimeSettings runtimeSettings, bool includeCommonAvatar, bool includeTempAvatar)
     {
         List<ItemCountInfo> avatars = new();
 
@@ -15,6 +15,11 @@ internal static class ItemAvatarAggregator
         if (includeCommonAvatar)
         {
             avatars.AddRange(commonAvatars.Select(i => new ItemCountInfo(i, i.AvatarsView.Length)));
+        }
+        
+        if (includeTempAvatar)
+        {
+            avatars.AddRange(tempAvatars.Select(i => new ItemCountInfo(i, 0)));
         }
 
         avatars.AddRange(

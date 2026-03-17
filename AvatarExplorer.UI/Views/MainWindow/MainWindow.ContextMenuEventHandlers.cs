@@ -279,5 +279,49 @@ public partial class MainWindow
         if (removed) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Remove]);
         else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RemoveFailed]);
     }
+
+    private TempAvatar? Main_ItemButton_ContextMenu_GetTempAvatarById(string id)
+    {
+        TempAvatar? tempAvatar = _avatarExplorerApp.GetTempAvatarById(TempAvatar.GetAvatarId(id));
+        if (tempAvatar == null) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound]);
+
+        return tempAvatar;
+    }
+
+    private async Task Main_ItemButton_ContextMenu_ResolveTempAvatar(string id) => ResolveTempAvatarOverlay_Open(id);
+    private async Task Main_ItemButton_ContextMenu_EditTempAvatarName(string id)
+    {
+        TempAvatar? tempAvatar = Main_ItemButton_ContextMenu_GetTempAvatarById(id);
+        if (tempAvatar == null) return;
+
+        string? newAvatarName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewTempAvatarName], tempAvatar.AvatarName);
+        if (string.IsNullOrEmpty(newAvatarName)) return;
+
+        tempAvatar.AvatarName = newAvatarName;
+
+        _avatarExplorerApp.SaveTempAvatarsDatabase();
+        _avatarExplorerApp.UpdateSearchIndex();
+
+        Main_ReloadCurrentWindow();
+    }
+    private async Task Main_ItemButton_ContextMenu_RemoveTempAvatar(string id)
+    {
+        TempAvatar? tempAvatar = Main_ItemButton_ContextMenu_GetTempAvatarById(id);
+        if (tempAvatar == null) return;
+
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveTempAvatar, tempAvatar.AvatarName));
+        if (result == null || result != YesNoResult.Yes) return;
+
+        YesNoResult? result1 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.RemoveAvatarFromSupportedAndImplemented]);
+        if (result1 == null) return;
+
+        bool removeItemFromSupportedAndImplemented = result1 == YesNoResult.Yes;
+        bool removed = _avatarExplorerApp.RemoveTempAvatar(tempAvatar.GetInternalId(), removeItemFromSupportedAndImplemented);
+
+        Main_ReloadCurrentWindow();
+
+        if (removed) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Remove]);
+        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RemoveFailed]);
+    }
     #endregion
 }

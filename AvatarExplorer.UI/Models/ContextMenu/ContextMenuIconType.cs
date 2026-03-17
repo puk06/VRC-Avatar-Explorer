@@ -23,5 +23,8 @@ internal enum ContextMenuIconType
     Fetch,
 
     [MaterialIcon(MaterialIconKind.Delete)]
-    Delete
+    Delete,
+
+    [MaterialIcon(MaterialIconKind.LinkVariant)]
+    Link
 }

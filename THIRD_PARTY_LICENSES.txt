@@ -185,6 +185,7 @@ Assets/EmptyIcon.png: Empty icons created by Ghozi Muhtarom - Flaticon (https://
 Assets/FolderIcon.png: Files and folders icons created by juicy_fish - Flaticon (https://www.flaticon.com/free-icon/folder_11471391)
 Assets/FileIcon.png: Document icons created by Neveraemje - Flaticon (https://www.flaticon.com/free-icon/new-document_3047411)
 Assets/GroupIcon.png: Group chat icons created by bsd - Flaticon (https://www.flaticon.com/free-icon/group-chat_9464022)
+Assets/AvatarIcon.png: User icons created by Saepul Nahwan - Flaticon (https://www.flaticon.com/free-icon/people_14643189)
 
 - Application Icon Credit & License
 ショコラ -Chocolat-【オリジナル3Dモデル】by あまとうさぎ（https://komado.booth.pm/items/6405390）

@@ -15,7 +15,8 @@ internal static class ImageService
     {
         { SystemIconKey.FolderIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/FolderIcon.png")) },
         { SystemIconKey.FileIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/FileIcon.png")) },
-        { SystemIconKey.GroupIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/GroupIcon.png")) }
+        { SystemIconKey.GroupIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/GroupIcon.png")) },
+        { SystemIconKey.AvatarIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/AvatarIcon.png")) }
     };
 
     internal static bool IsSystemIcon(string fileName) => SystemIconsDictionary.ContainsKey(fileName);

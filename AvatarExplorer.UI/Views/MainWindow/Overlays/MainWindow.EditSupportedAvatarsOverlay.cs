@@ -61,7 +61,15 @@ public partial class MainWindow
     private void EditSupportedAvatarsOverlay_DrawItemButtons()
     {
         EditSupportedAvatarsOverlay_AvatarsList.Children.Clear();
-        IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp.GetAvatars(includeCommonAvatar: true).Where(i => string.IsNullOrEmpty(EditSupportedAvatarsOverlay_SearchTextBox.Text) || (i.Item is Item item && item.Title.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text)) || (i.Item is CommonAvatar commonAvatar && commonAvatar.GroupName.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text)));
+        IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp
+            .GetAvatars(includeCommonAvatar: true, includeTempAvatar: true)
+            .Where(
+                i =>
+                    string.IsNullOrEmpty(EditSupportedAvatarsOverlay_SearchTextBox.Text) ||
+                    (i.Item is Item item && item.Title.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text)) ||
+                    (i.Item is CommonAvatar commonAvatar && commonAvatar.GroupName.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text)) ||
+                    (i.Item is TempAvatar tempAvatar && tempAvatar.AvatarName.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text))
+            );
 
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
@@ -71,6 +79,7 @@ public partial class MainWindow
 
             if (itemCountInfo.Item is Item item) avatarId = item.Id;
             else if (itemCountInfo.Item is CommonAvatar commonAvatar) avatarId = commonAvatar.GetInternalId();
+            else if (itemCountInfo.Item is TempAvatar tempAvatar) avatarId = tempAvatar.GetInternalId();
 
             if (!string.IsNullOrEmpty(avatarId) && _editSupportedAvatarsOverlay_selectedAvatars.Contains(avatarId)) button.Classes.Add("accent");
         }
@@ -79,6 +88,16 @@ public partial class MainWindow
     #region Event Handler
     private void EditSupportedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(null);
     private void EditSupportedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(_editSupportedAvatarsOverlay_selectedAvatars);
+    private async void EditSupportedAvatarsOverlay_AddTempAvatar_Click(object? sender, RoutedEventArgs e)
+    {
+        string? tempAvatarName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewTempAvatarName]);
+        if (string.IsNullOrEmpty(tempAvatarName)) return;
+
+        _avatarExplorerApp.AddTempAvatar(tempAvatarName);
+
+        EditSupportedAvatarsOverlay_DrawItemButtons();
+        Main_ReloadCurrentWindow();
+    }
     
     private void EditSupportedAvatarsOverlay_ItemButton_Click(object? sender, RoutedEventArgs e)
     {

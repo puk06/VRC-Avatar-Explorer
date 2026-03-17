@@ -29,5 +29,16 @@ public static partial class ItemUtils
         return FileNameUtils.GetSafeTitle(itemTitle);
     }
 
-    internal static Dictionary<string, string> GetItemTitleMaps(IEnumerable<Item> items) => items.ToDictionary(i => i.Id, i => i.Title);
+    internal static Dictionary<string, string> GetItemTitleMaps(IEnumerable<Item> items, IEnumerable<TempAvatar> tempAvatars)
+    {
+        Dictionary<string, string> itemTitleMaps = new();
+        
+        foreach (Item item in items)
+            itemTitleMaps.Add(item.Id, item.Title);
+        
+        foreach (TempAvatar tempAvatar in tempAvatars)
+            itemTitleMaps.Add(tempAvatar.GetInternalId(), tempAvatar.AvatarName);
+
+        return itemTitleMaps;
+    }
 }

@@ -80,6 +80,7 @@ public static class LocalizationKey
             {
                 public const string Count = "Button.Description.BulkImportPreset.Count";
             }
+            public const string TempAvatar = "Button.Description.TempAvatar";
         }
         public static class Tag
         {
@@ -108,9 +109,11 @@ public static class LocalizationKey
             public const string ResetCommonAvatarDatabase = "Dialog.Confirmation.ResetCommonAvatarDatabase";
             public const string RemoveAvatarFromSupportedAndImplemented = "Dialog.Confirmation.RemoveAvatarFromSupportedAndImplemented";
             public const string RemoveCommonAvatarGroup = "Dialog.Confirmation.RemoveCommonAvatarGroup";
+            public const string RemoveTempAvatar = "Dialog.Confirmation.RemoveTempAvatar";
             public const string ContinueRestoreFromBackup = "Dialog.Confirmation.ContinueRestoreFromBackup";
             public const string RemovePreset = "Dialog.Confirmation.RemovePreset";
             public const string AddToExistingItem = "Dialog.Confirmation.AddToExistingItem";
+            public const string ResolveTempAvatar = "Dialog.Confirmation.ResolveTempAvatar";
             public static class ExportToCsv
             {
                 public const string IncludeImplementedToSupported = "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported";
@@ -132,6 +135,7 @@ public static class LocalizationKey
             public const string AddCommonAvatarGroup = "Dialog.Title.AddCommonAvatarGroup";
             public const string NewCommonAvatarGroupName = "Dialog.Title.NewCommonAvatarGroupName";
             public const string NewBulkImportPresetName = "Dialog.Title.NewBulkImportPresetName";
+            public const string NewTempAvatarName = "Dialog.Title.NewTempAvatarName";
         }
         public static class Update
         {
@@ -251,6 +255,9 @@ public static class LocalizationKey
                 public const string Fetch = "ContextMenu.Item.Thumbnail.Fetch";
             }
             public const string Remove = "ContextMenu.Item.Remove";
+            public const string EditTempAvatarName = "ContextMenu.Item.EditTempAvatarName";
+            public const string ResolveTempAvatar = "ContextMenu.Item.ResolveTempAvatar";
+            public const string RemoveTempAvatar = "ContextMenu.Item.RemoveTempAvatar";
         }
         public static class ItemFile
         {
@@ -339,6 +346,7 @@ public static class LocalizationKey
         public const string AddItemFileFailed = "Error.AddItemFileFailed";
         public const string AddItemFolderFailed = "Error.AddItemFolderFailed";
         public const string RemoveFailed = "Error.RemoveFailed";
+        public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
     }
     public static class Settings
     {
@@ -562,6 +570,7 @@ public static class LocalizationKey
         public const string Search = "EditSupportedAvatars.Search";
         public const string Cancel = "EditSupportedAvatars.Cancel";
         public const string Confirm = "EditSupportedAvatars.Confirm";
+        public const string AddTempAvatar = "EditSupportedAvatars.AddTempAvatar";
     }
     public static class EditImplementedAvatars
     {
@@ -576,6 +585,12 @@ public static class LocalizationKey
         public const string RenameGroup = "EditCommonAvatars.RenameGroup";
         public const string RemoveGroup = "EditCommonAvatars.RemoveGroup";
         public const string ReplaceToGroup = "EditCommonAvatars.ReplaceToGroup";
+    }
+    public static class ResolveTempAvatar
+    {
+        public const string Title = "ResolveTempAvatar.Title";
+        public const string Search = "ResolveTempAvatar.Search";
+        public const string Cancel = "ResolveTempAvatar.Cancel";
     }
     public static class ErrorLog
     {

@@ -305,6 +305,7 @@ public partial class MainWindow
         string itemDatabasePath = Path.Join(backupRootPath, SystemFileName.Database.Items);
         string commonAvatarDatabasePath = Path.Join(backupRootPath, SystemFileName.Database.CommonAvatars);
         string bulkImportPresetDatabasePath = Path.Join(backupRootPath, SystemFileName.Database.BulkImportPresets);
+        string tempAvatarsDatabasePath = Path.Join(backupRootPath, SystemFileName.Database.TempAvatars);
         string runtimeSettingsFilePath = Path.Join(backupRootPath, SystemFileName.Settings.Runtime);
         string userPreferencesFilePath = Path.Join(backupRootPath, SystemFileName.Settings.Preferences);
 
@@ -324,6 +325,12 @@ public partial class MainWindow
         {
             _avatarExplorerApp.LoadBulkImportPresetDatabase(bulkImportPresetDatabasePath);
             _avatarExplorerApp.SaveBulkImportPresetDatabase();
+        }
+
+        if (File.Exists(tempAvatarsDatabasePath))
+        {
+            _avatarExplorerApp.LoadTempAvatarsDatabase(tempAvatarsDatabasePath);
+            _avatarExplorerApp.SaveTempAvatarsDatabase();
         }
 
         if (File.Exists(runtimeSettingsFilePath))

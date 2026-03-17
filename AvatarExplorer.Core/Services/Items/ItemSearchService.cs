@@ -10,9 +10,9 @@ namespace AvatarExplorer.Core.Services.Items;
 
 internal static class ItemSearchService
 {
-    internal static ImmutableArray<Item> ExecuteSearch(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, Dictionary<string, string> searchIndexDictionary, RuntimeSettings runtimeSettings, SearchFilter searchFilter)
+    internal static ImmutableArray<Item> ExecuteSearch(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, IEnumerable<TempAvatar> tempAvatars, Dictionary<string, string> searchIndexDictionary, RuntimeSettings runtimeSettings, SearchFilter searchFilter)
     {
-        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Type == ItemType.Avatar));
+        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Type == ItemType.Avatar), tempAvatars);
 
         List<Item> matchedItems = new();
         foreach (Item item in items)

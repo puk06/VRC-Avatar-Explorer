@@ -6,6 +6,7 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.External.KonoAsset.Databases;
+using AvatarExplorer.Core.Models.External.KonoAsset.Items;
 using AvatarExplorer.Core.Models.External.V1;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
@@ -182,6 +183,16 @@ internal static class DataImporter
                 .. (FileSystemService.DeserializeClass<KonoAssetWorldDatabase>(KonoAssetPath.WorldObjectsDatabasePath(dataFolderPath)).Value ?? new()).Data,
             ];
 
+            Dictionary<string, string> supportedAvatarMaps = new();
+            foreach (string avatarName in konoAssetItems.OfType<KonoAssetWearableItem>().SelectMany(i => i.SupportedAvatars).Distinct())
+            {
+                if (supportedAvatarMaps.ContainsKey(avatarName)) continue;
+
+                TempAvatar tempAvatar = new TempAvatar(avatarName);
+                supportedAvatarMaps.Add(avatarName, tempAvatar.GetInternalId());
+                dataImportResult.TempAvatars.Add(tempAvatar);
+            }
+
             int lastPercent = -1;
             for (int i = 0; i < konoAssetItems.Count; i++)
             {
@@ -217,6 +228,7 @@ internal static class DataImporter
                     }
                 }
 
+                item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => supportedAvatarMaps[i]));
                 dataImportResult.Items.Add(item);
 
                 int percent = (int)(100.0 * i / konoAssetItems.Count);

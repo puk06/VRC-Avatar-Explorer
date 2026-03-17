@@ -43,8 +43,12 @@ public partial class MainWindow
     {
         if (EditCommonAvatarsOverlay_AvatarsList == null) return;
         EditCommonAvatarsOverlay_AvatarsList.Children.Clear();
-        IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp.GetAvatars()
-            .Where(i => string.IsNullOrEmpty(EditCommonAvatarsOverlay_SearchTextBox.Text) || ((Item)i.Item).Title.Contains(EditCommonAvatarsOverlay_SearchTextBox.Text));
+        IEnumerable<ItemCountInfo> avatars = _avatarExplorerApp.GetAvatars(includeTempAvatar: true)
+            .Where(i =>
+                string.IsNullOrEmpty(EditCommonAvatarsOverlay_SearchTextBox.Text) ||
+                (i.Item is Item item && item.Title.Contains(EditCommonAvatarsOverlay_SearchTextBox.Text)) ||
+                (i.Item is TempAvatar tempAvatar && tempAvatar.AvatarName.Contains(EditCommonAvatarsOverlay_SearchTextBox.Text))
+            );
 
         CommonAvatar? commonAvatar = _avatarExplorerApp.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null) return;
@@ -52,7 +56,7 @@ public partial class MainWindow
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
             Button button = ItemButtonFactory.AddItemButton(EditCommonAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, _userPreferences, onClick: EditCommonAvatarsOverlay_ItemButton_Click);
-            if (commonAvatar.AvatarsView.Contains(((Item)itemCountInfo.Item).Id)) button.Classes.Add("accent");
+            if ((itemCountInfo.Item is Item item && commonAvatar.AvatarsView.Contains(item.Id)) || (itemCountInfo.Item is TempAvatar tempAvatar && commonAvatar.AvatarsView.Contains(tempAvatar.GetInternalId()))) button.Classes.Add("accent");
         }
     }
 

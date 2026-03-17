@@ -24,5 +24,9 @@ internal enum ActionKey
     AddFileToBulkImportList,
     OpenFileInExplorer,
 
-    RemovePreset
+    RemovePreset,
+
+    EditTempAvatarName,
+    ResolveTempAvatar,
+    RemoveTempAvatar
 }

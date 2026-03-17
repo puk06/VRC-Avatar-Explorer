@@ -41,6 +41,7 @@ public partial class MainWindow
             _avatarExplorerApp.LoadItemDatabase();
             _avatarExplorerApp.LoadCommonAvatarDatabase();
             _avatarExplorerApp.LoadBulkImportPresetDatabase();
+            _avatarExplorerApp.LoadTempAvatarsDatabase();
             _avatarExplorerApp.LoadRuntimeSettings();
             _avatarExplorerApp.StartAutoBackup();
         }
@@ -75,7 +76,10 @@ public partial class MainWindow
             { ActionKey.OpenFile, Main_ItemButton_ContextMenu_OpenFile },
             { ActionKey.AddFileToBulkImportList, Main_ItemButton_ContextMenu_AddFileToBulkImportList },
             { ActionKey.OpenFileInExplorer, Main_ItemButton_ContextMenu_OpenFileInExplorer },
-            { ActionKey.RemovePreset, Main_ItemButton_ContextMenu_RemovePreset }
+            { ActionKey.RemovePreset, Main_ItemButton_ContextMenu_RemovePreset },
+            { ActionKey.EditTempAvatarName, Main_ItemButton_ContextMenu_EditTempAvatarName },
+            { ActionKey.ResolveTempAvatar, Main_ItemButton_ContextMenu_ResolveTempAvatar },
+            { ActionKey.RemoveTempAvatar, Main_ItemButton_ContextMenu_RemoveTempAvatar }
         };
     }
     private void Main_InitializeLanguageBox()

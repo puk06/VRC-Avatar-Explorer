@@ -22,6 +22,7 @@ public partial class AvatarExplorerApp
 
     private readonly ItemDatabaseManager _itemDatabaseManager = new();
     private readonly CommonAvatarDatabaseManager _commonAvatarDatabaseManager = new();
+    private readonly TempAvatarsDatabaseManager _tempAvatarsDatabaseManager = new();
     private readonly BulkImportPresetDatabaseManager _bulkImportPresetDatabaseManager = new();
 
     private readonly Dictionary<string, string> _itemSearchIndexDictionary = new();
@@ -74,9 +75,18 @@ public partial class AvatarExplorerApp
         _bulkImportPresetDatabaseManager.Update(database);
     }
 
+    public void LoadTempAvatarsDatabase(string? path = null)
+    {
+        string loadPath = path ?? _tempAvatarsDatabaseManager.DatabaseFilePath;
+        IEnumerable<TempAvatar> database = DatabaseService<TempAvatar>.Load(loadPath);
+
+        _tempAvatarsDatabaseManager.Update(database);
+    }
+
     public void SaveItemDatabase() => DatabaseService<Item>.Save(_itemDatabaseManager.Items, _itemDatabaseManager.DatabaseFilePath);
     public void SaveCommonAvatarDatabase() => DatabaseService<CommonAvatar>.Save(_commonAvatarDatabaseManager.Items, _commonAvatarDatabaseManager.DatabaseFilePath);
     public void SaveBulkImportPresetDatabase() => DatabaseService<BulkImportPreset>.Save(_bulkImportPresetDatabaseManager.Items, _bulkImportPresetDatabaseManager.DatabaseFilePath);
+    public void SaveTempAvatarsDatabase() => DatabaseService<TempAvatar>.Save(_tempAvatarsDatabaseManager.Items, _tempAvatarsDatabaseManager.DatabaseFilePath);
 
     public void ResetItemDatabase()
     {
@@ -101,7 +111,7 @@ public partial class AvatarExplorerApp
     #region Update API
     public void UpdateSearchIndex()
     {
-        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar));
+        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
         foreach (Item item in _itemDatabaseManager.Items)
         {
             string index = ItemSearchService.BuildItemSearchIndex(item, avatarTitleMaps, _commonAvatarDatabaseManager.Items);
@@ -113,8 +123,28 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(itemId);
         if (item == null) return;
 
-        Dictionary<string, string> avatarNameMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar));
+        Dictionary<string, string> avatarNameMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
         _itemSearchIndexDictionary[item.Id] = ItemSearchService.BuildItemSearchIndex(item, avatarNameMaps, _commonAvatarDatabaseManager.Items);
+    }
+    #endregion
+
+    #region Resolve API
+    public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
+    {
+        foreach (Item item in _itemDatabaseManager.Items)
+        {
+            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
+        }
+
+        foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
+        {
+            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
+        }
+
+        SaveItemDatabase();
+        SaveCommonAvatarDatabase();
+        
+        RemoveTempAvatar(tempAvatarId);
     }
     #endregion
 
@@ -125,7 +155,7 @@ public partial class AvatarExplorerApp
     #endregion
 
     #region Get API
-    public ImmutableArray<ItemCountInfo> GetAvatars(bool includeCommonAvatar = false) => ItemAvatarAggregator.Aggregate(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _runtimeSettings, includeCommonAvatar);
+    public ImmutableArray<ItemCountInfo> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false) => ItemAvatarAggregator.Aggregate(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _tempAvatarsDatabaseManager.Items, _runtimeSettings, includeCommonAvatar, includeTempAvatar);
     public ImmutableArray<ItemCountInfo> GetAuthors() => ItemAuthorAggregator.Aggregate(_itemDatabaseManager.Items);
     public ImmutableArray<ItemCountInfo> GetCategories(bool includeEmptyCategory = false) => ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items, includeEmptyCategory);
 
@@ -162,7 +192,6 @@ public partial class AvatarExplorerApp
     }
 
     public ImmutableArray<BulkImportPreset> GetAllBulkImportPresets() => _bulkImportPresetDatabaseManager.Items;
-
     public BulkImportPreset? GetBulkImportPresetById(string? id)
     {
         if (id == null) return null;
@@ -171,6 +200,17 @@ public partial class AvatarExplorerApp
         if (bulkImportPreset == null) ErrorManager.Instance.PostInternalError($"The bulk import preset with the specified ID '{id}' was not found.");
 
         return bulkImportPreset;
+    }
+
+    public ImmutableArray<TempAvatar> GetAllTempAvatars() => _tempAvatarsDatabaseManager.Items;
+    public TempAvatar? GetTempAvatarById(string? id)
+    {
+        if (id == null) return null;
+
+        TempAvatar? tempAvatar = _tempAvatarsDatabaseManager.Items.FirstOrDefault(i => i.Id == id);
+        if (tempAvatar == null) ErrorManager.Instance.PostInternalError($"The temp avatar with the specified ID '{id}' was not found.");
+
+        return tempAvatar;
     }
 
     #region Current State Internal Handler
@@ -380,6 +420,14 @@ public partial class AvatarExplorerApp
 
         SaveCommonAvatarDatabase();
     }
+    public void AddTempAvatar(string avatarName)
+    {
+        TempAvatar tempAvatar = new TempAvatar(avatarName);
+
+        _tempAvatarsDatabaseManager.Add(tempAvatar);
+
+        SaveTempAvatarsDatabase();
+    }
     public void AddBulkImportPreset(string presetName, IEnumerable<BulkImportItem>? items = null)
     {
         BulkImportPreset bulkImportPreset = new()
@@ -578,10 +626,31 @@ public partial class AvatarExplorerApp
         
         return removed;
     }
+
+    public bool RemoveTempAvatar(string id, bool removeItemFromSupportedAndImplemented = false)
+    {
+        string? avatarId = TempAvatar.GetAvatarId(id);
+        if (avatarId == null) return false;
+
+        bool removed = _tempAvatarsDatabaseManager.Remove(avatarId);
+        if (removeItemFromSupportedAndImplemented)
+        {
+            foreach (Item item in _itemDatabaseManager.Items)
+            {
+                item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(a => a != id));
+                item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(a => a != id));
+            }
+        }
+
+        SaveTempAvatarsDatabase();
+        SaveItemDatabase();
+        
+        return removed;
+    }
     #endregion
 
     #region Search API
-    public ImmutableArray<Item> SearchItems(SearchFilter searchFilter) => ItemSearchService.ExecuteSearch(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _itemSearchIndexDictionary, _runtimeSettings, searchFilter);
+    public ImmutableArray<Item> SearchItems(SearchFilter searchFilter) => ItemSearchService.ExecuteSearch(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _tempAvatarsDatabaseManager.Items, _itemSearchIndexDictionary, _runtimeSettings, searchFilter);
     #endregion
 
     #region Save API
@@ -596,16 +665,18 @@ public partial class AvatarExplorerApp
 
         _itemDatabaseManager.AddRange(result.Value.Items);
         _commonAvatarDatabaseManager.AddRange(result.Value.CommonAvatars);
+        _tempAvatarsDatabaseManager.AddRange(result.Value.TempAvatars);
 
         SaveItemDatabase();
         SaveCommonAvatarDatabase();
+        SaveTempAvatarsDatabase();
 
         return Result.Success;
     }
     #endregion
 
     #region Data Exporter API
-    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string filePath, Dictionary<ItemType, string> localizedItemTypesMapping, bool includeCommonToSupported) => await DataExporter.Export(exportType, _itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, localizedItemTypesMapping, _runtimeSettings, filePath, includeCommonToSupported);
+    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string filePath, Dictionary<ItemType, string> localizedItemTypesMapping, bool includeCommonToSupported) => await DataExporter.Export(exportType, _itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _tempAvatarsDatabaseManager.Items, localizedItemTypesMapping, _runtimeSettings, filePath, includeCommonToSupported);
     #endregion
 
     #region Clear API

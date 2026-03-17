@@ -30,6 +30,7 @@ internal class UISelectableItem
     internal ImmutableArray<string> ItemTagsView => ItemTags.ToImmutableArray();
     internal string ItemMemo { get; private set; } = string.Empty; // アイテムTooltip表記用
     internal string ItemPath { get; private set; } = string.Empty; // Unitypackageの一覧を取得するためのアイテムのパス
+    internal bool IsTempAvatar { get; private set; } = false; // 仮アバターかどうか
 
     internal UISelectableItem(ISelectableItem source, int itemCount, string[]? args = null)
     {
@@ -43,6 +44,7 @@ internal class UISelectableItem
         else if (source is ItemFile itemFile) FromFileItemFile(itemFile);
         else if (source is CommonAvatar commonAvatar) FromCommonAvatar(commonAvatar);
         else if (source is BulkImportPreset bulkImportPreset) FromBulkImportPreset(bulkImportPreset);
+        else if (source is TempAvatar tempAvatar) FromTempAvatar(tempAvatar);
     }
 
     internal UISelectableItem(ItemCountInfo itemCountInfo)
@@ -126,5 +128,16 @@ internal class UISelectableItem
         ImageFileName = SystemIconKey.FolderIcon;
         Tag = new(ItemTagStates.None, bulkImportPreset.Id);
         IconType = IconType.None;
+    }
+
+    private void FromTempAvatar(TempAvatar tempAvatar)
+    {
+        Title = tempAvatar.AvatarName;
+        Description = (LocalizationKey.Button.Description.TempAvatar, []);
+        ImageFileName = SystemIconKey.AvatarIcon;
+        Tag = new(ItemTagStates.None, tempAvatar.GetInternalId());
+        IconType = IconType.None;
+
+        IsTempAvatar = true;
     }
 }
