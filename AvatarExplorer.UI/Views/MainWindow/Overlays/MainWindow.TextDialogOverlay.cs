@@ -18,7 +18,7 @@ public partial class MainWindow
         _textDialogOverlay_tcs = new();
 
         TextDialogOverlay_Title.Text = title;
-        if (!string.IsNullOrEmpty(initialText)) TextDialogOverlay_Content.Text = initialText;
+        TextDialogOverlay_Content.Text = initialText;
         TextDialogOverlay.IsVisible = true;
 
         return _textDialogOverlay_tcs.Task;
@@ -39,6 +39,7 @@ public partial class MainWindow
     private void TextDialogOverlay_Close(string? result)
     {
         TextDialogOverlay.IsVisible = false;
+        TextDialogOverlay_Content.Text = string.Empty;
 
         TaskCompletionSource<string?>? tcs = _textDialogOverlay_tcs;
         _textDialogOverlay_tcs = null;
