@@ -158,9 +158,9 @@ internal static class ItemButtonFactory
 
     internal static void SetupButtonInteractions(Button button, UISelectableItem item, RuntimeSettings runtimeSettings, ContextMenu? contextMenu, EventHandler<RoutedEventArgs>? onClick)
     {
-        if (StateFlagUtils.IsItemState(item.Tag.State) && !item.IsTempAvatar)
+        if (StateFlagUtils.IsItemState(item.Tag.State))
         {
-            ToolTip.SetTip(button, GetTooltipTextFromItem(item));
+            ToolTip.SetTip(button, item.IsTempAvatar ? item.Title : GetTooltipTextFromItem(item));
             ToolTip.SetBetweenShowDelay(button, -1);
         }
         else if (item.Tag.State == ItemTagStates.ItemFileCategoryOpen)
