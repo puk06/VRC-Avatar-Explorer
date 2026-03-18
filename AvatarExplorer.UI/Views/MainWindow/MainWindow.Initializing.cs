@@ -112,18 +112,16 @@ public partial class MainWindow
                 if (!string.IsNullOrEmpty(currentInternalSchemePath) && !SchemeService.IsSkipped(currentInternalSchemePath) && currentInternalSchemePath != ProcessUtils.GetCurrentProcessPath())
                 {
                     YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.PathChanged]);
-                    if (result == null) return;
+                    if (result == null || result != YesNoResult.Yes) return;
                     
-                    if (result == YesNoResult.Yes) await Main_RegisterSchemeAsync();
-                    else skipScheme();
+                    await Main_RegisterSchemeAsync();
                 }
                 else if (string.IsNullOrEmpty(currentInternalSchemePath))
                 {
                     YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterAgain]);
-                    if (result == null) return;
+                    if (result == null || result != YesNoResult.Yes) return;
                     
-                    if (result == YesNoResult.Yes) await Main_RegisterSchemeAsync();
-                    else skipScheme();
+                    await Main_RegisterSchemeAsync();
                 }
             }
             else
