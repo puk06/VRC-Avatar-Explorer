@@ -341,6 +341,7 @@
     "EditSupportedAvatars.AddTempAvatar": "仮アバターの追加",
 
     "EditImplementedAvatars.Title": "実装アバターの選択",
+    "EditImplementedAvatars.Cancel": "キャンセル",
     "EditImplementedAvatars.Confirm": "確定",
 
     "EditCommonAvatars.Title": "共通素体アバターの管理",

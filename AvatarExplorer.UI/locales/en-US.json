@@ -341,6 +341,7 @@
     "EditSupportedAvatars.AddTempAvatar": "Add Temporary Avatar",
 
     "EditImplementedAvatars.Title": "Select Implemented Avatars",
+    "EditImplementedAvatars.Cancel": "Cancel",
     "EditImplementedAvatars.Confirm": "Confirm",
 
     "EditCommonAvatars.Title": "Manage Common Avatar Avatars",

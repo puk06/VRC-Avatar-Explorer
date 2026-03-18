@@ -574,6 +574,7 @@ public static class LocalizationKey
     public static class EditImplementedAvatars
     {
         public const string Title = "EditImplementedAvatars.Title";
+        public const string Cancel = "EditImplementedAvatars.Cancel";
         public const string Confirm = "EditImplementedAvatars.Confirm";
     }
     public static class EditCommonAvatars
