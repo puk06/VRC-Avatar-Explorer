@@ -230,20 +230,23 @@ internal static class DataImporter
 
                 item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => supportedAvatarMaps[i]));
 
-                bool categoryFoundFlag = false;
-                foreach (var itemTypeKpv in localizedItemTypesMapping)
+                if (item.Type != ItemType.Avatar)
                 {
-                    if (item.CustomCategory == itemTypeKpv.Value)
+                    bool categoryFoundFlag = false;
+                    foreach (KeyValuePair<ItemType, string> itemTypeKpv in localizedItemTypesMapping)
                     {
-                        item.Type = itemTypeKpv.Key;
-                        item.CustomCategory = string.Empty;
+                        if (item.CustomCategory == itemTypeKpv.Value)
+                        {
+                            item.Type = itemTypeKpv.Key;
+                            item.CustomCategory = string.Empty;
 
-                        categoryFoundFlag = true;
-                        break;
+                            categoryFoundFlag = true;
+                            break;
+                        }
                     }
-                }
 
-                if (!categoryFoundFlag) item.CustomCategory += " (From KonoAsset)";
+                    if (!categoryFoundFlag) item.CustomCategory += " (From KonoAsset)";
+                }
 
                 dataImportResult.Items.Add(item);
 
