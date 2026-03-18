@@ -17,17 +17,17 @@ internal static class ItemAvatarAggregator
             avatars.AddRange(commonAvatars.Select(i => new ItemCountInfo(i, i.AvatarsView.Length)));
         }
         
-        if (includeTempAvatar)
-        {
-            avatars.AddRange(tempAvatars.Select(i => new ItemCountInfo(i, 0)));
-        }
-
         avatars.AddRange(
             items
                 .Where(i => i.Type == ItemType.Avatar)
                 .GetSortedItems(runtimeSettings)
                 .Select(i => new ItemCountInfo(i, 0))
         );
+
+        if (includeTempAvatar)
+        {
+            avatars.AddRange(tempAvatars.Select(i => new ItemCountInfo(i, 0)));
+        }
 
         return avatars.ToImmutableArray();
     }
