@@ -53,6 +53,52 @@ VRChatユーザー向けのシンプルかつ強力な**クロスプラットフ
 - **言語**: 制限なし（日本語・英語どちらも可）
 - **コミット形式**: 自由。
 
+### プルリクエスト（Pull Request）
+
+**タイトル形式（必須）**
+
+Squash merge 時のコミットメッセージになるため、[Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) 形式で記述してください。
+
+```
+<type>[(<scope>)]: <subject>
+```
+
+- **type**: コミットの種類（必須）
+- **scope**: 変更の対象範囲（任意）- 影響を受けるモジュールやコンポーネント名
+- **subject**: 変更内容の短い説明（必須）
+
+**type の種類**:
+- `feat`: 新機能追加
+- `fix`: バグ修正
+- `docs`: ドキュメント更新
+- `ci`: CI/CD パイプライン・GitHub Actions 関連
+- `refactor`: コードの構造改善（機能変更なし）
+- `perf`: パフォーマンス改善
+- `test`: テスト追加・修正
+- `chore`: ビルド設定やツールの更新など
+
+**タイトル例**:
+- `feat(avatar): add support for custom avatar names` (scope あり)
+- `feat: improve search performance` (scope なし)
+- `fix(ui): resolve overlay display bug on startup`
+- `docs: update contribution guidelines`
+- `ci: add automated release workflow`
+
+**説明文（Description）**:
+- PR の目的や背景を簡潔に記述（日本語でも可）
+- 関連する Issue がある場合は `Closes #123` のように参照
+- 主な変更点や実装上の注意点があれば記載
+
+**PR 前の確認事項（必須）**:
+- ✅ **ビルドが成功すること**: `AvatarExplorer.UI` または `AvatarExplorer.Core` をビルドして、エラーが出ないことを確認してください
+- ✅ **Localization Key の再生成**: `Tools/LocalizationKeyGenerator` を実行して、`AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` を自動生成してください（変更がない場合でも実行してください）
+
+これらのチェックは CI 上でも実行されますが、事前に実施することで、PR マージ前の手戻りを防ぐことができます。
+
+**ブランチ内の個別コミット**:
+- feature ブランチ内の個別コミットメッセージは自由です
+- main へのマージ時に Squash merge されるため、履歴を気にせず開発できます
+
 ## アーキテクチャと今後の方針
 
 現在のUIレイヤーはMainWindowクラスにオーバーレイ処理などが集中しており、
