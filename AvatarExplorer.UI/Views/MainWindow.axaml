@@ -519,7 +519,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetCommonAvatarDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetItemDatabase_Click"/>
+                                                <Button Grid.Column="1" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetItemDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetItemDatabase_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -531,6 +531,17 @@
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
                                                 <Button Grid.Column="1" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetCommonAvatarDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetCommonAvatarDatabase_Click"/>
+                                            </Grid>
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                            <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                                <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ResetBulkImportPresetDatabase.Title]}"/>
+                                                <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ResetBulkImportPresetDatabase.Description]}"/>
+                                            </Grid>
+
+                                            <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                                <Button Grid.Column="1" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetBulkImportPresetDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetBulkImportPresetDatabase_Click"/>
                                             </Grid>
                                         </Grid>
                                     </StackPanel>

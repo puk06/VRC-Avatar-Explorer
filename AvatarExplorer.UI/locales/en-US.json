@@ -49,8 +49,9 @@
 
     "Dialog.Confirmation.Default": "Confirmation",
     "Dialog.Confirmation.RemoveItem": "Item Name: {0}\n\nAre you sure you want to delete this item?",
-    "Dialog.Confirmation.ResetItemDatabase": "Are you sure you want to reset the item database?\n※ Asset data will not be deleted. It can be restored from automatic backup.",
+    "Dialog.Confirmation.ResetItemDatabase": "Are you sure you want to reset the item database? This includes temporary avatars.\n※ Asset data will not be deleted. It can be restored from automatic backup.",
     "Dialog.Confirmation.ResetCommonAvatarDatabase": "Are you sure you want to reset the common avatar database?\n※ Asset data will not be deleted. It can be restored from automatic backup.",
+    "Dialog.Confirmation.ResetBulkImportPresetDatabase": "Are you sure you want to reset the bulk import preset database?\n※ It can be restored from automatic backup.",
     "Dialog.Confirmation.RemoveCommonAvatarGroup": "Delete the common avatar group?\nCommon Avatar Group Name: {0}",
     "Dialog.Confirmation.RemoveTempAvatar": "Temporary Avatar Name: {0}\n\nAre you sure you want to delete this avatar?",
     "Dialog.Confirmation.ContinueRestoreFromBackup": "Failed to backup current settings, but continue restoring from backup?",
@@ -270,6 +271,9 @@
     "Settings.ResetCommonAvatarDatabase.Title": "Reset Common Avatar Database",
     "Settings.ResetCommonAvatarDatabase.Description": "Reset the common avatar database. Asset data itself will not be deleted. Can be restored from auto backup.",
     "Settings.ResetCommonAvatarDatabase.Reset": "Reset",
+    "Settings.ResetBulkImportPresetDatabase.Title": "Reset Bulk Import Preset",
+    "Settings.ResetBulkImportPresetDatabase.Description": "Resets the bulk import preset database. Can be restored from automatic backup.",
+    "Settings.ResetBulkImportPresetDatabase.Reset": "Reset",
     
     "Settings.System": "System",
     "Settings.ErrorLog.Title": "Error Log",

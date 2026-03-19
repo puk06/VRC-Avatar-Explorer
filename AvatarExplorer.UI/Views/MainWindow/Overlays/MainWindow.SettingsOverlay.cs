@@ -274,6 +274,8 @@ public partial class MainWindow
         if (result == null || result != YesNoResult.Yes) return;
 
         AvatarExplorer.ResetItemDatabase();
+        AvatarExplorer.ResetTempAvatarDatabase();
+
         Main_ReloadCurrentWindow();
     }
 
@@ -283,6 +285,15 @@ public partial class MainWindow
         if (result == null || result != YesNoResult.Yes) return;
 
         AvatarExplorer.ResetCommonAvatarDatabase();
+        Main_ReloadCurrentWindow();
+    }
+
+    private async void SettingsOverlay_ResetBulkImportPresetDatabase_Click(object? sender, RoutedEventArgs e)
+    {
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetBulkImportPresetDatabase]);
+        if (result == null || result != YesNoResult.Yes) return;
+
+        AvatarExplorer.ResetBulkImportDatabase();
         Main_ReloadCurrentWindow();
     }
 

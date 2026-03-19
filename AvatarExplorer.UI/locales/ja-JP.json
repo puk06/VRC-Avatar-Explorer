@@ -49,8 +49,9 @@
 
     "Dialog.Confirmation.Default": "確認",
     "Dialog.Confirmation.RemoveItem": "アイテム名: {0}\n\n本当にこのアイテムを削除しますか？",
-    "Dialog.Confirmation.ResetItemDatabase": "本当にアイテムデータベースをリセットしますか？\n※アセットデータは削除されません。自動バックアップから復元可能です。",
+    "Dialog.Confirmation.ResetItemDatabase": "本当にアイテムデータベースをリセットしますか？これには仮登録アバターも含まれます。\n※アセットデータは削除されません。自動バックアップから復元可能です。",
     "Dialog.Confirmation.ResetCommonAvatarDatabase": "本当に共通素体データベースをリセットしますか？\n※アセットデータは削除されません。自動バックアップから復元可能です。",
+    "Dialog.Confirmation.ResetBulkImportPresetDatabase": "本当に一括インポートプリセットデータベースをリセットしますか？\n※自動バックアップから復元可能です。",
     "Dialog.Confirmation.RemoveCommonAvatarGroup": "共通素体グループを削除しますか？\n共通素体グループ名: {0}",
     "Dialog.Confirmation.RemoveTempAvatar": "仮アバター名: {0}\n\n本当にこのアバターを削除しますか？",
     "Dialog.Confirmation.ContinueRestoreFromBackup": "現在の設定のバックアップに失敗しましたが、バックアップからの復元処理を続行しますか？",
@@ -270,6 +271,9 @@
     "Settings.ResetCommonAvatarDatabase.Title": "共通素体データベースのリセット",
     "Settings.ResetCommonAvatarDatabase.Description": "共通素体のデータベースをリセットします。アセットデータ自体は削除されません。自動バックアップから復元可能です。",
     "Settings.ResetCommonAvatarDatabase.Reset": "リセット",
+    "Settings.ResetBulkImportPresetDatabase.Title": "一括インポートプリセットのリセット",
+    "Settings.ResetBulkImportPresetDatabase.Description": "一括インポートプリセットデータベースをリセットします。自動バックアップから復元可能です。",
+    "Settings.ResetBulkImportPresetDatabase.Reset": "リセット",
     
     "Settings.System": "システム",
     "Settings.ErrorLog.Title": "エラーログ",

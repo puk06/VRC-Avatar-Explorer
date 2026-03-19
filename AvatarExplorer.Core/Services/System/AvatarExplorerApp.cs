@@ -98,6 +98,16 @@ public class AvatarExplorerApp
         _commonAvatarDatabaseManager.Clear();
         SaveCommonAvatarDatabase();
     }
+    public void ResetBulkImportDatabase()
+    {
+        _bulkImportPresetDatabaseManager.Clear();
+        SaveBulkImportPresetDatabase();
+    }
+    public void ResetTempAvatarDatabase()
+    {
+        _tempAvatarsDatabaseManager.Clear();
+        SaveTempAvatarsDatabase();
+    }
     #endregion
 
     #region Runtime Settings

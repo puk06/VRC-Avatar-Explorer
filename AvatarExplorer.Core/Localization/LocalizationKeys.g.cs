@@ -110,6 +110,7 @@ public static class LocalizationKey
             public const string RemoveItem = "Dialog.Confirmation.RemoveItem";
             public const string ResetItemDatabase = "Dialog.Confirmation.ResetItemDatabase";
             public const string ResetCommonAvatarDatabase = "Dialog.Confirmation.ResetCommonAvatarDatabase";
+            public const string ResetBulkImportPresetDatabase = "Dialog.Confirmation.ResetBulkImportPresetDatabase";
             public const string RemoveCommonAvatarGroup = "Dialog.Confirmation.RemoveCommonAvatarGroup";
             public const string RemoveTempAvatar = "Dialog.Confirmation.RemoveTempAvatar";
             public const string ContinueRestoreFromBackup = "Dialog.Confirmation.ContinueRestoreFromBackup";
@@ -494,6 +495,12 @@ public static class LocalizationKey
             public const string Title = "Settings.ResetCommonAvatarDatabase.Title";
             public const string Description = "Settings.ResetCommonAvatarDatabase.Description";
             public const string Reset = "Settings.ResetCommonAvatarDatabase.Reset";
+        }
+        public static class ResetBulkImportPresetDatabase
+        {
+            public const string Title = "Settings.ResetBulkImportPresetDatabase.Title";
+            public const string Description = "Settings.ResetBulkImportPresetDatabase.Description";
+            public const string Reset = "Settings.ResetBulkImportPresetDatabase.Reset";
         }
         public const string System = "Settings.System";
         public static class ErrorLog
