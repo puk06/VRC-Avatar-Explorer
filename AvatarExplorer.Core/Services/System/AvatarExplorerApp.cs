@@ -610,8 +610,13 @@ public class AvatarExplorerApp
     #endregion
 
     #region Remove API
-    public bool RemoveItem(string id)
+    public bool RemoveItem(string id, bool removeAssetData = false)
     {
+        if (removeAssetData)
+        {
+            Item? item = GetItemById(id);
+            if (item != null) FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath));
+        }
         bool removed = _itemDatabaseManager.Remove(id);
         
         foreach (Item item in _itemDatabaseManager.Items)

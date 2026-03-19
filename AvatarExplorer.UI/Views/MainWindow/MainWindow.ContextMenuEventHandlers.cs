@@ -217,7 +217,11 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveItem, item.Title));
         if (result == null || result != YesNoResult.Yes) return;
 
-        bool removed = AvatarExplorer.RemoveItem(item.Id);
+        YesNoResult? result1 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.RemoveAssetData]);
+        if (result == null) return;
+
+        bool removeAssetData = result1 == YesNoResult.Yes;
+        bool removed = AvatarExplorer.RemoveItem(item.Id, removeAssetData);
 
         Main_ReloadCurrentWindow();
 

@@ -117,6 +117,7 @@ public static class LocalizationKey
             public const string RemovePreset = "Dialog.Confirmation.RemovePreset";
             public const string AddToExistingItem = "Dialog.Confirmation.AddToExistingItem";
             public const string ResolveTempAvatar = "Dialog.Confirmation.ResolveTempAvatar";
+            public const string RemoveAssetData = "Dialog.Confirmation.RemoveAssetData";
             public static class ExportToCsv
             {
                 public const string IncludeImplementedToSupported = "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported";
