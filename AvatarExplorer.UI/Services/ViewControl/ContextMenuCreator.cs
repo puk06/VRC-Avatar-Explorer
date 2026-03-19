@@ -97,7 +97,6 @@ internal static class ContextMenuCreator
 
         return contextMenuActions.ToArray();
     }
-
     
     private static ContextMenuAction[] CreateFromItemCategory(ItemCategory itemCategory)
     {
