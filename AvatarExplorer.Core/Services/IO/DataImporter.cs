@@ -3,13 +3,11 @@ using AvatarExplorer.Core.Data.Paths.External.KonoAsset;
 using AvatarExplorer.Core.Data.Paths.External.V1;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
-using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.External.KonoAsset.Databases;
 using AvatarExplorer.Core.Models.External.KonoAsset.Items;
 using AvatarExplorer.Core.Models.External.V1;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
-using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using ErrorOr;
@@ -189,9 +187,6 @@ internal static class DataImporter
                 dataImportResult.TempAvatars.Add(tempAvatar);
             }
 
-            Dictionary<string, string> thumbnailFileNameDictionary = Directory.GetFiles(KonoAssetPath.ThumbnailsPath(dataFolderPath))
-                .ToDictionary(i => Path.GetFileNameWithoutExtension(i), i => i);
-
             int lastPercent = -1;
             for (int i = 0; i < konoAssetItems.Count; i++)
             {
@@ -204,9 +199,9 @@ internal static class DataImporter
                 await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath), newItemPath, runtimeSettings.MaxDegreeOfParallelism);
                 item.ItemPath = newItemPath;
 
-                if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename) && thumbnailFileNameDictionary.ContainsKey(konoAssetItem.Description.ImageFilename))
+                if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename))
                 {
-                    ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), thumbnailFileNameDictionary[konoAssetItem.Description.ImageFilename]), Path.Combine(SystemPath.ItemThumbnailsPath, item.Id));
+                    ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), konoAssetItem.Description.ImageFilename), Path.Combine(SystemPath.ItemThumbnailsPath, item.Id));
                     if (!result.IsError) item.ThumbnmailFileName = item.Id;
                     else item.ThumbnmailFileName = string.Empty;
                 }
