@@ -189,7 +189,7 @@ internal static class DataImporter
                 dataImportResult.TempAvatars.Add(tempAvatar);
             }
 
-            Dictionary<string, string> thumbnailExtensionDictionary = Directory.GetFiles(KonoAssetPath.ThumbnailsPath(dataFolderPath))
+            Dictionary<string, string> thumbnailFileNameDictionary = Directory.GetFiles(KonoAssetPath.ThumbnailsPath(dataFolderPath))
                 .ToDictionary(i => Path.GetFileNameWithoutExtension(i), i => i);
 
             int lastPercent = -1;
@@ -204,9 +204,9 @@ internal static class DataImporter
                 await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath), newItemPath, runtimeSettings.MaxDegreeOfParallelism);
                 item.ItemPath = newItemPath;
 
-                if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename) && thumbnailExtensionDictionary.ContainsKey(konoAssetItem.Description.ImageFilename))
+                if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename) && thumbnailFileNameDictionary.ContainsKey(konoAssetItem.Description.ImageFilename))
                 {
-                    ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), thumbnailExtensionDictionary[konoAssetItem.Description.ImageFilename]), Path.Combine(SystemPath.ItemThumbnailsPath, item.Id));
+                    ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), thumbnailFileNameDictionary[konoAssetItem.Description.ImageFilename]), Path.Combine(SystemPath.ItemThumbnailsPath, item.Id));
                     if (!result.IsError) item.ThumbnmailFileName = item.Id;
                     else item.ThumbnmailFileName = string.Empty;
                 }
