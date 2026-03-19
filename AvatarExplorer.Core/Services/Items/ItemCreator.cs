@@ -40,13 +40,6 @@ internal static class ItemCreator
             if (thumbnailResult) item.ThumbnmailFileName = itemThumbnailFileName;
         }
 
-        if (!string.IsNullOrEmpty(itemCreationContext.AuthorId) && !string.IsNullOrEmpty(itemCreationContext.AuthorThumbnailUrl))
-        {
-            string authorThumbnailFileName = itemCreationContext.AuthorId + ".png";
-            bool authorThumbnailResult = await ImageDownloader.Fetch(itemCreationContext.AuthorThumbnailUrl, Path.Combine(SystemPath.AuthorThumbnailsPath, authorThumbnailFileName), false);
-            if (authorThumbnailResult) item.AuthorThumbnmailFileName = authorThumbnailFileName;
-        }
-
         item.UpdateSupportedAvatars(itemCreationContext.SupportedAvatars);
 
         return new ItemCreationResult()

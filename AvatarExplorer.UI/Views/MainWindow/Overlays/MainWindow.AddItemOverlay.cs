@@ -213,7 +213,6 @@ public partial class MainWindow
         AddItemOverlay_InternalAuthorIdTextBox.Text = addItemWindowValues.BoothAuthorId;
         AddItemOverlay_InternalBoothIdTextBox.Text = addItemWindowValues.BoothId == -1 ? string.Empty : addItemWindowValues.BoothId.ToString();
         AddItemOverlay_InternalImageURLTextBox.Text = addItemWindowValues.BoothThumbnailUrl;
-        AddItemOverlay_InternalAuthorImageURLTextBox.Text = addItemWindowValues.BoothAuthorThumbnailUrl;
     }
     private void AddItemOverlay_SetValuesFromUi(AddItemOverlayWindowValues addItemWindowValues)
     {
@@ -222,7 +221,6 @@ public partial class MainWindow
         addItemWindowValues.BoothAuthorId = AddItemOverlay_InternalAuthorIdTextBox.Text ?? string.Empty;
         addItemWindowValues.BoothId = ValueParser.Int(AddItemOverlay_InternalBoothIdTextBox.Text, -1);
         addItemWindowValues.BoothThumbnailUrl = AddItemOverlay_InternalImageURLTextBox.Text ?? string.Empty;
-        addItemWindowValues.BoothAuthorThumbnailUrl = AddItemOverlay_InternalAuthorImageURLTextBox.Text ?? string.Empty;
     }
 
     private ItemCategory AddItemOverlay_GetCurrentCategory()
@@ -323,7 +321,6 @@ public partial class MainWindow
         itemCreationContext.Author = _addItemOverlay_addItemWindowValues.Author;
         itemCreationContext.AuthorId = _addItemOverlay_addItemWindowValues.BoothAuthorId;
         itemCreationContext.ThumbnailUrl = _addItemOverlay_addItemWindowValues.BoothThumbnailUrl;
-        itemCreationContext.AuthorThumbnailUrl = _addItemOverlay_addItemWindowValues.BoothAuthorThumbnailUrl;
         itemCreationContext.BoothId = _addItemOverlay_addItemWindowValues.BoothId;
 
         ItemCategory itemCategory = AddItemOverlay_GetCurrentCategory();

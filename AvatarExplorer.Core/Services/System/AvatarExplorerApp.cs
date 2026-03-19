@@ -543,21 +543,6 @@ public class AvatarExplorerApp
 
         return Result.Success;
     }
-    public async Task<ErrorOr<Success>> UpdateAuthorThumbnail(string itemId, string imageFilePath)
-    {
-        Item? item = GetItemById(itemId);
-        if (item == null) return Error.NotFound(description: "Item not found.");
-
-        ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.AuthorThumbnailsPath, Path.GetFileName(imageFilePath)));
-        if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
-
-        item.AuthorThumbnmailFileName = Path.GetFileName(imageFilePath);
-        UpdateItemUpdatedDate(itemId);
-
-        SaveItemDatabase();
-
-        return Result.Success;
-    }
     #endregion
 
     #region Replace API

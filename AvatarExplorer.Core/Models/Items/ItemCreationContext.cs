@@ -7,7 +7,6 @@ public class ItemCreationContext
     public string Author { get; set; } = string.Empty;
     public string AuthorId { get; set; } = string.Empty;
     public string ThumbnailUrl { get; set; } = string.Empty;
-    public string AuthorThumbnailUrl { get; set; } = string.Empty;
     public int BoothId { get; set; } = -1;
     public ItemType ItemType { get; set; } = ItemType.Avatar;
     public string CustomCategory { get; set; } = string.Empty;

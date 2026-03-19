@@ -10,7 +10,7 @@ internal static class ItemAuthorAggregator
         return items
             .DistinctBy(i => i.Author)
             .OrderBy(i => i.Author)
-            .Select(i => new ItemCountInfo(new Author { Name = i.Author, AuthorThumbnailFileName = i.AuthorThumbnmailFileName }, items.Count(item => item.Author == i.Author)))
+            .Select(i => new ItemCountInfo(new Author(i.Author), items.Count(item => item.Author == i.Author)))
             .ToImmutableArray();
     }
 }

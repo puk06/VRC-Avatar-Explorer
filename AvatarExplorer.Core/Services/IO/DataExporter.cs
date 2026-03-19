@@ -28,7 +28,7 @@ internal static class DataExporter
 
             FileSystemService.PrepareFileDirectory(filePath);
             using StreamWriter sw = new(filePath, false, Encoding.UTF8);
-            await sw.WriteLineAsync("Id,Title,AuthorName,AuthorImageFilePath,ImagePath,Category,Memo,SupportedAvatars,ImplementedAvatars,BoothId,ItemPath,Tags");
+            await sw.WriteLineAsync("Id,Title,AuthorName,ImagePath,Category,Memo,SupportedAvatars,ImplementedAvatars,BoothId,ItemPath,Tags");
 
             foreach (Item item in items)
             {
@@ -53,7 +53,6 @@ internal static class DataExporter
                 string itemId = CsvUtils.EscapeCsv(item.Id);
                 string itemTitle = CsvUtils.EscapeCsv(item.Title);
                 string authorName = CsvUtils.EscapeCsv(item.Author);
-                string authorImageFilePath = CsvUtils.EscapeCsv(item.AuthorThumbnmailFileName);
                 string imagePath = CsvUtils.EscapeCsv(item.ThumbnmailFileName);
 
                 string categoryName;
@@ -68,7 +67,7 @@ internal static class DataExporter
                 string itemPath = CsvUtils.EscapeCsv(ItemUtils.GetItemPath(runtimeSettings.DataRootDirectory, item.ItemPath));
                 string tags = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.TagsView));
 
-                await sw.WriteLineAsync($"{itemId},{itemTitle},{authorName},{authorImageFilePath},{imagePath},{category},{memo},{supportedAvatarsList},{implementedAvatarsList},{boothId},{itemPath},{tags}");
+                await sw.WriteLineAsync($"{itemId},{itemTitle},{authorName},{imagePath},{category},{memo},{supportedAvatarsList},{implementedAvatarsList},{boothId},{itemPath},{tags}");
             }
 
             return Result.Success;

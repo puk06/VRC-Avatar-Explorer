@@ -28,7 +28,6 @@ internal static class ImageService
         return iconType switch
         {
             IconType.Item => Load(Path.Join(SystemPath.ItemThumbnailsPath, fileName)),
-            IconType.Author => Load(Path.Join(SystemPath.AuthorThumbnailsPath, fileName)),
             _ => Load(fileName),
         };
     }

@@ -43,9 +43,6 @@ internal static class DataImporter
             List<CommonAvatarV1> v1CommonAvatars = FileSystemService.DeserializeClass<List<CommonAvatarV1>>(SystemPathV1.CommonAvatarDatabasePath(dataFolderPath)).Value ?? [];
 
             // １個１個チェックしながらコピーしても良いかも
-            if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 10));
-            await FileSystemService.CopyDirectoryAsync(SystemPathV1.AuthorThumbnailsPath(dataFolderPath), SystemPath.AuthorThumbnailsPath, runtimeSettings.MaxDegreeOfParallelism);
-
             if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 20));
             await FileSystemService.CopyDirectoryAsync(SystemPathV1.ItemThumbnailsPath(dataFolderPath), SystemPath.ItemThumbnailsPath, runtimeSettings.MaxDegreeOfParallelism);
 
@@ -124,7 +121,6 @@ internal static class DataImporter
             BoothId = item.BoothId,
             ItemPath = item.ItemPath,
             ThumbnmailFileName = MigrateAvatarExplorerV1Path(item.ImagePath),
-            AuthorThumbnmailFileName = MigrateAvatarExplorerV1Path(item.AuthorImageFilePath),
             Type = item.Type,
             CustomCategory = item.CustomCategory,
             ItemMemo = item.ItemMemo,
@@ -215,10 +211,6 @@ internal static class DataImporter
                         string itemThumbnailFileName = item.BoothId + ".png";
                         bool itemThumbnailResult = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, itemThumbnailFileName), false);
                         if (itemThumbnailResult) item.ThumbnmailFileName = itemThumbnailFileName;
-
-                        string authorThumbnailFileName = item.AuthorId + ".png";
-                        bool authorThumbnailResult = await ImageDownloader.Fetch(fetchResult.Value.Shop.ThumbnailUrl, Path.Combine(SystemPath.AuthorThumbnailsPath, authorThumbnailFileName), false);
-                        if (authorThumbnailResult) item.AuthorThumbnmailFileName = authorThumbnailFileName;
 
                         await Task.Delay(750 * 3);
                     }

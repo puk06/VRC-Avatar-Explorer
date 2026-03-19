@@ -14,7 +14,6 @@ public static class SystemPath
 
     public static readonly string TempFolderPath = PathUtils.GetSoftwareFolderPath(Path.GetTempPath());
 
-    public static readonly string AuthorThumbnailsPath = PathUtils.GetAuthorThumbnailsFolderPath(SoftwareDataPath);
     public static readonly string ItemThumbnailsPath = PathUtils.GetItemThumbnailsFolderPath(SoftwareDataPath);
 
     public static readonly string ItemDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.Items);

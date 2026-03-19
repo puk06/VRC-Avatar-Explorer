@@ -79,10 +79,10 @@ internal class UISelectableItem
     {
         Title = author.Name;
         Description = (LocalizationKey.Button.Description.Item.Count, [ItemCount.ToString()]);
-        ImageFileName = author.AuthorThumbnailFileName;
+        ImageFileName = SystemIconKey.AvatarIcon;
 
         Tag = new(ItemTagStates.RootAuthor, author.Name);
-        IconType = IconType.Author;
+        IconType = IconType.None;
     }
 
     private void FromCategory(ItemCategory category)

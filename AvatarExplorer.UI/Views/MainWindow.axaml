@@ -710,12 +710,6 @@
                                     <TextBlock Text="{Binding [AddItem.ImageUrl]}" FontSize="12" Opacity="0.6"/>
                                     <TextBox x:Name="AddItemOverlay_InternalImageURLTextBox" FontSize="13"/>
                                 </StackPanel>
-
-                                <StackPanel Spacing="5">
-                                    <TextBlock Text="{Binding [AddItem.AuthorImageUrl]}" FontSize="12" Opacity="0.6"/>
-                                    <TextBox x:Name="AddItemOverlay_InternalAuthorImageURLTextBox" FontSize="13"/>
-                                </StackPanel>
-                                
                             </StackPanel>
                         </StackPanel>
 
