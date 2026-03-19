@@ -16,6 +16,7 @@ public static class LocalizationKey
 {
     public const string LanguageName = "LanguageName";
     public const string LanguagePriority = "LanguagePriority";
+    public const string BoothLanguageCode = "BoothLanguageCode";
     public static class Title
     {
         public const string AdministratorMode = "Title.AdministratorMode";

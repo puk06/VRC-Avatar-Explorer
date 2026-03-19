@@ -54,14 +54,14 @@ public partial class MainWindow
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return;
 
-        await ClipboardService.SetText(item.GetBoothLink());
+        await ClipboardService.SetText(item.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]));
     }
     private async Task Main_ItemButton_ContextMenu_OpenBoothLink(string itemId)
     {
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return;
 
-        await LauncherService.OpenUri(this, item.GetBoothLink());
+        await LauncherService.OpenUri(this, item.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]));
     }
     private Task Main_ItemButton_ContextMenu_ShowOtherItemsByAuthor(string itemId)
     {

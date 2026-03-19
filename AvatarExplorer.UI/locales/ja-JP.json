@@ -2,6 +2,8 @@
     "LanguageName": "日本語",
     "LanguagePriority": "0",
     
+    "BoothLanguageCode": "ja",
+    
     "Title.AdministratorMode": "管理者モード",
     
     "Main.Search.Watermark": "入力して検索...",

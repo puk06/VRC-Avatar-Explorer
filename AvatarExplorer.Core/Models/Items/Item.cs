@@ -30,7 +30,11 @@ public class Item : AbstractDatabaseItem, ISelectableItem
     public void UpdateImplementedAvatars(IEnumerable<string> newList) => ImplementedAvatars = newList.ToList();
     public void UpdateTags(IEnumerable<string> newList) => Tags = newList.ToList();
     
-    public string GetBoothLink() => string.Format(BoothLink.ItemURLFormat, AuthorId, BoothId);
+    public string GetBoothLink(string languageCode)
+    {
+        if (string.IsNullOrEmpty(AuthorId)) return string.Format(BoothLink.ItemURLWithoutAuthorFormat, languageCode, BoothId);
+        else return string.Format(BoothLink.ItemURLFormat, AuthorId, BoothId);
+    }
     
     internal Item SetValuesFromCreationContext(ItemCreationContext itemCreationContext)
     {

@@ -35,7 +35,7 @@ public partial class MainWindow
         AddItemOverlay_InitializeCategories();
 
         _addItemOverlay_selectedItemId = item.Id;
-        AddItemOverlay_BoothLinkTextBox.Text = item.BoothId == -1 ? string.Empty : item.GetBoothLink();
+        AddItemOverlay_BoothLinkTextBox.Text = item.BoothId == -1 ? string.Empty : item.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]);
 
         _addItemOverlay_addItemWindowValues.ItemPaths.Clear();
         _addItemOverlay_addItemWindowValues.ItemPaths.Add(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
@@ -78,7 +78,7 @@ public partial class MainWindow
         AddItemOverlay_InitializeCategories();
 
         _addItemOverlay_selectedItemId = null;
-        AddItemOverlay_BoothLinkTextBox.Text = string.Format(BoothLink.ItemURLWithoutAuthorFormat, launchInfo.BoothId);
+        AddItemOverlay_BoothLinkTextBox.Text = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[LocalizationKey.BoothLanguageCode], launchInfo.BoothId);
 
         _addItemOverlay_addItemWindowValues.Reset();
 

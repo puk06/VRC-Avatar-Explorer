@@ -1,6 +1,8 @@
 {
     "LanguageName": "English",
     "LanguagePriority": "1",
+
+    "BoothLanguageCode": "en",
     
     "Title.AdministratorMode": "Administrator Mode",
     
