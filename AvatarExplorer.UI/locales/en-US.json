@@ -92,6 +92,7 @@
     "FileCategory.Unitypackage": "Unitypackage",
     "FileCategory.Material": "Material",
     "FileCategory.UrlShortcut": "URL Shortcut",
+    "FileCategory.Font": "Font",
     "FileCategory.Unknown": "Unknown",
 
     "Processing.Unitypackage.Status.Preparing": "Preparing files... {0}%",

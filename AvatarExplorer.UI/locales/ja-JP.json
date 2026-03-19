@@ -92,6 +92,7 @@
     "FileCategory.Unitypackage": "Unitypackage",
     "FileCategory.Material": "マテリアル",
     "FileCategory.UrlShortcut": "URLショートカット",
+    "FileCategory.Font": "フォント",
     "FileCategory.Unknown": "不明",
 
     "Processing.Unitypackage.Status.Preparing": "ファイルの準備中です... {0}%",

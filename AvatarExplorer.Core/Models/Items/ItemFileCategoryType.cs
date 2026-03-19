@@ -32,6 +32,10 @@ public enum ItemFileCategoryType
     [LocalizationKey(LocalizationKey.FileCategory.UrlShortcut)]
     UrlShortcut,
 
+    [ExtensionsFilter(".ttf|.otf|.woff|.woff2|.eot|.fon")]
+    [LocalizationKey(LocalizationKey.FileCategory.Font)]
+    Font,
+
     [LocalizationKey(LocalizationKey.FileCategory.Unknown)]
     Unknown
 }
