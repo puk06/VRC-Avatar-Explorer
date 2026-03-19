@@ -293,7 +293,7 @@ public partial class MainWindow
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetBulkImportPresetDatabase]);
         if (result == null || result != YesNoResult.Yes) return;
 
-        AvatarExplorer.ResetBulkImportDatabase();
+        AvatarExplorer.ResetBulkImportPresetDatabase();
         Main_ReloadCurrentWindow();
     }
 

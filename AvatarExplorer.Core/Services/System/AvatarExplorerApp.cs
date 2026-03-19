@@ -98,7 +98,7 @@ public class AvatarExplorerApp
         _commonAvatarDatabaseManager.Clear();
         SaveCommonAvatarDatabase();
     }
-    public void ResetBulkImportDatabase()
+    public void ResetBulkImportPresetDatabase()
     {
         _bulkImportPresetDatabaseManager.Clear();
         SaveBulkImportPresetDatabase();
