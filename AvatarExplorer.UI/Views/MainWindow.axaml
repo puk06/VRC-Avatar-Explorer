@@ -689,7 +689,7 @@
 
                             <StackPanel Spacing="8" Margin="10,0,0,0">
                                 <TextBlock Text="{Binding [AddItem.SupportedAvatars]}" FontSize="13" Opacity="0.7"/>
-                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" Content="{Binding [Overlay.AddItem.SelectedAvatarsCount]}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
+                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
                             </StackPanel>
                         </UniformGrid>
 
@@ -959,7 +959,7 @@
                 <StackPanel Spacing="15">
                     
                     <!-- タイトル -->
-                    <TextBlock x:Name="TextDialogOverlay_Title"  Text="{Binding [Dialog.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                    <TextBlock x:Name="TextDialogOverlay_Title" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
 
                     <!-- テキスト -->
                     <TextBox x:Name="TextDialogOverlay_Content" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10,0,10"/>
@@ -979,11 +979,11 @@
                 <StackPanel Spacing="15">
 
                     <!-- タイトル -->
-                    <TextBlock x:Name="YesNoDialogOverlay_Title" Text="{Binding [Dialog.Title]}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="YesNoDialogOverlay_Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
 
                     <!-- 内容 -->
                     <Grid RowDefinitions="Auto" ColumnDefinitions="*" Margin="0,10,0,10">
-                        <TextBlock x:Name="YesNoDialogOverlay_Content" Text="{Binding [Dialog.Content]}" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="YesNoDialogOverlay_Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left"/>
                     </Grid>
                     
                     <!-- Yes/Noボタン -->
