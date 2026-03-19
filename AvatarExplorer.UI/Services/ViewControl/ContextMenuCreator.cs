@@ -15,6 +15,7 @@ internal static class ContextMenuCreator
         if (selectableItem is ItemFile itemFile) return CreateFromItemFile(itemFile);
         if (selectableItem is BulkImportPreset bulkImportPreset) return CreateFromBulkImportPreset(bulkImportPreset);
         if (selectableItem is TempAvatar tempAvatar) return CreateFromTempAvatar(tempAvatar);
+        if (selectableItem is ItemCategory itemCategory) return CreateFromItemCategory(itemCategory);
         
         return [];
     }
@@ -92,6 +93,19 @@ internal static class ContextMenuCreator
             new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit, tempAvatar.GetInternalId()),
             new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, tempAvatar.GetInternalId(), addSeparator: true),
             new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete, tempAvatar.GetInternalId()),
+        ];
+
+        return contextMenuActions.ToArray();
+    }
+
+    
+    private static ContextMenuAction[] CreateFromItemCategory(ItemCategory itemCategory)
+    {
+        if (itemCategory.Type != ItemType.Custom) return [];
+        
+        List<ContextMenuAction> contextMenuActions =
+        [
+            new ContextMenuAction(LocalizationKey.ContextMenu.ItemCategory.EditCustomCategoryName, ActionKey.EditCustomCategoryName, ContextMenuIconType.Edit, itemCategory.CustomCategory),
         ];
 
         return contextMenuActions.ToArray();

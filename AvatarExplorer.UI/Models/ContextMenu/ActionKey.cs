@@ -28,5 +28,7 @@ internal enum ActionKey
 
     EditTempAvatarName,
     ResolveTempAvatar,
-    RemoveTempAvatar
+    RemoveTempAvatar,
+
+    EditCustomCategoryName
 }

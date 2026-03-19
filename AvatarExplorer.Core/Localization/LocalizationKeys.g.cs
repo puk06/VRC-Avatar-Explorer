@@ -128,6 +128,7 @@ public static class LocalizationKey
             {
                 public const string CopyData = "Dialog.Confirmation.StoragePathChange.CopyData";
             }
+            public const string DuplicateCustomCategoryName = "Dialog.Confirmation.DuplicateCustomCategoryName";
         }
         public static class Title
         {
@@ -137,6 +138,7 @@ public static class LocalizationKey
             public const string NewCommonAvatarGroupName = "Dialog.Title.NewCommonAvatarGroupName";
             public const string NewBulkImportPresetName = "Dialog.Title.NewBulkImportPresetName";
             public const string NewTempAvatarName = "Dialog.Title.NewTempAvatarName";
+            public const string NewCustomCategoryName = "Dialog.Title.NewCustomCategoryName";
         }
         public const string SelectSaveFilePath = "Dialog.SelectSaveFilePath";
         public const string SelectFolderPath = "Dialog.SelectFolderPath";
@@ -261,6 +263,10 @@ public static class LocalizationKey
             public const string EditTempAvatarName = "ContextMenu.TempAvatar.EditTempAvatarName";
             public const string ResolveTempAvatar = "ContextMenu.TempAvatar.ResolveTempAvatar";
             public const string RemoveTempAvatar = "ContextMenu.TempAvatar.RemoveTempAvatar";
+        }
+        public static class ItemCategory
+        {
+            public const string EditCustomCategoryName = "ContextMenu.ItemCategory.EditCustomCategoryName";
         }
     }
     public static class SearchFilter

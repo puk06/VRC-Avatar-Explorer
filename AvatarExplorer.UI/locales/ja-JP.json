@@ -62,6 +62,7 @@
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "共通素体グループが対応アバターとして設定されているアイテムの対応アバターを、個別のアバターに置き換えますか？",
 
     "Dialog.Confirmation.StoragePathChange.CopyData": "データの保存先が変更されています。前のフォルダからデータをコピーしますか？",
+    "Dialog.Confirmation.DuplicateCustomCategoryName": "カスタムカテゴリ名が既に存在しています。このまま続行すると、同じカテゴリアイテムとして認識されるようになります。続行しますか？",
 
     "Dialog.Title.NewItemTitle": "新しいタイトル",
     "Dialog.Title.AddCustomCategory": "新しいカスタムカテゴリ",
@@ -69,6 +70,7 @@
     "Dialog.Title.NewCommonAvatarGroupName": "新しい共通素体グループ名",
     "Dialog.Title.NewBulkImportPresetName": "新しい一括インポートプリセット名",
     "Dialog.Title.NewTempAvatarName": "新しい仮アバター名",
+    "Dialog.Title.NewCustomCategoryName": "新しいカスタムカテゴリ名",
 
     "Dialog.SelectSaveFilePath": "ファイルの保存先を選択してください",
     "Dialog.SelectFolderPath": "フォルダを選択してください",
@@ -123,6 +125,7 @@
     "ContextMenu.TempAvatar.EditTempAvatarName": "仮アバター名を編集する",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "正式なアイテムと紐付ける",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "仮アバターを削除する",
+    "ContextMenu.ItemCategory.EditCustomCategoryName": "カスタムカテゴリ名を編集する",
 
     "SearchFilter.Default": "検索中... - {0}",
     "SearchFilter.Title": "タイトル: {0}",

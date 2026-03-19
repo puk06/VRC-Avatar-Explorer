@@ -62,6 +62,7 @@
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Replace the supported avatars of items that have the common avatar group set as supported avatars with individual avatars?",
 
     "Dialog.Confirmation.StoragePathChange.CopyData": "The data storage location has been changed. Copy data from the previous folder?",
+    "Dialog.Confirmation.DuplicateCustomCategoryName": "This custom category name already exists. If you continue, items will be recognized as the same category. Do you want to continue?",
 
     "Dialog.Title.NewItemTitle": "New Title",
     "Dialog.Title.AddCustomCategory": "New Custom Category",
@@ -69,6 +70,7 @@
     "Dialog.Title.NewCommonAvatarGroupName": "New Common Avatar Group Name",
     "Dialog.Title.NewBulkImportPresetName": "New Bulk Import Preset Name",
     "Dialog.Title.NewTempAvatarName": "New Temporary Avatar Name",
+    "Dialog.Title.NewCustomCategoryName": "New Custom Category Name",
 
     "Dialog.SelectSaveFilePath": "Please select the file save location",
     "Dialog.SelectFolderPath": "Please select a folder",
@@ -123,6 +125,7 @@
     "ContextMenu.TempAvatar.EditTempAvatarName": "Edit Temporary Avatar Name",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "Link to Permanent Item",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "Remove Temporary Avatar",
+    "ContextMenu.ItemCategory.EditCustomCategoryName": "Edit Custom Category Name",
 
     "SearchFilter.Default": "Searching... - {0}",
     "SearchFilter.Title": "Title: {0}",

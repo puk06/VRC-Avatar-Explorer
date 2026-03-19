@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -316,6 +317,22 @@ public partial class MainWindow
 
         if (removed) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Remove]);
         else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RemoveFailed]);
+    }
+
+    private async Task Main_ItemButton_ContextMenu_EditCustomCategoryName(string customCategory)
+    {
+        string? newCategoryName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewCustomCategoryName], customCategory);
+        if (string.IsNullOrEmpty(newCategoryName)) return;
+
+        if (AvatarExplorer.GetCategories().Any(i => i.Item is ItemCategory itemCategory && itemCategory.Type == ItemType.Custom && itemCategory.CustomCategory == newCategoryName))
+        {
+            YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.DuplicateCustomCategoryName]);
+            if (result == null || result != YesNoResult.Yes) return;
+        }
+
+        AvatarExplorer.EditCustomCategoryName(customCategory, newCategoryName);
+
+        Main_ReloadCurrentWindow();
     }
     #endregion
 }

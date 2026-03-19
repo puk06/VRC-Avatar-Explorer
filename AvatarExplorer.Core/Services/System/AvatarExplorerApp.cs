@@ -500,6 +500,21 @@ public class AvatarExplorerApp
 
         return true;
     }
+
+    public void EditCustomCategoryName(string previousName, string newName)
+    {
+        foreach (Item item in _itemDatabaseManager.Items)
+        {
+            if (item.Type == ItemType.Custom && item.CustomCategory == previousName)
+            {
+                item.CustomCategory = newName;
+            }
+        }
+
+        UpdateSearchIndex();
+
+        SaveItemDatabase();
+    }
     #endregion
 
     #region Update API
