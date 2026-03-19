@@ -153,6 +153,7 @@ public class AvatarExplorerApp
 
         SaveItemDatabase();
         SaveCommonAvatarDatabase();
+        UpdateSearchIndex();
         
         RemoveTempAvatar(tempAvatarId);
     }
@@ -634,6 +635,7 @@ public class AvatarExplorerApp
             commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != id));
         }
 
+        UpdateSearchIndex();
         SaveItemDatabase();
         SaveCommonAvatarDatabase();
 
@@ -653,6 +655,7 @@ public class AvatarExplorerApp
             item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != internalId));
         }
 
+        UpdateSearchIndex();
         SaveItemDatabase();
         SaveCommonAvatarDatabase();
         
@@ -685,6 +688,7 @@ public class AvatarExplorerApp
             commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != internalId));
         }
 
+        UpdateSearchIndex();
         SaveTempAvatarsDatabase();
         SaveItemDatabase();
         SaveCommonAvatarDatabase();
