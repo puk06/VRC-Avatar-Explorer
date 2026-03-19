@@ -722,9 +722,8 @@ public class AvatarExplorerApp
         ErrorOr<BoothItem> fetchResult = await BoothService.GetItem(item.BoothId.ToString());
         if (fetchResult.IsError) return Error.Failure(description: fetchResult.Errors.ToErrorString());
 
-        string itemThumbnailFileName = item.BoothId + ".png";
-        bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, itemThumbnailFileName), true);
-        if (result) item.ThumbnmailFileName = itemThumbnailFileName;
+        bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
+        if (result) item.ThumbnmailFileName = item.Id;
 
         return Result.Success;
     }

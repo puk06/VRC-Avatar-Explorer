@@ -42,10 +42,6 @@ internal static class DataImporter
             List<ItemV1> v1Items = FileSystemService.DeserializeClass<List<ItemV1>>(SystemPathV1.ItemDatabasePath(dataFolderPath)).Value ?? [];
             List<CommonAvatarV1> v1CommonAvatars = FileSystemService.DeserializeClass<List<CommonAvatarV1>>(SystemPathV1.CommonAvatarDatabasePath(dataFolderPath)).Value ?? [];
 
-            // １個１個チェックしながらコピーしても良いかも
-            if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 20));
-            await FileSystemService.CopyDirectoryAsync(SystemPathV1.ItemThumbnailsPath(dataFolderPath), SystemPath.ItemThumbnailsPath, runtimeSettings.MaxDegreeOfParallelism);
-
             List<Item> items = new();
 
             Dictionary<string, string> pathMapping = new();
@@ -66,11 +62,15 @@ internal static class DataImporter
                 Item newItem = CreateItemFromItemV1(item);
                 newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
 
+                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
+                if (!result.IsError) newItem.ThumbnmailFileName = newItem.Id;
+                else newItem.ThumbnmailFileName = string.Empty;
+
                 pathMapping[previousItemPath] = newItem.Id;
 
                 items.Add(newItem);
 
-                int percent = 20 + (int)(80.0 * i / v1Items.Count);
+                int percent = (int)(100.0 * i / v1Items.Count);
                 if (percent != lastPercent)
                 {
                     lastPercent = percent;
@@ -189,10 +189,14 @@ internal static class DataImporter
                 dataImportResult.TempAvatars.Add(tempAvatar);
             }
 
+            Dictionary<string, string> thumbnailExtensionDictionary = Directory.GetFiles(KonoAssetPath.ThumbnailsPath(dataFolderPath))
+                .ToDictionary(i => Path.GetFileNameWithoutExtension(i), i => i);
+
             int lastPercent = -1;
             for (int i = 0; i < konoAssetItems.Count; i++)
             {
-                Item item = konoAssetItems[i].ToItem();
+                AbstractKonoAssetItem konoAssetItem = konoAssetItems[i];
+                Item item = konoAssetItem.ToItem();
 
                 string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
                 string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true);
@@ -200,24 +204,11 @@ internal static class DataImporter
                 await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath), newItemPath, runtimeSettings.MaxDegreeOfParallelism);
                 item.ItemPath = newItemPath;
 
-                if (item.BoothId != -1)
+                if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename) && thumbnailExtensionDictionary.ContainsKey(konoAssetItem.Description.ImageFilename))
                 {
-                    ErrorOr<BoothItem> fetchResult = await BoothService.GetItem(item.BoothId.ToString());
-
-                    if (!fetchResult.IsError)
-                    {
-                        item.AuthorId = fetchResult.Value.AuthorId; // IKonoAssetItem.ToItem()ではAuthorIdは移行されないためここで設定する必要がある。
-
-                        string itemThumbnailFileName = item.BoothId + ".png";
-                        bool itemThumbnailResult = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, itemThumbnailFileName), false);
-                        if (itemThumbnailResult) item.ThumbnmailFileName = itemThumbnailFileName;
-
-                        await Task.Delay(750 * 3);
-                    }
-                    else
-                    {
-                        await Task.Delay(750);
-                    }
+                    ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), thumbnailExtensionDictionary[konoAssetItem.Description.ImageFilename]), Path.Combine(SystemPath.ItemThumbnailsPath, item.Id));
+                    if (!result.IsError) item.ThumbnmailFileName = item.Id;
+                    else item.ThumbnmailFileName = string.Empty;
                 }
 
                 item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => supportedAvatarMaps[i]));
