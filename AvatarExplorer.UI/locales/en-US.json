@@ -120,9 +120,9 @@
     "ContextMenu.ItemFile.BulkImportList": "Add to Bulk Import",
     "ContextMenu.ItemFile.OpenFileInExplorer": "Show in Explorer",
     "ContextMenu.BulkImportPreset.RemovePreset": "Remove Preset",
-    "ContextMenu.Item.EditTempAvatarName": "Edit Temporary Avatar Name",
-    "ContextMenu.Item.ResolveTempAvatar": "Link to Permanent Item",
-    "ContextMenu.Item.RemoveTempAvatar": "Remove Temporary Avatar",
+    "ContextMenu.TempAvatar.EditTempAvatarName": "Edit Temporary Avatar Name",
+    "ContextMenu.TempAvatar.ResolveTempAvatar": "Link to Permanent Item",
+    "ContextMenu.TempAvatar.RemoveTempAvatar": "Remove Temporary Avatar",
 
     "SearchFilter.Default": "Searching... - {0}",
     "SearchFilter.Title": "Title: {0}",

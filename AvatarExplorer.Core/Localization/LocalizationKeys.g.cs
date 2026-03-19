@@ -245,9 +245,6 @@ public static class LocalizationKey
                 public const string Fetch = "ContextMenu.Item.Thumbnail.Fetch";
             }
             public const string Remove = "ContextMenu.Item.Remove";
-            public const string EditTempAvatarName = "ContextMenu.Item.EditTempAvatarName";
-            public const string ResolveTempAvatar = "ContextMenu.Item.ResolveTempAvatar";
-            public const string RemoveTempAvatar = "ContextMenu.Item.RemoveTempAvatar";
         }
         public static class ItemFile
         {
@@ -258,6 +255,12 @@ public static class LocalizationKey
         public static class BulkImportPreset
         {
             public const string RemovePreset = "ContextMenu.BulkImportPreset.RemovePreset";
+        }
+        public static class TempAvatar
+        {
+            public const string EditTempAvatarName = "ContextMenu.TempAvatar.EditTempAvatarName";
+            public const string ResolveTempAvatar = "ContextMenu.TempAvatar.ResolveTempAvatar";
+            public const string RemoveTempAvatar = "ContextMenu.TempAvatar.RemoveTempAvatar";
         }
     }
     public static class SearchFilter

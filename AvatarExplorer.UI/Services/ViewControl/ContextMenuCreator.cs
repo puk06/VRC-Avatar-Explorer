@@ -89,9 +89,9 @@ internal static class ContextMenuCreator
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(LocalizationKey.ContextMenu.Item.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit, tempAvatar.GetInternalId()),
-            new ContextMenuAction(LocalizationKey.ContextMenu.Item.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, tempAvatar.GetInternalId(), addSeparator: true),
-            new ContextMenuAction(LocalizationKey.ContextMenu.Item.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete, tempAvatar.GetInternalId()),
+            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit, tempAvatar.GetInternalId()),
+            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, tempAvatar.GetInternalId(), addSeparator: true),
+            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete, tempAvatar.GetInternalId()),
         ];
 
         return contextMenuActions.ToArray();
