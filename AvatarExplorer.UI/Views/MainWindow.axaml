@@ -625,6 +625,94 @@
                                 </ScrollViewer>
                             </Panel>
                         </TabItem>
+
+                        <TabItem FontWeight="Bold">
+                            <TabItem.Header>
+                                <StackPanel Spacing="8" Orientation="Horizontal">
+                                    <materialIcons:MaterialIcon Kind="InformationOutline" Width="18" Height="18" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [Settings.About]}" FontSize="16" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            
+                            <Panel>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <StackPanel Spacing="25" Margin="20">
+                                        <StackPanel Spacing="10" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding [Settings.AboutInfo.Title]}" FontSize="32" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{Binding [Settings.AboutInfo.Subtitle]}" TextAlignment="Center" FontSize="14" Foreground="{DynamicResource Text.Secondary}"/>
+                                        </StackPanel>
+
+                                        <Separator Background="#22000000"/>
+                                        
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="30">
+                                            <StackPanel Grid.Column="0" Spacing="15">
+                                                
+                                                <TextBlock Text="{Binding [Settings.AboutDeveloper.Title]}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                                                <Grid ColumnDefinitions="*,Auto">
+                                                    <Grid Grid.Column="0">
+                                                        <Border HorizontalAlignment="Center" Width="100" Height="100" CornerRadius="50" ClipToBounds="True">
+                                                            <Image Source="avares://AvatarExplorer/Assets/Internal/ProfileIcon.png" Stretch="UniformToFill"/>
+                                                        </Border>
+                                                    </Grid>
+
+                                                    <StackPanel Grid.Column="1" Spacing="10">
+                                                        <StackPanel Spacing="5">
+                                                            <TextBlock Text="{Binding [Settings.AboutDeveloper.Label]}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                                                            <TextBlock Text="ぷこるふ" FontSize="14"/>
+                                                        </StackPanel>
+
+                                                        <Button Classes="button" Padding="10,6" CornerRadius="6" Click="SettingsOverlay_OpenTwitter_Click">
+                                                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                                                <materialIcons:MaterialIcon Kind="Twitter" Width="16" Height="16"/>
+                                                                <TextBlock Text="Twitter" VerticalAlignment="Center" FontSize="13"/>
+                                                            </StackPanel>
+                                                        </Button>
+
+                                                        <Button Classes="button" Padding="10,6" CornerRadius="6" Click="SettingsOverlay_OpenGithub_Click">
+                                                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                                                <materialIcons:MaterialIcon Kind="Github" Width="16" Height="16"/>
+                                                                <TextBlock Text="Github" VerticalAlignment="Center" FontSize="13"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1" Spacing="15">
+                                                <TextBlock Text="{Binding [Settings.AboutProject.Title]}" FontSize="16" FontWeight="Bold"/>
+
+                                                <StackPanel Spacing="5">
+                                                    <TextBlock Text="{Binding [Settings.AboutProject.SourceCodeDescription]}" FontSize="12" Foreground="{DynamicResource Text.Secondary}" TextWrapping="Wrap"/>
+                                                    <Button Classes="button" Padding="10,6" CornerRadius="6" Click="SettingsOverlay_OpenSourceCode_Click">
+                                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                                            <materialIcons:MaterialIcon Kind="Github" Width="16" Height="16"/>
+                                                            <TextBlock Text="{Binding [Settings.AboutProject.ViewRepository]}" VerticalAlignment="Center" FontSize="13"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Separator Background="#22000000"/>
+
+                                        <StackPanel Spacing="10">
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.Title]}" FontSize="16" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.Type]}" FontSize="13"/>
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.Description]}" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Text.Secondary}"/>
+                                        </StackPanel>
+
+                                        <Button Classes="button" Padding="10,8" CornerRadius="8" HorizontalAlignment="Stretch" FontWeight="SemiBold" Click="SettingsOverlay_ViewLicenses_Click">
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.ViewLicense]}"/>
+                                        </Button>
+
+                                        <Button Classes="button" Padding="10,8" CornerRadius="8" HorizontalAlignment="Stretch" FontWeight="SemiBold" Click="SettingsOverlay_ThirdPartyLicenses_Click">
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.ViewThirdParty]}"/>
+                                        </Button>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Panel>
+                        </TabItem>
                     </TabControl>
 
                     <!-- 下のボタン -->

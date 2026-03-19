@@ -187,15 +187,24 @@ Assets/FileIcon.png: Document icons created by Neveraemje - Flaticon (https://ww
 Assets/GroupIcon.png: Group chat icons created by bsd - Flaticon (https://www.flaticon.com/free-icon/group-chat_9464022)
 Assets/AvatarIcon.png: User icons created by Saepul Nahwan - Flaticon (https://www.flaticon.com/free-icon/people_14643189)
 
+- Github Profile Icon Credit & License
+Used World: https://vrchat.com/home/world/wrld_576caaf0-ab5d-4f15-9cdc-e29a653dae31
+キプフェル Kipfel / オリジナル3Dモデル by もち山金魚 (https://mukumi.booth.pm/items/5813187)
+【キプフェル専用】 ♡ 𝐆𝐚𝐫𝐧𝐞𝐭 ♡ 【VRChat向け衣装+ヘアモデル】by PINK♡PUDDING (https://pinkpudding.booth.pm/items/6588091)
+【VRchat】 Metal Frame Glasses [メタル素材丸眼鏡] by ranchino (https://ranchino.booth.pm/items/3750938)
+まめひなた Mamehinata / オリジナル3Dモデル by もち山金魚 (https://mukumi.booth.pm/items/4340548)
+ゆるっとシャーク🦈ヘアクリップ by かこい亭 (https://kakoi-s.booth.pm/items/6026483)
+【キプフェル専用】すやすやEye by おちゃかなしょっぷ -Shop Ochakana- (https://escapefroma.booth.pm/items/5913410)
+
 - Application Icon Credit & License
-ショコラ -Chocolat-【オリジナル3Dモデル】by あまとうさぎ（https://komado.booth.pm/items/6405390）
+ショコラ -Chocolat-【オリジナル3Dモデル】by あまとうさぎ (https://komado.booth.pm/items/6405390)
 プラム -Plum-【オリジナル3Dモデル】by あまとうさぎ (https://komado.booth.pm/items/7770415)
 【47アバター対応】Re:うさぎさんるーむうぇあ by かぷちやのぶーす (https://capettiya.booth.pm/items/5657072)
-Lavender Braid Hair by 隣の店（https://tonarino8908.booth.pm/items/5483086）
-【VRC想定･MA対応】雲ヘアピン Cloud Hair Accessory【アクセサリー】 by ham.am / はむあむ（https://ham-am.booth.pm/items/5410436）
-【VRchat】 Metal Frame Glasses [メタル素材丸眼鏡] by ranchino（https://ranchino.booth.pm/items/3750938）
-にゃんこ ばんそうこう（Cat Bandage） by こけっこぴよぴよ（https://tosakahiyoshi.booth.pm/items/4137208）
-【19アバター対応】Sparkling eyesテクスチャ ♥15color♥ by さばさばショップ（https://sabavrc.booth.pm/items/6433694）
+Lavender Braid Hair by 隣の店 (https://tonarino8908.booth.pm/items/5483086)
+【VRC想定･MA対応】雲ヘアピン Cloud Hair Accessory【アクセサリー】 by ham.am / はむあむ(https://ham-am.booth.pm/items/5410436)
+【VRchat】 Metal Frame Glasses [メタル素材丸眼鏡] by ranchino (https://ranchino.booth.pm/items/3750938)
+にゃんこ ばんそうこう(Cat Bandage) by こけっこぴよぴよ(https://tosakahiyoshi.booth.pm/items/4137208)
+【19アバター対応】Sparkling eyesテクスチャ ♥15color♥ by さばさばショップ (https://sabavrc.booth.pm/items/6433694)
 【VRC向けワールド】Calmium【PC/Quest】by bろくく (https://tagob6c.booth.pm/items/7856261)
 
 Icon Text Font - Nunito (https://fonts.google.com/specimen/Nunito) - This Font Software is licensed under the SIL Open Font License, Version 1.1 (This license is copied below).

@@ -350,6 +350,8 @@ public static class LocalizationKey
         public const string AddItemFolderFailed = "Error.AddItemFolderFailed";
         public const string RemoveFailed = "Error.RemoveFailed";
         public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
+        public const string LicenseFileNotFound = "Error.LicenseFileNotFound";
+        public const string ThirdPartyLicenseFileNotFound = "Error.ThirdPartyLicenseFileNotFound";
     }
     public static class Settings
     {
@@ -543,6 +545,32 @@ public static class LocalizationKey
             public const string Check = "Settings.CheckForUpdateNow.Check";
         }
         public const string Apply = "Settings.Apply";
+        public const string About = "Settings.About";
+        public static class AboutInfo
+        {
+            public const string Title = "Settings.AboutInfo.Title";
+            public const string Subtitle = "Settings.AboutInfo.Subtitle";
+            public const string Version = "Settings.AboutInfo.Version";
+        }
+        public static class AboutDeveloper
+        {
+            public const string Title = "Settings.AboutDeveloper.Title";
+            public const string Label = "Settings.AboutDeveloper.Label";
+        }
+        public static class AboutProject
+        {
+            public const string Title = "Settings.AboutProject.Title";
+            public const string SourceCodeDescription = "Settings.AboutProject.SourceCodeDescription";
+            public const string ViewRepository = "Settings.AboutProject.ViewRepository";
+        }
+        public static class AboutLicense
+        {
+            public const string Title = "Settings.AboutLicense.Title";
+            public const string Type = "Settings.AboutLicense.Type";
+            public const string Description = "Settings.AboutLicense.Description";
+            public const string ViewLicense = "Settings.AboutLicense.ViewLicense";
+            public const string ViewThirdParty = "Settings.AboutLicense.ViewThirdParty";
+        }
     }
     public static class SidePanel
     {

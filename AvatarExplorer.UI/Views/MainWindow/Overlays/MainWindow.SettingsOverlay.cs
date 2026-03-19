@@ -9,6 +9,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
@@ -296,6 +297,27 @@ public partial class MainWindow
         AvatarExplorer.ResetBulkImportPresetDatabase();
         Main_ReloadCurrentWindow();
     }
+    
+    private async void SettingsOverlay_OpenGithub_Click(object? sender, RoutedEventArgs e) => await LauncherService.OpenUri(this, DeveloperLink.GithubURL);
+
+    private async void SettingsOverlay_ViewLicenses_Click(object? sender, RoutedEventArgs e)
+    {
+        string licenseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LICENSE.txt");
+
+        if (File.Exists(licenseFile)) await LauncherService.OpenUri(this, licenseFile);
+        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.LicenseFileNotFound]);
+    }
+
+    private async void SettingsOverlay_ThirdPartyLicenses_Click(object? sender, RoutedEventArgs e)
+    {
+        string licenseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "THIRD_PARTY_LICENSES.txt");
+
+        if (File.Exists(licenseFile)) await LauncherService.OpenUri(this, licenseFile);
+        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ThirdPartyLicenseFileNotFound]);
+    }
+
+    private async void SettingsOverlay_OpenTwitter_Click(object? sender, RoutedEventArgs e) => await LauncherService.OpenUri(this, DeveloperLink.TwitterURL);
+    private async void SettingsOverlay_OpenSourceCode_Click(object? sender, RoutedEventArgs e) => await LauncherService.OpenUri(this, SoftwareLink.RepositoryURL);
 
     private async void SettingsOverlay_RestoreDataFromBackup_Click(object? sender, RoutedEventArgs e)
     {
