@@ -628,7 +628,7 @@
                     </TabControl>
 
                     <!-- 下のボタン -->
-                    <Grid Grid.Row="2" ColumnDefinitions="200,*,200" Margin="10,50,10,0">
+                    <Grid Grid.Row="2" ColumnDefinitions="200,*,200" Margin="10,20,10,0">
                         <Button Classes="button" FontWeight="Bold" CornerRadius="20" Grid.Column="0" Content="{Binding [Button.Close]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Padding="10" Click="SettingsOverlay_Close_Click" />
                         <Button Classes="accent" FontWeight="Bold" CornerRadius="20" Grid.Column="2" Content="{Binding [Settings.Apply]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Padding="10" Click="SettingsOverlay_Apply_Click" />
                     </Grid>
