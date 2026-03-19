@@ -567,6 +567,8 @@ public class AvatarExplorerApp
         {
             item.UpdateSupportedAvatars(item.SupportedAvatarsView.SelectMany(i => i == internalId ? commonAvatar.AvatarsView : [i]).Distinct());
         }
+
+        SaveItemDatabase();
     }
     public void ReplaceSupportedAvatarsToCommonAvatarGroup(string groupId)
     {
@@ -579,6 +581,8 @@ public class AvatarExplorerApp
         {
             item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => commonAvatar.AvatarsView.Contains(i) ? internalId : i).Distinct());
         }
+
+        SaveItemDatabase();
     }
     #endregion
 
@@ -739,6 +743,8 @@ public class AvatarExplorerApp
 
         bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
         if (result) item.ThumbnmailFileName = item.Id;
+
+        SaveItemDatabase();
 
         return Result.Success;
     }

@@ -125,7 +125,6 @@ public partial class MainWindow
         if (result == null || result != YesNoResult.Yes) return;
 
         AvatarExplorer.ReplaceSupportedAvatarsToCommonAvatarGroup(commonAvatar.Id);
-        AvatarExplorer.SaveItemDatabase();
         Main_ReloadCurrentWindow();
     }
     private async void EditCommonAvatarsOverlay_RemoveGroup_Click(object? sender, RoutedEventArgs e)
