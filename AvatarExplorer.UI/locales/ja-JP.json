@@ -70,14 +70,6 @@
     "Dialog.Title.NewBulkImportPresetName": "新しい一括インポートプリセット名",
     "Dialog.Title.NewTempAvatarName": "新しい仮アバター名",
 
-    "Dialog.Update.Available": "アップデートが利用可能です",
-    "Dialog.Update.VersionText": "新しいバージョン: {0} (現在のバージョン: {1})\nリリース日: {2}",
-    "Dialog.Update.ChangeLogs": "更新内容:",
-    "Dialog.Update.Later": "後で通知",
-    "Dialog.Update.UpdateNow": "今すぐ更新",
-    "Dialog.Update.NoUpdateAvailableTitle": "アップデートはありません",
-    "Dialog.Update.NoUpdateAvailable": "現在、最新バージョン (v{0}) をご利用中です。新しい更新プログラムは提供されていません。\n\n※ ベータ版をご利用の場合、設定に関わらず、次に新しい安定版が出るまで現在のバージョンが最新として維持されます。",
-
     "Dialog.SelectSaveFilePath": "ファイルの保存先を選択してください",
     "Dialog.SelectFolderPath": "フォルダを選択してください",
     "Dialog.SelectFilePath": "ファイルを選択してください",
@@ -331,18 +323,13 @@
     "AddItem.BoothId": "Booth ID",
     "AddItem.ImageUrl": "画像 URL",
     "AddItem.AuthorImageUrl": "作者画像 URL",
-    "AddItem.Cancel": "キャンセル",
-    "AddItem.Confirm": "確定して保存",
+    "AddItem.ConfirmAndSave": "確定して保存",
 
     "EditSupportedAvatars.Title": "対応アバターの選択",
     "EditSupportedAvatars.Search": "検索",
-    "EditSupportedAvatars.Cancel": "キャンセル",
-    "EditSupportedAvatars.Confirm": "確定",
     "EditSupportedAvatars.AddTempAvatar": "仮アバターの追加",
 
     "EditImplementedAvatars.Title": "実装アバターの選択",
-    "EditImplementedAvatars.Cancel": "キャンセル",
-    "EditImplementedAvatars.Confirm": "確定",
 
     "EditCommonAvatars.Title": "共通素体アバターの管理",
     "EditCommonAvatars.Group": "共通素体グループ",
@@ -353,7 +340,6 @@
 
     "ResolveTempAvatar.Title": "正式アイテムとの紐づけ",
     "ResolveTempAvatar.Search": "検索",
-    "ResolveTempAvatar.Cancel": "キャンセル",
 
     "ErrorLog.Title": "エラーログ",
     "ErrorLog.Reflesh": "更新",
@@ -374,9 +360,19 @@
 
     "Progress.Loading": "読み込み中...",
 
+    "UpdateDialog.Available": "アップデートが利用可能です",
+    "UpdateDialog.VersionText": "新しいバージョン: {0} (現在のバージョン: {1})\nリリース日: {2}",
+    "UpdateDialog.ChangeLogs": "更新内容:",
+    "UpdateDialog.Later": "後で通知",
+    "UpdateDialog.UpdateNow": "今すぐ更新",
+    "UpdateDialog.NoUpdateAvailableTitle": "アップデートはありません",
+    "UpdateDialog.NoUpdateAvailable": "現在、最新バージョン (v{0}) をご利用中です。新しい更新プログラムは提供されていません。\n\n※ ベータ版をご利用の場合、設定に関わらず、次に新しい安定版が出るまで現在のバージョンが最新として維持されます。",
+
     "DialogResult.OK": "完了",
     "DialogResult.Yes": "はい",
     "DialogResult.No": "いいえ",
 
-    "Button.Close": "閉じる"
+    "Button.Close": "閉じる",
+    "Button.Confirm": "確定",
+    "Button.Cancel": "キャンセル"
 }

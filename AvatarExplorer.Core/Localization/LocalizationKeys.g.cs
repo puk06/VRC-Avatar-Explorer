@@ -93,6 +93,8 @@ public static class LocalizationKey
             public const string FilePath = "Button.ToolTip.FilePath";
         }
         public const string Close = "Button.Close";
+        public const string Confirm = "Button.Confirm";
+        public const string Cancel = "Button.Cancel";
     }
     public static class ItemWindow
     {
@@ -136,16 +138,6 @@ public static class LocalizationKey
             public const string NewBulkImportPresetName = "Dialog.Title.NewBulkImportPresetName";
             public const string NewTempAvatarName = "Dialog.Title.NewTempAvatarName";
         }
-        public static class Update
-        {
-            public const string Available = "Dialog.Update.Available";
-            public const string VersionText = "Dialog.Update.VersionText";
-            public const string ChangeLogs = "Dialog.Update.ChangeLogs";
-            public const string Later = "Dialog.Update.Later";
-            public const string UpdateNow = "Dialog.Update.UpdateNow";
-            public const string NoUpdateAvailableTitle = "Dialog.Update.NoUpdateAvailableTitle";
-            public const string NoUpdateAvailable = "Dialog.Update.NoUpdateAvailable";
-        }
         public const string SelectSaveFilePath = "Dialog.SelectSaveFilePath";
         public const string SelectFolderPath = "Dialog.SelectFolderPath";
         public const string SelectFilePath = "Dialog.SelectFilePath";
@@ -169,8 +161,7 @@ public static class LocalizationKey
         public const string BoothId = "AddItem.BoothId";
         public const string ImageUrl = "AddItem.ImageUrl";
         public const string AuthorImageUrl = "AddItem.AuthorImageUrl";
-        public const string Cancel = "AddItem.Cancel";
-        public const string Confirm = "AddItem.Confirm";
+        public const string ConfirmAndSave = "AddItem.ConfirmAndSave";
     }
     public static class Scheme
     {
@@ -567,15 +558,11 @@ public static class LocalizationKey
     {
         public const string Title = "EditSupportedAvatars.Title";
         public const string Search = "EditSupportedAvatars.Search";
-        public const string Cancel = "EditSupportedAvatars.Cancel";
-        public const string Confirm = "EditSupportedAvatars.Confirm";
         public const string AddTempAvatar = "EditSupportedAvatars.AddTempAvatar";
     }
     public static class EditImplementedAvatars
     {
         public const string Title = "EditImplementedAvatars.Title";
-        public const string Cancel = "EditImplementedAvatars.Cancel";
-        public const string Confirm = "EditImplementedAvatars.Confirm";
     }
     public static class EditCommonAvatars
     {
@@ -590,7 +577,6 @@ public static class LocalizationKey
     {
         public const string Title = "ResolveTempAvatar.Title";
         public const string Search = "ResolveTempAvatar.Search";
-        public const string Cancel = "ResolveTempAvatar.Cancel";
     }
     public static class ErrorLog
     {
@@ -625,6 +611,16 @@ public static class LocalizationKey
     public static class Progress
     {
         public const string Loading = "Progress.Loading";
+    }
+    public static class UpdateDialog
+    {
+        public const string Available = "UpdateDialog.Available";
+        public const string VersionText = "UpdateDialog.VersionText";
+        public const string ChangeLogs = "UpdateDialog.ChangeLogs";
+        public const string Later = "UpdateDialog.Later";
+        public const string UpdateNow = "UpdateDialog.UpdateNow";
+        public const string NoUpdateAvailableTitle = "UpdateDialog.NoUpdateAvailableTitle";
+        public const string NoUpdateAvailable = "UpdateDialog.NoUpdateAvailable";
     }
     public static class DialogResult
     {
