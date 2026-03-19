@@ -7,4 +7,5 @@ public static class KonoAssetPath
     public static string AvatarsDatabasePath(string dataFolderPath) => Path.Combine(dataFolderPath, "metadata", "avatars.json");
     public static string AvatarWearablesDatabasePath(string dataFolderPath) => Path.Combine(dataFolderPath, "metadata", "avatarWearables.json");
     public static string WorldObjectsDatabasePath(string dataFolderPath) => Path.Combine(dataFolderPath, "metadata", "worldObjects.json");
+    public static string OtherAssetsDatabasePath(string dataFolderPath) => Path.Combine(dataFolderPath, "metadata", "otherAssets.json");
 }

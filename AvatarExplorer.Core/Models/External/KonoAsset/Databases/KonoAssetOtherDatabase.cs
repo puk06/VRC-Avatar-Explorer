@@ -2,6 +2,6 @@
 
 namespace AvatarExplorer.Core.Models.External.KonoAsset.Databases;
 
-public class KonoAssetAvatarDatabase : AbstractKonoAssetDatabase<KonoAssetAvatarItem>
+public class KonoAssetOtherDatabase : AbstractKonoAssetDatabase<KonoAssetOtherItem>
 {
 }

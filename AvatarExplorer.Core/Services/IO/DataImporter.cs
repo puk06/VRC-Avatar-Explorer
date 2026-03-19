@@ -1,7 +1,6 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Data.Paths.External.KonoAsset;
 using AvatarExplorer.Core.Data.Paths.External.V1;
-using AvatarExplorer.Core.Interfaces.External.KonoAsset;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.External.Booth;
@@ -176,11 +175,12 @@ internal static class DataImporter
 
             if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 0));
 
-            List<IKonoAssetItem> konoAssetItems =
+            List<AbstractKonoAssetItem> konoAssetItems =
             [
                 .. (FileSystemService.DeserializeClass<KonoAssetAvatarDatabase>(KonoAssetPath.AvatarsDatabasePath(dataFolderPath)).Value ?? new()).Data,
                 .. (FileSystemService.DeserializeClass<KonoAssetWearableDatabase>(KonoAssetPath.AvatarWearablesDatabasePath(dataFolderPath)).Value ?? new()).Data,
                 .. (FileSystemService.DeserializeClass<KonoAssetWorldDatabase>(KonoAssetPath.WorldObjectsDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetOtherDatabase>(KonoAssetPath.WorldObjectsDatabasePath(dataFolderPath)).Value ?? new()).Data,
             ];
 
             Dictionary<string, string> supportedAvatarMaps = new();

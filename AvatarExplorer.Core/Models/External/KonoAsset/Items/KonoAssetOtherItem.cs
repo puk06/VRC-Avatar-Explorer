@@ -4,7 +4,7 @@ using AvatarExplorer.Core.Services.Items;
 
 namespace AvatarExplorer.Core.Models.External.KonoAsset.Items;
 
-public class KonoAssetWorldItem : AbstractKonoAssetItem
+public class KonoAssetOtherItem : AbstractKonoAssetItem
 {
     [JsonPropertyName("category")]
     public string Category { get; set; } = string.Empty;
@@ -14,7 +14,7 @@ public class KonoAssetWorldItem : AbstractKonoAssetItem
         Item migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.ItemPath = $"<sys>{Id}";
         migratedItem.Type = ItemType.Custom;
-        migratedItem.CustomCategory = string.IsNullOrEmpty(Category) ? "Worlds" : Category;
+        migratedItem.CustomCategory = string.IsNullOrEmpty(Category) ? "Others" : Category;
 
         return migratedItem;
     }
