@@ -17,6 +17,7 @@ internal class AddItemOverlayWindowValues
     internal string BoothThumbnailUrl { get; set; } = string.Empty;
     internal int BoothId { get; set; } = -1;
     internal ItemType ItemType { get; set; } = ItemType.Avatar;
+    internal string CustomCategory { get; set; } = string.Empty;
     private List<string> SupportedAvatars { get; set; } = new();
     internal ImmutableArray<string> SupportedAvatarsView => SupportedAvatars.ToImmutableArray();
 
@@ -29,6 +30,7 @@ internal class AddItemOverlayWindowValues
         BoothThumbnailUrl = string.Empty;
         BoothId = -1;
         ItemType = ItemType.Avatar;
+        CustomCategory = string.Empty;
         SupportedAvatars.Clear();
     }
 
@@ -42,6 +44,7 @@ internal class AddItemOverlayWindowValues
         BoothThumbnailUrl = string.Empty;
         BoothId = item.BoothId;
         ItemType = item.Type;
+        CustomCategory = item.CustomCategory;
 
         UpdateSupportedAvatars(item.SupportedAvatarsView);
     }
@@ -54,6 +57,7 @@ internal class AddItemOverlayWindowValues
         BoothId = boothItem.BoothId;
         BoothThumbnailUrl = boothItem.ThumbnailUrl;
         ItemType = CategoryUtils.InvalidItemTypes.Contains(boothItem.EstimatedCategory) ? ItemType.Avatar : boothItem.EstimatedCategory;
+        CustomCategory = string.Empty;
     }
 
     internal string Validate()

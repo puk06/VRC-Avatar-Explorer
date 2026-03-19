@@ -30,6 +30,9 @@ public partial class MainWindow
     private string? _addItemOverlay_selectedItemId = null;
     private readonly AddItemOverlayWindowValues _addItemOverlay_addItemWindowValues = new();
 
+    // カスタムカテゴリかどうか(式: ItemTypeの数 - 無効なItemType数 - カスタムカテゴリ)
+    private static readonly int AddItemOverlay_CustomCategoryIndex = Enum.GetValues<ItemType>().Length - CategoryUtils.InvalidItemTypes.Length - 1;
+
     private void AddItemOverlay_Open(Item item)
     {
         AddItemOverlay_InitializeCategories();
@@ -208,7 +211,7 @@ public partial class MainWindow
     {
         AddItemOverlay_BoothItemTitleTextBox.Text = addItemWindowValues.Title;
         AddItemOverlay_BoothItemAuthorTextBox.Text = addItemWindowValues.Author;
-        AddItemOverlay_ItemTypeComboBox.SelectedIndex = (int)addItemWindowValues.ItemType;
+        AddItemOverlay_ItemTypeComboBox.SelectedIndex = AddItemOverlay_GetCategoryIndex(addItemWindowValues.ItemType, addItemWindowValues.CustomCategory);
         AddItemOverlay_UpdateSupportedAvatarsLabel();
         AddItemOverlay_InternalAuthorIdTextBox.Text = addItemWindowValues.BoothAuthorId;
         AddItemOverlay_InternalBoothIdTextBox.Text = addItemWindowValues.BoothId == -1 ? string.Empty : addItemWindowValues.BoothId.ToString();
@@ -223,12 +226,33 @@ public partial class MainWindow
         addItemWindowValues.BoothThumbnailUrl = AddItemOverlay_InternalImageURLTextBox.Text ?? string.Empty;
     }
 
+    private int AddItemOverlay_GetCategoryIndex(ItemType itemType, string customCategory)
+    {
+        if (itemType == ItemType.Custom)
+        {
+            int index = 0;
+
+            for (int i = AddItemOverlay_CustomCategoryIndex; i < AddItemOverlay_ItemTypeComboBox.Items.Count; i++)
+            {
+                string? categoryName = AddItemOverlay_ItemTypeComboBox.Items[i]?.ToString();
+                if (string.IsNullOrEmpty(categoryName)) continue;
+
+                if (categoryName == customCategory) index = i;
+            }
+
+            return index;
+        }
+        else
+        {
+            return (int)itemType;
+        }
+    }
+
     private ItemCategory AddItemOverlay_GetCurrentCategory()
     {
         int selectedIndex = AddItemOverlay_ItemTypeComboBox.SelectedIndex;
 
-        // カスタムカテゴリかどうかのチェック(式: ItemTypeの数 - 無効なItemType数 - カスタムカテゴリ)
-        if (selectedIndex >= (Enum.GetValues<ItemType>().Length - CategoryUtils.InvalidItemTypes.Length - 1))
+        if (selectedIndex >= AddItemOverlay_CustomCategoryIndex)
         {
             return new ItemCategory(AddItemOverlay_ItemTypeComboBox.SelectedItem?.ToString() ?? string.Empty);
         }
