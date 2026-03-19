@@ -543,7 +543,6 @@ public static class LocalizationKey
     }
     public static class AdvancedSearch
     {
-        public const string Enable = "AdvancedSearch.Enable";
         public const string OrSearch = "AdvancedSearch.OrSearch";
         public const string Title = "AdvancedSearch.Title";
         public const string Author = "AdvancedSearch.Author";

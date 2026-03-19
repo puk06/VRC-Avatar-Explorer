@@ -266,7 +266,7 @@ public partial class MainWindow : Window
 
         SearchFilter searchFilter = SearchFilterBuilder.Build(_main_searchTextCache, SearchUtils.ParseCategory);
 
-        if (AdvancedSearchPanel_Enable.IsChecked ?? false) AdvancedSearchPanel_ApplyValues(searchFilter);
+        AdvancedSearchPanel_ApplyValues(searchFilter);
 
         if (string.IsNullOrEmpty(_main_searchTextCache) && searchFilter.IsEmpty)
         {
