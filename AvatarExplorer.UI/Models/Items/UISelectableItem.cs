@@ -80,7 +80,6 @@ internal class UISelectableItem
         Title = author.Name;
         Description = (LocalizationKey.Button.Description.Item.Count, [ItemCount.ToString()]);
         ImageFileName = SystemIconKey.AvatarIcon;
-
         Tag = new(ItemTagStates.RootAuthor, author.Name);
         IconType = IconType.None;
     }
