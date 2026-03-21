@@ -750,7 +750,9 @@ public class AvatarExplorerApp
         if (fetchResult.IsError) return Error.Failure(description: fetchResult.Errors.ToErrorString());
 
         bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
-        if (result) item.ThumbnmailFileName = item.Id;
+        if (!result) return Error.Failure(description: "Failed to fetch thumbnail.");
+        
+        item.ThumbnmailFileName = item.Id;
 
         SaveItemDatabase();
 
