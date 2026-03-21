@@ -715,6 +715,8 @@ public class AvatarExplorerApp
         _commonAvatarDatabaseManager.AddRange(result.Value.CommonAvatars);
         _tempAvatarsDatabaseManager.AddRange(result.Value.TempAvatars);
 
+        UpdateSearchIndex();
+
         SaveItemDatabase();
         SaveCommonAvatarDatabase();
         SaveTempAvatarsDatabase();
