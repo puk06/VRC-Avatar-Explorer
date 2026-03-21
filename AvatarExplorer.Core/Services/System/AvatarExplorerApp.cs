@@ -121,6 +121,8 @@ public class AvatarExplorerApp
     #region Update API
     public void UpdateSearchIndex()
     {
+        _itemSearchIndexDictionary.Clear();
+
         Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
         foreach (Item item in _itemDatabaseManager.Items)
         {
