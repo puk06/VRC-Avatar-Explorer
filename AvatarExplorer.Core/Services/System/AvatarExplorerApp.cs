@@ -313,7 +313,7 @@ public class AvatarExplorerApp
     {
         if (!Directory.Exists(itemPath))
         {
-            ErrorManager.Instance.PostInternalError(string.Join("Directory not found: '{0}'.", itemPath));
+            ErrorManager.Instance.PostInternalError(string.Format("Directory not found: '{0}'.", itemPath));
             return [];
         }
 
@@ -366,7 +366,7 @@ public class AvatarExplorerApp
 
         if (!Directory.Exists(itemPath))
         {
-            ErrorManager.Instance.PostInternalError(string.Join("Directory not found: '{0}'.", itemPath));
+            ErrorManager.Instance.PostInternalError(string.Format("Directory not found: '{0}'.", itemPath));
             return [];
         }
         
