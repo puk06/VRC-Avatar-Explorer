@@ -67,8 +67,12 @@ internal static class ItemSearchService
                 string[] targets = getTargets(group.Key);
 
                 bool hasMatchInThisGroup = group.Any(token =>
-                    targets.Any(target =>
-                        target.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase)));
+                {
+                    if (token.IsNegation)
+                        return targets.All(target => !target.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase));
+                    else
+                        return targets.Any(target => target.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase));
+                });
 
                 if (!hasMatchInThisGroup)
                     return false;
