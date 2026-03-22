@@ -5,7 +5,7 @@ namespace AvatarExplorer.Core.Services.Items;
 
 public static partial class SearchFilterBuilder
 {
-    [GeneratedRegex(@"(?<key>Title|Author|Booth|Avatar|Category|Memo|Folder|File|Implemented|NotImplemented|Tag|Common|OR|CategoryOR)=(?:""(?<value>.*?)""|(?<value>[^\s]+))|(?<word>[^\s]+)")]
+    [GeneratedRegex(@"(?<key>Title|Author|Booth|Avatar|Category|Memo|Folder|File|Implemented|NotImplemented|Tag|Common|OR|CategoryOR|EmptyAvatarAsNone)=(?:""(?<value>.*?)""|(?<value>[^\s]+))|(?<word>[^\s]+)")]
     private static partial Regex SearchFilterTextRegex();
 
     private sealed class RawSearchToken
@@ -93,6 +93,9 @@ public static partial class SearchFilterBuilder
                 case "CategoryOR":
                     filter.IsCategoryOrCondition = token.Value.Equals("true", StringComparison.CurrentCultureIgnoreCase);
                     if (filter.IsCategoryOrCondition) filter.IsOrCondition = false; // カテゴリーOR検索はOR検索と排他にする
+                    break;
+                case "EmptyAvatarAsNone":
+                    filter.TreatEmptySupportedAvatarAsNone = token.Value.Equals("true", StringComparison.CurrentCultureIgnoreCase);
                     break;
                 case "FreeWord":
                     filter.SearchTokens.Add(new SearchToken(SearchTokenType.FreeWord, token.Value));

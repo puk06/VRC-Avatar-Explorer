@@ -148,6 +148,7 @@
     "SearchFilter.SearchWord": "検索語句: {0}",
     "SearchFilter.IsOrSearch": "全体OR検索",
     "SearchFilter.IsCategoryOrSearch": "カテゴリOR検索",
+    "SearchFilter.EmptySupportedAvatarAsNone": "対応未設定=未対応",
     
     "Success.Default": "成功",
     "Success.Import": "データのインポートに成功しました",
@@ -324,6 +325,7 @@
     "AdvancedSearch.Author": "作者名",
     "AdvancedSearch.BoothId": "Booth Id",
     "AdvancedSearch.SupportedAvatar": "対応アバター",
+    "AdvancedSearch.EmptySupportedAvatarAsNone": "対応アバター未設定を未対応として扱う",
     "AdvancedSearch.Category": "カテゴリ",
     "AdvancedSearch.Memo": "メモ",
     "AdvancedSearch.Folder": "フォルダー",

@@ -32,17 +32,25 @@ internal static class ItemSearchService
     {
         string[] getTargets(SearchTokenType type)
         {
+            string[] getSupportedAvatarTargets()
+            {
+                if (item.SupportedAvatarsView.Length > 0)
+                {
+                    return AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
+                        .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i))
+                        .Where(name => !string.IsNullOrEmpty(name))
+                        .ToArray();
+                }
+
+                return searchFilter.TreatEmptySupportedAvatarAsNone ? Array.Empty<string>() : avatarTitleMaps.Values.ToArray();
+            }
+
             return type switch
             {
                 SearchTokenType.Title => [item.Title],
                 SearchTokenType.Author => [item.Author],
                 SearchTokenType.BoothId => [item.BoothId.ToString()],
-                SearchTokenType.SupportedAvatar => item.SupportedAvatarsView.Length > 0
-                    ? AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
-                        .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i))
-                        .Where(name => !string.IsNullOrEmpty(name))
-                        .ToArray()
-                    : avatarTitleMaps.Values.ToArray(),
+                SearchTokenType.SupportedAvatar => getSupportedAvatarTargets(),
                 SearchTokenType.Category => [item.Type == ItemType.Custom ? item.CustomCategory : (item.Type.GetLocalizationKey() ?? string.Empty)],
                 SearchTokenType.ItemMemo => [item.ItemMemo],
                 SearchTokenType.FolderName => [Path.GetFileName(item.ItemPath)],

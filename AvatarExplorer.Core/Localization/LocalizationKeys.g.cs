@@ -291,6 +291,7 @@ public static class LocalizationKey
         public const string SearchWord = "SearchFilter.SearchWord";
         public const string IsOrSearch = "SearchFilter.IsOrSearch";
         public const string IsCategoryOrSearch = "SearchFilter.IsCategoryOrSearch";
+        public const string EmptySupportedAvatarAsNone = "SearchFilter.EmptySupportedAvatarAsNone";
     }
     public static class Success
     {
@@ -587,6 +588,7 @@ public static class LocalizationKey
         public const string Author = "AdvancedSearch.Author";
         public const string BoothId = "AdvancedSearch.BoothId";
         public const string SupportedAvatar = "AdvancedSearch.SupportedAvatar";
+        public const string EmptySupportedAvatarAsNone = "AdvancedSearch.EmptySupportedAvatarAsNone";
         public const string Category = "AdvancedSearch.Category";
         public const string Memo = "AdvancedSearch.Memo";
         public const string Folder = "AdvancedSearch.Folder";

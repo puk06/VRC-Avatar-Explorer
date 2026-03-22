@@ -148,6 +148,7 @@
     "SearchFilter.SearchWord": "Search Word: {0}",
     "SearchFilter.IsOrSearch": "Overall OR Search",
     "SearchFilter.IsCategoryOrSearch": "Category OR Search",
+    "SearchFilter.EmptySupportedAvatarAsNone": "Unset supported=none",
     
     "Success.Default": "Success",
     "Success.Import": "Data import successful",
@@ -324,6 +325,7 @@
     "AdvancedSearch.Author": "Author Name",
     "AdvancedSearch.BoothId": "Booth Id",
     "AdvancedSearch.SupportedAvatar": "Supported Avatar",
+    "AdvancedSearch.EmptySupportedAvatarAsNone": "Treat empty supported avatars as none",
     "AdvancedSearch.Category": "Category",
     "AdvancedSearch.Memo": "Memo",
     "AdvancedSearch.Folder": "Folder",

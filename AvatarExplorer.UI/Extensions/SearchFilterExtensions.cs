@@ -25,6 +25,7 @@ internal static class SearchFilterExtensions
 
         if (searchFilter.IsOrCondition) searchFilterStrings.Add(Localizer.Instance[LocalizationKey.SearchFilter.IsOrSearch]);
         if (searchFilter.IsCategoryOrCondition) searchFilterStrings.Add(Localizer.Instance[LocalizationKey.SearchFilter.IsCategoryOrSearch]);
+        if (searchFilter.TreatEmptySupportedAvatarAsNone) searchFilterStrings.Add(Localizer.Instance[LocalizationKey.SearchFilter.EmptySupportedAvatarAsNone]);
         if (getSearchTokensByType(SearchTokenType.Title).Any()) addKey(LocalizationKey.SearchFilter.Title, getSearchTokensByType(SearchTokenType.Title));
         if (getSearchTokensByType(SearchTokenType.Author).Any()) addKey(LocalizationKey.SearchFilter.Author, getSearchTokensByType(SearchTokenType.Author));
         if (getSearchTokensByType(SearchTokenType.BoothId).Any()) addKey(LocalizationKey.SearchFilter.Booth, getSearchTokensByType(SearchTokenType.BoothId));

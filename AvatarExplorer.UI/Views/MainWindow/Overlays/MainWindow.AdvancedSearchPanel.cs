@@ -11,6 +11,7 @@ public partial class MainWindow
     {
         searchFilter.IsOrCondition = AdvancedSearchPanel_OrSearch.IsChecked ?? false;
         searchFilter.IsCategoryOrCondition = AdvancedSearchPanel_CategoryOrSearch.IsChecked ?? false;
+        searchFilter.TreatEmptySupportedAvatarAsNone = AdvancedSearchPanel_EmptySupportedAvatarAsNone.IsChecked ?? false;
         if (searchFilter.IsCategoryOrCondition) searchFilter.IsOrCondition = false; // カテゴリーOR検索はOR検索と排他にする
         
         searchFilter.SearchTokens.AddRange(TextParser.Parse(AdvancedSearchPanel_Title.Text ?? string.Empty).Select(value => new SearchToken(SearchTokenType.Title, value)));

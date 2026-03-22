@@ -155,6 +155,11 @@
                                                             <TextBox x:Name="AdvancedSearchPanel_Avatar" FontSize="14" Watermark="{Binding [AdvancedSearch.SupportedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
+                                                            <TextBlock Text="{Binding [AdvancedSearch.EmptySupportedAvatarAsNone]}" FontSize="14" Opacity="0.85"/>
+                                                            <Separator Background="#22000000"/>
+                                                            <ToggleSwitch x:Name="AdvancedSearchPanel_EmptySupportedAvatarAsNone" VerticalAlignment="Center" HorizontalAlignment="Left" IsCheckedChanged="Main_SearchValue_Changed"/>
+                                                        </StackPanel>
+                                                        <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.Category]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Category" FontSize="14" Watermark="{Binding [AdvancedSearch.Category]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
