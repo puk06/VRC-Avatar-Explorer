@@ -357,7 +357,7 @@ public partial class MainWindow
         {
             // 既にある同じBoothIdのアイテム
             // あればIdが入り、なければnull
-            string? existingItem = AvatarExplorer.GetAllItems().FirstOrDefault(i => i.BoothId == itemCreationContext.BoothId)?.Id;
+            string? existingItem = itemCreationContext.BoothId == -1 ? null : AvatarExplorer.GetAllItems().FirstOrDefault(i => i.BoothId == itemCreationContext.BoothId)?.Id;
 
             if (existingItem != null)
             {
