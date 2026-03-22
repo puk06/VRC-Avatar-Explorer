@@ -581,6 +581,7 @@ public static class LocalizationKey
     public static class AdvancedSearch
     {
         public const string OrSearch = "AdvancedSearch.OrSearch";
+        public const string CategoryOrSearch = "AdvancedSearch.CategoryOrSearch";
         public const string Title = "AdvancedSearch.Title";
         public const string Author = "AdvancedSearch.Author";
         public const string BoothId = "AdvancedSearch.BoothId";

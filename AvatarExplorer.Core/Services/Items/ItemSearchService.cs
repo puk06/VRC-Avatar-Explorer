@@ -37,10 +37,12 @@ internal static class ItemSearchService
                 SearchTokenType.Title => [item.Title],
                 SearchTokenType.Author => [item.Author],
                 SearchTokenType.BoothId => [item.BoothId.ToString()],
-                SearchTokenType.SupportedAvatar => AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
-                    .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i))
-                    .Where(name => !string.IsNullOrEmpty(name))
-                    .ToArray(),
+                SearchTokenType.SupportedAvatar => item.SupportedAvatarsView.Length > 0
+                    ? AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
+                        .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i))
+                        .Where(name => !string.IsNullOrEmpty(name))
+                        .ToArray()
+                    : avatarTitleMaps.Values.ToArray(),
                 SearchTokenType.Category => [item.Type == ItemType.Custom ? item.CustomCategory : (item.Type.GetLocalizationKey() ?? string.Empty)],
                 SearchTokenType.ItemMemo => [item.ItemMemo],
                 SearchTokenType.FolderName => [Path.GetFileName(item.ItemPath)],
@@ -56,50 +58,39 @@ internal static class ItemSearchService
             };
         }
 
-        foreach (SearchToken token in searchFilter.SearchTokens)
+        if (searchFilter.IsCategoryOrCondition)
         {
-            bool isNegation = token.Value.StartsWith('~');
-            string filterValue = isNegation ? token.Value[1..] : token.Value;
-
-            string[] targets = getTargets(token.Type);
-
-            if (searchFilter.IsOrCondition)
-            {
-                if (isNegation)
-                {
-                    if (targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    if (targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                if (isNegation)
-                {
-                    if (!targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    if (!targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
-                    {
-                        return false;
-                    }
-                }
-            }
+            return !searchFilter.SearchTokens
+                .GroupBy(i => i.Type)
+                .Any(i => !i.Any(token => getTargets(i.Key).Any(target => target.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase))));
         }
+        else
+        {
+            foreach (SearchToken token in searchFilter.SearchTokens)
+            {
+                bool isNegation = token.Value.StartsWith('~');
+                string filterValue = isNegation ? token.Value[1..] : token.Value;
 
-        return !searchFilter.IsOrCondition;
+                string[] targets = getTargets(token.Type);
+
+                if (searchFilter.IsOrCondition)
+                {
+                    if (isNegation)
+                        if (targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase))) return true;
+                    else
+                        if (targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase))) return true;
+                }
+                else
+                {
+                    if (isNegation)
+                        if (!targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase))) return false;
+                    else
+                        if (!targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase))) return false;
+                }
+            }
+
+            return !searchFilter.IsOrCondition;
+        }
     }
 
     internal static string BuildItemSearchIndex(Item item, Dictionary<string, string> avatarTitleMaps, IEnumerable<CommonAvatar> commonAvatars)

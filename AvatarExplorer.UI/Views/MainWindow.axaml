@@ -129,6 +129,10 @@
                                                             <ToggleSwitch x:Name="AdvancedSearchPanel_OrSearch" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" IsCheckedChanged="Main_SearchValue_Changed"/>
                                                         </Grid>
                                                         <Grid ColumnDefinitions="90,*" ColumnSpacing="10">
+                                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding [AdvancedSearch.CategoryOrSearch]}" FontSize="15" VerticalAlignment="Center"/>
+                                                            <ToggleSwitch x:Name="AdvancedSearchPanel_CategoryOrSearch" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" IsCheckedChanged="Main_SearchValue_Changed"/>
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="90,*" ColumnSpacing="10">
                                                             <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding [AdvancedSearch.Title]}" FontSize="15" VerticalAlignment="Center"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Title" Grid.Row="2" Grid.Column="1" FontSize="14" Watermark="{Binding [AdvancedSearch.Title]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </Grid>

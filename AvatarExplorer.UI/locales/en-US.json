@@ -317,7 +317,8 @@
     "SidePanel.BulkImport": "Bulk Import",
     "SidePanel.BulkImportPreset": "Bulk Import Preset",
 
-    "AdvancedSearch.OrSearch": "OR Search",
+    "AdvancedSearch.OrSearch": "Overall OR Search",
+    "AdvancedSearch.CategoryOrSearch": "Category OR Search",
     "AdvancedSearch.Title": "Title",
     "AdvancedSearch.Author": "Author Name",
     "AdvancedSearch.BoothId": "Booth Id",

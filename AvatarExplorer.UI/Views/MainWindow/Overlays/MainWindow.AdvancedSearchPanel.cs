@@ -9,6 +9,7 @@ public partial class MainWindow
     private void AdvancedSearchPanel_ApplyValues(SearchFilter searchFilter)
     {
         searchFilter.IsOrCondition = AdvancedSearchPanel_OrSearch.IsChecked ?? false;
+        searchFilter.IsCategoryOrCondition = AdvancedSearchPanel_CategoryOrSearch.IsChecked ?? false;
         searchFilter.SearchTokens.AddRange(TextParser.Parse(AdvancedSearchPanel_Title.Text ?? string.Empty).Select(value => new SearchToken(SearchTokenType.Title, value)));
         searchFilter.SearchTokens.AddRange(TextParser.Parse(AdvancedSearchPanel_Author.Text ?? string.Empty).Select(value => new SearchToken(SearchTokenType.Author, value)));
         searchFilter.SearchTokens.AddRange(TextParser.Parse(AdvancedSearchPanel_Booth.Text ?? string.Empty).Select(value => new SearchToken(SearchTokenType.BoothId, value)));
