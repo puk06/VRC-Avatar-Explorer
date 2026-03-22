@@ -52,49 +52,46 @@ public static partial class SearchFilterBuilder
             switch (token.Key)
             {
                 case "Title":
-                    filter.Titles.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.Title, token.Value));
                     break;
                 case "Author":
-                    filter.Authors.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.Author, token.Value));
                     break;
                 case "Booth":
-                    filter.BoothIds.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.BoothId, token.Value));
                     break;
                 case "Avatar":
-                    filter.SupportedAvatars.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.SupportedAvatar, token.Value));
                     break;
                 case "Category":
-                    filter.Categories.Add(toLocalizationKey == null ? token.Value : toLocalizationKey(token.Value));
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.Category, toLocalizationKey == null ? token.Value : toLocalizationKey(token.Value)));
                     break;
                 case "Memo":
-                    filter.ItemMemos.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.ItemMemo, token.Value));
                     break;
                 case "Folder":
-                    filter.FolderNames.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.FolderName, token.Value));
                     break;
                 case "File":
-                    filter.FileNames.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.FileName, token.Value));
                     break;
                 case "Implemented":
-                    filter.ImplementedAvatars.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.ImplementedAvatar, token.Value));
                     break;
                 case "NotImplemented":
-                    filter.NotImplementedAvatars.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.NotImplementedAvatar, token.Value));
                     break;
                 case "Tag":
-                    filter.Tags.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.Tag, token.Value));
                     break;
                 case "Common":
-                    filter.CommonAvatars.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.CommonAvatar, token.Value));
                     break;
                 case "OR":
-                    filter.IsOrSearch = token.Value.Equals("true", StringComparison.CurrentCultureIgnoreCase);
-                    break;
-                case "BrokenItems":
-                    filter.BrokenItems = token.Value.Equals("true", StringComparison.CurrentCultureIgnoreCase);
+                    filter.IsOrCondition = token.Value.Equals("true", StringComparison.CurrentCultureIgnoreCase);
                     break;
                 case "FreeWord":
-                    filter.SearchWords.Add(token.Value);
+                    filter.SearchTokens.Add(new SearchToken(SearchTokenType.FreeWord, token.Value));
                     break;
             }
         }

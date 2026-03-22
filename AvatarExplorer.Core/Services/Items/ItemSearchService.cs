@@ -25,130 +25,81 @@ internal static class ItemSearchService
         }
 
         return matchedItems
-            .OrderByDescending(i => !searchIndexDictionary.TryGetValue(i.Id, out string? value) ? 0 : SearchUtils.GetScore(value, searchFilter.SearchWords))
+            .OrderByDescending(i => !searchIndexDictionary.TryGetValue(i.Id, out string? value) ? 0 : SearchUtils.GetScore(value, searchFilter.SearchTokens.Where(t => t.Type == SearchTokenType.FreeWord).Select(t => t.Value)))
             .ToImmutableArray();
     }
     private static bool Matches(Item item, SearchFilter searchFilter, string searchIndex, Dictionary<string, string> avatarTitleMaps, IEnumerable<CommonAvatar> commonAvatars, string parentFolder)
     {
-        bool matchTitle = searchFilter.Titles.Count == 0 || SearchUtils.MatchesFilter(
-            [item.Title], searchFilter.Titles,
-            searchFilter.IsOrSearch,
-            (target, filter) => target.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-        );
-
-        bool matchAuthor = searchFilter.Authors.Count == 0 || SearchUtils.MatchesFilter(
-            [item.Author], searchFilter.Authors,
-            searchFilter.IsOrSearch,
-            (target, filter) => target.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-        );
-
-        bool matchBooth = searchFilter.BoothIds.Count == 0 || SearchUtils.MatchesFilter(
-            [item.BoothId.ToString()], searchFilter.BoothIds,
-            searchFilter.IsOrSearch,
-            (target, filter) => target == filter
-        );
-
-        bool matchAvatar = searchFilter.SupportedAvatars.Count == 0 || SearchUtils.MatchesFilter(
-            AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
-                .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)),
-            searchFilter.SupportedAvatars,
-            searchFilter.IsOrSearch,
-            (target, filter) => !string.IsNullOrEmpty(target) && target.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-        );
-
-        bool matchCategory = searchFilter.Categories.Count == 0 || SearchUtils.MatchesFilter(
-            [item.Type == ItemType.Custom ? item.CustomCategory : item.Type.GetLocalizationKey()], searchFilter.Categories,
-            searchFilter.IsOrSearch,
-            (target, filter) => target != null && target.Contains(filter!)
-        );
-
-        bool matchMemo = searchFilter.ItemMemos.Count == 0 || SearchUtils.MatchesFilter(
-            [item.ItemMemo], searchFilter.ItemMemos,
-            searchFilter.IsOrSearch,
-            (target, filter) => target.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-        );
-
-        bool matchPath = searchFilter.FolderNames.Count == 0 || SearchUtils.MatchesFilter(
-            [Path.GetFileName(item.ItemPath)], searchFilter.FolderNames,
-            searchFilter.IsOrSearch,
-            (target, filter) => target.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-        );
-
-        bool matchFile;
-        if (searchFilter.FileNames.Count == 0)
+        string[] getTargets(SearchTokenType type)
         {
-            matchFile = true;
-        }
-        else
-        {
-            string itemPath = ItemUtils.GetItemPath(parentFolder, item.ItemPath);
-
-            List<string> files = new();
-            if (!string.IsNullOrEmpty(itemPath) && Directory.Exists(itemPath)) files.AddRange(FileSystemService.EnumerateFiles(itemPath));
-
-            matchFile = SearchUtils.MatchesFilter(
-                files, searchFilter.FileNames,
-                searchFilter.IsOrSearch,
-                (target, filter) => target.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-            );
+            return type switch
+            {
+                SearchTokenType.Title => [item.Title],
+                SearchTokenType.Author => [item.Author],
+                SearchTokenType.BoothId => [item.BoothId.ToString()],
+                SearchTokenType.SupportedAvatar => AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
+                    .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i))
+                    .Where(name => !string.IsNullOrEmpty(name))
+                    .ToArray(),
+                SearchTokenType.Category => [item.Type == ItemType.Custom ? item.CustomCategory : (item.Type.GetLocalizationKey() ?? string.Empty)],
+                SearchTokenType.ItemMemo => [item.ItemMemo],
+                SearchTokenType.FolderName => [Path.GetFileName(item.ItemPath)],
+                SearchTokenType.FileName => !string.IsNullOrEmpty(ItemUtils.GetItemPath(parentFolder, item.ItemPath)) && Directory.Exists(ItemUtils.GetItemPath(parentFolder, item.ItemPath)) && searchFilter.SearchTokens.Any(i => i.Type == SearchTokenType.FileName)
+                    ? FileSystemService.EnumerateFiles(ItemUtils.GetItemPath(parentFolder, item.ItemPath)).ToArray()
+                    : Array.Empty<string>(),
+                SearchTokenType.ImplementedAvatar => item.ImplementedAvatarsView.Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)).Where(name => !string.IsNullOrEmpty(name)).ToArray(),
+                SearchTokenType.NotImplementedAvatar => avatarTitleMaps.Keys.Except(item.ImplementedAvatarsView).Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)).Where(name => !string.IsNullOrEmpty(name)).ToArray(),
+                SearchTokenType.Tag => item.TagsView.ToArray(),
+                SearchTokenType.CommonAvatar => commonAvatars.Where(ca => ca.AvatarsView.Any(a => item.SupportedAvatarsView.Contains(a))).Select(ca => ca.GroupName).ToArray(),
+                SearchTokenType.FreeWord => [searchIndex],
+                _ => Array.Empty<string>()
+            };
         }
 
-        IEnumerable<string> implementedAvatarTitles = item.ImplementedAvatarsView.Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i));
-
-        bool matchImplemented = searchFilter.ImplementedAvatars.Count == 0 || SearchUtils.MatchesFilter(
-            implementedAvatarTitles, searchFilter.ImplementedAvatars,
-            searchFilter.IsOrSearch,
-            (target, filter) => !string.IsNullOrEmpty(target) && target.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-        );
-
-        bool matchNotImplemented = searchFilter.NotImplementedAvatars.Count == 0
-            || (searchFilter.NotImplementedAvatars.Count > 0 && searchFilter.IsOrSearch
-                ? searchFilter.NotImplementedAvatars.Any(filter => !implementedAvatarTitles.Any(name => name.Contains(filter, StringComparison.CurrentCultureIgnoreCase)))
-                : searchFilter.NotImplementedAvatars.All(filter => !implementedAvatarTitles.Any(name => name.Contains(filter, StringComparison.CurrentCultureIgnoreCase))));
-
-        bool matchTag = searchFilter.Tags.Count == 0 || SearchUtils.MatchesFilter(
-            item.TagsView, searchFilter.Tags,
-            searchFilter.IsOrSearch,
-            (target, filter) => target.Contains(filter, StringComparison.CurrentCultureIgnoreCase)
-        );
-
-        bool matchCommon;
-        if (searchFilter.CommonAvatars.Count == 0)
+        foreach (SearchToken token in searchFilter.SearchTokens)
         {
-            matchCommon = true;
+            bool isNegation = token.Value.StartsWith('~');
+            string filterValue = isNegation ? token.Value[1..] : token.Value;
+
+            string[] targets = getTargets(token.Type);
+
+            if (searchFilter.IsOrCondition)
+            {
+                if (isNegation)
+                {
+                    if (targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if (isNegation)
+                {
+                    if (!targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        return false;
+                    }
+                }
+            }
         }
-        else
-        {
-            List<CommonAvatar?> filterCommonAvatars = searchFilter.CommonAvatars
-                .Select(name => CommonAvatarService.GetCommonAvatarFromName(commonAvatars, name))
-                .ToList();
 
-            matchCommon = searchFilter.IsOrSearch
-                ? item.SupportedAvatarsView.Any(avatar => filterCommonAvatars.Any(ca => ca != null && ca.AvatarsView.Contains(avatar)))
-                : filterCommonAvatars.All(ca => ca != null && item.SupportedAvatarsView.Any(avatar => ca.AvatarsView.Contains(avatar)));
-        }
-
-        bool matchBroken = !searchFilter.BrokenItems || (searchFilter.BrokenItems && !(item.SupportedAvatarsView.Contains(item.ItemPath) || item.ImplementedAvatarsView.Contains(item.ItemPath)));
-
-        bool matchWord = searchFilter.SearchWords.Count == 0
-            || (searchFilter.IsOrSearch
-                ? searchFilter.SearchWords.Any(word => SearchUtils.GetWordSearchResult(searchIndex, word))
-                : searchFilter.SearchWords.All(word => SearchUtils.GetWordSearchResult(searchIndex, word)));
-
-        return matchTitle
-            && matchAuthor
-            && matchBooth
-            && matchAvatar
-            && matchCategory
-            && matchMemo
-            && matchPath
-            && matchFile
-            && matchImplemented
-            && matchNotImplemented
-            && matchTag
-            && matchCommon
-            && matchBroken
-            && matchWord;
+        return !searchFilter.IsOrCondition;
     }
 
     internal static string BuildItemSearchIndex(Item item, Dictionary<string, string> avatarTitleMaps, IEnumerable<CommonAvatar> commonAvatars)

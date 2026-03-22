@@ -268,7 +268,7 @@ public partial class MainWindow : Window
 
         AdvancedSearchPanel_ApplyValues(searchFilter);
 
-        if (string.IsNullOrEmpty(_main_searchTextCache) && searchFilter.IsEmpty)
+        if (string.IsNullOrEmpty(_main_searchTextCache) && searchFilter.SearchTokens.Count == 0)
         {
             Main_RenderRightPanel();
             return;
