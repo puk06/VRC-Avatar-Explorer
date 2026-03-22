@@ -146,7 +146,8 @@
     "SearchFilter.Tag": "Tag: {0}",
     "SearchFilter.CommonAvatar": "Common Avatar: {0}",
     "SearchFilter.SearchWord": "Search Word: {0}",
-    "SearchFilter.IsOrSearch": "OR Search",
+    "SearchFilter.IsOrSearch": "Overall OR Search",
+    "SearchFilter.IsCategoryOrSearch": "Category OR Search",
     
     "Success.Default": "Success",
     "Success.Import": "Data import successful",

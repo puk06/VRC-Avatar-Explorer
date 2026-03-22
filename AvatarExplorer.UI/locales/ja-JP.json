@@ -146,7 +146,8 @@
     "SearchFilter.Tag": "タグ: {0}",
     "SearchFilter.CommonAvatar": "共通素体: {0}",
     "SearchFilter.SearchWord": "検索語句: {0}",
-    "SearchFilter.IsOrSearch": "OR検索",
+    "SearchFilter.IsOrSearch": "全体OR検索",
+    "SearchFilter.IsCategoryOrSearch": "カテゴリOR検索",
     
     "Success.Default": "成功",
     "Success.Import": "データのインポートに成功しました",

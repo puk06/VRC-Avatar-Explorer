@@ -290,6 +290,7 @@ public static class LocalizationKey
         public const string CommonAvatar = "SearchFilter.CommonAvatar";
         public const string SearchWord = "SearchFilter.SearchWord";
         public const string IsOrSearch = "SearchFilter.IsOrSearch";
+        public const string IsCategoryOrSearch = "SearchFilter.IsCategoryOrSearch";
     }
     public static class Success
     {
