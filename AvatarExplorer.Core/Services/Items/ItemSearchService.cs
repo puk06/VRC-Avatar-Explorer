@@ -60,9 +60,21 @@ internal static class ItemSearchService
 
         if (searchFilter.IsCategoryOrCondition)
         {
-            return !searchFilter.SearchTokens
-                .GroupBy(i => i.Type)
-                .Any(i => !i.Any(token => getTargets(i.Key).Any(target => target.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase))));
+            var tokenGroups = searchFilter.SearchTokens.GroupBy(t => t.Type);
+
+            foreach (var group in tokenGroups)
+            {
+                string[] targets = getTargets(group.Key);
+
+                bool hasMatchInThisGroup = group.Any(token =>
+                    targets.Any(target =>
+                        target.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase)));
+
+                if (!hasMatchInThisGroup)
+                    return false;
+            }
+
+            return true;
         }
         else
         {
@@ -76,16 +88,28 @@ internal static class ItemSearchService
                 if (searchFilter.IsOrCondition)
                 {
                     if (isNegation)
-                        if (targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase))) return true;
+                    {
+                        if (targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
+                            return true;
+                    }
                     else
-                        if (targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase))) return true;
+                    {
+                        if (targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
+                            return true;
+                    }
                 }
                 else
                 {
                     if (isNegation)
-                        if (!targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase))) return false;
+                    {
+                        if (!targets.All(target => !target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
+                            return false;
+                    }
                     else
-                        if (!targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase))) return false;
+                    {
+                        if (!targets.Any(target => target.Contains(filterValue, StringComparison.CurrentCultureIgnoreCase)))
+                            return false;
+                    }
                 }
             }
 
