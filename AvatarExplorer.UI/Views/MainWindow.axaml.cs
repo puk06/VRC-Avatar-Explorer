@@ -248,6 +248,16 @@ public partial class MainWindow : Window
     private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
     private void Main_SearchValue_Changed(object? sender, RoutedEventArgs e)
     {
+        // OR検索とカテゴリーOR検索は排他にする
+        if (sender == AdvancedSearchPanel_OrSearch && (AdvancedSearchPanel_OrSearch.IsChecked ?? false) && (AdvancedSearchPanel_CategoryOrSearch.IsChecked ?? false))
+        {
+            AdvancedSearchPanel_CategoryOrSearch.IsChecked = false;
+        }
+        else if (sender == AdvancedSearchPanel_CategoryOrSearch && (AdvancedSearchPanel_CategoryOrSearch.IsChecked ?? false) && (AdvancedSearchPanel_OrSearch.IsChecked ?? false))
+        {
+            AdvancedSearchPanel_OrSearch.IsChecked = false;
+        }
+
         _searchTimer.Stop();
         _searchTimer.Tick -= Main_OnSearchTimerTick;
         _searchTimer.Tick += Main_OnSearchTimerTick;
