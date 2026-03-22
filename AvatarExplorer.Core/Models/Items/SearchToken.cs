@@ -2,7 +2,6 @@ namespace AvatarExplorer.Core.Models.Items;
 
 public enum SearchTokenType
 {
-    None,
     Title,
     Author,
     BoothId,
