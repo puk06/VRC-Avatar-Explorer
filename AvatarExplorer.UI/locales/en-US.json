@@ -321,6 +321,7 @@
 
     "AdvancedSearch.OrSearch": "Overall OR Search",
     "AdvancedSearch.CategoryOrSearch": "Category OR Search",
+    "AdvancedSearch.NegationHint": "Prefix with ~ to exclude",
     "AdvancedSearch.Title": "Title",
     "AdvancedSearch.Author": "Author Name",
     "AdvancedSearch.BoothId": "Booth Id",

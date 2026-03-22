@@ -321,6 +321,7 @@
 
     "AdvancedSearch.OrSearch": "全体OR検索",
     "AdvancedSearch.CategoryOrSearch": "カテゴリOR検索",
+    "AdvancedSearch.NegationHint": "先頭に ~ を付けると除外検索になります",
     "AdvancedSearch.Title": "タイトル",
     "AdvancedSearch.Author": "作者名",
     "AdvancedSearch.BoothId": "Booth Id",
