@@ -17,8 +17,8 @@ public partial class MainWindow
         searchFilter.SearchTokens.AddRange(TextParser.Parse(AdvancedSearchPanel_Avatar.Text ?? string.Empty).Select(value => new SearchToken(SearchTokenType.SupportedAvatar, value)));
         searchFilter.SearchTokens.AddRange(TextParser.Parse(AdvancedSearchPanel_Category.Text ?? string.Empty).Select(value =>
         {
-            if (value.StartsWith('~')) value = value[1..];
-            return new SearchToken(SearchTokenType.Category, SearchUtils.ParseCategory(value));
+            bool isNegation = value.StartsWith(SearchToken.NegationPrefix);
+            return new SearchToken(SearchTokenType.Category, SearchUtils.ParseCategory(isNegation ? value[1..] : value), isNegation);
         }));
         searchFilter.SearchTokens.AddRange(TextParser.Parse(AdvancedSearchPanel_Memo.Text ?? string.Empty).Select(value => new SearchToken(SearchTokenType.ItemMemo, value)));
         searchFilter.SearchTokens.AddRange(TextParser.Parse(AdvancedSearchPanel_Folder.Text ?? string.Empty).Select(value => new SearchToken(SearchTokenType.FolderName, value)));

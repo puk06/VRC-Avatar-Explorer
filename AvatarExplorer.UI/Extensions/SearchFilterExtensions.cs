@@ -15,14 +15,20 @@ internal static class SearchFilterExtensions
         string localize(string key, IEnumerable<string> values) => Localizer.Instance.Get(key, toSeparatedString(values));
         void addKey(string key, IEnumerable<string> values) => searchFilterStrings.Add(localize(key, values));
         string toSeparatedString(IEnumerable<string> values, string separateString = ", ") => string.Join(separateString, values);
-        IEnumerable<string> getSearchTokensByType(SearchTokenType type) => searchFilter.SearchTokens.Where(t => t.Type == type).Select(t => t.Value);
+        
+        IEnumerable<string> getSearchTokensByType(SearchTokenType type, bool localize = false)
+        {
+            return searchFilter.SearchTokens
+                .Where(t => t.Type == type)
+                .Select(t => (t.IsNegation ? SearchToken.NegationPrefix : string.Empty) + (localize ? Localizer.Instance[t.Value] : t.Value));
+        }
 
         if (searchFilter.IsOrCondition) searchFilterStrings.Add(Localizer.Instance[LocalizationKey.SearchFilter.IsOrSearch]);
         if (getSearchTokensByType(SearchTokenType.Title).Any()) addKey(LocalizationKey.SearchFilter.Title, getSearchTokensByType(SearchTokenType.Title));
         if (getSearchTokensByType(SearchTokenType.Author).Any()) addKey(LocalizationKey.SearchFilter.Author, getSearchTokensByType(SearchTokenType.Author));
         if (getSearchTokensByType(SearchTokenType.BoothId).Any()) addKey(LocalizationKey.SearchFilter.Booth, getSearchTokensByType(SearchTokenType.BoothId));
         if (getSearchTokensByType(SearchTokenType.SupportedAvatar).Any()) addKey(LocalizationKey.SearchFilter.SupportedAvatar, getSearchTokensByType(SearchTokenType.SupportedAvatar));
-        if (getSearchTokensByType(SearchTokenType.Category).Any()) addKey(LocalizationKey.SearchFilter.Category, getSearchTokensByType(SearchTokenType.Category).Select(Localizer.Instance.Get));
+        if (getSearchTokensByType(SearchTokenType.Category).Any()) addKey(LocalizationKey.SearchFilter.Category, getSearchTokensByType(SearchTokenType.Category, true));
         if (getSearchTokensByType(SearchTokenType.ItemMemo).Any()) addKey(LocalizationKey.SearchFilter.ItemMemo, getSearchTokensByType(SearchTokenType.ItemMemo));
         if (getSearchTokensByType(SearchTokenType.FolderName).Any()) addKey(LocalizationKey.SearchFilter.FolderName, getSearchTokensByType(SearchTokenType.FolderName));
         if (getSearchTokensByType(SearchTokenType.FileName).Any()) addKey(LocalizationKey.SearchFilter.FileName, getSearchTokensByType(SearchTokenType.FileName));

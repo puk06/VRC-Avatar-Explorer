@@ -80,8 +80,8 @@ internal static class ItemSearchService
         {
             foreach (SearchToken token in searchFilter.SearchTokens)
             {
-                bool isNegation = token.Value.StartsWith('~');
-                string filterValue = isNegation ? token.Value[1..] : token.Value;
+                bool isNegation = token.IsNegation;
+                string filterValue = token.Value;
 
                 string[] targets = getTargets(token.Type);
 
