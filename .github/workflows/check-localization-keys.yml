@@ -22,8 +22,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Run LocalizationKeyGenerator
-        working-directory: AvatarExplorer.Core
-        run: dotnet run --project ../Tools/LocalizationKeyGenerator/LocalizationKeyGenerator.csproj
+        run: dotnet run --project Tools/LocalizationKeyGenerator/LocalizationKeyGenerator.csproj
 
       - name: Check LocalizationKeys.g.cs is up to date
         run: |
