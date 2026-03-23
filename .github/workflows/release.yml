@@ -31,10 +31,8 @@ jobs:
         include:
           - os: windows-latest
             runtime: win-x64
-            extension: zip
           - os: windows-latest
             runtime: win-arm64
-            extension: zip
 
           - os: macos-latest
             runtime: osx-arm64
@@ -62,7 +60,27 @@ jobs:
         run: |
           dotnet publish "./AvatarExplorer.UI/AvatarExplorer.UI.csproj" -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishSingleFile=true -o ./publish
 
+      - name: Install Inno Setup
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          choco install innosetup -y --no-progress
+
+      - name: Build Windows Installer
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $appName = "VRC-Avatar-Explorer"
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          $runtime = "${{ matrix.runtime }}"
+          $isccPath = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+
+          & $isccPath "/DMyAppVersion=$version" "/DMyAppRuntime=$runtime" "/DMySourceDir=publish" "/DMyOutputDir=." ".github/installer/windows.iss"
+
+          Add-Content -Path $env:GITHUB_ENV -Value "ASSET_PATH=${appName}_${version}-${runtime}_setup.exe"
+
       - name: Compress
+        if: runner.os != 'Windows'
         shell: bash
         run: |
           APP_NAME="VRC-Avatar-Explorer"
