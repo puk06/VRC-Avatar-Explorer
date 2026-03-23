@@ -40,6 +40,19 @@ VRChatユーザー向けのシンプルかつ強力な**クロスプラットフ
 
 ---
 
+## 開発環境
+
+- 開発には **.NET 10.0 SDK** を使用します。
+- 開発を始める前に、.NET 10.0 SDK をダウンロード・インストールしてください。
+
+## プロジェクト構成
+
+- **AvatarExplorer.Core**: AvatarExplorer のコア部分です。CLI などからこのライブラリを操作することで、新しい AvatarExplorer クライアントを作れます。シンプルなクラスライブラリで、UI に依存しません。
+- **AvatarExplorer.UI**: AvatarExplorer.Core を UI で操作するためのアプリケーションです。Avalonia UI で作られています。
+- **Tools/LocalizationKeyGenerator**: `AvatarExplorer.UI/locales/ja-JP.json` から `AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` を生成するツールです。`AvatarExplorer.Core` のビルド時に自動で生成されます。
+
+---
+
 ##  コミット & ブランチ運用ポリシー (Commit & Branch Policy)
 
 開発への貢献やメンテナンスに関しては、以下のルールを適用します。
