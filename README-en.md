@@ -51,7 +51,7 @@ By linking asset files with Booth item information, Avatar Explorer can automati
 
 - **AvatarExplorer.Core**: The core part of AvatarExplorer. You can build new AvatarExplorer clients, such as a CLI, by operating this library. It is a simple class library and does not depend on the UI.
 - **AvatarExplorer.UI**: The application layer used to operate AvatarExplorer.Core through a UI. Built with Avalonia UI.
-- **Tools/LocalizationKeyGenerator**: A tool that generates `AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` from `AvatarExplorer.UI/locales/ja-JP.json`. It runs automatically during `AvatarExplorer.Core` build.
+- **Tools/LocalizationKeyGenerator**: A tool that generates `AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` from `AvatarExplorer.Core/Data/Localization/ja-JP.json`. It runs automatically during `AvatarExplorer.Core` build.
 
 ---
 

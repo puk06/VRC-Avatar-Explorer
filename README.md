@@ -51,7 +51,7 @@ VRChatユーザー向けのシンプルかつ強力な**クロスプラットフ
 
 - **AvatarExplorer.Core**: AvatarExplorer のコア部分です。CLI などからこのライブラリを操作することで、新しい AvatarExplorer クライアントを作れます。シンプルなクラスライブラリで、UI に依存しません。
 - **AvatarExplorer.UI**: AvatarExplorer.Core を UI で操作するためのアプリケーションです。Avalonia UI で作られています。
-- **Tools/LocalizationKeyGenerator**: `AvatarExplorer.UI/locales/ja-JP.json` から `AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` を生成するツールです。`AvatarExplorer.Core` のビルド時に自動で生成されます。
+- **Tools/LocalizationKeyGenerator**: `AvatarExplorer.Core/Data/Localization/ja-JP.json` から `AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` を生成するツールです。`AvatarExplorer.Core` のビルド時に自動で生成されます。
 
 ---
 

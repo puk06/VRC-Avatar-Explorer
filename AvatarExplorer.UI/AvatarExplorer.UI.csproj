@@ -31,7 +31,8 @@
     <PackageReference Include="Material.Icons.Avalonia" Version="2.4.1" />
 		<ProjectReference Include="..\AvatarExplorer.Core/AvatarExplorer.Core.csproj" />
 
-    <Content Include="locales\**\*">
+    <Content Include="..\AvatarExplorer.Core\Data\Localization\**\*.json">
+      <Link>locales\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </Content>
