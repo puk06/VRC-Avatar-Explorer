@@ -24,7 +24,6 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 DefaultDirName={localappdata}\Programs\{#MyAppName}
 PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=none
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 UsePreviousTasks=no
@@ -40,7 +39,7 @@ SetupIconFile={#MyRepoRoot}\AvatarExplorer.UI\Assets\SoftwareIcon.ico
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checked
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
 Source: "{#MyRepoRoot}\{#MySourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
