@@ -40,6 +40,8 @@ By linking asset files with Booth item information, Avatar Explorer can automati
 2. Download the file for your operating system.
 3. Run `AvatarExplorer` in the extracted folder.
 
+For release-related notices, see [RELEASE_NOTICES.md](RELEASE_NOTICES.md).
+
 ---
 
 ## Development Environment
