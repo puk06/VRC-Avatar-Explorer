@@ -38,7 +38,9 @@ VRChatユーザー向けのシンプルかつ強力な**クロスプラットフ
 
 1. [最新のリリースページ](https://github.com/puk06/VRC-Avatar-Explorer/releases/latest)を開きます。
 2. 使用しているOSに対応したファイルをダウンロードします。
-3. 解凍したフォルダ内にある `AvatarExplorer` を実行してください。
+3. Windows以外の場合は、解凍したフォルダ内にある `AvatarExplorer` を実行してください。
+4. Windowsの場合は、ダウンロードした `setup`（`.exe`）を実行してインストールしてください。
+5. WindowsでSmartScreenが表示された場合は、`詳細情報` → `実行` の順に選択して続行してください。
 
 リリースに関する注意事項は [RELEASE_NOTICES.md](RELEASE_NOTICES.md) を参照してください。
 

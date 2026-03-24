@@ -38,7 +38,9 @@ By linking asset files with Booth item information, Avatar Explorer can automati
 
 1. Open the [latest release page](https://github.com/puk06/VRC-Avatar-Explorer/releases/latest).
 2. Download the file for your operating system.
-3. Run `AvatarExplorer` in the extracted folder.
+3. For non-Windows platforms, run `AvatarExplorer` in the extracted folder.
+4. On Windows, run the downloaded `setup` (`.exe`) and complete the installation.
+5. If Windows SmartScreen appears, select `More info` and then `Run anyway` to continue.
 
 For release-related notices, see [RELEASE_NOTICES.md](RELEASE_NOTICES.md).
 
