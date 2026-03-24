@@ -22,9 +22,9 @@
 AppId={{7BF331AB-1B3F-4497-BA2A-B34AEE7C90C7}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-DefaultDirName={code:GetDefaultDirName}
-PrivilegesRequired=admin
-PrivilegesRequiredOverridesAllowed=dialog
+DefaultDirName={localappdata}\Programs\{#MyAppName}
+PrivilegesRequired=lowest
+PrivilegesRequiredOverridesAllowed=none
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 UsePreviousTasks=no
@@ -48,12 +48,3 @@ Source: "{#MyRepoRoot}\{#MySourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-
-[Code]
-function GetDefaultDirName(Param: string): string;
-begin
-  if IsAdminInstallMode then
-    Result := ExpandConstant('{autopf}\\{#MyAppName}')
-  else
-    Result := ExpandConstant('{localappdata}\\Programs\\{#MyAppName}');
-end;
