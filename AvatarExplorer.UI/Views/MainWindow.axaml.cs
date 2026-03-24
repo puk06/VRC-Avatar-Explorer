@@ -1,17 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
+using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Extensions;
@@ -46,6 +51,8 @@ public partial class MainWindow : Window
 
     private static AvatarExplorerApp AvatarExplorer => AvatarExplorerApp.Instance;
     private static RuntimeSettings RuntimeSettings => AvatarExplorer.GetRuntimeSettings();
+    
+    private const string Main_GithubApiBaseUrl = "https://api.github.com/users/{0}";
 
     public MainWindow()
     {
@@ -71,6 +78,8 @@ public partial class MainWindow : Window
 
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
+        _ = Main_LoadDeveloperProfileIconAsync();
+
         // 初回起動かチェック
         if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
 
@@ -84,6 +93,62 @@ public partial class MainWindow : Window
         }
 
         if (_userPreferences.CheckForUpdate) await UpdateDialogOverlay_CheckAsync(_userPreferences.UpdateChannel);
+    }
+
+    private async Task Main_LoadDeveloperProfileIconAsync()
+    {
+        if (SettingsOverlay_DeveloperProfileImage == null) return;
+
+        try
+        {
+            string githubOwner = Main_GetRepositoryOwner();
+            string profileApiUrl = string.Format(Main_GithubApiBaseUrl, githubOwner);
+
+            using HttpRequestMessage request = new(HttpMethod.Get, profileApiUrl);
+            request.Headers.UserAgent.ParseAdd("AvatarExplorer");
+
+            using HttpResponseMessage response = await HttpService.Client.SendAsync(request);
+            if (!response.IsSuccessStatusCode) return;
+
+            await using Stream responseStream = await response.Content.ReadAsStreamAsync();
+            using JsonDocument jsonDocument = await JsonDocument.ParseAsync(responseStream);
+
+            if (!jsonDocument.RootElement.TryGetProperty("avatar_url", out JsonElement avatarUrlElement)) return;
+
+            string? avatarUrl = avatarUrlElement.GetString();
+            if (string.IsNullOrWhiteSpace(avatarUrl)) return;
+
+            using HttpRequestMessage avatarRequest = new(HttpMethod.Get, avatarUrl);
+            avatarRequest.Headers.UserAgent.ParseAdd("AvatarExplorer");
+
+            using HttpResponseMessage avatarResponse = await HttpService.Client.SendAsync(avatarRequest);
+            if (!avatarResponse.IsSuccessStatusCode) return;
+
+            await using Stream avatarStream = await avatarResponse.Content.ReadAsStreamAsync();
+            SettingsOverlay_DeveloperProfileImage.Source = new Avalonia.Media.Imaging.Bitmap(avatarStream);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to load developer profile icon from GitHub API.", ex);
+        }
+    }
+
+    private static string Main_GetRepositoryOwner()
+    {
+        try
+        {
+            Uri repositoryUri = new(SoftwareLink.RepositoryURL);
+            string[] segments = repositoryUri.AbsolutePath
+                .Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            if (segments.Length > 0 && !string.IsNullOrWhiteSpace(segments[0])) return segments[0];
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to parse repository owner from RepositoryURL.", ex);
+        }
+
+        return "puk06";
     }
 
     public async Task SetApplicationArgs(string[]? args)

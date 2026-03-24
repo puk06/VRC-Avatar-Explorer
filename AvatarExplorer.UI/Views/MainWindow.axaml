@@ -678,7 +678,7 @@
                                                 <Grid ColumnDefinitions="*,Auto">
                                                     <Grid Grid.Column="0">
                                                         <Border HorizontalAlignment="Center" Width="100" Height="100" CornerRadius="50" ClipToBounds="True">
-                                                            <Image Source="avares://AvatarExplorer/Assets/Internal/ProfileIcon.png" Stretch="UniformToFill"/>
+                                                            <Image x:Name="SettingsOverlay_DeveloperProfileImage" Stretch="UniformToFill"/>
                                                         </Border>
                                                     </Grid>
 
