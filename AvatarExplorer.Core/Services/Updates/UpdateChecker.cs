@@ -41,7 +41,8 @@ public static class UpdateChecker
             VersionRelease latestUpdateReleaseInfo = new()
             {
                 Version = latestVersion.Version,
-                ReleaseDate = latestVersion.ReleaseDate
+                ReleaseDate = latestVersion.ReleaseDate,
+                ReleaseUrl = latestVersion.ReleaseUrl
             };
 
             foreach (VersionRelease pendingRelease in pendingReleases)

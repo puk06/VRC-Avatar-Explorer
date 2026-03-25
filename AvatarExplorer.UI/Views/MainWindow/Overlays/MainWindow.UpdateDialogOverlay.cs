@@ -13,6 +13,7 @@ namespace AvatarExplorer.UI;
 public partial class MainWindow
 {
     private string? _updateDialogOverlay_latestVersion = null;
+    private string? _updateDialogOverlay_latestReleaseUrl = null;
     
     private async Task UpdateDialogOverlay_CheckAsync(UpdateChannel updateChannel = UpdateChannel.Stable, bool silent = true)
     {
@@ -25,6 +26,7 @@ public partial class MainWindow
         {
             UpdateDialogOverlay_Show(latestVersionRelease);
             _updateDialogOverlay_latestVersion = latestVersionRelease.Version;
+            _updateDialogOverlay_latestReleaseUrl = latestVersionRelease.ReleaseUrl;
         }
     }
     
@@ -40,7 +42,22 @@ public partial class MainWindow
     private void UpdateDialogOverlay_Later_Click(object? sender, RoutedEventArgs e) => UpdateDialogOverlay_Hide();
     private async void UpdateDialogOverlay_UpdateNow_Click(object? sender, RoutedEventArgs e)
     {
-        await LauncherService.OpenUri(this, string.IsNullOrEmpty(_updateDialogOverlay_latestVersion) ? SoftwareLink.LatestReleasePageURL : string.Format(SoftwareLink.ReleasePageURL, _updateDialogOverlay_latestVersion));
+        string targetUrl;
+
+        if (!string.IsNullOrWhiteSpace(_updateDialogOverlay_latestReleaseUrl))
+        {
+            targetUrl = _updateDialogOverlay_latestReleaseUrl;
+        }
+        else if (string.IsNullOrEmpty(_updateDialogOverlay_latestVersion))
+        {
+            targetUrl = SoftwareLink.LatestReleasePageURL;
+        }
+        else
+        {
+            targetUrl = string.Format(SoftwareLink.ReleasePageURL, _updateDialogOverlay_latestVersion);
+        }
+
+        await LauncherService.OpenUri(this, targetUrl);
         UpdateDialogOverlay_Hide();
     }
     #endregion
