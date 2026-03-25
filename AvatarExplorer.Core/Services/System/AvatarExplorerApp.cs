@@ -509,7 +509,12 @@ public class AvatarExplorerApp
         item.SetValuesFromCreationContext(itemCreationContext);
 
         // １個より多い場合は追加のアイテムとしてインポートしてあげる(0がRootフォルダー想定)
-        if (itemCreationContext.ItemPaths.Count > 1) await AddItemPaths(item.Id, itemCreationContext.ItemPaths.Skip(1).ToArray());
+        if (itemCreationContext.ItemPaths.Count > 1)
+        {
+            ErrorOr<ExtractResult> addItemPathsResult = await AddItemPaths(item.Id, itemCreationContext.ItemPaths.Skip(1).ToArray());
+            if (addItemPathsResult.IsError) return false;
+            if (addItemPathsResult.Value.ProcessingFailedPaths.Count > 0) return false;
+        }
 
         UpdateItemUpdatedDate(itemId);
         UpdateSearchIndex();
