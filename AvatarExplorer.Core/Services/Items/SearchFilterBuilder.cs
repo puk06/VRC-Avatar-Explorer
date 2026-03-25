@@ -1,12 +1,28 @@
-using System.Text.RegularExpressions;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.Items;
 
 public static partial class SearchFilterBuilder
 {
-    [GeneratedRegex(@"(?<key>Title|Author|Booth|Avatar|Category|Memo|Folder|File|Implemented|NotImplemented|Tag|Common|OR|CategoryOR|EmptyAvatarAsNone)=(?:""(?<value>.*?)""|(?<value>[^\s]+))|(?<word>[^\s]+)")]
-    private static partial Regex SearchFilterTextRegex();
+    private static readonly HashSet<string> AvailableFilterKeys = new()
+    {
+        "Title",
+        "Author",
+        "Booth",
+        "Avatar",
+        "Category",
+        "Memo",
+        "Folder",
+        "File",
+        "Implemented",
+        "NotImplemented",
+        "Tag",
+        "Common",
+        "OR",
+        "CategoryOR",
+        "EmptyAvatarAsNone"
+    };
 
     private sealed class RawSearchToken
     {
@@ -16,25 +32,39 @@ public static partial class SearchFilterBuilder
 
     private static List<RawSearchToken> Parse(string text)
     {
-        MatchCollection matches = SearchFilterTextRegex().Matches(text);
         List<RawSearchToken> rawSearchTokens = new();
 
-        foreach (GroupCollection groupCollection in matches.Select(m => m.Groups))
+        foreach (string token in TextParser.Parse(text))
         {
-            if (groupCollection["key"].Success && groupCollection["value"].Success)
+            int separatorIndex = token.IndexOf('=');
+            if (separatorIndex > 0)
             {
+                string key = token[..separatorIndex];
+                string value = token[(separatorIndex + 1)..];
+
+                if (!AvailableFilterKeys.Contains(key))
+                {
+                    rawSearchTokens.Add(new RawSearchToken
+                    {
+                        Key = "FreeWord",
+                        Value = token
+                    });
+
+                    continue;
+                }
+
                 rawSearchTokens.Add(new RawSearchToken
                 {
-                    Key = groupCollection["key"].Value,
-                    Value = groupCollection["value"].Value
+                    Key = key,
+                    Value = value
                 });
             }
-            else if (groupCollection["word"].Success)
+            else
             {
                 rawSearchTokens.Add(new RawSearchToken
                 {
                     Key = "FreeWord",
-                    Value = groupCollection["word"].Value
+                    Value = token
                 });
             }
         }
