@@ -61,14 +61,26 @@ internal static class DataImporter
 
                 string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
                 string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true) ?? throw new DirectoryNotFoundException("Counldn't get unique item path");
+
+                bool isItemsSystemPath = item.ItemPath.StartsWith("<sys>");
+
+                string sourceItemPath;
+                if (isItemsSystemPath) sourceItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
+                else sourceItemPath = item.ItemPath;
                 
-                await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, importParallelism);
+                await FileSystemService.CopyDirectoryAsync(sourceItemPath, newItemPath, importParallelism);
                 if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, importParallelism);
                 
                 Item newItem = CreateItemFromItemV1(item);
                 newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
 
-                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
+                bool isImageSystemPath = item.ImagePath.StartsWith("<sys>");
+
+                string imageFilePath;
+                if (isImageSystemPath) imageFilePath = Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath));
+                else imageFilePath = item.ImagePath;
+
+                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
                 if (!result.IsError) newItem.ThumbnailFileName = newItem.Id;
                 else newItem.ThumbnailFileName = string.Empty;
 
