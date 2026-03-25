@@ -405,6 +405,14 @@ public class AvatarExplorerApp
     }
 
     public RuntimeSettings GetRuntimeSettings() => _runtimeSettings;
+
+    public string GetSearchIndexByItemId(string itemId)
+    {
+        if (_itemSearchIndexDictionary.TryGetValue(itemId, out string? index)) return index ?? string.Empty;
+
+        ErrorManager.Instance.PostInternalError($"Search index not found for item ID '{itemId}'.");
+        return string.Empty;
+    }
     #endregion
 
     #region Set API
