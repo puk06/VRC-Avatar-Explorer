@@ -339,9 +339,9 @@ public partial class MainWindow : Window
     {
         if (!string.IsNullOrEmpty(searchText)) _main_searchTextCache = searchText;
 
-        SearchFilter searchFilter = SearchFilterBuilder.Build(_main_searchTextCache, SearchUtils.ParseCategory);
-
+        SearchFilter searchFilter = new();
         AdvancedSearchPanel_ApplyValues(searchFilter);
+        SearchFilterBuilder.Build(searchFilter, _main_searchTextCache, SearchUtils.ParseCategory);
 
         if (string.IsNullOrEmpty(_main_searchTextCache) && searchFilter.SearchTokens.Count == 0)
         {

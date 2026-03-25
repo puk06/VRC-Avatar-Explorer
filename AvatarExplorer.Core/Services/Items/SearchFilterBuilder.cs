@@ -42,10 +42,9 @@ public static partial class SearchFilterBuilder
         return rawSearchTokens;
     }
 
-    public static SearchFilter Build(string searchText, Func<string, string>? toLocalizationKey = null)
+    public static SearchFilter Build(SearchFilter filter, string searchText, Func<string, string>? toLocalizationKey = null)
     {
         List<RawSearchToken> rawSearchTokens = Parse(searchText);
-        SearchFilter filter = new();
 
         foreach (RawSearchToken token in rawSearchTokens)
         {
