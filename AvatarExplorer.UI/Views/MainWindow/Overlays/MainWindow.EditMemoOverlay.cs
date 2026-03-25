@@ -7,18 +7,25 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private void EditMemoOverlay_Open(string memo = "")
+    private string? _editMemoOverlay_selectedItemId = null;
+
+    private void EditMemoOverlay_Open(string itemId, string memo = "")
     {
+        _editMemoOverlay_selectedItemId = itemId;
         EditMemoOverlay.IsVisible = true;
         EditMemoOverlay_MemoTextBox.Text = memo;
     }
-    private void EditMemoOverlay_Close() => EditMemoOverlay.IsVisible = false;
+    private void EditMemoOverlay_Close()
+    {
+        _editMemoOverlay_selectedItemId = null;
+        EditMemoOverlay.IsVisible = false;
+    }
 
     #region Event Handler
     private void EditMemoOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditMemoOverlay_Close();
     private void EditMemoOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
-        Item? item = AvatarExplorer.GetItemById(_contextMenu_selectedItemId);
+        Item? item = AvatarExplorer.GetItemById(_editMemoOverlay_selectedItemId);
         if (item == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);

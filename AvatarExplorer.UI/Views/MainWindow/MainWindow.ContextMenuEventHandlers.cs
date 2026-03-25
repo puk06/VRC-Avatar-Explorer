@@ -138,9 +138,7 @@ public partial class MainWindow
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return Task.CompletedTask;
 
-        _contextMenu_selectedItemId = item.Id;
-
-        EditMemoOverlay_Open(item.ItemMemo);
+        EditMemoOverlay_Open(item.Id, item.ItemMemo);
 
         return Task.CompletedTask;
     }
@@ -186,15 +184,12 @@ public partial class MainWindow
         return extractResult;
     }
 
-    private string? _contextMenu_selectedItemId = null;
     private Task Main_ItemButton_ContextMenu_EditImplementedAvatar(string itemId)
     {
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return Task.CompletedTask;
 
-        _contextMenu_selectedItemId = item.Id;
-
-        EditImplementedAvatarsOverlay_Open(item.ImplementedAvatarsView);
+        EditImplementedAvatarsOverlay_Open(item.Id, item.ImplementedAvatarsView);
 
         return Task.CompletedTask;
     }
@@ -203,9 +198,7 @@ public partial class MainWindow
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return Task.CompletedTask;
 
-        _contextMenu_selectedItemId = item.Id;
-
-        EditTagsOverlay_Open(item.TagsView);
+        EditTagsOverlay_Open(item.Id, item.TagsView);
 
         return Task.CompletedTask;
     }

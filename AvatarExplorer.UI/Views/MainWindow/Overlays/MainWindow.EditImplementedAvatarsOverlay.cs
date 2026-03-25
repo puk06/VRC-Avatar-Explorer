@@ -13,13 +13,19 @@ namespace AvatarExplorer.UI;
 public partial class MainWindow
 {
     private readonly List<string> _editImplementedAvatarsOverlay_selectedAvatars = new();
+    private string? _editImplementedAvatarsOverlay_selectedItemId = null;
 
-    private void EditImplementedAvatarsOverlay_Open(IEnumerable<string>? avatars = null)
+    private void EditImplementedAvatarsOverlay_Open(string itemId, IEnumerable<string>? avatars = null)
     {
+        _editImplementedAvatarsOverlay_selectedItemId = itemId;
         EditImplementedAvatarsOverlay.IsVisible = true;
         EditImplementedAvatarsOverlay_Initialize(avatars);
     }
-    private void EditImplementedAvatarsOverlay_Close() => EditImplementedAvatarsOverlay.IsVisible = false;
+    private void EditImplementedAvatarsOverlay_Close()
+    {
+        _editImplementedAvatarsOverlay_selectedItemId = null;
+        EditImplementedAvatarsOverlay.IsVisible = false;
+    }
 
     private void EditImplementedAvatarsOverlay_Initialize(IEnumerable<string>? avatars = null)
     {
@@ -43,7 +49,7 @@ public partial class MainWindow
     private void EditImplementedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_Close();
     private void EditImplementedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
-        Item? item = AvatarExplorer.GetItemById(_contextMenu_selectedItemId);
+        Item? item = AvatarExplorer.GetItemById(_editImplementedAvatarsOverlay_selectedItemId);
         if (item == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);

@@ -16,14 +16,20 @@ namespace AvatarExplorer.UI;
 public partial class MainWindow
 {
     private readonly List<string> _editTagsOverlay_selectedTags = new();
+    private string? _editTagsOverlay_selectedItemId = null;
 
-    private void EditTagsOverlay_Open(IEnumerable<string>? tags = null)
+    private void EditTagsOverlay_Open(string itemId, IEnumerable<string>? tags = null)
     {
+        _editTagsOverlay_selectedItemId = itemId;
         EditTagsOverlay.IsVisible = true;
         EditTagsOverlay_TagTextBox.Text = string.Empty;
         EditTagsOverlay_Initialize(tags);
     }
-    private void EditTagsOverlay_Close() => EditTagsOverlay.IsVisible = false;
+    private void EditTagsOverlay_Close()
+    {
+        _editTagsOverlay_selectedItemId = null;
+        EditTagsOverlay.IsVisible = false;
+    }
 
     private void EditTagsOverlay_Initialize(IEnumerable<string>? tags = null)
     {
@@ -107,7 +113,7 @@ public partial class MainWindow
     private void EditTagsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditTagsOverlay_Close();
     private void EditTagsOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
-        Item? item = AvatarExplorer.GetItemById(_contextMenu_selectedItemId);
+        Item? item = AvatarExplorer.GetItemById(_editTagsOverlay_selectedItemId);
         if (item == null)
         {
             DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
