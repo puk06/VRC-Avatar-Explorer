@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
@@ -43,11 +44,15 @@ public partial class MainWindow
     {
         if (EditCommonAvatarsOverlay_AvatarsList == null) return;
         EditCommonAvatarsOverlay_AvatarsList.Children.Clear();
+
+        string searchText = EditCommonAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
+        string[] parsedText = TextParser.Parse(searchText);
+
         IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars(includeTempAvatar: true)
             .Where(i =>
-                string.IsNullOrEmpty(EditCommonAvatarsOverlay_SearchTextBox.Text) ||
-                (i.Item is Item item && item.Title.Contains(EditCommonAvatarsOverlay_SearchTextBox.Text)) ||
-                (i.Item is TempAvatar tempAvatar && tempAvatar.AvatarName.Contains(EditCommonAvatarsOverlay_SearchTextBox.Text))
+                string.IsNullOrEmpty(searchText) ||
+                EditCommonAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId((i.Item as Item)?.Id ?? string.Empty), parsedText) ||
+                (i.Item is TempAvatar tempAvatar && EditCommonAvatarsOverlay_IsMatch(tempAvatar.AvatarName, parsedText))
             );
 
         CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
@@ -59,6 +64,8 @@ public partial class MainWindow
             if ((itemCountInfo.Item is Item item && commonAvatar.AvatarsView.Contains(item.Id)) || (itemCountInfo.Item is TempAvatar tempAvatar && commonAvatar.AvatarsView.Contains(tempAvatar.GetInternalId()))) button.Classes.Add("accent");
         }
     }
+
+    private bool EditCommonAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(searchIndex.Contains);
 
     #region Event Handler
     private void EditCommonAvatarsOverlay_Close_Click(object? sender, RoutedEventArgs e) => EditCommonAvatarsOverlay_Close();

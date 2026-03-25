@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
@@ -61,14 +62,18 @@ public partial class MainWindow
     private void EditSupportedAvatarsOverlay_DrawItemButtons()
     {
         EditSupportedAvatarsOverlay_AvatarsList.Children.Clear();
+
+        string searchText = EditSupportedAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
+        string[] parsedText = TextParser.Parse(searchText);
+
         IEnumerable<ItemCountInfo> avatars = AvatarExplorer
             .GetAvatars(includeCommonAvatar: true, includeTempAvatar: true)
             .Where(
                 i =>
-                    string.IsNullOrEmpty(EditSupportedAvatarsOverlay_SearchTextBox.Text) ||
-                    (i.Item is Item item && item.Title.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text)) ||
-                    (i.Item is CommonAvatar commonAvatar && commonAvatar.GroupName.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text)) ||
-                    (i.Item is TempAvatar tempAvatar && tempAvatar.AvatarName.Contains(EditSupportedAvatarsOverlay_SearchTextBox.Text))
+                    string.IsNullOrEmpty(searchText) ||
+                    EditSupportedAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId((i.Item as Item)?.Id ?? string.Empty), parsedText) ||
+                    EditSupportedAvatarsOverlay_IsMatch((i.Item as CommonAvatar)?.GroupName ?? string.Empty, parsedText) ||
+                    EditSupportedAvatarsOverlay_IsMatch((i.Item as TempAvatar)?.AvatarName ?? string.Empty, parsedText)
             );
 
         foreach (ItemCountInfo itemCountInfo in avatars)
@@ -84,6 +89,8 @@ public partial class MainWindow
             if (!string.IsNullOrEmpty(avatarId) && _editSupportedAvatarsOverlay_selectedAvatars.Contains(avatarId)) button.Classes.Add("accent");
         }
     }
+    
+    private bool EditSupportedAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(searchIndex.Contains);
 
     #region Event Handler
     private void EditSupportedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(null);
