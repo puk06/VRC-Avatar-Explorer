@@ -90,7 +90,7 @@ internal class BackupManager
 
             int successCount = 0;
             int failureCount = 0;
-            var filesToBackup = _backupFiles.Where(File.Exists).ToList();
+            IEnumerable<string> filesToBackup = _backupFiles.Where(File.Exists);
 
             foreach (string filePath in filesToBackup)
             {
