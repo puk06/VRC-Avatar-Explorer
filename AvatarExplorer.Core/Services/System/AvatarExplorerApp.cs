@@ -426,10 +426,11 @@ public class AvatarExplorerApp
         if (avatars != null)
         {
             commonAvatar.UpdateAvatars(avatars);
-            UpdateSearchIndex();
         }
 
         _commonAvatarDatabaseManager.Add(commonAvatar);
+
+        UpdateSearchIndex();
 
         SaveCommonAvatarDatabase();
 
@@ -440,6 +441,8 @@ public class AvatarExplorerApp
         TempAvatar tempAvatar = new TempAvatar(avatarName);
 
         _tempAvatarsDatabaseManager.Add(tempAvatar);
+
+        UpdateSearchIndex();
 
         SaveTempAvatarsDatabase();
 
