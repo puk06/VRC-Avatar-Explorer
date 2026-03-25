@@ -70,7 +70,7 @@ public partial class MainWindow : Window
 
         // 設定画面の設定
         SettingsOverlay_SetUiValueFromCurrentSettings();
-        SettingsOverlay_ApplySettingsValues();
+        SettingsOverlay_ApplySettingsValues(checkDataCopy: false).GetAwaiter().GetResult();
 
         // 一括インポートプリセットの読み込み
         BulkImportPresetPanel_DrawItemButtons();

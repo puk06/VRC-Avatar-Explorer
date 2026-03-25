@@ -99,7 +99,7 @@ public partial class MainWindow
             SettingsOverlay_UpdateChannelComboBox.SelectedIndex = (int)_userPreferences.UpdateChannel;
         }
     }
-    private void SettingsOverlay_ApplySettingsValues()
+    private async Task SettingsOverlay_ApplySettingsValues(bool checkDataCopy = true)
     {
         string previousDataRootDirectoryPath = RuntimeSettings.DataRootDirectory;
 
@@ -136,7 +136,10 @@ public partial class MainWindow
         SettingsOverlay_ApplyPreferenceSettingsToUi();
         SettingsOverlay_SetUiValueFromCurrentSettings();
 
-        if (RuntimeSettings.DataRootDirectory != previousDataRootDirectoryPath) _ = SettingsOverlay_CheckDataCopy(previousDataRootDirectoryPath, RuntimeSettings.DataRootDirectory);
+        if (checkDataCopy && RuntimeSettings.DataRootDirectory != previousDataRootDirectoryPath)
+        {
+            await SettingsOverlay_CheckDataCopy(previousDataRootDirectoryPath, RuntimeSettings.DataRootDirectory);
+        }
     }
 
     private async Task SettingsOverlay_CheckDataCopy(string previousPath, string currentPath)
@@ -239,9 +242,9 @@ public partial class MainWindow
     private async void SettingsOverlay_RegisterScheme_Click(object? sender, RoutedEventArgs e) => await Main_RegisterSchemeAsync();
 
     private void SettingsOverlay_Close_Click(object? sender, RoutedEventArgs e) => SettingsOverlay_Close();
-    private void SettingsOverlay_Apply_Click(object? sender, RoutedEventArgs e)
+    private async void SettingsOverlay_Apply_Click(object? sender, RoutedEventArgs e)
     {
-        SettingsOverlay_ApplySettingsValues();
+        await SettingsOverlay_ApplySettingsValues();
 
         // 適用時は自動で保存する
         AvatarExplorer.SaveRuntimeSettings();
@@ -379,7 +382,7 @@ public partial class MainWindow
         }
 
         SettingsOverlay_SetUiValueFromCurrentSettings();
-        SettingsOverlay_ApplySettingsValues();
+        await SettingsOverlay_ApplySettingsValues();
 
         Main_ReloadCurrentWindow();
     }
