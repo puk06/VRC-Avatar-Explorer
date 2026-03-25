@@ -36,7 +36,7 @@ internal static class ItemCreator
         if (!string.IsNullOrEmpty(itemCreationContext.ThumbnailUrl))
         {
             bool thumbnailResult = await ImageDownloader.Fetch(itemCreationContext.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
-            if (thumbnailResult) item.ThumbnmailFileName = item.Id;
+            if (thumbnailResult) item.ThumbnailFileName = item.Id;
         }
 
         item.UpdateSupportedAvatars(itemCreationContext.SupportedAvatars);
@@ -54,7 +54,7 @@ internal static class ItemCreator
         {
             Title = konoAssetDescription.Name,
             Author = konoAssetDescription.Creator,
-            ThumbnmailFileName = konoAssetDescription.ImageFilename ?? string.Empty,
+            ThumbnailFileName = konoAssetDescription.ImageFilename ?? string.Empty,
             ItemMemo = konoAssetDescription.Memo ?? string.Empty,
             BoothId = konoAssetDescription.BoothItemId ?? -1,
             CreatedDate = konoAssetDescription.CreatedAt.ToString(),

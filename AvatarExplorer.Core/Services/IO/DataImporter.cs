@@ -61,8 +61,8 @@ internal static class DataImporter
                 newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
 
                 ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
-                if (!result.IsError) newItem.ThumbnmailFileName = newItem.Id;
-                else newItem.ThumbnmailFileName = string.Empty;
+                if (!result.IsError) newItem.ThumbnailFileName = newItem.Id;
+                else newItem.ThumbnailFileName = string.Empty;
 
                 pathMapping[previousItemPath] = newItem.Id;
 
@@ -118,7 +118,7 @@ internal static class DataImporter
             AuthorId = item.AuthorId,
             BoothId = item.BoothId,
             ItemPath = item.ItemPath,
-            ThumbnmailFileName = MigrateAvatarExplorerV1Path(item.ImagePath),
+            ThumbnailFileName = MigrateAvatarExplorerV1Path(item.ImagePath),
             Type = item.Type,
             CustomCategory = item.CustomCategory,
             ItemMemo = item.ItemMemo,
@@ -202,8 +202,8 @@ internal static class DataImporter
                 if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename))
                 {
                     ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), konoAssetItem.Description.ImageFilename), Path.Combine(SystemPath.ItemThumbnailsPath, item.Id));
-                    if (!result.IsError) item.ThumbnmailFileName = item.Id;
-                    else item.ThumbnmailFileName = string.Empty;
+                    if (!result.IsError) item.ThumbnailFileName = item.Id;
+                    else item.ThumbnailFileName = string.Empty;
                 }
 
                 item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => supportedAvatarMaps[i]));

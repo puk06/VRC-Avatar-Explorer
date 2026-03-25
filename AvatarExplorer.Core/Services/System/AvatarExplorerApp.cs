@@ -71,7 +71,9 @@ public class AvatarExplorerApp
     #region Database
     public void LoadItemDatabase(string? path = null)
     {
-        _itemDatabaseManager.Load(path);
+        string loadPath = path ?? SystemPath.ItemDatabasePath;
+        ItemDatabaseMigrationService.MigrateThumbnailKey(loadPath);
+        _itemDatabaseManager.Load(loadPath);
         UpdateSearchIndex();
     }
 
@@ -549,7 +551,7 @@ public class AvatarExplorerApp
         ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsPath, Path.GetFileName(imageFilePath)));
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
-        item.ThumbnmailFileName = Path.GetFileName(imageFilePath);
+        item.ThumbnailFileName = Path.GetFileName(imageFilePath);
         UpdateItemUpdatedDate(itemId);
         
         SaveItemDatabase();
@@ -752,7 +754,7 @@ public class AvatarExplorerApp
         bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
         if (!result) return Error.Failure(description: "Failed to fetch thumbnail.");
         
-        item.ThumbnmailFileName = item.Id;
+        item.ThumbnailFileName = item.Id;
 
         SaveItemDatabase();
 

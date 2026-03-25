@@ -53,7 +53,7 @@ internal static class DataExporter
                 string itemId = CsvUtils.EscapeCsv(item.Id);
                 string itemTitle = CsvUtils.EscapeCsv(item.Title);
                 string authorName = CsvUtils.EscapeCsv(item.Author);
-                string imagePath = CsvUtils.EscapeCsv(item.ThumbnmailFileName);
+                string imagePath = CsvUtils.EscapeCsv(item.ThumbnailFileName);
 
                 string categoryName;
                 if (item.Type == ItemType.Custom) categoryName = item.CustomCategory;

@@ -12,7 +12,7 @@ public class Item : AbstractDatabaseItem, ISelectableItem
     public string AuthorId { get; set; } = string.Empty;
     public int BoothId { get; set; } = -1;
     public string ItemPath { get; set; } = string.Empty;
-    public string ThumbnmailFileName { get; set; } = string.Empty;
+    public string ThumbnailFileName { get; set; } = string.Empty;
     public ItemType Type { get; set; } = ItemType.None;
     public string CustomCategory { get; set; } = string.Empty;
     [JsonInclude] private List<string> SupportedAvatars { get; set; } = new List<string>();

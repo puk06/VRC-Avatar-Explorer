@@ -62,7 +62,7 @@ internal class UISelectableItem
     {
         Title = item.Title;
         Description = (LocalizationKey.Button.Description.Item.Author, [item.Author]);
-        ImageFileName = item.ThumbnmailFileName;
+        ImageFileName = item.ThumbnailFileName;
         Tag = new(ItemTagStates.RootSelectedItem, item.Id);
         IconType = IconType.Item;
 
