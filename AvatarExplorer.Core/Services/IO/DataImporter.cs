@@ -61,14 +61,8 @@ internal static class DataImporter
 
                 string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
                 string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true) ?? throw new DirectoryNotFoundException("Counldn't get unique item path");
-
-                bool isItemsSystemPath = item.ItemPath.StartsWith("<sys>");
-
-                string sourceItemPath;
-                if (isItemsSystemPath) sourceItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
-                else sourceItemPath = item.ItemPath;
                 
-                await FileSystemService.CopyDirectoryAsync(sourceItemPath, newItemPath, importParallelism);
+                await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, importParallelism);
                 if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, importParallelism);
                 
                 Item newItem = CreateItemFromItemV1(item);
