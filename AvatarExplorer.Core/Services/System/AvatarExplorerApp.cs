@@ -576,7 +576,7 @@ public class AvatarExplorerApp
 
         string internalId = commonAvatar.GetInternalId();
 
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (Item item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Clothing))
         {
             item.UpdateSupportedAvatars(item.SupportedAvatarsView.SelectMany(i => i == internalId ? commonAvatar.AvatarsView : [i]).Distinct());
         }
@@ -591,7 +591,7 @@ public class AvatarExplorerApp
 
         string internalId = commonAvatar.GetInternalId();
 
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (Item item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Clothing))
         {
             item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => commonAvatar.AvatarsView.Contains(i) ? internalId : i).Distinct());
         }
