@@ -44,6 +44,20 @@ By linking asset files with Booth item information, Avatar Explorer can automati
 
 For release-related notices, see [RELEASE_NOTICES.md](RELEASE_NOTICES.md).
 
+### Version Tag Policy
+
+This project uses `v<version>` as the base tag format, and only the following suffixes are allowed.
+
+- `-beta.X` (pre-release)
+- `-release` (stable release tag)
+
+Examples:
+
+- `v2.0.0-beta.1`
+- `v2.0.0-release`
+
+No other suffixes are used.
+
 ---
 
 ## Development Environment
