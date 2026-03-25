@@ -49,12 +49,12 @@ For release-related notices, see [RELEASE_NOTICES.md](RELEASE_NOTICES.md).
 This project uses `v<version>` as the base tag format, and only the following suffixes are allowed.
 
 - `-beta.X` (pre-release)
-- `-release` (stable release tag)
+- `-stable` (stable release tag)
 
 Examples:
 
 - `v2.0.0-beta.1`
-- `v2.0.0-release`
+- `v2.0.0-stable`
 
 No other suffixes are used.
 

@@ -16,8 +16,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           draft: true
-          # Treat tags suffixed with '-release' as stable, and beta tags as prerelease.
-          prerelease: ${{ !endsWith(github.ref_name, '-release') && contains(github.ref_name, 'beta') }}
+          # Treat tags suffixed with '-stable' as stable, and beta tags as prerelease.
+          prerelease: ${{ !endsWith(github.ref_name, '-stable') && contains(github.ref_name, 'beta') }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,7 +73,7 @@ jobs:
         run: |
           $appName = "VRC-Avatar-Explorer"
           $version = "${{ github.ref_name }}".TrimStart('v')
-          $version = $version -replace "-release$", ""
+          $version = $version -replace "-stable$", ""
           $runtime = "${{ matrix.runtime }}"
           $isccPath = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
 
@@ -88,7 +88,7 @@ jobs:
           APP_NAME="VRC-Avatar-Explorer"
           VERSION="${{ github.ref_name }}"
           VERSION="${VERSION#v}"
-          VERSION="${VERSION%-release}"
+          VERSION="${VERSION%-stable}"
           RUNTIME="${{ matrix.runtime }}"
           EXTENSION="${{ matrix.extension }}"
           OUTPUT_NAME="${APP_NAME}_${VERSION}-${RUNTIME}.${EXTENSION}"
