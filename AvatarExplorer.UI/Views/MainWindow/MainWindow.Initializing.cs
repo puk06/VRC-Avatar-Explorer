@@ -145,6 +145,12 @@ public partial class MainWindow
     {
         try
         {
+            if (!ProcessUtils.IsWindows())
+            {
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.NonWindowsUnsupported]);
+                return;
+            }
+
             if (!SchemeService.IsRunAsAdmin())
             {
                 YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RestartAsAdmin]);

@@ -202,6 +202,7 @@
     "Error.TempAvatarNotFound": "仮アバターが見つかりませんでした",
     "Error.LicenseFileNotFound": "ライセンスファイルが見つかりませんでした",
     "Error.ThirdPartyLicenseFileNotFound": "サードパーティーライセンスファイルが見つかりませんでした",
+    "Error.NonWindowsUnsupported": "この機能はWindowsでのみ利用可能です",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "言語",

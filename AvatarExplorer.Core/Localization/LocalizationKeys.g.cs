@@ -354,6 +354,7 @@ public static class LocalizationKey
         public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
         public const string LicenseFileNotFound = "Error.LicenseFileNotFound";
         public const string ThirdPartyLicenseFileNotFound = "Error.ThirdPartyLicenseFileNotFound";
+        public const string NonWindowsUnsupported = "Error.NonWindowsUnsupported";
     }
     public static class Settings
     {

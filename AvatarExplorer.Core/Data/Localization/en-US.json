@@ -202,6 +202,7 @@
     "Error.TempAvatarNotFound": "Temp Avatar not found",
     "Error.LicenseFileNotFound": "License file not found",
     "Error.ThirdPartyLicenseFileNotFound": "Third-party license file not found",
+    "Error.NonWindowsUnsupported": "This feature is only available on Windows.",
 
     "Settings.Basic": "Basic",
     "Settings.Language.Title": "Language",
