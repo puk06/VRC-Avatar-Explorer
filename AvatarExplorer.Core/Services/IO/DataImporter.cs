@@ -16,6 +16,13 @@ namespace AvatarExplorer.Core.Services.IO;
 
 internal static class DataImporter
 {
+    private static int GetImportParallelism(RuntimeSettings runtimeSettings)
+    {
+        int requested = runtimeSettings.MaxDegreeOfParallelism;
+        int cappedByCpu = Math.Max(1, Environment.ProcessorCount - 1);
+        return Math.Clamp(requested - 1, 1, cappedByCpu);
+    }
+
     internal static async Task<ErrorOr<DataImportResult>> Import(DataImportType importType, string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
     {
         return importType switch
@@ -31,6 +38,7 @@ internal static class DataImporter
         try
         {
             DataImportResult dataImportResult = new();
+            int importParallelism = GetImportParallelism(runtimeSettings);
         
             if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 0));
 
@@ -54,8 +62,8 @@ internal static class DataImporter
                 string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
                 string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true) ?? throw new DirectoryNotFoundException("Counldn't get unique item path");
                 
-                await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, runtimeSettings.MaxDegreeOfParallelism);
-                if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, runtimeSettings.MaxDegreeOfParallelism);
+                await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, importParallelism);
+                if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, importParallelism);
                 
                 Item newItem = CreateItemFromItemV1(item);
                 newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
@@ -166,6 +174,7 @@ internal static class DataImporter
         try
         {
             DataImportResult dataImportResult = new();
+            int importParallelism = GetImportParallelism(runtimeSettings);
 
             if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 0));
 
@@ -196,7 +205,7 @@ internal static class DataImporter
                 string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
                 string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true);
 
-                await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath), newItemPath, runtimeSettings.MaxDegreeOfParallelism);
+                await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath), newItemPath, importParallelism);
                 item.ItemPath = newItemPath;
 
                 if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename))
