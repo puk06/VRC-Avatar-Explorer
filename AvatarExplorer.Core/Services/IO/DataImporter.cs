@@ -169,16 +169,21 @@ internal static class DataImporter
         const string V1ThumbnailFolderPrefix = "Datas\\Thumbnail\\";
         const string V1AuthorThumbnailFolderPrefix = "Datas\\AuthorImage\\";
 
+        string migratedPath = path;
+
+        // 古すぎるAEの場合は./が初めについていることがある
+        if (path.StartsWith("./")) migratedPath = path[2..];
+
         if (path.StartsWith(V1ItemsFolderPrefix))
-            return path.Replace(V1ItemsFolderPrefix, "<sys>"); // フルパスとアプリフォルダの区別をつけるため
+            return migratedPath.Replace(V1ItemsFolderPrefix, "<sys>"); // フルパスとアプリフォルダの区別をつけるため
 
         if (path.StartsWith(V1ThumbnailFolderPrefix))
-            return path.Replace(V1ThumbnailFolderPrefix, string.Empty);
+            return migratedPath.Replace(V1ThumbnailFolderPrefix, string.Empty);
 
         if (path.StartsWith(V1AuthorThumbnailFolderPrefix))
-            return path.Replace(V1AuthorThumbnailFolderPrefix, string.Empty);
+            return migratedPath.Replace(V1AuthorThumbnailFolderPrefix, string.Empty);
 
-        return path;
+        return migratedPath;
     }
 
     private static async Task<ErrorOr<DataImportResult>> FromKonoAsset(string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
