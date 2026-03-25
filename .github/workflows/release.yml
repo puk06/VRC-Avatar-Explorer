@@ -16,7 +16,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           draft: true
-          prerelease: ${{ contains(github.ref_name, 'beta') }}
+          # Treat tags suffixed with '-release' as stable, and beta tags as prerelease.
+          prerelease: ${{ !endsWith(github.ref_name, '-release') && contains(github.ref_name, 'beta') }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,6 +73,7 @@ jobs:
         run: |
           $appName = "VRC-Avatar-Explorer"
           $version = "${{ github.ref_name }}".TrimStart('v')
+          $version = $version -replace "-release$", ""
           $runtime = "${{ matrix.runtime }}"
           $isccPath = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
 
@@ -85,9 +87,11 @@ jobs:
         run: |
           APP_NAME="VRC-Avatar-Explorer"
           VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
+          VERSION="${VERSION%-release}"
           RUNTIME="${{ matrix.runtime }}"
           EXTENSION="${{ matrix.extension }}"
-          OUTPUT_NAME="${APP_NAME}_${VERSION#v}-${RUNTIME}.${EXTENSION}"
+          OUTPUT_NAME="${APP_NAME}_${VERSION}-${RUNTIME}.${EXTENSION}"
           cd publish
           if [ "$RUNNER_OS" == "Windows" ]; then
             powershell -Command "Compress-Archive -Path * -DestinationPath '../${OUTPUT_NAME}'"
