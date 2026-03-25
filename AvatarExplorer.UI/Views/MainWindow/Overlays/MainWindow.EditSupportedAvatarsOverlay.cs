@@ -61,6 +61,7 @@ public partial class MainWindow
     }
     private void EditSupportedAvatarsOverlay_DrawItemButtons()
     {
+        if (EditSupportedAvatarsOverlay_AvatarsList == null) return;
         EditSupportedAvatarsOverlay_AvatarsList.Children.Clear();
 
         string searchText = EditSupportedAvatarsOverlay_SearchTextBox.Text ?? string.Empty;

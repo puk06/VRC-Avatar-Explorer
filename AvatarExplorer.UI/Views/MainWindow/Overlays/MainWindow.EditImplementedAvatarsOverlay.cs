@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
@@ -35,8 +36,17 @@ public partial class MainWindow
     }
     private void EditImplementedAvatarsOverlay_DrawItemButtons()
     {
+        if (EditImplementedAvatarsOverlay_AvatarsList == null) return;
         EditImplementedAvatarsOverlay_AvatarsList.Children.Clear();
-        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars().Where(i => string.IsNullOrEmpty(EditImplementedAvatarsOverlay_SearchTextBox.Text) || ((Item)i.Item).Title.Contains(EditImplementedAvatarsOverlay_SearchTextBox.Text));
+
+        string searchText = EditImplementedAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
+        string[] parsedText = TextParser.Parse(searchText);
+
+        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars()
+            .Where(i =>
+                string.IsNullOrEmpty(searchText) ||
+                EditImplementedAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId((i.Item as Item)?.Id ?? string.Empty), parsedText)
+            );
 
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
@@ -44,6 +54,8 @@ public partial class MainWindow
             if (_editImplementedAvatarsOverlay_selectedAvatars.Contains(((Item)itemCountInfo.Item).Id)) button.Classes.Add("accent");
         }
     }
+
+    private bool EditImplementedAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(searchIndex.Contains);
 
     #region Event Handler
     private void EditImplementedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_Close();
