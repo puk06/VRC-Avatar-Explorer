@@ -77,22 +77,66 @@ internal class BackupManager
         {
             string now = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
             string backupFolderPath = Path.Combine(backupRootFolderPath, now);
-            Directory.CreateDirectory(backupFolderPath);
-
-            foreach (string filePath in _backupFiles.Where(File.Exists))
+            
+            try
             {
-                if (token.IsCancellationRequested) return Result.Success;
+                Directory.CreateDirectory(backupFolderPath);
+            }
+            catch (Exception ex)
+            {
+                ErrorManager.Instance.PostInternalError($"Failed to create backup folder: {backupFolderPath}.", ex);
+                return Error.Failure(description: "Failed to create backup folder.");
+            }
+
+            int successCount = 0;
+            int failureCount = 0;
+            var filesToBackup = _backupFiles.Where(File.Exists).ToList();
+
+            foreach (string filePath in filesToBackup)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    // Clean up incomplete backup folder on cancellation
+                    try
+                    {
+                        Directory.Delete(backupFolderPath, recursive: true);
+                    }
+                    catch { /* Ignore cleanup errors */ }
+                    return Result.Success;
+                }
 
                 string fileName = Path.GetFileName(filePath);
                 string backupPath = Path.Combine(backupFolderPath, fileName);
 
                 ErrorOr<Success> result = await FileSystemService.CopyFileAsync(filePath, backupPath);
-                if (result.IsError) ErrorManager.Instance.PostInternalError($"Failed to copy file: {filePath}.", tag: result.Errors.ToErrorString());
+                if (result.IsError)
+                {
+                    ErrorManager.Instance.PostInternalError($"Failed to copy file: {filePath}.", tag: result.Errors.ToErrorString());
+                    failureCount++;
+                }
+                else
+                {
+                    successCount++;
+                }
             }
 
-            _lastBackupDate = DateTime.Now;
+            // Only mark backup as successful if all files were copied successfully
+            if (failureCount == 0 && successCount > 0)
+            {
+                _lastBackupDate = DateTime.Now;
+                return Result.Success;
+            }
 
-            return Result.Success;
+            // If some or all files failed to copy, clean up and return error
+            try
+            {
+                Directory.Delete(backupFolderPath, recursive: true);
+            }
+            catch { /* Ignore cleanup errors */ }
+
+            string errorMessage = $"Backup completed with errors: {successCount} succeeded, {failureCount} failed.";
+            ErrorManager.Instance.PostInternalError(errorMessage);
+            return Error.Failure(description: errorMessage);
         }
         catch (Exception ex)
         {
