@@ -52,7 +52,7 @@ public partial class MainWindow
             .Where(i =>
                 string.IsNullOrEmpty(searchText) ||
                 EditCommonAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId((i.Item as Item)?.Id ?? string.Empty), parsedText) ||
-                (i.Item is TempAvatar tempAvatar && EditCommonAvatarsOverlay_IsMatch(tempAvatar.AvatarName, parsedText))
+                EditCommonAvatarsOverlay_IsMatch((i.Item as TempAvatar)?.AvatarName ?? string.Empty, parsedText)
             );
 
         CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
