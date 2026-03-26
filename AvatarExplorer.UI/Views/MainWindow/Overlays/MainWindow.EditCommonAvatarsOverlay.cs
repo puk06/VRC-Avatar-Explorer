@@ -70,7 +70,7 @@ public partial class MainWindow
         }
     }
 
-    private bool EditCommonAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(searchIndex.Contains);
+    private bool EditCommonAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(i => searchIndex.Contains(i, System.StringComparison.CurrentCultureIgnoreCase));
 
     #region Event Handler
     private void EditCommonAvatarsOverlay_Close_Click(object? sender, RoutedEventArgs e) => EditCommonAvatarsOverlay_Close();

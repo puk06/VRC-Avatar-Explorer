@@ -58,7 +58,7 @@ public partial class MainWindow
         }
     }
 
-    private bool EditImplementedAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(searchIndex.Contains);
+    private bool EditImplementedAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(i => searchIndex.Contains(i, System.StringComparison.CurrentCultureIgnoreCase));
 
     #region Event Handler
     private void EditImplementedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_Close();

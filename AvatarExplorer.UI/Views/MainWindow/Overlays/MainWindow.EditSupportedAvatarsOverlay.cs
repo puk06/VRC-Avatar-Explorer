@@ -94,7 +94,7 @@ public partial class MainWindow
         }
     }
     
-    private bool EditSupportedAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(searchIndex.Contains);
+    private bool EditSupportedAvatarsOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(i => searchIndex.Contains(i, StringComparison.CurrentCultureIgnoreCase));
 
     #region Event Handler
     private void EditSupportedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(null);

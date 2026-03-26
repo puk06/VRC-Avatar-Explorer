@@ -49,7 +49,7 @@ public partial class MainWindow
         }
     }
 
-    private bool ResolveTempAvatarOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(searchIndex.Contains);
+    private bool ResolveTempAvatarOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(i => searchIndex.Contains(i, System.StringComparison.CurrentCultureIgnoreCase));
 
     #region Event Handler
     private void ResolveTempAvatarOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => ResolveTempAvatarOverlay_Close();
