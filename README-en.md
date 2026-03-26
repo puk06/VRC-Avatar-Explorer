@@ -57,6 +57,16 @@ Examples:
 
 No other suffixes are used.
 
+#### Semantic Versioning Guidelines
+
+This project determines versions based on the following criteria.
+
+| Version | Criteria | Examples |
+|---------|----------|----------|
+| **v2.0.0** | Complete rewrite from V1 (fixed). This version remains unchanged. | v2.0.0, v2.0.0-beta.1 |
+| **v0.x.0** (MINOR) | Feature additions or specification changes that users notice. | New features, significant improvements to existing features |
+| **v0.0.x** (PATCH) | Code-only changes with no direct user impact. Bug fixes, internal refactoring, performance improvements, etc. | FileNameUtils security hardening, security fixes |
+
 ---
 
 ## Development Environment
