@@ -18,10 +18,16 @@ public partial class MainWindow
     private void ResolveTempAvatarOverlay_Open(string tempAvatarId)
     {
         _resolveTempAvatarOverlay_selectedAvatar = tempAvatarId;
-        ResolveTempAvatarOverlay.IsVisible = true;
         ResolveTempAvatarOverlay_DrawItemButtons();
+        ResolveTempAvatarOverlay.IsVisible = true;
     }
-    private void ResolveTempAvatarOverlay_Close() => ResolveTempAvatarOverlay.IsVisible = false;
+    private void ResolveTempAvatarOverlay_Close()
+    {
+        ResolveTempAvatarOverlay.IsVisible = false;
+        _resolveTempAvatarOverlay_selectedAvatar = null;
+        ResolveTempAvatarOverlay_SearchTextBox.Text = string.Empty;
+        ResolveTempAvatarOverlay_AvatarsList.Children.Clear();
+    }
 
     private void ResolveTempAvatarOverlay_DrawItemButtons()
     {

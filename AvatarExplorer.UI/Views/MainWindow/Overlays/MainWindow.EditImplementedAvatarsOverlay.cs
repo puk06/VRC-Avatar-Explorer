@@ -19,13 +19,16 @@ public partial class MainWindow
     private void EditImplementedAvatarsOverlay_Open(string itemId, IEnumerable<string>? avatars = null)
     {
         _editImplementedAvatarsOverlay_selectedItemId = itemId;
-        EditImplementedAvatarsOverlay.IsVisible = true;
         EditImplementedAvatarsOverlay_Initialize(avatars);
+        EditImplementedAvatarsOverlay.IsVisible = true;
     }
     private void EditImplementedAvatarsOverlay_Close()
     {
-        _editImplementedAvatarsOverlay_selectedItemId = null;
         EditImplementedAvatarsOverlay.IsVisible = false;
+        _editImplementedAvatarsOverlay_selectedItemId = null;
+        _editImplementedAvatarsOverlay_selectedAvatars.Clear();
+        EditImplementedAvatarsOverlay_SearchTextBox.Text = string.Empty;
+        EditImplementedAvatarsOverlay_AvatarsList.Children.Clear();
     }
 
     private void EditImplementedAvatarsOverlay_Initialize(IEnumerable<string>? avatars = null)

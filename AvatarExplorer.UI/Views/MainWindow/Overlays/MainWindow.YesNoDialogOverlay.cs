@@ -40,6 +40,8 @@ public partial class MainWindow
     private void YesNoDialogOverlay_Close(YesNoResult result)
     {
         YesNoDialogOverlay.IsVisible = false;
+        YesNoDialogOverlay_Title.Text = string.Empty;
+        YesNoDialogOverlay_Content.Text = string.Empty;
 
         TaskCompletionSource<YesNoResult>? tcs = _yesNoDialogOverlay_tcs;
         _yesNoDialogOverlay_tcs = null;

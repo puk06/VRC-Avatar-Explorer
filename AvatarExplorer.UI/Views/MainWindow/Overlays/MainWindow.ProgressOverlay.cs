@@ -17,8 +17,13 @@ public partial class MainWindow
 
         if (value != -1) ProgressOverlay_Update(value);
     }
-    private void ProgressOverlay_Hide() => ProgressOverlay.IsVisible = false;
-    
+    private void ProgressOverlay_Hide()
+    {
+        ProgressOverlay.IsVisible = false;
+        ProgressOverlay_Title.Text = string.Empty;
+        ProgressOverlay_Bar.IsIndeterminate = false;
+        ProgressOverlay_Bar.Value = 0;
+    }
     private void ProgressOverlay_Update(int value)
     {
         if (!ProgressOverlay.IsVisible) return;

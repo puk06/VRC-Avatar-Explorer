@@ -7,10 +7,14 @@ public partial class MainWindow
 {
     private void ErrorLogOverlay_Open()
     {
-        ErrorLogOverlay.IsVisible = true;
         ErrorLogOverlay_RefleshLogs();
+        ErrorLogOverlay.IsVisible = true;
     }
-    private void ErrorLogOverlay_Close() => ErrorLogOverlay.IsVisible = false;
+    private void ErrorLogOverlay_Close()
+    {
+        ErrorLogOverlay.IsVisible = false;
+        ErrorLogOverlay_ErrorLogGrid.ItemsSource = null;
+    }
 
     private void ErrorLogOverlay_RefleshLogs()
     {

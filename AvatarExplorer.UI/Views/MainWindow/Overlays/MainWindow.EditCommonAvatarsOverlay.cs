@@ -18,14 +18,19 @@ public partial class MainWindow
 
     private void EditCommonAvatarsOverlay_Open()
     {
-        EditCommonAvatarsOverlay.IsVisible = true;
-
         EditCommonAvatarsOverlay_RefleshGroupList();
         EditCommonAvatarsOverlay_DrawItemButtons();
 
         if (EditCommonAvatarsOverlay_GroupComboBox.Items.Count > 0) EditCommonAvatarsOverlay_GroupComboBox.SelectedIndex = 0;
+        EditCommonAvatarsOverlay.IsVisible = true;
     }
-    private void EditCommonAvatarsOverlay_Close() => EditCommonAvatarsOverlay.IsVisible = false;
+    private void EditCommonAvatarsOverlay_Close()
+    {
+        EditCommonAvatarsOverlay.IsVisible = false;
+        _editCommonAvatarsOverlay_selectedGroupId = null;
+        EditCommonAvatarsOverlay_SearchTextBox.Text = string.Empty;
+        EditCommonAvatarsOverlay_AvatarsList.Children.Clear();
+    }
 
     private void EditCommonAvatarsOverlay_RefleshGroupList()
     {

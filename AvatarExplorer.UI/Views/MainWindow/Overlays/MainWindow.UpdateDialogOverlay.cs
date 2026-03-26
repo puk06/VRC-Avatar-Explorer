@@ -36,7 +36,14 @@ public partial class MainWindow
         UpdateDialogOverlay_UpdateContentText.Text = versionRelease.ChangeLogs.ToString();
         UpdateDialogOverlay.IsVisible = true;
     }
-    private void UpdateDialogOverlay_Hide() => UpdateDialogOverlay.IsVisible = false;
+    private void UpdateDialogOverlay_Hide()
+    {
+        UpdateDialogOverlay.IsVisible = false;
+        UpdateDialogOverlay_VersionText.Text = string.Empty;
+        UpdateDialogOverlay_UpdateContentText.Text = string.Empty;
+        _updateDialogOverlay_latestVersion = null;
+        _updateDialogOverlay_latestReleaseUrl = null;
+    }
 
     #region Event Handler
     private void UpdateDialogOverlay_Later_Click(object? sender, RoutedEventArgs e) => UpdateDialogOverlay_Hide();

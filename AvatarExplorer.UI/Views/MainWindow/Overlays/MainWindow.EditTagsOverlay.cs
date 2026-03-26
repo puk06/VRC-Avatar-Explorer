@@ -21,14 +21,16 @@ public partial class MainWindow
     private void EditTagsOverlay_Open(string itemId, IEnumerable<string>? tags = null)
     {
         _editTagsOverlay_selectedItemId = itemId;
-        EditTagsOverlay.IsVisible = true;
         EditTagsOverlay_TagTextBox.Text = string.Empty;
         EditTagsOverlay_Initialize(tags);
+        EditTagsOverlay.IsVisible = true;
     }
     private void EditTagsOverlay_Close()
     {
-        _editTagsOverlay_selectedItemId = null;
         EditTagsOverlay.IsVisible = false;
+        _editTagsOverlay_selectedItemId = null;
+        _editTagsOverlay_selectedTags.Clear();
+        EditTagsOverlay_TagTextBox.Text = string.Empty;
     }
 
     private void EditTagsOverlay_Initialize(IEnumerable<string>? tags = null)

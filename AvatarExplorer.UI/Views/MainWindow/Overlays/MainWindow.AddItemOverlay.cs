@@ -46,9 +46,9 @@ public partial class MainWindow
         AddItemOverlay_DrawFilePathsList();
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
 
-        AddItemOverlay.IsVisible = true;
-
         AddItemOverlay_UpdateSupportedAvatarsLabel();
+        
+        AddItemOverlay.IsVisible = true;
     }
     private void AddItemOverlay_Open(IEnumerable<string>? paths = null)
     {
@@ -72,9 +72,9 @@ public partial class MainWindow
 
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
 
-        AddItemOverlay.IsVisible = true;
-
         AddItemOverlay_UpdateSupportedAvatarsLabel();
+        
+        AddItemOverlay.IsVisible = true;
     }
     private async Task AddItemOverlay_Open(LaunchInfo launchInfo)
     {
@@ -88,20 +88,20 @@ public partial class MainWindow
         _addItemOverlay_addItemWindowValues.ItemPaths.AddRange(launchInfo.AssetPaths);
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
 
-        AddItemOverlay.IsVisible = true;
-
         AddItemOverlay_DrawFilePathsList();
 
         AddItemOverlay_UpdateSupportedAvatarsLabel();
+        
+        AddItemOverlay.IsVisible = true;
 
         await AddItemOverlay_GetBoothItemData();
     }
     private void AddItemOverlay_Close()
     {
+        AddItemOverlay.IsVisible = false;
         _addItemOverlay_selectedItemId = null;
         _addItemOverlay_addItemWindowValues.Reset();
         _editSupportedAvatarsOverlay_selectedAvatars.Clear();
-        AddItemOverlay.IsVisible = false;
     }
 
     private void AddItemOverlay_DrawFilePathsList()

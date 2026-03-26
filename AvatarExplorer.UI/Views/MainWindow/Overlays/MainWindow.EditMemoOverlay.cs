@@ -12,13 +12,14 @@ public partial class MainWindow
     private void EditMemoOverlay_Open(string itemId, string memo = "")
     {
         _editMemoOverlay_selectedItemId = itemId;
-        EditMemoOverlay.IsVisible = true;
         EditMemoOverlay_MemoTextBox.Text = memo;
+        EditMemoOverlay.IsVisible = true;
     }
     private void EditMemoOverlay_Close()
     {
-        _editMemoOverlay_selectedItemId = null;
         EditMemoOverlay.IsVisible = false;
+        _editMemoOverlay_selectedItemId = null;
+        EditMemoOverlay_MemoTextBox.Text = string.Empty;
     }
 
     #region Event Handler
