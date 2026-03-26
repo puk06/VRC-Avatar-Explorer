@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
@@ -26,13 +27,23 @@ public partial class MainWindow
     private void ResolveTempAvatarOverlay_DrawItemButtons()
     {
         ResolveTempAvatarOverlay_AvatarsList.Children.Clear();
-        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars().Where(i => string.IsNullOrEmpty(ResolveTempAvatarOverlay_SearchTextBox.Text) || ((Item)i.Item).Title.Contains(ResolveTempAvatarOverlay_SearchTextBox.Text));
 
+        string searchText = ResolveTempAvatarOverlay_SearchTextBox.Text ?? string.Empty;
+        string[] parsedText = TextParser.Parse(searchText);
+
+        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars()
+            .Where(i =>
+                string.IsNullOrEmpty(searchText) ||
+                (i.Item is Item item && ResolveTempAvatarOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId(item.Id), parsedText))
+            );
+        
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
             ItemButtonFactory.AddItemButton(ResolveTempAvatarOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, _userPreferences, onClick: ResolveTempAvatarOverlay_ItemButton_Click);
         }
     }
+
+    private bool ResolveTempAvatarOverlay_IsMatch(string searchIndex, string[] searchText) => searchText.Length == 0 || searchText.Any(searchIndex.Contains);
 
     #region Event Handler
     private void ResolveTempAvatarOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => ResolveTempAvatarOverlay_Close();
