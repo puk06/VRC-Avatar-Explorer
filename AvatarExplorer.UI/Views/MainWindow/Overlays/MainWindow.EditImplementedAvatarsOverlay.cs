@@ -45,7 +45,7 @@ public partial class MainWindow
         IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars()
             .Where(i =>
                 string.IsNullOrEmpty(searchText) ||
-                EditImplementedAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId((i.Item as Item)?.Id ?? string.Empty), parsedText)
+                (i.Item is Item item && EditImplementedAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId(item.Id), parsedText))
             );
 
         foreach (ItemCountInfo itemCountInfo in avatars)

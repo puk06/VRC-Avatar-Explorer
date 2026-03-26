@@ -72,9 +72,9 @@ public partial class MainWindow
             .Where(
                 i =>
                     string.IsNullOrEmpty(searchText) ||
-                    EditSupportedAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId((i.Item as Item)?.Id ?? string.Empty), parsedText) ||
-                    EditSupportedAvatarsOverlay_IsMatch((i.Item as CommonAvatar)?.GroupName ?? string.Empty, parsedText) ||
-                    EditSupportedAvatarsOverlay_IsMatch((i.Item as TempAvatar)?.AvatarName ?? string.Empty, parsedText)
+                    (i.Item is Item item && EditSupportedAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId(item.Id), parsedText)) ||
+                    (i.Item is CommonAvatar commonAvatar && EditSupportedAvatarsOverlay_IsMatch(commonAvatar.GroupName, parsedText)) ||
+                    (i.Item is TempAvatar tempAvatar && EditSupportedAvatarsOverlay_IsMatch(tempAvatar.AvatarName, parsedText))
             );
 
         foreach (ItemCountInfo itemCountInfo in avatars)

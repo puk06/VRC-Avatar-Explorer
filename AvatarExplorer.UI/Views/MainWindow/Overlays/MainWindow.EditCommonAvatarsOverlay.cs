@@ -51,8 +51,8 @@ public partial class MainWindow
         IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars(includeTempAvatar: true)
             .Where(i =>
                 string.IsNullOrEmpty(searchText) ||
-                EditCommonAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId((i.Item as Item)?.Id ?? string.Empty), parsedText) ||
-                EditCommonAvatarsOverlay_IsMatch((i.Item as TempAvatar)?.AvatarName ?? string.Empty, parsedText)
+                (i.Item is Item item && EditCommonAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId(item.Id), parsedText)) ||
+                (i.Item is TempAvatar tempAvatar && EditCommonAvatarsOverlay_IsMatch(tempAvatar.AvatarName, parsedText))
             );
 
         CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
