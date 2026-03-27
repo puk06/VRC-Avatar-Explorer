@@ -432,6 +432,11 @@ public static class LocalizationKey
             public const string Title = "Settings.RemoveOriginal.Title";
             public const string Description = "Settings.RemoveOriginal.Description";
         }
+        public static class LinkToOriginal
+        {
+            public const string Title = "Settings.LinkToOriginal.Title";
+            public const string Description = "Settings.LinkToOriginal.Description";
+        }
         public const string Background = "Settings.Background";
         public static class UseCustomBackground
         {

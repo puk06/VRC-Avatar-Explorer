@@ -80,6 +80,7 @@ public partial class MainWindow
 
         // アイテム
         if (SettingsOverlay_RemoveOriginalCheckBox != null) SettingsOverlay_RemoveOriginalCheckBox.IsChecked = runtimeSettings.RemoveOriginal;
+        if (SettingsOverlay_LinkToOriginalCheckBox != null) SettingsOverlay_LinkToOriginalCheckBox.IsChecked = runtimeSettings.ShouldLinkToOriginal;
 
         // 背景
         if (SettingsOverlay_UseBackgroundImageCheckBox != null) SettingsOverlay_UseBackgroundImageCheckBox.IsChecked = userPreferences.UseBackgroundImage;
@@ -109,6 +110,7 @@ public partial class MainWindow
             ItemSortOrder = (ItemSortOrder)(SettingsOverlay_SortOrderComboBox?.SelectedIndex ?? 0),
             RemoveBrackets = SettingsOverlay_RemoveBracketsCheckBox?.IsChecked ?? false,
             RemoveOriginal = SettingsOverlay_RemoveOriginalCheckBox.IsChecked ?? false,
+            ShouldLinkToOriginal = SettingsOverlay_LinkToOriginalCheckBox?.IsChecked ?? false,
             AutoBackupRootDirectory = SettingsOverlay_AutoBackupPathTextBox?.Text ?? string.Empty,
             AutoBackupInterval = ValueParser.Int(SettingsOverlay_AutoBackupIntervalTextBox?.Text, 5),
             MaxDegreeOfParallelism = ValueParser.Int(SettingsOverlay_MaxDegreeOfParallelismTextBox?.Text, 4)
