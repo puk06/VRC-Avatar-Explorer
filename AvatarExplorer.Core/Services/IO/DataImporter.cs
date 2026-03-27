@@ -31,7 +31,7 @@ internal static class DataImporter
     {
         return importType switch
         {
-            DataImportType.V1 => await FromV1(dataFolderPath, runtimeSettings, copyAssetData, reportProgress),
+            DataImportType.V1 => await FromV1(dataFolderPath, copyAssetData, runtimeSettings, reportProgress),
             DataImportType.KonoAsset => await FromKonoAsset(dataFolderPath, localizedItemTypesMapping, copyAssetData, runtimeSettings, reportProgress),
             _ => Error.Unexpected(description: $"Unexpected import type: {importType}")
         };
@@ -47,7 +47,7 @@ internal static class DataImporter
         };
     }
     
-    private static async Task<ErrorOr<DataImportResult>> FromV1(string dataFolderPath, RuntimeSettings runtimeSettings, bool copyAssetData, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<ErrorOr<DataImportResult>> FromV1(string dataFolderPath, bool copyAssetData, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
     {
         try
         {
