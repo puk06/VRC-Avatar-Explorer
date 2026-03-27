@@ -68,10 +68,10 @@ internal static class DataImporter
                 Item newItem = CreateItemFromItemV1(item);
                 newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
 
-                bool isImageSystemPath = item.ImagePath.StartsWith("<sys>");
+                bool isFullPathImage = item.ImagePath == MigrateAvatarExplorerV1Path(item.ImagePath);
 
                 string imageFilePath;
-                if (isImageSystemPath) imageFilePath = Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath));
+                if (!isFullPathImage) imageFilePath = Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath));
                 else imageFilePath = item.ImagePath;
 
                 ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
