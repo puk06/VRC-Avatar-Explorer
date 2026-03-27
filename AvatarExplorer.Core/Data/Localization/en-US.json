@@ -59,7 +59,7 @@
     "Dialog.Confirmation.RemovePreset": "Preset Name: {0}\n\nAre you sure you want to delete this preset?",
     "Dialog.Confirmation.AddToExistingItem": "An item with the same Booth ID has already been added. Do you want to add files or folders to that item?",
     "Dialog.Confirmation.ResolveTempAvatar": "Confirm linking temporary avatar \"{0}\" to permanent item \"{1}\"?",
-    "Dialog.Confirmation.RemoveAssetData": "Delete the asset data for this item as well?",
+    "Dialog.Confirmation.RemoveAssetData": "Delete the asset data for this item as well?\n\nAsset Path: {0}",
     
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "Include common avatars in the supported avatar column?",
 
