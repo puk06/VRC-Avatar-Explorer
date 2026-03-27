@@ -19,7 +19,6 @@ internal static class DataImporter
     private const string V1DatasFolderName = "Datas";
     private static readonly string V1ItemsFolderPrefix = $"{V1DatasFolderName}\\Items\\";
     private static readonly string V1ThumbnailFolderPrefix = $"{V1DatasFolderName}\\Thumbnail\\";
-    private static readonly string V1AuthorThumbnailFolderPrefix = $"{V1DatasFolderName}\\AuthorImage\\";
 
     private static int GetImportParallelism(RuntimeSettings runtimeSettings)
     {
@@ -83,9 +82,7 @@ internal static class DataImporter
                 Item newItem = CreateItemFromItemV1(item);
                 newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
 
-                string imageFilePath = ResolveV1ThumbnailPath(dataFolderPath, item.ImagePath);
-
-                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
+                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
                 if (!result.IsError) newItem.ThumbnailFileName = newItem.Id;
                 else newItem.ThumbnailFileName = string.Empty;
 
@@ -175,14 +172,12 @@ internal static class DataImporter
         // 古すぎるAEの場合は./が初めについていることがある
         if (path.StartsWith("./")) migratedPath = path[2..];
 
+         // <sys>はフルパスとアプリフォルダの区別をつけるため
         if (migratedPath.StartsWith(V1ItemsFolderPrefix, StringComparison.Ordinal))
-            return migratedPath.Replace(V1ItemsFolderPrefix, "<sys>"); // フルパスとアプリフォルダの区別をつけるため
+            return migratedPath.Replace(V1ItemsFolderPrefix, "<sys>");
 
         if (migratedPath.StartsWith(V1ThumbnailFolderPrefix, StringComparison.Ordinal))
-            return migratedPath.Replace(V1ThumbnailFolderPrefix, string.Empty);
-
-        if (migratedPath.StartsWith(V1AuthorThumbnailFolderPrefix, StringComparison.Ordinal))
-            return migratedPath.Replace(V1AuthorThumbnailFolderPrefix, string.Empty);
+            return migratedPath.Replace(V1ThumbnailFolderPrefix, "<sys>");
 
         return migratedPath;
     }
@@ -291,7 +286,7 @@ internal static class DataImporter
                 if (sourceItem.BoothId == -1 || string.IsNullOrWhiteSpace(sourceItem.ImagePath)) continue;
                 if (sourceThumbnailMap.ContainsKey(sourceItem.BoothId)) continue;
 
-                string thumbnailPath = ResolveV1ThumbnailPath(dataFolderPath, sourceItem.ImagePath);
+                string thumbnailPath = ItemUtils.GetItemPath(dataFolderPath, MigrateAvatarExplorerV1Path(sourceItem.ImagePath));
                 if (File.Exists(thumbnailPath)) sourceThumbnailMap[sourceItem.BoothId] = thumbnailPath;
             }
 
@@ -369,16 +364,5 @@ internal static class DataImporter
                 if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, percent));
             }
         }
-    }
-
-    private static string ResolveV1ThumbnailPath(string dataFolderPath, string imagePath)
-    {
-        string migratedPath = MigrateAvatarExplorerV1Path(imagePath);
-        if (!string.Equals(imagePath, migratedPath, StringComparison.Ordinal))
-            return Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), migratedPath);
-
-        if (Path.IsPathRooted(imagePath)) return imagePath;
-
-        return Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), imagePath);
     }
 }
