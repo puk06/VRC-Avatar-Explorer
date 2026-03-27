@@ -17,7 +17,7 @@ internal class UISelectableItem
     internal string Title { get; private set; } = string.Empty;
     internal (string LocalizationKey, string[] Args) Description { get; set; } = new();
     internal string ImageFileName { get; private set; } = string.Empty;
-    internal ItemTagInfo Tag { get; private set; } = new(); // ボタンが選択されたときに使用されるタグ
+    internal ItemTagInfo Tag { get; private set; } = new(ItemTagStates.None, string.Empty); // ボタンが選択されたときに使用されるタグ
     internal IconType IconType { get; private set; } = IconType.None;
 
     internal int ItemCount { get; set; } = 0; // カテゴリなどの数表記用
