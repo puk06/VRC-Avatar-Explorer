@@ -534,12 +534,9 @@ public class AvatarExplorerApp
 
     public void EditCustomCategoryName(string previousName, string newName)
     {
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (Item item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Custom && i.CustomCategory == previousName))
         {
-            if (item.Type == ItemType.Custom && item.CustomCategory == previousName)
-            {
-                item.CustomCategory = newName;
-            }
+            item.CustomCategory = newName;
         }
 
         UpdateSearchIndex();
