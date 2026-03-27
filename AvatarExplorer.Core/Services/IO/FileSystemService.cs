@@ -261,10 +261,22 @@ public static class FileSystemService
 
         try
         {
-            string parentFolder = GetUniquePath(dataRootDirectory, ItemUtils.GetSafeTitle(itemCreationContext.Title) ?? Path.GetFileNameWithoutExtension(itemCreationContext.ItemPaths[0]), true);
+            bool linkedToOriginal = false;
+
+            string parentFolder;
+            if (runtimeSettings.ShouldLinkToOriginal && Directory.Exists(itemCreationContext.ItemPaths[0]))
+            {
+                parentFolder = itemCreationContext.ItemPaths[0];
+                linkedToOriginal = true;
+            }
+            else
+            {
+                parentFolder = GetUniquePath(dataRootDirectory, ItemUtils.GetSafeTitle(itemCreationContext.Title) ?? Path.GetFileNameWithoutExtension(itemCreationContext.ItemPaths[0]), true);
+            }
+            
             Directory.CreateDirectory(parentFolder);
 
-            foreach (string itemPath in itemCreationContext.ItemPaths)
+            foreach (string itemPath in linkedToOriginal ? itemCreationContext.ItemPaths.Skip(1) : itemCreationContext.ItemPaths)
             {
                 ErrorOr<Success> extractResult = await ExtractItemInternalAsync(
                     itemPath,

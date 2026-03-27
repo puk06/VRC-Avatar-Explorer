@@ -239,6 +239,8 @@
     "Settings.Item": "Item",
     "Settings.RemoveOriginal.Title": "Delete Original File on Import",
     "Settings.RemoveOriginal.Description": "Whether to automatically delete the original file when importing an item",
+    "Settings.LinkToOriginal.Title": "Use Folder As-Is When Adding Items",
+    "Settings.LinkToOriginal.Description": "When the first path provided while adding an item is a folder, use that folder directly without copying it",
 
     "Settings.Background": "Background",
     "Settings.UseCustomBackground.Title": "Use Custom Background",

@@ -10,6 +10,7 @@ public record RuntimeSettings
     public ItemSortOrder ItemSortOrder { get; init; } = ItemSortOrder.Title;
     public bool RemoveOriginal { get; init; } = false;
     public bool RemoveBrackets { get; init; } = false;
+    public bool ShouldLinkToOriginal { get; init; } = false;
     public int AutoBackupInterval { get; init; } = 5;
     public int MaxDegreeOfParallelism { get; init; } = 4;
 }
