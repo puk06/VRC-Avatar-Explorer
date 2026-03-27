@@ -17,6 +17,9 @@ namespace AvatarExplorer.Core.Services.IO;
 internal static class DataImporter
 {
     private const string V1DatasFolderName = "Datas";
+    private static readonly string V1ItemsFolderPrefix = $"{V1DatasFolderName}\\Items\\";
+    private static readonly string V1ThumbnailFolderPrefix = $"{V1DatasFolderName}\\Thumbnail\\";
+    private static readonly string V1AuthorThumbnailFolderPrefix = $"{V1DatasFolderName}\\AuthorImage\\";
 
     private static int GetImportParallelism(RuntimeSettings runtimeSettings)
     {
@@ -80,11 +83,7 @@ internal static class DataImporter
                 Item newItem = CreateItemFromItemV1(item);
                 newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
 
-                bool isFullPathImage = item.ImagePath == MigrateAvatarExplorerV1Path(item.ImagePath);
-
-                string imageFilePath;
-                if (!isFullPathImage) imageFilePath = Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath));
-                else imageFilePath = item.ImagePath;
+                string imageFilePath = ResolveV1ThumbnailPath(dataFolderPath, item.ImagePath);
 
                 ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
                 if (!result.IsError) newItem.ThumbnailFileName = newItem.Id;
@@ -171,23 +170,19 @@ internal static class DataImporter
     }
     private static string MigrateAvatarExplorerV1Path(string path)
     {
-        string v1ItemsFolderPrefix = $"{V1DatasFolderName}\\Items\\";
-        string v1ThumbnailFolderPrefix = $"{V1DatasFolderName}\\Thumbnail\\";
-        string v1AuthorThumbnailFolderPrefix = $"{V1DatasFolderName}\\AuthorImage\\";
-
         string migratedPath = path;
 
         // 古すぎるAEの場合は./が初めについていることがある
         if (path.StartsWith("./")) migratedPath = path[2..];
 
-        if (path.StartsWith(v1ItemsFolderPrefix))
-            return migratedPath.Replace(v1ItemsFolderPrefix, "<sys>"); // フルパスとアプリフォルダの区別をつけるため
+        if (migratedPath.StartsWith(V1ItemsFolderPrefix, StringComparison.Ordinal))
+            return migratedPath.Replace(V1ItemsFolderPrefix, "<sys>"); // フルパスとアプリフォルダの区別をつけるため
 
-        if (path.StartsWith(v1ThumbnailFolderPrefix))
-            return migratedPath.Replace(v1ThumbnailFolderPrefix, string.Empty);
+        if (migratedPath.StartsWith(V1ThumbnailFolderPrefix, StringComparison.Ordinal))
+            return migratedPath.Replace(V1ThumbnailFolderPrefix, string.Empty);
 
-        if (path.StartsWith(v1AuthorThumbnailFolderPrefix))
-            return migratedPath.Replace(v1AuthorThumbnailFolderPrefix, string.Empty);
+        if (migratedPath.StartsWith(V1AuthorThumbnailFolderPrefix, StringComparison.Ordinal))
+            return migratedPath.Replace(V1AuthorThumbnailFolderPrefix, string.Empty);
 
         return migratedPath;
     }
