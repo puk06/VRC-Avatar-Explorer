@@ -88,13 +88,10 @@ internal static class DataImporter
                 else
                 {
                     string newItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
-                    if (!Directory.Exists(newItemPath)) throw new DirectoryNotFoundException($"Item path not found: {newItemPath}");
 
                     if (!string.IsNullOrEmpty(item.MaterialPath))
                     {
                         string materialPath = ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath));
-                        if (!Directory.Exists(materialPath)) throw new DirectoryNotFoundException($"Material path not found: {materialPath}");
-
                         await FileSystemService.CopyDirectoryAsync(materialPath, newItemPath, importParallelism);
                     }
                     
@@ -245,7 +242,6 @@ internal static class DataImporter
                 else
                 {
                     newItemPath = ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath);
-                    if (!Directory.Exists(newItemPath)) throw new DirectoryNotFoundException($"Item path not found: {newItemPath}");
                 }
 
                 item.ItemPath = newItemPath;
