@@ -27,12 +27,12 @@ internal static class DataImporter
         return Math.Clamp(requested - 1, 1, cappedByCpu);
     }
 
-    internal static async Task<ErrorOr<DataImportResult>> Import(DataImportType importType, string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    internal static async Task<ErrorOr<DataImportResult>> Import(DataImportType importType, string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, bool copyAssetData, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
     {
         return importType switch
         {
-            DataImportType.V1 => await FromV1(dataFolderPath, runtimeSettings, reportProgress),
-            DataImportType.KonoAsset => await FromKonoAsset(dataFolderPath, localizedItemTypesMapping, runtimeSettings, reportProgress),
+            DataImportType.V1 => await FromV1(dataFolderPath, runtimeSettings, copyAssetData, reportProgress),
+            DataImportType.KonoAsset => await FromKonoAsset(dataFolderPath, localizedItemTypesMapping, copyAssetData, runtimeSettings, reportProgress),
             _ => Error.Unexpected(description: $"Unexpected import type: {importType}")
         };
     }
@@ -47,7 +47,7 @@ internal static class DataImporter
         };
     }
     
-    private static async Task<ErrorOr<DataImportResult>> FromV1(string dataFolderPath, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<ErrorOr<DataImportResult>> FromV1(string dataFolderPath, RuntimeSettings runtimeSettings, bool copyAssetData, Func<(string, int), Task>? reportProgress = null)
     {
         try
         {
@@ -72,15 +72,34 @@ internal static class DataImporter
             {
                 ItemV1 item = v1Items[i];
                 string previousItemPath = item.ItemPath;
-
-                string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
-                string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true) ?? throw new DirectoryNotFoundException("Counldn't get unique item path");
-                
-                await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, importParallelism);
-                if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, importParallelism);
                 
                 Item newItem = CreateItemFromItemV1(item);
-                newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
+
+                if (copyAssetData)
+                {
+                    string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
+                    string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true) ?? throw new DirectoryNotFoundException("Counldn't get unique item path");
+                    
+                    await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, importParallelism);
+                    if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, importParallelism);
+                
+                    newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
+                }
+                else
+                {
+                    string newItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
+                    if (!Directory.Exists(newItemPath)) throw new DirectoryNotFoundException($"Item path not found: {newItemPath}");
+
+                    if (!string.IsNullOrEmpty(item.MaterialPath))
+                    {
+                        string materialPath = ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath));
+                        if (!Directory.Exists(materialPath)) throw new DirectoryNotFoundException($"Material path not found: {materialPath}");
+
+                        await FileSystemService.CopyDirectoryAsync(materialPath, newItemPath, importParallelism);
+                    }
+                    
+                    newItem.ItemPath = newItemPath;
+                }
 
                 ErrorOr<Success> result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
                 if (!result.IsError) newItem.ThumbnailFileName = newItem.Id;
@@ -182,7 +201,7 @@ internal static class DataImporter
         return migratedPath;
     }
 
-    private static async Task<ErrorOr<DataImportResult>> FromKonoAsset(string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<ErrorOr<DataImportResult>> FromKonoAsset(string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, bool copyAssetData, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
     {
         try
         {
@@ -215,10 +234,20 @@ internal static class DataImporter
                 AbstractKonoAssetItem konoAssetItem = konoAssetItems[i];
                 Item item = konoAssetItem.ToItem();
 
-                string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
-                string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true);
+                string newItemPath;
+                if (copyAssetData)
+                {
+                    string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
+                    newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true);
+                    
+                    await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath), newItemPath, importParallelism);
+                }
+                else
+                {
+                    newItemPath = ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath);
+                    if (!Directory.Exists(newItemPath)) throw new DirectoryNotFoundException($"Item path not found: {newItemPath}");
+                }
 
-                await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath), newItemPath, importParallelism);
                 item.ItemPath = newItemPath;
 
                 if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename))

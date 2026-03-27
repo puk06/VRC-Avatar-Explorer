@@ -10,6 +10,7 @@ using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Services.Utilities;
 using ErrorOr;
 
@@ -39,7 +40,13 @@ public partial class MainWindow
         }
 
         Dictionary<ItemType, string> localizedItemTypesMapping = Enum.GetValues<ItemType>().ToDictionary(i => i, i => Localizer.Instance[i.GetLocalizationKey() ?? i.ToString()]);
-        ErrorOr<Success> result = await AvatarExplorer.Import(dataImportType, selectedFolder, localizedItemTypesMapping, progressAction);
+
+        YesNoResult? copyAssetData = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.CopyAssetData]);
+        if (copyAssetData == null) return;
+
+        bool shouldCopyAssetData = copyAssetData == YesNoResult.Yes;
+
+        ErrorOr<Success> result = await AvatarExplorer.Import(dataImportType, selectedFolder, localizedItemTypesMapping, shouldCopyAssetData, progressAction);
         ProgressOverlay_Hide();
 
         if (result.IsError)

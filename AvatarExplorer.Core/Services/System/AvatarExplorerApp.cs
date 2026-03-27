@@ -725,9 +725,9 @@ public class AvatarExplorerApp
     #endregion
 
     #region Data Importer API
-    public async Task<ErrorOr<Success>> Import(DataImportType importType, string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, Func<(string, int), Task>? reportProgress = null)
+    public async Task<ErrorOr<Success>> Import(DataImportType importType, string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, bool copyAssetData, Func<(string, int), Task>? reportProgress = null)
     {
-        ErrorOr<DataImportResult> result = await DataImporter.Import(importType, dataFolderPath, localizedItemTypesMapping, _runtimeSettings, reportProgress);
+        ErrorOr<DataImportResult> result = await DataImporter.Import(importType, dataFolderPath, localizedItemTypesMapping, copyAssetData, _runtimeSettings, reportProgress);
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
         _itemDatabaseManager.AddRange(result.Value.Items);

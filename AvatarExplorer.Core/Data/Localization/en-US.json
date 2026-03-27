@@ -60,6 +60,7 @@
     "Dialog.Confirmation.AddToExistingItem": "An item with the same Booth ID has already been added. Do you want to add files or folders to that item?",
     "Dialog.Confirmation.ResolveTempAvatar": "Confirm linking temporary avatar \"{0}\" to permanent item \"{1}\"?",
     "Dialog.Confirmation.RemoveAssetData": "Delete the asset data for this item as well?",
+    "Dialog.Confirmation.CopyAssetData": "Copy asset data?\n\nIf not, the original asset folder will be used as-is. When importing from Avatar Explorer, only the material folder will always be copied within the folder.",
     
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "Include common avatars in the supported avatar column?",
 

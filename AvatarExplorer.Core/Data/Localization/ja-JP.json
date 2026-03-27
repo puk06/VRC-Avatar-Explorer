@@ -60,6 +60,7 @@
     "Dialog.Confirmation.AddToExistingItem": "同じBoothIdのアイテムが既に追加されています。そのアイテムにファイルやフォルダを追加しますか？",
     "Dialog.Confirmation.ResolveTempAvatar": "仮アバター「{0}」を\n正式アイテム「{1}」として確定しますか？",
     "Dialog.Confirmation.RemoveAssetData": "アイテムのアセットデータも一緒に削除しますか？",
+    "Dialog.Confirmation.CopyAssetData": "アセットデータをコピーしますか？\n\nしない場合は、元のアセットフォルダがそのまま使用されます。Avatar Explorerからのインポート時、マテリアルフォルダのみフォルダ内に必ずコピーされます。",
     
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "対応アバターの欄に共通素体アバターを含めますか？",
 
