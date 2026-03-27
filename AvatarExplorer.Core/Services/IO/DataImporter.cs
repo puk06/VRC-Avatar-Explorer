@@ -82,7 +82,7 @@ internal static class DataImporter
                 Item newItem = CreateItemFromItemV1(item);
                 newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
 
-                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
+                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
                 if (!result.IsError) newItem.ThumbnailFileName = newItem.Id;
                 else newItem.ThumbnailFileName = string.Empty;
 
@@ -286,7 +286,7 @@ internal static class DataImporter
                 if (sourceItem.BoothId == -1 || string.IsNullOrWhiteSpace(sourceItem.ImagePath)) continue;
                 if (sourceThumbnailMap.ContainsKey(sourceItem.BoothId)) continue;
 
-                string thumbnailPath = ItemUtils.GetItemPath(dataFolderPath, MigrateAvatarExplorerV1Path(sourceItem.ImagePath));
+                string thumbnailPath = ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(sourceItem.ImagePath));
                 if (File.Exists(thumbnailPath)) sourceThumbnailMap[sourceItem.BoothId] = thumbnailPath;
             }
 
