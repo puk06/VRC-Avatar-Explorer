@@ -291,7 +291,7 @@ public static class FileSystemService
                 }
             }
 
-            result.ItemParentFolder = $"<sys>{Path.GetRelativePath(dataRootDirectory, parentFolder)}";
+            result.ItemParentFolder = linkedToOriginal ? parentFolder : $"<sys>{Path.GetRelativePath(dataRootDirectory, parentFolder)}";
 
             return result;
         }
