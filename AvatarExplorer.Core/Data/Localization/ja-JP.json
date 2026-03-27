@@ -237,10 +237,11 @@
     "Settings.AntiAliasing.Options.High": "高品質",
     "Settings.ItemsPerPage.Title": "ページあたりのアイテム表示数",
     "Settings.ItemsPerPage.Description": "1ページに表示する最大アイテム数です",
+
     "Settings.Item": "アイテム",
     "Settings.RemoveOriginal.Title": "インポート時に元ファイルを削除する",
     "Settings.RemoveOriginal.Description": "アイテムをインポートした時に、元ファイルを自動で削除するかどうかの設定です",
-    "Settings.LinkToOriginal.Title": "アイテム追加時にフォルダをそのまま使用する",
+    "Settings.LinkToOriginal.Title": "フォルダをそのまま使用する",
     "Settings.LinkToOriginal.Description": "アイテム追加時に渡された最初のパスがフォルダの場合、そのフォルダをコピーせずにそのまま使用します",
 
     "Settings.Background": "背景",
