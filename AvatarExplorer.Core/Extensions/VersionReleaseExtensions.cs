@@ -10,7 +10,7 @@ public static class VersionReleaseExtensions
         try
         {
             SemanticVersioning.Range versionRange = new SemanticVersioning.Range($">{AvatarExplorerApp.CurrentVersion}");
-            return versionReleases.Where(i => versionRange.IsSatisfied(i.Version));
+            return versionReleases.Where(i => versionRange.IsSatisfied(i.Version, includePrerelease: true));
         }
         catch (Exception ex)
         {
@@ -30,7 +30,7 @@ public static class VersionReleaseExtensions
 
             foreach (VersionRelease versionRelease in filteredReleases)
             {
-                if (latestVersionRange.IsSatisfied(versionRelease.Version))
+                if (latestVersionRange.IsSatisfied(versionRelease.Version, includePrerelease: true))
                 {
                     latestVersionRange = new SemanticVersioning.Range($">={versionRelease.Version}");
                     latestVersionRelease = versionRelease;
