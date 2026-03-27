@@ -168,6 +168,21 @@ public partial class MainWindow
         _editCommonAvatarsOverlay_selectedGroupId = (EditCommonAvatarsOverlay_GroupComboBox.SelectedItem as ComboBoxItem)?.Tag?.ToString();
         EditCommonAvatarsOverlay_DrawItemButtons();
     }
+    private void EditCommonAvatarsOverlay_SelectVisible_Click(object? sender, RoutedEventArgs e)
+    {
+        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        if (commonAvatar == null) return;
+
+        IEnumerable<string> visibleAvatarIds = EditCommonAvatarsOverlay_AvatarsList.Children
+            .OfType<Button>()
+            .Select(button => (button.Tag as ItemTagInfo)?.Value)
+            .Where(value => !string.IsNullOrEmpty(value))
+            .Cast<string>();
+
+        commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Concat(visibleAvatarIds).Distinct());
+
+        EditCommonAvatarsOverlay_DrawItemButtons();
+    }
     private void EditCommonAvatarsOverlay_SearchTextBox_TextChanged(object? sender, RoutedEventArgs e) => EditCommonAvatarsOverlay_DrawItemButtons();
     #endregion
 }

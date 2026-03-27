@@ -857,7 +857,10 @@
                         <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditSupportedAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
                         
                         <!-- 検索バー -->
-                        <TextBox x:Name="EditSupportedAvatarsOverlay_SearchTextBox" Grid.Row="2" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditSupportedAvatarsOverlay_SearchTextBox_TextChanged"/>
+                        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox x:Name="EditSupportedAvatarsOverlay_SearchTextBox" Grid.Column="0" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditSupportedAvatarsOverlay_SearchTextBox_TextChanged"/>
+                            <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Click="EditSupportedAvatarsOverlay_SelectVisible_Click"/>
+                        </Grid>
 
                         <!-- アバターリスト -->
                         <ScrollViewer Grid.Row="4" Height="500">
@@ -885,7 +888,10 @@
                         <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditImplementedAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
                         
                         <!-- 検索バー -->
-                        <TextBox x:Name="EditImplementedAvatarsOverlay_SearchTextBox" Grid.Row="2" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditImplementedAvatarsOverlay_SearchTextBox_TextChanged"/>
+                        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox x:Name="EditImplementedAvatarsOverlay_SearchTextBox" Grid.Column="0" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditImplementedAvatarsOverlay_SearchTextBox_TextChanged"/>
+                            <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Click="EditImplementedAvatarsOverlay_SelectVisible_Click"/>
+                        </Grid>
 
                         <!-- アバターリスト -->
                         <ScrollViewer Grid.Row="4" Height="500">
@@ -946,7 +952,10 @@
                         </Grid>
                         
                         <!-- 検索バー -->
-                        <TextBox x:Name="EditCommonAvatarsOverlay_SearchTextBox" Grid.Row="4" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditCommonAvatarsOverlay_SearchTextBox_TextChanged"/>
+                        <Grid Grid.Row="4" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <TextBox x:Name="EditCommonAvatarsOverlay_SearchTextBox" Grid.Column="0" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditCommonAvatarsOverlay_SearchTextBox_TextChanged"/>
+                            <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Click="EditCommonAvatarsOverlay_SelectVisible_Click"/>
+                        </Grid>
 
                         <!-- アバターリスト -->
                         <ScrollViewer Grid.Row="6" Height="400">

@@ -43,6 +43,7 @@
     "Button.ToolTip.CreatedDate": "Created Date: {0}",
     "Button.ToolTip.UpdatedDate": "Updated Date: {0}",
     "Button.ToolTip.FilePath": "File Path to Open: {0}",
+    "Button.SelectVisible": "Select Visible",
 
     "ItemWindow.CurrentPage": "{0} / {1} pages",
     "ItemWindow.PageItemCount": "{0} - {1} / {2} items",

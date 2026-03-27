@@ -87,6 +87,19 @@ public partial class MainWindow
 
         EditImplementedAvatarsOverlay_DrawItemButtons();
     }
+    private void EditImplementedAvatarsOverlay_SelectVisible_Click(object? sender, RoutedEventArgs e)
+    {
+        foreach (string avatarId in EditImplementedAvatarsOverlay_AvatarsList.Children
+            .OfType<Button>()
+            .Select(button => (button.Tag as ItemTagInfo)?.Value)
+            .Where(value => !string.IsNullOrEmpty(value))
+            .Cast<string>())
+        {
+            if (!_editImplementedAvatarsOverlay_selectedAvatars.Contains(avatarId)) _editImplementedAvatarsOverlay_selectedAvatars.Add(avatarId);
+        }
+
+        EditImplementedAvatarsOverlay_DrawItemButtons();
+    }
     private void EditImplementedAvatarsOverlay_SearchTextBox_TextChanged(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_DrawItemButtons();
     #endregion
 }

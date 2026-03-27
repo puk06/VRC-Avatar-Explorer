@@ -93,6 +93,7 @@ public static class LocalizationKey
             public const string UpdatedDate = "Button.ToolTip.UpdatedDate";
             public const string FilePath = "Button.ToolTip.FilePath";
         }
+        public const string SelectVisible = "Button.SelectVisible";
         public const string Close = "Button.Close";
         public const string Confirm = "Button.Confirm";
         public const string Cancel = "Button.Cancel";

@@ -119,6 +119,19 @@ public partial class MainWindow
 
         EditSupportedAvatarsOverlay_DrawItemButtons();
     }
+    private void EditSupportedAvatarsOverlay_SelectVisible_Click(object? sender, RoutedEventArgs e)
+    {
+        foreach (string avatarId in EditSupportedAvatarsOverlay_AvatarsList.Children
+            .OfType<Button>()
+            .Select(button => (button.Tag as ItemTagInfo)?.Value)
+            .Where(value => !string.IsNullOrEmpty(value))
+            .Cast<string>())
+        {
+            if (!_editSupportedAvatarsOverlay_selectedAvatars.Contains(avatarId)) _editSupportedAvatarsOverlay_selectedAvatars.Add(avatarId);
+        }
+
+        EditSupportedAvatarsOverlay_DrawItemButtons();
+    }
     private void EditSupportedAvatarsOverlay_SearchTextBox_TextChanged(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_DrawItemButtons();
     #endregion
 }
