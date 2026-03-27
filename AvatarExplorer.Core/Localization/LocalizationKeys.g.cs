@@ -479,6 +479,12 @@ public static class LocalizationKey
             public const string Description = "Settings.ImportFromOther.Description";
             public const string Import = "Settings.ImportFromOther.Import";
         }
+        public static class ImportThumbnail
+        {
+            public const string Title = "Settings.ImportThumbnail.Title";
+            public const string Description = "Settings.ImportThumbnail.Description";
+            public const string Import = "Settings.ImportThumbnail.Import";
+        }
         public static class ExportCsv
         {
             public const string Title = "Settings.ExportCsv.Title";

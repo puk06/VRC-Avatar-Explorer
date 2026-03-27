@@ -742,6 +742,16 @@ public class AvatarExplorerApp
 
         return Result.Success;
     }
+
+    public async Task<ErrorOr<Success>> ImportThumbnail(ThumbnailImportType importType, string dataFolderPath, Func<(string, int), Task>? reportProgress = null)
+    {
+        ErrorOr<Success> result = await DataImporter.ImportThumbnail(importType, _itemDatabaseManager.Items, dataFolderPath, reportProgress);
+        if (result.IsError) return result;
+
+        SaveItemDatabase();
+
+        return Result.Success;
+    }
     #endregion
 
     #region Data Exporter API

@@ -255,6 +255,7 @@ public partial class MainWindow
     private async void SettingsOverlay_UpdateCheckNow_Click(object? sender, RoutedEventArgs e) => await UpdateDialogOverlay_CheckAsync((UpdateChannel)SettingsOverlay_UpdateChannelComboBox.SelectedIndex, false);
 
     private void SettingsOverlay_ImportData_Click(object? sender, RoutedEventArgs e) => SelectImportTypeOverlay_Show();
+    private void SettingsOverlay_ImportThumbnail_Click(object? sender, RoutedEventArgs e) => SelectThumbnailImportTypeOverlay_Show();
 
     private async void SettingsOverlay_ExportDataToCsv_Click(object? sender, RoutedEventArgs e)
     {
