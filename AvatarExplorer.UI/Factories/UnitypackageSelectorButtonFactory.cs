@@ -8,7 +8,6 @@ using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
-using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Services.External;
 using Material.Icons;
 using Material.Icons.Avalonia;
@@ -17,41 +16,35 @@ namespace AvatarExplorer.UI.Factories;
 
 internal static class UnitypackageSelectorButtonFactory
 {
-    internal static Button AddItemButton(
-        StackPanel parent,
-        UISelectableItem item,
-        RuntimeSettings runtimeSettings, UserPreferences userPreferences,
-        string id, string selectedFilePath,
-        Action<string>? onCopyClick = null, Action<string>? onRemoveClick = null, Action<string, string>? onSelectionChanged = null
-    )
+    internal static Button AddItemButton(UnitypackageSelectorButtonOptions options)
     {
-        Button itemButton = ItemButtonFactory.CreateBaseButton(item);
+        Button itemButton = ItemButtonFactory.CreateBaseButton(options.Item);
 
         StackPanel contentStackPanel = new() { Spacing = 5 };
 
         Grid contentGrid = new() { ColumnSpacing = 10, ColumnDefinitions = new("Auto,*") };
 
         // アイコン (アイコンにCornerRadiusを適用するため、ChildにImageが指定されたBorderが返ってくる)
-        Border itemIconBorder = ItemButtonFactory.CreateItemIconBorder(item, userPreferences, false);
+        Border itemIconBorder = ItemButtonFactory.CreateItemIconBorder(options.Item, options.UserPreferences, false);
         contentGrid.Children.Add(itemIconBorder);
         Grid.SetColumn(itemIconBorder, 0);
 
         // タイトルリスト
-        Grid textGrid = CreateTextAndIconGrid(item, runtimeSettings, id, onCopyClick, onRemoveClick);
+        Grid textGrid = CreateTextAndIconGrid(options.Item, options.RuntimeSettings, options.Id, options.OnCopyClick, options.OnRemoveClick);
         contentGrid.Children.Add(textGrid);
         Grid.SetColumn(textGrid, 1);
 
         contentStackPanel.Children.Add(contentGrid);
 
         Panel unitypackagePanel = new();
-        unitypackagePanel.Children.Add(CreateUnitypackageList(item, id, selectedFilePath, runtimeSettings, onSelectionChanged));
+        unitypackagePanel.Children.Add(CreateUnitypackageList(options.Item, options.Id, options.SelectedFilePath, options.RuntimeSettings, options.OnSelectionChanged));
 
         contentStackPanel.Children.Add(unitypackagePanel);
 
         itemButton.Content = contentStackPanel;
-        ItemButtonFactory.SetupButtonInteractions(itemButton, item, runtimeSettings, null, null);
+        ItemButtonFactory.SetupButtonInteractions(itemButton, options.Item, options.RuntimeSettings, null, null);
 
-        parent.Children.Add(itemButton);
+        options.Parent.Children.Add(itemButton);
         return itemButton;
     }
 

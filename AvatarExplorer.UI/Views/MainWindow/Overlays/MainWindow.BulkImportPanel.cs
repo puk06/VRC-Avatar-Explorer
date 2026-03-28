@@ -62,13 +62,18 @@ public partial class MainWindow
             Item? item = AvatarExplorer.GetItemById(bulkImportItem.ItemId);
             if (item == null) continue;
 
-            UnitypackageSelectorButtonFactory.AddItemButton(
-                SidePanel_BulkImportPanel,
-                new UISelectableItem(new ItemCountInfo(item, 0)),
-                RuntimeSettings, _userPreferences,
-                bulkImportItem.Id, bulkImportItem.FilePath,
-                BulkImportPanel_ItemButton_Copy_Click, BulkImportPanel_ItemButton_Remove_Click, BulkImportPanel_ItemButton_SelectionChanged
-            );
+            UnitypackageSelectorButtonFactory.AddItemButton(new UnitypackageSelectorButtonOptions
+            {
+                Parent = SidePanel_BulkImportPanel,
+                Item = new UISelectableItem(new ItemCountInfo(item, 0)),
+                RuntimeSettings = RuntimeSettings,
+                UserPreferences = _userPreferences,
+                Id = bulkImportItem.Id,
+                SelectedFilePath = bulkImportItem.FilePath,
+                OnCopyClick = BulkImportPanel_ItemButton_Copy_Click,
+                OnRemoveClick = BulkImportPanel_ItemButton_Remove_Click,
+                OnSelectionChanged = BulkImportPanel_ItemButton_SelectionChanged
+            });
         }
     }
 
