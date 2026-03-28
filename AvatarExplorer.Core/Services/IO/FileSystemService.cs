@@ -369,32 +369,20 @@ public static class FileSystemService
 
         string extractDirectoryFolderPath = GetUniquePath(extractDirectory, Path.GetFileNameWithoutExtension(filePath), true);
 
-        try
+        string extension = Path.GetExtension(filePath).ToLower();
+
+        Func<string?, Task> extractAction = extension switch
         {
-            string extension = Path.GetExtension(filePath).ToLower();
+            ".zip" => password => ZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
+            ".rar" => password => RarExtractorAsync(filePath, extractDirectoryFolderPath, password),
+            ".7z" => password => SevenZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
+            ".gz" => _ => GzipExtractorAsync(filePath, extractDirectoryFolderPath),
+            ".tar" => _ => TarExtractorAsync(filePath, extractDirectoryFolderPath),
+            _ => _ => CopyFileAsync(filePath, Path.Combine(extractDirectoryFolderPath, Path.GetFileName(filePath)))
+        };
 
-            Func<string?, Task>? extractAction = extension switch
-            {
-                ".zip" => password => ZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
-                ".rar" => password => RarExtractorAsync(filePath, extractDirectoryFolderPath, password),
-                ".7z" => password => SevenZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
-                ".gz" => _ => GzipExtractorAsync(filePath, extractDirectoryFolderPath),
-                ".tar" => _ => TarExtractorAsync(filePath, extractDirectoryFolderPath),
-                _ => _ => CopyFileAsync(filePath, Path.Combine(extractDirectoryFolderPath, Path.GetFileName(filePath)))
-            };
-
-            if (extractAction == null)
-            {
-                return Error.Unexpected(description: $"Unsupported File Extension: '{Path.GetFileName(filePath)}'.");
-            }
-
-            await ExtractArchiveWithPasswordAsync(filePath, extractAction);
-        }
-        catch (Exception ex)
-        {
-            ErrorManager.Instance.PostInternalError($"Failed to extract file: '{filePath}'.", ex);
-            return Error.Failure(description: $"Failed to extract file: '{filePath}'.");
-        }
+        ErrorOr<Success> extractArchiveResult = await ExtractArchiveWithPasswordAsync(filePath, extractAction);
+        if (extractArchiveResult.IsError) return Error.Failure(description: $"Failed to extract archive: '{filePath}'.");
 
         if (removeOriginalFile)
         {
@@ -413,7 +401,7 @@ public static class FileSystemService
         return extractResult;
     }
 
-    private static async Task ExtractArchiveWithPasswordAsync(string archivePath, Func<string?, Task> extractAction)
+    private static async Task<ErrorOr<Success>> ExtractArchiveWithPasswordAsync(string archivePath, Func<string?, Task> extractAction)
     {
         string? password = null;
 
@@ -422,7 +410,7 @@ public static class FileSystemService
             try
             {
                 await extractAction(password);
-                return;
+                return Result.Success;
             }
             catch (Exception ex) when (IsPasswordRelatedException(ex))
             {
@@ -436,7 +424,14 @@ public static class FileSystemService
                     ErrorMessage = ex.Message
                 });
             }
+            catch (Exception ex)
+            {
+                ErrorManager.Instance.PostInternalError($"An error occurred while extracting archive: '{archivePath}'.", ex);
+                return Error.Failure(description: $"An error occurred while extracting archive: '{archivePath}'.");
+            }
         }
+
+        return Error.Failure(description: $"Failed to extract archive after multiple attempts. Archive: '{archivePath}'.");
     }
 
     private static bool IsPasswordRelatedException(Exception ex)
