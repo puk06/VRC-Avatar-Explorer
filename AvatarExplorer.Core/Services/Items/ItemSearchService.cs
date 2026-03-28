@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Utils;
@@ -10,22 +9,22 @@ namespace AvatarExplorer.Core.Services.Items;
 
 internal static class ItemSearchService
 {
-    internal static ImmutableArray<Item> ExecuteSearch(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, IEnumerable<TempAvatar> tempAvatars, Dictionary<string, string> searchIndexDictionary, RuntimeSettings runtimeSettings, SearchFilter searchFilter)
+    internal static ImmutableArray<Item> ExecuteSearch(SearchContext searchContext, SearchFilter searchFilter)
     {
-        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Type == ItemType.Avatar), tempAvatars);
+        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(searchContext.Items.Where(i => i.Type == ItemType.Avatar), searchContext.TempAvatars);
 
         List<Item> matchedItems = new();
-        foreach (Item item in items)
+        foreach (Item item in searchContext.Items)
         {
-            string searchIndex = searchIndexDictionary.TryGetValue(item.Id, out string? value) ? value : string.Empty;
-            if (Matches(item, searchFilter, searchIndex, avatarTitleMaps, commonAvatars, runtimeSettings.DataRootDirectory))
+            string searchIndex = searchContext.SearchIndexDictionary.TryGetValue(item.Id, out string? value) ? value : string.Empty;
+            if (Matches(item, searchFilter, searchIndex, avatarTitleMaps, searchContext.CommonAvatars, searchContext.RuntimeSettings.DataRootDirectory))
             {
                 matchedItems.Add(item);
             }
         }
 
         return matchedItems
-            .OrderByDescending(i => !searchIndexDictionary.TryGetValue(i.Id, out string? value) ? 0 : SearchUtils.GetScore(value, searchFilter.SearchTokens.Where(t => t.Type == SearchTokenType.FreeWord).Select(t => t.Value)))
+            .OrderByDescending(i => !searchContext.SearchIndexDictionary.TryGetValue(i.Id, out string? value) ? 0 : SearchUtils.GetScore(value, searchFilter.SearchTokens.Where(t => t.Type == SearchTokenType.FreeWord).Select(t => t.Value)))
             .ToImmutableArray();
     }
     private static bool Matches(Item item, SearchFilter searchFilter, string searchIndex, Dictionary<string, string> avatarTitleMaps, IEnumerable<CommonAvatar> commonAvatars, string parentFolder)

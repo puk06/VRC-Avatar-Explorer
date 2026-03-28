@@ -728,7 +728,19 @@ public class AvatarExplorerApp
     #endregion
 
     #region Search API
-    public ImmutableArray<Item> SearchItems(SearchFilter searchFilter) => ItemSearchService.ExecuteSearch(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _tempAvatarsDatabaseManager.Items, _itemSearchIndexDictionary, _runtimeSettings, searchFilter);
+    public ImmutableArray<Item> SearchItems(SearchFilter searchFilter)
+    {
+        SearchContext searchContext = new()
+        {
+            Items = _itemDatabaseManager.Items,
+            CommonAvatars = _commonAvatarDatabaseManager.Items,
+            TempAvatars = _tempAvatarsDatabaseManager.Items,
+            SearchIndexDictionary = _itemSearchIndexDictionary,
+            RuntimeSettings = _runtimeSettings
+        };
+
+        return ItemSearchService.ExecuteSearch(searchContext, searchFilter);
+    }
     #endregion
 
     #region Save API
