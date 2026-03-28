@@ -34,6 +34,7 @@ Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 SetupIconFile={#MyRepoRoot}\AvatarExplorer.UI\Assets\SoftwareIcon.ico
+AppMutex=AvatarExplorerV2.SingleInstance
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
