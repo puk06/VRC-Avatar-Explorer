@@ -371,15 +371,24 @@ public static class FileSystemService
 
         try
         {
-            switch(Path.GetExtension(filePath).ToLower())
+            string extension = Path.GetExtension(filePath).ToLower();
+
+            Func<string?, Task>? extractAction = extension switch
             {
-                case ".zip": await ZipExtractorAsync(filePath, extractDirectoryFolderPath); break;
-                case ".rar": await RarExtractorAsync(filePath, extractDirectoryFolderPath); break;
-                case ".7z": await SevenZipExtractorAsync(filePath, extractDirectoryFolderPath); break;
-                case ".gz": await GzipExtractorAsync(filePath, extractDirectoryFolderPath); break;
-                case ".tar": await TarExtractorAsync(filePath, extractDirectoryFolderPath); break;
-                default: return Error.Unexpected(description: $"Unsupported File Extension: '{Path.GetFileName(filePath)}'.");
+                ".zip" => password => ZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
+                ".rar" => password => RarExtractorAsync(filePath, extractDirectoryFolderPath, password),
+                ".7z" => password => SevenZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
+                ".gz" => _ => GzipExtractorAsync(filePath, extractDirectoryFolderPath),
+                ".tar" => _ => TarExtractorAsync(filePath, extractDirectoryFolderPath),
+                _ => null
+            };
+
+            if (extractAction == null)
+            {
+                return Error.Unexpected(description: $"Unsupported File Extension: '{Path.GetFileName(filePath)}'.");
             }
+
+            await ExtractArchiveWithPasswordAsync(filePath, extractAction);
         }
         catch (Exception ex)
         {
@@ -404,19 +413,64 @@ public static class FileSystemService
         return extractResult;
     }
 
-    private static async Task ZipExtractorAsync(string filePath, string extractDirectoryFolder)
+    private static async Task ExtractArchiveWithPasswordAsync(string archivePath, Func<string?, Task> extractAction)
     {
-        using var archive = SharpCompress.Archives.Zip.ZipArchive.Open(filePath);
+        string? password = null;
+
+        for (int attempt = 1; attempt <= 3; attempt++)
+        {
+            try
+            {
+                await extractAction(password);
+                return;
+            }
+            catch (Exception ex) when (IsPasswordRelatedException(ex))
+            {
+                Func<ArchivePasswordRequest, ValueTask<string?>>? passwordProvider = AvatarExplorerApp.Instance.PasswordProvider;
+                if (passwordProvider == null) throw;
+
+                password = await passwordProvider.Invoke(new ArchivePasswordRequest
+                {
+                    ArchivePath = archivePath,
+                    Attempt = attempt,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+    }
+
+    private static bool IsPasswordRelatedException(Exception ex)
+    {
+        if (ex is CryptographicException) return true;
+
+        Exception? current = ex;
+        while (current != null)
+        {
+            string message = current.Message.ToLowerInvariant();
+            if (message.Contains("password") || message.Contains("encrypted") || message.Contains("passphrase") || message.Contains("decrypt"))
+            {
+                return true;
+            }
+
+            current = current.InnerException;
+        }
+
+        return false;
+    }
+
+    private static async Task ZipExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
+    {
+        using var archive = SharpCompress.Archives.Zip.ZipArchive.Open(filePath, CreateReaderOptions(password));
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
-    private static async Task RarExtractorAsync(string filePath, string extractDirectoryFolder)
+    private static async Task RarExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
     {
-        using var archive = SharpCompress.Archives.Rar.RarArchive.Open(filePath);
+        using var archive = SharpCompress.Archives.Rar.RarArchive.Open(filePath, CreateReaderOptions(password));
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
-    private static async Task SevenZipExtractorAsync(string filePath, string extractDirectoryFolder)
+    private static async Task SevenZipExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
     {
-        using var archive = SharpCompress.Archives.SevenZip.SevenZipArchive.Open(filePath);
+        using var archive = SharpCompress.Archives.SevenZip.SevenZipArchive.Open(filePath, CreateReaderOptions(password));
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
     private static async Task GzipExtractorAsync(string filePath, string extractDirectoryFolder)
@@ -428,6 +482,12 @@ public static class FileSystemService
     {
         using var archive = SharpCompress.Archives.Tar.TarArchive.Open(filePath);
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
+    }
+    private static SharpCompress.Readers.ReaderOptions CreateReaderOptions(string? password)
+    {
+        SharpCompress.Readers.ReaderOptions options = new();
+        if (!string.IsNullOrEmpty(password)) options.Password = password;
+        return options;
     }
     private static async Task ExtractEntriesAsync<T>(string extractDirectoryFolder, ICollection<T> entries)
         where T : Entry, IArchiveEntry

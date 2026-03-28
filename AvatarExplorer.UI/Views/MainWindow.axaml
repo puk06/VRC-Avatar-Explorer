@@ -1135,6 +1135,35 @@
             </Border>
         </Border>
 
+        <!-- アーカイブパスワード入力ダイアログ -->
+        <Border x:Name="ArchivePasswordDialogOverlay" Classes="overlaybackground" IsVisible="False">
+            <Border Classes="overlay" Width="500" Padding="20">
+                <StackPanel Spacing="15">
+                    
+                    <!-- タイトル + ファイル名 + 試行回数 -->
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="{Binding [ArchivePasswordDialog.Title]}" FontSize="22" FontWeight="Bold"/>
+                        <TextBlock x:Name="ArchivePasswordDialogOverlay_FileName" FontSize="12" Foreground="Gray"/>
+                        <TextBlock x:Name="ArchivePasswordDialogOverlay_AttemptInfo" FontSize="12" Foreground="Gray"/>
+                    </StackPanel>
+
+                    <Separator Background="#22000000"/>
+
+                    <!-- パスワード説明 -->
+                    <TextBlock Text="{Binding [ArchivePasswordDialog.Description]}" FontSize="15" FontWeight="SemiBold"/>
+                    
+                    <!-- パスワード入力欄 -->
+                    <TextBox x:Name="ArchivePasswordDialogOverlay_PasswordBox" PasswordChar="●" Watermark="{Binding [ArchivePasswordDialog.Watermark]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10,10,10,10" FontSize="14"/>
+
+                    <!-- 下のボタン -->
+                    <Grid ColumnDefinitions="150,*,150">
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ArchivePasswordDialogOverlay_Cancel_Click"/>
+                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ArchivePasswordDialogOverlay_Confirm_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
+
         <!-- Yes/Noダイアログ -->
         <Border x:Name="YesNoDialogOverlay" Classes="overlaybackground" IsVisible="False">
             <Border Classes="overlay" Width="500">

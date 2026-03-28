@@ -31,6 +31,8 @@ public class AvatarExplorerApp
 
     private readonly Dictionary<string, string> _itemSearchIndexDictionary = new();
 
+    public Func<ArchivePasswordRequest, ValueTask<string?>>? PasswordProvider { get; set; }
+
     private readonly SelectionState _selectionState = new();
     private readonly Dictionary<ItemTagStates, Func<SelectionNode, ImmutableArray<ItemCountInfo>>> _stateHandlers;
     private RuntimeSettings _runtimeSettings = new();

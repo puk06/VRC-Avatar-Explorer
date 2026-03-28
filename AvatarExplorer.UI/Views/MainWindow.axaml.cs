@@ -58,6 +58,7 @@ public partial class MainWindow : Window
     {
         DataContext = Localizer.Instance;
         AvatarExplorer.Initialize();
+        AvatarExplorer.PasswordProvider = Main_GetArchivePasswordAsync;
 
         InitializeComponent();
         Main_InitializeContextMenuHandlers();
@@ -74,6 +75,14 @@ public partial class MainWindow : Window
 
         // 一括インポートプリセットの読み込み
         BulkImportPresetPanel_DrawItemButtons();
+    }
+
+    private async ValueTask<string?> Main_GetArchivePasswordAsync(ArchivePasswordRequest request)
+    {
+        string? password = await ArchivePasswordDialogOverlay_ShowSafeAsync(Path.GetFileName(request.ArchivePath));
+        if (password == null) return null; // キャンセルされた場合はnullを返す
+
+        return password;
     }
 
     private async void Main_Loaded(object? sender, RoutedEventArgs e)

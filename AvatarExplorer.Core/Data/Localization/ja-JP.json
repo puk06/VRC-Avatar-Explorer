@@ -409,6 +409,12 @@
     "UpdateDialog.NoUpdateAvailableTitle": "アップデートはありません",
     "UpdateDialog.NoUpdateAvailable": "現在、最新バージョン (v{0}) をご利用中です。新しい更新プログラムは提供されていません。\n\n※ ベータ版をご利用の場合、設定に関わらず、次に新しい安定版が出るまで現在のバージョンが最新として維持されます。",
 
+    "ArchivePasswordDialog.Title": "パスワードが必要です",
+    "ArchivePasswordDialog.Description": "このファイルはパスワードで保護されています。",
+    "ArchivePasswordDialog.FileName": "ファイル名",
+    "ArchivePasswordDialog.Attempts": "試行回数",
+    "ArchivePasswordDialog.Watermark": "パスワードを入力...",
+
     "DialogResult.OK": "完了",
     "DialogResult.Yes": "はい",
     "DialogResult.No": "いいえ",

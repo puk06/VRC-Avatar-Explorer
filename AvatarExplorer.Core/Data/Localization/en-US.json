@@ -409,6 +409,12 @@
     "UpdateDialog.NoUpdateAvailableTitle": "No Update Available",
     "UpdateDialog.NoUpdateAvailable": "You are currently using the latest version (v{0}). No new updates are available.\n\n※ If you are using the beta version, the current version will remain as the latest until the next stable release, regardless of settings.",
 
+    "ArchivePasswordDialog.Title": "Password Required",
+    "ArchivePasswordDialog.Description": "This file is protected with a password.",
+    "ArchivePasswordDialog.FileName": "File Name",
+    "ArchivePasswordDialog.Attempts": "Attempts",
+    "ArchivePasswordDialog.Watermark": "Enter Password...",
+
     "DialogResult.OK": "OK",
     "DialogResult.Yes": "Yes",
     "DialogResult.No": "No",

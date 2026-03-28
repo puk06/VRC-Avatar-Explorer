@@ -687,6 +687,14 @@ public static class LocalizationKey
         public const string NoUpdateAvailableTitle = "UpdateDialog.NoUpdateAvailableTitle";
         public const string NoUpdateAvailable = "UpdateDialog.NoUpdateAvailable";
     }
+    public static class ArchivePasswordDialog
+    {
+        public const string Title = "ArchivePasswordDialog.Title";
+        public const string Description = "ArchivePasswordDialog.Description";
+        public const string FileName = "ArchivePasswordDialog.FileName";
+        public const string Attempts = "ArchivePasswordDialog.Attempts";
+        public const string Watermark = "ArchivePasswordDialog.Watermark";
+    }
     public static class DialogResult
     {
         public const string OK = "DialogResult.OK";
