@@ -27,13 +27,13 @@ internal static class DataImporter
         return Math.Clamp(requested - 1, 1, cappedByCpu);
     }
 
-    internal static async Task<ErrorOr<DataImportResult>> Import(DataImportType importType, string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, bool copyAssetData, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    internal static async Task<ErrorOr<DataImportResult>> Import(ImportRequest importRequest)
     {
-        return importType switch
+        return importRequest.ImportType switch
         {
-            DataImportType.V1 => await FromV1(dataFolderPath, copyAssetData, runtimeSettings, reportProgress),
-            DataImportType.KonoAsset => await FromKonoAsset(dataFolderPath, localizedItemTypesMapping, copyAssetData, runtimeSettings, reportProgress),
-            _ => Error.Unexpected(description: $"Unexpected import type: {importType}")
+            DataImportType.V1 => await FromV1(importRequest),
+            DataImportType.KonoAsset => await FromKonoAsset(importRequest),
+            _ => Error.Unexpected(description: $"Unexpected import type: {importRequest.ImportType}")
         };
     }
 
@@ -47,10 +47,15 @@ internal static class DataImporter
         };
     }
     
-    private static async Task<ErrorOr<DataImportResult>> FromV1(string dataFolderPath, bool copyAssetData, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<ErrorOr<DataImportResult>> FromV1(ImportRequest importRequest)
     {
         try
         {
+            string dataFolderPath = importRequest.DataFolderPath;
+            bool copyAssetData = importRequest.CopyAssetData;
+            RuntimeSettings runtimeSettings = importRequest.RuntimeSettings;
+            Func<(string, int), Task>? reportProgress = importRequest.ReportProgress;
+
             DataImportResult dataImportResult = new();
             int importParallelism = GetImportParallelism(runtimeSettings);
         
@@ -198,10 +203,15 @@ internal static class DataImporter
         return migratedPath;
     }
 
-    private static async Task<ErrorOr<DataImportResult>> FromKonoAsset(string dataFolderPath, Dictionary<ItemType, string> localizedItemTypesMapping, bool copyAssetData, RuntimeSettings runtimeSettings, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<ErrorOr<DataImportResult>> FromKonoAsset(ImportRequest importRequest)
     {
         try
         {
+            string dataFolderPath = importRequest.DataFolderPath;
+            bool copyAssetData = importRequest.CopyAssetData;
+            RuntimeSettings runtimeSettings = importRequest.RuntimeSettings;
+            Func<(string, int), Task>? reportProgress = importRequest.ReportProgress;
+
             DataImportResult dataImportResult = new();
             int importParallelism = GetImportParallelism(runtimeSettings);
 
@@ -258,7 +268,7 @@ internal static class DataImporter
                 if (item.Type != ItemType.Avatar)
                 {
                     bool categoryFoundFlag = false;
-                    foreach (KeyValuePair<ItemType, string> itemTypeKpv in localizedItemTypesMapping)
+                    foreach (KeyValuePair<ItemType, string> itemTypeKpv in importRequest.LocalizedItemTypesMapping)
                     {
                         if (item.CustomCategory == itemTypeKpv.Value)
                         {
