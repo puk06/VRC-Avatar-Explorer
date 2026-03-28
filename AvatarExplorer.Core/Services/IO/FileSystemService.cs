@@ -380,7 +380,7 @@ public static class FileSystemService
                 ".7z" => password => SevenZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
                 ".gz" => _ => GzipExtractorAsync(filePath, extractDirectoryFolderPath),
                 ".tar" => _ => TarExtractorAsync(filePath, extractDirectoryFolderPath),
-                _ => null
+                _ => _ => CopyFileAsync(filePath, Path.Combine(extractDirectoryFolderPath, Path.GetFileName(filePath)))
             };
 
             if (extractAction == null)
