@@ -1,0 +1,8 @@
+namespace AvatarExplorer.Core.Models.External;
+
+public class ExportRequest
+{
+    public DataExportType ExportType { get; set; } = DataExportType.Csv;
+    public string FilePath { get; set; } = string.Empty;
+    public bool IncludeCommonToSupported { get; set; }
+}

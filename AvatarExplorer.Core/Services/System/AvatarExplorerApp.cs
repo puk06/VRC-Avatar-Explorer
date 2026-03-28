@@ -766,7 +766,26 @@ public class AvatarExplorerApp
     #endregion
 
     #region Data Exporter API
-    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string filePath, Dictionary<ItemType, string> localizedItemTypesMapping, bool includeCommonToSupported) => await DataExporter.Export(exportType, _itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _tempAvatarsDatabaseManager.Items, localizedItemTypesMapping, _runtimeSettings, filePath, includeCommonToSupported);
+    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string filePath, Dictionary<ItemType, string> localizedItemTypesMapping, bool includeCommonToSupported)
+    {
+        ExportContext exportContext = new()
+        {
+            Items = _itemDatabaseManager.Items,
+            CommonAvatars = _commonAvatarDatabaseManager.Items,
+            TempAvatars = _tempAvatarsDatabaseManager.Items,
+            LocalizedItemTypesMapping = localizedItemTypesMapping,
+            RuntimeSettings = _runtimeSettings
+        };
+
+        ExportRequest exportRequest = new()
+        {
+            ExportType = exportType,
+            FilePath = filePath,
+            IncludeCommonToSupported = includeCommonToSupported
+        };
+
+        return await DataExporter.Export(exportContext, exportRequest);
+    }
     #endregion
 
     #region Clear API

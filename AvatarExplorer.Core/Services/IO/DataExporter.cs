@@ -11,29 +11,29 @@ namespace AvatarExplorer.Core.Services.IO;
 
 internal static class DataExporter
 {
-    internal static async Task<ErrorOr<Success>> Export(DataExportType exportType, IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, IEnumerable<TempAvatar> tempAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
+    internal static async Task<ErrorOr<Success>> Export(ExportContext exportContext, ExportRequest exportRequest)
     {
-        return exportType switch
+        return exportRequest.ExportType switch
         {
-            DataExportType.Csv => await ToCsv(items, commonAvatars, tempAvatars, localizedItemTypesMapping, runtimeSettings, filePath, includeCommonToSupported),
-            _ => Error.Unexpected(description: $"Unexpected export type: {exportType}")
+            DataExportType.Csv => await ToCsv(exportContext, exportRequest),
+            _ => Error.Unexpected(description: $"Unexpected export type: {exportRequest.ExportType}")
         };
     }
     
-    private static async Task<ErrorOr<Success>> ToCsv(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, IEnumerable<TempAvatar> tempAvatars, Dictionary<ItemType, string> localizedItemTypesMapping, RuntimeSettings runtimeSettings, string filePath, bool includeCommonToSupported)
+    private static async Task<ErrorOr<Success>> ToCsv(ExportContext exportContext, ExportRequest exportRequest)
     {
         try
         {
-            Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Type == ItemType.Avatar), tempAvatars);
+            Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(exportContext.Items.Where(i => i.Type == ItemType.Avatar), exportContext.TempAvatars);
 
-            FileSystemService.PrepareFileDirectory(filePath);
-            using StreamWriter sw = new(filePath, false, Encoding.UTF8);
+            FileSystemService.PrepareFileDirectory(exportRequest.FilePath);
+            using StreamWriter sw = new(exportRequest.FilePath, false, Encoding.UTF8);
             await sw.WriteLineAsync("Id,Title,AuthorName,ImagePath,Category,Memo,SupportedAvatars,ImplementedAvatars,BoothId,ItemPath,Tags");
 
-            foreach (Item item in items)
+            foreach (Item item in exportContext.Items)
             {
                 List<string> supportedAvatarNames = new();
-                foreach (string supportedAvatarId in AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonToSupported))
+                foreach (string supportedAvatarId in AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, exportContext.CommonAvatars, exportRequest.IncludeCommonToSupported))
                 {
                     string avatarTitle = ItemUtils.GetTitleFromDictionary(avatarTitleMaps, supportedAvatarId);
                     if (string.IsNullOrEmpty(avatarTitle)) continue;
@@ -57,14 +57,14 @@ internal static class DataExporter
 
                 string categoryName;
                 if (item.Type == ItemType.Custom) categoryName = item.CustomCategory;
-                else categoryName = localizedItemTypesMapping.TryGetValue(item.Type, out string? value) ? value : item.Type.ToString();
+                else categoryName = exportContext.LocalizedItemTypesMapping.TryGetValue(item.Type, out string? value) ? value : item.Type.ToString();
 
                 string category = CsvUtils.EscapeCsv(categoryName);
                 string memo = CsvUtils.EscapeCsv(item.ItemMemo);
                 string supportedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, supportedAvatarNames));
                 string implementedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, implementedAvatarNames));
                 string boothId = CsvUtils.EscapeCsv(item.BoothId.ToString());
-                string itemPath = CsvUtils.EscapeCsv(ItemUtils.GetItemPath(runtimeSettings.DataRootDirectory, item.ItemPath));
+                string itemPath = CsvUtils.EscapeCsv(ItemUtils.GetItemPath(exportContext.RuntimeSettings.DataRootDirectory, item.ItemPath));
                 string tags = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.TagsView));
 
                 await sw.WriteLineAsync($"{itemId},{itemTitle},{authorName},{imagePath},{category},{memo},{supportedAvatarsList},{implementedAvatarsList},{boothId},{itemPath},{tags}");
