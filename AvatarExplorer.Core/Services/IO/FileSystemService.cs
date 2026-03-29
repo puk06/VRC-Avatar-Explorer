@@ -257,6 +257,8 @@ public static class FileSystemService
     #region Extract Item Folders
     internal static async Task<ErrorOr<ExtractResult>> ExtractItemFolders(ItemCreationContext itemCreationContext, string dataRootDirectory, RuntimeSettings runtimeSettings)
     {
+        if (itemCreationContext.ItemPaths.Count == 0) return Error.Failure(description: "No item paths provided.");
+
         ExtractResult result = new();
 
         try
