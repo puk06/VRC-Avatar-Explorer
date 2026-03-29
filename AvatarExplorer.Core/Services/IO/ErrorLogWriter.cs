@@ -17,6 +17,8 @@ public class ErrorLogWriter : IDisposable
         FileSystemService.PrepareFileDirectory(_logFilePath);
     }
 
+    public string LogFilePath => _logFilePath;
+
     public void Write(string title, Exception? exception, string tag)
     {
         WriteCore("Error", title, exception, tag);
