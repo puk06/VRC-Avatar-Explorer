@@ -1,5 +1,7 @@
 using Avalonia.Interactivity;
+using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.UI.Services.Utilities;
 
 namespace AvatarExplorer.UI;
 
@@ -27,5 +29,6 @@ public partial class MainWindow
     #region Event Handler
     private void ErrorLogOverlay_Reflesh_Click(object? sender, RoutedEventArgs e) => ErrorLogOverlay_RefleshLogs();
     private void ErrorLogOverlay_Close_Click(object? sender, RoutedEventArgs e) => ErrorLogOverlay_Close();
+    private async void ErrorLogOverlay_OpenLogFolder_Click(object? sender, RoutedEventArgs e) => await LauncherService.OpenFolder(this, SystemPath.LogsFolderPath);
     #endregion
 }

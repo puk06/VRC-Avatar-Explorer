@@ -384,7 +384,8 @@
 
     "ErrorLog.Title": "エラーログ",
     "ErrorLog.Reflesh": "更新",
-    
+    "ErrorLog.OpenLogFolder": "ログフォルダを開く",
+
     "InitialSetup.ChangeLaterNotice": "※ この設定は後からいつでも変更できます",
 
     "EditMemo.Title": "メモの編集",

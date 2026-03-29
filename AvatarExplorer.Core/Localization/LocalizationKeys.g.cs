@@ -647,6 +647,7 @@ public static class LocalizationKey
     {
         public const string Title = "ErrorLog.Title";
         public const string Reflesh = "ErrorLog.Reflesh";
+        public const string OpenLogFolder = "ErrorLog.OpenLogFolder";
     }
     public static class InitialSetup
     {

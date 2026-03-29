@@ -384,6 +384,7 @@
 
     "ErrorLog.Title": "Error Log",
     "ErrorLog.Reflesh": "Refresh",
+    "ErrorLog.OpenLogFolder": "Open Log Folder",
     
     "InitialSetup.ChangeLaterNotice": "※ This setting can be changed anytime later",
 

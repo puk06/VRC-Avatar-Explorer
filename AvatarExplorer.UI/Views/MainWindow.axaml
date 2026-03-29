@@ -1295,9 +1295,10 @@
                     </Panel>
 
                     <!-- 下のボタン -->
-                    <Grid Grid.Row="3" ColumnDefinitions="120,*,120">
+                    <Grid Grid.Row="3" ColumnDefinitions="120,*,120,120" ColumnSpacing="20">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_Close_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [ErrorLog.Reflesh]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_Reflesh_Click"/>
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [ErrorLog.OpenLogFolder]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_OpenLogFolder_Click"/>
+                        <Button Classes="accent" FontWeight="Bold" Grid.Column="3" Content="{Binding [ErrorLog.Reflesh]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_Reflesh_Click"/>
                     </Grid>
                 </Grid>
             </Border>
