@@ -8,7 +8,8 @@ public class ErrorLogWriter : IDisposable
 {
     private bool _disposed = false;
     private StreamWriter? _writer;
-    private readonly string _logFilePath = Path.Combine(SystemPath.LogsFolderPath, DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture) + ".log");
+    private readonly Lock _syncLock = new();
+    private readonly string _logFilePath = Path.Combine(SystemPath.LogsFolderPath, DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-fff", CultureInfo.InvariantCulture) + ".log");
     public static readonly ErrorLogWriter Instance = new();
 
     private ErrorLogWriter()
@@ -18,38 +19,12 @@ public class ErrorLogWriter : IDisposable
 
     public void Write(string title, Exception? exception, string tag)
     {
-        try
-        {
-            if (_writer == null) InitializeWriter();
-            if (_writer == null) return;
-
-            _writer.WriteLine($"Error: {title}");
-            if (!string.IsNullOrEmpty(tag)) _writer.WriteLine($"Tag Message: {tag}");
-            if (exception != null) _writer.WriteLine(exception.ToString());
-            _writer.WriteLine();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-        }
+        WriteCore("Error", title, exception, tag);
     }
 
     public void InternalWrite(string title, Exception? exception, string tag)
     {
-        try
-        {
-            if (_writer == null) InitializeWriter();
-            if (_writer == null) return;
-    
-            _writer.WriteLine($"Internal Error: {title}");
-            if (!string.IsNullOrEmpty(tag)) _writer.WriteLine($"Tag Message: {tag}");
-            if (exception != null) _writer.WriteLine(exception.ToString());
-            _writer.WriteLine();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-        }
+        WriteCore("Internal Error", title, exception, tag);
     }
 
     public void Dispose()
@@ -60,19 +35,48 @@ public class ErrorLogWriter : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (_disposed) return;
-
-        if (disposing)
+        lock (_syncLock)
         {
-            _writer?.Dispose();
-        }
+            if (_disposed) return;
 
-        _disposed = true;
+            if (disposing)
+            {
+                _writer?.Dispose();
+                _writer = null;
+            }
+
+            _disposed = true;
+        }
     }
 
     private void InitializeWriter()
     {
         if (_writer != null) return;
-        _writer = new StreamWriter(_logFilePath, false, Encoding.UTF8) { AutoFlush = true };
+        
+        FileStream stream = new(_logFilePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+        _writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+    }
+
+    private void WriteCore(string category, string title, Exception? exception, string tag)
+    {
+        lock (_syncLock)
+        {
+            if (_disposed) return;
+
+            try
+            {
+                InitializeWriter();
+                if (_writer == null) return;
+
+                _writer.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] {category}: {title}");
+                if (!string.IsNullOrEmpty(tag)) _writer.WriteLine($"Tag Message: {tag}");
+                if (exception != null) _writer.WriteLine(exception.ToString());
+                _writer.WriteLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
     }
 }
