@@ -64,26 +64,26 @@ public static class FileSystemService
         {
             Type elementType = typeof(T).GetGenericArguments().FirstOrDefault() ?? typeof(T);
             ErrorManager.Instance.PostInternalError($"Failed to serialize class: '{elementType.Name}' to '{filePath}'.", ex);
-            return Error.Failure("Failed to seriaze class.");
+            return Error.Failure(description: "Failed to serialize class.");
         }
     }
     public static ErrorOr<T> DeserializeClass<T>(string filePath)
     {
         try
         {
-            if (!File.Exists(filePath)) return Error.NotFound("File.Path", $"ファイルが見つかりません: {filePath}");
+            if (!File.Exists(filePath)) return Error.NotFound(description: $"File not found: {filePath}");
             
             string json = File.ReadAllText(filePath);
             T? result = JsonSerializer.Deserialize<T>(json);
             
-            if (Equals(result, default(T))) return Error.Failure("deserialization result is null.");
+            if (Equals(result, default(T))) return Error.Failure(description: "deserialization result is null.");
             
             return result!;
         }
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError($"Failed to desearize class: '{typeof(T).Name}' from '{filePath}'.", ex);
-            return Error.Failure("Failed to desearize class.");
+            return Error.Failure(description: "Failed to desearize class.");
         }
     }
     #endregion
@@ -618,10 +618,10 @@ public static class FileSystemService
         try
         {
             if (sourceFile == destinationFile)
-                return Error.Conflict("Source and destination are the same.");
+                return Error.Conflict(description: "Source and destination are the same.");
 
             if (!File.Exists(sourceFile))
-                return Error.NotFound($"Source file not found: '{sourceFile}'.");
+                return Error.NotFound(description:$"Source file not found: '{sourceFile}'.");
 
             PrepareFileDirectory(destinationFile);
             using Stream sourceStream = File.OpenRead(sourceFile);

@@ -300,7 +300,7 @@ internal static class DataImporter
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError("Failed to import data from Asset.", ex);
-            return Error.Failure("Failed to import data from KonoAsset.");
+            return Error.Failure(description: "Failed to import data from KonoAsset.");
         }
     }
 

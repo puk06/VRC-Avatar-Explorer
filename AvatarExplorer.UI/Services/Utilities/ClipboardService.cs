@@ -18,7 +18,7 @@ internal static class ClipboardService
         {
             if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop || desktop.MainWindow?.Clipboard is not { } provider)
             {
-                return Error.Failure("Failed to get clipboard provider.");
+                return Error.Failure(description: "Failed to get clipboard provider.");
             }
             
             await provider.SetTextAsync(text);
@@ -28,7 +28,7 @@ internal static class ClipboardService
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError("Failed to set text to clipboard.", ex);
-            return Error.Failure("Failed to set text to clipboard.");
+            return Error.Failure(description: "Failed to set text to clipboard.");
         }
     }
 }
