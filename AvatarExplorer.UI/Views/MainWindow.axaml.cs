@@ -79,7 +79,7 @@ public partial class MainWindow : Window
 
     private async ValueTask<string?> Main_GetArchivePasswordAsync(ArchivePasswordRequest request)
     {
-        string? password = await ArchivePasswordDialogOverlay_ShowSafeAsync(Path.GetFileName(request.ArchivePath));
+        string? password = await ArchivePasswordDialogOverlay_ShowSafeAsync(Path.GetFileName(request.ArchivePath), request.Attempt, request.MaxAttempts);
         if (password == null) return null; // キャンセルされた場合はnullを返す
 
         return password;

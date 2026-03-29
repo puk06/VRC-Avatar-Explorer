@@ -403,11 +403,12 @@ public static class FileSystemService
         return extractResult;
     }
 
+    private const int MaxPasswordAttempts = 3;
     private static async Task<ErrorOr<Success>> ExtractArchiveWithPasswordAsync(string archivePath, Func<string?, Task> extractAction)
     {
         string? password = null;
 
-        for (int attempt = 1; attempt <= 3; attempt++)
+        for (int attempt = 1; attempt <= MaxPasswordAttempts; attempt++)
         {
             try
             {
@@ -419,12 +420,17 @@ public static class FileSystemService
                 Func<ArchivePasswordRequest, ValueTask<string?>>? passwordProvider = AvatarExplorerApp.Instance.PasswordProvider;
                 if (passwordProvider == null) throw;
 
-                password = await passwordProvider.Invoke(new ArchivePasswordRequest
+                string? result = await passwordProvider.Invoke(new ArchivePasswordRequest
                 {
                     ArchivePath = archivePath,
+                    MaxAttempts = MaxPasswordAttempts,
                     Attempt = attempt,
                     ErrorMessage = ex.Message
                 });
+
+                if (result == null) return Error.Failure(description: "Password input cancelled by user.");
+
+                password = result;
             }
             catch (Exception ex)
             {
