@@ -364,3 +364,9 @@ FodyWeavers.xsd
 
 # テスト用プロジェクト
 AvatarExplorer.Test/
+
+# Source-generated localization keys written by the standalone LocalizationKeyGenerator tool.
+# The build now uses the Roslyn source generator (LocalizationSourceGenerator) instead,
+# which emits the file into obj/ (already ignored above). The entry below prevents the
+# legacy tool output from being accidentally committed.
+AvatarExplorer.Core/Localization/LocalizationKeys.g.cs
