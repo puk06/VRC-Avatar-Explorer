@@ -11,16 +11,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="../Tools/LocalizationSourceGenerator/LocalizationSourceGenerator.csproj"
-		                  OutputItemType="Analyzer"
-		                  ReferenceOutputAssembly="false" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<AdditionalFiles Include="Data/Localization/ja-JP.json" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="ErrorOr" Version="2.0.1" />
 		<PackageReference Include="SemanticVersioning" Version="3.0.0" />
 		<PackageReference Include="SharpCompress" Version="0.44.5" />
@@ -38,4 +28,7 @@
 		</Content>
 	</ItemGroup>
 
+	<Target Name="GenerateLocalizationKeys" BeforeTargets="BeforeBuild">
+		<Exec Command="dotnet run --project ../Tools/LocalizationKeyGenerator/LocalizationKeyGenerator.csproj" />
+	</Target>
 </Project>
