@@ -90,6 +90,7 @@ public partial class MainWindow
     {
         Dispatcher.UIThread.Post(async () =>
         {
+            if (WindowState == Avalonia.Controls.WindowState.Minimized) WindowState = Avalonia.Controls.WindowState.Normal;
             Topmost = true;
             Activate();
             await SetApplicationArgs(args);
