@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Models.Items;
@@ -71,6 +73,12 @@ internal static class ContextMenuCreator
         if (ProcessUtils.IsWindows())
         {
             contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, itemFile.FullPath));
+        }
+
+        bool isUnitypackage = itemFile.FullPath.ToLower().EndsWith(".unitypackage");
+        if (isUnitypackage)
+        {
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenUnitypackageViewer, ActionKey.OpenUnitypackageViewer, ContextMenuIconType.Open, itemFile.FullPath));
         }
 
         return contextMenuActions.ToArray();

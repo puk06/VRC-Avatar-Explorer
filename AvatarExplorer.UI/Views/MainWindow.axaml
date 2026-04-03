@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:ui="clr-namespace:AvatarExplorer.UI"
         xmlns:localization="clr-namespace:AvatarExplorer.UI.Localization"
         xmlns:common="clr-namespace:AvatarExplorer.Core.Models.Common;assembly=AvatarExplorer.Core"
         x:Class="AvatarExplorer.UI.MainWindow"
@@ -1079,6 +1080,37 @@
                     <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [SelectImportType.Options.KonoAsset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectThumbnailImportTypeOverlay_FromKonoAsset_Click"/>
                     <Button Classes="button" FontWeight="Bold" Grid.Column="4" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectThumbnailImportTypeOverlay_Cancel_Click"/>
                 </StackPanel>
+            </Border>
+        </Border>
+        
+        <!-- Unitypackage Viewer -->
+        <Border x:Name="UnitypackageViewerOverlay" Classes="overlaybackground" IsVisible="False">
+            <Border Classes="overlay" Width="800" Height="600" Padding="20">
+                <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
+                    <TextBlock Text="Unitypackage Viewer" FontSize="22" FontWeight="Bold"/>
+                    <StackPanel Grid.Row="1" Spacing="2">
+                        <TextBlock x:Name="UnitypackageViewerOverlay_FileName" FontSize="12" Foreground="Gray"/>
+                        <TextBlock x:Name="UnitypackageViewerOverlay_StatusText" FontSize="12" Foreground="Gray"/>
+                        <TextBlock x:Name="UnitypackageViewerOverlay_SelectedPathText" FontSize="12" Foreground="Gray" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="2" Classes="panelbackground" Background="{DynamicResource Background.Sub}">
+                        <ScrollViewer>
+                            <TreeView x:Name="UnitypackageViewerOverlay_TreeView" SelectionChanged="UnitypackageViewerOverlay_TreeView_SelectionChanged">
+                                <TreeView.ItemTemplate>
+                                    <TreeDataTemplate x:DataType="ui:MainWindow+UnitypackagePathNode" ItemsSource="{Binding Children}">
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </TreeDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Grid Grid.Row="3" ColumnDefinitions="*,120,120" ColumnSpacing="10">
+                        <Button Grid.Column="1" x:Name="UnitypackageViewerOverlay_ExportButton" Classes="accent" FontWeight="Bold" Content="{Binding [Settings.ExportCsv.Export]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="UnitypackageViewerOverlay_Export_Click" IsEnabled="False"/>
+                        <Button Grid.Column="2" Classes="button" FontWeight="Bold" Content="{Binding [Button.Close]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="UnitypackageViewerOverlay_Close_Click"/>
+                    </Grid>
+                </Grid>
             </Border>
         </Border>
 

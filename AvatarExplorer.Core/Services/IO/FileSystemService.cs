@@ -89,6 +89,137 @@ public static class FileSystemService
     #endregion
 
     #region Unitypackage Modifier
+    public static async Task<ErrorOr<List<string>>> GetUnitypackagePathnamesAsync(string unitypackagePath)
+    {
+        if (string.IsNullOrWhiteSpace(unitypackagePath))
+            return Error.Validation(description: "Unitypackage path is empty.");
+
+        if (!File.Exists(unitypackagePath))
+            return Error.NotFound(description: $"Unitypackage not found: '{unitypackagePath}'.");
+
+        List<string> pathnames = new();
+
+        try
+        {
+            await using Stream fileStream = File.OpenRead(unitypackagePath);
+            await using GZipStream gzipStream = new(fileStream, CompressionMode.Decompress);
+            await using TarReader tarReader = new(gzipStream);
+
+            while (await tarReader.GetNextEntryAsync() is { } entry)
+            {
+                if (Path.GetFileName(entry.Name) != "pathname" || entry.DataStream == null)
+                    continue;
+
+                using StreamReader reader = new(entry.DataStream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, leaveOpen: true);
+                string pathname = await reader.ReadToEndAsync();
+
+                if (!string.IsNullOrWhiteSpace(pathname))
+                {
+                    pathnames.Add(pathname.Trim());
+                }
+            }
+
+            return pathnames;
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to read pathname entries from unitypackage: '{unitypackagePath}'.", ex);
+            return Error.Failure(description: "Failed to read pathname entries from unitypackage.");
+        }
+    }
+
+    public static async Task<ErrorOr<string>> ExtractUnitypackageAssetAsync(string unitypackagePath, string pathname, string destinationFolderPath)
+    {
+        if (string.IsNullOrWhiteSpace(unitypackagePath))
+            return Error.Validation(description: "Unitypackage path is empty.");
+
+        if (!File.Exists(unitypackagePath))
+            return Error.NotFound(description: $"Unitypackage not found: '{unitypackagePath}'.");
+
+        if (string.IsNullOrWhiteSpace(pathname))
+            return Error.Validation(description: "Unitypackage pathname is empty.");
+
+        if (string.IsNullOrWhiteSpace(destinationFolderPath))
+            return Error.Validation(description: "Destination folder path is empty.");
+
+        string normalizedTargetPath = NormalizeUnitypackagePath(pathname);
+        string? targetGroupFolder = null;
+
+        try
+        {
+            await using Stream fileStream = File.OpenRead(unitypackagePath);
+            await using GZipStream gzipStream = new(fileStream, CompressionMode.Decompress);
+            await using TarReader tarReader = new(gzipStream);
+
+            while (await tarReader.GetNextEntryAsync() is { } entry)
+            {
+                if (Path.GetFileName(entry.Name) != "pathname" || entry.DataStream == null)
+                    continue;
+
+                using StreamReader reader = new(entry.DataStream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, leaveOpen: true);
+                string entryPath = NormalizeUnitypackagePath(await reader.ReadToEndAsync());
+
+                if (string.Equals(entryPath, normalizedTargetPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    targetGroupFolder = GetUnitypackageTopLevelFolder(entry.Name);
+                    break;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to search pathname entries from unitypackage: '{unitypackagePath}'.", ex);
+            return Error.Failure(description: "Failed to search pathname entries from unitypackage.");
+        }
+
+        if (string.IsNullOrWhiteSpace(targetGroupFolder))
+            return Error.NotFound(description: $"Unitypackage entry not found: '{pathname}'.");
+
+        string extractedFilePath = Path.Combine(destinationFolderPath, normalizedTargetPath.Replace('/', Path.DirectorySeparatorChar));
+        string? extractedDirectory = Path.GetDirectoryName(extractedFilePath);
+        if (!string.IsNullOrWhiteSpace(extractedDirectory)) Directory.CreateDirectory(extractedDirectory);
+
+        try
+        {
+            await using Stream fileStream = File.OpenRead(unitypackagePath);
+            await using GZipStream gzipStream = new(fileStream, CompressionMode.Decompress);
+            await using TarReader tarReader = new(gzipStream);
+
+            while (await tarReader.GetNextEntryAsync() is { } entry)
+            {
+                if (entry.DataStream == null)
+                    continue;
+
+                if (!string.Equals(GetUnitypackageTopLevelFolder(entry.Name), targetGroupFolder, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                if (!string.Equals(Path.GetFileName(entry.Name), "asset", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                await using FileStream outputStream = File.Create(extractedFilePath);
+                await entry.DataStream.CopyToAsync(outputStream);
+
+                return extractedFilePath;
+            }
+
+            return Error.NotFound(description: $"Asset entry not found for pathname: '{pathname}'.");
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to export asset from unitypackage: '{unitypackagePath}'.", ex);
+            return Error.Failure(description: "Failed to export asset from unitypackage.");
+        }
+    }
+
+    private static string NormalizeUnitypackagePath(string path) => path.Trim().Replace('\\', '/');
+
+    private static string GetUnitypackageTopLevelFolder(string entryName)
+    {
+        string normalizedEntryName = NormalizeUnitypackagePath(entryName);
+        int separatorIndex = normalizedEntryName.IndexOf('/');
+        return separatorIndex >= 0 ? normalizedEntryName[..separatorIndex] : normalizedEntryName;
+    }
+
     internal static async Task<ModifiedUnitypackagesResult> ModifyUnitypackageFilePathsAsync(Dictionary<string, string> itemPathCategoryDictionary, Func<(string, int), Task>? reportProgress = null)
     {
         ModifiedUnitypackagesResult result = new();

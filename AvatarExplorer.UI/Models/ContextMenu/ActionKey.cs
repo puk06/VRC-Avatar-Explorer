@@ -23,6 +23,7 @@ internal enum ActionKey
     OpenFile,
     AddFileToBulkImportList,
     OpenFileInExplorer,
+    OpenUnitypackageViewer,
 
     RemovePreset,
 

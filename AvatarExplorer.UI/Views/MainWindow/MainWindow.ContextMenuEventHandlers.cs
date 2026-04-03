@@ -251,6 +251,10 @@ public partial class MainWindow
         
         return Task.CompletedTask;
     }
+    private async Task Main_ItemButton_ContextMenu_OpenUnitypackageViewer(string filePath)
+    {
+        await UnitypackageViewerOverlay_OpenAsync(filePath);
+    }
 
     private BulkImportPreset? Main_ItemButton_ContextMenu_GetBulkImportPresetById(string id)
     {
