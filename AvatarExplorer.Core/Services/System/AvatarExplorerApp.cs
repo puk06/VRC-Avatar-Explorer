@@ -606,6 +606,17 @@ public class AvatarExplorerApp
         UpdateSearchIndex();
         SaveItemDatabase();
     }
+
+    public void ConvertDatabaseRelativePathsToFullPaths(string previousDataRootDirectory)
+    {
+        foreach (Item item in _itemDatabaseManager.Items)
+        {
+            string currentPath = ItemUtils.GetItemPath(previousDataRootDirectory, item.ItemPath);
+            item.ItemPath = currentPath;
+        }
+        
+        SaveItemDatabase();
+    }
     #endregion
 
     #region Booth API

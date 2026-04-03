@@ -133,6 +133,7 @@ public static class LocalizationKey
             public static class StoragePathChange
             {
                 public const string CopyData = "Dialog.Confirmation.StoragePathChange.CopyData";
+                public const string ConvertRelativePath = "Dialog.Confirmation.StoragePathChange.ConvertRelativePath";
             }
             public const string DuplicateCustomCategoryName = "Dialog.Confirmation.DuplicateCustomCategoryName";
         }

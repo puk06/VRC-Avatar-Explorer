@@ -62,13 +62,13 @@
     "Dialog.Confirmation.ResolveTempAvatar": "仮アバター「{0}」を\n正式アイテム「{1}」として確定しますか？",
     "Dialog.Confirmation.RemoveAssetData": "アイテムのアセットデータも一緒に削除しますか？\n\nアセットパス: {0}",
     "Dialog.Confirmation.CopyAssetData": "アセットデータをコピーしますか？\n\nしない場合は、元のアセットフォルダがそのまま使用されます。Avatar Explorerからのインポート時、マテリアルフォルダのみフォルダ内に必ずコピーされます。",
-    
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "対応アバターの欄に共通素体アバターを含めますか？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "共通素体グループ内のアバターが含まれているアイテムの対応アバターを共通素体グループに置き換えますか？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "共通素体グループが対応アバターとして設定されているアイテムの対応アバターを、個別のアバターに置き換えますか？",
 
     "Dialog.Confirmation.StoragePathChange.CopyData": "データの保存先が変更されています。前のフォルダからデータをコピーしますか？",
+    "Dialog.Confirmation.StoragePathChange.ConvertRelativePath": "ファイルパスを相対パスからフルパスに変換しますか？\n\n利点: データ移行なしで保存先を変更できます\n注意: 元の保存先フォルダを移動すると、ファイルが見つからなくなります",
     "Dialog.Confirmation.DuplicateCustomCategoryName": "カスタムカテゴリ名が既に存在しています。このまま続行すると、同じカテゴリアイテムとして認識されるようになります。続行しますか？",
 
     "Dialog.Title.NewItemTitle": "新しいタイトル",

@@ -148,7 +148,15 @@ public partial class MainWindow
     {
         // データをコピーするか
         YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.StoragePathChange.CopyData]);
-        if (result == null || result != YesNoResult.Yes) return;
+        if (result == null) return;
+
+        if (result == YesNoResult.No)
+        {
+            YesNoResult? convertPathResult = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.StoragePathChange.ConvertRelativePath]);
+            if (convertPathResult != null && convertPathResult == YesNoResult.Yes) AvatarExplorer.ConvertDatabaseRelativePathsToFullPaths(previousPath);
+
+            return;
+        }
         
         async Task progressAction((string localizationKey, int progress) tuple)
         {

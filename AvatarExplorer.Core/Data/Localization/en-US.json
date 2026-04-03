@@ -69,6 +69,7 @@
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Replace the supported avatars of items that have the common avatar group set as supported avatars with individual avatars?",
 
     "Dialog.Confirmation.StoragePathChange.CopyData": "The data storage location has been changed. Copy data from the previous folder?",
+        "Dialog.Confirmation.StoragePathChange.ConvertRelativePath": "Convert file paths from relative to absolute paths?\n\nBenefits: Change the save location without data migration\nNote: If you move the original save folder, files will no longer be found",
     "Dialog.Confirmation.DuplicateCustomCategoryName": "This custom category name already exists. If you continue, items will be recognized as the same category. Do you want to continue?",
 
     "Dialog.Title.NewItemTitle": "New Title",
