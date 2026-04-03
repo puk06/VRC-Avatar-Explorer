@@ -7,7 +7,7 @@ public record RuntimeSettings
 {
     public string DataRootDirectory { get; init; } = SystemPath.DefaultItemsFolderPath;
     public string AutoBackupRootDirectory { get; init; } = SystemPath.BackupFolderPath;
-    public ItemSortOrder ItemSortOrder { get; init; } = ItemSortOrder.Title;
+    public ItemSortOrder ItemSortOrder { get; init; } = ItemSortOrder.Updated;
     public bool RemoveOriginal { get; init; } = false;
     public bool RemoveBrackets { get; init; } = false;
     public bool ShouldLinkToOriginal { get; init; } = false;
