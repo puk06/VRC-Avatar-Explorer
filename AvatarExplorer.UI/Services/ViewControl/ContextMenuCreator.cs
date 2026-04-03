@@ -75,8 +75,7 @@ internal static class ContextMenuCreator
             contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, itemFile.FullPath));
         }
 
-        bool isUnitypackage = itemFile.FullPath.ToLower().EndsWith(".unitypackage");
-        if (isUnitypackage)
+        if (PathUtils.IsUnitypackageFile(itemFile.FullPath))
         {
             contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenUnitypackageViewer, ActionKey.OpenUnitypackageViewer, ContextMenuIconType.Open, itemFile.FullPath));
         }

@@ -490,9 +490,7 @@ public partial class MainWindow : Window
 
     private async Task Main_OpenFileInternalAsync(string filePath)
     {
-        bool isUnitypackage = filePath.ToLower().EndsWith(".unitypackage");
-
-        if (isUnitypackage) await Main_OpenUnitypackageInternalAsync(filePath); // Unitypackageだと自動展開処理に移る
+        if (PathUtils.IsUnitypackageFile(filePath)) await Main_OpenUnitypackageInternalAsync(filePath); // Unitypackageだと自動展開処理に移る
         else
         {
             ErrorOr<Success> result = await LauncherService.OpenFile(this, filePath);

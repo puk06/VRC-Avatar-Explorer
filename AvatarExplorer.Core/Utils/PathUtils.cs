@@ -10,4 +10,6 @@ public static class PathUtils
     public static string GetSettingsFolderPath(string softwarePath) => Path.Combine(softwarePath, "settings");
     public static string GetLogsFolderPath(string softwarePath) => Path.Combine(softwarePath, "logs");
     public static string GetItemThumbnailsFolderPath(string softwarePath) => Path.Combine(GetImagesFolderPath(softwarePath), "item_thumbnails");
+
+    public static bool IsUnitypackageFile(string filePath) => Path.GetExtension(filePath).Equals(".unitypackage", StringComparison.CurrentCultureIgnoreCase);
 }

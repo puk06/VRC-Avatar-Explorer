@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.UI.Services.External;
 
@@ -32,9 +33,7 @@ internal static class UnitypackageService
 
         foreach (string filePath in FileSystemService.EnumerateFiles(itemPath))
         {
-            bool isUnitypackage = Path.GetExtension(filePath).Equals(".unitypackage", StringComparison.CurrentCultureIgnoreCase);
-            if (!isUnitypackage) continue;
-
+            if (!PathUtils.IsUnitypackageFile(filePath)) continue;
             unitypackageFilePaths.Add(filePath);
         }
 
