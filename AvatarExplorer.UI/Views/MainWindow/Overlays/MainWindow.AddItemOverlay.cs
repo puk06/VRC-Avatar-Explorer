@@ -30,8 +30,8 @@ public partial class MainWindow
     private string? _addItemOverlay_selectedItemId = null;
     private readonly AddItemOverlayWindowValues _addItemOverlay_addItemWindowValues = new();
 
-    // カスタムカテゴリかどうか(式: ItemTypeの数 - 無効なItemType数 - カスタムカテゴリ)
-    private static readonly int AddItemOverlay_CustomCategoryIndex = Enum.GetValues<ItemType>().Length - CategoryUtils.InvalidItemTypes.Length - 1;
+    // カスタムカテゴリかどうか(式: ItemTypeの数 - アイテムに指定不可なItemType数 - カスタムカテゴリ)
+    private static readonly int AddItemOverlay_CustomCategoryIndex = Enum.GetValues<ItemType>().Length - CategoryUtils.NonSelectableItemTypes.Length - 1;
 
     private void AddItemOverlay_Open(Item item)
     {
@@ -190,7 +190,7 @@ public partial class MainWindow
     private void AddItemOverlay_InitializeCategories()
     {
         AddItemOverlay_ItemTypeComboBox.Items.Clear();
-        AddItemOverlay_ItemTypeComboBox.Items.AddRange(AvatarExplorer.GetCategories(includeEmptyCategory: true).Select(i => Localizer.Instance[((ItemCategory)i.Item).ToString()]));
+        AddItemOverlay_ItemTypeComboBox.Items.AddRange(AvatarExplorer.GetCategories(includeEmptyCategory: true, includeAllCategory: false).Select(i => Localizer.Instance[((ItemCategory)i.Item).ToString()]));
 
         if (AddItemOverlay_ItemTypeComboBox.Items.Count > 0) AddItemOverlay_ItemTypeComboBox.SelectedIndex = 0;
     }

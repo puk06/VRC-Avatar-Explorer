@@ -195,7 +195,7 @@ public partial class MainWindow : Window
                 }
             case 2:
                 {
-                    items.AddRange(AvatarExplorer.GetCategories());
+                    items.AddRange(AvatarExplorer.GetCategories(includeAllCategory: true));
                     customState = ItemTagStates.RootCategory;
                     break;
                 }

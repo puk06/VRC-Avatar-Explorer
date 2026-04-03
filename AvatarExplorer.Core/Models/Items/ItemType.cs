@@ -34,5 +34,8 @@ public enum ItemType
     [LocalizationKey(LocalizationKey.ItemCategory.Shader)]
     Shader = 8,
 
-    Custom = 9
+    Custom = 9,
+
+    [LocalizationKey(LocalizationKey.ItemCategory.All)]
+    All = 10,
 }

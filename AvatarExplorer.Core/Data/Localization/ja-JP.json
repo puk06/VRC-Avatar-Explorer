@@ -30,6 +30,7 @@
     "ItemCategory.Animation": "アニメーション",
     "ItemCategory.Tool": "ツール",
     "ItemCategory.Shader": "シェーダー",
+    "ItemCategory.All": "すべて",
 
     "Button.Description.Item.Author": "作者: {0}",
     "Button.Description.Item.Count": "{0}個の項目",

@@ -30,6 +30,7 @@
     "ItemCategory.Animation": "Animation",
     "ItemCategory.Tool": "Tool",
     "ItemCategory.Shader": "Shader",
+    "ItemCategory.All": "All",
 
     "Button.Description.Item.Author": "Author: {0}",
     "Button.Description.Item.Count": "{0} items",

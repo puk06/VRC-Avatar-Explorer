@@ -59,6 +59,7 @@ public static class LocalizationKey
         public const string Animation = "ItemCategory.Animation";
         public const string Tool = "ItemCategory.Tool";
         public const string Shader = "ItemCategory.Shader";
+        public const string All = "ItemCategory.All";
     }
     public static class Button
     {

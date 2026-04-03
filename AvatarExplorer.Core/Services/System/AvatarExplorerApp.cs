@@ -174,7 +174,7 @@ public class AvatarExplorerApp
     #region Get API
     public ImmutableArray<ItemCountInfo> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false) => ItemAvatarAggregator.Aggregate(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _tempAvatarsDatabaseManager.Items, _runtimeSettings, includeCommonAvatar, includeTempAvatar);
     public ImmutableArray<ItemCountInfo> GetAuthors() => ItemAuthorAggregator.Aggregate(_itemDatabaseManager.Items);
-    public ImmutableArray<ItemCountInfo> GetCategories(bool includeEmptyCategory = false) => ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items, includeEmptyCategory);
+    public ImmutableArray<ItemCountInfo> GetCategories(bool includeEmptyCategory = false, bool includeAllCategory = false) => ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items, includeEmptyCategory, includeAllCategory);
 
     public ImmutableArray<Item> GetAllItems() => _itemDatabaseManager.Items;
     public Item? GetItemById(string? itemId)

@@ -34,6 +34,9 @@ public static class ItemExtensions
 
     internal static bool IsCategoryMatch(this Item item, string category)
     {
+        // カテゴリがすべてだった場合、常にマッチとする
+        if (category == ItemType.All.GetLocalizationKey()) return true;
+
         if (item.Type == ItemType.Custom) return item.CustomCategory == category;
         else return item.Type.GetLocalizationKey() == category;
     }
