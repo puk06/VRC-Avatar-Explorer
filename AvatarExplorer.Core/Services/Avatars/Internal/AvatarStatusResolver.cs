@@ -5,12 +5,12 @@ namespace AvatarExplorer.Core.Services.Avatars.Internal;
 
 internal static class AvatarStatusResolver
 {
-    internal static AvatarStatus Resolve(Item item, string? avatarId, IEnumerable<CommonAvatar> commonAvatars)
+    internal static AvatarStatus Resolve(Item item, string? avatarId, IEnumerable<CommonAvatar> commonAvatars, bool treatEmptySupportedAvatarAsNone = false)
     {
         AvatarStatus avatarStatus = new();
         if (string.IsNullOrEmpty(avatarId)) return avatarStatus;
 
-        if (!item.SupportedAvatarsView.Any() || item.SupportedAvatarsView.Contains(avatarId))
+        if ((!treatEmptySupportedAvatarAsNone && !item.SupportedAvatarsView.Any()) || item.SupportedAvatarsView.Contains(avatarId))
             avatarStatus.IsSupported = true;
 
         if (item.Type != ItemType.Clothing) return avatarStatus;

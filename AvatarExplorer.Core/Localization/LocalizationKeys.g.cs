@@ -440,6 +440,11 @@ public static class LocalizationKey
             public const string Title = "Settings.LinkToOriginal.Title";
             public const string Description = "Settings.LinkToOriginal.Description";
         }
+        public static class TreatEmptySupportedAvatarAsNone
+        {
+            public const string Title = "Settings.TreatEmptySupportedAvatarAsNone.Title";
+            public const string Description = "Settings.TreatEmptySupportedAvatarAsNone.Description";
+        }
         public const string Background = "Settings.Background";
         public static class UseCustomBackground
         {

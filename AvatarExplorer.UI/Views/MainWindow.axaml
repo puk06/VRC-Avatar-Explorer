@@ -411,6 +411,17 @@
                                                 <ToggleSwitch x:Name="SettingsOverlay_LinkToOriginalCheckBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                             </Grid>
                                         </Grid>
+
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                            <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                                <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.TreatEmptySupportedAvatarAsNone.Title]}"/>
+                                                <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.TreatEmptySupportedAvatarAsNone.Description]}"/>
+                                            </Grid>
+
+                                            <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                                <ToggleSwitch x:Name="SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </Grid>
                                     </StackPanel>
                                 </ScrollViewer>
                             </Panel>

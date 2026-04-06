@@ -234,7 +234,7 @@ public class AvatarExplorerApp
     private ImmutableArray<ItemCountInfo> HandleRootAvatar(SelectionNode selectionNode)
     {
         string avatarId = selectionNode.Key;
-        return ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items.Where(i => AvatarStatusResolver.Resolve(i, avatarId, _commonAvatarDatabaseManager.Items).IsSupportedOrCommon));
+        return ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items.Where(i => AvatarStatusResolver.Resolve(i, avatarId, _commonAvatarDatabaseManager.Items, _runtimeSettings.TreatEmptySupportedAvatarAsNone).IsSupportedOrCommon));
     }
     private ImmutableArray<ItemCountInfo> HandleRootAuthor(SelectionNode selectionNode)
     {
@@ -263,7 +263,7 @@ public class AvatarExplorerApp
             {
                 if (!item.IsCategoryMatch(selectionNode.Key)) continue;
 
-                AvatarStatus avatarStatus = AvatarStatusResolver.Resolve(item, rootSelectionNode.Key, _commonAvatarDatabaseManager.Items);
+                AvatarStatus avatarStatus = AvatarStatusResolver.Resolve(item, rootSelectionNode.Key, _commonAvatarDatabaseManager.Items, _runtimeSettings.TreatEmptySupportedAvatarAsNone);
                 if (!avatarStatus.IsSupportedOrCommon) continue;
 
                 filteredResult.Add(new ItemCountInfo(item, 0, avatarStatus.IsOnlyCommon ? [avatarStatus.CommonAvatarName] : null));
