@@ -336,7 +336,7 @@ public class AvatarExplorerApp
 
         List<string> unknownFiles = new();
 
-        foreach (string file in FileSystemService.EnumerateFiles(itemPath))
+        foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
         {
             string extension = Path.GetExtension(file);
             string fileName = Path.GetFileNameWithoutExtension(file);
@@ -378,7 +378,7 @@ public class AvatarExplorerApp
         
         List<ItemCountInfo> result = new();
 
-        foreach (string file in FileSystemService.EnumerateFiles(itemPath))
+        foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
         {
             bool isMatch;
 

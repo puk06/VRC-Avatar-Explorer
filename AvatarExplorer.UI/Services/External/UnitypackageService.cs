@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Threading;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
@@ -31,7 +32,7 @@ internal static class UnitypackageService
 
         List<string> unitypackageFilePaths = new();
 
-        foreach (string filePath in FileSystemService.EnumerateFiles(itemPath))
+        foreach (string filePath in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
         {
             if (!PathUtils.IsUnitypackageFile(filePath)) continue;
             unitypackageFilePaths.Add(filePath);
