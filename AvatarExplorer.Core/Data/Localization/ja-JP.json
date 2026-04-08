@@ -1,18 +1,18 @@
 {
     "LanguageName": "日本語",
     "LanguagePriority": "0",
-    
+
     "BoothLanguageCode": "ja",
-    
+
     "Title.AdministratorMode": "管理者モード",
-    
+
     "Main.Search.Watermark": "入力して検索...",
     "Main.AddItem": "アイテムを追加する",
 
     "Main.Filter.Avatar": "アバター",
     "Main.Filter.Author": "作者",
     "Main.Filter.Category": "カテゴリ",
-    
+
     "Main.Path.Watermark": "ここには現在のパスが表示されます",
     "Main.Path.SearchResult": "検索結果: {0}",
     "Main.Path.Root.Avatar": "アバター: {0}",
@@ -38,7 +38,7 @@
     "Button.Description.CommonAvatar.Count": "合計アバター数: {0}",
     "Button.Description.BulkImportPreset.Count": "{0}個のアイテム",
     "Button.Description.TempAvatar": "仮登録アバター",
-    
+
     "Button.Tag.CommonAvatar": "共通素体: {0}",
 
     "Button.ToolTip.CreatedDate": "登録日時: {0}",
@@ -62,7 +62,7 @@
     "Dialog.Confirmation.ResolveTempAvatar": "仮アバター「{0}」を\n正式アイテム「{1}」として確定しますか？",
     "Dialog.Confirmation.RemoveAssetData": "アイテムのアセットデータも一緒に削除しますか？\n\nアセットパス: {0}",
     "Dialog.Confirmation.CopyAssetData": "アセットデータをコピーしますか？\n\nしない場合は、元のアセットフォルダがそのまま使用されます。Avatar Explorerからのインポート時、マテリアルフォルダのみフォルダ内に必ずコピーされます。",
-    
+
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "対応アバターの欄に共通素体アバターを含めますか？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "共通素体グループ内のアバターが含まれているアイテムの対応アバターを共通素体グループに置き換えますか？",
@@ -156,7 +156,7 @@
     "SearchFilter.IsOrSearch": "全体OR検索",
     "SearchFilter.IsCategoryOrSearch": "カテゴリOR検索",
     "SearchFilter.EmptySupportedAvatarAsNone": "対応未設定=未対応",
-    
+
     "Success.Default": "成功",
     "Success.Import": "データのインポートに成功しました",
     "Success.Export": "データのエクスポートに成功しました",
@@ -296,7 +296,7 @@
     "Settings.ResetBulkImportPresetDatabase.Title": "一括インポートプリセットのリセット",
     "Settings.ResetBulkImportPresetDatabase.Description": "一括インポートプリセットデータベースをリセットします。自動バックアップから復元可能です。",
     "Settings.ResetBulkImportPresetDatabase.Reset": "リセット",
-    
+
     "Settings.System": "システム",
     "Settings.ErrorLog.Title": "エラーログ",
     "Settings.ErrorLog.Description": "ソフト内で起きたエラーのログを見ることが出来ます。",
@@ -393,7 +393,7 @@
     "ErrorLog.Title": "エラーログ",
     "ErrorLog.Reflesh": "更新",
     "ErrorLog.OpenLogFolder": "ログフォルダを開く",
-    
+
     "InitialSetup.ChangeLaterNotice": "※ この設定は後からいつでも変更できます",
 
     "EditMemo.Title": "メモの編集",
