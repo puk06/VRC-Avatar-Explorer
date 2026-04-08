@@ -136,6 +136,7 @@ public static class LocalizationKey
                 public const string ConvertRelativePath = "Dialog.Confirmation.StoragePathChange.ConvertRelativePath";
             }
             public const string DuplicateCustomCategoryName = "Dialog.Confirmation.DuplicateCustomCategoryName";
+            public const string MergeCategory = "Dialog.Confirmation.MergeCategory";
         }
         public static class Title
         {
@@ -276,6 +277,7 @@ public static class LocalizationKey
         public static class ItemCategory
         {
             public const string EditCustomCategoryName = "ContextMenu.ItemCategory.EditCustomCategoryName";
+            public const string MergeWithOtherCategory = "ContextMenu.ItemCategory.MergeWithOtherCategory";
         }
     }
     public static class SearchFilter
@@ -360,6 +362,7 @@ public static class LocalizationKey
         public const string LicenseFileNotFound = "Error.LicenseFileNotFound";
         public const string ThirdPartyLicenseFileNotFound = "Error.ThirdPartyLicenseFileNotFound";
         public const string NonWindowsUnsupported = "Error.NonWindowsUnsupported";
+        public const string InvalidCategory = "Error.InvalidCategory";
     }
     public static class Settings
     {
@@ -703,6 +706,12 @@ public static class LocalizationKey
         public const string FileName = "ArchivePasswordDialog.FileName";
         public const string Attempts = "ArchivePasswordDialog.Attempts";
         public const string Watermark = "ArchivePasswordDialog.Watermark";
+    }
+    public static class MergeCategory
+    {
+        public const string Title = "MergeCategory.Title";
+        public const string TargetCategory = "MergeCategory.TargetCategory";
+        public const string Merge = "MergeCategory.Merge";
     }
     public static class DialogResult
     {

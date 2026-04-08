@@ -26,5 +26,8 @@ internal enum ContextMenuIconType
     Delete,
 
     [MaterialIcon(MaterialIconKind.LinkVariant)]
-    Link
+    Link,
+
+    [MaterialIcon(MaterialIconKind.SetMerge)]
+    Merge
 }

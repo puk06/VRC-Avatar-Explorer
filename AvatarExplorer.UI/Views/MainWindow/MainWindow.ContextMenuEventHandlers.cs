@@ -335,5 +335,43 @@ public partial class MainWindow
 
         Main_ReloadCurrentWindow();
     }
+
+    private async Task Main_ItemButton_ContextMenu_MergeWithOtherCategory(string categoryName)
+    {
+        ItemCategory sourceCategory;
+        if (categoryName.StartsWith("<sys:customcategory>"))
+        {
+            string customCategoryName = categoryName.Substring("<sys:customcategory>".Length);
+            sourceCategory = new ItemCategory(customCategoryName);
+        }
+        else if (categoryName.StartsWith("<sys:itemcategory>"))
+        {
+            string itemCategoryName = categoryName.Substring("<sys:itemcategory>".Length);
+            if (!Enum.TryParse(itemCategoryName, out ItemType itemType))
+            {
+                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.InvalidCategory]);
+                return;
+            }
+
+            sourceCategory = new ItemCategory(itemType);
+        }
+        else
+        {
+            return;
+        }
+
+        ItemCategory? targetCategory = await MergeCategoryOverlay_ShowAsyncSafe();
+        if (targetCategory == null) return;
+        
+        string sourceCategoryName = sourceCategory.Type == ItemType.Custom ? sourceCategory.CategoryName : Localizer.Instance[sourceCategory.ToString()];
+        string targetCategoryName = targetCategory.Type == ItemType.Custom ? targetCategory.CategoryName : Localizer.Instance[targetCategory.ToString()];
+
+        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.MergeCategory, [sourceCategoryName, targetCategoryName]));
+        if (result == null || result != YesNoResult.Yes) return;
+
+        AvatarExplorer.MergeItemCategories(sourceCategory, targetCategory);
+
+        Main_ReloadCurrentWindow();
+    }
     #endregion
 }

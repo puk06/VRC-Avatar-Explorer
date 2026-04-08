@@ -858,4 +858,19 @@ public class AvatarExplorerApp
     public async Task StopAutoBackup() => await _backupManager.StopAutoBackup();
     public async Task<ErrorOr<Success>> ExecuteBackup(string path) => await _backupManager.ExecuteBackup(path);
     #endregion
+
+    #region Merge API
+    public void MergeItemCategories(ItemCategory sourceCategory, ItemCategory targetCategory)
+    {
+        foreach (Item item in _itemDatabaseManager.Items.Where(i => i.IsCategoryMatch(sourceCategory.CategoryName)))
+        {
+            item.Type = targetCategory.Type;
+            item.CustomCategory = targetCategory.CustomCategory;
+        }
+
+        UpdateSearchIndex();
+
+        SaveItemDatabase();
+    }
+    #endregion
 }

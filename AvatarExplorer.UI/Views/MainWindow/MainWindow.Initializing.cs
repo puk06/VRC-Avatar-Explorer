@@ -65,7 +65,8 @@ public partial class MainWindow
             { ActionKey.EditTempAvatarName, Main_ItemButton_ContextMenu_EditTempAvatarName },
             { ActionKey.ResolveTempAvatar, Main_ItemButton_ContextMenu_ResolveTempAvatar },
             { ActionKey.RemoveTempAvatar, Main_ItemButton_ContextMenu_RemoveTempAvatar },
-            { ActionKey.EditCustomCategoryName, Main_ItemButton_ContextMenu_EditCustomCategoryName }
+            { ActionKey.EditCustomCategoryName, Main_ItemButton_ContextMenu_EditCustomCategoryName },
+            { ActionKey.MergeWithOtherCategory, Main_ItemButton_ContextMenu_MergeWithOtherCategory }
         };
     }
     private void Main_InitializeLanguageBox()

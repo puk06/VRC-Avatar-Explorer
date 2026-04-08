@@ -71,6 +71,7 @@
     "Dialog.Confirmation.StoragePathChange.CopyData": "データの保存先が変更されています。前のフォルダからデータをコピーしますか？",
     "Dialog.Confirmation.StoragePathChange.ConvertRelativePath": "ファイルパスを相対パスからフルパスに変換しますか？\n\n利点: データ移行なしで保存先を変更できます\n注意: 元の保存先フォルダを移動すると、ファイルが見つからなくなります",
     "Dialog.Confirmation.DuplicateCustomCategoryName": "カスタムカテゴリ名が既に存在しています。このまま続行すると、同じカテゴリアイテムとして認識されるようになります。続行しますか？",
+    "Dialog.Confirmation.MergeCategory": "カテゴリ「{0}」をカテゴリ「{1}」に統合しますか？\nカテゴリ「{0}」のアイテムが全てカテゴリ「{1}」に移動します。",
 
     "Dialog.Title.NewItemTitle": "新しいタイトル",
     "Dialog.Title.AddCustomCategory": "新しいカスタムカテゴリ",
@@ -136,6 +137,7 @@
     "ContextMenu.TempAvatar.ResolveTempAvatar": "正式なアイテムと紐付ける",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "仮アバターを削除する",
     "ContextMenu.ItemCategory.EditCustomCategoryName": "カスタムカテゴリ名を編集する",
+    "ContextMenu.ItemCategory.MergeWithOtherCategory": "他のカテゴリと統合する",
 
     "SearchFilter.Default": "検索中... - {0}",
     "SearchFilter.Title": "タイトル: {0}",
@@ -208,6 +210,7 @@
     "Error.LicenseFileNotFound": "ライセンスファイルが見つかりませんでした",
     "Error.ThirdPartyLicenseFileNotFound": "サードパーティーライセンスファイルが見つかりませんでした",
     "Error.NonWindowsUnsupported": "この機能はWindowsでのみ利用可能です",
+    "Error.InvalidCategory": "無効なカテゴリです",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "言語",
@@ -420,6 +423,10 @@
     "ArchivePasswordDialog.FileName": "ファイル名",
     "ArchivePasswordDialog.Attempts": "試行回数",
     "ArchivePasswordDialog.Watermark": "パスワードを入力...",
+
+    "MergeCategory.Title": "カテゴリの統合",
+    "MergeCategory.TargetCategory": "統合先のカテゴリ",
+    "MergeCategory.Merge": "統合",
 
     "DialogResult.OK": "完了",
     "DialogResult.Yes": "はい",

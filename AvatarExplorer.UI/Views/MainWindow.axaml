@@ -1259,6 +1259,28 @@
             </Border>
         </Border>
 
+        <!-- カテゴリ統合ダイアログ -->
+        <Border x:Name="MergeCategoryOverlay" Classes="overlaybackground" IsVisible="False">
+            <Border Classes="overlay" Width="500">
+                <StackPanel Spacing="15">
+
+                    <!-- タイトル -->
+                    <TextBlock Text="{Binding [MergeCategory.Title]}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
+
+                    <!-- 統合先のカテゴリ -->
+                    <StackPanel Spacing="8" Margin="0,10,0,10">
+                        <TextBlock Text="{Binding [MergeCategory.TargetCategory]}" FontSize="13" Opacity="0.7"/>
+                        <ComboBox x:Name="MergeCategoryOverlay_ItemTypeComboBox" HorizontalAlignment="Stretch" SelectedIndex="0"/>
+                    </StackPanel>
+
+                    <Grid ColumnDefinitions="100,*,100">
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="MergeCategoryOverlay_Cancel_Click"/>
+                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [MergeCategory.Merge]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="MergeCategoryOverlay_Merge_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
+
         <!-- 初期設定オーバーレイ -->
         <Border x:Name="InitialSetupOverlay" Classes="overlaybackground" IsVisible="False">
             <Border Classes="overlay" Width="450" Padding="25">

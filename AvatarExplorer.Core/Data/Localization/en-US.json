@@ -71,6 +71,7 @@
     "Dialog.Confirmation.StoragePathChange.CopyData": "The data storage location has been changed. Copy data from the previous folder?",
         "Dialog.Confirmation.StoragePathChange.ConvertRelativePath": "Convert file paths from relative to absolute paths?\n\nBenefits: Change the save location without data migration\nNote: If you move the original save folder, files will no longer be found",
     "Dialog.Confirmation.DuplicateCustomCategoryName": "This custom category name already exists. If you continue, items will be recognized as the same category. Do you want to continue?",
+    "Dialog.Confirmation.MergeCategory": "Merge category \"{0}\" into category \"{1}\"?\nAll items in category \"{0}\" will be moved to category \"{1}\".",
 
     "Dialog.Title.NewItemTitle": "New Title",
     "Dialog.Title.AddCustomCategory": "New Custom Category",
@@ -136,6 +137,7 @@
     "ContextMenu.TempAvatar.ResolveTempAvatar": "Link to Permanent Item",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "Remove Temporary Avatar",
     "ContextMenu.ItemCategory.EditCustomCategoryName": "Edit Custom Category Name",
+    "ContextMenu.ItemCategory.MergeWithOtherCategory": "Merge with Other Category",
 
     "SearchFilter.Default": "Searching... - {0}",
     "SearchFilter.Title": "Title: {0}",
@@ -208,6 +210,7 @@
     "Error.LicenseFileNotFound": "License file not found",
     "Error.ThirdPartyLicenseFileNotFound": "Third-party license file not found",
     "Error.NonWindowsUnsupported": "This feature is only available on Windows.",
+    "Error.InvalidCategory": "Invalid category",
 
     "Settings.Basic": "Basic",
     "Settings.Language.Title": "Language",
@@ -420,6 +423,10 @@
     "ArchivePasswordDialog.FileName": "File Name",
     "ArchivePasswordDialog.Attempts": "Attempts",
     "ArchivePasswordDialog.Watermark": "Enter Password...",
+    
+    "MergeCategory.Title": "Merge Category",
+    "MergeCategory.TargetCategory": "Target Category",
+    "MergeCategory.Merge": "Merge",
 
     "DialogResult.OK": "OK",
     "DialogResult.Yes": "Yes",
