@@ -111,8 +111,7 @@ internal static class ContextMenuCreator
 
         if (itemCategory.Type != ItemType.All)
         {
-            string itemCategoryName = itemCategory.Type == ItemType.Custom ? "<sys:customcategory>" + itemCategory.CustomCategory : "<sys:itemcategory>" + itemCategory.Type;
-            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, itemCategoryName));
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, itemCategory.GetInternalId()));
         }
 
         if (itemCategory.Type == ItemType.Custom)

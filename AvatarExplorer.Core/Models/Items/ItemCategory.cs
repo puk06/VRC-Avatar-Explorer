@@ -57,4 +57,30 @@ public class ItemCategory : ISelectableItem
     #endregion
 
     public override string ToString() => Type == ItemType.Custom ? CustomCategory : (Type.GetLocalizationKey() ?? Type.ToString());
+
+    private const string CustomCategoryPrefix = "<sys:customcategory>";
+    private const string ItemCategoryPrefix = "<sys:itemcategory>";
+    public string GetInternalId() => Type == ItemType.Custom ? CustomCategoryPrefix + CustomCategory : ItemCategoryPrefix + Type.ToString();
+
+    public static bool TryParse(string internalId, out ItemCategory? category)
+    {
+        category = default;
+
+        if (internalId.StartsWith(CustomCategoryPrefix))
+        {
+            category = new ItemCategory(internalId[CustomCategoryPrefix.Length..]);
+            return true;
+        }
+        else if (internalId.StartsWith(ItemCategoryPrefix))
+        {
+            string itemTypeString = internalId[ItemCategoryPrefix.Length..];
+            if (Enum.TryParse(itemTypeString, out ItemType itemType))
+            {
+                category = new ItemCategory(itemType);
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
