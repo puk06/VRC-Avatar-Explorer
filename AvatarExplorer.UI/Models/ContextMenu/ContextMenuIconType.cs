@@ -28,6 +28,6 @@ internal enum ContextMenuIconType
     [MaterialIcon(MaterialIconKind.LinkVariant)]
     Link,
 
-    [MaterialIcon(MaterialIconKind.SetMerge)]
+    [MaterialIcon(MaterialIconKind.Merge)]
     Merge
 }
