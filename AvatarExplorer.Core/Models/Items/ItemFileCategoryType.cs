@@ -7,14 +7,14 @@ public enum ItemFileCategoryType
 {
     None,
 
-    [ExtensionsFilter(".unitypackage")]
-    [LocalizationKey(LocalizationKey.FileCategory.Unitypackage)]
-    Unitypackage,
-
     [FileNamesFilter("Material|マテリアル")]
     [ExtensionsFilter(".unitypackage")]
     [LocalizationKey(LocalizationKey.FileCategory.Material)]
     Material,
+
+    [ExtensionsFilter(".unitypackage")]
+    [LocalizationKey(LocalizationKey.FileCategory.Unitypackage)]
+    Unitypackage,
 
     [ExtensionsFilter(".png|.jpg|.jpeg|.webp|.tga|.bmp|.dds|.tiff|.tif|.gif|.hdr|.exr")]
     [LocalizationKey(LocalizationKey.FileCategory.Texture)]
