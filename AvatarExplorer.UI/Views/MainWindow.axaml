@@ -297,6 +297,7 @@
                                                 <ComboBox Grid.Column="1" x:Name="SettingsOverlay_ThemeComboBox" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                                     <ComboBoxItem Content="{Binding [Settings.Theme.Options.Dark]}"/>
                                                     <ComboBoxItem Content="{Binding [Settings.Theme.Options.Light]}"/>
+                                                    <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sakura]}"/>
                                                 </ComboBox>
                                             </Grid>
                                         </Grid>

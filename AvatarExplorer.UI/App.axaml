@@ -1,5 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:AvatarExplorer.UI"
         xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         x:Class="AvatarExplorer.UI.App"
         RequestedThemeVariant="Dark">
@@ -50,6 +51,26 @@
                     <SolidColorBrush x:Key="Button.Selected" Color="#8600A900"/>
 
                     <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF646464"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Sakura}">
+                    <SolidColorBrush x:Key="Background.TransparentMain" Color="#C4FFF4F7"/>
+                    <SolidColorBrush x:Key="Background.BorderBrush" Color="#2EE7B8C8"/>
+                    <SolidColorBrush x:Key="Background.Panel" Color="#99FFEFF4"/>
+
+                    <SolidColorBrush x:Key="BorderBrush.Main" Color="#FFECCFD9"/>
+                    <SolidColorBrush x:Key="Background.Main" Color="#FFFFF7FA"/>
+                    <SolidColorBrush x:Key="Background.Sub" Color="#FFFFEFF5"/>
+
+                    <SolidColorBrush x:Key="Text.Primary" Color="#FF4E2E3B"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF8F6675"/>
+                    <SolidColorBrush x:Key="Text.Disabled" Color="#FFB89AA5"/>
+
+                    <SolidColorBrush x:Key="Button.Background" Color="#5CFFDCE8"/>
+                    <SolidColorBrush x:Key="Button.BorderBrush" Color="#59DDA3B7"/>
+                    <SolidColorBrush x:Key="Button.Selected" Color="#86E07FA3"/>
+
+                    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FFD8B4C2"/>
                 </ResourceDictionary>
 
             </ResourceDictionary.ThemeDictionaries>

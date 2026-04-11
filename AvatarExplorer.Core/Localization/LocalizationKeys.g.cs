@@ -392,6 +392,7 @@ public static class LocalizationKey
             {
                 public const string Dark = "Settings.Theme.Options.Dark";
                 public const string Light = "Settings.Theme.Options.Light";
+                public const string Sakura = "Settings.Theme.Options.Sakura";
             }
         }
         public const string Display = "Settings.Display";

@@ -201,11 +201,13 @@ public partial class MainWindow
 
         if (theme == Models.Common.Theme.Dark) application.RequestedThemeVariant = ThemeVariant.Dark;
         else if (theme == Models.Common.Theme.Light) application.RequestedThemeVariant = ThemeVariant.Light;
+        else if (theme == Models.Common.Theme.Sakura) application.RequestedThemeVariant = AppThemeVariants.Sakura;
     }
     private void SettingsOverlay_SetBackground(Theme theme)
     {
         if (theme == Models.Common.Theme.Dark) Background = new SolidColorBrush(new Color(255, 32, 32, 32));
         else if (theme == Models.Common.Theme.Light) Background = new SolidColorBrush(new Color(255, 249, 249, 249));
+        else if (theme == Models.Common.Theme.Sakura) Background = new SolidColorBrush(new Color(255, 255, 247, 250));
     }
     private void SettingsOverlay_ApplyBackgroundImage(UserPreferences userPreferences)
     {
