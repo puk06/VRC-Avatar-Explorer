@@ -479,6 +479,7 @@ public partial class MainWindow : Window
 
         foreach (var pageInfo in _main_pageManager.GetKeys().Where(i => !selectedItemTagStates.Contains(i)))
         {
+            if (pageInfo == ItemTagStates.RootItem) continue;
             _main_pageManager.ResetPageValue(pageInfo);
         }
     }
