@@ -14,6 +14,7 @@ internal class ScrollManager
         { ItemTagStates.RootAvatar, Empty },
         { ItemTagStates.RootAuthor, Empty },
         { ItemTagStates.RootCategory, Empty },
+        { ItemTagStates.RootItem, Empty },
         { ItemTagStates.RootSelectedCategory, Empty },
         { ItemTagStates.RootSelectedItem, Empty },
         { ItemTagStates.ItemFileCategory, Empty },

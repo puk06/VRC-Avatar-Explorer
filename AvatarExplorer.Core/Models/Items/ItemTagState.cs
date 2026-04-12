@@ -20,9 +20,12 @@ public enum ItemTagStates
 
     [LocalizationKey(LocalizationKey.Main.Path.Root.Category)]
     RootCategory = 1 << 3,
+
+    [LocalizationKey(LocalizationKey.Main.Path.Root.Item)]
+    RootItem = 1 << 4,
     
-    RootSelectedCategory = 1 << 4,
-    RootSelectedItem = 1 << 5,
-    ItemFileCategory = 1 << 6,
-    ItemFileCategoryOpen = 1 << 7
+    RootSelectedCategory = 1 << 5,
+    RootSelectedItem = 1 << 6,
+    ItemFileCategory = 1 << 7,
+    ItemFileCategoryOpen = 1 << 8
 }

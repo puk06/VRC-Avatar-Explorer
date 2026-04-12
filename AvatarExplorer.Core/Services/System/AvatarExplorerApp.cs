@@ -45,6 +45,7 @@ public class AvatarExplorerApp
             { ItemTagStates.RootAvatar, HandleRootAvatar },
             { ItemTagStates.RootAuthor, HandleRootAuthor },
             { ItemTagStates.RootCategory, HandleRootCategory },
+            { ItemTagStates.RootItem, HandleRootSelectedItem },
             { ItemTagStates.RootSelectedCategory, HandleRootSelectedCategory },
             { ItemTagStates.RootSelectedItem, HandleRootSelectedItem },
             { ItemTagStates.ItemFileCategory, HandleItemFileCategory }
@@ -189,7 +190,13 @@ public class AvatarExplorerApp
     public ImmutableArray<ItemCountInfo> GetItemsForCurrentState()
     {
         SelectionNode? current = _selectionState.Current;
-        if (current == null) return [];
+        if (current == null)
+        {
+            return _itemDatabaseManager.Items
+                .GetSortedItems(_runtimeSettings)
+                .Select(i => new ItemCountInfo(i, 0))
+                .ToImmutableArray();
+        }
 
         if (_stateHandlers.TryGetValue(current.State, out var handler))
             return handler(current);

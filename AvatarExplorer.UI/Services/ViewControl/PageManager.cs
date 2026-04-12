@@ -12,6 +12,7 @@ internal class PageManager
         { ItemTagStates.RootAvatar, 0 },
         { ItemTagStates.RootAuthor, 0 },
         { ItemTagStates.RootCategory, 0 },
+        { ItemTagStates.RootItem, 0 },
         { ItemTagStates.RootSelectedCategory, 0 },
         { ItemTagStates.RootSelectedItem, 0 },
         { ItemTagStates.ItemFileCategoryOpen, 0 }
