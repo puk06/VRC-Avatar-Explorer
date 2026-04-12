@@ -300,7 +300,7 @@ public class AvatarExplorerApp
     }
     private ImmutableArray<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
     {
-        SelectionNode? fileSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem);
+        SelectionNode? fileSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
         if (fileSelectionNode == null) return [];
 
         Item? item = GetItemById(fileSelectionNode.Key);
@@ -316,7 +316,7 @@ public class AvatarExplorerApp
 
     public Item? GetSelectedItem()
     {
-        SelectionNode? itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem);
+        SelectionNode? itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
         if (itemSelectionNode == null) return null;
 
         return _itemDatabaseManager.Items.FirstOrDefault(i => i.Id == itemSelectionNode.Key);
