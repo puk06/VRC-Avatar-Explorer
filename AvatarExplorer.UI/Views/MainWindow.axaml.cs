@@ -201,9 +201,6 @@ public partial class MainWindow : Window
                 }
         }
 
-        // スクロール位置をDictionaryから復元してあげる
-        Main_LeftPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(customState);
-
         int currentPage = _main_pageManager.GetPage(customState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
 
         foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage) : items)
@@ -222,6 +219,10 @@ public partial class MainWindow : Window
             if (pageInfoPanel != null) Main_LeftPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_LeftPanelPageInfo.Children.Clear();
+
+        // スクロール位置をDictionaryから復元してあげる
+        Main_LeftPanelScrollViewer.Presenter?.UpdateLayout();
+        Main_LeftPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(customState);
     }
     private void LeftPanel_ItemButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -261,9 +262,6 @@ public partial class MainWindow : Window
         if (items.Length > 0) itemTagState = new UISelectableItem(items[0]).Tag.State;
         _main_lastRightPanelItemTagState = itemTagState;
 
-        // スクロール位置をDictionaryから復元してあげる
-        Main_RightPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(itemTagState);
-
         int currentPage = _main_pageManager.GetPage(itemTagState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
 
         foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage) : items)
@@ -285,6 +283,10 @@ public partial class MainWindow : Window
 
         _main_isLastWindowSearch = false;
         Main_LoadCurrentPath();
+        
+        // スクロール位置をDictionaryから復元してあげる
+        Main_LeftPanelScrollViewer.Presenter?.UpdateLayout();
+        Main_RightPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(itemTagState);
     }
     private async void RightPanel_ItemButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -377,9 +379,6 @@ public partial class MainWindow : Window
         if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
 
-        // スクロール位置をDictionaryから復元してあげる
-        Main_RightPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(ItemTagStates.SearchItem);
-
         int currentPage = _main_pageManager.GetPage(ItemTagStates.SearchItem); // SearchItemは必ずページが存在しているため
 
         foreach (Item item in items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage))
@@ -402,6 +401,10 @@ public partial class MainWindow : Window
         _main_isLastWindowSearch = true;
 
         Main_PathTextBox.Text = searchFilter.ToPathString();
+
+        // スクロール位置をDictionaryから復元してあげる
+        Main_LeftPanelScrollViewer.Presenter?.UpdateLayout();
+        Main_RightPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(itemTagState);
     }
     #endregion
 
