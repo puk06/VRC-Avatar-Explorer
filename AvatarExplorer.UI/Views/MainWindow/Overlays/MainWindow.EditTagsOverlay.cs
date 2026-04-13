@@ -61,10 +61,10 @@ public partial class MainWindow
             if (tagBorder.Child is TextBlock tagLabel)
             {
                 tagLabel.FontWeight = FontWeight.Bold;
-                tagLabel.Classes.Add("accent");
+                tagLabel.Classes.Add("tag");
             }
 
-            tagBorder.Classes.Add("tagborder");
+            tagBorder.Classes.Add("tag");
             tagBorder.PointerPressed += EditTagsOverlay_Tag_Click;
 
             EditTagsOverlay_TagList.Children.Add(tagBorder);

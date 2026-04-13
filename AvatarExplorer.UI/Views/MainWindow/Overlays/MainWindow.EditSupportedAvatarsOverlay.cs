@@ -90,7 +90,7 @@ public partial class MainWindow
             else if (itemCountInfo.Item is CommonAvatar commonAvatar) avatarId = commonAvatar.GetInternalId();
             else if (itemCountInfo.Item is TempAvatar tempAvatar) avatarId = tempAvatar.GetInternalId();
 
-            if (!string.IsNullOrEmpty(avatarId) && _editSupportedAvatarsOverlay_selectedAvatars.Contains(avatarId)) button.Classes.Add("accent");
+            if (!string.IsNullOrEmpty(avatarId) && _editSupportedAvatarsOverlay_selectedAvatars.Contains(avatarId)) button.Classes.Add("accentbutton");
         }
     }
     

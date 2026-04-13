@@ -54,7 +54,7 @@ public partial class MainWindow
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
             Button button = ItemButtonFactory.AddItemButton(EditImplementedAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, _userPreferences, onClick: EditImplementedAvatarsOverlay_ItemButton_Click);
-            if (_editImplementedAvatarsOverlay_selectedAvatars.Contains(((Item)itemCountInfo.Item).Id)) button.Classes.Add("accent");
+            if (_editImplementedAvatarsOverlay_selectedAvatars.Contains(((Item)itemCountInfo.Item).Id)) button.Classes.Add("accentbutton");
         }
     }
 
