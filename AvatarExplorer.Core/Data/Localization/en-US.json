@@ -228,6 +228,11 @@
     "Settings.Theme.Options.Sakura": "Sakura",
     "Settings.Theme.Options.Mint": "Mint",
     "Settings.Theme.Options.Lavender": "Lavender",
+    "Settings.Theme.Options.Ocean": "Ocean",
+    "Settings.Theme.Options.Sunset": "Sunset",
+    "Settings.Theme.Options.Forest": "Forest",
+    "Settings.Theme.Options.Mocha": "Mocha",
+    "Settings.Theme.Options.Slate": "Slate",
 
     "Settings.Display": "Display",
     "Settings.RemoveBrackets.Title": "Remove Brackets from Title",

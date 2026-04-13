@@ -228,6 +228,11 @@
     "Settings.Theme.Options.Sakura": "サクラ",
     "Settings.Theme.Options.Mint": "ミント",
     "Settings.Theme.Options.Lavender": "ラベンダー",
+    "Settings.Theme.Options.Ocean": "オーシャン",
+    "Settings.Theme.Options.Sunset": "サンセット",
+    "Settings.Theme.Options.Forest": "フォレスト",
+    "Settings.Theme.Options.Mocha": "モカ",
+    "Settings.Theme.Options.Slate": "スレート",
 
     "Settings.Display": "表示",
     "Settings.RemoveBrackets.Title": "タイトルの括弧を削除する",

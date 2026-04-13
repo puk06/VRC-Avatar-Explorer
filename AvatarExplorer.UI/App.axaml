@@ -153,6 +153,146 @@
                     <SolidColorBrush x:Key="GridSplitter.Background" Color="#FFB9ABD9"/>
                 </ResourceDictionary>
 
+                <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Ocean}">
+                    <SolidColorBrush x:Key="Background.TransparentMain" Color="#A33A5366"/>
+                    <SolidColorBrush x:Key="Background.BorderBrush" Color="#2A5B87A6"/>
+                    <SolidColorBrush x:Key="Background.Panel" Color="#8247637B"/>
+                    <SolidColorBrush x:Key="Background.CommonAvatar" Color="#FF1F7FA6"/>
+                    <SolidColorBrush x:Key="Background.Tag" Color="#FF4FA8CC"/>
+
+                    <SolidColorBrush x:Key="BorderBrush.Main" Color="#FF557186"/>
+                    <SolidColorBrush x:Key="Background.Main" Color="#FF40586B"/>
+                    <SolidColorBrush x:Key="Background.Sub" Color="#FF334759"/>
+
+                    <SolidColorBrush x:Key="Text.Primary" Color="#FFF4FAFF"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FFC7D8E4"/>
+                    <SolidColorBrush x:Key="Text.Disabled" Color="#FF93A8B8"/>
+                    <SolidColorBrush x:Key="Text.CommonAvatar" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Tag" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Accent" Color="#FFFFFFFF"/>
+
+                    <SolidColorBrush x:Key="Button.Background" Color="#644E7086"/>
+                    <SolidColorBrush x:Key="Button.Background.PointerOver" Color="#806188A1"/>
+                    <SolidColorBrush x:Key="Button.BorderBrush" Color="#6B7FA4BC"/>
+                    <SolidColorBrush x:Key="Button.Selected" Color="#7096C7DF"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground" Color="#FF2D9AC9"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="#FF47ACD6"/>
+
+                    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF6C90A8"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Sunset}">
+                    <SolidColorBrush x:Key="Background.TransparentMain" Color="#A5F0D9C7"/>
+                    <SolidColorBrush x:Key="Background.BorderBrush" Color="#2ACC926E"/>
+                    <SolidColorBrush x:Key="Background.Panel" Color="#82F6E3D4"/>
+                    <SolidColorBrush x:Key="Background.CommonAvatar" Color="#FFC95D3D"/>
+                    <SolidColorBrush x:Key="Background.Tag" Color="#FFD9904F"/>
+
+                    <SolidColorBrush x:Key="BorderBrush.Main" Color="#FFE0C6B3"/>
+                    <SolidColorBrush x:Key="Background.Main" Color="#FFF0DDD0"/>
+                    <SolidColorBrush x:Key="Background.Sub" Color="#FFE3CCBD"/>
+
+                    <SolidColorBrush x:Key="Text.Primary" Color="#FF4B2F22"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF815848"/>
+                    <SolidColorBrush x:Key="Text.Disabled" Color="#FFB08A7B"/>
+                    <SolidColorBrush x:Key="Text.CommonAvatar" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Tag" Color="#FFFFFBF8"/>
+                    <SolidColorBrush x:Key="Text.Accent" Color="#FFFFFBF7"/>
+
+                    <SolidColorBrush x:Key="Button.Background" Color="#64D7B8A6"/>
+                    <SolidColorBrush x:Key="Button.Background.PointerOver" Color="#80E2C9BA"/>
+                    <SolidColorBrush x:Key="Button.BorderBrush" Color="#6BB98566"/>
+                    <SolidColorBrush x:Key="Button.Selected" Color="#70CF8A63"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground" Color="#FFE07A57"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="#FFEB8F6D"/>
+
+                    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FFCBA385"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Forest}">
+                    <SolidColorBrush x:Key="Background.TransparentMain" Color="#A5CCD9CB"/>
+                    <SolidColorBrush x:Key="Background.BorderBrush" Color="#2A6A8E65"/>
+                    <SolidColorBrush x:Key="Background.Panel" Color="#82D8E4D7"/>
+                    <SolidColorBrush x:Key="Background.CommonAvatar" Color="#FF2E6E3D"/>
+                    <SolidColorBrush x:Key="Background.Tag" Color="#FF4D9468"/>
+
+                    <SolidColorBrush x:Key="BorderBrush.Main" Color="#FFB9CCB7"/>
+                    <SolidColorBrush x:Key="Background.Main" Color="#FFD6E2D5"/>
+                    <SolidColorBrush x:Key="Background.Sub" Color="#FFC2D2C0"/>
+
+                    <SolidColorBrush x:Key="Text.Primary" Color="#FF223327"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF4E6954"/>
+                    <SolidColorBrush x:Key="Text.Disabled" Color="#FF7F9A84"/>
+                    <SolidColorBrush x:Key="Text.CommonAvatar" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Tag" Color="#FFF8FFF9"/>
+                    <SolidColorBrush x:Key="Text.Accent" Color="#FFF8FFFA"/>
+
+                    <SolidColorBrush x:Key="Button.Background" Color="#649DBAA0"/>
+                    <SolidColorBrush x:Key="Button.Background.PointerOver" Color="#80B2C8B4"/>
+                    <SolidColorBrush x:Key="Button.BorderBrush" Color="#6B5F8B69"/>
+                    <SolidColorBrush x:Key="Button.Selected" Color="#7083B07F"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground" Color="#FF4E7C52"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="#FF639767"/>
+
+                    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF92AF95"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Mocha}">
+                    <SolidColorBrush x:Key="Background.TransparentMain" Color="#A5685751"/>
+                    <SolidColorBrush x:Key="Background.BorderBrush" Color="#2A9F7867"/>
+                    <SolidColorBrush x:Key="Background.Panel" Color="#826E5D56"/>
+                    <SolidColorBrush x:Key="Background.CommonAvatar" Color="#FF875746"/>
+                    <SolidColorBrush x:Key="Background.Tag" Color="#FFB27D62"/>
+
+                    <SolidColorBrush x:Key="BorderBrush.Main" Color="#FF7F6A63"/>
+                    <SolidColorBrush x:Key="Background.Main" Color="#FF6E5B55"/>
+                    <SolidColorBrush x:Key="Background.Sub" Color="#FF5B4B45"/>
+
+                    <SolidColorBrush x:Key="Text.Primary" Color="#FFF7F0EC"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FFDCC9C0"/>
+                    <SolidColorBrush x:Key="Text.Disabled" Color="#FFB59E95"/>
+                    <SolidColorBrush x:Key="Text.CommonAvatar" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Tag" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Accent" Color="#FFFFFFFF"/>
+
+                    <SolidColorBrush x:Key="Button.Background" Color="#64866B63"/>
+                    <SolidColorBrush x:Key="Button.Background.PointerOver" Color="#809C7F75"/>
+                    <SolidColorBrush x:Key="Button.BorderBrush" Color="#6BC19A87"/>
+                    <SolidColorBrush x:Key="Button.Selected" Color="#70B07A66"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground" Color="#FFB98262"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="#FFC89478"/>
+
+                    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF9B7E74"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Slate}">
+                    <SolidColorBrush x:Key="Background.TransparentMain" Color="#A5494E5A"/>
+                    <SolidColorBrush x:Key="Background.BorderBrush" Color="#2A8E97A8"/>
+                    <SolidColorBrush x:Key="Background.Panel" Color="#82545A67"/>
+                    <SolidColorBrush x:Key="Background.CommonAvatar" Color="#FF556F8A"/>
+                    <SolidColorBrush x:Key="Background.Tag" Color="#FF7C92AD"/>
+
+                    <SolidColorBrush x:Key="BorderBrush.Main" Color="#FF687080"/>
+                    <SolidColorBrush x:Key="Background.Main" Color="#FF575E6E"/>
+                    <SolidColorBrush x:Key="Background.Sub" Color="#FF454C5A"/>
+
+                    <SolidColorBrush x:Key="Text.Primary" Color="#FFF5F7FA"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FFCAD2DC"/>
+                    <SolidColorBrush x:Key="Text.Disabled" Color="#FF99A4B2"/>
+                    <SolidColorBrush x:Key="Text.CommonAvatar" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Tag" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Accent" Color="#FFFFFFFF"/>
+
+                    <SolidColorBrush x:Key="Button.Background" Color="#646A7384"/>
+                    <SolidColorBrush x:Key="Button.Background.PointerOver" Color="#807E889A"/>
+                    <SolidColorBrush x:Key="Button.BorderBrush" Color="#6B9AA5BA"/>
+                    <SolidColorBrush x:Key="Button.Selected" Color="#7090A4C5"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground" Color="#FF6884A4"/>
+                    <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="#FF7A96B6"/>
+
+                    <SolidColorBrush x:Key="GridSplitter.Background" Color="#FF8390A5"/>
+                </ResourceDictionary>
+
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>

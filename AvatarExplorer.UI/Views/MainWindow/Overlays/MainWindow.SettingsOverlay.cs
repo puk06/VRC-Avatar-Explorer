@@ -206,6 +206,11 @@ public partial class MainWindow
             Models.Common.Theme.Sakura => AppThemeVariants.Sakura,
             Models.Common.Theme.Mint => AppThemeVariants.Mint,
             Models.Common.Theme.Lavender => AppThemeVariants.Lavender,
+            Models.Common.Theme.Ocean => AppThemeVariants.Ocean,
+            Models.Common.Theme.Sunset => AppThemeVariants.Sunset,
+            Models.Common.Theme.Forest => AppThemeVariants.Forest,
+            Models.Common.Theme.Mocha => AppThemeVariants.Mocha,
+            Models.Common.Theme.Slate => AppThemeVariants.Slate,
             _ => ThemeVariant.Dark
         };
     }
@@ -218,6 +223,11 @@ public partial class MainWindow
             Models.Common.Theme.Sakura => new SolidColorBrush(new Color(255, 233, 224, 228)),
             Models.Common.Theme.Mint => new SolidColorBrush(new Color(255, 219, 231, 225)),
             Models.Common.Theme.Lavender => new SolidColorBrush(new Color(255, 223, 216, 236)),
+            Models.Common.Theme.Ocean => new SolidColorBrush(new Color(255, 64, 88, 107)),
+            Models.Common.Theme.Sunset => new SolidColorBrush(new Color(255, 240, 221, 208)),
+            Models.Common.Theme.Forest => new SolidColorBrush(new Color(255, 214, 226, 213)),
+            Models.Common.Theme.Mocha => new SolidColorBrush(new Color(255, 110, 91, 85)),
+            Models.Common.Theme.Slate => new SolidColorBrush(new Color(255, 87, 94, 110)),
             _ => new SolidColorBrush(new Color(255, 235, 235, 235))
         };
     }

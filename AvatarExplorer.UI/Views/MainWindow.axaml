@@ -300,6 +300,11 @@
                                                     <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sakura]}"/>
                                                     <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mint]}"/>
                                                     <ComboBoxItem Content="{Binding [Settings.Theme.Options.Lavender]}"/>
+                                                    <ComboBoxItem Content="{Binding [Settings.Theme.Options.Ocean]}"/>
+                                                    <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sunset]}"/>
+                                                    <ComboBoxItem Content="{Binding [Settings.Theme.Options.Forest]}"/>
+                                                    <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mocha]}"/>
+                                                    <ComboBoxItem Content="{Binding [Settings.Theme.Options.Slate]}"/>
                                                 </ComboBox>
                                             </Grid>
                                         </Grid>

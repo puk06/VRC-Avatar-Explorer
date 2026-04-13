@@ -395,6 +395,11 @@ public static class LocalizationKey
                 public const string Sakura = "Settings.Theme.Options.Sakura";
                 public const string Mint = "Settings.Theme.Options.Mint";
                 public const string Lavender = "Settings.Theme.Options.Lavender";
+                public const string Ocean = "Settings.Theme.Options.Ocean";
+                public const string Sunset = "Settings.Theme.Options.Sunset";
+                public const string Forest = "Settings.Theme.Options.Forest";
+                public const string Mocha = "Settings.Theme.Options.Mocha";
+                public const string Slate = "Settings.Theme.Options.Slate";
             }
         }
         public const string Display = "Settings.Display";

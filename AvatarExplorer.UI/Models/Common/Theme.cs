@@ -6,5 +6,10 @@ public enum Theme
     Light,
     Sakura,
     Mint,
-    Lavender
+    Lavender,
+    Ocean,
+    Sunset,
+    Forest,
+    Mocha,
+    Slate
 }
