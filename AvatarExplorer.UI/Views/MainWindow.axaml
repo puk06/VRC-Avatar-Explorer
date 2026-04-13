@@ -33,10 +33,10 @@
                         <materialIcons:MaterialIcon Grid.Column="3" Kind="Magnify" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
                         <TextBox x:Name="Main_SearchTextBox" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Watermark="{Binding [Main.Search.Watermark]}" FontSize="14" CornerRadius="8" TextChanged="Main_SearchValue_Changed"/>
                         
-                        <Button Classes="accent" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CornerRadius="8" Margin="5,0,0,0" Click="Main_AddItem_Click">
+                        <Button Classes="accentbutton" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CornerRadius="8" Margin="5,0,0,0" Click="Main_AddItem_Click">
                             <StackPanel Orientation="Horizontal" Spacing="5">
                                 <materialIcons:MaterialIcon Kind="Plus" Width="25" Height="25" VerticalAlignment="Center"/>
-                                <TextBlock Classes="accent" FontSize="15" FontWeight="Bold" Text="{Binding [Main.AddItem]}" VerticalAlignment="Center"/>
+                                <TextBlock Classes="accentbutton" FontSize="15" FontWeight="Bold" Text="{Binding [Main.AddItem]}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                     </Grid>
@@ -123,7 +123,7 @@
                                                     <TextBlock Text="{Binding [SidePanel.AdvancedSearch]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                                     <TextBlock Text="{Binding [AdvancedSearch.NegationHint]}" FontSize="12" Opacity="0.75" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                                 </StackPanel>
-
+                                                        <Button Grid.Column="2" Classes="button" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
                                                 <Separator Grid.Row="1" Background="#22000000"/>
 
                                                 <ScrollViewer Grid.Row="2" VerticalAlignment="Stretch">
@@ -218,9 +218,9 @@
                                                     <ScrollViewer x:Name="SidePanel_BulkImportPanelScrollViewer" Grid.Row="0" DragDrop.AllowDrop="True" DragDrop.Drop="BulkImportPanel_DragDrop_Drop">
                                                         <StackPanel x:Name="SidePanel_BulkImportPanel" Spacing="5" Margin="0,0,10,0"/>
                                                     </ScrollViewer>
-                                                    <Button Grid.Row="1" Classes="accent" FontWeight="Bold" Content="{Binding [BulkImport.Import]}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Click="BulkImportPanel_Import_Click"/>
+                                                    <Button Grid.Row="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [BulkImport.Import]}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Click="BulkImportPanel_Import_Click"/>
                                                     <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="10">
-                                                        <Button Grid.Column="0" Classes="accent" FontWeight="Bold" Content="{Binding [BulkImport.Save]}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Click="BulkImportPanel_Save_Click"/>
+                                                        <Button Grid.Column="0" Classes="accentbutton" FontWeight="Bold" Content="{Binding [BulkImport.Save]}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Click="BulkImportPanel_Save_Click"/>
                                                         <Button Grid.Column="1" Classes="button" FontWeight="Bold" Content="{Binding [BulkImport.Reset]}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Click="BulkImportPanel_Reset_Click"/>
                                                     </Grid>
                                                 </Grid>
@@ -298,6 +298,8 @@
                                                     <ComboBoxItem Content="{Binding [Settings.Theme.Options.Dark]}"/>
                                                     <ComboBoxItem Content="{Binding [Settings.Theme.Options.Light]}"/>
                                                     <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sakura]}"/>
+                                                    <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mint]}"/>
+                                                    <ComboBoxItem Content="{Binding [Settings.Theme.Options.Lavender]}"/>
                                                 </ComboBox>
                                             </Grid>
                                         </Grid>
@@ -482,7 +484,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="accent" Content="{Binding [Settings.CommonAvatarManagement.OpenManagement]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_EditCommonAvatars_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.CommonAvatarManagement.OpenManagement]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_EditCommonAvatars_Click"/>
                                             </Grid>
                                         </Grid>
                                     </StackPanel>
@@ -536,7 +538,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="accent" Content="{Binding [Settings.ImportFromOther.Import]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ImportData_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ImportFromOther.Import]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ImportData_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -547,7 +549,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="accent" Content="{Binding [Settings.ExportCsv.Export]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ExportDataToCsv_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ExportCsv.Export]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ExportDataToCsv_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -558,7 +560,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="accent" Content="{Binding [Settings.ImportThumbnail.Import]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ImportThumbnail_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ImportThumbnail.Import]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ImportThumbnail_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -569,7 +571,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="accent" Content="{Binding [Settings.RestoreFromBackup.SelectBackup]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_RestoreDataFromBackup_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.RestoreFromBackup.SelectBackup]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_RestoreDataFromBackup_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -580,7 +582,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetItemDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetItemDatabase_Click"/>
+                                                <Button Grid.Column="1" Classes="button" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetItemDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetItemDatabase_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -591,7 +593,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetCommonAvatarDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetCommonAvatarDatabase_Click"/>
+                                                <Button Grid.Column="1" Classes="button" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetCommonAvatarDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetCommonAvatarDatabase_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -602,7 +604,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetBulkImportPresetDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetBulkImportPresetDatabase_Click"/>
+                                                <Button Grid.Column="1" Classes="button" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetBulkImportPresetDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetBulkImportPresetDatabase_Click"/>
                                             </Grid>
                                         </Grid>
                                     </StackPanel>
@@ -621,7 +623,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="accent" Content="{Binding [Settings.ErrorLog.OpenErrorLog]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ShowErrorLog_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ErrorLog.OpenErrorLog]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ShowErrorLog_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -632,7 +634,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="accent" Content="{Binding [Settings.RegisterScheme.Register]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_RegisterScheme_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.RegisterScheme.Register]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_RegisterScheme_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -679,7 +681,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="accent" Content="{Binding [Settings.CheckForUpdateNow.Check]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_UpdateCheckNow_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.CheckForUpdateNow.Check]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_UpdateCheckNow_Click"/>
                                             </Grid>
                                         </Grid>
                                     </StackPanel>
@@ -779,7 +781,7 @@
                     <!-- 下のボタン -->
                     <Grid Grid.Row="2" ColumnDefinitions="200,*,200" Margin="10,20,10,0">
                         <Button Classes="button" FontWeight="Bold" CornerRadius="20" Grid.Column="0" Content="{Binding [Button.Close]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Padding="10" Click="SettingsOverlay_Close_Click" />
-                        <Button Classes="accent" FontWeight="Bold" CornerRadius="20" Grid.Column="2" Content="{Binding [Settings.Apply]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Padding="10" Click="SettingsOverlay_Apply_Click" />
+                        <Button Classes="accentbutton" FontWeight="Bold" CornerRadius="20" Grid.Column="2" Content="{Binding [Settings.Apply]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Padding="10" Click="SettingsOverlay_Apply_Click" />
                     </Grid>
                 </Grid>
             </Border>
@@ -791,13 +793,13 @@
                 <Grid ColumnDefinitions="350,20,500">
                     <Grid Grid.Column="0" RowDefinitions="Auto,15,*">
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                            <Button Classes="accent" FontSize="12" Click="AddItemOverlay_AddFolder_Click">
+                            <Button Classes="accentbutton" FontSize="12" Click="AddItemOverlay_AddFolder_Click">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <materialIcons:MaterialIcon Kind="FolderPlus" Width="20" Height="20"/>
                                     <TextBlock Text="{Binding [AddItem.AddFolder]}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button Classes="accent" FontSize="12" Click="AddItemOverlay_AddFile_Click">
+                            <Button Classes="accentbutton" FontSize="12" Click="AddItemOverlay_AddFile_Click">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <materialIcons:MaterialIcon Kind="FilePlus" Width="20" Height="20"/>
                                     <TextBlock Text="{Binding [AddItem.AddFile]}" VerticalAlignment="Center"/>
@@ -820,7 +822,7 @@
                             <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
                                 <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl]}" VerticalAlignment="Center" Opacity="0.7"/>
                                 <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" Watermark="{Binding [AddItem.BoothUrlWatermark]}"/>
-                                <Button Grid.Column="2" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
+                                <Button Grid.Column="2" Classes="button" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
                             </Grid>
 
                             <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
@@ -839,13 +841,13 @@
                                 <TextBlock Text="{Binding [AddItem.Category]}" FontSize="13" Opacity="0.7"/>
                                 <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
                                     <ComboBox x:Name="AddItemOverlay_ItemTypeComboBox" HorizontalAlignment="Stretch" SelectedIndex="0"/>
-                                    <Button Grid.Column="1" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" Click="AddItemOverlay_AddCustomCategory_Click"/>
+                                    <Button Grid.Column="1" Classes="button" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" Click="AddItemOverlay_AddCustomCategory_Click"/>
                                 </Grid>
                             </StackPanel>
 
                             <StackPanel Spacing="8" Margin="10,0,0,0">
                                 <TextBlock Text="{Binding [AddItem.SupportedAvatars]}" FontSize="13" Opacity="0.7"/>
-                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
+                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
                             </StackPanel>
                         </UniformGrid>
 
@@ -875,7 +877,7 @@
 
                         <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="15" Margin="0,10,0,0">
                             <Button Grid.Column="1" Content="{Binding [Button.Cancel]}" Width="160" Height="40" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_Close_Click" />
-                            <Button Grid.Column="2" Content="{Binding [AddItem.ConfirmAndSave]}" Width="160" Height="40" Classes="accent" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_Confirm_Click"/>
+                            <Button Grid.Column="2" Content="{Binding [AddItem.ConfirmAndSave]}" Width="160" Height="40" Classes="accentbutton" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_Confirm_Click"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -906,7 +908,7 @@
                         <Grid ColumnDefinitions="200,*,150,150" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
                             <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [EditSupportedAvatars.AddTempAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_AddTempAvatar_Click"/>
                             <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_Cancel_Click"/>
-                            <Button Classes="accent" FontWeight="Bold" Grid.Column="3" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_Confirm_Click"/>
+                            <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="3" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditSupportedAvatarsOverlay_Confirm_Click"/>
                         </Grid>
                     </Grid>
                 </StackPanel>
@@ -936,7 +938,7 @@
                         <!-- 下のボタン -->
                         <Grid ColumnDefinitions="*,180,180" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
                             <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditImplementedAvatarsOverlay_Cancel_Click"/>
-                            <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditImplementedAvatarsOverlay_Confirm_Click"/>
+                            <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditImplementedAvatarsOverlay_Confirm_Click"/>
                         </Grid>
                     </Grid>
                 </StackPanel>
@@ -1000,7 +1002,7 @@
                         <!-- 下のボタン -->
                         <Grid ColumnDefinitions="Auto,*,180" Grid.Row="8">
                             <Button Classes="button" FontWeight="Bold" Content="{Binding [EditCommonAvatars.ReplaceToGroup]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="10,7" FontSize="15" Click="EditCommonAvatarsOverlay_ReplaceAvatarsToGroup_Click"/>
-                            <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditCommonAvatarsOverlay_Close_Click"/>
+                            <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditCommonAvatarsOverlay_Close_Click"/>
                         </Grid>
                     </Grid>
                 </StackPanel>
@@ -1023,7 +1025,7 @@
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditMemoOverlay_Cancel_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.OK]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditMemoOverlay_Confirm_Click"/>
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.OK]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditMemoOverlay_Confirm_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -1050,14 +1052,14 @@
                     <TextBlock Text="{Binding [EditTags.AddTag]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"/>
                     <Grid ColumnDefinitions="*,80" ColumnSpacing="5">
                         <TextBox x:Name="EditTagsOverlay_TagTextBox" Grid.Column="0" Watermark="{Binding [EditTags.NewTag]}" KeyDown="EditTagsOverlay_TagTextBox_KeyDown"/>
-                        <Button Grid.Column="1" Content="{Binding [EditTags.AddTag]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="EditTagsOverlay_AddTagButton_Click"/>
+                        <Button Grid.Column="1" Classes="button" Content="{Binding [EditTags.AddTag]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="EditTagsOverlay_AddTagButton_Click"/>
                     </Grid>
                     <ComboBox x:Name="EditTagsOverlay_TagComboBox" PlaceholderText="{Binding [EditTags.SelectTag]}" Grid.Row="8" HorizontalAlignment="Stretch" SelectionChanged="EditTagsOverlay_TagComboBox_SelectionChanged"/>
 
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150" Margin="0,10,0,0">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditTagsOverlay_Cancel_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.OK]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditTagsOverlay_Confirm_Click"/>
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.OK]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="EditTagsOverlay_Confirm_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -1119,7 +1121,7 @@
                     </Border>
 
                     <Grid Grid.Row="3" ColumnDefinitions="*,120,120" ColumnSpacing="10">
-                        <Button Grid.Column="1" x:Name="UnitypackageViewerOverlay_ExportButton" Classes="accent" FontWeight="Bold" Content="{Binding [Settings.ExportCsv.Export]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="UnitypackageViewerOverlay_Export_Click" IsEnabled="False"/>
+                        <Button Grid.Column="1" x:Name="UnitypackageViewerOverlay_ExportButton" Classes="accentbutton" FontWeight="Bold" Content="{Binding [Settings.ExportCsv.Export]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="UnitypackageViewerOverlay_Export_Click" IsEnabled="False"/>
                         <Button Grid.Column="2" Classes="button" FontWeight="Bold" Content="{Binding [Button.Close]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="UnitypackageViewerOverlay_Close_Click"/>
                     </Grid>
                 </Grid>
@@ -1154,7 +1156,7 @@
                     </Grid>
 
                     <!-- OKボタン -->
-                    <Button Classes="accent" FontWeight="Bold" Content="{Binding [DialogResult.OK]}" Width="150" VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="DialogOverlay_OK_Click"/>
+                    <Button Classes="accentbutton" FontWeight="Bold" Content="{Binding [DialogResult.OK]}" Width="150" VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="DialogOverlay_OK_Click"/>
                 </StackPanel>
             </Border>
         </Border>
@@ -1173,7 +1175,7 @@
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="TextDialogOverlay_Cancel_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="TextDialogOverlay_Confirm_Click"/>
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="TextDialogOverlay_Confirm_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -1202,7 +1204,7 @@
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ArchivePasswordDialogOverlay_Cancel_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ArchivePasswordDialogOverlay_Confirm_Click"/>
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Confirm]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ArchivePasswordDialogOverlay_Confirm_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -1224,7 +1226,7 @@
                     <!-- Yes/Noボタン -->
                     <Grid ColumnDefinitions="100,*,100">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [DialogResult.No]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="YesNoDialogOverlay_No_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.Yes]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="YesNoDialogOverlay_Yes_Click"/>
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.Yes]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="YesNoDialogOverlay_Yes_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -1254,7 +1256,7 @@
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="*,10,120,10,120">
                         <Button Grid.Column="2" Classes="button" Content="{Binding [UpdateDialog.Later]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="UpdateDialogOverlay_Later_Click"/>
-                        <Button Grid.Column="4" Classes="accent" Content="{Binding [UpdateDialog.UpdateNow]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="UpdateDialogOverlay_UpdateNow_Click"/>
+                        <Button Grid.Column="4" Classes="accentbutton" Content="{Binding [UpdateDialog.UpdateNow]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="UpdateDialogOverlay_UpdateNow_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -1276,7 +1278,7 @@
 
                     <Grid ColumnDefinitions="100,*,100">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="MergeCategoryOverlay_Cancel_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="2" Content="{Binding [MergeCategory.Merge]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="MergeCategoryOverlay_Merge_Click"/>
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [MergeCategory.Merge]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="MergeCategoryOverlay_Merge_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -1325,7 +1327,7 @@
                     </StackPanel>
 
                     <Grid ColumnDefinitions="*,120">
-                        <Button Grid.Column="1" Classes="accent" Content="{Binding [DialogResult.OK]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="InitialSetupOverlay_OK_Click"/>
+                        <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [DialogResult.OK]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="InitialSetupOverlay_OK_Click"/>
                     </Grid>
 
                 </StackPanel>
@@ -1364,7 +1366,7 @@
                     <Grid Grid.Row="3" ColumnDefinitions="120,*,120,120" ColumnSpacing="20">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_Close_Click"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [ErrorLog.OpenLogFolder]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_OpenLogFolder_Click"/>
-                        <Button Classes="accent" FontWeight="Bold" Grid.Column="3" Content="{Binding [ErrorLog.Reflesh]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_Reflesh_Click"/>
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="3" Content="{Binding [ErrorLog.Reflesh]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_Reflesh_Click"/>
                     </Grid>
                 </Grid>
             </Border>

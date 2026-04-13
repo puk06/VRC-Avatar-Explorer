@@ -199,15 +199,27 @@ public partial class MainWindow
     {
         if (application == null) return;
 
-        if (theme == Models.Common.Theme.Dark) application.RequestedThemeVariant = ThemeVariant.Dark;
-        else if (theme == Models.Common.Theme.Light) application.RequestedThemeVariant = ThemeVariant.Light;
-        else if (theme == Models.Common.Theme.Sakura) application.RequestedThemeVariant = AppThemeVariants.Sakura;
+        application.RequestedThemeVariant = theme switch
+        {
+            Models.Common.Theme.Dark => ThemeVariant.Dark,
+            Models.Common.Theme.Light => ThemeVariant.Light,
+            Models.Common.Theme.Sakura => AppThemeVariants.Sakura,
+            Models.Common.Theme.Mint => AppThemeVariants.Mint,
+            Models.Common.Theme.Lavender => AppThemeVariants.Lavender,
+            _ => ThemeVariant.Dark
+        };
     }
     private void SettingsOverlay_SetBackground(Theme theme)
     {
-        if (theme == Models.Common.Theme.Dark) Background = new SolidColorBrush(new Color(255, 32, 32, 32));
-        else if (theme == Models.Common.Theme.Light) Background = new SolidColorBrush(new Color(255, 249, 249, 249));
-        else if (theme == Models.Common.Theme.Sakura) Background = new SolidColorBrush(new Color(255, 255, 247, 250));
+        Background = theme switch
+        {
+            Models.Common.Theme.Dark => new SolidColorBrush(new Color(255, 32, 32, 32)),
+            Models.Common.Theme.Light => new SolidColorBrush(new Color(255, 235, 235, 235)),
+            Models.Common.Theme.Sakura => new SolidColorBrush(new Color(255, 233, 224, 228)),
+            Models.Common.Theme.Mint => new SolidColorBrush(new Color(255, 219, 231, 225)),
+            Models.Common.Theme.Lavender => new SolidColorBrush(new Color(255, 223, 216, 236)),
+            _ => new SolidColorBrush(new Color(255, 235, 235, 235))
+        };
     }
     private void SettingsOverlay_ApplyBackgroundImage(UserPreferences userPreferences)
     {

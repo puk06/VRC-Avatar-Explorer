@@ -4,5 +4,7 @@ public enum Theme
 {
     Dark,
     Light,
-    Sakura
+    Sakura,
+    Mint,
+    Lavender
 }
