@@ -17,6 +17,8 @@
                     <SolidColorBrush x:Key="Background.TransparentMain" Color="#B8E8E8E8"/>
                     <SolidColorBrush x:Key="Background.BorderBrush" Color="#54000000"/>
                     <SolidColorBrush x:Key="Background.Panel" Color="#81EAEAEA"/>
+                    <SolidColorBrush x:Key="Background.CommonAvatar" Color="#FF008000"/>
+                    <SolidColorBrush x:Key="Background.Tag" Color="#FF2B78BF"/>
 
                     <SolidColorBrush x:Key="BorderBrush.Main" Color="#FFE0E0E0"/>
                     <SolidColorBrush x:Key="Background.Main" Color="#FFE3E3E3"/>
@@ -25,6 +27,8 @@
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF1A1A1A"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="#FF666666"/>
                     <SolidColorBrush x:Key="Text.Disabled" Color="#FF9E9E9E"/>
+                    <SolidColorBrush x:Key="Text.CommonAvatar" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Tag" Color="#FFFFFFFF"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#33EAEAEA"/>
                     <SolidColorBrush x:Key="Button.BorderBrush" Color="#54000000"/>
@@ -37,6 +41,8 @@
                     <SolidColorBrush x:Key="Background.TransparentMain" Color="#DB333333"/>
                     <SolidColorBrush x:Key="Background.BorderBrush" Color="#00000000"/>
                     <SolidColorBrush x:Key="Background.Panel" Color="#6C414141"/>
+                    <SolidColorBrush x:Key="Background.CommonAvatar" Color="#FF008000"/>
+                    <SolidColorBrush x:Key="Background.Tag" Color="#FF2B78BF"/>
 
                     <SolidColorBrush x:Key="BorderBrush.Main" Color="#FF2A2A2A"/>
                     <SolidColorBrush x:Key="Background.Main" Color="#FF333333"/>
@@ -45,6 +51,8 @@
                     <SolidColorBrush x:Key="Text.Primary" Color="#FFF2F2F2"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="#FFB0B0B0"/>
                     <SolidColorBrush x:Key="Text.Disabled" Color="#FF777777"/>
+                    <SolidColorBrush x:Key="Text.CommonAvatar" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Tag" Color="#FFFFFFFF"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#33FFFFFF"/>
                     <SolidColorBrush x:Key="Button.BorderBrush" Color="#00000000"/>
@@ -57,6 +65,8 @@
                     <SolidColorBrush x:Key="Background.TransparentMain" Color="#C4FFF4F7"/>
                     <SolidColorBrush x:Key="Background.BorderBrush" Color="#2EE7B8C8"/>
                     <SolidColorBrush x:Key="Background.Panel" Color="#99FFEFF4"/>
+                    <SolidColorBrush x:Key="Background.CommonAvatar" Color="#FFFF5597"/>
+                    <SolidColorBrush x:Key="Background.Tag" Color="#FFFF8CD7"/>
 
                     <SolidColorBrush x:Key="BorderBrush.Main" Color="#FFECCFD9"/>
                     <SolidColorBrush x:Key="Background.Main" Color="#FFFFF7FA"/>
@@ -65,6 +75,8 @@
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF4E2E3B"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="#FF8F6675"/>
                     <SolidColorBrush x:Key="Text.Disabled" Color="#FFB89AA5"/>
+                    <SolidColorBrush x:Key="Text.CommonAvatar" Color="#FFFFFFFF"/>
+                    <SolidColorBrush x:Key="Text.Tag" Color="#FFF9E5F2"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#5CFFDCE8"/>
                     <SolidColorBrush x:Key="Button.BorderBrush" Color="#59DDA3B7"/>
@@ -83,9 +95,21 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
         </Style>
+        
+        <Style Selector="Border.commonavatar">
+            <Setter Property="Background" Value="{DynamicResource Background.CommonAvatar}"/>
+        </Style>
 
-        <Style Selector="Border.tagborder">
-            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
+        <Style Selector="TextBlock.commonavatar">
+            <Setter Property="Foreground" Value="{DynamicResource Text.CommonAvatar}"/>
+        </Style>
+
+        <Style Selector="Border.tag">
+            <Setter Property="Background" Value="{DynamicResource Background.Tag}"/>
+        </Style>
+
+        <Style Selector="TextBlock.tag">
+            <Setter Property="Foreground" Value="{DynamicResource Text.Tag}"/>
         </Style>
 
         <Style Selector="Border.panelbackground">

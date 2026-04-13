@@ -132,10 +132,10 @@ internal static class ItemButtonFactory
             if (commonAvatarBorder.Child is TextBlock tagLabel)
             {
                 tagLabel.FontWeight = FontWeight.Bold;
-                tagLabel.Foreground = new SolidColorBrush(Colors.White);
+                tagLabel.Classes.Add("commonavatar");
             }
 
-            commonAvatarBorder.Background = new SolidColorBrush(Colors.Green);
+            commonAvatarBorder.Classes.Add("commonavatar");
             tagPanel.Children.Add(commonAvatarBorder);
         }
 
@@ -145,10 +145,10 @@ internal static class ItemButtonFactory
             if (tagBorder.Child is TextBlock tagLabel)
             {
                 tagLabel.FontWeight = FontWeight.Bold;
-                tagLabel.Classes.Add("accent");
+                tagLabel.Classes.Add("tag");
             }
 
-            tagBorder.Classes.Add("tagborder");
+            tagBorder.Classes.Add("tag");
 
             tagPanel.Children.Add(tagBorder);
         }
