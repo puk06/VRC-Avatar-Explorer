@@ -303,6 +303,7 @@ public partial class MainWindow : Window
             {
                 AvatarExplorer.Select(itemTagInfo.State, itemTagInfo.Value);
                 Main_CheckPageStates();
+                Main_CheckScrollStates();
                 _main_scrollManager.SetScroll(itemTagInfo.State, Main_RightPanelScrollViewer.Offset); // 次の画面に行くため、今のStateのスクロール位置を保存する
 
                 Main_RenderRightPanel();
@@ -440,6 +441,7 @@ public partial class MainWindow : Window
         bool isCurrentSearchNode = AvatarExplorer.GetCurrentNode()?.State == ItemTagStates.SearchItem;
 
         Main_CheckPageStates(); // SelectUndoより前にやってあげないと、戻った先の画面のページ情報がリセットされる
+        Main_CheckScrollStates(); // SelectUndoより前にやってあげないと、戻った先の画面のスクロール情報がリセットされる
         if (!_main_isLastWindowSearch) AvatarExplorer.SelectUndo(); // 最後の画面が検索画面だったら、検索だけやめて戻るようにする
 
         if (isCurrentSearchNode) Main_ExecuteSearchItems();
@@ -479,6 +481,20 @@ public partial class MainWindow : Window
         foreach (var pageInfo in _main_pageManager.GetKeys().Where(i => !selectedItemTagStates.Contains(i)))
         {
             _main_pageManager.ResetPageValue(pageInfo);
+        }
+    }
+    private void Main_CheckScrollStates()
+    {
+        List<ItemTagStates> selectedItemTagStates = new();
+
+        foreach (SelectionNode selectionNode in AvatarExplorer.GetCurrentSelectionNodes().Where(i => !selectedItemTagStates.Contains(i.State)))
+        {
+            selectedItemTagStates.Add(selectionNode.State);
+        }
+
+        foreach (var scrollInfo in _main_scrollManager.GetKeys().Where(i => !selectedItemTagStates.Contains(i)))
+        {
+            _main_scrollManager.ResetScrollValue(scrollInfo);
         }
     }
 
