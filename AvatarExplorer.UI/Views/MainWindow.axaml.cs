@@ -285,7 +285,7 @@ public partial class MainWindow : Window
         Main_LoadCurrentPath();
         
         // スクロール位置をDictionaryから復元してあげる
-        Main_LeftPanelScrollViewer.Presenter?.UpdateLayout();
+        Main_RightPanelScrollViewer.Presenter?.UpdateLayout();
         Main_RightPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(itemTagState);
     }
     private async void RightPanel_ItemButton_Click(object? sender, RoutedEventArgs e)
@@ -403,8 +403,8 @@ public partial class MainWindow : Window
         Main_PathTextBox.Text = searchFilter.ToPathString();
 
         // スクロール位置をDictionaryから復元してあげる
-        Main_LeftPanelScrollViewer.Presenter?.UpdateLayout();
-        Main_RightPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(itemTagState);
+        Main_RightPanelScrollViewer.Presenter?.UpdateLayout();
+        Main_RightPanelScrollViewer.Offset = _main_scrollManager.GetScrollValue(ItemTagStates.SearchItem);
     }
     #endregion
 
