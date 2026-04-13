@@ -11,24 +11,13 @@ internal class ScrollManager
     private readonly Dictionary<ItemTagStates, Vector> _currentScrollValues = new()
     {
         { ItemTagStates.SearchItem, Empty },
-        { ItemTagStates.RootAvatar, Empty },
-        { ItemTagStates.RootAuthor, Empty },
-        { ItemTagStates.RootCategory, Empty },
         { ItemTagStates.RootSelectedCategory, Empty },
         { ItemTagStates.RootSelectedItem, Empty },
         { ItemTagStates.ItemFileCategory, Empty },
         { ItemTagStates.ItemFileCategoryOpen, Empty }
     };
 
-    private static readonly ItemTagStates[] _leftPanelStates =
-    [
-        ItemTagStates.RootAvatar,
-        ItemTagStates.RootAuthor,
-        ItemTagStates.RootCategory
-    ];
-
     internal bool IsScrollSupported(ItemTagStates itemTagState) => _currentScrollValues.ContainsKey(itemTagState);
-    internal bool IsStateResetSupported(ItemTagStates itemTagState) => !_leftPanelStates.Contains(itemTagState);
 
     internal Vector GetScrollValue(ItemTagStates itemTagState) => IsScrollSupported(itemTagState) ? _currentScrollValues[itemTagState] : new();
     internal void SetScroll(ItemTagStates itemTagState, Vector value)
@@ -39,12 +28,12 @@ internal class ScrollManager
 
     internal void ResetScrollValue(ItemTagStates itemTagState)
     {
-        if (!IsScrollSupported(itemTagState) || !IsStateResetSupported(itemTagState)) return;
+        if (!IsScrollSupported(itemTagState)) return;
         SetScroll(itemTagState, Empty);
     }
     internal void ResetAllScrollValues()
     {
-        foreach (ItemTagStates key in GetKeys().Where(IsStateResetSupported))
+        foreach (ItemTagStates key in GetKeys())
             ResetScrollValue(key);
     }
 
