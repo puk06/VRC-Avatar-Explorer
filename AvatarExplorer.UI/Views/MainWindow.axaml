@@ -587,7 +587,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="button" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetItemDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetItemDatabase_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [Settings.ResetItemDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetItemDatabase_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -598,7 +598,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="button" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetCommonAvatarDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetCommonAvatarDatabase_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [Settings.ResetCommonAvatarDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetCommonAvatarDatabase_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -609,7 +609,7 @@
                                             </Grid>
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                                <Button Grid.Column="1" Classes="button" Background="Red" Foreground="White" FontWeight="Bold" Content="{Binding [Settings.ResetBulkImportPresetDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetBulkImportPresetDatabase_Click"/>
+                                                <Button Grid.Column="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [Settings.ResetBulkImportPresetDatabase.Reset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ResetBulkImportPresetDatabase_Click"/>
                                             </Grid>
                                         </Grid>
                                     </StackPanel>

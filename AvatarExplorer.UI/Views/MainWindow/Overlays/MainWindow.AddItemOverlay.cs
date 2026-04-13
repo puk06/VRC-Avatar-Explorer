@@ -159,12 +159,10 @@ public partial class MainWindow
             Content = Localizer.Instance[LocalizationKey.AddItem.RemoveFolder],
             FontSize = 14,
             Padding = new Thickness(10, 4),
-            Background = new SolidColorBrush(Color.FromRgb(210, 0, 0)),
-            Foreground = Brushes.White,
-            BorderBrush = Brushes.DarkRed,
             BorderThickness = new Thickness(1),
             Tag = folder
         };
+        itemRemoveButton.Classes.Add("accentbutton");
         Grid.SetColumn(itemRemoveButton, 3);
         itemRemoveButton.Click += AddItemOverlay_FilePath_RemoveButton_Click;
         itemPathGrid.Children.Add(itemRemoveButton);
