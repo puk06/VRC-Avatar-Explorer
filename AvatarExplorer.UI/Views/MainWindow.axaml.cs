@@ -451,6 +451,7 @@ public partial class MainWindow : Window
     {
         AvatarExplorer.SelectClear();
         _main_pageManager.ResetAllPageValues();
+        _main_scrollManager.ResetAllScrollValues();
         Main_RenderRightPanel();
     }
     private void Main_ReloadCurrentWindow()
