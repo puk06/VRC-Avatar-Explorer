@@ -233,7 +233,7 @@ public partial class MainWindow : Window
             AvatarExplorer.SelectClear();
             AvatarExplorer.Select(itemTagInfo.State, itemTagInfo.Value);
             Main_CheckPageStates();
-            _main_scrollManager.ResetAllScrollValues(); // 左のパネルのボタンは全てRootのため、スクロール状況を全てリセットしてしまう
+            Main_CheckScrollStates();
 
             Main_RenderRightPanel();
         }
