@@ -25,7 +25,7 @@ internal static class ImageService
     }
 
     private static readonly Dictionary<string, CacheEntry> BitmapCache = new();
-    private static readonly object BitmapCacheLock = new();
+    private static readonly Lock BitmapCacheLock = new();
     private static int ThumbnailWarmupStarted = 0;
     private static int _compressedThumbnailMaxEdge = DefaultCompressedThumbnailMaxEdge;
 

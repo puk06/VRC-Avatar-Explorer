@@ -37,8 +37,6 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow : Window
 {
-    private const string Main_CacheWarmupTitleText = "キャッシュ生成中";
-
     private readonly PageManager _main_pageManager = new();
     private readonly ScrollManager _main_scrollManager = new();
 
