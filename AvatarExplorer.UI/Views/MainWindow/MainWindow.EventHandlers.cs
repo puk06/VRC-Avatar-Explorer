@@ -94,6 +94,10 @@ public partial class MainWindow
     #endregion
 
     #region Window Closing
-    private void Main_Closing(object? sender, WindowClosingEventArgs e) => AvatarExplorerApp.ClearTemp();
+    private void Main_Closing(object? sender, WindowClosingEventArgs e)
+    {
+        ImageService.ThumbnailCacheWarmupStateChanged -= Main_OnThumbnailCacheWarmupStateChanged;
+        AvatarExplorerApp.ClearTemp();
+    }
     #endregion
 }

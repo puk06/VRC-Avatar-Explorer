@@ -82,6 +82,7 @@ public partial class MainWindow
         if (SettingsOverlay_RemoveOriginalCheckBox != null) SettingsOverlay_RemoveOriginalCheckBox.IsChecked = runtimeSettings.RemoveOriginal;
         if (SettingsOverlay_LinkToOriginalCheckBox != null) SettingsOverlay_LinkToOriginalCheckBox.IsChecked = runtimeSettings.ShouldLinkToOriginal;
         if (SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox != null) SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox.IsChecked = runtimeSettings.TreatEmptySupportedAvatarAsNone;
+        if (SettingsOverlay_ThumbnailCompressionMaxSizeSlider != null) SettingsOverlay_ThumbnailCompressionMaxSizeSlider.Value = userPreferences.ThumbnailCompressionMaxEdge;
 
         // 背景
         if (SettingsOverlay_UseBackgroundImageCheckBox != null) SettingsOverlay_UseBackgroundImageCheckBox.IsChecked = userPreferences.UseBackgroundImage;
@@ -127,12 +128,15 @@ public partial class MainWindow
             EnableHoverIconSize = SettingsOverlay_EnableHoverIconSizeCheckBox?.IsChecked ?? true,
             AntiAliasingMode = (BitmapAntiAliasingMode)(SettingsOverlay_AntiAliasingModeComboBox?.SelectedIndex ?? 0),
             ItemsPerPage = ValueParser.Int(SettingsOverlay_ItemsPerPageTextBox?.Text, 30),
+            ThumbnailCompressionMaxEdge = Math.Clamp((int)(SettingsOverlay_ThumbnailCompressionMaxSizeSlider?.Value ?? 256), 64, 2048),
             UseBackgroundImage = SettingsOverlay_UseBackgroundImageCheckBox?.IsChecked ?? false,
             BackgroundImage = SettingsOverlay_BackgroundImagePathTextBox?.Text ?? string.Empty,
             BackgroundOpacity = Math.Clamp((int)(SettingsOverlay_BackgroundImageOpacitySlider?.Value ?? 20), 0, 100),
             CheckForUpdate = SettingsOverlay_CheckForUpdateCheckBox.IsChecked ?? true,
             UpdateChannel = (UpdateChannel)(SettingsOverlay_UpdateChannelComboBox?.SelectedIndex ?? 0)
         };
+
+        ImageService.SetThumbnailCompressionMaxEdge(userPreferences.ThumbnailCompressionMaxEdge);
 
         _userPreferences = userPreferences;
         AvatarExplorer.SetRuntimeSettings(runtimeSettings);

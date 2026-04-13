@@ -5,6 +5,7 @@
     "BoothLanguageCode": "en",
 
     "Title.AdministratorMode": "Administrator Mode",
+    "Title.CacheGeneration": "Preparing Thumbnails...",
 
     "Main.Search.Watermark": "Type to search...",
     "Main.AddItem": "Add Item",
@@ -260,6 +261,8 @@
     "Settings.LinkToOriginal.Description": "When the first path provided while adding an item is a folder, use that folder directly without copying it",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Treat Empty Supported Avatars as None",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "When no supported avatars are configured for an item, treat it as unsupported rather than supported by all avatars.",
+    "Settings.ThumbnailCompressionMaxSize.Title": "Thumbnail Max Compression Size",
+    "Settings.ThumbnailCompressionMaxSize.Description": "Maximum edge size (px) for compression, applied to newly generated images",
 
     "Settings.Background": "Background",
     "Settings.UseCustomBackground.Title": "Use Custom Background",

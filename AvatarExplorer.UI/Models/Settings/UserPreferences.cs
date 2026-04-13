@@ -9,6 +9,7 @@ public record UserPreferences
     public int NormalIconSize { get; init; } = 70;
     public bool EnableHoverIconSize { get; init; } = true;
     public int HoverIconSize { get; init; } = 200;
+    public int ThumbnailCompressionMaxEdge { get; init; } = 256;
     public bool UseBackgroundImage { get; init; } = false;
     public string BackgroundImage { get; init; } = string.Empty;
     public int BackgroundOpacity { get; init; } = 20;

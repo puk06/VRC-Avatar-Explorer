@@ -37,6 +37,8 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow : Window
 {
+    private const string Main_CacheWarmupTitleText = "キャッシュ生成中";
+
     private readonly PageManager _main_pageManager = new();
     private readonly ScrollManager _main_scrollManager = new();
 
@@ -45,6 +47,8 @@ public partial class MainWindow : Window
     private bool _main_isLastWindowSearch = false;
 
     private ItemTagStates _main_lastRightPanelItemTagState = ItemTagStates.None;
+    private bool _main_isAdministratorMode = false;
+    private bool _main_isThumbnailCacheWarmupRunning = false;
 
     private UserPreferences _userPreferences = new();
     private int ItemsPerPage => _userPreferences.ItemsPerPage;
@@ -59,6 +63,7 @@ public partial class MainWindow : Window
         DataContext = Localizer.Instance;
         AvatarExplorer.Initialize();
         AvatarExplorer.PasswordProvider = Main_GetArchivePasswordAsync;
+        ImageService.ThumbnailCacheWarmupStateChanged += Main_OnThumbnailCacheWarmupStateChanged;
 
         InitializeComponent();
         Main_InitializeContextMenuHandlers();
@@ -77,6 +82,15 @@ public partial class MainWindow : Window
         BulkImportPresetPanel_DrawItemButtons();
     }
 
+    private void Main_OnThumbnailCacheWarmupStateChanged(bool isRunning)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            _main_isThumbnailCacheWarmupRunning = isRunning;
+            Main_UpdateWindowTitle();
+        });
+    }
+
     private async ValueTask<string?> Main_GetArchivePasswordAsync(ArchivePasswordRequest request)
     {
         string? password = await ArchivePasswordDialogOverlay_ShowSafeAsync(Path.GetFileName(request.ArchivePath), request.Attempt, request.MaxAttempts);
@@ -88,6 +102,7 @@ public partial class MainWindow : Window
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
         _ = Main_LoadDeveloperProfileIconAsync();
+        ImageService.StartThumbnailCacheWarmupInBackground();
 
         // 初回起動かチェック
         if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();

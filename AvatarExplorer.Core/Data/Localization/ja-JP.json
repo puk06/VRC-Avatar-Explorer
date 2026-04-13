@@ -5,6 +5,7 @@
     "BoothLanguageCode": "ja",
 
     "Title.AdministratorMode": "管理者モード",
+    "Title.CacheGeneration": "サムネイルを準備中...",
 
     "Main.Search.Watermark": "入力して検索...",
     "Main.AddItem": "アイテムを追加する",
@@ -260,6 +261,8 @@
     "Settings.LinkToOriginal.Description": "アイテム追加時に渡された最初のパスがフォルダの場合、そのフォルダをコピーせずにそのまま使用します",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "対応アバター未設定を未対応として扱う",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "アイテムの対応アバターが一つも設定されていない場合、全てのアバターに対応しているのではなく、どのアバターにも対応していないとみなすようになります。",
+    "Settings.ThumbnailCompressionMaxSize.Title": "サムネイル最大圧縮サイズ",
+    "Settings.ThumbnailCompressionMaxSize.Description": "新しく生成する画像に適用される、最大辺の圧縮サイズ(px)です",
 
     "Settings.Background": "背景",
     "Settings.UseCustomBackground.Title": "カスタム背景を使用する",

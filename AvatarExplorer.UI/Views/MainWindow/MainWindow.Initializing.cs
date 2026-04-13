@@ -10,14 +10,33 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services.Utilities;
 
 namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
+    private void Main_UpdateWindowTitle()
+    {
+        string title = string.Format("VRC Avatar Explorer v{0}", AvatarExplorerApp.CurrentVersion);
+
+        if (_main_isAdministratorMode)
+        {
+            title += string.Format(" - [{0}]", Localizer.Instance[LocalizationKey.Title.AdministratorMode]);
+        }
+
+        if (_main_isThumbnailCacheWarmupRunning)
+        {
+            title += string.Format(" - {0}", Localizer.Instance[LocalizationKey.Title.CacheGeneration]);
+        }
+
+        Title = title;
+    }
+
     private void Main_InitializeTitle()
     {
-        Title = string.Format("VRC Avatar Explorer v{0}", AvatarExplorerApp.CurrentVersion);
+        _main_isAdministratorMode = false;
+        Main_UpdateWindowTitle();
     }
     private void Main_CheckAdministratorMode()
     {
@@ -25,7 +44,8 @@ public partial class MainWindow
         {
             if (ProcessUtils.IsWindows() && SchemeService.IsRunAsAdmin())
             {
-                Title = string.Format("VRC Avatar Explorer v{0} - [{1}]", AvatarExplorerApp.CurrentVersion, Localizer.Instance[LocalizationKey.Title.AdministratorMode]);
+                _main_isAdministratorMode = true;
+                Main_UpdateWindowTitle();
                 DialogOverlay_Show(Localizer.Instance[LocalizationKey.Warning.Default], Localizer.Instance[LocalizationKey.Warning.RunningInAdministratorMode]);
             }
         }
@@ -37,6 +57,7 @@ public partial class MainWindow
     private void Main_InitializeUserPreferences()
     {
         _userPreferences = UserPreferencesService.Load(SystemPath.UserPreferencesFilePath);
+        ImageService.SetThumbnailCompressionMaxEdge(_userPreferences.ThumbnailCompressionMaxEdge);
     }
     private void Main_InitializeContextMenuHandlers()
     {

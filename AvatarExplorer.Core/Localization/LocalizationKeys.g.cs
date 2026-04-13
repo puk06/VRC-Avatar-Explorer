@@ -20,6 +20,7 @@ public static class LocalizationKey
     public static class Title
     {
         public const string AdministratorMode = "Title.AdministratorMode";
+        public const string CacheGeneration = "Title.CacheGeneration";
     }
     public static class Main
     {
@@ -456,6 +457,11 @@ public static class LocalizationKey
         {
             public const string Title = "Settings.TreatEmptySupportedAvatarAsNone.Title";
             public const string Description = "Settings.TreatEmptySupportedAvatarAsNone.Description";
+        }
+        public static class ThumbnailCompressionMaxSize
+        {
+            public const string Title = "Settings.ThumbnailCompressionMaxSize.Title";
+            public const string Description = "Settings.ThumbnailCompressionMaxSize.Description";
         }
         public const string Background = "Settings.Background";
         public static class UseCustomBackground
