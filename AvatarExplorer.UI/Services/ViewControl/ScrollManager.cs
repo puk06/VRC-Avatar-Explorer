@@ -11,6 +11,7 @@ internal class ScrollManager
     private readonly Dictionary<ItemTagStates, Vector> _currentScrollValues = new()
     {
         { ItemTagStates.SearchItem, Empty },
+        { ItemTagStates.RootItem, Empty },
         { ItemTagStates.RootSelectedCategory, Empty },
         { ItemTagStates.RootSelectedItem, Empty },
         { ItemTagStates.ItemFileCategory, Empty },

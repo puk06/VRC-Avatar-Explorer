@@ -254,12 +254,16 @@ public partial class MainWindow : Window
         Main_RightPanel.Children.Clear();
 
         ImmutableArray<ItemCountInfo> items = AvatarExplorer.GetItemsForCurrentState();
+        bool isRootItemState = AvatarExplorer.GetCurrentNode() == null; // Nodeがない場合は全てのアイテムが返されるため、それをRootItem状態として扱う
 
         if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
 
         ItemTagStates itemTagState = ItemTagStates.None;
-        if (items.Length > 0) itemTagState = new UISelectableItem(items[0]).Tag.State;
+
+        if (isRootItemState) itemTagState = ItemTagStates.RootItem;
+        else if (items.Length > 0) itemTagState = new UISelectableItem(items[0]).Tag.State;
+
         _main_lastRightPanelItemTagState = itemTagState;
 
         int currentPage = _main_pageManager.GetPage(itemTagState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
@@ -267,7 +271,7 @@ public partial class MainWindow : Window
         foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage) : items)
         {
             ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
-            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(itemCountInfo), RuntimeSettings, _userPreferences, itemContextMenu, RightPanel_ItemButton_Click);
+            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(itemCountInfo).SetState(itemTagState), RuntimeSettings, _userPreferences, itemContextMenu, RightPanel_ItemButton_Click);
 
             // アイテムの場合はD&Dイベントを登録してあげる
             if (StateFlagUtils.IsDraggableState(itemTagState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
@@ -481,6 +485,7 @@ public partial class MainWindow : Window
 
         foreach (var pageInfo in _main_pageManager.GetKeys().Where(i => !selectedItemTagStates.Contains(i)))
         {
+            if (pageInfo == ItemTagStates.RootItem) continue;
             _main_pageManager.ResetPageValue(pageInfo);
         }
     }

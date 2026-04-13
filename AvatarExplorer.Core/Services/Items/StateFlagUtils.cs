@@ -4,7 +4,7 @@ namespace AvatarExplorer.Core.Services.Items;
 
 public static class StateFlagUtils
 {
-    public static readonly ItemTagStates ItemFlags = ItemTagStates.SearchItem | ItemTagStates.RootAvatar | ItemTagStates.RootSelectedItem;
+    public static readonly ItemTagStates ItemFlags = ItemTagStates.SearchItem | ItemTagStates.RootAvatar | ItemTagStates.RootSelectedItem | ItemTagStates.RootItem;
     public static readonly ItemTagStates DraggableFlags = ItemTagStates.SearchItem | ItemTagStates.RootAvatar | ItemTagStates.RootSelectedItem | ItemTagStates.ItemFileCategoryOpen;
     public static readonly ItemTagStates CategoryFlags = ItemTagStates.RootCategory | ItemTagStates.RootSelectedCategory | ItemTagStates.ItemFileCategory;
 

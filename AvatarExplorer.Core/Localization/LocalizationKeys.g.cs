@@ -43,6 +43,7 @@ public static class LocalizationKey
                 public const string Avatar = "Main.Path.Root.Avatar";
                 public const string Author = "Main.Path.Root.Author";
                 public const string Category = "Main.Path.Root.Category";
+                public const string Item = "Main.Path.Root.Item";
             }
             public const string Search = "Main.Path.Search";
             public const string Removed = "Main.Path.Removed";
