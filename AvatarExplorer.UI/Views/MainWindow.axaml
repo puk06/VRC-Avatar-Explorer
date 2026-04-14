@@ -123,7 +123,6 @@
                                                     <TextBlock Text="{Binding [SidePanel.AdvancedSearch]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                                     <TextBlock Text="{Binding [AdvancedSearch.NegationHint]}" FontSize="12" Opacity="0.75" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                                 </StackPanel>
-                                                        <Button Grid.Column="2" Classes="button" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
                                                 <Separator Grid.Row="1" Background="#22000000"/>
 
                                                 <ScrollViewer Grid.Row="2" VerticalAlignment="Stretch">
