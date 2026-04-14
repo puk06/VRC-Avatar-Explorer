@@ -1076,7 +1076,7 @@
 
                     <!-- タグの追加 -->
                     <TextBlock Text="{Binding [EditTags.AddTag]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"/>
-                    <Grid ColumnDefinitions="*,80" ColumnSpacing="5">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
                         <TextBox x:Name="EditTagsOverlay_TagTextBox" Grid.Column="0" PlaceholderText="{Binding [EditTags.NewTag]}" KeyDown="EditTagsOverlay_TagTextBox_KeyDown"/>
                         <Button Grid.Column="1" Classes="button" Content="{Binding [EditTags.AddTag]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="EditTagsOverlay_AddTagButton_Click"/>
                     </Grid>
