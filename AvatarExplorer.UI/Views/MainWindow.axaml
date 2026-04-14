@@ -848,7 +848,7 @@
                             <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
                                 <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl]}" VerticalAlignment="Center" Opacity="0.7"/>
                                 <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.BoothUrlPlaceholder]}"/>
-                                <Button Grid.Column="2" Classes="button" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
+                                <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
                             </Grid>
 
                             <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
@@ -867,13 +867,13 @@
                                 <TextBlock Text="{Binding [AddItem.Category]}" FontSize="13" Opacity="0.7"/>
                                 <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
                                     <ComboBox x:Name="AddItemOverlay_ItemTypeComboBox" HorizontalAlignment="Stretch" SelectedIndex="0"/>
-                                    <Button Grid.Column="1" Classes="button" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" Click="AddItemOverlay_AddCustomCategory_Click"/>
+                                    <Button Grid.Column="1" Classes="accentbutton" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" FontSize="19" Click="AddItemOverlay_AddCustomCategory_Click"/>
                                 </Grid>
                             </StackPanel>
 
                             <StackPanel Spacing="8" Margin="10,0,0,0">
                                 <TextBlock Text="{Binding [AddItem.SupportedAvatars]}" FontSize="13" Opacity="0.7"/>
-                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
+                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" Classes="accentbutton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
                             </StackPanel>
                         </UniformGrid>
 
