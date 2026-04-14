@@ -14,7 +14,7 @@ using ErrorOr;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Tar;
 using SharpCompress.Common;
-using SharpCompress.Writers;
+using SharpCompress.Writers.Tar;
 
 namespace AvatarExplorer.Core.Services.IO;
 
@@ -372,16 +372,16 @@ public static class FileSystemService
     {
         if (!Directory.Exists(sourceFolder)) throw new DirectoryNotFoundException(sourceFolder);
 
-        using TarArchive archive = TarArchive.Create();
+        IWritableAsyncArchive<TarWriterOptions> archive = await TarArchive.CreateAsyncArchive();
 
         foreach (string filePath in EnumerateFiles(sourceFolder))
         {
             string relativePath = Path.GetRelativePath(sourceFolder, filePath);
-            archive.AddEntry(relativePath, filePath);
+            await archive.AddEntryAsync(relativePath, filePath);
         }
 
         using FileStream fileStream = new(outputTarFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 1024 * 1024, FileOptions.SequentialScan);
-        await archive.SaveToAsync(fileStream, new WriterOptions(CompressionType.None));
+        await archive.SaveToAsync(fileStream, new TarWriterOptions(CompressionType.None));
     }
     #endregion
 
@@ -594,37 +594,38 @@ public static class FileSystemService
 
     private static async Task ZipExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
     {
-        using var archive = SharpCompress.Archives.Zip.ZipArchive.Open(filePath, CreateReaderOptions(password));
+        using var archive = SharpCompress.Archives.Zip.ZipArchive.OpenArchive(filePath, CreateReaderOptions(password));
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
     private static async Task RarExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
     {
-        using var archive = SharpCompress.Archives.Rar.RarArchive.Open(filePath, CreateReaderOptions(password));
+        using var archive = SharpCompress.Archives.Rar.RarArchive.OpenArchive(filePath, CreateReaderOptions(password));
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
     private static async Task SevenZipExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
     {
-        using var archive = SharpCompress.Archives.SevenZip.SevenZipArchive.Open(filePath, CreateReaderOptions(password));
+        using var archive = SharpCompress.Archives.SevenZip.SevenZipArchive.OpenArchive(filePath, CreateReaderOptions(password));
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
     private static async Task GzipExtractorAsync(string filePath, string extractDirectoryFolder)
     {
-        using var archive = SharpCompress.Archives.GZip.GZipArchive.Open(filePath);
+        using var archive = SharpCompress.Archives.GZip.GZipArchive.OpenArchive(filePath);
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
     private static async Task TarExtractorAsync(string filePath, string extractDirectoryFolder)
     {
-        using var archive = SharpCompress.Archives.Tar.TarArchive.Open(filePath);
+        using var archive = SharpCompress.Archives.Tar.TarArchive.OpenArchive(filePath);
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
     private static SharpCompress.Readers.ReaderOptions CreateReaderOptions(string? password)
     {
-        SharpCompress.Readers.ReaderOptions options = new();
-        if (!string.IsNullOrEmpty(password)) options.Password = password;
-        return options;
+        return new SharpCompress.Readers.ReaderOptions()
+        {
+            Password = string.IsNullOrEmpty(password) ? null : password,
+        };
     }
-    private static async Task ExtractEntriesAsync<T>(string extractDirectoryFolder, ICollection<T> entries)
-        where T : Entry, IArchiveEntry
+    private static async Task ExtractEntriesAsync<T>(string extractDirectoryFolder, IEnumerable<T> entries)
+        where T : IEntry, IArchiveEntry
     {
         byte[] buffer = new byte[BufferSize];
 
