@@ -33,16 +33,6 @@ public partial class MainWindow
         SidePanel_TabControl.SelectedIndex = itemIndex;
     }
 
-    private void SidePanel_Tab_Click(object? sender, PointerPressedEventArgs e)
-    {
-        // TabItem
-        if (sender is not TabItem tab) return;
-
-        int currentSelectedIndex = SidePanel_TabControl.SelectedIndex;
-        int index = SidePanel_TabControl.Items.IndexOf(tab);
-
-        // 既に表示されていた場合は閉じる
-        if (currentSelectedIndex == index) SidePanel_Hide();
-    }
+    private void SidePanel_TabItem_DoubleTapped(object? sender, RoutedEventArgs e) => SidePanel_Hide(); // ダブルタップでサイドパネルを閉じる
     #endregion
 }

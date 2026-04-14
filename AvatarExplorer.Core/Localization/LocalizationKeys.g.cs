@@ -26,7 +26,7 @@ public static class LocalizationKey
     {
         public static class Search
         {
-            public const string Watermark = "Main.Search.Watermark";
+            public const string Placeholder = "Main.Search.Placeholder";
         }
         public const string AddItem = "Main.AddItem";
         public static class Filter
@@ -37,7 +37,7 @@ public static class LocalizationKey
         }
         public static class Path
         {
-            public const string Watermark = "Main.Path.Watermark";
+            public const string Placeholder = "Main.Path.Placeholder";
             public const string SearchResult = "Main.Path.SearchResult";
             public static class Root
             {
@@ -162,7 +162,7 @@ public static class LocalizationKey
         public const string AddFolder = "AddItem.AddFolder";
         public const string AddFile = "AddItem.AddFile";
         public const string BoothUrl = "AddItem.BoothUrl";
-        public const string BoothUrlWatermark = "AddItem.BoothUrlWatermark";
+        public const string BoothUrlPlaceholder = "AddItem.BoothUrlPlaceholder";
         public const string FetchInfo = "AddItem.FetchInfo";
         public const string Title = "AddItem.Title";
         public const string Author = "AddItem.Author";
@@ -720,7 +720,7 @@ public static class LocalizationKey
         public const string Description = "ArchivePasswordDialog.Description";
         public const string FileName = "ArchivePasswordDialog.FileName";
         public const string Attempts = "ArchivePasswordDialog.Attempts";
-        public const string Watermark = "ArchivePasswordDialog.Watermark";
+        public const string Placeholder = "ArchivePasswordDialog.Placeholder";
     }
     public static class MergeCategory
     {

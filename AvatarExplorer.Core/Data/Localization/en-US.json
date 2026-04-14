@@ -7,14 +7,14 @@
     "Title.AdministratorMode": "Administrator Mode",
     "Title.CacheGeneration": "Preparing Thumbnails...",
 
-    "Main.Search.Watermark": "Type to search...",
+    "Main.Search.Placeholder": "Type to search...",
     "Main.AddItem": "Add Item",
 
     "Main.Filter.Avatar": "Avatar",
     "Main.Filter.Author": "Author",
     "Main.Filter.Category": "Category",
 
-    "Main.Path.Watermark": "The current path is displayed here",
+    "Main.Path.Placeholder": "The current path is displayed here",
     "Main.Path.SearchResult": "Search Results: {0}",
     "Main.Path.Root.Avatar": "Avatar: {0}",
     "Main.Path.Root.Author": "Author: {0}",
@@ -292,7 +292,7 @@
     "Settings.ImportFromOther.Import": "Import",
     "Settings.ImportThumbnail.Title": "Import Thumbnails",
     "Settings.ImportThumbnail.Description": "Import thumbnails whose BoothId matches existing items",
-    "Settings.ImportThumbnail.Import": "Import Thumbnails",
+    "Settings.ImportThumbnail.Import": "Import",
     "Settings.ExportCsv.Title": "Export CSV Data",
     "Settings.ExportCsv.Description": "Export the current database in CSV format",
     "Settings.ExportCsv.Export": "Export",
@@ -373,7 +373,7 @@
     "AddItem.AddFolder": "Add Folder",
     "AddItem.AddFile": "Add File",
     "AddItem.BoothUrl": "Booth URL",
-    "AddItem.BoothUrlWatermark": "Enter URL...",
+    "AddItem.BoothUrlPlaceholder": "Enter URL...",
     "AddItem.FetchInfo": "Fetch Info",
     "AddItem.Title": "Title",
     "AddItem.Author": "Author",
@@ -434,7 +434,7 @@
     "ArchivePasswordDialog.Description": "This file is protected with a password.",
     "ArchivePasswordDialog.FileName": "File Name",
     "ArchivePasswordDialog.Attempts": "Attempts",
-    "ArchivePasswordDialog.Watermark": "Enter Password...",
+    "ArchivePasswordDialog.Placeholder": "Enter Password...",
 
     "MergeCategory.Title": "Merge Category",
     "MergeCategory.TargetCategory": "Target Category",

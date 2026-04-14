@@ -26,13 +26,13 @@
             <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*" ColumnSpacing="12">
                 <Border Grid.Column="1" Classes="panelbackground">
                     <Grid ColumnDefinitions="Auto,Auto,2.3*,Auto,*,Auto" ColumnSpacing="10">
-                        <Button Classes="button" Grid.Column="0" Content="{materialIcons:MaterialIconExt Kind=ArrowLeft}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" CornerRadius="8" Padding="15,0,15,0" Click="Main_UndoButton_Click"/>
-                        <Button Classes="button" Grid.Column="1" Content="{materialIcons:MaterialIconExt Kind=HomeOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" CornerRadius="8" Padding="15,0,15,0" Click="Main_HomeButton_Click"/>
+                        <Button Classes="button" Grid.Column="0" Content="{materialIcons:MaterialIconExt Kind=ArrowLeft}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" FontSize="19" CornerRadius="8" Padding="15,0,15,0" Click="Main_UndoButton_Click"/>
+                        <Button Classes="button" Grid.Column="1" Content="{materialIcons:MaterialIconExt Kind=HomeOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" FontSize="19" CornerRadius="8" Padding="15,0,15,0" Click="Main_HomeButton_Click"/>
                         
-                        <TextBox x:Name="Main_PathTextBox" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Path.Watermark]}" IsReadOnly="True" FontSize="14" CornerRadius="8"/>
+                        <TextBox x:Name="Main_PathTextBox" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Path.Placeholder]}" IsReadOnly="True" FontSize="14" CornerRadius="8"/>
                         
                         <materialIcons:MaterialIcon Grid.Column="3" Kind="Magnify" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                        <TextBox x:Name="Main_SearchTextBox" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Search.Watermark]}" FontSize="14" CornerRadius="8" TextChanged="Main_SearchValue_Changed"/>
+                        <TextBox x:Name="Main_SearchTextBox" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Search.Placeholder]}" FontSize="14" CornerRadius="8" TextChanged="Main_SearchValue_Changed"/>
                         
                         <Button Classes="accentbutton" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CornerRadius="8" Margin="5,0,0,0" Click="Main_AddItem_Click">
                             <StackPanel Orientation="Horizontal" Spacing="5">
@@ -44,7 +44,7 @@
                 </Border>
 
                 <Border Classes="panelbackground">
-                    <Button Classes="button" FontWeight="Bold" Content="{materialIcons:MaterialIconExt Kind=CogOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" Width="35" CornerRadius="8" Click="Main_SettingsButton_Click"/>
+                    <Button Classes="button" FontWeight="Bold" Content="{materialIcons:MaterialIconExt Kind=CogOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" Width="35" FontSize="19" CornerRadius="8" Click="Main_SettingsButton_Click"/>
                 </Border>
             </Grid>
 
@@ -108,9 +108,9 @@
                     <Panel x:Name="Main_SidePanel" Grid.Column="4" HorizontalAlignment="Stretch">
                         <Border Classes="panelbackground" IsVisible="{Binding !#Main_SidePanelBorder.IsVisible}" CornerRadius="12,0,0,12" Width="50">
                             <StackPanel Spacing="10">
-                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=TextSearch}" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch]}" Tag="0" Click="SidePanel_Item_Click"/>
-                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=DownloadMultiple}" ToolTip.Tip="{Binding [SidePanel.BulkImport]}" Tag="1" Click="SidePanel_Item_Click"/>
-                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset]}" Tag="2" Click="SidePanel_Item_Click"/>
+                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=TextSearch}" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch]}" FontSize="17" Tag="0" Click="SidePanel_Item_Click"/>
+                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=DownloadMultiple}" ToolTip.Tip="{Binding [SidePanel.BulkImport]}" FontSize="17" Tag="1" Click="SidePanel_Item_Click"/>
+                                <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset]}" FontSize="17" Tag="2" Click="SidePanel_Item_Click"/>
                             </StackPanel>
                         </Border>
 
@@ -118,7 +118,10 @@
                             <Grid RowSpacing="10">
                                 <Grid Grid.Row="2" ColumnSpacing="10">
                                     <TabControl x:Name="SidePanel_TabControl" HorizontalAlignment="Stretch" SelectedIndex="0" FontSize="18" Margin="0,0,-10,0" TabStripPlacement="Right">
-                                        <TabItem Header="{materialIcons:MaterialIconExt Kind=TextSearch}" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch]}" PointerPressed="SidePanel_Tab_Click">
+                                        <TabItem ToolTip.Tip="{Binding [SidePanel.AdvancedSearch]}" DoubleTapped="SidePanel_TabItem_DoubleTapped">
+                                            <TabItem.Header>
+                                                <materialIcons:MaterialIcon Kind="TextSearch" Width="16" Height="16"/>
+                                            </TabItem.Header>
                                             <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
                                                 <StackPanel Spacing="3">
                                                     <TextBlock Text="{Binding [SidePanel.AdvancedSearch]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -208,7 +211,10 @@
                                             </Grid>
                                         </TabItem>
 
-                                        <TabItem x:Name="SidePanel_BulkImportPanelTab" Header="{materialIcons:MaterialIconExt Kind=DownloadMultiple}" ToolTip.Tip="{Binding [SidePanel.BulkImport]}" PointerPressed="SidePanel_Tab_Click">
+                                        <TabItem x:Name="SidePanel_BulkImportPanelTab" ToolTip.Tip="{Binding [SidePanel.BulkImport]}" DoubleTapped="SidePanel_TabItem_DoubleTapped">
+                                            <TabItem.Header>
+                                                <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="16" Height="16"/>
+                                            </TabItem.Header>
                                             <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
                                                 <TextBlock Text="{Binding [SidePanel.BulkImport]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
@@ -227,7 +233,10 @@
                                             </Grid>
                                         </TabItem>
 
-                                        <TabItem x:Name="SidePanel_BulkImportPresetPanelTab" Header="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset]}" PointerPressed="SidePanel_Tab_Click">
+                                        <TabItem x:Name="SidePanel_BulkImportPresetPanelTab" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset]}" DoubleTapped="SidePanel_TabItem_DoubleTapped">
+                                            <TabItem.Header>
+                                                <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="16" Height="16"/>
+                                            </TabItem.Header>
                                             <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
                                                 <TextBlock Text="{Binding [SidePanel.BulkImportPreset]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
@@ -251,7 +260,7 @@
 
         <!-- 設定画面 -->
         <Border x:Name="SettingsOverlay" Classes="overlaybackground" IsVisible="False">
-            <Border Classes="overlay" Width="800" Height="600">
+            <Border Classes="overlay" Width="900" Height="650">
                 <Grid RowDefinitions="*,5,Auto">
                     <TabControl Grid.Row="0" TabStripPlacement="Left">
 
@@ -838,7 +847,7 @@
                         <StackPanel Spacing="15">
                             <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
                                 <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl]}" VerticalAlignment="Center" Opacity="0.7"/>
-                                <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.BoothUrlWatermark]}"/>
+                                <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.BoothUrlPlaceholder]}"/>
                                 <Button Grid.Column="2" Classes="button" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
                             </Grid>
 
@@ -1216,7 +1225,7 @@
                     <TextBlock Text="{Binding [ArchivePasswordDialog.Description]}" FontSize="15" FontWeight="SemiBold"/>
                     
                     <!-- パスワード入力欄 -->
-                    <TextBox x:Name="ArchivePasswordDialogOverlay_PasswordBox" PasswordChar="●" PlaceholderText="{Binding [ArchivePasswordDialog.Watermark]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10,10,10,10" FontSize="14"/>
+                    <TextBox x:Name="ArchivePasswordDialogOverlay_PasswordBox" PasswordChar="●" PlaceholderText="{Binding [ArchivePasswordDialog.Placeholder]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10,10,10,10" FontSize="14"/>
 
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150">
@@ -1380,7 +1389,7 @@
                     </Panel>
 
                     <!-- 下のボタン -->
-                    <Grid Grid.Row="3" ColumnDefinitions="120,*,120,120" ColumnSpacing="20">
+                    <Grid Grid.Row="3" ColumnDefinitions="120,*,200,120" ColumnSpacing="20">
                         <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_Close_Click"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [ErrorLog.OpenLogFolder]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_OpenLogFolder_Click"/>
                         <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="3" Content="{Binding [ErrorLog.Reflesh]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="ErrorLogOverlay_Reflesh_Click"/>

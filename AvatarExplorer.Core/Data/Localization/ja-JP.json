@@ -7,14 +7,14 @@
     "Title.AdministratorMode": "管理者モード",
     "Title.CacheGeneration": "サムネイルを準備中...",
 
-    "Main.Search.Watermark": "入力して検索...",
+    "Main.Search.Placeholder": "入力して検索...",
     "Main.AddItem": "アイテムを追加する",
 
     "Main.Filter.Avatar": "アバター",
     "Main.Filter.Author": "作者",
     "Main.Filter.Category": "カテゴリ",
 
-    "Main.Path.Watermark": "ここには現在のパスが表示されます",
+    "Main.Path.Placeholder": "ここには現在のパスが表示されます",
     "Main.Path.SearchResult": "検索結果: {0}",
     "Main.Path.Root.Avatar": "アバター: {0}",
     "Main.Path.Root.Author": "作者: {0}",
@@ -292,7 +292,7 @@
     "Settings.ImportFromOther.Import": "インポート",
     "Settings.ImportThumbnail.Title": "サムネイルをインポート",
     "Settings.ImportThumbnail.Description": "他のツールのデータベースとBoothIdが一致するサムネイルを取り込みます",
-    "Settings.ImportThumbnail.Import": "サムネイルをインポート",
+    "Settings.ImportThumbnail.Import": "インポート",
     "Settings.ExportCsv.Title": "CSVデータの出力",
     "Settings.ExportCsv.Description": "現在のデータベースをCSV形式でエクスポートします",
     "Settings.ExportCsv.Export": "エクスポート",
@@ -373,7 +373,7 @@
     "AddItem.AddFolder": "フォルダを追加",
     "AddItem.AddFile": "ファイルを追加",
     "AddItem.BoothUrl": "Booth URL",
-    "AddItem.BoothUrlWatermark": "URLを入力...",
+    "AddItem.BoothUrlPlaceholder": "URLを入力...",
     "AddItem.FetchInfo": "情報取得",
     "AddItem.Title": "タイトル",
     "AddItem.Author": "作者",
@@ -434,7 +434,7 @@
     "ArchivePasswordDialog.Description": "このファイルはパスワードで保護されています。",
     "ArchivePasswordDialog.FileName": "ファイル名",
     "ArchivePasswordDialog.Attempts": "試行回数",
-    "ArchivePasswordDialog.Watermark": "パスワードを入力...",
+    "ArchivePasswordDialog.Placeholder": "パスワードを入力...",
 
     "MergeCategory.Title": "カテゴリの統合",
     "MergeCategory.TargetCategory": "統合先のカテゴリ",
