@@ -71,7 +71,6 @@ internal static class ImageService
         return GetFromFileCache(filePath, compressThumbnail);
     }
 
-    internal static Bitmap? Load(string filePath) => File.Exists(filePath) ? new Bitmap(filePath) : null;
     internal static Bitmap? Load(Uri uri)
     {
         if (!AssetLoader.Exists(uri)) return null;
@@ -80,7 +79,7 @@ internal static class ImageService
         return new Bitmap(fileStream);
     }
     
-    internal static void StartThumbnailCacheWarmupInBackground()
+    internal static void StartThumbnailCacheWarmupInBackground(IEnumerable<string> imageFileNames)
     {
         if (Interlocked.Exchange(ref ThumbnailWarmupStarted, 1) != 0) return;
 
@@ -92,9 +91,9 @@ internal static class ImageService
             {
                 if (!Directory.Exists(SystemPath.ItemThumbnailsPath)) return;
 
-                foreach (string filePath in Directory.EnumerateFiles(SystemPath.ItemThumbnailsPath))
+                foreach (string filePath in imageFileNames)
                 {
-                    _ = GetFromFileCache(filePath, compressThumbnail: true);
+                    _ = GetFromFileCache(Path.Join(SystemPath.ItemThumbnailsPath, filePath), compressThumbnail: true);
                 }
             }
             catch (Exception ex)

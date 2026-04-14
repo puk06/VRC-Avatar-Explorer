@@ -100,7 +100,9 @@ public partial class MainWindow : Window
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
         _ = Main_LoadDeveloperProfileIconAsync();
-        ImageService.StartThumbnailCacheWarmupInBackground();
+
+        IEnumerable<string> thumbnailFileNames = AvatarExplorer.GetAllItems().Select(i => i.ThumbnailFileName).Where(p => !string.IsNullOrEmpty(p));
+        ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
 
         // 初回起動かチェック
         if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
