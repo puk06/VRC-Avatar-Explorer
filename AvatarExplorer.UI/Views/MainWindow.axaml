@@ -13,6 +13,7 @@
         DragDrop.Drop="Main_DragDrop_Drop"
         Closing="Main_Closing"
         Loaded="Main_Loaded"
+        FontFamily="avares://AvatarExplorer/Assets/Fonts#Noto Sans JP"
         MinWidth="1280"
         MinHeight="720"
         Width="1280"
@@ -28,10 +29,10 @@
                         <Button Classes="button" Grid.Column="0" Content="{materialIcons:MaterialIconExt Kind=ArrowLeft}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" CornerRadius="8" Padding="15,0,15,0" Click="Main_UndoButton_Click"/>
                         <Button Classes="button" Grid.Column="1" Content="{materialIcons:MaterialIconExt Kind=HomeOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" CornerRadius="8" Padding="15,0,15,0" Click="Main_HomeButton_Click"/>
                         
-                        <TextBox x:Name="Main_PathTextBox" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Watermark="{Binding [Main.Path.Watermark]}" IsReadOnly="True" FontSize="14" CornerRadius="8"/>
+                        <TextBox x:Name="Main_PathTextBox" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Path.Watermark]}" IsReadOnly="True" FontSize="14" CornerRadius="8"/>
                         
                         <materialIcons:MaterialIcon Grid.Column="3" Kind="Magnify" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                        <TextBox x:Name="Main_SearchTextBox" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Watermark="{Binding [Main.Search.Watermark]}" FontSize="14" CornerRadius="8" TextChanged="Main_SearchValue_Changed"/>
+                        <TextBox x:Name="Main_SearchTextBox" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Search.Watermark]}" FontSize="14" CornerRadius="8" TextChanged="Main_SearchValue_Changed"/>
                         
                         <Button Classes="accentbutton" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CornerRadius="8" Margin="5,0,0,0" Click="Main_AddItem_Click">
                             <StackPanel Orientation="Horizontal" Spacing="5">
@@ -140,22 +141,22 @@
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.Title]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Title" FontSize="14" Watermark="{Binding [AdvancedSearch.Title]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Title" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Title]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.Author]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Author" FontSize="14" Watermark="{Binding [AdvancedSearch.Author]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Author" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Author]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.BoothId]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Booth" FontSize="14" Watermark="{Binding [AdvancedSearch.BoothId]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Booth" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.BoothId]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.SupportedAvatar]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Avatar" FontSize="14" Watermark="{Binding [AdvancedSearch.SupportedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Avatar" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.SupportedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.EmptySupportedAvatarAsNone]}" FontSize="14" Opacity="0.85"/>
@@ -165,42 +166,42 @@
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.Category]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Category" FontSize="14" Watermark="{Binding [AdvancedSearch.Category]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Category" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Category]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.Memo]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Memo" FontSize="14" Watermark="{Binding [AdvancedSearch.Memo]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Memo" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Memo]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.Folder]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Folder" FontSize="14" Watermark="{Binding [AdvancedSearch.Folder]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Folder" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Folder]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.File]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_File" FontSize="14" Watermark="{Binding [AdvancedSearch.File]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_File" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.File]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.ImplementedAvatar]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Implemented" FontSize="14" Watermark="{Binding [AdvancedSearch.ImplementedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Implemented" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.ImplementedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.NotImplementedAvatar]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_NotImplemented" FontSize="14" Watermark="{Binding [AdvancedSearch.NotImplementedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_NotImplemented" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.NotImplementedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.Tag]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_Tag" FontSize="14" Watermark="{Binding [AdvancedSearch.Tag]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_Tag" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Tag]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
                                                             <TextBlock Text="{Binding [AdvancedSearch.CommonAvatar]}" FontSize="14" Opacity="0.85"/>
                                                             <Separator Background="#22000000"/>
-                                                            <TextBox x:Name="AdvancedSearchPanel_CommonAvatar" FontSize="14" Watermark="{Binding [AdvancedSearch.CommonAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
+                                                            <TextBox x:Name="AdvancedSearchPanel_CommonAvatar" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.CommonAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                     </StackPanel>
                                                 </ScrollViewer>
@@ -837,18 +838,18 @@
                         <StackPanel Spacing="15">
                             <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
                                 <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl]}" VerticalAlignment="Center" Opacity="0.7"/>
-                                <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" Watermark="{Binding [AddItem.BoothUrlWatermark]}"/>
+                                <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.BoothUrlWatermark]}"/>
                                 <Button Grid.Column="2" Classes="button" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
                             </Grid>
 
                             <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
                                 <TextBlock Grid.Column="0" Text="{Binding [AddItem.Title]}" VerticalAlignment="Center" Opacity="0.7"/>
-                                <TextBox x:Name="AddItemOverlay_BoothItemTitleTextBox" Grid.Column="1" Watermark="{Binding [AddItem.Title]}"/>
+                                <TextBox x:Name="AddItemOverlay_BoothItemTitleTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Title]}"/>
                             </Grid>
 
                             <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
                                 <TextBlock Grid.Column="0" Text="{Binding [AddItem.Author]}" VerticalAlignment="Center" Opacity="0.7"/>
-                                <TextBox x:Name="AddItemOverlay_BoothItemAuthorTextBox" Grid.Column="1" Watermark="{Binding [AddItem.Author]}"/>
+                                <TextBox x:Name="AddItemOverlay_BoothItemAuthorTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Author]}"/>
                             </Grid>
                         </StackPanel>
 
@@ -911,7 +912,7 @@
                         
                         <!-- 検索バー -->
                         <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <TextBox x:Name="EditSupportedAvatarsOverlay_SearchTextBox" Grid.Column="0" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditSupportedAvatarsOverlay_SearchTextBox_TextChanged"/>
+                            <TextBox x:Name="EditSupportedAvatarsOverlay_SearchTextBox" Grid.Column="0" PlaceholderText="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditSupportedAvatarsOverlay_SearchTextBox_TextChanged"/>
                             <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Click="EditSupportedAvatarsOverlay_SelectVisible_Click"/>
                         </Grid>
 
@@ -942,7 +943,7 @@
                         
                         <!-- 検索バー -->
                         <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <TextBox x:Name="EditImplementedAvatarsOverlay_SearchTextBox" Grid.Column="0" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditImplementedAvatarsOverlay_SearchTextBox_TextChanged"/>
+                            <TextBox x:Name="EditImplementedAvatarsOverlay_SearchTextBox" Grid.Column="0" PlaceholderText="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditImplementedAvatarsOverlay_SearchTextBox_TextChanged"/>
                             <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Click="EditImplementedAvatarsOverlay_SelectVisible_Click"/>
                         </Grid>
 
@@ -971,7 +972,7 @@
                         <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [ResolveTempAvatar.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
                         
                         <!-- 検索バー -->
-                        <TextBox x:Name="ResolveTempAvatarOverlay_SearchTextBox" Grid.Row="2" Watermark="{Binding [ResolveTempAvatar.Search]}" TextChanged="ResolveTempAvatarOverlay_SearchTextBox_TextChanged"/>
+                        <TextBox x:Name="ResolveTempAvatarOverlay_SearchTextBox" Grid.Row="2" PlaceholderText="{Binding [ResolveTempAvatar.Search]}" TextChanged="ResolveTempAvatarOverlay_SearchTextBox_TextChanged"/>
 
                         <!-- アバターリスト -->
                         <ScrollViewer Grid.Row="4" Height="500">
@@ -1006,7 +1007,7 @@
                         
                         <!-- 検索バー -->
                         <Grid Grid.Row="4" ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <TextBox x:Name="EditCommonAvatarsOverlay_SearchTextBox" Grid.Column="0" Watermark="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditCommonAvatarsOverlay_SearchTextBox_TextChanged"/>
+                            <TextBox x:Name="EditCommonAvatarsOverlay_SearchTextBox" Grid.Column="0" PlaceholderText="{Binding [EditSupportedAvatars.Search]}" TextChanged="EditCommonAvatarsOverlay_SearchTextBox_TextChanged"/>
                             <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible]}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Click="EditCommonAvatarsOverlay_SelectVisible_Click"/>
                         </Grid>
 
@@ -1035,7 +1036,7 @@
 
                     <!-- メモテキスト -->
                     <ScrollViewer Height="150">
-                        <TextBox x:Name="EditMemoOverlay_MemoTextBox" Watermark="{Binding [EditMemo.Memo]}" AcceptsReturn="True"/>
+                        <TextBox x:Name="EditMemoOverlay_MemoTextBox" PlaceholderText="{Binding [EditMemo.Memo]}" AcceptsReturn="True"/>
                     </ScrollViewer>
 
                     <!-- 下のボタン -->
@@ -1067,7 +1068,7 @@
                     <!-- タグの追加 -->
                     <TextBlock Text="{Binding [EditTags.AddTag]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"/>
                     <Grid ColumnDefinitions="*,80" ColumnSpacing="5">
-                        <TextBox x:Name="EditTagsOverlay_TagTextBox" Grid.Column="0" Watermark="{Binding [EditTags.NewTag]}" KeyDown="EditTagsOverlay_TagTextBox_KeyDown"/>
+                        <TextBox x:Name="EditTagsOverlay_TagTextBox" Grid.Column="0" PlaceholderText="{Binding [EditTags.NewTag]}" KeyDown="EditTagsOverlay_TagTextBox_KeyDown"/>
                         <Button Grid.Column="1" Classes="button" Content="{Binding [EditTags.AddTag]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="EditTagsOverlay_AddTagButton_Click"/>
                     </Grid>
                     <ComboBox x:Name="EditTagsOverlay_TagComboBox" PlaceholderText="{Binding [EditTags.SelectTag]}" Grid.Row="8" HorizontalAlignment="Stretch" SelectionChanged="EditTagsOverlay_TagComboBox_SelectionChanged"/>
@@ -1215,7 +1216,7 @@
                     <TextBlock Text="{Binding [ArchivePasswordDialog.Description]}" FontSize="15" FontWeight="SemiBold"/>
                     
                     <!-- パスワード入力欄 -->
-                    <TextBox x:Name="ArchivePasswordDialogOverlay_PasswordBox" PasswordChar="●" Watermark="{Binding [ArchivePasswordDialog.Watermark]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10,10,10,10" FontSize="14"/>
+                    <TextBox x:Name="ArchivePasswordDialogOverlay_PasswordBox" PasswordChar="●" PlaceholderText="{Binding [ArchivePasswordDialog.Watermark]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10,10,10,10" FontSize="14"/>
 
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150">

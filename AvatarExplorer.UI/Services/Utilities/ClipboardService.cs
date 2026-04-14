@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input.Platform;
 using AvatarExplorer.Core.Services.System;
 using ErrorOr;
 
