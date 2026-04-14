@@ -220,6 +220,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground" Color="#FF4E7C52"/>
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="#FF639767"/>
 
+                    <SolidColorBrush x:Key="Panel.BorderBrush" Color="#6B5F8B69"/>
+
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="#FF2E6E3D"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="#FFFFFFFF"/>
 
