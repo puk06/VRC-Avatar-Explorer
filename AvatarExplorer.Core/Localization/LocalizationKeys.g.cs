@@ -463,6 +463,11 @@ public static class LocalizationKey
             public const string Title = "Settings.ThumbnailCompressionMaxSize.Title";
             public const string Description = "Settings.ThumbnailCompressionMaxSize.Description";
         }
+        public static class EnableSearchInFolder
+        {
+            public const string Title = "Settings.EnableSearchInFolder.Title";
+            public const string Description = "Settings.EnableSearchInFolder.Description";
+        }
         public const string Background = "Settings.Background";
         public static class UseCustomBackground
         {
