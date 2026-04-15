@@ -1104,32 +1104,38 @@
 
         <!-- データインポート画面 -->
         <Border x:Name="SelectImportTypeOverlay" Classes="overlaybackground" IsVisible="False">
-            <Border Classes="overlay" Width="300">
-                <StackPanel Spacing="10">
+            <Border Classes="overlay" Width="500" Padding="24">
+                <StackPanel Spacing="14">
 
                     <!-- タイトル -->
-                    <TextBlock Text="{Binding [SelectImportType.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0,10,0,10" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Text="{Binding [SelectImportType.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
                     
                     <!-- インポートタイプ選択ボタン -->
-                    <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [SelectImportType.Options.V1]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectImportTypeOverlay_FromV1_Click"/>
-                    <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [SelectImportType.Options.KonoAsset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectImportTypeOverlay_FromKonoAsset_Click"/>
-                    <Button Classes="button" FontWeight="Bold" Grid.Column="4" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectImportTypeOverlay_Cancel_Click"/>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="0" Content="{Binding [SelectImportType.Options.V1]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Click="SelectImportTypeOverlay_FromV1_Click"/>
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [SelectImportType.Options.KonoAsset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Click="SelectImportTypeOverlay_FromKonoAsset_Click"/>
+                    </Grid>
+                    <Button Classes="button" FontWeight="Bold" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Margin="0,2,0,0" Click="SelectImportTypeOverlay_Cancel_Click"/>
                 </StackPanel>
             </Border>
         </Border>
 
         <!-- サムネイルインポート画面 -->
         <Border x:Name="SelectThumbnailImportTypeOverlay" Classes="overlaybackground" IsVisible="False">
-            <Border Classes="overlay" Width="300">
-                <StackPanel Spacing="10">
+            <Border Classes="overlay" Width="500" Padding="24">
+                <StackPanel Spacing="14">
 
                     <!-- タイトル -->
-                    <TextBlock Text="{Binding [SelectImportType.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0,10,0,10" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Text="{Binding [SelectImportType.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
 
                     <!-- インポートタイプ選択ボタン -->
-                    <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [SelectImportType.Options.V1]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectThumbnailImportTypeOverlay_FromV1_Click"/>
-                    <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [SelectImportType.Options.KonoAsset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectThumbnailImportTypeOverlay_FromKonoAsset_Click"/>
-                    <Button Classes="button" FontWeight="Bold" Grid.Column="4" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectThumbnailImportTypeOverlay_Cancel_Click"/>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="0" Content="{Binding [SelectImportType.Options.V1]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Click="SelectThumbnailImportTypeOverlay_FromV1_Click"/>
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [SelectImportType.Options.KonoAsset]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Click="SelectThumbnailImportTypeOverlay_FromKonoAsset_Click"/>
+                    </Grid>
+                    <Button Classes="button" FontWeight="Bold" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Margin="0,2,0,0" Click="SelectThumbnailImportTypeOverlay_Cancel_Click"/>
                 </StackPanel>
             </Border>
         </Border>
