@@ -70,6 +70,8 @@ public partial class MainWindow : Window
         Main_InitializeLanguageBox();
         Main_InitializeUserPreferences();
 
+        SidePanel_InitializeTabItemHandlers();
+
         Main_InitializePipeServer();
 
         // 設定画面の設定

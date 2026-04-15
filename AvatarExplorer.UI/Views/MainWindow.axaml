@@ -118,7 +118,7 @@
                             <Grid RowSpacing="10">
                                 <Grid Grid.Row="2" ColumnSpacing="10">
                                     <TabControl x:Name="SidePanel_TabControl" HorizontalAlignment="Stretch" SelectedIndex="0" FontSize="18" Margin="0,0,-10,0" TabStripPlacement="Right">
-                                        <TabItem ToolTip.Tip="{Binding [SidePanel.AdvancedSearch]}" DoubleTapped="SidePanel_TabItem_DoubleTapped">
+                                        <TabItem x:Name="SidePanel_AdvancedSearchTab" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch]}">
                                             <TabItem.Header>
                                                 <materialIcons:MaterialIcon Kind="TextSearch" Width="16" Height="16"/>
                                             </TabItem.Header>
@@ -211,7 +211,7 @@
                                             </Grid>
                                         </TabItem>
 
-                                        <TabItem x:Name="SidePanel_BulkImportPanelTab" ToolTip.Tip="{Binding [SidePanel.BulkImport]}" DoubleTapped="SidePanel_TabItem_DoubleTapped">
+                                        <TabItem x:Name="SidePanel_BulkImportPanelTab" ToolTip.Tip="{Binding [SidePanel.BulkImport]}">
                                             <TabItem.Header>
                                                 <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="16" Height="16"/>
                                             </TabItem.Header>
@@ -233,7 +233,7 @@
                                             </Grid>
                                         </TabItem>
 
-                                        <TabItem x:Name="SidePanel_BulkImportPresetPanelTab" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset]}" DoubleTapped="SidePanel_TabItem_DoubleTapped">
+                                        <TabItem x:Name="SidePanel_BulkImportPresetPanelTab" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset]}">
                                             <TabItem.Header>
                                                 <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="16" Height="16"/>
                                             </TabItem.Header>

@@ -6,6 +6,12 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
+    private void SidePanel_InitializeTabItemHandlers()
+    {
+        SidePanel_AdvancedSearchTab.AddHandler(PointerPressedEvent, SidePanel_Tab_Click, RoutingStrategies.Tunnel);
+        SidePanel_BulkImportPanelTab.AddHandler(PointerPressedEvent, SidePanel_Tab_Click, RoutingStrategies.Tunnel);
+        SidePanel_BulkImportPresetPanelTab.AddHandler(PointerPressedEvent, SidePanel_Tab_Click, RoutingStrategies.Tunnel);
+    }
     private void SidePanel_Show()
     {
         if (Main_SidePanelBorder.IsVisible) return;
@@ -33,6 +39,16 @@ public partial class MainWindow
         SidePanel_TabControl.SelectedIndex = itemIndex;
     }
 
-    private void SidePanel_TabItem_DoubleTapped(object? sender, RoutedEventArgs e) => SidePanel_Hide(); // ダブルタップでサイドパネルを閉じる
+    private void SidePanel_Tab_Click(object? sender, PointerPressedEventArgs e)
+    {
+        // TabItem
+        if (sender is not TabItem tab) return;
+
+        int currentSelectedIndex = SidePanel_TabControl.SelectedIndex;
+        int index = SidePanel_TabControl.Items.IndexOf(tab);
+
+        // 既に表示されていた場合は閉じる
+        if (currentSelectedIndex == index) SidePanel_Hide();
+    }
     #endregion
 }
