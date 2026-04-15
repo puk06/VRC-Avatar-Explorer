@@ -13,6 +13,5 @@ public record RuntimeSettings
     public bool ShouldLinkToOriginal { get; init; } = false;
     public int AutoBackupInterval { get; init; } = 5;
     public bool TreatEmptySupportedAvatarAsNone { get; init; } = false;
-    public bool EnableSearchInFolder { get; init; } = false;
     public int MaxDegreeOfParallelism { get; init; } = 4;
 }

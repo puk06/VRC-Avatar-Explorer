@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
-using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
@@ -749,17 +748,7 @@ public class AvatarExplorerApp
     #endregion
 
     #region Search API
-    public ImmutableArray<ISelectableItem> Search(SearchFilter searchFilter)
-    {
-        if (_runtimeSettings.EnableSearchInFolder)
-        {
-            Item? currentSelectedItem = GetSelectedItem();
-            if (currentSelectedItem != null) return SearchItemFiles(currentSelectedItem, searchFilter).CastArray<ISelectableItem>();
-        }
-        
-        return SearchItems(searchFilter).CastArray<ISelectableItem>();
-    }
-    private ImmutableArray<Item> SearchItems(SearchFilter searchFilter)
+    public ImmutableArray<Item> SearchItems(SearchFilter searchFilter)
     {
         SearchContext searchContext = new()
         {
@@ -771,10 +760,6 @@ public class AvatarExplorerApp
         };
 
         return ItemSearchService.ExecuteSearch(searchContext, searchFilter);
-    }
-    private ImmutableArray<ItemFile> SearchItemFiles(Item item, SearchFilter searchFilter)
-    {
-        return ItemFileSearchService.ExecuteSearch(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath), searchFilter);
     }
     #endregion
 

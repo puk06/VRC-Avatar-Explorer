@@ -451,17 +451,6 @@
                                                 <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_ThumbnailCompressionMaxSizeSlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                             </Grid>
                                         </Grid>
-
-                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                                            <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
-                                                <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.EnableSearchInFolder.Title]}"/>
-                                                <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.EnableSearchInFolder.Description]}"/>
-                                            </Grid>
-
-                                            <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
-                                                <ToggleSwitch x:Name="SettingsOverlay_EnableSearchInFolderCheckBox" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                            </Grid>
-                                        </Grid>
                                     </StackPanel>
                                 </ScrollViewer>
                             </Panel>

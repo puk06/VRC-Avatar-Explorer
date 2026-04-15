@@ -12,7 +12,6 @@ using Avalonia.Threading;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
@@ -394,24 +393,20 @@ public partial class MainWindow : Window
         }
         _main_lastSearchTextCache = _main_searchTextCache;
 
+
         Main_RightPanel.Children.Clear();
 
-        ImmutableArray<ISelectableItem> items = AvatarExplorer.Search(searchFilter);
+        ImmutableArray<Item> items = AvatarExplorer.SearchItems(searchFilter);
 
         if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
 
         int currentPage = _main_pageManager.GetPage(ItemTagStates.SearchItem); // SearchItemは必ずページが存在しているため
 
-        foreach (ISelectableItem item in items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage))
+        foreach (Item item in items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage))
         {
-            ItemTagStates state;
-            if (item is Item) state = ItemTagStates.SearchItem;
-            else if (item is ItemFile) state = ItemTagStates.ItemFileCategoryOpen;
-            else continue; // ここに来ることはないはず
-
             ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(item), Main_ItemButton_ContextMenuItem_Click);
-            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(item, 0).SetState(state), RuntimeSettings, _userPreferences, itemContextMenu, RightPanel_ItemButton_Click);
+            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(item, 0).SetState(ItemTagStates.SearchItem), RuntimeSettings, _userPreferences, itemContextMenu, RightPanel_ItemButton_Click);
 
             // D&Dイベントを登録してあげる
             itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);

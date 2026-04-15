@@ -83,7 +83,6 @@ public partial class MainWindow
         if (SettingsOverlay_LinkToOriginalCheckBox != null) SettingsOverlay_LinkToOriginalCheckBox.IsChecked = runtimeSettings.ShouldLinkToOriginal;
         if (SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox != null) SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox.IsChecked = runtimeSettings.TreatEmptySupportedAvatarAsNone;
         if (SettingsOverlay_ThumbnailCompressionMaxSizeSlider != null) SettingsOverlay_ThumbnailCompressionMaxSizeSlider.Value = userPreferences.ThumbnailCompressionMaxEdge;
-        if (SettingsOverlay_EnableSearchInFolderCheckBox != null) SettingsOverlay_EnableSearchInFolderCheckBox.IsChecked = runtimeSettings.EnableSearchInFolder;
 
         // 背景
         if (SettingsOverlay_UseBackgroundImageCheckBox != null) SettingsOverlay_UseBackgroundImageCheckBox.IsChecked = userPreferences.UseBackgroundImage;
@@ -115,7 +114,6 @@ public partial class MainWindow
             RemoveOriginal = SettingsOverlay_RemoveOriginalCheckBox.IsChecked ?? false,
             ShouldLinkToOriginal = SettingsOverlay_LinkToOriginalCheckBox?.IsChecked ?? false,
             TreatEmptySupportedAvatarAsNone = SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox?.IsChecked ?? false,
-            EnableSearchInFolder = SettingsOverlay_EnableSearchInFolderCheckBox?.IsChecked ?? false,
             AutoBackupRootDirectory = SettingsOverlay_AutoBackupPathTextBox?.Text ?? string.Empty,
             AutoBackupInterval = ValueParser.Int(SettingsOverlay_AutoBackupIntervalTextBox?.Text, 5),
             MaxDegreeOfParallelism = ValueParser.Int(SettingsOverlay_MaxDegreeOfParallelismTextBox?.Text, 4)

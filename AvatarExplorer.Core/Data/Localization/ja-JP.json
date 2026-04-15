@@ -263,8 +263,6 @@
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "アイテムの対応アバターが一つも設定されていない場合、全てのアバターに対応しているのではなく、どのアバターにも対応していないとみなすようになります。",
     "Settings.ThumbnailCompressionMaxSize.Title": "サムネイル最大圧縮サイズ",
     "Settings.ThumbnailCompressionMaxSize.Description": "新しく生成する画像に適用される、最大辺の圧縮サイズ(px)です",
-    "Settings.EnableSearchInFolder.Title": "フォルダ内検索を有効化",
-    "Settings.EnableSearchInFolder.Description": "アイテムが選択されていた状態だと、フォルダー内検索に自動で切り替わるようになります",
 
     "Settings.Background": "背景",
     "Settings.UseCustomBackground.Title": "カスタム背景を使用する",

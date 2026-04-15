@@ -263,8 +263,6 @@
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "When no supported avatars are configured for an item, treat it as unsupported rather than supported by all avatars.",
     "Settings.ThumbnailCompressionMaxSize.Title": "Thumbnail Max Compression Size",
     "Settings.ThumbnailCompressionMaxSize.Description": "Maximum edge size (px) for compression, applied to newly generated images",
-    "Settings.EnableSearchInFolder.Title": "Enable Search in Folder",
-    "Settings.EnableSearchInFolder.Description": "When an item is selected, automatically switch to folder search",
 
     "Settings.Background": "Background",
     "Settings.UseCustomBackground.Title": "Use Custom Background",
