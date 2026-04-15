@@ -95,6 +95,14 @@ VRChatユーザー向けのシンプルかつ強力な**クロスプラットフ
 - **言語**: 制限なし（日本語・英語どちらも可）
 - **コミット形式**: 自由。
 
+### バージョン更新時の運用（統一ルール）
+- **ブランチ名**: `chore/bump-version-<version>`
+- **コミットメッセージ**: `chore: bump version to <version>`
+
+例:
+- `chore/bump-version-0.3.2`
+- `chore: bump version to 0.3.2`
+
 ### プルリクエスト（Pull Request）
 
 **タイトル形式（必須）**

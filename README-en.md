@@ -95,6 +95,14 @@ The following rules apply to contributions and maintenance.
 - **Language**: No restriction (Japanese or English).
 - **Commit format**: Free style.
 
+### Version Bump Rule (Standardized)
+- **Branch name**: `chore/bump-version-<version>`
+- **Commit message**: `chore: bump version to <version>`
+
+Examples:
+- `chore/bump-version-0.3.2`
+- `chore: bump version to 0.3.2`
+
 ### Pull Requests
 
 **Title format (required)**
