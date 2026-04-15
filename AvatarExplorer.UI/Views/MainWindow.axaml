@@ -833,13 +833,13 @@
                             <Button Classes="accentbutton" FontSize="12" Click="AddItemOverlay_AddFolder_Click">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <materialIcons:MaterialIcon Kind="FolderPlus" Width="20" Height="20"/>
-                                    <TextBlock Text="{Binding [AddItem.AddFolder]}" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                    <TextBlock Text="{Binding [AddItem.AddFolder]}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
                             <Button Classes="accentbutton" FontSize="12" Click="AddItemOverlay_AddFile_Click">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <materialIcons:MaterialIcon Kind="FilePlus" Width="20" Height="20"/>
-                                    <TextBlock Text="{Binding [AddItem.AddFile]}" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                    <TextBlock Text="{Binding [AddItem.AddFile]}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
