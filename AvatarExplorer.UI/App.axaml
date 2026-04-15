@@ -21,7 +21,7 @@
                     <SolidColorBrush x:Key="Separator.Background" Color="#22000000"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF1A1A1A"/>
-                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF666666"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF555555"/>
                     <SolidColorBrush x:Key="Text.Accent" Color="#FFFFFFFF"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#5ADEE2E2"/>
@@ -75,7 +75,7 @@
                     <SolidColorBrush x:Key="Separator.Background" Color="#22B27F91"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF4B313B"/>
-                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF81606C"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF6D4E59"/>
                     <SolidColorBrush x:Key="Text.Accent" Color="#FFFFF8FB"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#64D6BEC7"/>
@@ -102,7 +102,7 @@
                     <SolidColorBrush x:Key="Separator.Background" Color="#226B9C8E"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF253B35"/>
-                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF56756A"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF456459"/>
                     <SolidColorBrush x:Key="Text.Accent" Color="#FFF6FFFB"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#64B2CCBF"/>
@@ -129,7 +129,7 @@
                     <SolidColorBrush x:Key="Separator.Background" Color="#228674B0"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF332B49"/>
-                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF63587F"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF52486F"/>
                     <SolidColorBrush x:Key="Text.Accent" Color="#FFFCFBFF"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#64C5BBDD"/>
@@ -183,7 +183,7 @@
                     <SolidColorBrush x:Key="Separator.Background" Color="#22B98566"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF4B2F22"/>
-                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF815848"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF6D4637"/>
                     <SolidColorBrush x:Key="Text.Accent" Color="#FFFFFBF7"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#64D7B8A6"/>
@@ -210,7 +210,7 @@
                     <SolidColorBrush x:Key="Separator.Background" Color="#225F8B69"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF223327"/>
-                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF4E6954"/>
+                    <SolidColorBrush x:Key="Text.Secondary" Color="#FF3D5843"/>
                     <SolidColorBrush x:Key="Text.Accent" Color="#FFF8FFFA"/>
 
                     <SolidColorBrush x:Key="Button.Background" Color="#649DBAA0"/>

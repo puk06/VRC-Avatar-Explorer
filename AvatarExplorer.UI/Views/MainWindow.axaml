@@ -86,7 +86,7 @@
                         <Panel>
                             <StackPanel x:Name="Main_RightPanelParent" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10" IsVisible="False">
                                 <Image Source="avares://AvatarExplorer/Assets/Internal/EmptyIcon.png" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding [Error.Nothing]}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="25"/>
+                                <TextBlock Text="{Binding [Error.Nothing]}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="25" Foreground="{DynamicResource Text.Primary}"/>
                             </StackPanel>
 
                             <Grid RowDefinitions="*,Auto" RowSpacing="5">
@@ -124,85 +124,85 @@
                                             </TabItem.Header>
                                             <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
                                                 <StackPanel Spacing="3">
-                                                    <TextBlock Text="{Binding [SidePanel.AdvancedSearch]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding [AdvancedSearch.NegationHint]}" FontSize="12" Opacity="0.75" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding [SidePanel.AdvancedSearch]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                                    <TextBlock Text="{Binding [AdvancedSearch.NegationHint]}" FontSize="12" Opacity="0.75" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
                                                 </StackPanel>
                                                 <Separator Classes="separator" Grid.Row="1"/>
 
                                                 <ScrollViewer Grid.Row="2" VerticalAlignment="Stretch">
                                                     <StackPanel Spacing="14" Margin="0,10,10,0">
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.OrSearch]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.OrSearch]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <ToggleSwitch x:Name="AdvancedSearchPanel_OrSearch" VerticalAlignment="Center" HorizontalAlignment="Left" IsCheckedChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.CategoryOrSearch]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.CategoryOrSearch]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <ToggleSwitch x:Name="AdvancedSearchPanel_CategoryOrSearch" VerticalAlignment="Center" HorizontalAlignment="Left" IsCheckedChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.Title]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.Title]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Title" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Title]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.Author]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.Author]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Author" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Author]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.BoothId]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.BoothId]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Booth" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.BoothId]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.SupportedAvatar]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.SupportedAvatar]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Avatar" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.SupportedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.EmptySupportedAvatarAsNone]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.EmptySupportedAvatarAsNone]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <ToggleSwitch x:Name="AdvancedSearchPanel_EmptySupportedAvatarAsNone" VerticalAlignment="Center" HorizontalAlignment="Left" IsCheckedChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.Category]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.Category]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Category" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Category]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.Memo]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.Memo]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Memo" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Memo]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.Folder]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.Folder]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Folder" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Folder]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.File]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.File]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_File" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.File]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.ImplementedAvatar]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.ImplementedAvatar]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Implemented" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.ImplementedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.NotImplementedAvatar]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.NotImplementedAvatar]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_NotImplemented" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.NotImplementedAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.Tag]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.Tag]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_Tag" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Tag]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
                                                         <StackPanel Spacing="6">
-                                                            <TextBlock Text="{Binding [AdvancedSearch.CommonAvatar]}" FontSize="14" Opacity="0.85"/>
+                                                            <TextBlock Text="{Binding [AdvancedSearch.CommonAvatar]}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                                                             <Separator Classes="separator"/>
                                                             <TextBox x:Name="AdvancedSearchPanel_CommonAvatar" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.CommonAvatar]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="Main_SearchValue_Changed"/>
                                                         </StackPanel>
@@ -216,7 +216,7 @@
                                                 <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="16" Height="16"/>
                                             </TabItem.Header>
                                             <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
-                                                <TextBlock Text="{Binding [SidePanel.BulkImport]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding [SidePanel.BulkImport]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
 
                                                 <Separator Classes="separator" Grid.Row="1"/>
 
@@ -238,7 +238,7 @@
                                                 <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="16" Height="16"/>
                                             </TabItem.Header>
                                             <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
-                                                <TextBlock Text="{Binding [SidePanel.BulkImportPreset]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding [SidePanel.BulkImportPreset]}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
 
                                                 <Separator Classes="separator" Grid.Row="1"/>
 
@@ -264,7 +264,7 @@
                 <Grid RowDefinitions="*,5,Auto">
                     <TabControl Grid.Row="0" TabStripPlacement="Left">
 
-                        <TabItem Header="{Binding [Settings.Basic]}" FontWeight="Bold">
+                        <TabItem Header="{Binding [Settings.Basic]}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
                             <Panel>
                                 <ScrollViewer>
                                     <StackPanel Spacing="20" Margin="0,0,10,0">
@@ -322,7 +322,7 @@
                             </Panel>
                         </TabItem>
 
-                        <TabItem Header="{Binding [Settings.Display]}" FontWeight="Bold">
+                        <TabItem Header="{Binding [Settings.Display]}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
                             <Panel>
                                 <ScrollViewer>
                                     <StackPanel Spacing="20" Margin="0,0,10,0">
@@ -345,7 +345,7 @@
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
                                                 <Slider x:Name="SettingsOverlay_NormalIconSizeSlider" Value="70" Minimum="0" Maximum="200" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_NormalIconSizeSlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_NormalIconSizeSlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                             </Grid>
                                         </Grid>
 
@@ -368,7 +368,7 @@
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
                                                 <Slider x:Name="SettingsOverlay_HoverIconSizeSlider" Value="200" Minimum="0" Maximum="800" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_HoverIconSizeSlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_HoverIconSizeSlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                             </Grid>
                                         </Grid>
 
@@ -403,7 +403,7 @@
                             </Panel>
                         </TabItem>
 
-                        <TabItem Header="{Binding [Settings.Item]}" FontWeight="Bold">
+                        <TabItem Header="{Binding [Settings.Item]}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
                             <Panel>
                                 <ScrollViewer>
                                     <StackPanel Spacing="20" Margin="0,0,10,0">
@@ -448,7 +448,7 @@
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,45" ColumnSpacing="5">
                                                 <Slider x:Name="SettingsOverlay_ThumbnailCompressionMaxSizeSlider" Value="256" Minimum="64" Maximum="1024" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_ThumbnailCompressionMaxSizeSlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_ThumbnailCompressionMaxSizeSlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                             </Grid>
                                         </Grid>
                                     </StackPanel>
@@ -456,7 +456,7 @@
                             </Panel>
                         </TabItem>
 
-                        <TabItem Header="{Binding [Settings.Background]}" FontWeight="Bold">
+                        <TabItem Header="{Binding [Settings.Background]}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
                             <Panel>
                                 <ScrollViewer>
                                     <StackPanel Spacing="20" Margin="0,0,10,0">
@@ -491,7 +491,7 @@
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
                                                 <Slider x:Name="SettingsOverlay_BackgroundImageOpacitySlider" Value="20" Minimum="0" Maximum="100" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_BackgroundImageOpacitySlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding #SettingsOverlay_BackgroundImageOpacitySlider.Value, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                             </Grid>
                                         </Grid>
                                     </StackPanel>
@@ -499,7 +499,7 @@
                             </Panel>
                         </TabItem>
 
-                        <TabItem Header="{Binding [Settings.CommonAvatar]}" FontWeight="Bold">
+                        <TabItem Header="{Binding [Settings.CommonAvatar]}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
                             <Panel>
                                 <ScrollViewer>
                                     <StackPanel Spacing="20" Margin="0,0,10,0">
@@ -518,7 +518,7 @@
                             </Panel>
                         </TabItem>
 
-                        <TabItem Header="{Binding [Settings.Data]}" FontWeight="Bold">
+                        <TabItem Header="{Binding [Settings.Data]}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
                             <Panel>
                                 <ScrollViewer>
                                     <StackPanel Spacing="20" Margin="0,0,10,0">
@@ -638,7 +638,7 @@
                             </Panel>
                         </TabItem>
 
-                        <TabItem Header="{Binding [Settings.System]}" FontWeight="Bold">
+                        <TabItem Header="{Binding [Settings.System]}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
                             <Panel>
                                 <ScrollViewer>
                                     <StackPanel Spacing="20" Margin="0,0,10,0">
@@ -718,8 +718,8 @@
                         <TabItem FontWeight="Bold">
                             <TabItem.Header>
                                 <StackPanel Spacing="8" Orientation="Horizontal">
-                                    <materialIcons:MaterialIcon Kind="InformationOutline" Width="18" Height="18" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding [Settings.About]}" FontSize="16" VerticalAlignment="Center"/>
+                                    <materialIcons:MaterialIcon Kind="InformationOutline" Width="20" Height="20" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [Settings.About]}" FontSize="16" Foreground="{DynamicResource Text.Primary}"/>
                                 </StackPanel>
                             </TabItem.Header>
                             
@@ -727,7 +727,7 @@
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                                     <StackPanel Spacing="25" Margin="20">
                                         <StackPanel Spacing="10" HorizontalAlignment="Center">
-                                            <TextBlock Text="{Binding [Settings.AboutInfo.Title]}" FontSize="32" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{Binding [Settings.AboutInfo.Title]}" FontSize="32" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                             <TextBlock Text="{Binding [Settings.AboutInfo.Subtitle]}" TextAlignment="Center" FontSize="14" Foreground="{DynamicResource Text.Secondary}"/>
                                         </StackPanel>
 
@@ -736,7 +736,7 @@
                                         <Grid ColumnDefinitions="*,*" ColumnSpacing="30">
                                             <StackPanel Grid.Column="0" Spacing="15">
                                                 
-                                                <TextBlock Text="{Binding [Settings.AboutDeveloper.Title]}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="{Binding [Settings.AboutDeveloper.Title]}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
 
                                                 <Grid ColumnDefinitions="*,Auto">
                                                     <Grid Grid.Column="0">
@@ -748,20 +748,20 @@
                                                     <StackPanel Grid.Column="1" Spacing="10">
                                                         <StackPanel Spacing="5">
                                                             <TextBlock Text="{Binding [Settings.AboutDeveloper.Label]}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
-                                                            <TextBlock Text="ぷこるふ" FontSize="14"/>
+                                                            <TextBlock Text="ぷこるふ" FontSize="14" Foreground="{DynamicResource Text.Primary}"/>
                                                         </StackPanel>
 
                                                         <Button Classes="button" Padding="10,6" CornerRadius="6" Click="SettingsOverlay_OpenTwitter_Click">
                                                             <StackPanel Orientation="Horizontal" Spacing="6">
                                                                 <materialIcons:MaterialIcon Kind="Twitter" Width="16" Height="16"/>
-                                                                <TextBlock Text="Twitter" VerticalAlignment="Center" FontSize="13"/>
+                                                                <TextBlock Text="Twitter" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
                                                             </StackPanel>
                                                         </Button>
 
                                                         <Button Classes="button" Padding="10,6" CornerRadius="6" Click="SettingsOverlay_OpenGithub_Click">
                                                             <StackPanel Orientation="Horizontal" Spacing="6">
                                                                 <materialIcons:MaterialIcon Kind="Github" Width="16" Height="16"/>
-                                                                <TextBlock Text="Github" VerticalAlignment="Center" FontSize="13"/>
+                                                                <TextBlock Text="Github" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
                                                             </StackPanel>
                                                         </Button>
                                                     </StackPanel>
@@ -769,14 +769,14 @@
                                             </StackPanel>
 
                                             <StackPanel Grid.Column="1" Spacing="15">
-                                                <TextBlock Text="{Binding [Settings.AboutProject.Title]}" FontSize="16" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding [Settings.AboutProject.Title]}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
 
                                                 <StackPanel Spacing="5">
-                                                    <TextBlock Text="{Binding [Settings.AboutProject.SourceCodeDescription]}" FontSize="12" Foreground="{DynamicResource Text.Secondary}" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding [Settings.AboutProject.SourceCodeDescription]}" FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource Text.Secondary}" />
                                                     <Button Classes="button" Padding="10,6" CornerRadius="6" Click="SettingsOverlay_OpenSourceCode_Click">
                                                         <StackPanel Orientation="Horizontal" Spacing="6">
                                                             <materialIcons:MaterialIcon Kind="Github" Width="16" Height="16"/>
-                                                            <TextBlock Text="{Binding [Settings.AboutProject.ViewRepository]}" VerticalAlignment="Center" FontSize="13"/>
+                                                            <TextBlock Text="{Binding [Settings.AboutProject.ViewRepository]}" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
                                                         </StackPanel>
                                                     </Button>
                                                 </StackPanel>
@@ -786,17 +786,17 @@
                                         <Separator Classes="separator"/>
 
                                         <StackPanel Spacing="10">
-                                            <TextBlock Text="{Binding [Settings.AboutLicense.Title]}" FontSize="16" FontWeight="Bold"/>
-                                            <TextBlock Text="{Binding [Settings.AboutLicense.Type]}" FontSize="13"/>
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.Title]}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.Type]}" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
                                             <TextBlock Text="{Binding [Settings.AboutLicense.Description]}" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Text.Secondary}"/>
                                         </StackPanel>
 
                                         <Button Classes="button" Padding="10,8" CornerRadius="8" HorizontalAlignment="Stretch" FontWeight="SemiBold" Click="SettingsOverlay_ViewLicenses_Click">
-                                            <TextBlock Text="{Binding [Settings.AboutLicense.ViewLicense]}"/>
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.ViewLicense]}" Foreground="{DynamicResource Text.Primary}"/>
                                         </Button>
 
                                         <Button Classes="button" Padding="10,8" CornerRadius="8" HorizontalAlignment="Stretch" FontWeight="SemiBold" Click="SettingsOverlay_ThirdPartyLicenses_Click">
-                                            <TextBlock Text="{Binding [Settings.AboutLicense.ViewThirdParty]}"/>
+                                            <TextBlock Text="{Binding [Settings.AboutLicense.ViewThirdParty]}" Foreground="{DynamicResource Text.Primary}"/>
                                         </Button>
                                     </StackPanel>
                                 </ScrollViewer>
@@ -819,16 +819,16 @@
                 <Grid ColumnDefinitions="350,20,500">
                     <Grid Grid.Column="0" RowDefinitions="Auto,15,*">
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                            <Button Classes="accentbutton" FontSize="12" Click="AddItemOverlay_AddFolder_Click">
+                            <Button Classes="button" FontSize="12" Click="AddItemOverlay_AddFolder_Click">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <materialIcons:MaterialIcon Kind="FolderPlus" Width="20" Height="20"/>
-                                    <TextBlock Text="{Binding [AddItem.AddFolder]}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [AddItem.AddFolder]}" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                 </StackPanel>
                             </Button>
-                            <Button Classes="accentbutton" FontSize="12" Click="AddItemOverlay_AddFile_Click">
+                            <Button Classes="button" FontSize="12" Click="AddItemOverlay_AddFile_Click">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <materialIcons:MaterialIcon Kind="FilePlus" Width="20" Height="20"/>
-                                    <TextBlock Text="{Binding [AddItem.AddFile]}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [AddItem.AddFile]}" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -842,38 +842,38 @@
 
                     <!-- Boothアイテム情報 -->
                     <StackPanel Grid.Column="2" Spacing="25">
-                        <TextBlock Text="{Binding [AddItem.BoothItemInfo]}" FontWeight="Bold" FontSize="22"/>
+                        <TextBlock Text="{Binding [AddItem.BoothItemInfo]}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource Text.Primary}"/>
 
                         <StackPanel Spacing="15">
                             <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
-                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl]}" VerticalAlignment="Center" Opacity="0.7"/>
+                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
                                 <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.BoothUrlPlaceholder]}"/>
-                                <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
+                                <Button Grid.Column="2" Classes="button" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
                             </Grid>
 
                             <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
-                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.Title]}" VerticalAlignment="Center" Opacity="0.7"/>
+                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.Title]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
                                 <TextBox x:Name="AddItemOverlay_BoothItemTitleTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Title]}"/>
                             </Grid>
 
                             <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
-                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.Author]}" VerticalAlignment="Center" Opacity="0.7"/>
+                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.Author]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
                                 <TextBox x:Name="AddItemOverlay_BoothItemAuthorTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Author]}"/>
                             </Grid>
                         </StackPanel>
 
                         <UniformGrid Columns="2">
                             <StackPanel Spacing="8" Margin="0,0,10,0">
-                                <TextBlock Text="{Binding [AddItem.Category]}" FontSize="13" Opacity="0.7"/>
+                                <TextBlock Text="{Binding [AddItem.Category]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
                                 <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
                                     <ComboBox x:Name="AddItemOverlay_ItemTypeComboBox" HorizontalAlignment="Stretch" SelectedIndex="0"/>
-                                    <Button Grid.Column="1" Classes="accentbutton" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" FontSize="19" Click="AddItemOverlay_AddCustomCategory_Click"/>
+                                    <Button Grid.Column="1" Classes="button" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" FontSize="19" Click="AddItemOverlay_AddCustomCategory_Click"/>
                                 </Grid>
                             </StackPanel>
 
                             <StackPanel Spacing="8" Margin="10,0,0,0">
-                                <TextBlock Text="{Binding [AddItem.SupportedAvatars]}" FontSize="13" Opacity="0.7"/>
-                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" Classes="accentbutton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
+                                <TextBlock Text="{Binding [AddItem.SupportedAvatars]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
                             </StackPanel>
                         </UniformGrid>
 
@@ -885,17 +885,17 @@
                             <StackPanel IsVisible="{Binding #AddItemOverlay_ShowInternalInfo.IsChecked}" Spacing="12" Margin="10,5,0,0">
                                 <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
                                     <StackPanel Grid.Column="0" Spacing="5">
-                                        <TextBlock Text="{Binding [AddItem.AuthorId]}" FontSize="12" Opacity="0.6"/>
+                                        <TextBlock Text="{Binding [AddItem.AuthorId]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
                                         <TextBox x:Name="AddItemOverlay_InternalAuthorIdTextBox" FontSize="13"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Spacing="5">
-                                        <TextBlock Text="{Binding [AddItem.BoothId]}" FontSize="12" Opacity="0.6"/>
+                                        <TextBlock Text="{Binding [AddItem.BoothId]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
                                         <TextBox x:Name="AddItemOverlay_InternalBoothIdTextBox" FontSize="13"/>
                                     </StackPanel>
                                 </Grid>
                                 
                                 <StackPanel Spacing="5">
-                                    <TextBlock Text="{Binding [AddItem.ImageUrl]}" FontSize="12" Opacity="0.6"/>
+                                    <TextBlock Text="{Binding [AddItem.ImageUrl]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
                                     <TextBox x:Name="AddItemOverlay_InternalImageURLTextBox" FontSize="13"/>
                                 </StackPanel>
                             </StackPanel>
@@ -917,7 +917,7 @@
                     <Grid RowDefinitions="Auto,20,Auto,10,Auto,20,Auto">
 
                         <!-- タイトル -->
-                        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditSupportedAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditSupportedAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                         
                         <!-- 検索バー -->
                         <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
@@ -948,7 +948,7 @@
                     <Grid RowDefinitions="Auto,20,Auto,10,Auto,20,Auto">
 
                         <!-- タイトル -->
-                        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditImplementedAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditImplementedAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                         
                         <!-- 検索バー -->
                         <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
@@ -978,7 +978,7 @@
                     <Grid RowDefinitions="Auto,20,Auto,10,Auto,20,Auto">
 
                         <!-- タイトル -->
-                        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [ResolveTempAvatar.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [ResolveTempAvatar.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                         
                         <!-- 検索バー -->
                         <TextBox x:Name="ResolveTempAvatarOverlay_SearchTextBox" Grid.Row="2" PlaceholderText="{Binding [ResolveTempAvatar.Search]}" TextChanged="ResolveTempAvatarOverlay_SearchTextBox_TextChanged"/>
@@ -1003,11 +1003,11 @@
                     <Grid RowDefinitions="Auto,20,Auto,30,Auto,10,Auto,20,Auto">
 
                         <!-- タイトル -->
-                        <TextBlock Grid.Row="0" Text="{Binding [EditCommonAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="0" Text="{Binding [EditCommonAvatars.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
 
                         <!-- グループ選択欄 -->
                         <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="10,0,10,0" Grid.Row="2" ColumnSpacing="10">
-                            <TextBlock Text="{Binding [EditCommonAvatars.Group]}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding [EditCommonAvatars.Group]}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                             <ComboBox x:Name="EditCommonAvatarsOverlay_GroupComboBox" Grid.Column="1" SelectedIndex="0" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="10,0,10,0" SelectionChanged="EditCommonAvatarsOverlay_GroupComboBox_SelectionChanged"/>
                             <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [EditCommonAvatars.AddGroup]}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Click="EditCommonAvatarsOverlay_AddGroup_Click"/>
                             <Button Classes="button" FontWeight="Bold" Grid.Column="3" Content="{Binding [EditCommonAvatars.RenameGroup]}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Click="EditCommonAvatarsOverlay_RenameGroup_Click"/>
@@ -1041,7 +1041,7 @@
                 <StackPanel Spacing="15">
                     
                     <!-- タイトル -->
-                    <TextBlock Text="{Binding [EditMemo.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding [EditMemo.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- メモテキスト -->
                     <ScrollViewer Height="150">
@@ -1063,7 +1063,7 @@
                 <StackPanel Spacing="15">
 
                     <!-- タイトル -->
-                    <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditTags.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditTags.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- アイテムタグリスト -->
                     <ScrollViewer x:Name="EditTagsOverlay_TagListScrollViewer" Height="160" Margin="0,10,0,10">
@@ -1075,7 +1075,7 @@
                     </ScrollViewer>
 
                     <!-- タグの追加 -->
-                    <TextBlock Text="{Binding [EditTags.AddTag]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding [EditTags.AddTag]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
                         <TextBox x:Name="EditTagsOverlay_TagTextBox" Grid.Column="0" PlaceholderText="{Binding [EditTags.NewTag]}" KeyDown="EditTagsOverlay_TagTextBox_KeyDown"/>
                         <Button Grid.Column="1" Classes="button" Content="{Binding [EditTags.AddTag]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="EditTagsOverlay_AddTagButton_Click"/>
@@ -1097,7 +1097,7 @@
                 <StackPanel Spacing="10">
 
                     <!-- タイトル -->
-                    <TextBlock Text="{Binding [SelectImportType.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0,10,0,10"/>
+                    <TextBlock Text="{Binding [SelectImportType.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0,10,0,10" Foreground="{DynamicResource Text.Primary}"/>
                     
                     <!-- インポートタイプ選択ボタン -->
                     <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [SelectImportType.Options.V1]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectImportTypeOverlay_FromV1_Click"/>
@@ -1113,7 +1113,7 @@
                 <StackPanel Spacing="10">
 
                     <!-- タイトル -->
-                    <TextBlock Text="{Binding [SelectImportType.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0,10,0,10"/>
+                    <TextBlock Text="{Binding [SelectImportType.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0,10,0,10" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- インポートタイプ選択ボタン -->
                     <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [SelectImportType.Options.V1]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" Padding="10" Click="SelectThumbnailImportTypeOverlay_FromV1_Click"/>
@@ -1127,11 +1127,11 @@
         <Border x:Name="UnitypackageViewerOverlay" Classes="overlaybackground" IsVisible="False">
             <Border Classes="overlay" Width="800" Height="600" Padding="20">
                 <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
-                    <TextBlock Text="Unitypackage Viewer" FontSize="22" FontWeight="Bold"/>
+                    <TextBlock Text="Unitypackage Viewer" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                     <StackPanel Grid.Row="1" Spacing="2">
-                        <TextBlock x:Name="UnitypackageViewerOverlay_FileName" FontSize="12" Foreground="Gray"/>
-                        <TextBlock x:Name="UnitypackageViewerOverlay_StatusText" FontSize="12" Foreground="Gray"/>
-                        <TextBlock x:Name="UnitypackageViewerOverlay_SelectedPathText" FontSize="12" Foreground="Gray" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock x:Name="UnitypackageViewerOverlay_FileName" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                        <TextBlock x:Name="UnitypackageViewerOverlay_StatusText" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                        <TextBlock x:Name="UnitypackageViewerOverlay_SelectedPathText" FontSize="12" Foreground="{DynamicResource Text.Secondary}" TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
 
                     <Border Grid.Row="2" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
@@ -1139,7 +1139,7 @@
                             <TreeView x:Name="UnitypackageViewerOverlay_TreeView" SelectionChanged="UnitypackageViewerOverlay_TreeView_SelectionChanged">
                                 <TreeView.ItemTemplate>
                                     <TreeDataTemplate x:DataType="ui:MainWindow+UnitypackagePathNode" ItemsSource="{Binding Children}">
-                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Text.Primary}"/>
                                     </TreeDataTemplate>
                                 </TreeView.ItemTemplate>
                             </TreeView>
@@ -1160,7 +1160,7 @@
                 <StackPanel Spacing="20">
 
                     <!-- タイトル -->
-                    <TextBlock x:Name="ProgressOverlay_Title" Text="{Binding [Progress.Loading]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Margin="0,5,0,5"/>
+                    <TextBlock x:Name="ProgressOverlay_Title" Text="{Binding [Progress.Loading]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Margin="0,5,0,5" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- 進捗バー -->
                     <ProgressBar x:Name="ProgressOverlay_Bar" Value="0" IsIndeterminate="True"/>
@@ -1174,11 +1174,11 @@
                 <StackPanel Spacing="15">
 
                     <!-- タイトル -->
-                    <TextBlock x:Name="DialogOverlay_Title" Text="Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="DialogOverlay_Title" Text="Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- 内容 -->
                     <Grid RowDefinitions="Auto" ColumnDefinitions="*" Margin="0,10,0,10">
-                        <TextBlock x:Name="DialogOverlay_Content" Text="Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="DialogOverlay_Content" Text="Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
                     </Grid>
 
                     <!-- OKボタン -->
@@ -1193,10 +1193,10 @@
                 <StackPanel Spacing="15">
                     
                     <!-- タイトル -->
-                    <TextBlock x:Name="TextDialogOverlay_Title" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold"/>
+                    <TextBlock x:Name="TextDialogOverlay_Title" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- テキスト -->
-                    <TextBox x:Name="TextDialogOverlay_Content" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10,0,10"/>
+                    <TextBox x:Name="TextDialogOverlay_Content" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="0,10,0,10" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150">
@@ -1214,15 +1214,15 @@
                     
                     <!-- タイトル + ファイル名 + 試行回数 -->
                     <StackPanel Spacing="5">
-                        <TextBlock Text="{Binding [ArchivePasswordDialog.Title]}" FontSize="22" FontWeight="Bold"/>
-                        <TextBlock x:Name="ArchivePasswordDialogOverlay_FileName" FontSize="12" Foreground="Gray"/>
-                        <TextBlock x:Name="ArchivePasswordDialogOverlay_AttemptInfo" FontSize="12" Foreground="Gray"/>
+                        <TextBlock Text="{Binding [ArchivePasswordDialog.Title]}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                        <TextBlock x:Name="ArchivePasswordDialogOverlay_FileName" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                        <TextBlock x:Name="ArchivePasswordDialogOverlay_AttemptInfo" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
                     </StackPanel>
 
                     <Separator Classes="separator"/>
 
                     <!-- パスワード説明 -->
-                    <TextBlock Text="{Binding [ArchivePasswordDialog.Description]}" FontSize="15" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding [ArchivePasswordDialog.Description]}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Secondary}"/>
                     
                     <!-- パスワード入力欄 -->
                     <TextBox x:Name="ArchivePasswordDialogOverlay_PasswordBox" PasswordChar="●" PlaceholderText="{Binding [ArchivePasswordDialog.Placeholder]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="10,10,10,10" FontSize="14"/>
@@ -1242,11 +1242,11 @@
                 <StackPanel Spacing="15">
 
                     <!-- タイトル -->
-                    <TextBlock x:Name="YesNoDialogOverlay_Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="YesNoDialogOverlay_Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- 内容 -->
                     <Grid RowDefinitions="Auto" ColumnDefinitions="*" Margin="0,10,0,10">
-                        <TextBlock x:Name="YesNoDialogOverlay_Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="YesNoDialogOverlay_Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
                     </Grid>
                     
                     <!-- Yes/Noボタン -->
@@ -1265,17 +1265,17 @@
 
                     <!-- タイトル + バージョンテキスト -->
                     <StackPanel Spacing="5">
-                        <TextBlock Text="{Binding [UpdateDialog.Available]}" FontSize="22" FontWeight="Bold"/>
-                        <TextBlock x:Name="UpdateDialogOverlay_VersionText" FontSize="12" Foreground="Gray"/>
+                        <TextBlock Text="{Binding [UpdateDialog.Available]}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                        <TextBlock x:Name="UpdateDialogOverlay_VersionText" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
                     </StackPanel>
 
                     <Separator Classes="separator"/>
 
                     <!-- 更新履歴 -->
-                    <TextBlock Text="{Binding [UpdateDialog.ChangeLogs]}" FontSize="15" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding [UpdateDialog.ChangeLogs]}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
                     <Border Classes="panelbackground" Height="200" Background="{DynamicResource Background.Surface}">
                         <ScrollViewer>
-                            <TextBlock x:Name="UpdateDialogOverlay_UpdateContentText" FontSize="14" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="UpdateDialogOverlay_UpdateContentText" FontSize="14" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
                         </ScrollViewer>
                     </Border>
 
@@ -1294,11 +1294,11 @@
                 <StackPanel Spacing="15">
 
                     <!-- タイトル -->
-                    <TextBlock Text="{Binding [MergeCategory.Title]}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding [MergeCategory.Title]}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- 統合先のカテゴリ -->
                     <StackPanel Spacing="8" Margin="0,10,0,10">
-                        <TextBlock Text="{Binding [MergeCategory.TargetCategory]}" FontSize="13" Opacity="0.7"/>
+                        <TextBlock Text="{Binding [MergeCategory.TargetCategory]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>
                         <ComboBox x:Name="MergeCategoryOverlay_ItemTypeComboBox" HorizontalAlignment="Stretch" SelectedIndex="0"/>
                     </StackPanel>
 
@@ -1316,8 +1316,8 @@
                 <StackPanel Spacing="20">
 
                     <StackPanel Spacing="5">
-                        <TextBlock Text="初期設定 / Initial Setup" FontSize="22" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding [InitialSetup.ChangeLaterNotice]}" FontSize="12" Foreground="Gray"/>
+                        <TextBlock Text="初期設定 / Initial Setup" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                        <TextBlock Text="{Binding [InitialSetup.ChangeLaterNotice]}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
                     </StackPanel>
 
                     <Separator Classes="separator"/>
@@ -1326,11 +1326,11 @@
                         <StackPanel Spacing="5">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Spacing="10">
-                                    <TextBlock Text="{Binding [Settings.Language.Title]}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [Settings.Language.Title]}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                     <materialIcons:MaterialIcon Kind="Translate" HorizontalAlignment="Center" Width="30" Height="30" VerticalAlignment="Center"/>
                                 </StackPanel>
 
-                                <TextBlock Text="{Binding [Settings.Language.Description]}" FontSize="14" Foreground="{DynamicResource Text.Secondary}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding [Settings.Language.Description]}" FontSize="14" VerticalAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
                             </StackPanel>
                             <ComboBox x:Name="InitialSetupOverlay_LanguageComboBox" HorizontalAlignment="Stretch" SelectionChanged="InitialSetupOverlay_LanguageComboBox_SelectionChanged"/>
                         </StackPanel>
@@ -1338,11 +1338,11 @@
                         <StackPanel Spacing="5">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Spacing="10">
-                                    <TextBlock Text="{Binding [Settings.ItemsFolder.Title]}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [Settings.ItemsFolder.Title]}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                     <materialIcons:MaterialIcon Kind="Folder" HorizontalAlignment="Center" Width="30" Height="30" VerticalAlignment="Center"/>
                                 </StackPanel>
 
-                                <TextBlock Text="{Binding [Settings.ItemsFolder.Description]}" FontSize="14" Foreground="{DynamicResource Text.Secondary}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding [Settings.ItemsFolder.Description]}" FontSize="14" VerticalAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
                             </StackPanel>
 
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
@@ -1366,7 +1366,7 @@
                 <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="15">
 
                     <!-- タイトル -->
-                    <TextBlock Text="{Binding [ErrorLog.Title]}" FontSize="22" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding [ErrorLog.Title]}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
 
                     <Separator Classes="separator" Grid.Row="1"/>
 
