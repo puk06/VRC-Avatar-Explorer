@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
@@ -16,21 +18,44 @@ namespace AvatarExplorer.UI;
 public partial class MainWindow
 {
     private readonly List<string> _editTagsOverlay_selectedTags = new();
-    private string? _editTagsOverlay_selectedItemId = null;
+    private TaskCompletionSource<string[]?>? _editTagsOverlay_tcs;
 
-    private void EditTagsOverlay_Open(string itemId, IEnumerable<string>? tags = null)
+    private Task<string[]?> EditTagsOverlay_ShowAsync(IEnumerable<string>? tags = null)
     {
-        _editTagsOverlay_selectedItemId = itemId;
+        if (_editTagsOverlay_tcs != null) throw new InvalidOperationException("EditTagsOverlay is already shown.");
+
+        _editTagsOverlay_tcs = new();
+
         EditTagsOverlay_TagTextBox.Text = string.Empty;
         EditTagsOverlay_Initialize(tags);
         EditTagsOverlay.IsVisible = true;
+
+        return _editTagsOverlay_tcs.Task;
     }
-    private void EditTagsOverlay_Close()
+    private async Task<string[]?> EditTagsOverlay_ShowAsyncSafe(IEnumerable<string>? tags = null)
+    {
+        try
+        {
+            return await EditTagsOverlay_ShowAsync(tags);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostError("Failed to open edit tags dialog.", ex);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenDialogFailed]);
+            return null;
+        }
+    }
+
+    private void EditTagsOverlay_Close(string[]? result)
     {
         EditTagsOverlay.IsVisible = false;
-        _editTagsOverlay_selectedItemId = null;
         _editTagsOverlay_selectedTags.Clear();
         EditTagsOverlay_TagTextBox.Text = string.Empty;
+
+        TaskCompletionSource<string[]?>? tcs = _editTagsOverlay_tcs;
+        _editTagsOverlay_tcs = null;
+
+        tcs?.TrySetResult(result);
     }
 
     private void EditTagsOverlay_Initialize(IEnumerable<string>? tags = null)
@@ -112,24 +137,7 @@ public partial class MainWindow
 
         EditTagsOverlay_TagComboBox.SelectedIndex = -1;
     }
-    private void EditTagsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditTagsOverlay_Close();
-    private void EditTagsOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
-    {
-        Item? item = AvatarExplorer.GetItemById(_editTagsOverlay_selectedItemId);
-        if (item == null)
-        {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
-            return;
-        }
-
-        item.UpdateTags(_editTagsOverlay_selectedTags);
-        AvatarExplorer.UpdateItemUpdatedDate(item.Id);
-
-        AvatarExplorer.UpdateSearchIndex(item.Id);
-        AvatarExplorer.SaveItemDatabase();
-
-        EditTagsOverlay_Close();
-        Main_ReloadCurrentWindow();
-    }
+    private void EditTagsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditTagsOverlay_Close(null);
+    private void EditTagsOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => EditTagsOverlay_Close(_editTagsOverlay_selectedTags.ToArray());
     #endregion
 }

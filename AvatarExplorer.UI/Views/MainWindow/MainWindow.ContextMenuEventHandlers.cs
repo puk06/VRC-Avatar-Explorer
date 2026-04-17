@@ -193,14 +193,21 @@ public partial class MainWindow
 
         return Task.CompletedTask;
     }
-    private Task Main_ItemButton_ContextMenu_EditItemTag(string itemId)
+    private async Task Main_ItemButton_ContextMenu_EditItemTag(string itemId)
     {
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
-        if (item == null) return Task.CompletedTask;
+        if (item == null) return;
 
-        EditTagsOverlay_Open(item.Id, item.TagsView);
+        string[]? tags = await EditTagsOverlay_ShowAsyncSafe(item.TagsView);
+        if (tags == null) return;
 
-        return Task.CompletedTask;
+        item.UpdateTags(tags);
+        AvatarExplorer.UpdateItemUpdatedDate(item.Id);
+
+        AvatarExplorer.UpdateSearchIndex(item.Id);
+        AvatarExplorer.SaveItemDatabase();
+
+        Main_ReloadCurrentWindow();
     }
     private async Task Main_ItemButton_ContextMenu_RemoveItem(string itemId)
     {
