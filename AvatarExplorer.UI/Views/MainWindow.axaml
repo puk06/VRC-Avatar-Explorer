@@ -851,6 +851,8 @@
                                 <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
                             </Grid>
 
+                            <Separator Classes="separator"/>
+
                             <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
                                 <TextBlock Grid.Column="0" Text="{Binding [AddItem.Title]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
                                 <TextBox x:Name="AddItemOverlay_BoothItemTitleTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Title]}"/>
