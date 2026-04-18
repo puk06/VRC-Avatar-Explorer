@@ -19,7 +19,10 @@ internal class AddItemOverlayWindowValues
     internal ItemType ItemType { get; set; } = ItemType.Avatar;
     internal string CustomCategory { get; set; } = string.Empty;
     private List<string> SupportedAvatars { get; set; } = new();
+    private List<string> Tags { get; set; } = new();
+    internal string ItemMemo { get; set; } = string.Empty;
     internal ImmutableArray<string> SupportedAvatarsView => SupportedAvatars.ToImmutableArray();
+    internal ImmutableArray<string> TagsView => Tags.ToImmutableArray();
 
     internal void Reset()
     {
@@ -32,9 +35,12 @@ internal class AddItemOverlayWindowValues
         ItemType = ItemType.Avatar;
         CustomCategory = string.Empty;
         SupportedAvatars.Clear();
+        Tags.Clear();
+        ItemMemo = string.Empty;
     }
 
     internal void UpdateSupportedAvatars(IEnumerable<string> newList) => SupportedAvatars = newList.ToList();
+    internal void UpdateTags(IEnumerable<string> newList) => Tags = newList.ToList();
 
     internal void FromItem(Item item)
     {
@@ -45,6 +51,8 @@ internal class AddItemOverlayWindowValues
         BoothId = item.BoothId;
         ItemType = item.Type;
         CustomCategory = item.CustomCategory;
+        Tags = item.TagsView.ToList();
+        ItemMemo = item.ItemMemo;
 
         UpdateSupportedAvatars(item.SupportedAvatarsView);
     }

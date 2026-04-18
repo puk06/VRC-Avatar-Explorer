@@ -45,6 +45,8 @@ public class Item : AbstractDatabaseItem, ISelectableItem
         Type = itemCreationContext.ItemType;
         CustomCategory = itemCreationContext.CustomCategory;
         UpdateSupportedAvatars(itemCreationContext.SupportedAvatars);
+        UpdateTags(itemCreationContext.Tags);
+        ItemMemo = itemCreationContext.ItemMemo;
 
         return this;
     }

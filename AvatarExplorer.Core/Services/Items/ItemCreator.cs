@@ -30,7 +30,8 @@ internal static class ItemCreator
             BoothId = itemCreationContext.BoothId,
             ItemPath = extractResult.Value.ItemParentFolder,
             Type = itemCreationContext.ItemType,
-            CustomCategory = itemCreationContext.CustomCategory
+            CustomCategory = itemCreationContext.CustomCategory,
+            ItemMemo = itemCreationContext.ItemMemo
         };
 
         if (!string.IsNullOrEmpty(itemCreationContext.ThumbnailUrl))
@@ -40,6 +41,7 @@ internal static class ItemCreator
         }
 
         item.UpdateSupportedAvatars(itemCreationContext.SupportedAvatars);
+        item.UpdateTags(itemCreationContext.Tags);
 
         return new ItemCreationResult()
         {

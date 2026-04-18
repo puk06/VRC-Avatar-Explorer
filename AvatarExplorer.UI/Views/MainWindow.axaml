@@ -879,6 +879,24 @@
                             </StackPanel>
                         </UniformGrid>
 
+                        <StackPanel Spacing="10">
+                            <CheckBox Content="{Binding [AddItem.ShowAdvancedSettings]}" FontSize="13" x:Name="AddItemOverlay_ShowAdvancedSettingsCheckBox"/>
+
+                            <StackPanel IsVisible="{Binding #AddItemOverlay_ShowAdvancedSettingsCheckBox.IsChecked}">
+                                <UniformGrid Columns="2">
+                                    <StackPanel Spacing="8" Margin="0,0,0,0">
+                                        <TextBlock Text="{Binding [AddItem.ItemMemo]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                        <Button Content="{Binding [AddItem.EditItemMemo]}" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditItemMemo_Click"/>
+                                    </StackPanel>
+
+                                    <StackPanel Spacing="8" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding [AddItem.Tags]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                        <Button x:Name="AddItemOverlay_EditTagsButton" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditTags_Click"/>
+                                    </StackPanel>
+                                </UniformGrid>
+                            </StackPanel>
+                        </StackPanel>
+
                         <Separator Classes="separator" Height="1"/>
 
                         <StackPanel Spacing="10">

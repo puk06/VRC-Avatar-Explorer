@@ -47,6 +47,7 @@ public partial class MainWindow
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
 
         AddItemOverlay_UpdateSupportedAvatarsLabel();
+        AddItemOverlay_UpdateTagsLabel();
         
         AddItemOverlay.IsVisible = true;
     }
@@ -73,6 +74,7 @@ public partial class MainWindow
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
 
         AddItemOverlay_UpdateSupportedAvatarsLabel();
+        AddItemOverlay_UpdateTagsLabel();
         
         AddItemOverlay.IsVisible = true;
     }
@@ -91,6 +93,7 @@ public partial class MainWindow
         AddItemOverlay_DrawFilePathsList();
 
         AddItemOverlay_UpdateSupportedAvatarsLabel();
+        AddItemOverlay_UpdateTagsLabel();
         
         AddItemOverlay.IsVisible = true;
 
@@ -204,6 +207,10 @@ public partial class MainWindow
 
         AddItemOverlay_EditSupportedAvatarsButton.Content = string.Format(Localizer.Instance.Get(LocalizationKey.AddItem.SelectedAvatarsCount, totalAvatarsCount.ToString()));
     }
+    private void AddItemOverlay_UpdateTagsLabel()
+    {
+        AddItemOverlay_EditTagsButton.Content = string.Format(Localizer.Instance.Get(LocalizationKey.AddItem.SelectedTagsCount, _addItemOverlay_addItemWindowValues.TagsView.Length.ToString()));
+    }
 
     private void AddItemOverlay_SetValuesToUi(AddItemOverlayWindowValues addItemWindowValues)
     {
@@ -211,6 +218,7 @@ public partial class MainWindow
         AddItemOverlay_BoothItemAuthorTextBox.Text = addItemWindowValues.Author;
         AddItemOverlay_ItemTypeComboBox.SelectedIndex = AddItemOverlay_GetCategoryIndex(addItemWindowValues.ItemType, addItemWindowValues.CustomCategory);
         AddItemOverlay_UpdateSupportedAvatarsLabel();
+        AddItemOverlay_UpdateTagsLabel();
         AddItemOverlay_InternalAuthorIdTextBox.Text = addItemWindowValues.BoothAuthorId;
         AddItemOverlay_InternalBoothIdTextBox.Text = addItemWindowValues.BoothId == -1 ? string.Empty : addItemWindowValues.BoothId.ToString();
         AddItemOverlay_InternalImageURLTextBox.Text = addItemWindowValues.BoothThumbnailUrl;
@@ -315,6 +323,24 @@ public partial class MainWindow
             AddItemOverlay_UpdateSupportedAvatarsLabel();
         }
     }
+    private async void AddItemOverlay_EditItemMemo_Click(object? sender, RoutedEventArgs e)
+    {
+        string? memo = await EditMemoOverlay_ShowSafeAsync(_addItemOverlay_addItemWindowValues.ItemMemo);
+        if (!string.IsNullOrEmpty(memo))
+        {
+            _addItemOverlay_addItemWindowValues.ItemMemo = memo;
+        }
+    }
+    private async void AddItemOverlay_EditTags_Click(object? sender, RoutedEventArgs e)
+    {
+        string[]? tags = await EditTagsOverlay_ShowAsyncSafe(_addItemOverlay_addItemWindowValues.TagsView);
+        if (tags != null)
+        {
+            _addItemOverlay_addItemWindowValues.UpdateTags(tags);
+            AddItemOverlay_UpdateTagsLabel();
+        }
+    }
+
     private async void AddItemOverlay_AddFolder_Click(object? sender, RoutedEventArgs e)
     {
         string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], true);
@@ -329,6 +355,7 @@ public partial class MainWindow
 
         AddItemOverlay_AddItemPaths(files);
     }
+
     private async void AddItemOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
         if (_addItemOverlay_addItemWindowValues == null) return;
@@ -350,6 +377,8 @@ public partial class MainWindow
         itemCreationContext.CustomCategory = itemCategory.CustomCategory;
 
         itemCreationContext.SupportedAvatars.AddRange(_addItemOverlay_addItemWindowValues.SupportedAvatarsView);
+        itemCreationContext.Tags.AddRange(_addItemOverlay_addItemWindowValues.TagsView);
+        itemCreationContext.ItemMemo = _addItemOverlay_addItemWindowValues.ItemMemo;
 
         if (_addItemOverlay_selectedItemId == null)
         {
