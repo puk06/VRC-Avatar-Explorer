@@ -17,9 +17,9 @@ namespace AvatarExplorer.UI;
 public partial class MainWindow
 {
     private readonly List<string> _editSupportedAvatarsOverlay_selectedAvatars = new();
-    private TaskCompletionSource<List<string>?>? _editSupportedAvatarsOverlay_tcs;
+    private TaskCompletionSource<string[]?>? _editSupportedAvatarsOverlay_tcs;
 
-    private Task<List<string>?> EditSupportedAvatarsOverlay_OpenAsync(IEnumerable<string>? avatars = null)
+    private Task<string[]?> EditSupportedAvatarsOverlay_OpenAsync(IEnumerable<string>? avatars = null)
     {
         if (_editSupportedAvatarsOverlay_tcs != null) throw new InvalidOperationException("EditSupportedAvatarsOverlay is already shown.");
 
@@ -30,7 +30,7 @@ public partial class MainWindow
 
         return _editSupportedAvatarsOverlay_tcs.Task;
     }
-    private async Task<List<string>?> EditSupportedAvatarsOverlay_OpenAsyncSafe(IEnumerable<string>? avatars = null)
+    private async Task<string[]?> EditSupportedAvatarsOverlay_OpenAsyncSafe(IEnumerable<string>? avatars = null)
     {
         try
         {
@@ -43,14 +43,14 @@ public partial class MainWindow
             return null;
         }
     }
-    private void EditSupportedAvatarsOverlay_Close(List<string>? result)
+    private void EditSupportedAvatarsOverlay_Close(string[]? result)
     {
         EditSupportedAvatarsOverlay.IsVisible = false;
         _editSupportedAvatarsOverlay_selectedAvatars.Clear();
         EditSupportedAvatarsOverlay_SearchTextBox.Text = string.Empty;
         EditSupportedAvatarsOverlay_AvatarsList.Children.Clear();
 
-        TaskCompletionSource<List<string>?>? tcs = _editSupportedAvatarsOverlay_tcs;
+        TaskCompletionSource<string[]?>? tcs = _editSupportedAvatarsOverlay_tcs;
         _editSupportedAvatarsOverlay_tcs = null;
 
         tcs?.TrySetResult(result);
@@ -98,7 +98,7 @@ public partial class MainWindow
 
     #region Event Handler
     private void EditSupportedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(null);
-    private void EditSupportedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(_editSupportedAvatarsOverlay_selectedAvatars.ToList());
+    private void EditSupportedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(_editSupportedAvatarsOverlay_selectedAvatars.ToArray());
     private async void EditSupportedAvatarsOverlay_AddTempAvatar_Click(object? sender, RoutedEventArgs e)
     {
         string? tempAvatarName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewTempAvatarName]);

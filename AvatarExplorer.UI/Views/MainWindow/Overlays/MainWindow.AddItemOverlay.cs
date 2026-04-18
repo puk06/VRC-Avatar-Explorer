@@ -316,7 +316,7 @@ public partial class MainWindow
     }
     private async void AddItemOverlay_EditSupportedAvatars_Click(object? sender, RoutedEventArgs e)
     {
-        List<string>? supportedAvatars = await EditSupportedAvatarsOverlay_OpenAsyncSafe(_addItemOverlay_addItemWindowValues.SupportedAvatarsView);
+        string[]? supportedAvatars = await EditSupportedAvatarsOverlay_OpenAsyncSafe(_addItemOverlay_addItemWindowValues.SupportedAvatarsView);
         if (supportedAvatars != null)
         {
             _addItemOverlay_addItemWindowValues.UpdateSupportedAvatars(supportedAvatars);
