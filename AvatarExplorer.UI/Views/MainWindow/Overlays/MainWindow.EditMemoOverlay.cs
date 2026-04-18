@@ -1,46 +1,53 @@
+using System;
+using System.Threading.Tasks;
 using Avalonia.Interactivity;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
 
 namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private string? _editMemoOverlay_selectedItemId = null;
+    private TaskCompletionSource<string?>? _editMemoOverlay_tcs;
 
-    private void EditMemoOverlay_Open(string itemId, string memo = "")
+    private Task<string?> EditMemoOverlay_ShowAsync(string memo = "")
     {
-        _editMemoOverlay_selectedItemId = itemId;
+        if (_editMemoOverlay_tcs != null) throw new InvalidOperationException("EditMemoOverlay is already shown.");
+
+        _editMemoOverlay_tcs = new();
+
         EditMemoOverlay_MemoTextBox.Text = memo;
         EditMemoOverlay.IsVisible = true;
+
+        return _editMemoOverlay_tcs.Task;
     }
-    private void EditMemoOverlay_Close()
+    private async Task<string?> EditMemoOverlay_ShowSafeAsync(string memo = "")
+    {
+        try
+        {
+            return await EditMemoOverlay_ShowAsync(memo);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostError("Failed to open Edit Memo dialog.", ex);
+            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenDialogFailed]);
+            return null;
+        }
+    }
+    private void EditMemoOverlay_Close(string? result)
     {
         EditMemoOverlay.IsVisible = false;
-        _editMemoOverlay_selectedItemId = null;
         EditMemoOverlay_MemoTextBox.Text = string.Empty;
+
+        TaskCompletionSource<string?>? tcs = _editMemoOverlay_tcs;
+        _editMemoOverlay_tcs = null;
+
+        tcs?.TrySetResult(result);
     }
 
     #region Event Handler
-    private void EditMemoOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditMemoOverlay_Close();
-    private void EditMemoOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
-    {
-        Item? item = AvatarExplorer.GetItemById(_editMemoOverlay_selectedItemId);
-        if (item == null)
-        {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
-            return;
-        }
-
-        item.ItemMemo = EditMemoOverlay_MemoTextBox.Text ?? string.Empty;
-        AvatarExplorer.UpdateItemUpdatedDate(item.Id);
-
-        AvatarExplorer.UpdateSearchIndex(item.Id);
-        AvatarExplorer.SaveItemDatabase();
-
-        EditMemoOverlay_Close();
-        Main_ReloadCurrentWindow();
-    }
+    private void EditMemoOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditMemoOverlay_Close(null);
+    private void EditMemoOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => EditMemoOverlay_Close(EditMemoOverlay_MemoTextBox.Text ?? string.Empty);
     #endregion
 }

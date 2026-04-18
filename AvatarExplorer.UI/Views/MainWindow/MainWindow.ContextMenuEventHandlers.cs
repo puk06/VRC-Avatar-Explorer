@@ -133,14 +133,21 @@ public partial class MainWindow
 
         Main_ReloadCurrentWindow();
     }
-    private Task Main_ItemButton_ContextMenu_EditMemo(string itemId)
+    private async Task Main_ItemButton_ContextMenu_EditMemo(string itemId)
     {
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
-        if (item == null) return Task.CompletedTask;
+        if (item == null) return;
 
-        EditMemoOverlay_Open(item.Id, item.ItemMemo);
+        string? memo = await EditMemoOverlay_ShowSafeAsync(item.ItemMemo);
+        if (string.IsNullOrEmpty(memo)) return;
 
-        return Task.CompletedTask;
+        item.ItemMemo = memo;
+        AvatarExplorer.UpdateItemUpdatedDate(item.Id);
+
+        AvatarExplorer.UpdateSearchIndex(item.Id);
+        AvatarExplorer.SaveItemDatabase();
+
+        Main_ReloadCurrentWindow();
     }
     private Task Main_ItemButton_ContextMenu_AddToBulkImportList(string itemId)
     {
