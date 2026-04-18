@@ -377,7 +377,7 @@
     "AddItem.Category": "カテゴリ",
     "AddItem.SupportedAvatars": "対応アバター",
     "AddItem.SelectedAvatarsCount": "選択中: {0}アバター",
-    "AddItem.ShowAdvancedSettings": "アイテムの追加設定を表示する",
+    "AddItem.ShowAdvancedSettings": "追加設定を表示する",
     "AddItem.ItemMemo": "アイテムメモ",
     "AddItem.EditItemMemo": "編集する",
     "AddItem.Tags": "タグ",
