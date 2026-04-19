@@ -48,7 +48,7 @@
                 </Border>
             </Grid>
 
-            <Grid Margin="0,12,-12,0">
+            <Panel Margin="0,12,-12,0">
                 <Grid x:Name="Main_PanelGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MinWidth="250" Width="300" MaxWidth="550"/>
@@ -255,7 +255,7 @@
                         </Border>
                     </Panel>
                 </Grid>
-            </Grid>
+            </Panel>
         </DockPanel>
 
         <!-- 設定画面 -->
@@ -816,7 +816,7 @@
         <!-- アイテム追加画面 -->
         <Border x:Name="AddItemOverlay" Classes="overlaybackground" IsVisible="False">
             <Border Classes="overlay" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" CornerRadius="12">
-                <Grid ColumnDefinitions="350,20,500">
+                <Grid ColumnDefinitions="350,500" ColumnSpacing="20">
                     <Grid Grid.Column="0" RowDefinitions="Auto,15,*">
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
                             <Button Classes="accentbutton" FontSize="12" Click="AddItemOverlay_AddFolder_Click">
@@ -841,7 +841,7 @@
                     </Grid>
 
                     <!-- Boothアイテム情報 -->
-                    <StackPanel Grid.Column="2" Spacing="25">
+                    <StackPanel Grid.Column="1" Spacing="25">
                         <TextBlock Text="{Binding [AddItem.BoothItemInfo]}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource Text.Primary}"/>
 
                         <StackPanel Spacing="15">
@@ -1064,9 +1064,7 @@
                     <TextBlock Text="{Binding [EditMemo.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- メモテキスト -->
-                    <ScrollViewer Height="150">
-                        <TextBox x:Name="EditMemoOverlay_MemoTextBox" PlaceholderText="{Binding [EditMemo.Memo]}" AcceptsReturn="True"/>
-                    </ScrollViewer>
+                    <TextBox Height="150" x:Name="EditMemoOverlay_MemoTextBox" PlaceholderText="{Binding [EditMemo.Memo]}" AcceptsReturn="True"/>
 
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="150,*,150">
@@ -1203,9 +1201,7 @@
                     <TextBlock x:Name="DialogOverlay_Title" Text="Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- 内容 -->
-                    <Grid RowDefinitions="Auto" ColumnDefinitions="*" Margin="0,10,0,10">
-                        <TextBlock x:Name="DialogOverlay_Content" Text="Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
-                    </Grid>
+                    <TextBlock x:Name="DialogOverlay_Content" Text="Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="0,10,0,10" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- OKボタン -->
                     <Button Classes="accentbutton" FontWeight="Bold" Content="{Binding [DialogResult.OK]}" Width="150" VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="DialogOverlay_OK_Click"/>
@@ -1271,9 +1267,7 @@
                     <TextBlock x:Name="YesNoDialogOverlay_Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- 内容 -->
-                    <Grid RowDefinitions="Auto" ColumnDefinitions="*" Margin="0,10,0,10">
-                        <TextBlock x:Name="YesNoDialogOverlay_Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
-                    </Grid>
+                    <TextBlock x:Name="YesNoDialogOverlay_Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="0,10,0,10" Foreground="{DynamicResource Text.Primary}"/>
                     
                     <!-- Yes/Noボタン -->
                     <Grid ColumnDefinitions="100,*,100">
