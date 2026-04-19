@@ -15,16 +15,17 @@
 #endif
 
 #define MyAppName "VRC-Avatar-Explorer"
+#define MyAppDisplayName "VRC Avatar Explorer"
 #define MyAppExeName "AvatarExplorer.exe"
 #define MyRepoRoot "..\\.."
 
 [Setup]
 AppId={{7BF331AB-1B3F-4497-BA2A-B34AEE7C90C7}
-AppName={#MyAppName}
+AppName={#MyAppDisplayName}
 AppVersion={#MyAppVersion}
 DefaultDirName={localappdata}\Programs\{#MyAppName}
 PrivilegesRequired=lowest
-DefaultGroupName={#MyAppName}
+DefaultGroupName={#MyAppDisplayName}
 DisableProgramGroupPage=yes
 UsePreviousTasks=no
 UninstallDisplayIcon={app}\{#MyAppExeName}
@@ -46,5 +47,5 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "{#MyRepoRoot}\{#MySourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autoprograms}\{#MyAppDisplayName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autodesktop}\{#MyAppDisplayName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
