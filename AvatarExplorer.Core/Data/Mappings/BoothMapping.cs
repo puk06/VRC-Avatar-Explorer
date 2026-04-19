@@ -19,13 +19,17 @@ internal static class BoothMapping
 
     internal static readonly Dictionary<string, ItemType> CategoryMappings = new()
     {
-        { "3Dキャラクター", ItemType.Avatar },
-        { "3Dモデル（その他）" , ItemType.Avatar },
-        { "3Dモーション・アニメーション", ItemType.Animation },
-        { "3D衣装", ItemType.Clothing },
-        { "3D小道具", ItemType.Gimmick },
-        { "3D装飾品", ItemType.Accessory },
-        { "3Dテクスチャ", ItemType.Texture },
-        { "3Dツール・システム", ItemType.Tool }
+        // Category : 3D Models
+        { "3D Characters", ItemType.Avatar }, // 3Dキャラクター
+        { "3D Clothing", ItemType.Clothing }, // 3D衣装
+        { "3D Accessories", ItemType.Accessory }, // 3D装飾品
+        { "3D Props", ItemType.Gimmick }, // 3D小道具
+        { "3D Textures", ItemType.Texture }, // 3Dテクスチャ
+        { "3D Tools & Systems", ItemType.Tool }, // 3Dツール・システム
+        { "3D Motion & Animation", ItemType.Animation }, // 3Dモーション・アニメーション
+        { "3D Models (Other)" , ItemType.Avatar }, // 3Dモデル（その他）
+
+        // Category : Software & Hardware
+        { "Software", ItemType.Tool } // ソフトウェア
     };
 }
