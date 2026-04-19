@@ -31,7 +31,6 @@ By linking asset files with Booth item information, Avatar Explorer can automati
 | Explorer replacement | Explorer-style with file management capabilities | Specialized for asset management |
 | Supported avatar management | Managed as avatar items (temporary avatar registration supported) | String-based management |
 | Unitypackage import | Supports automatic path rewriting and batch import | Not supported |
-| Settings when adding items | Configure tags and other details after adding (speed-focused) | Configure everything while adding (accuracy-focused) |
 
 ## Installation
 
