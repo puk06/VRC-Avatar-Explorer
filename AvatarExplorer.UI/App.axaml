@@ -14,29 +14,47 @@
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
+                    <!-- 画面全体や通常パネルの背景 -->
                     <SolidColorBrush x:Key="Background.Window" Color="#81EAEAEA"/>
+                    <!-- モーダルやオーバーレイの背景 -->
                     <SolidColorBrush x:Key="Background.Overlay" Color="#FFD7D7D7"/>
+                    <!-- カードや内側領域の面色 -->
                     <SolidColorBrush x:Key="Background.Surface" Color="#FFDCDCDC"/>
 
+                    <!-- 区切り線の色 -->
                     <SolidColorBrush x:Key="Separator.Background" Color="#22000000"/>
 
+                    <!-- 主文言の色 -->
                     <SolidColorBrush x:Key="Text.Primary" Color="#FF1A1A1A"/>
+                    <!-- 補助文言の色 -->
                     <SolidColorBrush x:Key="Text.Secondary" Color="#FF555555"/>
+                    <!-- アクセントボタン上の文字色 -->
                     <SolidColorBrush x:Key="Text.Accent" Color="#FFFFFFFF"/>
 
+                    <!-- 通常ボタンの背景 -->
                     <SolidColorBrush x:Key="Button.Background" Color="#5ADEE2E2"/>
+                    <!-- 通常ボタンのホバー背景 -->
                     <SolidColorBrush x:Key="Button.Background.PointerOver" Color="#74D1D7D7"/>
+                    <!-- ボタン枠線の色 -->
                     <SolidColorBrush x:Key="Button.BorderBrush" Color="#6A808080"/>
+                    <!-- 選択中の強調色 -->
                     <SolidColorBrush x:Key="Button.Selected" Color="#8600A900"/>
+                    <!-- アクセントボタンの背景 -->
                     <SolidColorBrush x:Key="Button.AccentBackground" Color="#FF2F7ECB"/>
+                    <!-- アクセントボタンのホバー背景 -->
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="#FF3F8FDE"/>
 
+                    <!-- パネル枠線の色 -->
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="#6A808080"/>
 
+                    <!-- 共通素体アバターの背景 -->
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="#FF008000"/>
+                    <!-- 共通素体アバターの文字色 -->
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="#FFFFFFFF"/>
 
+                    <!-- タグの背景 -->
                     <SolidColorBrush x:Key="Tag.Background" Color="#FF2B78BF"/>
+                    <!-- タグの文字色 -->
                     <SolidColorBrush x:Key="Tag.Text" Color="#FFFFFFFF"/>
                 </ResourceDictionary>
 
