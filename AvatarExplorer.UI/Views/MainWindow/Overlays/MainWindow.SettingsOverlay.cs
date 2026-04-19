@@ -44,7 +44,7 @@ public partial class MainWindow
         UserPreferences userPreferences = _userPreferences;
 
         // 基本
-        if (SettingsOverlay_ItemsFolderPathTextBox != null) SettingsOverlay_ItemsFolderPathTextBox.Text = runtimeSettings.DataRootDirectory ?? string.Empty;
+        SettingsOverlay_ItemsFolderPathTextBox?.Text = runtimeSettings.DataRootDirectory ?? string.Empty;
         
         if (SettingsOverlay_LanguageComboBox != null)
         {
@@ -65,10 +65,10 @@ public partial class MainWindow
         }
 
         // 表示
-        if (SettingsOverlay_RemoveBracketsCheckBox != null) SettingsOverlay_RemoveBracketsCheckBox.IsChecked = runtimeSettings.RemoveBrackets;
-        if (SettingsOverlay_NormalIconSizeSlider != null) SettingsOverlay_NormalIconSizeSlider.Value = userPreferences.NormalIconSize;
-        if (SettingsOverlay_EnableHoverIconSizeCheckBox != null) SettingsOverlay_EnableHoverIconSizeCheckBox.IsChecked = userPreferences.EnableHoverIconSize;
-        if (SettingsOverlay_HoverIconSizeSlider != null) SettingsOverlay_HoverIconSizeSlider.Value = userPreferences.HoverIconSize;
+        SettingsOverlay_RemoveBracketsCheckBox?.IsChecked = runtimeSettings.RemoveBrackets;
+        SettingsOverlay_NormalIconSizeSlider?.Value = userPreferences.NormalIconSize;
+        SettingsOverlay_EnableHoverIconSizeCheckBox?.IsChecked = userPreferences.EnableHoverIconSize;
+        SettingsOverlay_HoverIconSizeSlider?.Value = userPreferences.HoverIconSize;
 
         if (SettingsOverlay_AntiAliasingModeComboBox != null)
         {
@@ -76,26 +76,26 @@ public partial class MainWindow
             SettingsOverlay_AntiAliasingModeComboBox.SelectedIndex = (int)userPreferences.AntiAliasingMode;
         }
 
-        if (SettingsOverlay_ItemsPerPageTextBox != null) SettingsOverlay_ItemsPerPageTextBox.Text = userPreferences.ItemsPerPage.ToString();
+        SettingsOverlay_ItemsPerPageTextBox?.Text = userPreferences.ItemsPerPage.ToString();
 
         // アイテム
-        if (SettingsOverlay_RemoveOriginalCheckBox != null) SettingsOverlay_RemoveOriginalCheckBox.IsChecked = runtimeSettings.RemoveOriginal;
-        if (SettingsOverlay_LinkToOriginalCheckBox != null) SettingsOverlay_LinkToOriginalCheckBox.IsChecked = runtimeSettings.ShouldLinkToOriginal;
-        if (SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox != null) SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox.IsChecked = runtimeSettings.TreatEmptySupportedAvatarAsNone;
-        if (SettingsOverlay_ThumbnailCompressionMaxSizeSlider != null) SettingsOverlay_ThumbnailCompressionMaxSizeSlider.Value = userPreferences.ThumbnailCompressionMaxEdge;
+        SettingsOverlay_RemoveOriginalCheckBox?.IsChecked = runtimeSettings.RemoveOriginal;
+        SettingsOverlay_LinkToOriginalCheckBox?.IsChecked = runtimeSettings.ShouldLinkToOriginal;
+        SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox?.IsChecked = runtimeSettings.TreatEmptySupportedAvatarAsNone;
+        SettingsOverlay_ThumbnailCompressionMaxSizeSlider?.Value = userPreferences.ThumbnailCompressionMaxEdge;
 
         // 背景
-        if (SettingsOverlay_UseBackgroundImageCheckBox != null) SettingsOverlay_UseBackgroundImageCheckBox.IsChecked = userPreferences.UseBackgroundImage;
-        if (SettingsOverlay_BackgroundImagePathTextBox != null) SettingsOverlay_BackgroundImagePathTextBox.Text = userPreferences.BackgroundImage ?? string.Empty;
-        if (SettingsOverlay_BackgroundImageOpacitySlider != null) SettingsOverlay_BackgroundImageOpacitySlider.Value = userPreferences.BackgroundOpacity;
+        SettingsOverlay_UseBackgroundImageCheckBox?.IsChecked = userPreferences.UseBackgroundImage;
+        SettingsOverlay_BackgroundImagePathTextBox?.Text = userPreferences.BackgroundImage ?? string.Empty;
+        SettingsOverlay_BackgroundImageOpacitySlider?.Value = userPreferences.BackgroundOpacity;
 
         // データ
-        if (SettingsOverlay_AutoBackupPathTextBox != null) SettingsOverlay_AutoBackupPathTextBox.Text = runtimeSettings.AutoBackupRootDirectory ?? string.Empty;
-        if (SettingsOverlay_AutoBackupIntervalTextBox != null) SettingsOverlay_AutoBackupIntervalTextBox.Text = runtimeSettings.AutoBackupInterval.ToString();
-    
+        SettingsOverlay_AutoBackupPathTextBox?.Text = runtimeSettings.AutoBackupRootDirectory ?? string.Empty;
+        SettingsOverlay_AutoBackupIntervalTextBox?.Text = runtimeSettings.AutoBackupInterval.ToString();
+
         // システム
-        if (SettingsOverlay_MaxDegreeOfParallelismTextBox != null) SettingsOverlay_MaxDegreeOfParallelismTextBox.Text = runtimeSettings.MaxDegreeOfParallelism.ToString();
-        if (SettingsOverlay_CheckForUpdateCheckBox != null) SettingsOverlay_CheckForUpdateCheckBox.IsChecked = _userPreferences.CheckForUpdate;
+        SettingsOverlay_MaxDegreeOfParallelismTextBox?.Text = runtimeSettings.MaxDegreeOfParallelism.ToString();
+        SettingsOverlay_CheckForUpdateCheckBox?.IsChecked = _userPreferences.CheckForUpdate;
         if (SettingsOverlay_UpdateChannelComboBox != null)
         {
             SettingsOverlay_UpdateChannelComboBox.SelectedIndex = -1;
@@ -263,21 +263,21 @@ public partial class MainWindow
         string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
         if (folders == null || folders.Length == 0) return;
 
-        if (SettingsOverlay_ItemsFolderPathTextBox != null) SettingsOverlay_ItemsFolderPathTextBox.Text = folders[0];
+        SettingsOverlay_ItemsFolderPathTextBox?.Text = folders[0];
     }
     private async void SettingsOverlay_OpenBackgroundFile_Click(object? sender, RoutedEventArgs e)
     {
         string[]? files = await StorageService.OpenFileDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFilePath], false);
         if (files == null || files.Length == 0) return;
 
-        if (SettingsOverlay_BackgroundImagePathTextBox != null) SettingsOverlay_BackgroundImagePathTextBox.Text = files[0];
+        SettingsOverlay_BackgroundImagePathTextBox?.Text = files[0];
     }
     private async void SettingsOverlay_OpenAutoBackupRootFolder_Click(object? sender, RoutedEventArgs e)
     {
         string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false, RuntimeSettings.AutoBackupRootDirectory);
         if (folders == null || folders.Length == 0) return;
 
-        if (SettingsOverlay_AutoBackupPathTextBox != null) SettingsOverlay_AutoBackupPathTextBox.Text = folders[0];
+        SettingsOverlay_AutoBackupPathTextBox?.Text = folders[0];
     }
     private async void SettingsOverlay_RegisterScheme_Click(object? sender, RoutedEventArgs e) => await Main_RegisterSchemeAsync();
 
