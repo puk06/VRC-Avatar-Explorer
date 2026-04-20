@@ -622,6 +622,7 @@ public static class FileSystemService
         return new SharpCompress.Readers.ReaderOptions()
         {
             Password = string.IsNullOrEmpty(password) ? null : password,
+            LeaveStreamOpen = false
         };
     }
     private static async Task ExtractEntriesAsync<T>(string extractDirectoryFolder, IEnumerable<T> entries)
