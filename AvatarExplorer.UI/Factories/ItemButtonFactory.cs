@@ -60,11 +60,13 @@ internal static class ItemButtonFactory
     internal static Border? CreateItemIconBorder(UISelectableItem item, UserPreferences userPreferences, bool enableHoverIconSize = true)
     {
         Bitmap? itemIconBitmap = ImageService.Get(item.ImageFileName, item.IconType);
-        if (itemIconBitmap == null) return null;
+        bool isFallbackIcon = itemIconBitmap == null;
+
+        if (isFallbackIcon && item.ImageFileName == SystemIconKey.None) return null; // アイコンがなく、アイコンタイプも指定されていない場合はアイコンなし
 
         Image itemIcon = new()
         {
-            Source = itemIconBitmap,
+            Source = itemIconBitmap ?? ImageService.Get(SystemIconKey.FileIcon),
             Width = userPreferences.NormalIconSize,
             Height = userPreferences.NormalIconSize,
             Stretch = Stretch.Fill,
@@ -73,7 +75,7 @@ internal static class ItemButtonFactory
         BitmapInterpolationMode bitmapInterpolationMode = userPreferences.AntiAliasingMode.GetInterpolationMode();
         if (bitmapInterpolationMode != BitmapInterpolationMode.None && bitmapInterpolationMode != BitmapInterpolationMode.Unspecified) RenderOptions.SetBitmapInterpolationMode(itemIcon, bitmapInterpolationMode);
 
-        if (!ImageService.IsSystemIcon(item.ImageFileName) && userPreferences.EnableHoverIconSize && enableHoverIconSize)
+        if (!ImageService.IsSystemIcon(item.ImageFileName) && !isFallbackIcon && userPreferences.EnableHoverIconSize && enableHoverIconSize)
         {
             itemIcon.PointerEntered += (s, e) =>
             {
