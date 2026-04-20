@@ -33,6 +33,7 @@ internal static class ImageService
 
     internal static readonly Dictionary<string, Bitmap?> SystemIconsDictionary = new()
     {
+        { SystemIconKey.None, null },
         { SystemIconKey.FolderIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/FolderIcon.png")) },
         { SystemIconKey.FileIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/FileIcon.png")) },
         { SystemIconKey.GroupIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/GroupIcon.png")) },
