@@ -376,6 +376,7 @@
 
         <Style Selector="Button.accentbutton /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource Button.AccentBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text.Accent}"/>
         </Style>
 
         <Style Selector="Button.accentbutton:pointerover /template/ ContentPresenter">
