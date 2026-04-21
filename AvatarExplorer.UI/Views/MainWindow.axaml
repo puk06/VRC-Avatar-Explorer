@@ -816,8 +816,8 @@
         <!-- アイテム追加画面 -->
         <Border x:Name="AddItemOverlay" Classes="overlaybackground" IsVisible="False">
             <Border Classes="overlay" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" CornerRadius="12">
-                <Grid ColumnDefinitions="350,500" ColumnSpacing="20">
-                    <Grid Grid.Column="0" RowDefinitions="Auto,15,*">
+                <Grid ColumnDefinitions="350,500" Height="550" ColumnSpacing="20">
+                    <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="15">
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
                             <Button Classes="accentbutton" FontSize="12" Click="AddItemOverlay_AddFolder_Click">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
@@ -833,99 +833,103 @@
                             </Button>
                         </StackPanel>
 
-                        <Border Grid.Row="2" Background="{DynamicResource Background.Surface}" CornerRadius="8" BorderBrush="#444" BorderThickness="1">
-                            <ScrollViewer Padding="10">
+                        <Border Grid.Row="1" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
+                            <ScrollViewer>
                                 <Grid x:Name="AddItemOverlay_ItemPathsList"/>
                             </ScrollViewer>
                         </Border>
                     </Grid>
 
                     <!-- Boothアイテム情報 -->
-                    <StackPanel Grid.Column="1" Spacing="25">
-                        <TextBlock Text="{Binding [AddItem.BoothItemInfo]}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource Text.Primary}"/>
+                    <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" RowSpacing="25">
+                        <TextBlock Grid.Row="0" Text="{Binding [AddItem.BoothItemInfo]}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource Text.Primary}"/>
 
-                        <StackPanel Spacing="15">
-                            <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
-                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.BoothUrlPlaceholder]}"/>
-                                <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
-                            </Grid>
+                        <ScrollViewer Grid.Row="1">
+                            <StackPanel Spacing="15" Margin="10">
+                                <StackPanel Spacing="15">
+                                    <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
+                                        <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                        <TextBox x:Name="AddItemOverlay_BoothLinkTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.BoothUrlPlaceholder]}"/>
+                                        <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [AddItem.FetchInfo]}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_GetBoothItemData_Click"/>
+                                    </Grid>
 
-                            <Separator Classes="separator"/>
+                                    <Separator Classes="separator"/>
 
-                            <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
-                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.Title]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                <TextBox x:Name="AddItemOverlay_BoothItemTitleTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Title]}"/>
-                            </Grid>
+                                    <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
+                                        <TextBlock Grid.Column="0" Text="{Binding [AddItem.Title]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                        <TextBox x:Name="AddItemOverlay_BoothItemTitleTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Title]}"/>
+                                    </Grid>
 
-                            <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
-                                <TextBlock Grid.Column="0" Text="{Binding [AddItem.Author]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                <TextBox x:Name="AddItemOverlay_BoothItemAuthorTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Author]}"/>
-                            </Grid>
-                        </StackPanel>
+                                    <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
+                                        <TextBlock Grid.Column="0" Text="{Binding [AddItem.Author]}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                        <TextBox x:Name="AddItemOverlay_BoothItemAuthorTextBox" Grid.Column="1" PlaceholderText="{Binding [AddItem.Author]}"/>
+                                    </Grid>
+                                </StackPanel>
 
-                        <UniformGrid Columns="2">
-                            <StackPanel Spacing="8" Margin="0,0,10,0">
-                                <TextBlock Text="{Binding [AddItem.Category]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
-                                    <ComboBox x:Name="AddItemOverlay_ItemTypeComboBox" HorizontalAlignment="Stretch" SelectedIndex="0"/>
-                                    <Button Grid.Column="1" Classes="button" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" FontSize="19" Click="AddItemOverlay_AddCustomCategory_Click"/>
-                                </Grid>
-                            </StackPanel>
-
-                            <StackPanel Spacing="8" Margin="10,0,0,0">
-                                <TextBlock Text="{Binding [AddItem.SupportedAvatars]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" Classes="accentbutton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
-                            </StackPanel>
-                        </UniformGrid>
-
-                        <StackPanel Spacing="10">
-                            <CheckBox Content="{Binding [AddItem.ShowAdvancedSettings]}" FontSize="13" x:Name="AddItemOverlay_ShowAdvancedSettingsCheckBox"/>
-
-                            <StackPanel IsVisible="{Binding #AddItemOverlay_ShowAdvancedSettingsCheckBox.IsChecked}">
                                 <UniformGrid Columns="2">
-                                    <StackPanel Spacing="8" Margin="0,0,0,0">
-                                        <TextBlock Text="{Binding [AddItem.ItemMemo]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                        <Button Content="{Binding [AddItem.EditItemMemo]}" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditItemMemo_Click"/>
+                                    <StackPanel Spacing="8" Margin="0,0,10,0">
+                                        <TextBlock Text="{Binding [AddItem.Category]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
+                                            <ComboBox x:Name="AddItemOverlay_ItemTypeComboBox" HorizontalAlignment="Stretch" SelectedIndex="0"/>
+                                            <Button Grid.Column="1" Classes="button" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" FontSize="19" Click="AddItemOverlay_AddCustomCategory_Click"/>
+                                        </Grid>
                                     </StackPanel>
 
                                     <StackPanel Spacing="8" Margin="10,0,0,0">
-                                        <TextBlock Text="{Binding [AddItem.Tags]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                        <Button x:Name="AddItemOverlay_EditTagsButton" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditTags_Click"/>
+                                        <TextBlock Text="{Binding [AddItem.SupportedAvatars]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                        <Button x:Name="AddItemOverlay_EditSupportedAvatarsButton" Classes="accentbutton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditSupportedAvatars_Click"/>
                                     </StackPanel>
                                 </UniformGrid>
-                            </StackPanel>
-                        </StackPanel>
 
-                        <Separator Classes="separator" Height="1"/>
+                                <StackPanel Spacing="10">
+                                    <CheckBox Content="{Binding [AddItem.ShowAdvancedSettings]}" FontSize="13" x:Name="AddItemOverlay_ShowAdvancedSettingsCheckBox"/>
 
-                        <StackPanel Spacing="10">
-                            <CheckBox x:Name="AddItemOverlay_ShowInternalInfo" Content="{Binding [AddItem.ShowInternalInfo]}" FontSize="13"/>
-                            
-                            <StackPanel IsVisible="{Binding #AddItemOverlay_ShowInternalInfo.IsChecked}" Spacing="12" Margin="10,5,0,0">
-                                <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
-                                    <StackPanel Grid.Column="0" Spacing="5">
-                                        <TextBlock Text="{Binding [AddItem.AuthorId]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
-                                        <TextBox x:Name="AddItemOverlay_InternalAuthorIdTextBox" FontSize="13"/>
+                                    <StackPanel IsVisible="{Binding #AddItemOverlay_ShowAdvancedSettingsCheckBox.IsChecked}">
+                                        <UniformGrid Columns="2">
+                                            <StackPanel Spacing="8" Margin="0,0,0,0">
+                                                <TextBlock Text="{Binding [AddItem.ItemMemo]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                                <Button Content="{Binding [AddItem.EditItemMemo]}" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditItemMemo_Click"/>
+                                            </StackPanel>
+
+                                            <StackPanel Spacing="8" Margin="10,0,0,0">
+                                                <TextBlock Text="{Binding [AddItem.Tags]}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                                <Button x:Name="AddItemOverlay_EditTagsButton" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Click="AddItemOverlay_EditTags_Click"/>
+                                            </StackPanel>
+                                        </UniformGrid>
                                     </StackPanel>
-                                    <StackPanel Grid.Column="1" Spacing="5">
-                                        <TextBlock Text="{Binding [AddItem.BoothId]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
-                                        <TextBox x:Name="AddItemOverlay_InternalBoothIdTextBox" FontSize="13"/>
+                                </StackPanel>
+
+                                <Separator Classes="separator" Height="1"/>
+
+                                <StackPanel Spacing="10">
+                                    <CheckBox x:Name="AddItemOverlay_ShowInternalInfo" Content="{Binding [AddItem.ShowInternalInfo]}" FontSize="13"/>
+                                    
+                                    <StackPanel IsVisible="{Binding #AddItemOverlay_ShowInternalInfo.IsChecked}" Spacing="12" Margin="10,5,0,0">
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                                            <StackPanel Grid.Column="0" Spacing="5">
+                                                <TextBlock Text="{Binding [AddItem.AuthorId]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
+                                                <TextBox x:Name="AddItemOverlay_InternalAuthorIdTextBox" FontSize="13"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Spacing="5">
+                                                <TextBlock Text="{Binding [AddItem.BoothId]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
+                                                <TextBox x:Name="AddItemOverlay_InternalBoothIdTextBox" FontSize="13"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        
+                                        <StackPanel Spacing="5">
+                                            <TextBlock Text="{Binding [AddItem.ImageUrl]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
+                                            <TextBox x:Name="AddItemOverlay_InternalImageURLTextBox" FontSize="13"/>
+                                        </StackPanel>
                                     </StackPanel>
-                                </Grid>
-                                
-                                <StackPanel Spacing="5">
-                                    <TextBlock Text="{Binding [AddItem.ImageUrl]}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
-                                    <TextBox x:Name="AddItemOverlay_InternalImageURLTextBox" FontSize="13"/>
                                 </StackPanel>
                             </StackPanel>
-                        </StackPanel>
+                        </ScrollViewer>
 
-                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="15" Margin="0,10,0,0">
+                        <Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="15" Margin="0,10,0,0">
                             <Button Grid.Column="1" Content="{Binding [Button.Cancel]}" Width="160" Height="40" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_Close_Click" />
                             <Button Grid.Column="2" Content="{Binding [AddItem.ConfirmAndSave]}" Width="160" Height="40" Classes="accentbutton" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="AddItemOverlay_Confirm_Click"/>
                         </Grid>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
         </Border>
@@ -1084,13 +1088,11 @@
                     <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditTags.Title]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
 
                     <!-- アイテムタグリスト -->
-                    <ScrollViewer x:Name="EditTagsOverlay_TagListScrollViewer" Height="160" Margin="0,10,0,10">
-                        <Panel>
-                            <Border Background="{DynamicResource Background.Surface}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="10" Padding="10">
-                                <WrapPanel x:Name="EditTagsOverlay_TagList" VerticalAlignment="Stretch" LineSpacing="5" ItemSpacing="5"/>
-                            </Border>
-                        </Panel>
-                    </ScrollViewer>
+                    <Border Classes="panelbackground" Background="{DynamicResource Background.Surface}" Height="180">
+                        <ScrollViewer x:Name="EditTagsOverlay_TagListScrollViewer" Margin="3">
+                            <WrapPanel x:Name="EditTagsOverlay_TagList" VerticalAlignment="Stretch" LineSpacing="5" ItemSpacing="5"/>
+                        </ScrollViewer>
+                    </Border>
 
                     <!-- タグの追加 -->
                     <TextBlock Text="{Binding [EditTags.AddTag]}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
