@@ -58,28 +58,10 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        Localizer.Instance.LoadFromFolder("locales");
         DataContext = Localizer.Instance;
-        AvatarExplorer.Initialize();
-        AvatarExplorer.PasswordProvider = Main_GetArchivePasswordAsync;
-        ImageService.ThumbnailCacheWarmupStateChanged += Main_OnThumbnailCacheWarmupStateChanged;
 
         InitializeComponent();
-        Main_InitializeContextMenuHandlers();
-
-        Main_InitializeTitle();
-        Main_InitializeLanguageBox();
-        Main_InitializeUserPreferences();
-
-        SidePanel_InitializeTabItemHandlers();
-
-        Main_InitializePipeServer();
-
-        // 設定画面の設定
-        SettingsOverlay_SetUiValueFromCurrentSettings();
-        SettingsOverlay_ApplySettingsValues(checkDataCopy: false).GetAwaiter().GetResult();
-
-        // 一括インポートプリセットの読み込み
-        BulkImportPresetPanel_DrawItemButtons();
     }
 
     private void Main_OnThumbnailCacheWarmupStateChanged(bool isRunning)
@@ -101,7 +83,14 @@ public partial class MainWindow : Window
 
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
-        _ = Main_LoadDeveloperProfileIconAsync();
+        ErrorOr<Success> initializationResult = await Main_Initialize();
+        if (initializationResult.IsError)
+        {
+            FatalErrorOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.InitializationFailed]);
+            await Task.Delay(5000);
+            Close();
+            return;
+        }
 
         IEnumerable<string> thumbnailFileNames = AvatarExplorer.GetAllItems().Select(i => i.ThumbnailFileName).Where(p => !string.IsNullOrEmpty(p));
         ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
@@ -119,6 +108,43 @@ public partial class MainWindow : Window
         }
 
         if (_userPreferences.CheckForUpdate) await UpdateDialogOverlay_CheckAsync(_userPreferences.UpdateChannel);
+    }
+
+    private async Task<ErrorOr<Success>> Main_Initialize()
+    {
+        try
+        {
+            AvatarExplorer.Initialize();
+
+            AvatarExplorer.PasswordProvider = Main_GetArchivePasswordAsync;
+            ImageService.ThumbnailCacheWarmupStateChanged += Main_OnThumbnailCacheWarmupStateChanged;
+
+            Main_InitializeContextMenuHandlers();
+
+            Main_InitializeTitle();
+            Main_InitializeLanguageBox();
+            Main_InitializeUserPreferences();
+
+            SidePanel_InitializeTabItemHandlers();
+
+            Main_InitializePipeServer();
+
+            // 設定画面の設定
+            SettingsOverlay_SetUiValueFromCurrentSettings();
+            SettingsOverlay_ApplySettingsValues(checkDataCopy: false).GetAwaiter().GetResult();
+
+            // 一括インポートプリセットの読み込み
+            BulkImportPresetPanel_DrawItemButtons();
+
+            _ = Main_LoadDeveloperProfileIconAsync();
+
+            return Result.Success;
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("An error occurred during MainWindow initialization.", ex);
+            return Error.Failure(description: "An error occurred during MainWindow initialization.");
+        }
     }
 
     private async Task Main_LoadDeveloperProfileIconAsync()

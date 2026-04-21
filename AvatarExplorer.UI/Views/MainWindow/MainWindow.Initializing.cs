@@ -92,8 +92,6 @@ public partial class MainWindow
     }
     private void Main_InitializeLanguageBox()
     {
-        Localizer.Instance.LoadFromFolder("locales");
-
         string[] languages = Localizer.Instance.GetLanguageList();
 
         SettingsOverlay_LanguageComboBox.Items.Clear();

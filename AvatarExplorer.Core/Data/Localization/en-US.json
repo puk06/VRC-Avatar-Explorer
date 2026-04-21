@@ -210,6 +210,7 @@
     "Error.ThirdPartyLicenseFileNotFound": "Third-party license file not found",
     "Error.NonWindowsUnsupported": "This feature is only available on Windows.",
     "Error.InvalidCategory": "Invalid category",
+    "Error.InitializationFailed": "Failed to initialize the software. Please check the error log.",
 
     "Settings.Basic": "Basic",
     "Settings.Language.Title": "Language",

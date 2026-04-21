@@ -210,6 +210,7 @@
     "Error.ThirdPartyLicenseFileNotFound": "サードパーティーライセンスファイルが見つかりませんでした",
     "Error.NonWindowsUnsupported": "この機能はWindowsでのみ利用可能です",
     "Error.InvalidCategory": "無効なカテゴリです",
+    "Error.InitializationFailed": "ソフトウェアの初期化に失敗しました。エラーログを確認してください。",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "言語",

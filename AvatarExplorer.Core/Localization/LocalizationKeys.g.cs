@@ -344,6 +344,7 @@ public static class LocalizationKey
         public const string ThirdPartyLicenseFileNotFound = "Error.ThirdPartyLicenseFileNotFound";
         public const string NonWindowsUnsupported = "Error.NonWindowsUnsupported";
         public const string InvalidCategory = "Error.InvalidCategory";
+        public const string InitializationFailed = "Error.InitializationFailed";
     }
     public static class Settings
     {

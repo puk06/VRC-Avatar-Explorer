@@ -1419,5 +1419,16 @@
                 </Grid>
             </Border>
         </Border>
+
+        <!-- 致命的なエラーオーバーレイ -->
+        <Border x:Name="FatalErrorOverlay" Classes="overlaybackground" IsVisible="False">
+            <Border Classes="overlay" Width="520" Padding="24">
+                <StackPanel Spacing="12">
+                    <TextBlock x:Name="FatalErrorOverlay_Title" FontSize="24" FontWeight="Bold" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock x:Name="FatalErrorOverlay_Content" FontSize="15" TextWrapping="Wrap" Foreground="{DynamicResource Text.Secondary}"/>
+                    <TextBlock FontSize="12" Opacity="0.8" Text="The application will close automatically." Foreground="{DynamicResource Text.Secondary}"/>
+                </StackPanel>
+            </Border>
+        </Border>
     </Panel>
 </Window>
