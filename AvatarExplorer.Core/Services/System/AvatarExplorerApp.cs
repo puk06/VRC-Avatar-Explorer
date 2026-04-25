@@ -659,17 +659,7 @@ public class AvatarExplorerApp
         if (removeAssetData)
         {
             Item? item = GetItemById(id);
-            if (item != null)
-            {
-                // パスチェック：<sys>なのに..を含む場合はおかしい
-                if (item.ItemPath.StartsWith("<sys>") && item.ItemPath.Contains(".."))
-                {
-                    ErrorManager.Instance.PostInternalError($"Corrupted item path detected: {item.ItemPath}");
-                    return false;
-                }
-
-                FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath));
-            }
+            if (item != null) FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath));
         }
 
         bool removed = _itemDatabaseManager.Remove(id);
