@@ -416,13 +416,12 @@ public partial class MainWindow : Window
         if (!_main_isLastWindowSearch) _main_scrollManager.SetScroll(_main_lastRightPanelItemTagState, Main_RightPanelScrollViewer.Offset);
 
         // 検索文字列が前回と違う場合はページ、スクロール位置をリセットする
-        if (_main_searchTextCache != _main_lastSearchTextCache)
+        if (searchFilter.ToString() != _main_lastSearchTextCache)
         {
             _main_pageManager.SetPage(ItemTagStates.SearchItem, 0);
             _main_scrollManager.SetScroll(ItemTagStates.SearchItem, new());
         }
-        _main_lastSearchTextCache = _main_searchTextCache;
-
+        _main_lastSearchTextCache = searchFilter.ToString();
 
         Main_RightPanel.Children.Clear();
 
