@@ -83,9 +83,11 @@ public partial class MainWindow : Window
 
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
+        await Task.Delay(750);
         ErrorOr<Success> initializationResult = await Main_Initialize();
         if (initializationResult.IsError)
         {
+            StartupLoadingOverlay.IsVisible = false;
             FatalErrorOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.InitializationFailed]);
             await Task.Delay(5000);
             Close();
@@ -98,7 +100,9 @@ public partial class MainWindow : Window
         // 初回起動かチェック
         if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
 
+        Main_DockPanel.IsVisible = true;
         Main_ReloadCurrentWindow();
+        StartupLoadingOverlay.IsVisible = false;
 
         // Scheme & Administrator Mode Check (Windows)
         if (ProcessUtils.IsWindows())
@@ -131,7 +135,7 @@ public partial class MainWindow : Window
 
             // 設定画面の設定
             SettingsOverlay_SetUiValueFromCurrentSettings();
-            SettingsOverlay_ApplySettingsValues(checkDataCopy: false).GetAwaiter().GetResult();
+            SettingsOverlay_ApplySettingsValues(checkDataCopy: false, reloadWindow: false).GetAwaiter().GetResult();
 
             // 一括インポートプリセットの読み込み
             BulkImportPresetPanel_DrawItemButtons();

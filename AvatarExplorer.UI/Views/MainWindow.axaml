@@ -22,7 +22,7 @@
     <Panel x:Name="WindowPanel" PointerPressed="Main_PointerPressed">
 
         <!-- メイン画面 -->
-        <DockPanel Margin="12">
+        <DockPanel x:Name="Main_DockPanel" Margin="12" IsVisible="False">
             <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*" ColumnSpacing="12">
                 <Border Grid.Column="1" Classes="panelbackground">
                     <Grid ColumnDefinitions="Auto,Auto,2.3*,Auto,*,Auto" ColumnSpacing="10">
@@ -1430,5 +1430,30 @@
                 </StackPanel>
             </Border>
         </Border>
+
+        <!-- 起動時読み込み画面 -->
+        <Grid x:Name="StartupLoadingOverlay" IsVisible="True" Background="#F3EEE6">
+            <Grid>
+                <Ellipse Width="360" Height="360" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-110,-110,0,0" Fill="#E8D9C7" Opacity="0.32"/>
+                <Ellipse Width="240" Height="240" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-80,-80" Fill="#D9E5DC" Opacity="0.35"/>
+            </Grid>
+
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="460" Padding="32" CornerRadius="28" Background="#FFFDF9" BorderBrush="#E0D4C6" BorderThickness="1">
+                <StackPanel Spacing="16" HorizontalAlignment="Center">
+                    <Border Width="72" Height="72" CornerRadius="36" Background="#E9D7C1" HorizontalAlignment="Center">
+                        <TextBlock Text="AE" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5B4B3E"/>
+                    </Border>
+
+                    <StackPanel Spacing="6" HorizontalAlignment="Center">
+                        <TextBlock Text="Avatar Explorer" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4B3F35"/>
+                        <TextBlock Text="Loading your library and preferences..." FontSize="13" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Foreground="#7B6B5E"/>
+                    </StackPanel>
+
+                    <ProgressBar Width="320" Height="8" IsIndeterminate="True" Foreground="#B98F6F" Background="#E8DDD2"/>
+
+                    <TextBlock Text="Please wait a moment." FontSize="12" HorizontalAlignment="Center" Foreground="#8B7A6A"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Panel>
 </Window>

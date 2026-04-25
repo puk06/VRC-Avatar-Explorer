@@ -102,7 +102,7 @@ public partial class MainWindow
             SettingsOverlay_UpdateChannelComboBox.SelectedIndex = (int)_userPreferences.UpdateChannel;
         }
     }
-    private async Task SettingsOverlay_ApplySettingsValues(bool checkDataCopy = true)
+    private async Task SettingsOverlay_ApplySettingsValues(bool checkDataCopy = true, bool reloadWindow = true)
     {
         string previousDataRootDirectoryPath = RuntimeSettings.DataRootDirectory;
 
@@ -141,7 +141,7 @@ public partial class MainWindow
         _userPreferences = userPreferences;
         AvatarExplorer.SetRuntimeSettings(runtimeSettings);
 
-        SettingsOverlay_ApplyPreferenceSettingsToUi();
+        SettingsOverlay_ApplyPreferenceSettingsToUi(reloadWindow);
         SettingsOverlay_SetUiValueFromCurrentSettings();
 
         if (checkDataCopy && RuntimeSettings.DataRootDirectory != previousDataRootDirectoryPath)
@@ -192,12 +192,12 @@ public partial class MainWindow
         }
     }
 
-    private void SettingsOverlay_ApplyPreferenceSettingsToUi()
+    private void SettingsOverlay_ApplyPreferenceSettingsToUi(bool reloadWindow = true)
     {
         SettingsOverlay_SetApplicationTheme(Application.Current, _userPreferences.Theme);
         SettingsOverlay_SetBackground(_userPreferences.Theme);
         SettingsOverlay_ApplyBackgroundImage(_userPreferences);
-        SettingsOverlay_ApplyLanguage(_userPreferences.Language);
+        SettingsOverlay_ApplyLanguage(_userPreferences.Language, reloadWindow);
     }
     private void SettingsOverlay_SetApplicationTheme(Application? application, Theme theme)
     {
@@ -251,10 +251,12 @@ public partial class MainWindow
             WindowPanel.Background = null;
         }
     }
-    private void SettingsOverlay_ApplyLanguage(int language)
+    private void SettingsOverlay_ApplyLanguage(int language, bool reloadWindow = true)
     {
-        Localizer.Instance.SetLanguage(language);
-        Main_ReloadCurrentWindow();
+        bool isLanguageChanged = Localizer.Instance.CurrentLanguageIndex != language;
+        if (isLanguageChanged) Localizer.Instance.SetLanguage(language);
+
+        if (reloadWindow && isLanguageChanged) Main_ReloadCurrentWindow();
     }
 
     #region Event Handler
