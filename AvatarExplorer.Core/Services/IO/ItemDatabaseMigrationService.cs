@@ -37,7 +37,7 @@ internal static class ItemDatabaseMigrationService
                 string backupPath = BuildBackupPath(filePath, appliedVersion, CurrentMigrationVersion);
                 File.Copy(filePath, backupPath, overwrite: true);
 
-                string migratedJson = root.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
+                string migratedJson = root.ToJsonString(JsonManager.JsonSerializerOptions);
                 File.WriteAllText(filePath, migratedJson);
             }
 

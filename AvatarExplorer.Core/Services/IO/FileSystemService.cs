@@ -50,13 +50,12 @@ public static class FileSystemService
     private const int BufferSize = 1024 * 1024;
 
     #region Serialize / Deserialize
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { WriteIndented = true };
     public static ErrorOr<Success> SerializeClass<T>(T value, string filePath) where T : class
     {
         try
         {
             PrepareFileDirectory(filePath);
-            string json = JsonSerializer.Serialize(value, JsonSerializerOptions);
+            string json = JsonManager.Serialize(value);
             File.WriteAllText(filePath, json);
             return Result.Success;
         }
@@ -74,7 +73,7 @@ public static class FileSystemService
             if (!File.Exists(filePath)) return Error.NotFound(description: $"File not found: {filePath}");
             
             string json = File.ReadAllText(filePath);
-            T? result = JsonSerializer.Deserialize<T>(json, JsonSerializerOptions);
+            T? result = JsonManager.Deserialize<T>(json);
             
             if (result == null) return Error.Failure(description: "deserialization result is null.");
             

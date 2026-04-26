@@ -1,8 +1,8 @@
-using System.Text.Json;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Data.Mappings;
 using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using ErrorOr;
@@ -11,8 +11,6 @@ namespace AvatarExplorer.Core.Services.Network;
 
 internal static class BoothService
 {
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
-
     internal static async Task<ErrorOr<BoothItem>> GetItem(string boothId)
     {
         try
@@ -22,7 +20,7 @@ internal static class BoothService
             string url = string.Format(BoothLink.ItemJsonURLFormat, boothId);
             string response = await HttpService.Client.GetStringAsync(url);
 
-            BoothItem? boothItem = JsonSerializer.Deserialize<BoothItem>(response, JsonSerializerOptions);
+            BoothItem? boothItem = JsonManager.Deserialize<BoothItem>(response);
             if (boothItem == null) return Error.Failure(description: "Failed to deserialize data.");
 
             return boothItem with

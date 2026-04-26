@@ -1,7 +1,7 @@
-using System.Text.Json;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Updates;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Services.System;
 
@@ -9,14 +9,12 @@ namespace AvatarExplorer.Core.Services.Updates;
 
 public static class UpdateChecker
 {
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
-
     public async static Task<UpdateManifest?> GetUpdateManifest()
     {
         try
         {
             string response = await HttpService.Client.GetStringAsync(SoftwareLink.UpdateCheckURL);
-            return JsonSerializer.Deserialize<UpdateManifest>(response, JsonSerializerOptions);
+            return JsonManager.Deserialize<UpdateManifest>(response);
         }
         catch (Exception ex)
         {
