@@ -4,10 +4,10 @@ using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.Database;
 
-internal abstract class AbstractDatabaseManager<T> : IDatabaseManager<T>
+internal class DatabaseManager<T>(string databaseFilePath)
     where T : IDatabaseItem
 {
-    public abstract string DatabaseFilePath { get; }
+    public string DatabaseFilePath { get; } = databaseFilePath;
 
     private List<T> _items { get; set; } = new();
     public ImmutableArray<T> Items => _items.ToImmutableArray();

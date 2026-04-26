@@ -24,10 +24,10 @@ public class AvatarExplorerApp
 
     private bool _initialized = false;
 
-    private readonly ItemDatabaseManager _itemDatabaseManager = new();
-    private readonly CommonAvatarDatabaseManager _commonAvatarDatabaseManager = new();
-    private readonly TempAvatarsDatabaseManager _tempAvatarsDatabaseManager = new();
-    private readonly BulkImportPresetDatabaseManager _bulkImportPresetDatabaseManager = new();
+    private readonly DatabaseManager<Item> _itemDatabaseManager = new(SystemPath.ItemDatabasePath);
+    private readonly DatabaseManager<CommonAvatar> _commonAvatarDatabaseManager = new(SystemPath.CommonAvatarDatabasePath);
+    private readonly DatabaseManager<TempAvatar> _tempAvatarsDatabaseManager = new(SystemPath.TempAvatarsDatabasePath);
+    private readonly DatabaseManager<BulkImportPreset> _bulkImportPresetDatabaseManager = new(SystemPath.BulkImportPresetDatabasePath);
 
     private readonly Dictionary<string, string> _itemSearchIndexDictionary = new();
 
