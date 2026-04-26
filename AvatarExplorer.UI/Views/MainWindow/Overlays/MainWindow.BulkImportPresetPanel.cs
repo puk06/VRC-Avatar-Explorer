@@ -24,7 +24,7 @@ public partial class MainWindow
         foreach (BulkImportPreset bulkImportPreset in AvatarExplorer.GetAllBulkImportPresets())
         {
             ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(bulkImportPreset), Main_ItemButton_ContextMenuItem_Click);
-            ItemButtonFactory.AddItemButton(SidePanel_BulkImportPresetPanel, new UISelectableItem(bulkImportPreset, 0), RuntimeSettings, _userPreferences, itemContextMenu, BulkImportPresetPanel_ItemButton_Click);
+            ItemButtonFactory.AddItemButton(SidePanel_BulkImportPresetPanel, new UISelectableItem(bulkImportPreset, 0), RuntimeSettings, UserPreferences, itemContextMenu, BulkImportPresetPanel_ItemButton_Click);
         }
     }
 

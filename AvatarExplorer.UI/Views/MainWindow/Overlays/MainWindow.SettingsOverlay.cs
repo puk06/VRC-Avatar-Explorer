@@ -39,66 +39,63 @@ public partial class MainWindow
 
     private void SettingsOverlay_SetUiValueFromCurrentSettings()
     {
-        RuntimeSettings runtimeSettings = AvatarExplorer.GetRuntimeSettings();
-        UserPreferences userPreferences = _userPreferences;
-
         // 基本
-        SettingsOverlay_ItemsFolderPathTextBox?.Text = runtimeSettings.DataRootDirectory ?? string.Empty;
+        SettingsOverlay_ItemsFolderPathTextBox?.Text = RuntimeSettings.DataRootDirectory ?? string.Empty;
         
         if (SettingsOverlay_LanguageComboBox != null)
         {
             SettingsOverlay_LanguageComboBox.SelectedIndex = -1;
-            SettingsOverlay_LanguageComboBox.SelectedIndex = userPreferences.Language;
+            SettingsOverlay_LanguageComboBox.SelectedIndex = UserPreferences.Language;
         }
 
         if (SettingsOverlay_SortOrderComboBox != null)
         {
             SettingsOverlay_SortOrderComboBox.SelectedIndex = -1;
-            SettingsOverlay_SortOrderComboBox.SelectedIndex = (int)runtimeSettings.ItemSortOrder;
+            SettingsOverlay_SortOrderComboBox.SelectedIndex = (int)RuntimeSettings.ItemSortOrder;
         }
 
         if (SettingsOverlay_ThemeComboBox != null)
         {
             SettingsOverlay_ThemeComboBox.SelectedIndex = -1;
-            SettingsOverlay_ThemeComboBox.SelectedIndex = (int)userPreferences.Theme;
+            SettingsOverlay_ThemeComboBox.SelectedIndex = (int)UserPreferences.Theme;
         }
 
         // 表示
-        SettingsOverlay_RemoveBracketsCheckBox?.IsChecked = runtimeSettings.RemoveBrackets;
-        SettingsOverlay_NormalIconSizeSlider?.Value = userPreferences.NormalIconSize;
-        SettingsOverlay_EnableHoverIconSizeCheckBox?.IsChecked = userPreferences.EnableHoverIconSize;
-        SettingsOverlay_HoverIconSizeSlider?.Value = userPreferences.HoverIconSize;
+        SettingsOverlay_RemoveBracketsCheckBox?.IsChecked = RuntimeSettings.RemoveBrackets;
+        SettingsOverlay_NormalIconSizeSlider?.Value = UserPreferences.NormalIconSize;
+        SettingsOverlay_EnableHoverIconSizeCheckBox?.IsChecked = UserPreferences.EnableHoverIconSize;
+        SettingsOverlay_HoverIconSizeSlider?.Value = UserPreferences.HoverIconSize;
 
         if (SettingsOverlay_AntiAliasingModeComboBox != null)
         {
             SettingsOverlay_AntiAliasingModeComboBox.SelectedIndex = -1;
-            SettingsOverlay_AntiAliasingModeComboBox.SelectedIndex = (int)userPreferences.AntiAliasingMode;
+            SettingsOverlay_AntiAliasingModeComboBox.SelectedIndex = (int)UserPreferences.AntiAliasingMode;
         }
 
-        SettingsOverlay_ItemsPerPageTextBox?.Text = userPreferences.ItemsPerPage.ToString();
+        SettingsOverlay_ItemsPerPageTextBox?.Text = UserPreferences.ItemsPerPage.ToString();
 
         // アイテム
-        SettingsOverlay_RemoveOriginalCheckBox?.IsChecked = runtimeSettings.RemoveOriginal;
-        SettingsOverlay_LinkToOriginalCheckBox?.IsChecked = runtimeSettings.ShouldLinkToOriginal;
-        SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox?.IsChecked = runtimeSettings.TreatEmptySupportedAvatarAsNone;
-        SettingsOverlay_ThumbnailCompressionMaxSizeSlider?.Value = userPreferences.ThumbnailCompressionMaxEdge;
+        SettingsOverlay_RemoveOriginalCheckBox?.IsChecked = RuntimeSettings.RemoveOriginal;
+        SettingsOverlay_LinkToOriginalCheckBox?.IsChecked = RuntimeSettings.ShouldLinkToOriginal;
+        SettingsOverlay_TreatEmptySupportedAvatarAsNoneCheckBox?.IsChecked = RuntimeSettings.TreatEmptySupportedAvatarAsNone;
+        SettingsOverlay_ThumbnailCompressionMaxSizeSlider?.Value = UserPreferences.ThumbnailCompressionMaxEdge;
 
         // 背景
-        SettingsOverlay_UseBackgroundImageCheckBox?.IsChecked = userPreferences.UseBackgroundImage;
-        SettingsOverlay_BackgroundImagePathTextBox?.Text = userPreferences.BackgroundImage ?? string.Empty;
-        SettingsOverlay_BackgroundImageOpacitySlider?.Value = userPreferences.BackgroundOpacity;
+        SettingsOverlay_UseBackgroundImageCheckBox?.IsChecked = UserPreferences.UseBackgroundImage;
+        SettingsOverlay_BackgroundImagePathTextBox?.Text = UserPreferences.BackgroundImage ?? string.Empty;
+        SettingsOverlay_BackgroundImageOpacitySlider?.Value = UserPreferences.BackgroundOpacity;
 
         // データ
-        SettingsOverlay_AutoBackupPathTextBox?.Text = runtimeSettings.AutoBackupRootDirectory ?? string.Empty;
-        SettingsOverlay_AutoBackupIntervalTextBox?.Text = runtimeSettings.AutoBackupInterval.ToString();
+        SettingsOverlay_AutoBackupPathTextBox?.Text = RuntimeSettings.AutoBackupRootDirectory ?? string.Empty;
+        SettingsOverlay_AutoBackupIntervalTextBox?.Text = RuntimeSettings.AutoBackupInterval.ToString();
 
         // システム
-        SettingsOverlay_MaxDegreeOfParallelismTextBox?.Text = runtimeSettings.MaxDegreeOfParallelism.ToString();
-        SettingsOverlay_CheckForUpdateCheckBox?.IsChecked = _userPreferences.CheckForUpdate;
+        SettingsOverlay_MaxDegreeOfParallelismTextBox?.Text = RuntimeSettings.MaxDegreeOfParallelism.ToString();
+        SettingsOverlay_CheckForUpdateCheckBox?.IsChecked = UserPreferences.CheckForUpdate;
         if (SettingsOverlay_UpdateChannelComboBox != null)
         {
             SettingsOverlay_UpdateChannelComboBox.SelectedIndex = -1;
-            SettingsOverlay_UpdateChannelComboBox.SelectedIndex = (int)_userPreferences.UpdateChannel;
+            SettingsOverlay_UpdateChannelComboBox.SelectedIndex = (int)UserPreferences.UpdateChannel;
         }
     }
     private async Task SettingsOverlay_ApplySettingsValues(bool checkDataCopy = true, bool reloadWindow = true)
@@ -137,7 +134,7 @@ public partial class MainWindow
 
         ImageService.SetThumbnailCompressionMaxEdge(userPreferences.ThumbnailCompressionMaxEdge);
 
-        _userPreferences = userPreferences;
+        _userPreferences.Update(userPreferences);
         AvatarExplorer.SetRuntimeSettings(runtimeSettings);
 
         SettingsOverlay_ApplyPreferenceSettingsToUi(reloadWindow);
@@ -193,10 +190,10 @@ public partial class MainWindow
 
     private void SettingsOverlay_ApplyPreferenceSettingsToUi(bool reloadWindow = true)
     {
-        SettingsOverlay_SetApplicationTheme(Application.Current, _userPreferences.Theme);
-        SettingsOverlay_SetBackground(_userPreferences.Theme);
-        SettingsOverlay_ApplyBackgroundImage(_userPreferences);
-        SettingsOverlay_ApplyLanguage(_userPreferences.Language, reloadWindow);
+        SettingsOverlay_SetApplicationTheme(Application.Current, UserPreferences.Theme);
+        SettingsOverlay_SetBackground(UserPreferences.Theme);
+        SettingsOverlay_ApplyBackgroundImage(UserPreferences);
+        SettingsOverlay_ApplyLanguage(UserPreferences.Language, reloadWindow);
     }
     private void SettingsOverlay_SetApplicationTheme(Application? application, Theme theme)
     {
@@ -289,7 +286,7 @@ public partial class MainWindow
 
         // 適用時は自動で保存する
         AvatarExplorer.SaveRuntimeSettings();
-        JsonFileManager<UserPreferences>.Save(_userPreferences, SystemPath.UserPreferencesFilePath);
+        _userPreferences.Save();
 
         Main_ReloadCurrentWindow();
     }
@@ -419,8 +416,8 @@ public partial class MainWindow
 
         if (File.Exists(userPreferencesFilePath))
         {
-            _userPreferences = JsonFileManager<UserPreferences>.Load(userPreferencesFilePath) ?? new();
-            JsonFileManager<UserPreferences>.Save(_userPreferences, SystemPath.UserPreferencesFilePath);
+            _userPreferences.Load(userPreferencesFilePath);
+            _userPreferences.Save();
         }
 
         SettingsOverlay_SetUiValueFromCurrentSettings();

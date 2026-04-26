@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
 using Avalonia.Interactivity;
-using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Services.Utilities;
@@ -18,7 +16,7 @@ public partial class MainWindow
         _initialSetupOverlay_tcs?.TrySetResult(false);
         _initialSetupOverlay_tcs = new();
 
-        InitialSetupOverlay_LanguageComboBox.SelectedIndex = _userPreferences.Language;
+        InitialSetupOverlay_LanguageComboBox.SelectedIndex = UserPreferences.Language;
         InitialSetupOverlay_ItemsFolderPathTextBox.Text = RuntimeSettings.DataRootDirectory;
 
         InitialSetupOverlay.IsVisible = true;
@@ -33,12 +31,12 @@ public partial class MainWindow
 
         if (InitialSetupOverlay_LanguageComboBox != null)
         {
-            _userPreferences = _userPreferences with
+            _userPreferences.Update(UserPreferences with
             {
                 Language = InitialSetupOverlay_LanguageComboBox?.SelectedIndex ?? 0
-            };
+            });
 
-            SettingsOverlay_ApplyLanguage(_userPreferences.Language);
+            SettingsOverlay_ApplyLanguage(UserPreferences.Language);
         }
     }
 
@@ -60,7 +58,7 @@ public partial class MainWindow
 
     private void InitialSetupOverlay_OK_Click(object? sender, RoutedEventArgs e)
     {
-        JsonFileManager<UserPreferences>.Save(_userPreferences, SystemPath.UserPreferencesFilePath);
+        _userPreferences.Save();
         AvatarExplorer.SaveRuntimeSettings();
 
         InitialSetupOverlay.IsVisible = false;

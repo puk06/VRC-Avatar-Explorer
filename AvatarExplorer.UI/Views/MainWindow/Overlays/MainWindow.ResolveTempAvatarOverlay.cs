@@ -45,7 +45,7 @@ public partial class MainWindow
         
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
-            ItemButtonFactory.AddItemButton(ResolveTempAvatarOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, _userPreferences, onClick: ResolveTempAvatarOverlay_ItemButton_Click);
+            ItemButtonFactory.AddItemButton(ResolveTempAvatarOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: ResolveTempAvatarOverlay_ItemButton_Click);
         }
     }
 

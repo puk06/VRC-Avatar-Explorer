@@ -35,7 +35,9 @@ public class AvatarExplorerApp
 
     private readonly SelectionState _selectionState = new();
     private readonly Dictionary<ItemTagStates, Func<SelectionNode, ImmutableArray<ItemCountInfo>>> _stateHandlers;
-    private RuntimeSettings _runtimeSettings = new();
+
+    private readonly SettingsManager<RuntimeSettings> _runtimeSettings = new(SystemPath.RuntimeSettingsFilePath);
+    private RuntimeSettings RuntimeSettings => _runtimeSettings.Settings;
 
     private AvatarExplorerApp()
     {
@@ -119,7 +121,7 @@ public class AvatarExplorerApp
     public void LoadRuntimeSettings(string? path = null)
     {
         string loadPath = path ?? SystemPath.RuntimeSettingsFilePath;
-        _runtimeSettings = JsonFileManager<RuntimeSettings>.Load(loadPath) ?? new();
+        _runtimeSettings.Load(loadPath);
     }
     #endregion
 
@@ -173,7 +175,7 @@ public class AvatarExplorerApp
     #endregion
 
     #region Get API
-    public ImmutableArray<ItemCountInfo> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false) => ItemAvatarAggregator.Aggregate(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _tempAvatarsDatabaseManager.Items, _runtimeSettings, includeCommonAvatar, includeTempAvatar);
+    public ImmutableArray<ItemCountInfo> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false) => ItemAvatarAggregator.Aggregate(_itemDatabaseManager.Items, _commonAvatarDatabaseManager.Items, _tempAvatarsDatabaseManager.Items, RuntimeSettings, includeCommonAvatar, includeTempAvatar);
     public ImmutableArray<ItemCountInfo> GetAuthors() => ItemAuthorAggregator.Aggregate(_itemDatabaseManager.Items);
     public ImmutableArray<ItemCountInfo> GetCategories(bool includeEmptyCategory = false, bool includeAllCategory = false) => ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items, includeEmptyCategory, includeAllCategory);
 
@@ -193,7 +195,7 @@ public class AvatarExplorerApp
         if (current == null)
         {
             return _itemDatabaseManager.Items
-                .GetSortedItems(_runtimeSettings)
+                .GetSortedItems(RuntimeSettings)
                 .Select(i => new ItemCountInfo(i, 0))
                 .ToImmutableArray();
         }
@@ -241,7 +243,7 @@ public class AvatarExplorerApp
     private ImmutableArray<ItemCountInfo> HandleRootAvatar(SelectionNode selectionNode)
     {
         string avatarId = selectionNode.Key;
-        return ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items.Where(i => AvatarStatusResolver.Resolve(i, avatarId, _commonAvatarDatabaseManager.Items, _runtimeSettings.TreatEmptySupportedAvatarAsNone).IsSupportedOrCommon));
+        return ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items.Where(i => AvatarStatusResolver.Resolve(i, avatarId, _commonAvatarDatabaseManager.Items, RuntimeSettings.TreatEmptySupportedAvatarAsNone).IsSupportedOrCommon));
     }
     private ImmutableArray<ItemCountInfo> HandleRootAuthor(SelectionNode selectionNode)
     {
@@ -253,7 +255,7 @@ public class AvatarExplorerApp
         string category = selectionNode.Key;
         return _itemDatabaseManager.Items
             .Where(i => i.IsCategoryMatch(category))
-            .GetSortedItems(_runtimeSettings)
+            .GetSortedItems(RuntimeSettings)
             .Select(i => new ItemCountInfo(i, 0))
             .ToImmutableArray();
     }
@@ -270,21 +272,21 @@ public class AvatarExplorerApp
             {
                 if (!item.IsCategoryMatch(selectionNode.Key)) continue;
 
-                AvatarStatus avatarStatus = AvatarStatusResolver.Resolve(item, rootSelectionNode.Key, _commonAvatarDatabaseManager.Items, _runtimeSettings.TreatEmptySupportedAvatarAsNone);
+                AvatarStatus avatarStatus = AvatarStatusResolver.Resolve(item, rootSelectionNode.Key, _commonAvatarDatabaseManager.Items, RuntimeSettings.TreatEmptySupportedAvatarAsNone);
                 if (!avatarStatus.IsSupportedOrCommon) continue;
 
                 filteredResult.Add(new ItemCountInfo(item, 0, avatarStatus.IsOnlyCommon ? [avatarStatus.CommonAvatarName] : null));
             }
 
             return filteredResult
-                .GetSortedItemsFromCountInfo(_runtimeSettings)
+                .GetSortedItemsFromCountInfo(RuntimeSettings)
                 .ToImmutableArray();
         }
         else if (rootSelectionNode.State == ItemTagStates.RootAuthor)
         {
             return _itemDatabaseManager.Items
                 .Where(i => i.IsCategoryMatch(selectionNode.Key) && i.Author == rootSelectionNode.Key)
-                .GetSortedItems(_runtimeSettings)
+                .GetSortedItems(RuntimeSettings)
                 .Select(i => new ItemCountInfo(i, 0))
                 .ToImmutableArray();
         }
@@ -296,7 +298,7 @@ public class AvatarExplorerApp
         Item? item = GetItemById(selectionNode.Key);
         if (item == null) return [];
 
-        return GetCategoryItemsFromPathInternal(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath));
+        return GetCategoryItemsFromPathInternal(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
     }
     private ImmutableArray<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
     {
@@ -306,7 +308,7 @@ public class AvatarExplorerApp
         Item? item = GetItemById(fileSelectionNode.Key);
         if (item == null) return [];
         
-        return GetFilesFromPathInternal(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath), selectionNode.Key);
+        return GetFilesFromPathInternal(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), selectionNode.Key);
     }
     #endregion
 
@@ -413,7 +415,7 @@ public class AvatarExplorerApp
         return result.ToImmutableArray();
     }
 
-    public RuntimeSettings GetRuntimeSettings() => _runtimeSettings;
+    public RuntimeSettings GetRuntimeSettings() => RuntimeSettings;
 
     public string GetSearchIndexByItemId(string itemId)
     {
@@ -427,10 +429,10 @@ public class AvatarExplorerApp
     #region Set API
     public void SetRuntimeSettings(RuntimeSettings runtimeSettings)
     {
-        _runtimeSettings = runtimeSettings;
+        _runtimeSettings.Update(runtimeSettings);
 
-        _backupManager.SetAutoBackupPath(_runtimeSettings.AutoBackupRootDirectory);
-        _backupManager.SetAutoBackupInterval(_runtimeSettings.AutoBackupInterval);
+        _backupManager.SetAutoBackupPath(RuntimeSettings.AutoBackupRootDirectory);
+        _backupManager.SetAutoBackupInterval(RuntimeSettings.AutoBackupInterval);
     }
     #endregion
 
@@ -487,7 +489,7 @@ public class AvatarExplorerApp
     }
     public async Task<ErrorOr<ItemCreationResult>> AddItem(ItemCreationContext itemCreationContext)
     {
-        ErrorOr<ItemCreationResult> itemCreationResult = await ItemCreator.FromItemCreationContext(itemCreationContext, _runtimeSettings);
+        ErrorOr<ItemCreationResult> itemCreationResult = await ItemCreator.FromItemCreationContext(itemCreationContext, RuntimeSettings);
         if (itemCreationResult.IsError) return Error.Failure(description: itemCreationResult.Errors.ToErrorString());
 
         if (itemCreationResult.Value.Item == null) return itemCreationResult;
@@ -508,7 +510,7 @@ public class AvatarExplorerApp
         Item? item = GetItemById(itemId);
         if (item == null) return Error.NotFound(description: "Item not found.");
 
-        ExtractResult extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath), paths, _runtimeSettings);
+        ExtractResult extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), paths, RuntimeSettings);
 
         UpdateItemUpdatedDate(itemId);
         SaveItemDatabase();
@@ -659,7 +661,7 @@ public class AvatarExplorerApp
         if (removeAssetData)
         {
             Item? item = GetItemById(id);
-            if (item != null) FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(_runtimeSettings.DataRootDirectory, item.ItemPath));
+            if (item != null) FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
         }
 
         bool removed = _itemDatabaseManager.Remove(id);
@@ -746,7 +748,7 @@ public class AvatarExplorerApp
             CommonAvatars = _commonAvatarDatabaseManager.Items,
             TempAvatars = _tempAvatarsDatabaseManager.Items,
             SearchIndexDictionary = _itemSearchIndexDictionary,
-            RuntimeSettings = _runtimeSettings
+            RuntimeSettings = RuntimeSettings
         };
 
         return ItemSearchService.ExecuteSearch(searchContext, searchFilter);
@@ -754,7 +756,7 @@ public class AvatarExplorerApp
     #endregion
 
     #region Save API
-    public void SaveRuntimeSettings() => JsonFileManager<RuntimeSettings>.Save(_runtimeSettings, SystemPath.RuntimeSettingsFilePath);
+    public void SaveRuntimeSettings() => _runtimeSettings.Save();
     #endregion
 
     #region Data Importer API
@@ -766,7 +768,7 @@ public class AvatarExplorerApp
             DataFolderPath = dataFolderPath,
             LocalizedItemTypesMapping = localizedItemTypesMapping,
             CopyAssetData = copyAssetData,
-            RuntimeSettings = _runtimeSettings,
+            RuntimeSettings = RuntimeSettings,
             ReportProgress = reportProgress
         };
 
@@ -806,7 +808,7 @@ public class AvatarExplorerApp
             CommonAvatars = _commonAvatarDatabaseManager.Items,
             TempAvatars = _tempAvatarsDatabaseManager.Items,
             LocalizedItemTypesMapping = localizedItemTypesMapping,
-            RuntimeSettings = _runtimeSettings
+            RuntimeSettings = RuntimeSettings
         };
 
         ExportRequest exportRequest = new()
@@ -851,7 +853,7 @@ public class AvatarExplorerApp
 
     #region Backup API
     private readonly BackupManager _backupManager = new();
-    public void StartAutoBackup() => _backupManager.StartAutoBackup(_runtimeSettings.AutoBackupInterval, _runtimeSettings.AutoBackupRootDirectory); // minutes
+    public void StartAutoBackup() => _backupManager.StartAutoBackup(RuntimeSettings.AutoBackupInterval, RuntimeSettings.AutoBackupRootDirectory); // minutes
     public async Task StopAutoBackup() => await _backupManager.StopAutoBackup();
     public async Task<ErrorOr<Success>> ExecuteBackup(string path) => await _backupManager.ExecuteBackup(path);
     #endregion

@@ -10,6 +10,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Data.Links;
+using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
@@ -48,8 +49,8 @@ public partial class MainWindow : Window
     private bool _main_isAdministratorMode = false;
     private bool _main_isThumbnailCacheWarmupRunning = false;
 
-    private UserPreferences _userPreferences = new();
-    private int ItemsPerPage => _userPreferences.ItemsPerPage;
+    private readonly SettingsManager<UserPreferences> _userPreferences = new(SystemPath.UserPreferencesFilePath);
+    private UserPreferences UserPreferences => _userPreferences.Settings;
 
     private static AvatarExplorerApp AvatarExplorer => AvatarExplorerApp.Instance;
     private static RuntimeSettings RuntimeSettings => AvatarExplorer.GetRuntimeSettings();
@@ -111,7 +112,7 @@ public partial class MainWindow : Window
             Main_CheckAdministratorMode();
         }
 
-        if (_userPreferences.CheckForUpdate) await UpdateDialogOverlay_CheckAsync(_userPreferences.UpdateChannel);
+        if (UserPreferences.CheckForUpdate) await UpdateDialogOverlay_CheckAsync(UserPreferences.UpdateChannel);
     }
 
     private async Task<ErrorOr<Success>> Main_Initialize()
@@ -250,10 +251,10 @@ public partial class MainWindow : Window
 
         int currentPage = _main_pageManager.GetPage(customState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
 
-        foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage) : items)
+        foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
         {
             ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
-            Button itemButton = ItemButtonFactory.AddItemButton(Main_LeftPanel, new UISelectableItem(itemCountInfo).SetState(customState), RuntimeSettings, _userPreferences, itemContextMenu, LeftPanel_ItemButton_Click);
+            Button itemButton = ItemButtonFactory.AddItemButton(Main_LeftPanel, new UISelectableItem(itemCountInfo).SetState(customState), RuntimeSettings, UserPreferences, itemContextMenu, LeftPanel_ItemButton_Click);
 
             // アイテム(アバター)の場合はD&Dイベントを登録してあげる
             if (StateFlagUtils.IsDraggableState(customState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
@@ -262,7 +263,7 @@ public partial class MainWindow : Window
         if (currentPage != -1 && items.Count != 0)
         {
             Main_LeftPanelPageInfo.Children.Clear();
-            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(customState, currentPage, ItemsPerPage, items.Count, LeftPanel_ItemButton_Click);
+            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(customState, currentPage, UserPreferences.ItemsPerPage, items.Count, LeftPanel_ItemButton_Click);
             if (pageInfoPanel != null) Main_LeftPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_LeftPanelPageInfo.Children.Clear();
@@ -315,10 +316,10 @@ public partial class MainWindow : Window
 
         int currentPage = _main_pageManager.GetPage(itemTagState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
 
-        foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage) : items)
+        foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
         {
             ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
-            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(itemCountInfo).SetState(itemTagState), RuntimeSettings, _userPreferences, itemContextMenu, RightPanel_ItemButton_Click);
+            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(itemCountInfo).SetState(itemTagState), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
 
             // アイテムの場合はD&Dイベントを登録してあげる
             if (StateFlagUtils.IsDraggableState(itemTagState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
@@ -327,7 +328,7 @@ public partial class MainWindow : Window
         if (currentPage != -1 && items.Length != 0)
         {
             Main_RightPanelPageInfo.Children.Clear();
-            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(itemTagState, currentPage, ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
+            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(itemTagState, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
             if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_RightPanelPageInfo.Children.Clear();
@@ -432,10 +433,10 @@ public partial class MainWindow : Window
 
         int currentPage = _main_pageManager.GetPage(ItemTagStates.SearchItem); // SearchItemは必ずページが存在しているため
 
-        foreach (Item item in items.Skip(currentPage * ItemsPerPage).Take(ItemsPerPage))
+        foreach (Item item in items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage))
         {
             ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(item), Main_ItemButton_ContextMenuItem_Click);
-            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(item, 0).SetState(ItemTagStates.SearchItem), RuntimeSettings, _userPreferences, itemContextMenu, RightPanel_ItemButton_Click);
+            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(item, 0).SetState(ItemTagStates.SearchItem), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
 
             // D&Dイベントを登録してあげる
             itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
@@ -444,7 +445,7 @@ public partial class MainWindow : Window
         if (items.Length != 0)
         {
             Main_RightPanelPageInfo.Children.Clear();
-            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(ItemTagStates.SearchItem, currentPage, ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
+            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(ItemTagStates.SearchItem, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
             if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_RightPanelPageInfo.Children.Clear();

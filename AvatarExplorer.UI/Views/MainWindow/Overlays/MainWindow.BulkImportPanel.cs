@@ -67,7 +67,7 @@ public partial class MainWindow
                 Parent = SidePanel_BulkImportPanel,
                 Item = new UISelectableItem(new ItemCountInfo(item, 0)),
                 RuntimeSettings = RuntimeSettings,
-                UserPreferences = _userPreferences,
+                UserPreferences = UserPreferences,
                 Id = bulkImportItem.Id,
                 SelectedFilePath = bulkImportItem.FilePath,
                 OnCopyClick = BulkImportPanel_ItemButton_Copy_Click,

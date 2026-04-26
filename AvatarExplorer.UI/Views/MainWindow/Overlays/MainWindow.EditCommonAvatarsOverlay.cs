@@ -65,7 +65,7 @@ public partial class MainWindow
 
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
-            Button button = ItemButtonFactory.AddItemButton(EditCommonAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, _userPreferences, onClick: EditCommonAvatarsOverlay_ItemButton_Click);
+            Button button = ItemButtonFactory.AddItemButton(EditCommonAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: EditCommonAvatarsOverlay_ItemButton_Click);
             if ((itemCountInfo.Item is Item item && commonAvatar.AvatarsView.Contains(item.Id)) || (itemCountInfo.Item is TempAvatar tempAvatar && commonAvatar.AvatarsView.Contains(tempAvatar.GetInternalId()))) button.Classes.Add("accentbutton");
         }
     }
