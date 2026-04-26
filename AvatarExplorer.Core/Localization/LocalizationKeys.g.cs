@@ -316,6 +316,7 @@ public static class LocalizationKey
             public const string NoFolders = "Error.Validation.NoFolders";
             public const string EmptyTitle = "Error.Validation.EmptyTitle";
             public const string EmptyAuthor = "Error.Validation.EmptyAuthor";
+            public const string NotClothingWithCommonAvatar = "Error.Validation.NotClothingWithCommonAvatar";
         }
         public const string ImportFailed = "Error.ImportFailed";
         public const string ExportFailed = "Error.ExportFailed";

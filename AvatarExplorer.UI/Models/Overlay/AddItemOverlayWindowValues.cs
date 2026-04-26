@@ -73,6 +73,7 @@ internal class AddItemOverlayWindowValues
         if (ItemPaths.Count == 0) return LocalizationKey.Error.Validation.NoFolders;
         if (string.IsNullOrEmpty(Title)) return LocalizationKey.Error.Validation.EmptyTitle;
         if (string.IsNullOrEmpty(Author)) return LocalizationKey.Error.Validation.EmptyAuthor;
+        if (ItemType != ItemType.Clothing && SupportedAvatars.Any(i => i.StartsWith(CommonAvatar.InternalPathPrefix))) return LocalizationKey.Error.Validation.NotClothingWithCommonAvatar;
 
         return string.Empty;
     }
