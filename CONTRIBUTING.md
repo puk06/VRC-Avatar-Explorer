@@ -89,6 +89,9 @@ GitHub Copilot などの AI ツールを使うことは問題ありませんが�
 
 現在の UI レイヤーでは、オーバーレイ関連の処理が MainWindow クラスに集中しています。MVVM 移行は別ブランチで進める予定のため、現時点では既存の設計に合わせて実装してください。
 
+現在のUIはWinFormsに近い設計で、コードを追うのが難しい状態です。
+別アーキテクチャへ移行するまでの間は、貢献のハードルが高いかもしれません。気になる点はIssueで知らせていただければ、こちらで対応します。
+
 #### 命名規則（暫定）
 - オーバーレイ専用のメンバーは `<Overlay名>_<メンバー名>` の形式で命名する
 - private フィールドは `_` + camelCase を使用する
@@ -187,6 +190,9 @@ Review points:
 ### Architecture note
 
 In the current UI layer, overlay-related processing is concentrated in the MainWindow class. MVVM migration will be handled in a separate branch, so implement changes in a way that follows the current design.
+
+The current UI design is close to WinForms and can be difficult to follow.
+Before we migrate to another architecture, contribution may be challenging, so please let us know via an issue and we will fix it on our side.
 
 #### Temporary naming rules
 - Members dedicated to an overlay should follow `<OverlayName>_<MemberName>`
