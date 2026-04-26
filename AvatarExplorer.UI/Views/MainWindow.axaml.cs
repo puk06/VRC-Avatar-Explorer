@@ -49,8 +49,8 @@ public partial class MainWindow : Window
     private bool _main_isAdministratorMode = false;
     private bool _main_isThumbnailCacheWarmupRunning = false;
 
-    private readonly SettingsManager<UserPreferences> _userPreferences = new(SystemPath.UserPreferencesFilePath);
-    private UserPreferences UserPreferences => _userPreferences.Settings;
+    private readonly SettingsManager<UserPreferences> _userPreferencesManager = new(SystemPath.UserPreferencesFilePath);
+    private UserPreferences UserPreferences => _userPreferencesManager.Settings;
 
     private static AvatarExplorerApp AvatarExplorer => AvatarExplorerApp.Instance;
     private static RuntimeSettings RuntimeSettings => AvatarExplorer.GetRuntimeSettings();

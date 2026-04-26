@@ -36,8 +36,8 @@ public class AvatarExplorerApp
     private readonly SelectionState _selectionState = new();
     private readonly Dictionary<ItemTagStates, Func<SelectionNode, ImmutableArray<ItemCountInfo>>> _stateHandlers;
 
-    private readonly SettingsManager<RuntimeSettings> _runtimeSettings = new(SystemPath.RuntimeSettingsFilePath);
-    private RuntimeSettings RuntimeSettings => _runtimeSettings.Settings;
+    private readonly SettingsManager<RuntimeSettings> _runtimeSettingsManager = new(SystemPath.RuntimeSettingsFilePath);
+    private RuntimeSettings RuntimeSettings => _runtimeSettingsManager.Settings;
 
     private AvatarExplorerApp()
     {
@@ -121,7 +121,7 @@ public class AvatarExplorerApp
     public void LoadRuntimeSettings(string? path = null)
     {
         string loadPath = path ?? SystemPath.RuntimeSettingsFilePath;
-        _runtimeSettings.Load(loadPath);
+        _runtimeSettingsManager.Load(loadPath);
     }
     #endregion
 
@@ -429,7 +429,7 @@ public class AvatarExplorerApp
     #region Set API
     public void SetRuntimeSettings(RuntimeSettings runtimeSettings)
     {
-        _runtimeSettings.Update(runtimeSettings);
+        _runtimeSettingsManager.Update(runtimeSettings);
 
         _backupManager.SetAutoBackupPath(RuntimeSettings.AutoBackupRootDirectory);
         _backupManager.SetAutoBackupInterval(RuntimeSettings.AutoBackupInterval);
@@ -756,7 +756,7 @@ public class AvatarExplorerApp
     #endregion
 
     #region Save API
-    public void SaveRuntimeSettings() => _runtimeSettings.Save();
+    public void SaveRuntimeSettings() => _runtimeSettingsManager.Save();
     #endregion
 
     #region Data Importer API

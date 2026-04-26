@@ -134,7 +134,7 @@ public partial class MainWindow
 
         ImageService.SetThumbnailCompressionMaxEdge(userPreferences.ThumbnailCompressionMaxEdge);
 
-        _userPreferences.Update(userPreferences);
+        _userPreferencesManager.Update(userPreferences);
         AvatarExplorer.SetRuntimeSettings(runtimeSettings);
 
         SettingsOverlay_ApplyPreferenceSettingsToUi(reloadWindow);
@@ -286,7 +286,7 @@ public partial class MainWindow
 
         // 適用時は自動で保存する
         AvatarExplorer.SaveRuntimeSettings();
-        _userPreferences.Save();
+        _userPreferencesManager.Save();
 
         Main_ReloadCurrentWindow();
     }
@@ -416,8 +416,8 @@ public partial class MainWindow
 
         if (File.Exists(userPreferencesFilePath))
         {
-            _userPreferences.Load(userPreferencesFilePath);
-            _userPreferences.Save();
+            _userPreferencesManager.Load(userPreferencesFilePath);
+            _userPreferencesManager.Save();
         }
 
         SettingsOverlay_SetUiValueFromCurrentSettings();

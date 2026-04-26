@@ -55,7 +55,7 @@ public partial class MainWindow
     }
     private void Main_InitializeUserPreferences()
     {
-        _userPreferences.Load();
+        _userPreferencesManager.Load();
         ImageService.SetThumbnailCompressionMaxEdge(UserPreferences.ThumbnailCompressionMaxEdge);
     }
     private void Main_InitializeContextMenuHandlers()

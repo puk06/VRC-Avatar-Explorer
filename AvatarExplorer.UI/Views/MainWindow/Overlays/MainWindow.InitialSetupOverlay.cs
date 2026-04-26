@@ -31,7 +31,7 @@ public partial class MainWindow
 
         if (InitialSetupOverlay_LanguageComboBox != null)
         {
-            _userPreferences.Update(UserPreferences with
+            _userPreferencesManager.Update(UserPreferences with
             {
                 Language = InitialSetupOverlay_LanguageComboBox?.SelectedIndex ?? 0
             });
@@ -58,7 +58,7 @@ public partial class MainWindow
 
     private void InitialSetupOverlay_OK_Click(object? sender, RoutedEventArgs e)
     {
-        _userPreferences.Save();
+        _userPreferencesManager.Save();
         AvatarExplorer.SaveRuntimeSettings();
 
         InitialSetupOverlay.IsVisible = false;
