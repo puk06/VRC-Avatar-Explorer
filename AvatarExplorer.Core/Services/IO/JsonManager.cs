@@ -21,7 +21,7 @@ public static class JsonManager
         {
             return JsonSerializer.Deserialize<T>(json, JsonSerializerOptions);
         }
-        catch (JsonException)
+        catch
         {
             return null;
         }
