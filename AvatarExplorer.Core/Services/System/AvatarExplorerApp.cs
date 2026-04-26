@@ -119,7 +119,7 @@ public class AvatarExplorerApp
     public void LoadRuntimeSettings(string? path = null)
     {
         string loadPath = path ?? SystemPath.RuntimeSettingsFilePath;
-        _runtimeSettings =  RuntimeSettingsService.Load(loadPath);
+        _runtimeSettings = JsonFileManager<RuntimeSettings>.Load(loadPath) ?? new();
     }
     #endregion
 
@@ -754,7 +754,7 @@ public class AvatarExplorerApp
     #endregion
 
     #region Save API
-    public void SaveRuntimeSettings() => RuntimeSettingsService.Save(_runtimeSettings);
+    public void SaveRuntimeSettings() => JsonFileManager<RuntimeSettings>.Save(_runtimeSettings, SystemPath.RuntimeSettingsFilePath);
     #endregion
 
     #region Data Importer API

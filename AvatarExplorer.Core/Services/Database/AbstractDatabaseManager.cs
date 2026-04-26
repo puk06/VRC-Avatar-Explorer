@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using AvatarExplorer.Core.Interfaces.Database;
+using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.Database;
 
@@ -11,8 +12,8 @@ internal abstract class AbstractDatabaseManager<T> : IDatabaseManager<T>
     private List<T> _items { get; set; } = new();
     public ImmutableArray<T> Items => _items.ToImmutableArray();
 
-    public void Load(string? path = null) => Update(DatabaseService<T>.Load(path ?? DatabaseFilePath));
-    public void Save() => DatabaseService<T>.Save(_items, DatabaseFilePath);
+    public void Load(string? path = null) => Update(JsonFileManager<IEnumerable<T>>.Load(path ?? DatabaseFilePath) ?? []);
+    public void Save() => JsonFileManager<IEnumerable<T>>.Save(_items, DatabaseFilePath);
     
     public void Add(T item) => _items.Add(item);
     public void AddRange(IEnumerable<T> items) => _items.AddRange(items);

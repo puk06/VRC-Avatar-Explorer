@@ -51,7 +51,7 @@ public static class FileSystemService
 
     #region Serialize / Deserialize
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { WriteIndented = true };
-    public static ErrorOr<Success> SerializeClass<T>(T value, string filePath)
+    public static ErrorOr<Success> SerializeClass<T>(T value, string filePath) where T : class
     {
         try
         {
@@ -67,18 +67,18 @@ public static class FileSystemService
             return Error.Failure(description: "Failed to serialize class.");
         }
     }
-    public static ErrorOr<T> DeserializeClass<T>(string filePath)
+    public static ErrorOr<T> DeserializeClass<T>(string filePath) where T : class
     {
         try
         {
             if (!File.Exists(filePath)) return Error.NotFound(description: $"File not found: {filePath}");
             
             string json = File.ReadAllText(filePath);
-            T? result = JsonSerializer.Deserialize<T>(json);
+            T? result = JsonSerializer.Deserialize<T>(json, JsonSerializerOptions);
             
-            if (Equals(result, default(T))) return Error.Failure(description: "deserialization result is null.");
+            if (result == null) return Error.Failure(description: "deserialization result is null.");
             
-            return result!;
+            return result;
         }
         catch (Exception ex)
         {

@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.ContextMenu;
-using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Services.Utilities;
 
 namespace AvatarExplorer.UI;
@@ -56,7 +57,7 @@ public partial class MainWindow
     }
     private void Main_InitializeUserPreferences()
     {
-        _userPreferences = UserPreferencesService.Load(SystemPath.UserPreferencesFilePath);
+        _userPreferences = JsonFileManager<UserPreferences>.Load(SystemPath.UserPreferencesFilePath) ?? new();
         ImageService.SetThumbnailCompressionMaxEdge(_userPreferences.ThumbnailCompressionMaxEdge);
     }
     private void Main_InitializeContextMenuHandlers()

@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using Avalonia.Interactivity;
+using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.UI.Localization;
-using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Services.Utilities;
 
 namespace AvatarExplorer.UI;
@@ -58,7 +60,7 @@ public partial class MainWindow
 
     private void InitialSetupOverlay_OK_Click(object? sender, RoutedEventArgs e)
     {
-        UserPreferencesService.Save(_userPreferences);
+        JsonFileManager<UserPreferences>.Save(_userPreferences, SystemPath.UserPreferencesFilePath);
         AvatarExplorer.SaveRuntimeSettings();
 
         InitialSetupOverlay.IsVisible = false;

@@ -23,7 +23,6 @@ using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
-using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ErrorOr;
 
@@ -290,7 +289,7 @@ public partial class MainWindow
 
         // 適用時は自動で保存する
         AvatarExplorer.SaveRuntimeSettings();
-        UserPreferencesService.Save(_userPreferences);
+        JsonFileManager<UserPreferences>.Save(_userPreferences, SystemPath.UserPreferencesFilePath);
 
         Main_ReloadCurrentWindow();
     }
@@ -420,8 +419,8 @@ public partial class MainWindow
 
         if (File.Exists(userPreferencesFilePath))
         {
-            _userPreferences = UserPreferencesService.Load(userPreferencesFilePath);
-            UserPreferencesService.Save(_userPreferences);
+            _userPreferences = JsonFileManager<UserPreferences>.Load(userPreferencesFilePath) ?? new();
+            JsonFileManager<UserPreferences>.Save(_userPreferences, SystemPath.UserPreferencesFilePath);
         }
 
         SettingsOverlay_SetUiValueFromCurrentSettings();
