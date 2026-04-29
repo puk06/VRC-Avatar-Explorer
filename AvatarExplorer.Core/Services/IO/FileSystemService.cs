@@ -260,7 +260,7 @@ public static class FileSystemService
 
             reportProgress?.Invoke((LocalizationKey.Processing.Unitypackage.Status.Creating, 90));
 
-            await CreateTarArchive(saveFolderPath, unitypackagePath);
+            CreateTarArchive(saveFolderPath, unitypackagePath);
 
             DeleteDirectory(saveFolderPath, true);
 
@@ -366,20 +366,20 @@ public static class FileSystemService
 
         return processedEntries;
     }
-    private static async Task CreateTarArchive(string sourceFolder, string outputTarFile)
+    private static void CreateTarArchive(string sourceFolder, string outputTarFile)
     {
         if (!Directory.Exists(sourceFolder)) throw new DirectoryNotFoundException(sourceFolder);
 
-        IWritableAsyncArchive<TarWriterOptions> archive = await TarArchive.CreateAsyncArchive();
+        using IWritableArchive<TarWriterOptions> archive = TarArchive.CreateArchive();
 
         foreach (string filePath in EnumerateFiles(sourceFolder))
         {
             string relativePath = Path.GetRelativePath(sourceFolder, filePath);
-            await archive.AddEntryAsync(relativePath, filePath);
+            archive.AddEntry(relativePath, filePath);
         }
 
         using FileStream fileStream = new(outputTarFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 1024 * 1024, FileOptions.SequentialScan);
-        await archive.SaveToAsync(fileStream, new TarWriterOptions(CompressionType.None));
+        archive.SaveTo(fileStream, new TarWriterOptions(CompressionType.None));
     }
     #endregion
 
