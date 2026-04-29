@@ -332,42 +332,53 @@ public class AvatarExplorerApp
             return [];
         }
 
-        List<ItemFileCategoryDefinition> categoryDefinitions = Enum.GetValues<ItemFileCategoryType>()
-            .Select(c => new ItemFileCategoryDefinition()
-            {
-                FileCategory = c,
-                ExtensionFilters = c.GetExtensionFilters(),
-                FilenameFilters = c.GetFileNameFilters(),
-                Item = new FileCategoryItem(c)
-            })
-            .Where(x => x.ExtensionFilters != null)
-            .ToList();
+        IEnumerable<ItemFileCategoryType> allCategories = Enum.GetValues<ItemFileCategoryType>();
+        IEnumerable<ItemFileCategoryType> validCategories = allCategories.Where(c => !string.IsNullOrEmpty(c.GetLocalizationKey()));
 
-        List<string> unknownFiles = new();
+        Dictionary<ItemFileCategoryType, List<string>> buckets = new();
+        foreach (var c in validCategories) buckets[c] = new List<string>();
+
+        // 拡張子フィルタを持つカテゴリのみを事前抽出（Unknown は別扱い）
+        IEnumerable<ItemFileCategoryType> categoriesWithFilters = validCategories
+            .Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null);
 
         foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
         {
             string extension = Path.GetExtension(file);
             string fileName = Path.GetFileNameWithoutExtension(file);
-            ItemFileCategoryDefinition? matched = categoryDefinitions.FirstOrDefault(def => def.ExtensionFilters!.Contains(extension) && (def.FilenameFilters == null || def.FilenameFilters.Any(f => fileName.Contains(f, StringComparison.CurrentCultureIgnoreCase))));
 
-            if (matched != null) matched.Item.FilePaths.Add(file);
-            else unknownFiles.Add(file);
+            bool matchedAny = false;
+
+            foreach (var c in categoriesWithFilters)
+            {
+                string[]? exts = c.GetExtensionFilters();
+                string[]? names = c.GetFileNameFilters();
+                if (exts != null && exts.Contains(extension) && (names == null || names.Any(f => fileName.Contains(f, StringComparison.CurrentCultureIgnoreCase))))
+                {
+                    buckets[c].Add(Path.GetFullPath(file));
+                    matchedAny = true;
+                }
+            }
+
+            // Unknown が有効なら Unknown バケットへ
+            if (!matchedAny && validCategories.Contains(ItemFileCategoryType.Unknown))
+            {
+                buckets[ItemFileCategoryType.Unknown].Add(Path.GetFullPath(file));
+            }
         }
 
-        List<ItemCountInfo> result = categoryDefinitions
-            .Where(x => x.Item.FilePaths.Count > 0)
-            .Select(x => new ItemCountInfo(x.Item, x.Item.FilePaths.Count))
-            .ToList();
-
-        if (unknownFiles.Count > 0)
+        var resultBuilder = ImmutableArray.CreateBuilder<ItemCountInfo>();
+        foreach (var kv in buckets)
         {
-            FileCategoryItem unknownItem = new(ItemFileCategoryType.Unknown);
-            unknownItem.FilePaths.AddRange(unknownFiles);
-            result.Add(new ItemCountInfo(unknownItem, unknownFiles.Count));
+            if (kv.Value.Count == 0) continue;
+
+            FileCategoryItem item = new(kv.Key);
+            item.FilePaths.AddRange(kv.Value);
+
+            resultBuilder.Add(new ItemCountInfo(item, kv.Value.Count));
         }
 
-        return result.ToImmutableArray();
+        return resultBuilder.ToImmutable();
     }
     private static ImmutableArray<ItemCountInfo> GetFilesFromPathInternal(string itemPath, string category)
     {
@@ -384,35 +395,44 @@ public class AvatarExplorerApp
             ErrorManager.Instance.PostInternalError(string.Format("Directory not found: '{0}'.", itemPath));
             return [];
         }
-        
-        List<ItemCountInfo> result = new();
 
-        foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+        var resultBuilder = ImmutableArray.CreateBuilder<ItemCountInfo>();
+
+        if (targetCategory == ItemFileCategoryType.Unknown)
         {
-            bool isMatch;
+            var categoriesWithFilters = Enum.GetValues<ItemFileCategoryType>()
+                .Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null);
 
-            if (targetCategory == ItemFileCategoryType.Unknown)
-            {
-                isMatch = !Enum.GetValues<ItemFileCategoryType>()
-                    .Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null)
-                    .Any(c =>
-                    {
-                        string[]? exts = c.GetExtensionFilters();
-                        string[]? names = c.GetFileNameFilters();
-                        return exts!.Contains(Path.GetExtension(file)) && (names == null || names.Any(f => Path.GetFileNameWithoutExtension(file).Contains(f, StringComparison.CurrentCultureIgnoreCase)));
-                    });
-            }
-            else
+            foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
             {
                 string extension = Path.GetExtension(file);
                 string fileName = Path.GetFileNameWithoutExtension(file);
-                isMatch = extensionFilters != null && extensionFilters.Contains(extension) && (fileNameFilters == null || fileNameFilters.Any(f => fileName.Contains(f, StringComparison.CurrentCultureIgnoreCase)));
-            }
 
-            if (isMatch) result.Add(new ItemCountInfo(new ItemFile(Path.GetFullPath(file)), 0));
+                bool matched = categoriesWithFilters.Any(c =>
+                {
+                    string[]? exts = c.GetExtensionFilters();
+                    string[]? names = c.GetFileNameFilters();
+                    return exts != null && exts.Contains(extension) && (names == null || names.Any(f => fileName.Contains(f, StringComparison.CurrentCultureIgnoreCase)));
+                });
+
+                if (!matched) resultBuilder.Add(new ItemCountInfo(new ItemFile(Path.GetFullPath(file)), 0));
+            }
+        }
+        else
+        {
+            foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+            {
+                string extension = Path.GetExtension(file);
+                string fileName = Path.GetFileNameWithoutExtension(file);
+
+                if (extensionFilters != null && extensionFilters.Contains(extension) && (fileNameFilters == null || fileNameFilters.Any(f => fileName.Contains(f, StringComparison.CurrentCultureIgnoreCase))))
+                {
+                    resultBuilder.Add(new ItemCountInfo(new ItemFile(Path.GetFullPath(file)), 0));
+                }
+            }
         }
 
-        return result.ToImmutableArray();
+        return resultBuilder.ToImmutable();
     }
 
     public RuntimeSettings GetRuntimeSettings() => RuntimeSettings;
