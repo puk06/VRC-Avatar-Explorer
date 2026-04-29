@@ -2,7 +2,6 @@ using System.Collections.Concurrent;
 using System.Formats.Tar;
 using System.IO.Compression;
 using System.Text;
-using System.Text.Json;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;

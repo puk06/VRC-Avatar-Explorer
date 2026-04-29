@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Models.Items;

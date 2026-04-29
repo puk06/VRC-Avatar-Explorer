@@ -1,7 +1,6 @@
 using System.Text;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
