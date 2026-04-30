@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Data.Links;
@@ -113,6 +115,22 @@ public partial class MainWindow : Window
         }
 
         if (UserPreferences.CheckForUpdate) await UpdateDialogOverlay_CheckAsync(UserPreferences.UpdateChannel);
+
+        await Main_LoadApplicationArgsAsync();
+    }
+
+    private async Task Main_LoadApplicationArgsAsync()
+    {
+        if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to get application lifetime for loading application arguments.");
+            return;
+        }
+
+        string[]? args = desktop.Args;
+        if (args == null || args.Length == 0) return;
+
+        await SetApplicationArgs(args);
     }
 
     private async Task<ErrorOr<Success>> Main_Initialize()
