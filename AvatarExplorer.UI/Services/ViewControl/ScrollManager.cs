@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using Avalonia;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
@@ -7,7 +7,7 @@ namespace AvatarExplorer.UI.Services.ViewControl;
 
 internal class ScrollManager(Vector defaultValue) : CacheManager<ItemTagStates, Vector>(defaultValue)
 {
-    private static readonly ItemTagStates[] _supportedScrollStates =
+    private static readonly HashSet<ItemTagStates> _supportedScrollStates =
     [
         ItemTagStates.SearchItem,
         ItemTagStates.RootItem,
