@@ -650,7 +650,7 @@ public class AvatarExplorerApp
 
     #region Booth API
     private DateTime _lastBoothApiGetTime;
-    public bool IsApiCooldownNow => _lastBoothApiGetTime.AddSeconds(5) > DateTime.Now;
+    public bool IsApiCooldownNow => _lastBoothApiGetTime.AddSeconds(2) > DateTime.Now;
     public async Task<ErrorOr<BoothItem>> GetBoothItem(string boothUrl)
     {
         if (string.IsNullOrEmpty(boothUrl)) return Error.Failure(description: "Invalid Url.");
