@@ -346,6 +346,7 @@
     "SidePanel.AdvancedSearch": "Advanced Search",
     "SidePanel.BulkImport": "Bulk Import",
     "SidePanel.BulkImportPreset": "Bulk Import Preset",
+    "SidePanel.ItemDetails": "Item Details",
 
     "AdvancedSearch.OrSearch": "Overall OR Search",
     "AdvancedSearch.CategoryOrSearch": "Category OR Search",

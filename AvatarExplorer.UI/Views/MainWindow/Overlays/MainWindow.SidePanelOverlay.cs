@@ -11,6 +11,7 @@ public partial class MainWindow
         SidePanel_AdvancedSearchTab.AddHandler(PointerPressedEvent, SidePanel_Tab_Click, RoutingStrategies.Tunnel);
         SidePanel_BulkImportPanelTab.AddHandler(PointerPressedEvent, SidePanel_Tab_Click, RoutingStrategies.Tunnel);
         SidePanel_BulkImportPresetPanelTab.AddHandler(PointerPressedEvent, SidePanel_Tab_Click, RoutingStrategies.Tunnel);
+        SidePanel_ItemDetailsTab.AddHandler(PointerPressedEvent, SidePanel_Tab_Click, RoutingStrategies.Tunnel);
     }
     private void SidePanel_Show()
     {

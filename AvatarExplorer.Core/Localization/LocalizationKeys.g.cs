@@ -600,6 +600,7 @@ public static class LocalizationKey
         public const string AdvancedSearch = "SidePanel.AdvancedSearch";
         public const string BulkImport = "SidePanel.BulkImport";
         public const string BulkImportPreset = "SidePanel.BulkImportPreset";
+        public const string ItemDetails = "SidePanel.ItemDetails";
     }
     public static class AdvancedSearch
     {

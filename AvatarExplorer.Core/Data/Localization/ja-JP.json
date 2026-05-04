@@ -346,6 +346,7 @@
     "SidePanel.AdvancedSearch": "詳細検索",
     "SidePanel.BulkImport": "一括インポート",
     "SidePanel.BulkImportPreset": "一括インポートプリセット",
+    "SidePanel.ItemDetails": "アイテム詳細",
 
     "AdvancedSearch.OrSearch": "全体OR検索",
     "AdvancedSearch.CategoryOrSearch": "カテゴリOR検索",

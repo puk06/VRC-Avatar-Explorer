@@ -117,6 +117,8 @@ public partial class MainWindow : Window
         if (UserPreferences.CheckForUpdate) await UpdateDialogOverlay_CheckAsync(UserPreferences.UpdateChannel);
 
         await Main_LoadApplicationArgsAsync();
+
+        SidePanel_RenderItemDetails(); // 詳細パネルを更新
     }
 
     private async Task Main_LoadApplicationArgsAsync()
@@ -298,6 +300,7 @@ public partial class MainWindow : Window
         {
             AvatarExplorer.SelectClear();
             AvatarExplorer.Select(itemTagInfo.State, itemTagInfo.Value);
+            SidePanel_RenderItemDetails(); // 詳細パネルを更新
             Main_CheckPageStates();
             Main_CheckScrollStates();
 
@@ -372,6 +375,8 @@ public partial class MainWindow : Window
             else
             {
                 AvatarExplorer.Select(itemTagInfo.State, itemTagInfo.Value);
+                SidePanel_RenderItemDetails(); // 詳細パネルを更新
+
                 Main_CheckPageStates();
                 Main_CheckScrollStates();
                 _main_scrollManager.Add(itemTagInfo.State, Main_RightPanelScrollViewer.Offset); // 次の画面に行くため、今のStateのスクロール位置を保存する
@@ -515,6 +520,8 @@ public partial class MainWindow : Window
 
         if (isCurrentSearchNode) Main_ExecuteSearchItems();
         else Main_RenderRightPanel();
+
+        SidePanel_RenderItemDetails(); // 詳細パネルを更新
     }
     private void Main_ExecuteHome()
     {
@@ -522,6 +529,8 @@ public partial class MainWindow : Window
         _main_pageManager.Clear();
         _main_scrollManager.Clear();
         Main_RenderRightPanel();
+
+        SidePanel_RenderItemDetails(); // 詳細パネルを更新
     }
     private void Main_ReloadCurrentWindow()
     {
