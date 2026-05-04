@@ -1,23 +1,11 @@
-using System.Collections.Generic;
 using System.Linq;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.UI.Services.ViewControl;
 
-internal class PageManager
+internal class PageManager(int defaultValue) : CacheManager<ItemTagStates, int>(defaultValue)
 {
-    private readonly Dictionary<ItemTagStates, int> _currentPageStates = new()
-    {
-        { ItemTagStates.SearchItem, 0 },
-        { ItemTagStates.RootAvatar, 0 },
-        { ItemTagStates.RootAuthor, 0 },
-        { ItemTagStates.RootCategory, 0 },
-        { ItemTagStates.RootItem, 0 },
-        { ItemTagStates.RootSelectedCategory, 0 },
-        { ItemTagStates.RootSelectedItem, 0 },
-        { ItemTagStates.ItemFileCategoryOpen, 0 }
-    };
-
     private static readonly ItemTagStates[] _leftPanelStates =
     [
         ItemTagStates.RootAvatar,
@@ -25,26 +13,14 @@ internal class PageManager
         ItemTagStates.RootCategory
     ];
 
-    internal bool IsPageSupported(ItemTagStates itemTagState) => _currentPageStates.ContainsKey(itemTagState);
-    internal bool IsStateResetSupported(ItemTagStates itemTagState) => !_leftPanelStates.Contains(itemTagState);
-
-    internal int GetPage(ItemTagStates itemTagState) => IsPageSupported(itemTagState) ? _currentPageStates[itemTagState] : -1;
-    internal void SetPage(ItemTagStates itemTagState, int value)
+    public override bool Remove(ItemTagStates key)
     {
-        if (!IsPageSupported(itemTagState)) return;
-        _currentPageStates[itemTagState] = value;
+        if (_leftPanelStates.Contains(key)) return false; // 左パネルのページ情報は消さないようにする
+        return base.Remove(key);
     }
 
-    internal void ResetPageValue(ItemTagStates itemTagState)
+    public override void Clear()
     {
-        if (!IsPageSupported(itemTagState) || !IsStateResetSupported(itemTagState)) return;
-        SetPage(itemTagState, 0);
+        foreach (var state in GetKeys()) Remove(state);
     }
-    internal void ResetAllPageValues()
-    {
-        foreach (ItemTagStates key in GetKeys().Where(IsStateResetSupported))
-            ResetPageValue(key);
-    }
-
-    internal ItemTagStates[] GetKeys() => _currentPageStates.Keys.ToArray();
 }

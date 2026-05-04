@@ -1,42 +1,25 @@
-using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.UI.Services.ViewControl;
 
-internal class ScrollManager
+internal class ScrollManager(Vector defaultValue) : CacheManager<ItemTagStates, Vector>(defaultValue)
 {
-    private static readonly Vector Empty = new();
-    private readonly Dictionary<ItemTagStates, Vector> _currentScrollValues = new()
-    {
-        { ItemTagStates.SearchItem, Empty },
-        { ItemTagStates.RootItem, Empty },
-        { ItemTagStates.RootSelectedCategory, Empty },
-        { ItemTagStates.RootSelectedItem, Empty },
-        { ItemTagStates.ItemFileCategory, Empty },
-        { ItemTagStates.ItemFileCategoryOpen, Empty }
-    };
+    private static readonly ItemTagStates[] _supportedScrollStates =
+    [
+        ItemTagStates.SearchItem,
+        ItemTagStates.RootItem,
+        ItemTagStates.RootSelectedCategory,
+        ItemTagStates.RootSelectedItem,
+        ItemTagStates.ItemFileCategory,
+        ItemTagStates.ItemFileCategoryOpen
+    ];
 
-    internal bool IsScrollSupported(ItemTagStates itemTagState) => _currentScrollValues.ContainsKey(itemTagState);
-
-    internal Vector GetScrollValue(ItemTagStates itemTagState) => IsScrollSupported(itemTagState) ? _currentScrollValues[itemTagState] : new();
-    internal void SetScroll(ItemTagStates itemTagState, Vector value)
+    public override void Add(ItemTagStates key, Vector value)
     {
-        if (!IsScrollSupported(itemTagState)) return;
-        _currentScrollValues[itemTagState] = value;
+        if (!_supportedScrollStates.Contains(key)) return;
+        base.Add(key, value);
     }
-
-    internal void ResetScrollValue(ItemTagStates itemTagState)
-    {
-        if (!IsScrollSupported(itemTagState)) return;
-        SetScroll(itemTagState, Empty);
-    }
-    internal void ResetAllScrollValues()
-    {
-        foreach (ItemTagStates key in GetKeys())
-            ResetScrollValue(key);
-    }
-
-    internal ItemTagStates[] GetKeys() => _currentScrollValues.Keys.ToArray();
 }
