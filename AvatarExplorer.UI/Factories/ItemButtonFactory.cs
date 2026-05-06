@@ -64,6 +64,8 @@ internal static class ItemButtonFactory
 
         if (isFallbackIcon && item.ImageFileName == SystemIconKey.None) return null; // アイコンがなく、アイコンタイプも指定されていない場合はアイコンなし
 
+        Border iconBorder = new() { CornerRadius = new(8), ClipToBounds = true, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Top };
+
         Image itemIcon = new()
         {
             Source = itemIconBitmap ?? ImageService.Get(SystemIconKey.FileIcon),
@@ -72,6 +74,11 @@ internal static class ItemButtonFactory
             Stretch = Stretch.Fill,
             VerticalAlignment = VerticalAlignment.Top
         };
+        iconBorder.Child = itemIcon;
+
+        iconBorder.Width = itemIcon.Width;
+        iconBorder.Height = itemIcon.Height;
+
         BitmapInterpolationMode bitmapInterpolationMode = userPreferences.AntiAliasingMode.GetInterpolationMode();
         if (bitmapInterpolationMode != BitmapInterpolationMode.None && bitmapInterpolationMode != BitmapInterpolationMode.Unspecified) RenderOptions.SetBitmapInterpolationMode(itemIcon, bitmapInterpolationMode);
 
@@ -81,16 +88,22 @@ internal static class ItemButtonFactory
             {
                 itemIcon.Width = userPreferences.HoverIconSize;
                 itemIcon.Height = double.NaN;
+
+                iconBorder.Width = itemIcon.Width;
+                iconBorder.Height = itemIcon.Height;
             };
 
             itemIcon.PointerExited += (s, e) =>
             {
                 itemIcon.Width = userPreferences.NormalIconSize;
                 itemIcon.Height = userPreferences.NormalIconSize;
+
+                iconBorder.Width = itemIcon.Width;
+                iconBorder.Height = itemIcon.Height;
             };
         }
 
-        return new() { ClipToBounds = true, CornerRadius = new(8), Child = itemIcon };
+        return iconBorder;
     }
 
     internal static Grid CreateTextAndTagGrid(UISelectableItem item, RuntimeSettings runtimeSettings)
