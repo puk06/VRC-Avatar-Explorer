@@ -1,0 +1,105 @@
+using AvatarExplorer.Core.Data.Paths;
+using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.IO;
+using AvatarExplorer.Core.Services.Items;
+using AvatarExplorer.Core.Utils;
+
+namespace AvatarExplorer.Core.Services.System;
+
+public partial class AvatarExplorerApp
+{
+    #region Database
+    public void LoadItemDatabase(string? path = null)
+    {
+        string loadPath = path ?? SystemPath.ItemDatabasePath;
+        ItemDatabaseMigrationService.MigrateThumbnailKey(loadPath);
+        _itemDatabaseManager.Load(loadPath);
+        UpdateSearchIndex();
+    }
+
+    public void LoadCommonAvatarDatabase(string? path = null) => _commonAvatarDatabaseManager.Load(path);
+    public void LoadBulkImportPresetDatabase(string? path = null) => _bulkImportPresetDatabaseManager.Load(path);
+    public void LoadTempAvatarsDatabase(string? path = null)
+    {
+        _tempAvatarsDatabaseManager.Load(path);
+        UpdateSearchIndex();
+    }
+
+    public void SaveItemDatabase() => _itemDatabaseManager.Save();
+    public void SaveCommonAvatarDatabase() => _commonAvatarDatabaseManager.Save();
+    public void SaveBulkImportPresetDatabase() => _bulkImportPresetDatabaseManager.Save();
+    public void SaveTempAvatarsDatabase() => _tempAvatarsDatabaseManager.Save();
+
+    public void ResetItemDatabase()
+    {
+        _itemDatabaseManager.Clear();
+        SaveItemDatabase();
+    }
+    public void ResetCommonAvatarDatabase()
+    {
+        _commonAvatarDatabaseManager.Clear();
+        SaveCommonAvatarDatabase();
+    }
+    public void ResetBulkImportPresetDatabase()
+    {
+        _bulkImportPresetDatabaseManager.Clear();
+        SaveBulkImportPresetDatabase();
+    }
+    public void ResetTempAvatarDatabase()
+    {
+        _tempAvatarsDatabaseManager.Clear();
+        SaveTempAvatarsDatabase();
+    }
+    #endregion
+
+    #region Runtime Settings
+    public void LoadRuntimeSettings(string? path = null)
+    {
+        string loadPath = path ?? SystemPath.RuntimeSettingsFilePath;
+        _runtimeSettingsManager.Load(loadPath);
+    }
+    #endregion
+
+    #region Update API
+    public void UpdateSearchIndex()
+    {
+        _itemSearchIndexDictionary.Clear();
+
+        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
+        foreach (Item item in _itemDatabaseManager.Items)
+        {
+            string index = ItemSearchService.BuildItemSearchIndex(item, avatarTitleMaps, _commonAvatarDatabaseManager.Items);
+            _itemSearchIndexDictionary[item.Id] = index;
+        }
+    }
+    public void UpdateSearchIndex(string itemId)
+    {
+        Item? item = GetItemById(itemId);
+        if (item == null) return;
+
+        Dictionary<string, string> avatarNameMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
+        _itemSearchIndexDictionary[item.Id] = ItemSearchService.BuildItemSearchIndex(item, avatarNameMaps, _commonAvatarDatabaseManager.Items);
+    }
+    #endregion
+
+    #region Resolve API
+    public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
+    {
+        foreach (Item item in _itemDatabaseManager.Items)
+        {
+            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
+        }
+
+        foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
+        {
+            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
+        }
+
+        SaveItemDatabase();
+        SaveCommonAvatarDatabase();
+        UpdateSearchIndex();
+
+        RemoveTempAvatar(tempAvatarId);
+    }
+    #endregion
+}
