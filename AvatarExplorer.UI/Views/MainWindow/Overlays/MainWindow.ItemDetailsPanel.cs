@@ -1,6 +1,8 @@
+using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Media;
 using Avalonia.Layout;
+using Avalonia.Media;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Avatars;
@@ -8,14 +10,17 @@ using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Services.Utilities;
-using System.Linq;
-using AvatarExplorer.Core.Extensions;
 
 namespace AvatarExplorer.UI;
 
 public partial class MainWindow
 {
-    private void SidePanel_RenderItemDetails()
+    private void ItemDetailsPanel_InitializeEventHandler()
+    {
+        AvatarExplorer.OnSelectionNodeChanged += ItemDetailsPanel_RenderItemDetails;
+    }
+
+    private void ItemDetailsPanel_RenderItemDetails()
     {
         if (SidePanel_ItemDetailsContent == null) return;
         SidePanel_ItemDetailsContent.RowDefinitions.Clear();
@@ -37,7 +42,7 @@ public partial class MainWindow
         // サムネイル画像
         SidePanel_ItemDetailsContent.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
         Image thumbnailImage = new() { Width = 200, Height = 200, Margin = new(0, 10, 0, 10) };
-        
+
         if (!string.IsNullOrEmpty(selectedItem.ThumbnailFileName))
         {
             thumbnailImage.Source = ImageService.Get(selectedItem.ThumbnailFileName, IconType.Item);
@@ -46,7 +51,7 @@ public partial class MainWindow
         Panel thumbnailPanel = new();
         Border thumbnailBorder = new() { CornerRadius = new(12), ClipToBounds = true, Child = thumbnailImage };
         thumbnailPanel.Children.Add(thumbnailBorder);
-        
+
         Grid.SetRow(thumbnailPanel, rowIndex++);
         SidePanel_ItemDetailsContent.Children.Add(thumbnailPanel);
 
@@ -73,18 +78,18 @@ public partial class MainWindow
 
         // カテゴリ
         string categoryText = selectedItem.Type == ItemType.Custom ? selectedItem.CustomCategory : Localizer.Instance[selectedItem.Type.GetLocalizationKey() ?? selectedItem.Type.ToString()];
-        SidePanel_AddDetailRow(detailsPanel, "Category", categoryText);
+        ItemDetailsPanel_AddDetailRow(detailsPanel, "Category", categoryText);
 
         // BoothID
         if (selectedItem.BoothId >= 0)
         {
-            SidePanel_AddDetailRow(detailsPanel, "Booth ID", selectedItem.BoothId.ToString());
+            ItemDetailsPanel_AddDetailRow(detailsPanel, "Booth ID", selectedItem.BoothId.ToString());
         }
 
         // タグ
         if (selectedItem.TagsView.Length > 0)
         {
-            SidePanel_AddDetailRow(detailsPanel, "Tags", string.Join(", ", selectedItem.TagsView));
+            ItemDetailsPanel_AddDetailRow(detailsPanel, "Tags", string.Join(", ", selectedItem.TagsView));
         }
 
         // サポートされているアバター
@@ -94,9 +99,9 @@ public partial class MainWindow
                 .Select(id => AvatarExplorer.GetItemById(id)?.Title ?? "Unknown")
                 .Select(name => RuntimeSettings.RemoveBrackets ? ItemUtils.RemoveBrackets(name) : name)
                 .ToArray();
-            
+
             string supportedAvatarsText = supportedAvatarNames.Length > 5 ? $"{string.Join("\n", supportedAvatarNames.Take(5))}... + {supportedAvatarNames.Length - 5}Avatars" : string.Join("\n", supportedAvatarNames);
-            SidePanel_AddDetailRow(detailsPanel, "Supported", supportedAvatarsText);
+            ItemDetailsPanel_AddDetailRow(detailsPanel, "Supported", supportedAvatarsText);
         }
 
         // 実装されているアバター
@@ -106,27 +111,27 @@ public partial class MainWindow
                 .Select(id => AvatarExplorer.GetItemById(id)?.Title ?? "Unknown")
                 .Select(name => RuntimeSettings.RemoveBrackets ? ItemUtils.RemoveBrackets(name) : name)
                 .ToArray();
-            
+
             string implementedAvatarsText = implementedAvatarNames.Length > 5 ? $"{string.Join("\n", implementedAvatarNames.Take(5))}... + {implementedAvatarNames.Length - 5}Avatars" : string.Join("\n", implementedAvatarNames);
-            SidePanel_AddDetailRow(detailsPanel, "Implemented", implementedAvatarsText);
+            ItemDetailsPanel_AddDetailRow(detailsPanel, "Implemented", implementedAvatarsText);
         }
 
         // メモ
         if (!string.IsNullOrEmpty(selectedItem.ItemMemo))
         {
-            SidePanel_AddDetailRow(detailsPanel, "Memo", selectedItem.ItemMemo);
+            ItemDetailsPanel_AddDetailRow(detailsPanel, "Memo", selectedItem.ItemMemo);
         }
 
         // 作成日
         if (!string.IsNullOrEmpty(selectedItem.CreatedDate))
         {
-            SidePanel_AddDetailRow(detailsPanel, "Created", DatetimeUtils.GetDateStringFromUnixTime(selectedItem.CreatedDate));
+            ItemDetailsPanel_AddDetailRow(detailsPanel, "Created", DatetimeUtils.GetDateStringFromUnixTime(selectedItem.CreatedDate));
         }
 
         // 更新日
         if (!string.IsNullOrEmpty(selectedItem.UpdatedDate))
         {
-            SidePanel_AddDetailRow(detailsPanel, "Updated", DatetimeUtils.GetDateStringFromUnixTime(selectedItem.UpdatedDate));
+            ItemDetailsPanel_AddDetailRow(detailsPanel, "Updated", DatetimeUtils.GetDateStringFromUnixTime(selectedItem.UpdatedDate));
         }
 
         SidePanel_ItemDetailsContent.RowDefinitions.Add(new(GridLength.Auto));
@@ -134,7 +139,7 @@ public partial class MainWindow
         SidePanel_ItemDetailsContent.Children.Add(detailsPanel);
     }
 
-    private void SidePanel_AddDetailRow(StackPanel panel, string label, string value)
+    private void ItemDetailsPanel_AddDetailRow(StackPanel panel, string label, string value)
     {
         Grid row = new() { ColumnDefinitions = new("Auto,*"), ColumnSpacing = 8, Margin = new(0, 0, 0, 0) };
 

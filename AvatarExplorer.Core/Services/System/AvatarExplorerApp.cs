@@ -892,4 +892,12 @@ public class AvatarExplorerApp
         SaveItemDatabase();
     }
     #endregion
+
+    #region Event
+    public event Action? OnSelectionNodeChanged
+    {
+        add => _selectionState.SelectionChanged += value;
+        remove => _selectionState.SelectionChanged -= value;
+    }
+    #endregion
 }
