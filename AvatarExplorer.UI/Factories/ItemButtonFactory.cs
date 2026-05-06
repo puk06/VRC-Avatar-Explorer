@@ -166,11 +166,13 @@ internal static class ItemButtonFactory
         if (StateFlagUtils.IsItemState(item.Tag.State))
         {
             ToolTip.SetTip(button, item.IsTempAvatar ? item.Title : GetTooltipTextFromItem(item));
+            ToolTip.SetShowDelay(button, 1500);
             ToolTip.SetBetweenShowDelay(button, -1);
         }
         else if (item.Tag.State == ItemTagStates.ItemFileCategoryOpen)
         {
             ToolTip.SetTip(button, Localizer.Instance.Get(LocalizationKey.Button.ToolTip.FilePath, Path.GetRelativePath(runtimeSettings.DataRootDirectory, item.Tag.Value)));
+            ToolTip.SetShowDelay(button, 1500);
             ToolTip.SetBetweenShowDelay(button, -1);
         }
 
