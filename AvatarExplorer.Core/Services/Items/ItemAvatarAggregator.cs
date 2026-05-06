@@ -9,7 +9,7 @@ internal static class ItemAvatarAggregator
 {
     internal static ImmutableArray<ItemCountInfo> Aggregate(IEnumerable<Item> items, IEnumerable<CommonAvatar> commonAvatars, IEnumerable<TempAvatar> tempAvatars, RuntimeSettings runtimeSettings, bool includeCommonAvatar, bool includeTempAvatar)
     {
-        List<ItemCountInfo> avatars = new();
+        var avatars = ImmutableArray.CreateBuilder<ItemCountInfo>();
 
         // 共通素体グループをアバターとして追加して返すかどうか
         if (includeCommonAvatar)
@@ -29,6 +29,6 @@ internal static class ItemAvatarAggregator
             avatars.AddRange(tempAvatars.Select(i => new ItemCountInfo(i, 0)));
         }
 
-        return avatars.ToImmutableArray();
+        return avatars.ToImmutable();
     }
 }

@@ -7,7 +7,7 @@ internal static class ItemCategoryAggregator
 {
     internal static ImmutableArray<ItemCountInfo> Aggregate(IEnumerable<Item> items, bool includeEmptyCategory = false, bool includeAllCategory = false)
     {
-        List<ItemCountInfo> categories = new();
+        var categories = ImmutableArray.CreateBuilder<ItemCountInfo>();
 
         Dictionary<ItemType, int> itemsByType = items
             .GroupBy(i => i.Type)
@@ -39,6 +39,6 @@ internal static class ItemCategoryAggregator
                 .Select(i => new ItemCountInfo(new ItemCategory(i), itemsByCustomCategory[i]))
         );
 
-        return categories.ToImmutableArray();
+        return categories.ToImmutable();
     }
 }

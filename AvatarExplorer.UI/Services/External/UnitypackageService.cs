@@ -30,7 +30,7 @@ internal static class UnitypackageService
     {
         if (!Directory.Exists(itemPath)) return [];
 
-        List<string> unitypackageFilePaths = new();
+        var unitypackageFilePaths = ImmutableArray.CreateBuilder<string>();
 
         foreach (string filePath in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
         {
@@ -38,6 +38,6 @@ internal static class UnitypackageService
             unitypackageFilePaths.Add(filePath);
         }
 
-        return unitypackageFilePaths.ToImmutableArray();
+        return unitypackageFilePaths.ToImmutable();
     }
 }
