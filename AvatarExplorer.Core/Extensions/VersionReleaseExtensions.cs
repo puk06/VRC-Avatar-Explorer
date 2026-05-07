@@ -14,7 +14,7 @@ public static class VersionReleaseExtensions
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError("Failed to retrieve the latest update information for the '{updateChannel}' channel. Please check if the version strings in the data source follow SemVer format.", ex);
+            ErrorManager.Instance.PostInternalError($"Failed to retrieve pending updates. Please check if the version strings in the data source follow SemVer format.", ex);
             return [];
         }
     }
@@ -41,7 +41,7 @@ public static class VersionReleaseExtensions
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError("Failed to retrieve the latest update information for the '{updateChannel}' channel. Please check if the version strings in the data source follow SemVer format.", ex);
+            ErrorManager.Instance.PostInternalError($"Failed to retrieve the latest update information for the '{updateChannel}' channel. Please check if the version strings in the data source follow SemVer format.", ex);
             return null;
         }
     }
