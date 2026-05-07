@@ -1,4 +1,4 @@
-namespace AvatarExplorer.Core.Services.IO;
+namespace AvatarExplorer.Core.Models.External;
 
 public sealed record ArchivePasswordRequest
 {
