@@ -205,6 +205,10 @@ public static class LocalizationKey
         {
             public const string Copying = "Processing.ItemAdd.Copying";
         }
+        public static class ThumbnailBulkFetch
+        {
+            public const string Fetching = "Processing.ThumbnailBulkFetch.Fetching";
+        }
     }
     public static class ContextMenu
     {
@@ -295,11 +299,13 @@ public static class LocalizationKey
         public const string ItemFileAdd = "Success.ItemFileAdd";
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
         public const string CopyDirectory = "Success.CopyDirectory";
+        public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
     }
     public static class Warning
     {
         public const string Default = "Warning.Default";
         public const string RunningInAdministratorMode = "Warning.RunningInAdministratorMode";
+        public const string FetchAllItemThumbnailsCancelled = "Warning.FetchAllItemThumbnailsCancelled";
     }
     public static class Error
     {
@@ -346,6 +352,7 @@ public static class LocalizationKey
         public const string NonWindowsUnsupported = "Error.NonWindowsUnsupported";
         public const string InvalidCategory = "Error.InvalidCategory";
         public const string InitializationFailed = "Error.InitializationFailed";
+        public const string FetchAllItemThumbnailsFailed = "Error.FetchAllItemThumbnailsFailed";
     }
     public static class Settings
     {
@@ -497,6 +504,12 @@ public static class LocalizationKey
             public const string Title = "Settings.ImportThumbnail.Title";
             public const string Description = "Settings.ImportThumbnail.Description";
             public const string Import = "Settings.ImportThumbnail.Import";
+        }
+        public static class FetchAllThumbnails
+        {
+            public const string Title = "Settings.FetchAllThumbnails.Title";
+            public const string Description = "Settings.FetchAllThumbnails.Description";
+            public const string Open = "Settings.FetchAllThumbnails.Open";
         }
         public static class ExportCsv
         {
@@ -706,6 +719,23 @@ public static class LocalizationKey
         {
             public const string V1 = "SelectImportType.Options.V1";
             public const string KonoAsset = "SelectImportType.Options.KonoAsset";
+        }
+    }
+    public static class FetchAllThumbnailsOverlay
+    {
+        public const string Title = "FetchAllThumbnailsOverlay.Title";
+        public const string Description = "FetchAllThumbnailsOverlay.Description";
+        public const string Start = "FetchAllThumbnailsOverlay.Start";
+        public const string CancelRunning = "FetchAllThumbnailsOverlay.CancelRunning";
+        public const string CurrentItem = "FetchAllThumbnailsOverlay.CurrentItem";
+        public const string Progress = "FetchAllThumbnailsOverlay.Progress";
+        public static class Status
+        {
+            public const string Ready = "FetchAllThumbnailsOverlay.Status.Ready";
+            public const string Running = "FetchAllThumbnailsOverlay.Status.Running";
+            public const string Cancelling = "FetchAllThumbnailsOverlay.Status.Cancelling";
+            public const string Cancelled = "FetchAllThumbnailsOverlay.Status.Cancelled";
+            public const string Completed = "FetchAllThumbnailsOverlay.Status.Completed";
         }
     }
     public static class Progress

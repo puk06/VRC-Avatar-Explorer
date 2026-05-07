@@ -168,9 +168,11 @@
     "Success.ItemFileAdd": "アイテムファイルの追加が完了しました",
     "Success.ItemFolderAdd": "アイテムフォルダーの追加が完了しました",
     "Success.CopyDirectory": "ディリクトリのコピーに成功しました",
+    "Success.FetchAllItemThumbnails": "サムネイル一括取得が完了しました ({0}件成功)",
 
     "Warning.Default": "注意",
     "Warning.RunningInAdministratorMode": "現在、このソフトは管理者モードで起動しています。\nスキームの登録時以外は、通常モードでの起動をおすすめします。\n管理者モードでは、ドラッグ＆ドロップなど一部の操作が利用できなくなります。",
+    "Warning.FetchAllItemThumbnailsCancelled": "サムネイル一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",
 
     "Error.Default": "エラー",
     "Error.NotImplemented": "この機能はまだ実装されていません",
@@ -212,6 +214,7 @@
     "Error.NonWindowsUnsupported": "この機能はWindowsでのみ利用可能です",
     "Error.InvalidCategory": "無効なカテゴリです",
     "Error.InitializationFailed": "ソフトウェアの初期化に失敗しました。エラーログを確認してください。",
+    "Error.FetchAllItemThumbnailsFailed": "サムネイル一括取得が完了しました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件\n詳細はエラーログを確認してください。",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "言語",
@@ -292,6 +295,9 @@
     "Settings.ImportThumbnail.Title": "サムネイルをインポート",
     "Settings.ImportThumbnail.Description": "他のツールのデータベースとBoothIdが一致するサムネイルを取り込みます",
     "Settings.ImportThumbnail.Import": "インポート",
+    "Settings.FetchAllThumbnails.Title": "サムネイルを一括取得",
+    "Settings.FetchAllThumbnails.Description": "全てのアイテムに対してBoothからサムネイル取得を実行します",
+    "Settings.FetchAllThumbnails.Open": "一括取得",
     "Settings.ExportCsv.Title": "CSVデータの出力",
     "Settings.ExportCsv.Description": "現在のデータベースをCSV形式でエクスポートします",
     "Settings.ExportCsv.Export": "エクスポート",
@@ -426,8 +432,20 @@
     "SelectImportType.Title": "データをインポートする",
     "SelectImportType.Options.V1": "Avatar Explorer V1.x.x",
     "SelectImportType.Options.KonoAsset": "KonoAsset",
+    "FetchAllThumbnailsOverlay.Title": "サムネイル一括取得",
+    "FetchAllThumbnailsOverlay.Description": "全アイテムに対してサムネイル取得を実行します。Booth APIの制限により完了まで時間がかかる場合があります。",
+    "FetchAllThumbnailsOverlay.Start": "開始",
+    "FetchAllThumbnailsOverlay.CancelRunning": "処理をキャンセル",
+    "FetchAllThumbnailsOverlay.CurrentItem": "現在のアイテム: {0}",
+    "FetchAllThumbnailsOverlay.Progress": "進捗: {0}/{1} (成功: {2}, 失敗: {3})",
+    "FetchAllThumbnailsOverlay.Status.Ready": "開始待ち",
+    "FetchAllThumbnailsOverlay.Status.Running": "サムネイルを取得中...",
+    "FetchAllThumbnailsOverlay.Status.Cancelling": "キャンセル中...",
+    "FetchAllThumbnailsOverlay.Status.Cancelled": "キャンセルされました",
+    "FetchAllThumbnailsOverlay.Status.Completed": "完了",
 
     "Progress.Loading": "読み込み中...",
+    "Processing.ThumbnailBulkFetch.Fetching": "サムネイル取得中... {0}%",
 
     "UpdateDialog.Available": "アップデートが利用可能です",
     "UpdateDialog.VersionText": "新しいバージョン: {0} (現在のバージョン: {1})\nリリース日: {2}",
@@ -455,3 +473,6 @@
     "Button.Confirm": "確定",
     "Button.Cancel": "キャンセル"
 }
+
+
+

@@ -17,6 +17,15 @@ public partial class AvatarExplorerApp
     #region Booth API
     private DateTime _lastBoothApiGetTime;
     public bool IsApiCooldownNow => _lastBoothApiGetTime.AddSeconds(2) > DateTime.Now;
+    public async Task WaitForApiCooldownAsync(int pollingIntervalMs = 100, CancellationToken cancellationToken = default)
+    {
+        if (pollingIntervalMs < 10) pollingIntervalMs = 10;
+
+        while (IsApiCooldownNow)
+        {
+            await Task.Delay(pollingIntervalMs, cancellationToken);
+        }
+    }
     public async Task<ErrorOr<BoothItem>> GetBoothItem(string boothUrl)
     {
         if (string.IsNullOrEmpty(boothUrl)) return Error.Failure(description: "Invalid Url.");
@@ -160,3 +169,5 @@ public partial class AvatarExplorerApp
     public async Task<ErrorOr<Success>> ExecuteBackup(string path) => await _backupManager.ExecuteBackup(path);
     #endregion
 }
+
+

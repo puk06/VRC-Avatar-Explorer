@@ -168,9 +168,11 @@
     "Success.ItemFileAdd": "Item file addition completed",
     "Success.ItemFolderAdd": "Item folder addition completed",
     "Success.CopyDirectory": "Directory copy successful",
+    "Success.FetchAllItemThumbnails": "Bulk thumbnail fetch completed ({0} succeeded)",
 
     "Warning.Default": "Warning",
     "Warning.RunningInAdministratorMode": "This software is currently running in administrator mode.\nWe recommend running in normal mode except when registering schemes.\nIn administrator mode, some operations like drag & drop may not be available.",
+    "Warning.FetchAllItemThumbnailsCancelled": "Bulk thumbnail fetch was cancelled. Success: {0} / Failed: {1} / Total: {2}",
 
     "Error.Default": "Error",
     "Error.NotImplemented": "This feature is not yet implemented",
@@ -212,6 +214,7 @@
     "Error.NonWindowsUnsupported": "This feature is only available on Windows.",
     "Error.InvalidCategory": "Invalid category",
     "Error.InitializationFailed": "Failed to initialize the software. Please check the error log.",
+    "Error.FetchAllItemThumbnailsFailed": "Bulk thumbnail fetch completed. Success: {0} / Failed: {1} / Total: {2}\nCheck the error log for details.",
 
     "Settings.Basic": "Basic",
     "Settings.Language.Title": "Language",
@@ -292,6 +295,9 @@
     "Settings.ImportThumbnail.Title": "Import Thumbnails",
     "Settings.ImportThumbnail.Description": "Import thumbnails whose BoothId matches existing items",
     "Settings.ImportThumbnail.Import": "Import",
+    "Settings.FetchAllThumbnails.Title": "Fetch Thumbnails in Bulk",
+    "Settings.FetchAllThumbnails.Description": "Fetch thumbnails from Booth for all items",
+    "Settings.FetchAllThumbnails.Open": "Bulk Fetch",
     "Settings.ExportCsv.Title": "Export CSV Data",
     "Settings.ExportCsv.Description": "Export the current database in CSV format",
     "Settings.ExportCsv.Export": "Export",
@@ -426,8 +432,20 @@
     "SelectImportType.Title": "Import Data",
     "SelectImportType.Options.V1": "Avatar Explorer V1.x.x",
     "SelectImportType.Options.KonoAsset": "KonoAsset",
+    "FetchAllThumbnailsOverlay.Title": "Bulk Thumbnail Fetch",
+    "FetchAllThumbnailsOverlay.Description": "Run thumbnail fetching for all items. This may take time due to Booth API limits.",
+    "FetchAllThumbnailsOverlay.Start": "Start",
+    "FetchAllThumbnailsOverlay.CancelRunning": "Cancel Processing",
+    "FetchAllThumbnailsOverlay.CurrentItem": "Current item: {0}",
+    "FetchAllThumbnailsOverlay.Progress": "Progress: {0}/{1} (Success: {2}, Failed: {3})",
+    "FetchAllThumbnailsOverlay.Status.Ready": "Ready",
+    "FetchAllThumbnailsOverlay.Status.Running": "Fetching thumbnails...",
+    "FetchAllThumbnailsOverlay.Status.Cancelling": "Cancelling...",
+    "FetchAllThumbnailsOverlay.Status.Cancelled": "Cancelled",
+    "FetchAllThumbnailsOverlay.Status.Completed": "Completed",
 
     "Progress.Loading": "Loading...",
+    "Processing.ThumbnailBulkFetch.Fetching": "Fetching thumbnails... {0}%",
 
     "UpdateDialog.Available": "Update Available",
     "UpdateDialog.VersionText": "New Version: {0} (Current Version: {1})\nRelease Date: {2}",
@@ -455,3 +473,6 @@
     "Button.Confirm": "Confirm",
     "Button.Cancel": "Cancel"
 }
+
+
+

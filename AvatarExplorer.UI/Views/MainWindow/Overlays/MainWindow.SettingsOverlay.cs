@@ -294,6 +294,7 @@ public partial class MainWindow
 
     private void SettingsOverlay_ImportData_Click(object? sender, RoutedEventArgs e) => SelectImportTypeOverlay_Show();
     private void SettingsOverlay_ImportThumbnail_Click(object? sender, RoutedEventArgs e) => SelectThumbnailImportTypeOverlay_Show();
+    private void SettingsOverlay_FetchAllThumbnails_Click(object? sender, RoutedEventArgs e) => FetchAllThumbnailsOverlay_Show();
 
     private async void SettingsOverlay_ExportDataToCsv_Click(object? sender, RoutedEventArgs e)
     {
@@ -428,3 +429,5 @@ public partial class MainWindow
     private async void SettingsOverlay_ShowErrorLog_Click(object? sender, RoutedEventArgs e) => ErrorLogOverlay_Open();
     #endregion
 }
+
+

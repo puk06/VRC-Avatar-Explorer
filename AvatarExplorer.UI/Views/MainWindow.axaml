@@ -1,4 +1,4 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         xmlns:ui="clr-namespace:AvatarExplorer.UI"
@@ -594,7 +594,6 @@
                                                 <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ExportCsv.Export]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ExportDataToCsv_Click"/>
                                             </Grid>
                                         </Grid>
-
                                         <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                                             <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
                                                 <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ImportThumbnail.Title]}"/>
@@ -603,6 +602,17 @@
 
                                             <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
                                                 <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ImportThumbnail.Import]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_ImportThumbnail_Click"/>
+                                            </Grid>
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                            <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                                <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.FetchAllThumbnails.Title]}"/>
+                                                <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.FetchAllThumbnails.Description]}"/>
+                                            </Grid>
+
+                                            <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                                <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.FetchAllThumbnails.Open]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="SettingsOverlay_FetchAllThumbnails_Click"/>
                                             </Grid>
                                         </Grid>
 
@@ -1164,7 +1174,33 @@
                 </StackPanel>
             </Border>
         </Border>
-        
+        <!-- サムネイル一括取得画面 -->
+        <Border x:Name="FetchAllThumbnailsOverlay" Classes="overlaybackground" IsVisible="False">
+            <Border Classes="overlay" Width="680" Padding="24">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="12">
+                    <TextBlock Grid.Row="0" Text="{Binding [FetchAllThumbnailsOverlay.Title]}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Grid.Row="1" Classes="separator"/>
+
+                    <TextBlock Grid.Row="2" Text="{Binding [FetchAllThumbnailsOverlay.Description]}" TextWrapping="Wrap" Foreground="{DynamicResource Text.Secondary}"/>
+
+                    <StackPanel Grid.Row="3" Spacing="4">
+                        <TextBlock x:Name="FetchAllThumbnailsOverlay_StatusText" Text="{Binding [FetchAllThumbnailsOverlay.Status.Ready]}" FontSize="13" Foreground="{DynamicResource Text.Secondary}"/>
+                        <TextBlock x:Name="FetchAllThumbnailsOverlay_CountText" Text="-" FontSize="13" Foreground="{DynamicResource Text.Secondary}"/>
+                        <TextBlock x:Name="FetchAllThumbnailsOverlay_CurrentItemText" Text="-" FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
+                    </StackPanel>
+
+                    <ProgressBar Grid.Row="4" x:Name="FetchAllThumbnailsOverlay_ProgressBar" Value="0" Minimum="0" Maximum="100"/>
+
+                    <Grid Grid.Row="5" ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button x:Name="FetchAllThumbnailsOverlay_StartButton" Grid.Column="0" Classes="accentbutton" FontWeight="Bold" Content="{Binding [FetchAllThumbnailsOverlay.Start]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Click="FetchAllThumbnailsOverlay_Start_Click"/>
+                        <Button x:Name="FetchAllThumbnailsOverlay_CancelButton" Grid.Column="1" Classes="button" FontWeight="Bold" Content="{Binding [FetchAllThumbnailsOverlay.CancelRunning]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Click="FetchAllThumbnailsOverlay_Cancel_Click" IsEnabled="False"/>
+                    </Grid>
+
+                    <Button Grid.Row="6" x:Name="FetchAllThumbnailsOverlay_CloseButton" Classes="button" FontWeight="Bold" Content="{Binding [Button.Close]}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Margin="0,2,0,0" Click="FetchAllThumbnailsOverlay_Close_Click"/>
+                </Grid>
+            </Border>
+        </Border>
+
         <!-- Unitypackage Viewer -->
         <Border x:Name="UnitypackageViewerOverlay" Classes="overlaybackground" IsVisible="False">
             <Border Classes="overlay" Width="800" Height="600" Padding="20">
@@ -1473,3 +1509,11 @@
         </Grid>
     </Panel>
 </Window>
+
+
+
+
+
+
+
+
