@@ -9,7 +9,7 @@ public static class VersionReleaseExtensions
     {
         try
         {
-            SemanticVersioning.Range versionRange = new SemanticVersioning.Range($">{AvatarExplorerApp.CurrentVersion}");
+            SemanticVersioning.Range versionRange = new($">{AvatarExplorerApp.CurrentVersion}");
             return versionReleases.Where(i => versionRange.IsSatisfied(i.Version, includePrerelease: true));
         }
         catch (Exception ex)
@@ -23,21 +23,15 @@ public static class VersionReleaseExtensions
     {
         try
         {
-            IEnumerable<VersionRelease> filteredReleases = versionReleases.Where(i => updateChannel != UpdateChannel.Stable || !i.Version.Contains("beta"));
+            SemanticVersioning.Range versionRange = new($">{AvatarExplorerApp.CurrentVersion}");
 
-            SemanticVersioning.Range latestVersionRange = new SemanticVersioning.Range($">{AvatarExplorerApp.CurrentVersion}");
-            VersionRelease? latestVersionRelease = null;
-
-            foreach (VersionRelease versionRelease in filteredReleases)
-            {
-                if (latestVersionRange.IsSatisfied(versionRelease.Version, includePrerelease: true))
-                {
-                    latestVersionRange = new SemanticVersioning.Range($">={versionRelease.Version}");
-                    latestVersionRelease = versionRelease;
-                }
-            }
-
-            return latestVersionRelease;
+            return versionReleases
+                .Where(i => updateChannel != UpdateChannel.Stable || !i.Version.Contains("beta"))
+                .Where(i => versionRange.IsSatisfied(i.Version, includePrerelease: true))
+                .Aggregate<VersionRelease, VersionRelease?>(null, (latestVersionRelease, versionRelease) =>
+                    latestVersionRelease == null || new SemanticVersioning.Range($">={latestVersionRelease.Version}").IsSatisfied(versionRelease.Version, includePrerelease: true)
+                        ? versionRelease
+                        : latestVersionRelease);
         }
         catch (Exception ex)
         {
