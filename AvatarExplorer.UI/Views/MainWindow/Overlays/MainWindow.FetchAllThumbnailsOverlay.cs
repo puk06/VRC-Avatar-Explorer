@@ -34,10 +34,19 @@ public partial class MainWindow
         FetchAllThumbnailsOverlay_StatusText.Text = Localizer.Instance["FetchAllThumbnailsOverlay.Status.Ready"];
         FetchAllThumbnailsOverlay_CountText.Text = Localizer.Instance.Get("FetchAllThumbnailsOverlay.Progress", ["0", "0", "0", "0"]);
         FetchAllThumbnailsOverlay_CurrentItemText.Text = Localizer.Instance.Get("FetchAllThumbnailsOverlay.CurrentItem", "-");
+        FetchAllThumbnailsOverlay_EtaText.Text = Localizer.Instance["FetchAllThumbnailsOverlay.EtaUnknown"];
 
         FetchAllThumbnailsOverlay_StartButton.IsEnabled = !_fetchAllThumbnailsOverlay_isRunning;
         FetchAllThumbnailsOverlay_CancelButton.IsEnabled = _fetchAllThumbnailsOverlay_isRunning;
         FetchAllThumbnailsOverlay_CloseButton.IsEnabled = !_fetchAllThumbnailsOverlay_isRunning;
+    }
+
+    private static string FormatRemainingTime(int totalSeconds)
+    {
+        int clamped = Math.Max(0, totalSeconds);
+        int minutes = clamped / 60;
+        int seconds = clamped % 60;
+        return Localizer.Instance.Get("FetchAllThumbnailsOverlay.Eta", [minutes.ToString(), seconds.ToString()]);
     }
 
     private async Task FetchAllThumbnailsOverlay_StartInternal()
@@ -63,6 +72,7 @@ public partial class MainWindow
         int successCount = 0;
         int failureCount = 0;
         bool isCancelled = false;
+        DateTime startedAt = DateTime.UtcNow;
 
         try
         {
@@ -99,6 +109,22 @@ public partial class MainWindow
                     "FetchAllThumbnailsOverlay.Progress",
                     [processedCount.ToString(), allItems.Length.ToString(), successCount.ToString(), failureCount.ToString()]
                 );
+
+                int remainingCount = allItems.Length - processedCount;
+                if (processedCount > 0 && remainingCount > 0)
+                {
+                    double averageSecondsPerItem = (DateTime.UtcNow - startedAt).TotalSeconds / processedCount;
+                    int estimatedRemainingSeconds = (int)Math.Round(averageSecondsPerItem * remainingCount, MidpointRounding.AwayFromZero);
+                    FetchAllThumbnailsOverlay_EtaText.Text = FormatRemainingTime(estimatedRemainingSeconds);
+                }
+                else if (remainingCount == 0)
+                {
+                    FetchAllThumbnailsOverlay_EtaText.Text = FormatRemainingTime(0);
+                }
+                else
+                {
+                    FetchAllThumbnailsOverlay_EtaText.Text = Localizer.Instance["FetchAllThumbnailsOverlay.EtaUnknown"];
+                }
             }
         }
         catch (TaskCanceledException)

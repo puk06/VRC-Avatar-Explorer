@@ -729,6 +729,8 @@ public static class LocalizationKey
         public const string CancelRunning = "FetchAllThumbnailsOverlay.CancelRunning";
         public const string CurrentItem = "FetchAllThumbnailsOverlay.CurrentItem";
         public const string Progress = "FetchAllThumbnailsOverlay.Progress";
+        public const string Eta = "FetchAllThumbnailsOverlay.Eta";
+        public const string EtaUnknown = "FetchAllThumbnailsOverlay.EtaUnknown";
         public static class Status
         {
             public const string Ready = "FetchAllThumbnailsOverlay.Status.Ready";

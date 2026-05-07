@@ -438,6 +438,8 @@
     "FetchAllThumbnailsOverlay.CancelRunning": "Cancel Processing",
     "FetchAllThumbnailsOverlay.CurrentItem": "Current item: {0}",
     "FetchAllThumbnailsOverlay.Progress": "Progress: {0}/{1} (Success: {2}, Failed: {3})",
+    "FetchAllThumbnailsOverlay.Eta": "Estimated remaining: ~{0}m {1}s",
+    "FetchAllThumbnailsOverlay.EtaUnknown": "Estimated remaining: calculating...",
     "FetchAllThumbnailsOverlay.Status.Ready": "Ready",
     "FetchAllThumbnailsOverlay.Status.Running": "Fetching thumbnails...",
     "FetchAllThumbnailsOverlay.Status.Cancelling": "Cancelling...",

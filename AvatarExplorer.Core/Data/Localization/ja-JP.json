@@ -438,6 +438,8 @@
     "FetchAllThumbnailsOverlay.CancelRunning": "処理をキャンセル",
     "FetchAllThumbnailsOverlay.CurrentItem": "現在のアイテム: {0}",
     "FetchAllThumbnailsOverlay.Progress": "進捗: {0}/{1} (成功: {2}, 失敗: {3})",
+    "FetchAllThumbnailsOverlay.Eta": "推定残り時間: 約{0}分 {1}秒",
+    "FetchAllThumbnailsOverlay.EtaUnknown": "推定残り時間: 計算中...",
     "FetchAllThumbnailsOverlay.Status.Ready": "開始待ち",
     "FetchAllThumbnailsOverlay.Status.Running": "サムネイルを取得中...",
     "FetchAllThumbnailsOverlay.Status.Cancelling": "キャンセル中...",

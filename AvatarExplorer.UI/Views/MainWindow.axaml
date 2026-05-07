@@ -1186,6 +1186,7 @@
                     <StackPanel Grid.Row="3" Spacing="4">
                         <TextBlock x:Name="FetchAllThumbnailsOverlay_StatusText" Text="{Binding [FetchAllThumbnailsOverlay.Status.Ready]}" FontSize="13" Foreground="{DynamicResource Text.Secondary}"/>
                         <TextBlock x:Name="FetchAllThumbnailsOverlay_CountText" Text="-" FontSize="13" Foreground="{DynamicResource Text.Secondary}"/>
+                        <TextBlock x:Name="FetchAllThumbnailsOverlay_EtaText" Text="-" FontSize="13" Foreground="{DynamicResource Text.Secondary}"/>
                         <TextBlock x:Name="FetchAllThumbnailsOverlay_CurrentItemText" Text="-" FontSize="13" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
                     </StackPanel>
 
@@ -1509,3 +1510,5 @@
         </Grid>
     </Panel>
 </Window>
+
+
