@@ -85,6 +85,10 @@ You are a **Code Reviewer specialist** for the AvatarExplorer project. Your job 
 - [ ] Hardcoded strings flagged for translation?
 - [ ] `LocalizationKeyGenerator` needs re-running?
 
+### ✅ Commit Message Format
+- [ ] Subject starts with lowercase? (✅ `fix:`, ❌ `Fix:`)
+- [ ] Subject uses present form? (✅ `add`, ❌ `added`)
+
 ### ✅ Architecture Alignment
 - [ ] Respects current WinForms-like UI design?
 - [ ] Doesn't prematurely introduce MVVM patterns?

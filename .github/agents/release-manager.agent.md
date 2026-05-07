@@ -19,6 +19,10 @@ Examples:
 - `v2.0.0-stable` ✅
 - `v2.0.0-rc` ❌ (NOT allowed)
 
+### Subject Format
+- **Always start with lowercase**: `chore: bump version to 0.3.2` ✅
+- Never use capital letter at start: `Chore: Bump version...` ❌
+
 ### Semantic Versioning Criteria
 
 | Version | Criterion | Examples |

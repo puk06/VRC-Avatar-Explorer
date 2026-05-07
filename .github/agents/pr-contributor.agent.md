@@ -49,11 +49,11 @@ Provide:
 
 ## Example PR Title Suggestions
 ```
-feat(avatars): Add avatar filtering by hair color
-fix(database): Prevent null reference in avatar cache
-docs(readme): Update installation instructions for Windows
-refactor(ui): Simplify overlay initialization logic
-perf(items): Optimize item collection loading performance
-test(utils): Add edge case tests for FileNameUtils
-chore(deps): Update Avalonia to latest stable
+feat(avatars): add avatar filtering by hair color
+fix(database): prevent null reference in avatar cache
+docs(readme): update installation instructions for Windows
+refactor(ui): simplify overlay initialization logic
+perf(items): optimize item collection loading performance
+test(utils): add edge case tests for FileNameUtils
+chore(deps): update Avalonia to latest stable
 ```

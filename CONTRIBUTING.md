@@ -57,7 +57,7 @@ PR タイトルは、Squash merge 時のコミットメッセージになるた�
 
 - type: コミットの種類
 - scope: 変更の対象範囲（任意）
-- subject: 変更内容の短い説明
+- subject: 変更内容の短い説明（小文字で始める）
 
 使用できる type:
 - `feat`: 新機能追加
@@ -68,6 +68,26 @@ PR タイトルは、Squash merge 時のコミットメッセージになるた�
 - `perf`: パフォーマンス改善
 - `test`: テスト追加・修正
 - `chore`: ビルド設定やツールの更新など
+
+#### Subject の書き方
+
+subject は以下のルールに従ってください：
+
+- **小文字で始める**（例：`add`, `fix`, `update` など）
+- 現在形を使う（過去形 `fixed` ではなく `fix`）
+- 末尾にピリオド（`.`）を付けない
+- 命令形で記述（「〜する」という意味で）
+
+**良い例**：
+- `feat(avatars): add avatar filtering by hair color`
+- `fix(database): fix null reference in avatar cache`
+- `docs(readme): update installation instructions`
+- `refactor(ui): simplify overlay initialization logic`
+
+**悪い例**：
+- ❌ `Add avatar filtering by hair color` (大文字で始まっている)
+- ❌ `Fixed null reference exception` (過去形)
+- ❌ `Update installation instructions.` (ピリオド付き)
 
 PR 説明文には、目的や背景、関連 Issue、実装上の注意点を簡潔に記載してください。
 
