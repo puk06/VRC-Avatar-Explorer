@@ -429,5 +429,3 @@ public partial class MainWindow
     private async void SettingsOverlay_ShowErrorLog_Click(object? sender, RoutedEventArgs e) => ErrorLogOverlay_Open();
     #endregion
 }
-
-

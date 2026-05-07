@@ -169,5 +169,3 @@ public partial class AvatarExplorerApp
     public async Task<ErrorOr<Success>> ExecuteBackup(string path) => await _backupManager.ExecuteBackup(path);
     #endregion
 }
-
-
