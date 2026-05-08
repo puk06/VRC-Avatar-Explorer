@@ -5,6 +5,7 @@ namespace AvatarExplorer.Core.Models.Items;
 
 public enum ItemType
 {
+    [NonSelectable]
     None = -1,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Avatar)]
@@ -34,8 +35,10 @@ public enum ItemType
     [LocalizationKey(LocalizationKey.ItemCategory.Shader)]
     Shader = 8,
 
+    [NonSelectable]
     Custom = 9,
 
+    [NonSelectable]
     [LocalizationKey(LocalizationKey.ItemCategory.All)]
     All = 10,
 }

@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
 
 namespace AvatarExplorer.Core.Services.Items;
@@ -25,7 +26,7 @@ internal static class ItemCategoryAggregator
 
         categories.AddRange(
             Enum.GetValues<ItemType>()
-                .Where(i => !CategoryUtils.NonSelectableItemTypes.Contains(i) && i != ItemType.Custom)
+                .Where(i => i.IsSelectable())
                 .Where(i => includeEmptyCategory || itemsByType.ContainsKey(i))
                 .Select(i => new ItemCountInfo(new ItemCategory(i), itemsByType.TryGetValue(i, out int count) ? count : 0))
         );

@@ -9,6 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using AvatarExplorer.Core.Data.Links;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
@@ -30,8 +31,8 @@ public partial class MainWindow
     private string? _addItemOverlay_selectedItemId = null;
     private readonly AddItemOverlayWindowValues _addItemOverlay_addItemWindowValues = new();
 
-    // カスタムカテゴリかどうか(式: ItemTypeの数 - アイテムに指定不可なItemType数 - カスタムカテゴリ)
-    private static readonly int AddItemOverlay_CustomCategoryIndex = Enum.GetValues<ItemType>().Length - CategoryUtils.NonSelectableItemTypes.Length - 1;
+    // カスタムカテゴリかどうかの判定に使う。これ以降のインデックスは全てカスタムカテゴリ
+    private static readonly int AddItemOverlay_CustomCategoryIndex = Enum.GetValues<ItemType>().Count(i => i.IsSelectable());
 
     private void AddItemOverlay_Open(Item item)
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.Items;
 
 namespace AvatarExplorer.UI.Models.Overlay;
 
@@ -64,7 +64,7 @@ internal class AddItemOverlayWindowValues
         BoothAuthorId = boothItem.Shop.Id;
         BoothId = boothItem.BoothId;
         BoothThumbnailUrl = boothItem.ThumbnailUrl;
-        ItemType = CategoryUtils.NonSelectableItemTypes.Contains(boothItem.EstimatedCategory) ? ItemType.Avatar : boothItem.EstimatedCategory;
+        ItemType = boothItem.EstimatedCategory.IsSelectable() ? boothItem.EstimatedCategory : ItemType.Avatar;
         CustomCategory = string.Empty;
     }
 
