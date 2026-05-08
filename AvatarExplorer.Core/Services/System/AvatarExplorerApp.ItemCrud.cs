@@ -156,7 +156,7 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(itemId);
         if (item == null) return Error.NotFound(description: "Item not found.");
 
-        ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsPath, Path.GetFileName(imageFilePath)));
+        ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsFolderPath, Path.GetFileName(imageFilePath)));
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
         item.ThumbnailFileName = Path.GetFileName(imageFilePath);

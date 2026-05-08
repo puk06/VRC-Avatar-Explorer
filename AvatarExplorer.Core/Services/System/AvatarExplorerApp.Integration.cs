@@ -57,7 +57,7 @@ public partial class AvatarExplorerApp
         ErrorOr<BoothItem> fetchResult = await BoothService.GetItem(item.BoothId.ToString());
         if (fetchResult.IsError) return Error.Failure(description: fetchResult.Errors.ToErrorString());
 
-        bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
+        bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id), true);
         if (!result) return Error.Failure(description: "Failed to fetch thumbnail.");
 
         item.ThumbnailFileName = item.Id;

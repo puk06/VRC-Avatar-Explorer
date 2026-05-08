@@ -4,17 +4,16 @@ namespace AvatarExplorer.Core.Data.Paths;
 
 public static class SystemPath
 {
-    public static readonly string SoftwareDataPath = PathUtils.GetSoftwareFolderPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-    public static readonly string DatabaseFolderPath = PathUtils.GetDataFolderPath(SoftwareDataPath);
+    public static readonly string SoftwareDataPath = PathUtils.GetRootPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+    public static readonly string DatabaseFolderPath = PathUtils.GetDatabaseFolderPath(SoftwareDataPath);
     public static readonly string ImagesFolderPath = PathUtils.GetImagesFolderPath(SoftwareDataPath);
+    public static readonly string ItemThumbnailsFolderPath = PathUtils.GetItemThumbnailsFolderPath(SoftwareDataPath);
     public static readonly string DefaultItemsFolderPath = PathUtils.GetItemsFolderPath(SoftwareDataPath);
     public static readonly string BackupFolderPath = PathUtils.GetBackupFolderPath(SoftwareDataPath);
     public static readonly string SettingsFolderPath = PathUtils.GetSettingsFolderPath(SoftwareDataPath);
     public static readonly string LogsFolderPath = PathUtils.GetLogsFolderPath(SoftwareDataPath);
 
-    public static readonly string TempFolderPath = PathUtils.GetSoftwareFolderPath(Path.GetTempPath());
-
-    public static readonly string ItemThumbnailsPath = PathUtils.GetItemThumbnailsFolderPath(SoftwareDataPath);
+    public static readonly string TempFolderPath = PathUtils.GetRootPath(Path.GetTempPath()); // {TempFolder}/Avatar Explorer V2
 
     public static readonly string ItemDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.Items);
     public static readonly string CommonAvatarDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.CommonAvatars);

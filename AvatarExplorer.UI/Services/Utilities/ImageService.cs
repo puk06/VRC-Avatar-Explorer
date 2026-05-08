@@ -64,7 +64,7 @@ internal static class ImageService
 
         string filePath = iconType switch
         {
-            IconType.Item => Path.Join(SystemPath.ItemThumbnailsPath, fileName),
+            IconType.Item => Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName),
             _ => fileName,
         };
 
@@ -90,11 +90,11 @@ internal static class ImageService
         {
             try
             {
-                if (!Directory.Exists(SystemPath.ItemThumbnailsPath)) return;
+                if (!Directory.Exists(SystemPath.ItemThumbnailsFolderPath)) return;
 
                 foreach (string filePath in imageFileNames)
                 {
-                    _ = GetFromFileCache(Path.Join(SystemPath.ItemThumbnailsPath, filePath), compressThumbnail: true);
+                    _ = GetFromFileCache(Path.Join(SystemPath.ItemThumbnailsFolderPath, filePath), compressThumbnail: true);
                 }
             }
             catch (Exception ex)

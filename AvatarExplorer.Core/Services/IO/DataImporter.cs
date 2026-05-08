@@ -85,25 +85,25 @@ internal static class DataImporter
                     string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
                     string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true) ?? throw new DirectoryNotFoundException("Counldn't get unique item path");
                     
-                    await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, importParallelism);
-                    if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, importParallelism);
+                    await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, importParallelism);
+                    if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, importParallelism);
                 
                     newItem.ItemPath = $"<sys>{Path.GetRelativePath(runtimeSettings.DataRootDirectory, newItemPath)}";
                 }
                 else
                 {
-                    string newItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
+                    string newItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
 
                     if (!string.IsNullOrEmpty(item.MaterialPath))
                     {
-                        string materialPath = ItemUtils.GetItemPath(SystemPathV1.ItemsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath));
+                        string materialPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath));
                         await FileSystemService.CopyDirectoryAsync(materialPath, newItemPath, importParallelism);
                     }
                     
                     newItem.ItemPath = newItemPath;
                 }
 
-                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsPath, newItem.Id));
+                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsFolderPath, newItem.Id));
                 if (!result.IsError) newItem.ThumbnailFileName = newItem.Id;
                 else newItem.ThumbnailFileName = string.Empty;
 
@@ -247,18 +247,18 @@ internal static class DataImporter
                     string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
                     newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true);
                     
-                    await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath), newItemPath, importParallelism);
+                    await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.DataPath(dataFolderPath), item.ItemPath), newItemPath, importParallelism);
                 }
                 else
                 {
-                    newItemPath = ItemUtils.GetItemPath(KonoAssetPath.ItemsPath(dataFolderPath), item.ItemPath);
+                    newItemPath = ItemUtils.GetItemPath(KonoAssetPath.DataPath(dataFolderPath), item.ItemPath);
                 }
 
                 item.ItemPath = newItemPath;
 
                 if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename))
                 {
-                    ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), konoAssetItem.Description.ImageFilename), Path.Combine(SystemPath.ItemThumbnailsPath, item.Id));
+                    ErrorOr<Success> result = await FileSystemService.CopyFileAsync(Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), konoAssetItem.Description.ImageFilename), Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id));
                     if (!result.IsError) item.ThumbnailFileName = item.Id;
                     else item.ThumbnailFileName = string.Empty;
                 }
@@ -388,7 +388,7 @@ internal static class DataImporter
             Item targetItem = targets[i];
             if (sourceThumbnailMap.TryGetValue(targetItem.BoothId, out string? sourcePath))
             {
-                ErrorOr<Success> copyResult = await FileSystemService.CopyFileAsync(sourcePath, Path.Combine(SystemPath.ItemThumbnailsPath, targetItem.Id));
+                ErrorOr<Success> copyResult = await FileSystemService.CopyFileAsync(sourcePath, Path.Combine(SystemPath.ItemThumbnailsFolderPath, targetItem.Id));
                 if (!copyResult.IsError) targetItem.ThumbnailFileName = targetItem.Id;
             }
 

@@ -36,7 +36,7 @@ internal static class ItemCreator
 
         if (!string.IsNullOrEmpty(itemCreationContext.ThumbnailUrl))
         {
-            bool thumbnailResult = await ImageDownloader.Fetch(itemCreationContext.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
+            bool thumbnailResult = await ImageDownloader.Fetch(itemCreationContext.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id), true);
             if (thumbnailResult) item.ThumbnailFileName = item.Id;
         }
 
