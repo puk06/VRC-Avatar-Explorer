@@ -61,7 +61,7 @@ internal class AddItemOverlayWindowValues
     {
         Title = boothItem.Title;
         Author = boothItem.Shop.Name;
-        BoothAuthorId = boothItem.AuthorId;
+        BoothAuthorId = boothItem.Shop.Id;
         BoothId = boothItem.BoothId;
         BoothThumbnailUrl = boothItem.ThumbnailUrl;
         ItemType = CategoryUtils.NonSelectableItemTypes.Contains(boothItem.EstimatedCategory) ? ItemType.Avatar : boothItem.EstimatedCategory;

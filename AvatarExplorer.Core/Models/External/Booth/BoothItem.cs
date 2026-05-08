@@ -23,8 +23,5 @@ public record BoothItem
     public ItemType EstimatedCategory { get; init; } = ItemType.None;
 
     [JsonIgnore]
-    public string AuthorId { get; init; } = string.Empty;
-
-    [JsonIgnore]
     public string ThumbnailUrl => Thumbnails.Count > 0 ? Thumbnails[0].Original : string.Empty;
 }

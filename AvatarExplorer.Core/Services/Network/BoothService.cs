@@ -26,7 +26,6 @@ internal static class BoothService
             return boothItem with
             {
                 EstimatedCategory = SuggestItemType(boothItem.Title, boothItem.Category.Name),
-                AuthorId = BoothUtils.GetAuthorIdFromUrl(boothItem.Shop.Url)
             };
         }
         catch (Exception ex)

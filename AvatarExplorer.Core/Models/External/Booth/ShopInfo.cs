@@ -6,7 +6,8 @@ public record ShopInfo
 {
     public string Name { get; init; } = string.Empty;
 
-    public string Url { get; init; } = string.Empty;
+    [JsonPropertyName("subdomain")]
+    public string Id { get; init; } = string.Empty;
 
     [JsonPropertyName("thumbnail_url")]
     public string ThumbnailUrl { get; init; } = string.Empty;
