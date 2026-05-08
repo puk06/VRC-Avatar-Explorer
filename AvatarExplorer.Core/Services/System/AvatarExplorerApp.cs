@@ -13,7 +13,8 @@ public partial class AvatarExplorerApp
 {
     public static readonly string CurrentVersion = "2.5.0-beta.5";
 
-    public static AvatarExplorerApp Instance { get; private set; } = new AvatarExplorerApp();
+    private static readonly AvatarExplorerApp _instance = new();
+    public static AvatarExplorerApp Instance => _instance;
 
     private bool _initialized = false;
 
