@@ -15,6 +15,8 @@ internal class DatabaseManager<T>(string databaseFilePath)
     public void Load(string? path = null) => Update(JsonFileManager<IEnumerable<T>>.Load(path ?? DatabaseFilePath) ?? []);
     public void Save() => JsonFileManager<IEnumerable<T>>.Save(_items, DatabaseFilePath);
     
+    public T? GetById(string id) => _items.FirstOrDefault(i => i.Id == id);
+
     public void Add(T item) => _items.Add(item);
     public void AddRange(IEnumerable<T> items) => _items.AddRange(items);
     public bool Remove(string id) => _items.RemoveAll(i => i.Id == id) > 0;

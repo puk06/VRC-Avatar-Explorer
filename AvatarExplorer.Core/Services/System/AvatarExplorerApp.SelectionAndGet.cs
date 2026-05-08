@@ -28,7 +28,7 @@ public partial class AvatarExplorerApp
     {
         if (itemId == null) return null;
 
-        Item? item = _itemDatabaseManager.Items.FirstOrDefault(i => i.Id == itemId);
+        Item? item = _itemDatabaseManager.GetById(itemId);
         if (item == null) ErrorManager.Instance.PostInternalError($"The item with the specified ID '{itemId}' was not found.");
 
         return item;
@@ -55,7 +55,7 @@ public partial class AvatarExplorerApp
     {
         if (groupId == null) return null;
 
-        CommonAvatar? commonAvatar = _commonAvatarDatabaseManager.Items.FirstOrDefault(i => i.Id == groupId);
+        CommonAvatar? commonAvatar = _commonAvatarDatabaseManager.GetById(groupId);
         if (commonAvatar == null) ErrorManager.Instance.PostInternalError($"The common avatar group with the specified ID '{groupId}' was not found.");
 
         return commonAvatar;
@@ -66,7 +66,7 @@ public partial class AvatarExplorerApp
     {
         if (id == null) return null;
 
-        BulkImportPreset? bulkImportPreset = _bulkImportPresetDatabaseManager.Items.FirstOrDefault(i => i.Id == id);
+        BulkImportPreset? bulkImportPreset = _bulkImportPresetDatabaseManager.GetById(id);
         if (bulkImportPreset == null) ErrorManager.Instance.PostInternalError($"The bulk import preset with the specified ID '{id}' was not found.");
 
         return bulkImportPreset;
@@ -77,7 +77,7 @@ public partial class AvatarExplorerApp
     {
         if (id == null) return null;
 
-        TempAvatar? tempAvatar = _tempAvatarsDatabaseManager.Items.FirstOrDefault(i => i.Id == id);
+        TempAvatar? tempAvatar = _tempAvatarsDatabaseManager.GetById(id);
         if (tempAvatar == null) ErrorManager.Instance.PostInternalError($"The temp avatar with the specified ID '{id}' was not found.");
 
         return tempAvatar;
@@ -178,7 +178,7 @@ public partial class AvatarExplorerApp
         SelectionNode? itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
         if (itemSelectionNode == null) return null;
 
-        return _itemDatabaseManager.Items.FirstOrDefault(i => i.Id == itemSelectionNode.Key);
+        return _itemDatabaseManager.GetById(itemSelectionNode.Key);
     }
 
     private static ImmutableArray<ItemCountInfo> GetCategoryItemsFromPathInternal(string itemPath)
