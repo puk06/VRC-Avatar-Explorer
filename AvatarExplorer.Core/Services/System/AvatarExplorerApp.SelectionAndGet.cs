@@ -142,17 +142,30 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(selectionNode.Key);
         if (item == null) return [];
 
-        return GetCategoryItemsFromPathInternal(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
+        return GetFoldersFromPathInternal(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
+    }
+    private ImmutableArray<ItemCountInfo> HandleItemFolder(SelectionNode selectionNode)
+    {
+        SelectionNode? itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
+        if (itemSelectionNode == null) return [];
+
+        Item? item = GetItemById(itemSelectionNode.Key);
+        if (item == null) return [];
+
+        return GetCategoryItemsFromPathInternal(Path.Combine(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), selectionNode.Key));
     }
     private ImmutableArray<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
     {
-        SelectionNode? fileSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
-        if (fileSelectionNode == null) return [];
+        SelectionNode? itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
+        if (itemSelectionNode == null) return [];
 
-        Item? item = GetItemById(fileSelectionNode.Key);
+        SelectionNode? folderSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.ItemFolder);
+        if (folderSelectionNode == null) return [];
+
+        Item? item = GetItemById(itemSelectionNode.Key);
         if (item == null) return [];
 
-        return GetFilesFromPathInternal(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), selectionNode.Key);
+        return GetFilesFromPathInternal(Path.Combine(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), folderSelectionNode.Key), selectionNode.Key);
     }
     #endregion
 
@@ -218,6 +231,23 @@ public partial class AvatarExplorerApp
             item.FilePaths.AddRange(kv.Value);
 
             resultBuilder.Add(new ItemCountInfo(item, kv.Value.Count));
+        }
+
+        return resultBuilder.ToImmutable();
+    }
+    private static ImmutableArray<ItemCountInfo> GetFoldersFromPathInternal(string itemPath)
+    {
+        if (!Directory.Exists(itemPath))
+        {
+            ErrorManager.Instance.PostInternalError(string.Format("Directory not found: '{0}'.", itemPath));
+            return [];
+        }
+
+        var resultBuilder = ImmutableArray.CreateBuilder<ItemCountInfo>();
+
+        foreach (string folder in Directory.GetDirectories(itemPath).SortByFileName())
+        {
+            resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(folder)), FileSystemService.EnumerateFiles(folder).Count()));
         }
 
         return resultBuilder.ToImmutable();

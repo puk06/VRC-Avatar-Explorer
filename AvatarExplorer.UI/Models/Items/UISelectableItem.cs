@@ -40,6 +40,7 @@ internal class UISelectableItem
         if (source is Item item) FromItem(item);
         else if (source is Author author) FromAuthor(author);
         else if (source is ItemCategory category) FromCategory(category);
+        else if (source is ItemFolder itemFolder) FromFileItemFolder(itemFolder);
         else if (source is FileCategoryItem fileCategoryItem) FromFileCategoryItem(fileCategoryItem);
         else if (source is ItemFile itemFile) FromFileItemFile(itemFile);
         else if (source is CommonAvatar commonAvatar) FromCommonAvatar(commonAvatar);
@@ -90,6 +91,15 @@ internal class UISelectableItem
         Description = (LocalizationKey.Button.Description.Item.Count, [ItemCount.ToString()]);
         ImageFileName = SystemIconKey.FolderIcon;
         Tag = new(ItemTagStates.RootSelectedCategory, category.Type.GetLocalizationKey() ?? category.CustomCategory);
+        IconType = IconType.None;
+    }
+    
+    private void FromFileItemFolder(ItemFolder itemFolder)
+    {
+        Title = itemFolder.FolderName;
+        Description = (LocalizationKey.Button.Description.Item.Count, [ItemCount.ToString()]);
+        ImageFileName = SystemIconKey.FolderIcon;
+        Tag = new(ItemTagStates.ItemFolder, itemFolder.FolderName);
         IconType = IconType.None;
     }
 

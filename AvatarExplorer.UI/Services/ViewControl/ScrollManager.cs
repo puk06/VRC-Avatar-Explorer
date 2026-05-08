@@ -13,6 +13,7 @@ internal class ScrollManager(Vector defaultValue) : CacheManager<ItemTagStates, 
         ItemTagStates.RootItem,
         ItemTagStates.RootSelectedCategory,
         ItemTagStates.RootSelectedItem,
+        ItemTagStates.ItemFolder,
         ItemTagStates.ItemFileCategory,
         ItemTagStates.ItemFileCategoryOpen
     ];

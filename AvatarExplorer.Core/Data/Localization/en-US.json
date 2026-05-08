@@ -127,6 +127,7 @@
     "ContextMenu.Item.Thumbnail.Change": "Change Thumbnail",
     "ContextMenu.Item.Thumbnail.Fetch": "Fetch Thumbnail",
     "ContextMenu.Item.Remove": "Remove Item",
+    "ContextMenu.ItemFolder.OpenFileInExplorer": "Show in Explorer",
     "ContextMenu.ItemFile.OpenFile": "Open File",
     "ContextMenu.ItemFile.BulkImportList": "Add to Bulk Import",
     "ContextMenu.ItemFile.OpenFileInExplorer": "Show in Explorer",

@@ -15,6 +15,7 @@ internal class PageManager(int defaultValue) : CacheManager<ItemTagStates, int>(
         ItemTagStates.RootItem,
         ItemTagStates.RootSelectedCategory,
         ItemTagStates.RootSelectedItem,
+        ItemTagStates.ItemFolder,
         ItemTagStates.ItemFileCategoryOpen
     ];
 

@@ -12,6 +12,7 @@ internal static class ContextMenuCreator
     internal static ContextMenuAction[] Create(ISelectableItem selectableItem)
     {
         if (selectableItem is Item item) return CreateFromItem(item);
+        if (selectableItem is ItemFolder itemFolder) return CreateFromItemFolder(itemFolder);
         if (selectableItem is ItemFile itemFile) return CreateFromItemFile(itemFile);
         if (selectableItem is BulkImportPreset bulkImportPreset) return CreateFromBulkImportPreset(bulkImportPreset);
         if (selectableItem is TempAvatar tempAvatar) return CreateFromTempAvatar(tempAvatar);
@@ -56,6 +57,18 @@ internal static class ContextMenuCreator
                 new ContextMenuAction(LocalizationKey.ContextMenu.Item.Remove, ActionKey.RemoveItem, ContextMenuIconType.Delete, item.Id)
             ]
         );
+
+        return contextMenuActions.ToArray();
+    }
+
+    private static ContextMenuAction[] CreateFromItemFolder(ItemFolder itemFolder)
+    {
+        List<ContextMenuAction> contextMenuActions = [];
+
+        if (ProcessUtils.IsWindows())
+        {
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, itemFolder.FullPath));
+        }
 
         return contextMenuActions.ToArray();
     }

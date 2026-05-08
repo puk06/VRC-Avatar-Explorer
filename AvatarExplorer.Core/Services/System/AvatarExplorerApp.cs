@@ -43,6 +43,7 @@ public partial class AvatarExplorerApp
             { ItemTagStates.RootItem, HandleRootSelectedItem },
             { ItemTagStates.RootSelectedCategory, HandleRootSelectedCategory },
             { ItemTagStates.RootSelectedItem, HandleRootSelectedItem },
+            { ItemTagStates.ItemFolder, HandleItemFolder },
             { ItemTagStates.ItemFileCategory, HandleItemFileCategory }
         };
     }

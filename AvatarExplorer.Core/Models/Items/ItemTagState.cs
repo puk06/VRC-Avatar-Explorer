@@ -26,6 +26,7 @@ public enum ItemTagStates
     
     RootSelectedCategory = 1 << 5,
     RootSelectedItem = 1 << 6,
-    ItemFileCategory = 1 << 7,
-    ItemFileCategoryOpen = 1 << 8
+    ItemFolder = 1 << 7,
+    ItemFileCategory = 1 << 8,
+    ItemFileCategoryOpen = 1 << 9
 }

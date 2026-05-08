@@ -127,6 +127,7 @@
     "ContextMenu.Item.Thumbnail.Change": "サムネイルを変更する",
     "ContextMenu.Item.Thumbnail.Fetch": "サムネイルを取得する",
     "ContextMenu.Item.Remove": "アイテムを削除する",
+    "ContextMenu.ItemFolder.OpenFileInExplorer": "エクスプローラーで表示する",
     "ContextMenu.ItemFile.OpenFile": "ファイルを開く",
     "ContextMenu.ItemFile.BulkImportList": "一括インポートに追加する",
     "ContextMenu.ItemFile.OpenFileInExplorer": "エクスプローラーで表示する",
