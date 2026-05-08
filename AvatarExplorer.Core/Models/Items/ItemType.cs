@@ -6,39 +6,39 @@ namespace AvatarExplorer.Core.Models.Items;
 public enum ItemType
 {
     [NonSelectable]
-    None = -1,
+    None,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Avatar)]
-    Avatar = 0,
+    Avatar,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Clothing)]
-    Clothing = 1,
+    Clothing,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Texture)]
-    Texture = 2,
+    Texture,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Gimmick)]
-    Gimmick = 3,
+    Gimmick,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Accessory)]
-    Accessory = 4,
+    Accessory,
 
     [LocalizationKey(LocalizationKey.ItemCategory.HairStyle)]
-    HairStyle = 5,
+    HairStyle,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Animation)]
-    Animation = 6,
+    Animation,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Tool)]
-    Tool = 7,
+    Tool,
 
     [LocalizationKey(LocalizationKey.ItemCategory.Shader)]
-    Shader = 8,
+    Shader,
 
     [NonSelectable]
-    Custom = 9,
+    Custom,
 
     [NonSelectable]
     [LocalizationKey(LocalizationKey.ItemCategory.All)]
-    All = 10,
+    All,
 }

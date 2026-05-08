@@ -12,7 +12,7 @@ public partial class AvatarExplorerApp
     public void LoadItemDatabase(string? path = null)
     {
         string loadPath = path ?? SystemPath.ItemDatabasePath;
-        ItemDatabaseMigrationService.MigrateThumbnailKey(loadPath);
+        ItemDatabaseMigrationService.Migrate(loadPath);
         _itemDatabaseManager.Load(loadPath);
         UpdateSearchIndex();
     }

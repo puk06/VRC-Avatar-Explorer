@@ -5,12 +5,14 @@ namespace AvatarExplorer.Core.Services.IO;
 
 internal static class ItemDatabaseMigrationService
 {
-    private const int CurrentMigrationVersion = 1;
+    private const int CurrentMigrationVersion = 2;
 
     private const string LegacyThumbnailKey = "ThumbnmailFileName";
     private const string ThumbnailKey = "ThumbnailFileName";
 
-    internal static void MigrateThumbnailKey(string filePath)
+    private const int ItemTypeOffset = 1; // ItemType enum values were shifted up by 1 in version 2
+
+    internal static void Migrate(string filePath)
     {
         try
         {
@@ -53,6 +55,7 @@ internal static class ItemDatabaseMigrationService
         return targetVersion switch
         {
             1 => MigrateV1RenameThumbnailKey(items),
+            2 => MigrateV2ItemTypeOffset(items),
             _ => false
         };
     }
@@ -76,6 +79,26 @@ internal static class ItemDatabaseMigrationService
             }
 
             itemObject.Remove(LegacyThumbnailKey);
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private static bool MigrateV2ItemTypeOffset(JsonArray items)
+    {
+        bool changed = false;
+
+        foreach (JsonNode? itemNode in items)
+        {
+            if (itemNode is not JsonObject itemObject) continue;
+            if (!itemObject.ContainsKey("Type")) continue;
+
+            JsonNode? typeNode = itemObject["Type"];
+            if (typeNode is not JsonValue typeValue || !typeValue.TryGetValue(out int typeInt)) continue;
+
+            int migratedTypeInt = typeInt + ItemTypeOffset;
+            itemObject["Type"] = migratedTypeInt;
             changed = true;
         }
 
