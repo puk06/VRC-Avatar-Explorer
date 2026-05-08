@@ -33,6 +33,8 @@ public partial class AvatarExplorerApp
     private readonly SettingsManager<RuntimeSettings> _runtimeSettingsManager = new(SystemPath.RuntimeSettingsFilePath);
     private RuntimeSettings RuntimeSettings => _runtimeSettingsManager.Settings;
 
+    private readonly BackupManager _backupManager = new();
+
     private AvatarExplorerApp()
     {
         _stateHandlers = new()

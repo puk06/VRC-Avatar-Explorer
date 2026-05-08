@@ -44,6 +44,28 @@ public partial class AvatarExplorerApp
 
         return result.Value;
     }
+    public async Task<ErrorOr<Success>> FetchAndUpdateThumbnailImage(string itemId)
+    {
+        Item? item = GetItemById(itemId);
+        if (item == null) return Error.NotFound(description: "Item not found.");
+
+        if (item.BoothId == -1) return Error.Validation(description: "Booth id not found.");
+
+        if (IsApiCooldownNow) return Error.Failure(description: "API is on cooldown.");
+
+        _lastBoothApiGetTime = DateTime.Now;
+        ErrorOr<BoothItem> fetchResult = await BoothService.GetItem(item.BoothId.ToString());
+        if (fetchResult.IsError) return Error.Failure(description: fetchResult.Errors.ToErrorString());
+
+        bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
+        if (!result) return Error.Failure(description: "Failed to fetch thumbnail.");
+
+        item.ThumbnailFileName = item.Id;
+
+        SaveItemDatabase();
+
+        return Result.Success;
+    }
     #endregion
 
     #region File API
@@ -64,10 +86,6 @@ public partial class AvatarExplorerApp
 
         return ItemSearchService.ExecuteSearch(searchContext, searchFilter);
     }
-    #endregion
-
-    #region Save API
-    public void SaveRuntimeSettings() => _runtimeSettingsManager.Save();
     #endregion
 
     #region Data Importer API
@@ -137,33 +155,7 @@ public partial class AvatarExplorerApp
     public static void ClearTemp() => FileSystemService.DeleteDirectory(SystemPath.TempFolderPath);
     #endregion
 
-    #region Execute Context Menu Command
-    public async Task<ErrorOr<Success>> FetchAndUpdateThumbnailImage(string itemId)
-    {
-        Item? item = GetItemById(itemId);
-        if (item == null) return Error.NotFound(description: "Item not found.");
-
-        if (item.BoothId == -1) return Error.Validation(description: "Booth id not found.");
-
-        if (IsApiCooldownNow) return Error.Failure(description: "API is on cooldown.");
-
-        _lastBoothApiGetTime = DateTime.Now;
-        ErrorOr<BoothItem> fetchResult = await BoothService.GetItem(item.BoothId.ToString());
-        if (fetchResult.IsError) return Error.Failure(description: fetchResult.Errors.ToErrorString());
-
-        bool result = await ImageDownloader.Fetch(fetchResult.Value.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsPath, item.Id), true);
-        if (!result) return Error.Failure(description: "Failed to fetch thumbnail.");
-
-        item.ThumbnailFileName = item.Id;
-
-        SaveItemDatabase();
-
-        return Result.Success;
-    }
-    #endregion
-
     #region Backup API
-    private readonly BackupManager _backupManager = new();
     public void StartAutoBackup() => _backupManager.StartAutoBackup(RuntimeSettings.AutoBackupInterval, RuntimeSettings.AutoBackupRootDirectory);
     public async Task StopAutoBackup() => await _backupManager.StopAutoBackup();
     public async Task<ErrorOr<Success>> ExecuteBackup(string path) => await _backupManager.ExecuteBackup(path);

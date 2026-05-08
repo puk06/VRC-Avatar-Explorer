@@ -53,32 +53,32 @@ public partial class AvatarExplorerApp
     #endregion
 
     #region Runtime Settings
-    public void LoadRuntimeSettings(string? path = null)
-    {
-        string loadPath = path ?? SystemPath.RuntimeSettingsFilePath;
-        _runtimeSettingsManager.Load(loadPath);
-    }
+    public void LoadRuntimeSettings(string? path = null) => _runtimeSettingsManager.Load(path);
+    public void SaveRuntimeSettings() => _runtimeSettingsManager.Save();
     #endregion
 
     #region Update API
-    public void UpdateSearchIndex()
+    public void UpdateSearchIndex(string? itemId = null)
     {
-        _itemSearchIndexDictionary.Clear();
-
         Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
-        foreach (Item item in _itemDatabaseManager.Items)
-        {
-            string index = ItemSearchService.BuildItemSearchIndex(item, avatarTitleMaps, _commonAvatarDatabaseManager.Items);
-            _itemSearchIndexDictionary[item.Id] = index;
-        }
-    }
-    public void UpdateSearchIndex(string itemId)
-    {
-        Item? item = GetItemById(itemId);
-        if (item == null) return;
 
-        Dictionary<string, string> avatarNameMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
-        _itemSearchIndexDictionary[item.Id] = ItemSearchService.BuildItemSearchIndex(item, avatarNameMaps, _commonAvatarDatabaseManager.Items);
+        if (itemId != null)
+        {
+            Item? item = GetItemById(itemId);
+            if (item == null) return;
+
+            _itemSearchIndexDictionary[item.Id] = ItemSearchService.BuildItemSearchIndex(item, avatarTitleMaps, _commonAvatarDatabaseManager.Items);
+        }
+        else
+        {
+            _itemSearchIndexDictionary.Clear();
+
+            foreach (Item item in _itemDatabaseManager.Items)
+            {
+                string index = ItemSearchService.BuildItemSearchIndex(item, avatarTitleMaps, _commonAvatarDatabaseManager.Items);
+                _itemSearchIndexDictionary[item.Id] = index;
+            }
+        }
     }
     #endregion
 
