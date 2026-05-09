@@ -7,6 +7,7 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Utils;
+using AvatarExplorer.UI.Data;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Services.Utilities;
@@ -46,6 +47,10 @@ public partial class MainWindow
         if (!string.IsNullOrEmpty(selectedItem.ThumbnailFileName))
         {
             thumbnailImage.Source = ImageService.Get(selectedItem.ThumbnailFileName, IconType.Item);
+        }
+        else
+        {
+            thumbnailImage.Source = ImageService.Get(SystemIconKey.FileIcon);
         }
 
         Panel thumbnailPanel = new();
