@@ -15,7 +15,7 @@ public class ItemV1
     public string ImagePath { get; set; } = string.Empty;
     public string AuthorImageUrl { get; set; } = string.Empty;
     public string AuthorImageFilePath { get; set; } = string.Empty;
-    public ItemType Type { get; set; }
+    public int Type { get; set; }
     public string CustomCategory { get; set; } = string.Empty;
     public List<string> SupportedAvatar { get; set; } = new List<string>();
     public string CreatedDate { get; set; } = string.Empty;

@@ -162,7 +162,7 @@ internal static class DataImporter
             BoothId = item.BoothId,
             ItemPath = item.ItemPath,
             ThumbnailFileName = MigrateAvatarExplorerV1Path(item.ImagePath),
-            Type = item.Type,
+            Type = (ItemType)(item.Type + 1),
             CustomCategory = item.CustomCategory,
             ItemMemo = item.ItemMemo,
             CreatedDate = item.CreatedDate,
