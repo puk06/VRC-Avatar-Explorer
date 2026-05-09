@@ -63,6 +63,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         Localizer.Instance.LoadFromFolder("locales");
+        Localizer.Instance.SetLanguage(0); // 先に言語をセットしてあげる（タイトルの初期化などで必要になるため）
         DataContext = Localizer.Instance;
 
         InitializeComponent();
