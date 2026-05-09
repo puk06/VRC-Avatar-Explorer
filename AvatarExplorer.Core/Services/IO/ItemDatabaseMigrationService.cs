@@ -50,6 +50,19 @@ internal static class ItemDatabaseMigrationService
         }
     }
 
+    internal static void MarkCurrentVersion(string filePath)
+    {
+        try
+        {
+            if (!File.Exists(filePath)) return;
+            WriteAppliedMigrationVersion(filePath, CurrentMigrationVersion);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to mark item database migration version: '{filePath}'.", ex);
+        }
+    }
+
     private static bool ApplyMigration(JsonArray items, int targetVersion)
     {
         return targetVersion switch

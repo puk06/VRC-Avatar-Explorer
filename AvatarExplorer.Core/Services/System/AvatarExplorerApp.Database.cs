@@ -25,7 +25,11 @@ public partial class AvatarExplorerApp
         UpdateSearchIndex();
     }
 
-    public void SaveItemDatabase() => _itemDatabaseManager.Save();
+    public void SaveItemDatabase()
+    {
+        _itemDatabaseManager.Save();
+        ItemDatabaseMigrationService.MarkCurrentVersion(_itemDatabaseManager.DatabaseFilePath);
+    }
     public void SaveCommonAvatarDatabase() => _commonAvatarDatabaseManager.Save();
     public void SaveBulkImportPresetDatabase() => _bulkImportPresetDatabaseManager.Save();
     public void SaveTempAvatarsDatabase() => _tempAvatarsDatabaseManager.Save();
