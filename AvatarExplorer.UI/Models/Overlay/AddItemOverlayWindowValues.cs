@@ -16,8 +16,7 @@ internal class AddItemOverlayWindowValues
     internal string BoothAuthorId { get; set; } = string.Empty;
     internal string BoothThumbnailUrl { get; set; } = string.Empty;
     internal int BoothId { get; set; } = -1;
-    internal ItemType ItemType { get; set; } = ItemType.Avatar;
-    internal string CustomCategory { get; set; } = string.Empty;
+    internal ItemCategory Category { get; set; } = new ItemCategory(ItemType.Avatar);
     private List<string> SupportedAvatars { get; set; } = new();
     private List<string> Tags { get; set; } = new();
     internal string ItemMemo { get; set; } = string.Empty;
@@ -32,8 +31,7 @@ internal class AddItemOverlayWindowValues
         BoothAuthorId = string.Empty;
         BoothThumbnailUrl = string.Empty;
         BoothId = -1;
-        ItemType = ItemType.Avatar;
-        CustomCategory = string.Empty;
+        Category = new ItemCategory(ItemType.Avatar);
         SupportedAvatars.Clear();
         Tags.Clear();
         ItemMemo = string.Empty;
@@ -49,8 +47,7 @@ internal class AddItemOverlayWindowValues
         BoothAuthorId = item.AuthorId;
         BoothThumbnailUrl = string.Empty;
         BoothId = item.BoothId;
-        ItemType = item.Type;
-        CustomCategory = item.CustomCategory;
+        Category = new ItemCategory(item.Type, item.CustomCategory);
         Tags = item.TagsView.ToList();
         ItemMemo = item.ItemMemo;
 
@@ -64,8 +61,7 @@ internal class AddItemOverlayWindowValues
         BoothAuthorId = boothItem.Shop.Id;
         BoothId = boothItem.BoothId;
         BoothThumbnailUrl = boothItem.ThumbnailUrl;
-        ItemType = boothItem.EstimatedCategory.IsSelectable() ? boothItem.EstimatedCategory : ItemType.Avatar;
-        CustomCategory = string.Empty;
+        Category = new ItemCategory(boothItem.EstimatedCategory.IsSelectable() ? boothItem.EstimatedCategory : ItemType.Avatar);
     }
 
     internal string Validate()
@@ -73,7 +69,7 @@ internal class AddItemOverlayWindowValues
         if (ItemPaths.Count == 0) return LocalizationKey.Error.Validation.NoFolders;
         if (string.IsNullOrEmpty(Title)) return LocalizationKey.Error.Validation.EmptyTitle;
         if (string.IsNullOrEmpty(Author)) return LocalizationKey.Error.Validation.EmptyAuthor;
-        if (ItemType != ItemType.Clothing && SupportedAvatars.Any(i => i.StartsWith(CommonAvatar.InternalPathPrefix))) return LocalizationKey.Error.Validation.NotClothingWithCommonAvatar;
+        if (Category.Type != ItemType.Clothing && SupportedAvatars.Any(i => i.StartsWith(CommonAvatar.InternalPathPrefix))) return LocalizationKey.Error.Validation.NotClothingWithCommonAvatar;
 
         return string.Empty;
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,14 +8,12 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using AvatarExplorer.Core.Data.Links;
-using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Utils;
-using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Overlay;
@@ -30,9 +27,6 @@ public partial class MainWindow
 {
     private string? _addItemOverlay_selectedItemId = null;
     private readonly AddItemOverlayWindowValues _addItemOverlay_addItemWindowValues = new();
-
-    // カスタムカテゴリかどうかの判定に使う。これ以降のインデックスは全てカスタムカテゴリ
-    private static readonly int AddItemOverlay_CustomCategoryIndex = Enum.GetValues<ItemType>().Count(i => i.IsSelectable());
 
     private void AddItemOverlay_Open(Item item)
     {
@@ -192,7 +186,17 @@ public partial class MainWindow
     private void AddItemOverlay_InitializeCategories()
     {
         AddItemOverlay_ItemTypeComboBox.Items.Clear();
-        AddItemOverlay_ItemTypeComboBox.Items.AddRange(AvatarExplorer.GetCategories(includeEmptyCategory: true, includeAllCategory: false).Select(i => Localizer.Instance[((ItemCategory)i.Item).ToString()]));
+
+        IEnumerable<ItemCategory> categories = AvatarExplorer.GetCategories(includeEmptyCategory: true, includeAllCategory: false).Select(i => (ItemCategory)i.Item);
+        foreach (ItemCategory category in categories)
+        {
+            string categoryName = Localizer.Instance[category.ToString()];
+            AddItemOverlay_ItemTypeComboBox.Items.Add(new ComboBoxItem()
+            {
+                Content = categoryName,
+                Tag = category
+            });
+        }
 
         if (AddItemOverlay_ItemTypeComboBox.Items.Count > 0) AddItemOverlay_ItemTypeComboBox.SelectedIndex = 0;
     }
@@ -217,7 +221,7 @@ public partial class MainWindow
     {
         AddItemOverlay_BoothItemTitleTextBox.Text = addItemWindowValues.Title;
         AddItemOverlay_BoothItemAuthorTextBox.Text = addItemWindowValues.Author;
-        AddItemOverlay_ItemTypeComboBox.SelectedIndex = AddItemOverlay_GetCategoryIndex(addItemWindowValues.ItemType, addItemWindowValues.CustomCategory);
+        AddItemOverlay_ItemTypeComboBox.SelectedIndex = AddItemOverlay_GetCategoryIndex(addItemWindowValues.Category);
         AddItemOverlay_UpdateSupportedAvatarsLabel();
         AddItemOverlay_UpdateTagsLabel();
         AddItemOverlay_InternalAuthorIdTextBox.Text = addItemWindowValues.BoothAuthorId;
@@ -233,39 +237,30 @@ public partial class MainWindow
         addItemWindowValues.BoothThumbnailUrl = AddItemOverlay_InternalImageURLTextBox.Text ?? string.Empty;
     }
 
-    private int AddItemOverlay_GetCategoryIndex(ItemType itemType, string customCategory)
+    private int AddItemOverlay_GetCategoryIndex(ItemCategory category)
     {
-        if (itemType == ItemType.Custom)
+        for (int i = 0; i < AddItemOverlay_ItemTypeComboBox.Items.Count; i++)
         {
-            int index = 0;
-
-            for (int i = AddItemOverlay_CustomCategoryIndex; i < AddItemOverlay_ItemTypeComboBox.Items.Count; i++)
+            if (AddItemOverlay_ItemTypeComboBox.Items[i] is ComboBoxItem comboBoxItem && comboBoxItem.Tag is ItemCategory itemCategory && itemCategory.Equals(category))
             {
-                string? categoryName = AddItemOverlay_ItemTypeComboBox.Items[i]?.ToString();
-                if (string.IsNullOrEmpty(categoryName)) continue;
-
-                if (categoryName == customCategory) index = i;
+                return i;
             }
+        }
 
-            return index;
-        }
-        else
-        {
-            return (int)itemType;
-        }
+        return 0; // 見つからなかったらとりあえず先頭のカテゴリを選択しておく
     }
-
-    private ItemCategory AddItemOverlay_GetCurrentCategory()
+    private ItemCategory AddItemOverlay_GetItemCategoryFromIndex(int index)
     {
-        int selectedIndex = AddItemOverlay_ItemTypeComboBox.SelectedIndex;
+        if (index < 0 || index >= AddItemOverlay_ItemTypeComboBox.Items.Count) return new ItemCategory();
 
-        if (selectedIndex >= AddItemOverlay_CustomCategoryIndex)
+        if (AddItemOverlay_ItemTypeComboBox.Items[index] is ComboBoxItem comboBoxItem && comboBoxItem.Tag is ItemCategory itemCategory)
         {
-            return new ItemCategory(AddItemOverlay_ItemTypeComboBox.SelectedItem?.ToString() ?? string.Empty);
+            return itemCategory;
         }
 
-        return new ItemCategory((ItemType)selectedIndex);
+        return new ItemCategory();
     }
+
     private bool AddItemOverlay_ValidateValues()
     {
         string errorMessage = _addItemOverlay_addItemWindowValues.Validate();
@@ -312,7 +307,11 @@ public partial class MainWindow
         string? customCategory = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.AddCustomCategory]);
         if (string.IsNullOrEmpty(customCategory)) return;
 
-        int index = AddItemOverlay_ItemTypeComboBox.Items.Add(customCategory);
+        int index = AddItemOverlay_ItemTypeComboBox.Items.Add(new ComboBoxItem()
+        {
+            Content = customCategory,
+            Tag = new ItemCategory(customCategory)
+        });
         AddItemOverlay_ItemTypeComboBox.SelectedIndex = index;
     }
     private async void AddItemOverlay_EditSupportedAvatars_Click(object? sender, RoutedEventArgs e)
@@ -373,7 +372,7 @@ public partial class MainWindow
         itemCreationContext.ThumbnailUrl = _addItemOverlay_addItemWindowValues.BoothThumbnailUrl;
         itemCreationContext.BoothId = _addItemOverlay_addItemWindowValues.BoothId;
 
-        ItemCategory itemCategory = AddItemOverlay_GetCurrentCategory();
+        ItemCategory itemCategory = AddItemOverlay_GetItemCategoryFromIndex(AddItemOverlay_ItemTypeComboBox.SelectedIndex);
         itemCreationContext.ItemType = itemCategory.Type;
         itemCreationContext.CustomCategory = itemCategory.CustomCategory;
 
