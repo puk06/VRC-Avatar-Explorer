@@ -60,24 +60,40 @@ internal static class ImageService
 
     internal static Bitmap? Get(string fileName, IconType iconType = IconType.None)
     {
-        if (IsSystemIcon(fileName)) return SystemIconsDictionary[fileName];
-
-        string filePath = iconType switch
+        try
         {
-            IconType.Item => Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName),
-            _ => fileName,
-        };
+            if (IsSystemIcon(fileName)) return SystemIconsDictionary[fileName];
 
-        bool compressThumbnail = iconType == IconType.Item;
-        return GetFromFileCache(filePath, compressThumbnail);
+            string filePath = iconType switch
+            {
+                IconType.Item => Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName),
+                _ => fileName,
+            };
+
+            bool compressThumbnail = iconType == IconType.Item;
+            return GetFromFileCache(filePath, compressThumbnail);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to get image for file: {fileName}", ex);
+            return null;
+        }
     }
 
     internal static Bitmap? Load(Uri uri)
     {
         if (!AssetLoader.Exists(uri)) return null;
 
-        using Stream fileStream = AssetLoader.Open(uri);
-        return new Bitmap(fileStream);
+        try
+        {
+            using Stream fileStream = AssetLoader.Open(uri);
+            return new Bitmap(fileStream);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to load bitmap from URI: {uri}", ex);
+            return null;
+        }
     }
     
     internal static void StartThumbnailCacheWarmupInBackground(IEnumerable<string> imageFileNames)
@@ -111,7 +127,19 @@ internal static class ImageService
     private static Bitmap? GetFromFileCache(string filePath, bool compressThumbnail)
     {
         bool exists = File.Exists(filePath);
-        DateTime lastWriteTimeUtc = exists ? File.GetLastWriteTimeUtc(filePath) : DateTime.MinValue;
+        DateTime lastWriteTimeUtc = DateTime.MinValue;
+        if (exists)
+        {
+            try
+            {
+                lastWriteTimeUtc = File.GetLastWriteTimeUtc(filePath);
+            }
+            catch (Exception ex)
+            {
+                ErrorManager.Instance.PostInternalError($"Failed to get last write time for file: {filePath}", ex);
+                return null;
+            }
+        }
 
         lock (BitmapCacheLock)
         {
@@ -138,24 +166,34 @@ internal static class ImageService
         }
     }
 
-    private static Bitmap LoadBitmap(string filePath, bool compressThumbnail)
+    private static Bitmap? LoadBitmap(string filePath, bool compressThumbnail)
     {
-        Bitmap sourceBitmap = new(filePath);
-        if (!compressThumbnail) return sourceBitmap;
+        Bitmap? sourceBitmap = null;
+        try
+        {
+            sourceBitmap = new(filePath);
+            if (!compressThumbnail) return sourceBitmap;
 
-        PixelSize sourceSize = sourceBitmap.PixelSize;
-        int maxEdge = Math.Max(sourceSize.Width, sourceSize.Height);
-        if (maxEdge <= _compressedThumbnailMaxEdge) return sourceBitmap;
+            PixelSize sourceSize = sourceBitmap.PixelSize;
+            int maxEdge = Math.Max(sourceSize.Width, sourceSize.Height);
+            if (maxEdge <= _compressedThumbnailMaxEdge) return sourceBitmap;
 
-        double scale = (double)_compressedThumbnailMaxEdge / maxEdge;
-        PixelSize targetSize = new(
-            Math.Max(1, (int)Math.Round(sourceSize.Width * scale)),
-            Math.Max(1, (int)Math.Round(sourceSize.Height * scale))
-        );
+            double scale = (double)_compressedThumbnailMaxEdge / maxEdge;
+            PixelSize targetSize = new(
+                Math.Max(1, (int)Math.Round(sourceSize.Width * scale)),
+                Math.Max(1, (int)Math.Round(sourceSize.Height * scale))
+            );
 
-        Bitmap compressedBitmap = sourceBitmap.CreateScaledBitmap(targetSize, BitmapInterpolationMode.HighQuality);
-        sourceBitmap.Dispose();
+            Bitmap compressedBitmap = sourceBitmap.CreateScaledBitmap(targetSize, BitmapInterpolationMode.HighQuality);
+            sourceBitmap.Dispose();
 
-        return compressedBitmap;
+            return compressedBitmap;
+        }
+        catch (Exception ex)
+        {
+            sourceBitmap?.Dispose();
+            ErrorManager.Instance.PostInternalError($"Failed to load or compress bitmap: {filePath}", ex);
+            return null;
+        }
     }
 }
