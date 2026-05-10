@@ -139,7 +139,7 @@ public partial class MainWindow
         if (item == null) return;
 
         string? memo = await EditMemoOverlay_ShowSafeAsync(item.ItemMemo);
-        if (string.IsNullOrEmpty(memo)) return;
+        if (memo == null) return;
 
         item.ItemMemo = memo;
         AvatarExplorer.UpdateItemUpdatedDate(item.Id);

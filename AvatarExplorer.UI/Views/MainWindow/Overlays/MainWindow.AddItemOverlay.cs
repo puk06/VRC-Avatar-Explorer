@@ -326,10 +326,9 @@ public partial class MainWindow
     private async void AddItemOverlay_EditItemMemo_Click(object? sender, RoutedEventArgs e)
     {
         string? memo = await EditMemoOverlay_ShowSafeAsync(_addItemOverlay_addItemWindowValues.ItemMemo);
-        if (!string.IsNullOrEmpty(memo))
-        {
-            _addItemOverlay_addItemWindowValues.ItemMemo = memo;
-        }
+        if (memo == null) return;
+
+        _addItemOverlay_addItemWindowValues.ItemMemo = memo;
     }
     private async void AddItemOverlay_EditTags_Click(object? sender, RoutedEventArgs e)
     {
