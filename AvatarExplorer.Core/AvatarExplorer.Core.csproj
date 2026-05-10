@@ -13,7 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="ErrorOr" Version="2.0.1" />
 		<PackageReference Include="SemanticVersioning" Version="3.0.0" />
-		<PackageReference Include="SharpCompress" Version="0.47.4" />
+		<PackageReference Include="SharpCompress" Version="0.48.0" />
 
 		<Content Include="../THIRD_PARTY_LICENSES.txt">
 			<Link>THIRD_PARTY_LICENSES.txt</Link>
