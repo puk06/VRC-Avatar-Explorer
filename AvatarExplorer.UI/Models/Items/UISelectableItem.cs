@@ -115,7 +115,10 @@ internal class UISelectableItem
     private void FromFileItemFile(ItemFile itemFile)
     {
         Title = itemFile.FileName;
-        Description = (LocalizationKey.Button.Description.File.Extension, [itemFile.Extension]);
+
+        if (string.IsNullOrEmpty(itemFile.Extension)) Description = (LocalizationKey.Button.Description.File.NoExtension, []);
+        else Description = (LocalizationKey.Button.Description.File.Extension, [itemFile.Extension]);
+
         ImageFileName = SystemIconKey.FileIcon;
         Tag = new(ItemTagStates.ItemFileCategoryOpen, itemFile.FullPath);
         IconType = IconType.None;

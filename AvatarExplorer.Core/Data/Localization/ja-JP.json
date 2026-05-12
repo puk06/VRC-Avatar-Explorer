@@ -38,6 +38,7 @@
     "Button.Description.Item.Author": "作者: {0}",
     "Button.Description.Item.Count": "{0}個の項目",
     "Button.Description.File.Extension": "{0} ファイル",
+    "Button.Description.File.NoExtension": "拡張子なし",
     "Button.Description.CommonAvatar.Count": "合計アバター数: {0}",
     "Button.Description.BulkImportPreset.Count": "{0}個のアイテム",
     "Button.Description.TempAvatar": "仮登録アバター",

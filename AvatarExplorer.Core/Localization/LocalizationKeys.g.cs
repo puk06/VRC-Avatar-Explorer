@@ -76,6 +76,7 @@ public static class LocalizationKey
             public static class File
             {
                 public const string Extension = "Button.Description.File.Extension";
+                public const string NoExtension = "Button.Description.File.NoExtension";
             }
             public static class CommonAvatar
             {
