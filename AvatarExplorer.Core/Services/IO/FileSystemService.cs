@@ -781,7 +781,7 @@ public static class FileSystemService
         Directory.CreateDirectory(directory);
     }
 
-    public static IEnumerable<string> EnumerateFiles(string rootDirectory)
+    public static IEnumerable<string> EnumerateFiles(string rootDirectory, bool isRecursive = true)
     {
         if (!Directory.Exists(rootDirectory)) throw new DirectoryNotFoundException($"Directory not found: {rootDirectory}.");
 
@@ -804,9 +804,12 @@ public static class FileSystemService
                 continue;
             }
 
-            foreach (string subDirectory in subDirectories)
+            if (isRecursive)
             {
-                directories.Push(subDirectory);
+                foreach (string subDirectory in subDirectories)
+                {
+                    directories.Push(subDirectory);
+                }
             }
 
             string[] files;

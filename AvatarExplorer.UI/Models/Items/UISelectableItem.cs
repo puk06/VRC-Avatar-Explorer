@@ -99,7 +99,7 @@ internal class UISelectableItem
         Title = itemFolder.FolderName;
         Description = (LocalizationKey.Button.Description.Item.Count, [ItemCount.ToString()]);
         ImageFileName = SystemIconKey.FolderIcon;
-        Tag = new(ItemTagStates.ItemFolder, itemFolder.FolderName);
+        Tag = new(ItemTagStates.ItemFolder, itemFolder.IsRoot ? ItemFolder.RootNodeName : itemFolder.FolderName);
         IconType = IconType.None;
     }
 

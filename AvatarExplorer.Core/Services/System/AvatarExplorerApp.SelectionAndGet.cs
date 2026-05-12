@@ -152,7 +152,14 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(itemSelectionNode.Key);
         if (item == null) return [];
 
-        return GetCategoryItemsFromPathInternal(Path.Combine(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), selectionNode.Key));
+        string itemPath = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+
+        if (selectionNode.Key == ItemFolder.RootNodeName)
+        {
+            return GetCategoryItemsFromPathInternal(itemPath, isRecursive: false);
+        }
+
+        return GetCategoryItemsFromPathInternal(Path.Combine(itemPath, selectionNode.Key));
     }
     private ImmutableArray<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
     {
@@ -165,7 +172,14 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(itemSelectionNode.Key);
         if (item == null) return [];
 
-        return GetFilesFromPathInternal(Path.Combine(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), folderSelectionNode.Key), selectionNode.Key);
+        string itemPath = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+
+        if (folderSelectionNode.Key == ItemFolder.RootNodeName)
+        {
+            return GetFilesFromPathInternal(itemPath, selectionNode.Key, isRecursive: false);
+        }
+
+        return GetFilesFromPathInternal(Path.Combine(itemPath, folderSelectionNode.Key), selectionNode.Key);
     }
     #endregion
 
@@ -181,7 +195,7 @@ public partial class AvatarExplorerApp
         return _itemDatabaseManager.GetById(itemSelectionNode.Key);
     }
 
-    private static ImmutableArray<ItemCountInfo> GetCategoryItemsFromPathInternal(string itemPath)
+    private static ImmutableArray<ItemCountInfo> GetCategoryItemsFromPathInternal(string itemPath, bool isRecursive = true)
     {
         if (!Directory.Exists(itemPath))
         {
@@ -198,7 +212,7 @@ public partial class AvatarExplorerApp
         IEnumerable<ItemFileCategoryType> categoriesWithFilters = validCategories
             .Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null);
 
-        foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+        foreach (string file in FileSystemService.EnumerateFiles(itemPath, isRecursive: isRecursive).SortByFileName())
         {
             string extension = Path.GetExtension(file);
             string fileName = Path.GetFileNameWithoutExtension(file);
@@ -250,9 +264,15 @@ public partial class AvatarExplorerApp
             resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(folder)), FileSystemService.EnumerateFiles(folder).Count()));
         }
 
+        IEnumerable<string> rootFiles = FileSystemService.EnumerateFiles(itemPath, isRecursive: false);
+        if (rootFiles.Any())
+        {
+            resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(itemPath), isRoot: true), rootFiles.Count()));
+        }
+
         return resultBuilder.ToImmutable();
     }
-    private static ImmutableArray<ItemCountInfo> GetFilesFromPathInternal(string itemPath, string category)
+    private static ImmutableArray<ItemCountInfo> GetFilesFromPathInternal(string itemPath, string category, bool isRecursive = true)
     {
         ItemFileCategoryType targetCategory = Enum.GetValues<ItemFileCategoryType>()
             .FirstOrDefault(i => i.GetLocalizationKey() == category);
@@ -275,7 +295,7 @@ public partial class AvatarExplorerApp
             var categoriesWithFilters = Enum.GetValues<ItemFileCategoryType>()
                 .Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null);
 
-            foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+            foreach (string file in FileSystemService.EnumerateFiles(itemPath, isRecursive: isRecursive).SortByFileName())
             {
                 string extension = Path.GetExtension(file);
                 string fileName = Path.GetFileNameWithoutExtension(file);
@@ -292,7 +312,7 @@ public partial class AvatarExplorerApp
         }
         else
         {
-            foreach (string file in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+            foreach (string file in FileSystemService.EnumerateFiles(itemPath, isRecursive: isRecursive).SortByFileName())
             {
                 string extension = Path.GetExtension(file);
                 string fileName = Path.GetFileNameWithoutExtension(file);

@@ -48,6 +48,7 @@ public static class LocalizationKey
             }
             public const string Search = "Main.Path.Search";
             public const string Removed = "Main.Path.Removed";
+            public const string RootFolder = "Main.Path.RootFolder";
         }
     }
     public static class ItemCategory

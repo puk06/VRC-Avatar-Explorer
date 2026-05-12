@@ -22,6 +22,7 @@
     "Main.Path.Root.Item": "Item: {0}",
     "Main.Path.Search": "Search: {0}",
     "Main.Path.Removed": "[Removed]",
+    "Main.Path.RootFolder": "Root Folder",
 
     "ItemCategory.Avatar": "Avatar",
     "ItemCategory.Clothing": "Clothing",

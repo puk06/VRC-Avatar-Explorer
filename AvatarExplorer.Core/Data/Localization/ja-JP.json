@@ -22,6 +22,7 @@
     "Main.Path.Root.Item": "アイテム: {0}",
     "Main.Path.Search": "検索: {0}",
     "Main.Path.Removed": "[削除済み]",
+    "Main.Path.RootFolder": "ルートフォルダ",
 
     "ItemCategory.Avatar": "アバター",
     "ItemCategory.Clothing": "衣装",

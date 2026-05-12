@@ -39,6 +39,12 @@ internal static class PathService
             value = Localizer.Instance[value];
         }
 
+        if (state == ItemTagStates.ItemFolder)
+        {
+            // フォルダはRootかどうかで表記を変える
+            value = value == ItemFolder.RootNodeName ? Localizer.Instance[LocalizationKey.Main.Path.RootFolder] : value;
+        }
+
         // 翻訳できないタグ(Root以外)はここがnullになるため、valueがパスになる。ある場合はPrefixが翻訳される。
         string? localizationKey = state.GetLocalizationKey();
 
