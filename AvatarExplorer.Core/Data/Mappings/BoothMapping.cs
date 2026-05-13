@@ -22,7 +22,9 @@ internal static class BoothMapping
         // Category : 3D Models
         { "3D Characters", ItemType.Avatar }, // 3Dキャラクター
         { "3D Clothing", ItemType.Clothing }, // 3D衣装
+        { "3D Hair", ItemType.HairStyle }, // 3D 髪型
         { "3D Accessories", ItemType.Accessory }, // 3D装飾品
+        { "3D Shoes", ItemType.Clothing }, // 3D 靴
         { "3D Props", ItemType.Gimmick }, // 3D小道具
         { "3D Textures", ItemType.Texture }, // 3Dテクスチャ
         { "3D Tools & Systems", ItemType.Tool }, // 3Dツール・システム
