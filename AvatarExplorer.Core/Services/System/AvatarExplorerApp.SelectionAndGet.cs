@@ -87,55 +87,25 @@ public partial class AvatarExplorerApp
     private ImmutableArray<ItemCountInfo> HandleRootAvatar(SelectionNode selectionNode)
     {
         string avatarId = selectionNode.Key;
-        return ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items.Where(i => AvatarStatusResolver.Resolve(i, avatarId, _commonAvatarDatabaseManager.Items, RuntimeSettings.TreatEmptySupportedAvatarAsNone).IsSupportedOrCommon));
+        return GetItemCategoriesFromAvatarIdInternal(avatarId);
     }
     private ImmutableArray<ItemCountInfo> HandleRootAuthor(SelectionNode selectionNode)
     {
         string authorName = selectionNode.Key;
-        return ItemCategoryAggregator.Aggregate(_itemDatabaseManager.Items.Where(i => i.Author == authorName));
+        return GetItemCategoriesFromAuthorInternal(authorName);
     }
     private ImmutableArray<ItemCountInfo> HandleRootCategory(SelectionNode selectionNode)
     {
         string category = selectionNode.Key;
-        return _itemDatabaseManager.Items
-            .Where(i => i.IsCategoryMatch(category))
-            .GetSortedItems(RuntimeSettings)
-            .Select(i => new ItemCountInfo(i, 0))
-            .ToImmutableArray();
+        return GetMatchedItemsByCategoryInternal(category);
     }
     private ImmutableArray<ItemCountInfo> HandleRootSelectedCategory(SelectionNode selectionNode)
     {
-        SelectionNode? rootSelectionNode = _selectionState.Root;
+        SelectionNode? rootSelectionNode = GetRootNode();
         if (rootSelectionNode == null) return [];
 
-        if (rootSelectionNode.State == ItemTagStates.RootAvatar)
-        {
-            List<ItemCountInfo> filteredResult = new();
-
-            foreach (Item item in _itemDatabaseManager.Items)
-            {
-                if (!item.IsCategoryMatch(selectionNode.Key)) continue;
-
-                AvatarStatus avatarStatus = AvatarStatusResolver.Resolve(item, rootSelectionNode.Key, _commonAvatarDatabaseManager.Items, RuntimeSettings.TreatEmptySupportedAvatarAsNone);
-                if (!avatarStatus.IsSupportedOrCommon) continue;
-
-                filteredResult.Add(new ItemCountInfo(item, 0, avatarStatus.IsOnlyCommon ? [avatarStatus.CommonAvatarName] : null));
-            }
-
-            return filteredResult
-                .GetSortedItemsFromCountInfo(RuntimeSettings)
-                .ToImmutableArray();
-        }
-        else if (rootSelectionNode.State == ItemTagStates.RootAuthor)
-        {
-            return _itemDatabaseManager.Items
-                .Where(i => i.IsCategoryMatch(selectionNode.Key) && i.Author == rootSelectionNode.Key)
-                .GetSortedItems(RuntimeSettings)
-                .Select(i => new ItemCountInfo(i, 0))
-                .ToImmutableArray();
-        }
-
-        return [];
+        string category = selectionNode.Key;
+        return GetMatchedItemsByCategoryInternal(rootSelectionNode, category);
     }
     private ImmutableArray<ItemCountInfo> HandleRootSelectedItem(SelectionNode selectionNode)
     {
@@ -153,13 +123,10 @@ public partial class AvatarExplorerApp
         if (item == null) return [];
 
         string itemPath = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+        string folderPath = selectionNode.Key == ItemFolder.RootNodeName ? itemPath : Path.Combine(itemPath, selectionNode.Key);
+        bool isRecursive = selectionNode.Key != ItemFolder.RootNodeName; // Rootだとアイテム直下のみ、そうでなければサブフォルダも含める
 
-        if (selectionNode.Key == ItemFolder.RootNodeName)
-        {
-            return GetCategoryItemsFromPathInternal(itemPath, isRecursive: false);
-        }
-
-        return GetCategoryItemsFromPathInternal(Path.Combine(itemPath, selectionNode.Key));
+        return GetCategoryItemsFromPathInternal(folderPath, isRecursive: isRecursive);
     }
     private ImmutableArray<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
     {
@@ -173,29 +140,72 @@ public partial class AvatarExplorerApp
         if (item == null) return [];
 
         string itemPath = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+        string folderPath = folderSelectionNode.Key == ItemFolder.RootNodeName ? itemPath : Path.Combine(itemPath, folderSelectionNode.Key);
+        bool isRecursive = folderSelectionNode.Key != ItemFolder.RootNodeName; // Rootだとアイテム直下のみ、そうでなければサブフォルダも含める
 
-        if (folderSelectionNode.Key == ItemFolder.RootNodeName)
+        return GetFilesFromPathInternal(folderPath, selectionNode.Key, isRecursive: isRecursive);
+    }
+
+    private ImmutableArray<ItemCountInfo> GetItemCategoriesFromAvatarIdInternal(string avatarId)
+    {
+        return ItemCategoryAggregator
+            .Aggregate(
+                _itemDatabaseManager.Items
+                    .Where(i => AvatarStatusResolver.Resolve(i, avatarId, _commonAvatarDatabaseManager.Items, RuntimeSettings.TreatEmptySupportedAvatarAsNone).IsSupportedOrCommon)
+            );
+    }
+    private ImmutableArray<ItemCountInfo> GetItemCategoriesFromAuthorInternal(string author)
+    {
+        return ItemCategoryAggregator
+            .Aggregate(
+                _itemDatabaseManager.Items
+                    .Where(i => i.Author == author)
+            );
+    }
+    private ImmutableArray<ItemCountInfo> GetMatchedItemsByCategoryInternal(string category)
+    {
+        return _itemDatabaseManager.Items
+            .Where(i => i.IsCategoryMatch(category))
+            .GetSortedItems(RuntimeSettings)
+            .Select(i => new ItemCountInfo(i, 0))
+            .ToImmutableArray();
+    }
+    private ImmutableArray<ItemCountInfo> GetMatchedItemsByCategoryInternal(SelectionNode rootSelectionNode, string category)
+    {
+        if (rootSelectionNode.State == ItemTagStates.RootAvatar)
         {
-            return GetFilesFromPathInternal(itemPath, selectionNode.Key, isRecursive: false);
+            string rootAvatarId = rootSelectionNode.Key;
+
+            List<ItemCountInfo> filteredResult = new();
+
+            foreach (Item item in _itemDatabaseManager.Items)
+            {
+                if (!item.IsCategoryMatch(category)) continue;
+
+                AvatarStatus avatarStatus = AvatarStatusResolver.Resolve(item, rootAvatarId, _commonAvatarDatabaseManager.Items, RuntimeSettings.TreatEmptySupportedAvatarAsNone);
+                if (!avatarStatus.IsSupportedOrCommon) continue;
+
+                filteredResult.Add(new ItemCountInfo(item, 0, avatarStatus.IsOnlyCommon ? [avatarStatus.CommonAvatarName] : null));
+            }
+
+            return filteredResult
+                .GetSortedItemsFromCountInfo(RuntimeSettings)
+                .ToImmutableArray();
+        }
+        else if (rootSelectionNode.State == ItemTagStates.RootAuthor)
+        {
+            string authorName = rootSelectionNode.Key;
+
+            return _itemDatabaseManager.Items
+                .Where(i => i.IsCategoryMatch(category) && i.Author == authorName)
+                .GetSortedItems(RuntimeSettings)
+                .Select(i => new ItemCountInfo(i, 0))
+                .ToImmutableArray();
         }
 
-        return GetFilesFromPathInternal(Path.Combine(itemPath, folderSelectionNode.Key), selectionNode.Key);
+        return [];
     }
-    #endregion
-
-    public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _selectionState.GetCurrentSelectionNodes();
-    public SelectionNode? GetCurrentNode() => _selectionState.Current;
-    public SelectionNode? GetRootNode() => _selectionState.Root;
-
-    public Item? GetSelectedItem()
-    {
-        SelectionNode? itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
-        if (itemSelectionNode == null) return null;
-
-        return _itemDatabaseManager.GetById(itemSelectionNode.Key);
-    }
-
-    private static ImmutableArray<ItemCountInfo> GetCategoryItemsFromPathInternal(string itemPath, bool isRecursive = true)
+    private ImmutableArray<ItemCountInfo> GetCategoryItemsFromPathInternal(string itemPath, bool isRecursive)
     {
         if (!Directory.Exists(itemPath))
         {
@@ -249,7 +259,7 @@ public partial class AvatarExplorerApp
 
         return resultBuilder.ToImmutable();
     }
-    private static ImmutableArray<ItemCountInfo> GetFoldersFromPathInternal(string itemPath)
+    private ImmutableArray<ItemCountInfo> GetFoldersFromPathInternal(string itemPath)
     {
         if (!Directory.Exists(itemPath))
         {
@@ -272,7 +282,7 @@ public partial class AvatarExplorerApp
 
         return resultBuilder.ToImmutable();
     }
-    private static ImmutableArray<ItemCountInfo> GetFilesFromPathInternal(string itemPath, string category, bool isRecursive = true)
+    private ImmutableArray<ItemCountInfo> GetFilesFromPathInternal(string itemPath, string category, bool isRecursive)
     {
         ItemFileCategoryType targetCategory = Enum.GetValues<ItemFileCategoryType>()
             .FirstOrDefault(i => i.GetLocalizationKey() == category);
@@ -325,6 +335,19 @@ public partial class AvatarExplorerApp
         }
 
         return resultBuilder.ToImmutable();
+    }
+    #endregion
+
+    public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _selectionState.GetCurrentSelectionNodes();
+    public SelectionNode? GetCurrentNode() => _selectionState.Current;
+    public SelectionNode? GetRootNode() => _selectionState.Root;
+
+    public Item? GetSelectedItem()
+    {
+        SelectionNode? itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
+        if (itemSelectionNode == null) return null;
+
+        return _itemDatabaseManager.GetById(itemSelectionNode.Key);
     }
 
     public RuntimeSettings GetRuntimeSettings() => RuntimeSettings;
