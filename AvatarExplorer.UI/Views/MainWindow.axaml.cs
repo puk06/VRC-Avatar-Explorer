@@ -102,12 +102,12 @@ public partial class MainWindow : Window
         IEnumerable<string> thumbnailFileNames = AvatarExplorer.GetAllItems().Select(i => i.ThumbnailFileName).Where(p => !string.IsNullOrEmpty(p));
         ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
 
-        // 初回起動かチェック
-        if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
-
         Main_DockPanel.IsVisible = true;
         Main_ReloadCurrentWindow();
         StartupLoadingOverlay.IsVisible = false;
+        
+        // 初回起動かチェック
+        if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
 
         // Scheme & Administrator Mode Check (Windows)
         if (ProcessUtils.IsWindows())
