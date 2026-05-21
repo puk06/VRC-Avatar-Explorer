@@ -254,6 +254,7 @@ public static class LocalizationKey
             public const string BulkImportList = "ContextMenu.ItemFile.BulkImportList";
             public const string OpenFileInExplorer = "ContextMenu.ItemFile.OpenFileInExplorer";
             public const string OpenUnitypackageViewer = "ContextMenu.ItemFile.OpenUnitypackageViewer";
+            public const string OpenPdfViewer = "ContextMenu.ItemFile.OpenPdfViewer";
         }
         public static class BulkImportPreset
         {

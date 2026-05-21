@@ -91,6 +91,11 @@ internal static class ContextMenuCreator
             contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenUnitypackageViewer, ActionKey.OpenUnitypackageViewer, ContextMenuIconType.Open, itemFile.FullPath));
         }
 
+        if (PathUtils.IsPdfFile(itemFile.FullPath))
+        {
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenPdfViewer, ActionKey.OpenPdfViewer, ContextMenuIconType.Open, itemFile.FullPath));
+        }
+
         return contextMenuActions.ToArray();
     }
 

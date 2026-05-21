@@ -81,6 +81,7 @@ public partial class MainWindow
             { ActionKey.AddFileToBulkImportList, Main_ItemButton_ContextMenu_AddFileToBulkImportList },
             { ActionKey.OpenFileInExplorer, Main_ItemButton_ContextMenu_OpenFileInExplorer },
             { ActionKey.OpenUnitypackageViewer, Main_ItemButton_ContextMenu_OpenUnitypackageViewer },
+            { ActionKey.OpenPdfViewer, Main_ItemButton_ContextMenu_OpenPdfViewer },
             { ActionKey.RemovePreset, Main_ItemButton_ContextMenu_RemovePreset },
             { ActionKey.EditTempAvatarName, Main_ItemButton_ContextMenu_EditTempAvatarName },
             { ActionKey.ResolveTempAvatar, Main_ItemButton_ContextMenu_ResolveTempAvatar },

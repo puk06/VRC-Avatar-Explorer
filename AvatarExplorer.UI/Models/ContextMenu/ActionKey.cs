@@ -24,6 +24,7 @@ internal enum ActionKey
     AddFileToBulkImportList,
     OpenFileInExplorer,
     OpenUnitypackageViewer,
+    OpenPdfViewer,
 
     RemovePreset,
 

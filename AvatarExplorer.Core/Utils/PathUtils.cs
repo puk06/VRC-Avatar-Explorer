@@ -14,4 +14,5 @@ public static class PathUtils
     public static string GetItemThumbnailsFolderPath(string root) => Path.Combine(GetImagesFolderPath(root), "item_thumbnails");
 
     public static bool IsUnitypackageFile(string filePath) => Path.GetExtension(filePath).Equals(".unitypackage", StringComparison.CurrentCultureIgnoreCase);
+    public static bool IsPdfFile(string filePath) => Path.GetExtension(filePath).Equals(".pdf", StringComparison.CurrentCultureIgnoreCase);
 }

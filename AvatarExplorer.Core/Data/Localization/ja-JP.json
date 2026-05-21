@@ -134,6 +134,7 @@
     "ContextMenu.ItemFile.BulkImportList": "一括インポートに追加する",
     "ContextMenu.ItemFile.OpenFileInExplorer": "エクスプローラーで表示する",
     "ContextMenu.ItemFile.OpenUnitypackageViewer": "Unitypackage Viewerで開く",
+    "ContextMenu.ItemFile.OpenPdfViewer": "PDF Viewerで開く",
     "ContextMenu.BulkImportPreset.RemovePreset": "プリセットを削除する",
     "ContextMenu.TempAvatar.EditTempAvatarName": "仮アバター名を編集する",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "正式なアイテムと紐付ける",

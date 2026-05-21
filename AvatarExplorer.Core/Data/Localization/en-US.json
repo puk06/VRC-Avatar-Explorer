@@ -134,6 +134,7 @@
     "ContextMenu.ItemFile.BulkImportList": "Add to Bulk Import",
     "ContextMenu.ItemFile.OpenFileInExplorer": "Show in Explorer",
     "ContextMenu.ItemFile.OpenUnitypackageViewer": "Open Unitypackage Viewer",
+    "ContextMenu.ItemFile.OpenPdfViewer": "Open PDF Viewer",
     "ContextMenu.BulkImportPreset.RemovePreset": "Remove Preset",
     "ContextMenu.TempAvatar.EditTempAvatarName": "Edit Temporary Avatar Name",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "Link to Permanent Item",

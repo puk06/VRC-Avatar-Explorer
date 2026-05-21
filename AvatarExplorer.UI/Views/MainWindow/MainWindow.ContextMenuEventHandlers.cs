@@ -270,6 +270,11 @@ public partial class MainWindow
         await UnitypackageViewerOverlay_OpenAsync(filePath);
     }
 
+    private async Task Main_ItemButton_ContextMenu_OpenPdfViewer(string filePath)
+    {
+        await PdfViewerOverlay_OpenAsync(filePath);
+    }
+
     private BulkImportPreset? Main_ItemButton_ContextMenu_GetBulkImportPresetById(string id)
     {
         BulkImportPreset? bulkImportPreset = AvatarExplorer.GetBulkImportPresetById(id);

@@ -1233,6 +1233,45 @@
             </Border>
         </Border>
 
+        <!-- PDF Viewer -->
+        <Border x:Name="PdfViewerOverlay" Classes="overlaybackground" IsVisible="False">
+            <Border Classes="overlay" Width="1100" Height="760" Padding="20">
+                <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
+                    <TextBlock Text="PDF Viewer" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                    <StackPanel Grid.Row="1" Spacing="2">
+                        <TextBlock x:Name="PdfViewerOverlay_FileName" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                        <TextBlock x:Name="PdfViewerOverlay_StatusText" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="2" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
+                        <ScrollViewer>
+                            <ItemsControl x:Name="PdfViewerOverlay_PageItemsControl">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Spacing="16" Margin="0,0,12,0"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="ui:MainWindow+PdfPageViewModel">
+                                        <Border Classes="panelbackground" Background="{DynamicResource Background.Surface}" Padding="12">
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                                                <Image Source="{Binding Image}" Stretch="Uniform" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Grid Grid.Row="3" ColumnDefinitions="*,120" ColumnSpacing="10">
+                        <Button Grid.Column="1" Classes="button" FontWeight="Bold" Content="{Binding [Button.Close]}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="PdfViewerOverlay_Close_Click"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Border>
+
         <!-- 進捗画面 -->
         <Border x:Name="ProgressOverlay" Classes="overlaybackground" IsVisible="False">
             <Border Classes="overlay" Width="400">
