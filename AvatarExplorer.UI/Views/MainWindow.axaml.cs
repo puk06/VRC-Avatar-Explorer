@@ -86,9 +86,25 @@ public partial class MainWindow : Window
         return password;
     }
 
+    private async Task Main_HideStartupLoadingOverlayAsync()
+    {
+        const int fadeDurationMs = 450;
+        const int fadeSteps = 20;
+        int stepDelayMs = fadeDurationMs / fadeSteps;
+
+        for (int step = 0; step <= fadeSteps; step++)
+        {
+            double opacity = 1 - (step / (double)fadeSteps);
+            await Dispatcher.UIThread.InvokeAsync(() => StartupLoadingOverlay.Opacity = opacity);
+            if (step < fadeSteps) await Task.Delay(stepDelayMs);
+        }
+
+        StartupLoadingOverlay.IsVisible = false;
+        StartupLoadingOverlay.Opacity = 0;
+    }
+
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
-        await Task.Delay(750);
         ErrorOr<Success> initializationResult = await Main_Initialize();
         if (initializationResult.IsError)
         {
@@ -104,7 +120,7 @@ public partial class MainWindow : Window
 
         Main_DockPanel.IsVisible = true;
         Main_ReloadCurrentWindow();
-        StartupLoadingOverlay.IsVisible = false;
+        await Main_HideStartupLoadingOverlayAsync();
         
         // 初回起動かチェック
         if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
