@@ -1,6 +1,8 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
@@ -13,7 +15,11 @@ internal static class ContextMenuFactory
 {
     internal static ContextMenu GetContextMenu(ContextMenuAction[] contextMenuActions, EventHandler<RoutedEventArgs>? onClick = null)
     {
-        ContextMenu contextMenu = new();
+        FontFamily fontFamily = new($"avares://AvatarExplorer/Assets/Fonts#{Localizer.Instance[LocalizationKey.FontFamily]}");
+        ContextMenu contextMenu = new()
+        {
+            FontFamily = fontFamily
+        };
 
         foreach (ContextMenuAction contextMenuAction in contextMenuActions)
         {
@@ -21,7 +27,8 @@ internal static class ContextMenuFactory
             {
                 Icon = GetMaterialIcon(contextMenuAction.ContextMenuIconType),
                 Header = Localizer.Instance[contextMenuAction.DisplayName],
-                Tag = contextMenuAction
+                Tag = contextMenuAction,
+                FontFamily = fontFamily
             };
 
             if (onClick != null) menuItem.Click += onClick;
