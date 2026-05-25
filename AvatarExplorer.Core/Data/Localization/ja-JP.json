@@ -4,6 +4,8 @@
 
     "BoothLanguageCode": "ja",
 
+    "FontFamily": "Noto Sans JP",
+
     "Title.AdministratorMode": "管理者モード",
     "Title.CacheGeneration": "サムネイルを準備中...",
 

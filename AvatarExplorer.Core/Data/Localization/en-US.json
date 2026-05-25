@@ -4,6 +4,8 @@
 
     "BoothLanguageCode": "en",
 
+    "FontFamily": "Noto Sans",
+
     "Title.AdministratorMode": "Administrator Mode",
     "Title.CacheGeneration": "Preparing Thumbnails...",
 

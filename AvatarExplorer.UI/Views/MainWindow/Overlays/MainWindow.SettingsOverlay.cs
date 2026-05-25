@@ -250,7 +250,11 @@ public partial class MainWindow
     private void SettingsOverlay_ApplyLanguage(int language, bool reloadWindow = true)
     {
         bool isLanguageChanged = Localizer.Instance.CurrentLanguageIndex != language;
-        if (isLanguageChanged) Localizer.Instance.SetLanguage(language);
+        if (isLanguageChanged)
+        {
+            Localizer.Instance.SetLanguage(language);
+            FontFamily = new FontFamily("avares://AvatarExplorer/Assets/Fonts#" + Localizer.Instance[LocalizationKey.FontFamily]);
+        }
 
         if (reloadWindow && isLanguageChanged) Main_ReloadCurrentWindow();
     }
