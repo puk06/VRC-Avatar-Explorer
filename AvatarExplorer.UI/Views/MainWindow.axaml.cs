@@ -107,10 +107,9 @@ public partial class MainWindow : Window
         ErrorOr<Success> initializationResult = await Main_Initialize();
         if (initializationResult.IsError)
         {
-            if (_main_initializationErrorShown) return;
-
             StartupLoadingOverlay.IsVisible = false;
-            FatalErrorOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.InitializationFailed]);
+            if (!_main_initializationErrorShown) FatalErrorOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.InitializationFailed]);
+
             await Task.Delay(5000);
             Close();
             return;
