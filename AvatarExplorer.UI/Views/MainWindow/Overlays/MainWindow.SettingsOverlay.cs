@@ -45,7 +45,7 @@ public partial class MainWindow
         if (SettingsOverlay_LanguageComboBox != null)
         {
             SettingsOverlay_LanguageComboBox.SelectedIndex = -1;
-            SettingsOverlay_LanguageComboBox.SelectedIndex = UserPreferences.Language;
+            SettingsOverlay_LanguageComboBox.SelectedIndex = Math.Clamp(UserPreferences.Language, 0, Localizer.Instance.LanguageCount - 1);
         }
 
         if (SettingsOverlay_SortOrderComboBox != null)
@@ -117,7 +117,7 @@ public partial class MainWindow
 
         UserPreferences userPreferences = new()
         {
-            Language = SettingsOverlay_LanguageComboBox?.SelectedIndex ?? 0,
+            Language = SettingsOverlay_LanguageComboBox?.SelectedIndex >= 0 ? SettingsOverlay_LanguageComboBox.SelectedIndex : 0,
             Theme = (Theme)(SettingsOverlay_ThemeComboBox?.SelectedIndex ?? 0),
             NormalIconSize = (int)(SettingsOverlay_NormalIconSizeSlider?.Value ?? 70),
             HoverIconSize = (int)(SettingsOverlay_HoverIconSizeSlider?.Value ?? 200),
@@ -249,10 +249,11 @@ public partial class MainWindow
     }
     private void SettingsOverlay_ApplyLanguage(int language, bool reloadWindow = true)
     {
-        bool isLanguageChanged = Localizer.Instance.CurrentLanguageIndex != language;
+        int validLanguageIndex = Math.Clamp(language, 0, Localizer.Instance.LanguageCount - 1);
+        bool isLanguageChanged = Localizer.Instance.CurrentLanguageIndex != validLanguageIndex;
         if (isLanguageChanged)
         {
-            Localizer.Instance.SetLanguage(language);
+            Localizer.Instance.SetLanguage(validLanguageIndex);
             FontFamily = new FontFamily("avares://AvatarExplorer/Assets/Fonts#" + Localizer.Instance[LocalizationKey.FontFamily]);
         }
 

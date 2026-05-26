@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Avalonia.Interactivity;
 using AvatarExplorer.Core.Localization;
@@ -16,7 +17,7 @@ public partial class MainWindow
         _initialSetupOverlay_tcs?.TrySetResult(false);
         _initialSetupOverlay_tcs = new();
 
-        InitialSetupOverlay_LanguageComboBox.SelectedIndex = UserPreferences.Language;
+        InitialSetupOverlay_LanguageComboBox.SelectedIndex = Math.Clamp(UserPreferences.Language, 0, Localizer.Instance.LanguageCount - 1);
         InitialSetupOverlay_ItemsFolderPathTextBox.Text = RuntimeSettings.DataRootDirectory;
 
         InitialSetupOverlay.IsVisible = true;

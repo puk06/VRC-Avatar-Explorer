@@ -51,6 +51,7 @@ public partial class MainWindow : Window
     private ItemTagStates _main_lastRightPanelItemTagState = ItemTagStates.None;
     private bool _main_isAdministratorMode = false;
     private bool _main_isThumbnailCacheWarmupRunning = false;
+    private bool _main_initializationErrorShown = false;
 
     private readonly SettingsManager<UserPreferences> _userPreferencesManager = new(SystemPath.UserPreferencesFilePath);
     private UserPreferences UserPreferences => _userPreferencesManager.Settings;
@@ -62,8 +63,6 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
-        Localizer.Instance.LoadFromFolder("locales");
-        Localizer.Instance.SetLanguage(0); // 先に言語をセットしてあげる（タイトルの初期化などで必要になるため）
         DataContext = Localizer.Instance;
 
         InitializeComponent();
@@ -108,6 +107,8 @@ public partial class MainWindow : Window
         ErrorOr<Success> initializationResult = await Main_Initialize();
         if (initializationResult.IsError)
         {
+            if (_main_initializationErrorShown) return;
+
             StartupLoadingOverlay.IsVisible = false;
             FatalErrorOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.InitializationFailed]);
             await Task.Delay(5000);
@@ -156,6 +157,17 @@ public partial class MainWindow : Window
         try
         {
             AvatarExplorer.Initialize();
+
+            Localizer.Instance.LoadFromFolder("locales");
+            if (Localizer.Instance.LanguageCount == 0)
+            {
+                _main_initializationErrorShown = true;
+                FatalErrorOverlay_Show("エラー", "言語ファイルが存在しません。");
+                ErrorManager.Instance.PostInternalError("No localization files were found in the locales folder.");
+                return Error.Failure(description: "言語ファイルが存在しません。");
+            }
+
+            Localizer.Instance.SetLanguage(0); // 先に言語をセットしてあげる（タイトルの初期化などで必要になるため）
 
             AvatarExplorer.PasswordProvider = Main_GetArchivePasswordAsync;
             ImageService.ThumbnailCacheWarmupStateChanged += Main_OnThumbnailCacheWarmupStateChanged;

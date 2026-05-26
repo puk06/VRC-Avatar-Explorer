@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -28,6 +29,8 @@ public class Localizer : INotifyPropertyChanged
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
         }
     }
+
+    public int LanguageCount => _map.Count;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -66,7 +69,13 @@ public class Localizer : INotifyPropertyChanged
 
     public string[] GetLanguageList() => _map.Select(i => i[LocalizationKey.LanguageName]).ToArray();
 
-    public void SetLanguage(int index) => CurrentLanguageIndex = index;
+    public void SetLanguage(int index) => CurrentLanguageIndex = GetValidLanguageIndex(index);
+
+    private int GetValidLanguageIndex(int index)
+    {
+        if (_map.Count == 0) return -1;
+        return Math.Clamp(index, 0, _map.Count - 1);
+    }
 
     public string Get(string localizationKey) => this[localizationKey];
     public string Get(string localizationKey, string arg)
