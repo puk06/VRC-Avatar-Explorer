@@ -164,7 +164,7 @@ public partial class MainWindow : Window
                 _main_initializationErrorShown = true;
                 FatalErrorOverlay_Show("エラー", "言語ファイルが存在しません。");
                 ErrorManager.Instance.PostInternalError("No localization files were found in the locales folder.");
-                return Error.Failure(description: "言語ファイルが存在しません。");
+                return Error.Failure(description: "No localization files were found in the locales folder.");
             }
 
             Localizer.Instance.SetLanguage(0); // 先に言語をセットしてあげる（タイトルの初期化などで必要になるため）
