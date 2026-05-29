@@ -261,7 +261,7 @@ public static class FileSystemService
 
             reportProgress?.Invoke((LocalizationKey.Processing.Unitypackage.Status.Creating, 90));
 
-            CreateTarArchive(saveFolderPath, unitypackagePath);
+            await CreateTarArchive(saveFolderPath, unitypackagePath);
 
             DeleteDirectory(saveFolderPath, true);
 
@@ -367,20 +367,20 @@ public static class FileSystemService
 
         return processedEntries;
     }
-    private static void CreateTarArchive(string sourceFolder, string outputTarFile)
+    private static async Task CreateTarArchive(string sourceFolder, string outputTarFile)
     {
         if (!Directory.Exists(sourceFolder)) throw new DirectoryNotFoundException(sourceFolder);
 
-        using IWritableArchive<TarWriterOptions> archive = TarArchive.CreateArchive();
+        await using IWritableAsyncArchive<TarWriterOptions> archive = await TarArchive.CreateAsyncArchive();
 
         foreach (string filePath in EnumerateFiles(sourceFolder))
         {
             string relativePath = Path.GetRelativePath(sourceFolder, filePath);
-            archive.AddEntry(relativePath, filePath);
+            await archive.AddEntryAsync(relativePath, filePath);
         }
 
-        using FileStream fileStream = new(outputTarFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 1024 * 1024, FileOptions.SequentialScan);
-        archive.SaveTo(fileStream, new TarWriterOptions(CompressionType.None));
+        await using FileStream fileStream = new(outputTarFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 1024 * 1024, FileOptions.SequentialScan);
+        await archive.SaveToAsync(fileStream, new TarWriterOptions(CompressionType.None));
     }
     #endregion
 
@@ -636,8 +636,8 @@ public static class FileSystemService
                 string fullPath = Path.Combine(extractDirectoryFolder, entry.Key!);
                 PrepareFileDirectory(fullPath);
 
-                using Stream inStream = await entry.OpenEntryStreamAsync();
-                using Stream outStream = File.Create(fullPath);
+                await using Stream inStream = await entry.OpenEntryStreamAsync();
+                await using Stream outStream = File.Create(fullPath);
 
                 int read;
                 while ((read = await inStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
@@ -762,8 +762,8 @@ public static class FileSystemService
                 return Error.NotFound(description:$"Source file not found: '{sourceFile}'.");
 
             PrepareFileDirectory(destinationFile);
-            using Stream sourceStream = File.OpenRead(sourceFile);
-            using Stream destStream = File.Create(destinationFile);
+            await using Stream sourceStream = File.OpenRead(sourceFile);
+            await using Stream destStream = File.Create(destinationFile);
             await sourceStream.CopyToAsync(destStream, BufferSize);
 
             return Result.Success;
