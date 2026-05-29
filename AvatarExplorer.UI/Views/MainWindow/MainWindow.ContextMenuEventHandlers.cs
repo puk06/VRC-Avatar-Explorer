@@ -108,6 +108,14 @@ public partial class MainWindow
             Main_ReloadCurrentWindow();
         }
     }
+    private async Task Main_ItemButton_ContextMenu_CopyItemInfo(string itemId)
+    {
+        Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
+        if (item == null) return;
+
+        string itemInfo = string.Format("{0} - {1}\n{2}", item.Title, item.Author, item.BoothId != -1 ? item.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]) : "N/A");
+        await ClipboardService.SetText(itemInfo);
+    }
     private Task Main_ItemButton_ContextMenu_EditItem(string itemId)
     {
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);

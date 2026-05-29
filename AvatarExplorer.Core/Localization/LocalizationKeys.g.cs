@@ -230,6 +230,7 @@ public static class LocalizationKey
                 public const string Open = "ContextMenu.Item.Booth.Open";
                 public const string Copy = "ContextMenu.Item.Booth.Copy";
             }
+            public const string CopyItemInfo = "ContextMenu.Item.CopyItemInfo";
             public static class Edit
             {
                 public const string Default = "ContextMenu.Item.Edit.Default";

@@ -68,6 +68,7 @@ public partial class MainWindow
             { ActionKey.ShowOtherItemsByAuthor, Main_ItemButton_ContextMenu_ShowOtherItemsByAuthor },
             { ActionKey.ChangeThumbnail, Main_ItemButton_ContextMenu_ChangeThumbnail },
             { ActionKey.FetchThumbnail, Main_ItemButton_ContextMenu_FetchThumbnail },
+            { ActionKey.CopyItemInfo, Main_ItemButton_ContextMenu_CopyItemInfo },
             { ActionKey.EditItem, Main_ItemButton_ContextMenu_EditItem },
             { ActionKey.EditItemTitle, Main_ItemButton_ContextMenu_EditItemTitle },
             { ActionKey.EditItemMemo, Main_ItemButton_ContextMenu_EditMemo },

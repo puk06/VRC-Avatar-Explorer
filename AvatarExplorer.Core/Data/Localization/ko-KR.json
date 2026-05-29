@@ -123,6 +123,7 @@
     "ContextMenu.Item.Add.Folder": "아이템 폴더 추가",
     "ContextMenu.Item.Booth.Open": "Booth 링크 열기",
     "ContextMenu.Item.Booth.Copy": "Booth 링크 복사",
+    "ContextMenu.Item.CopyItemInfo": "아이템 정보 복사",
     "ContextMenu.Item.Edit.Default": "아이템 편집",
     "ContextMenu.Item.Edit.Title": "제목 편집",
     "ContextMenu.Item.Edit.Tag": "아이템 태그 편집",

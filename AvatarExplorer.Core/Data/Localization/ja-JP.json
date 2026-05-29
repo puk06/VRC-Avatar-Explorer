@@ -123,6 +123,7 @@
     "ContextMenu.Item.Add.Folder": "アイテムフォルダを追加する",
     "ContextMenu.Item.Booth.Open": "Boothリンクを開く",
     "ContextMenu.Item.Booth.Copy": "Boothリンクのコピー",
+    "ContextMenu.Item.CopyItemInfo": "アイテム情報のコピー",
     "ContextMenu.Item.Edit.Default": "アイテムを編集する",
     "ContextMenu.Item.Edit.Title": "タイトルを編集する",
     "ContextMenu.Item.Edit.Tag": "アイテムタグを編集する",

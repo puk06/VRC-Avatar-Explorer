@@ -10,6 +10,7 @@ internal enum ActionKey
     ShowOtherItemsByAuthor,
     ChangeThumbnail,
     FetchThumbnail,
+    CopyItemInfo,
     EditItem,
     EditItemTitle,
     EditItemMemo,

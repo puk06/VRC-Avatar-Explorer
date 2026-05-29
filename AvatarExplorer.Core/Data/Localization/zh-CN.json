@@ -123,6 +123,7 @@
     "ContextMenu.Item.Add.Folder": "添加项目文件夹",
     "ContextMenu.Item.Booth.Open": "打开 Booth 链接",
     "ContextMenu.Item.Booth.Copy": "复制 Booth 链接",
+    "ContextMenu.Item.CopyItemInfo": "复制物品信息",
     "ContextMenu.Item.Edit.Default": "编辑项目",
     "ContextMenu.Item.Edit.Title": "编辑标题",
     "ContextMenu.Item.Edit.Tag": "编辑项目标签",

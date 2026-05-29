@@ -123,6 +123,7 @@
     "ContextMenu.Item.Add.Folder": "Ajouter un dossier d'élément",
     "ContextMenu.Item.Booth.Open": "Ouvrir le lien Booth",
     "ContextMenu.Item.Booth.Copy": "Copier le lien Booth",
+    "ContextMenu.Item.CopyItemInfo": "Copier les informations de l'élément",
     "ContextMenu.Item.Edit.Default": "Modifier l'élément",
     "ContextMenu.Item.Edit.Title": "Modifier le titre",
     "ContextMenu.Item.Edit.Tag": "Modifier l'étiquette de l'élément",

@@ -123,6 +123,7 @@
     "ContextMenu.Item.Add.Folder": "新增項目資料夾",
     "ContextMenu.Item.Booth.Open": "開啟 Booth 連結",
     "ContextMenu.Item.Booth.Copy": "複製 Booth 連結",
+    "ContextMenu.Item.CopyItemInfo": "複製物品資訊",
     "ContextMenu.Item.Edit.Default": "編輯項目",
     "ContextMenu.Item.Edit.Title": "編輯標題",
     "ContextMenu.Item.Edit.Tag": "編輯項目標籤",

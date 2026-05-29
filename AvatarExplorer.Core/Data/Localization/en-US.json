@@ -123,6 +123,7 @@
     "ContextMenu.Item.Add.Folder": "Add Item Folder",
     "ContextMenu.Item.Booth.Open": "Open Booth Link",
     "ContextMenu.Item.Booth.Copy": "Copy Booth Link",
+    "ContextMenu.Item.CopyItemInfo": "Copy Item Info",
     "ContextMenu.Item.Edit.Default": "Edit Item",
     "ContextMenu.Item.Edit.Title": "Edit Title",
     "ContextMenu.Item.Edit.Tag": "Edit Item Tag",
