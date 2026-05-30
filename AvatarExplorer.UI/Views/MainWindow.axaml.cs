@@ -530,6 +530,7 @@ public partial class MainWindow : Window
         ImmutableArray<Item> items = AvatarExplorer.GetAllItems();
         ImmutableArray<TempAvatar> tempAvatars = AvatarExplorer.GetAllTempAvatars();
         Main_PathTextBox.Text = string.Join(" > ", selectionNodes.Select(i => PathService.BuildPath(items, tempAvatars, i, RuntimeSettings.RemoveBrackets)));
+        Main_PathTextBox.CaretIndex = Main_PathTextBox.Text.Length;
     }
     #endregion
 
