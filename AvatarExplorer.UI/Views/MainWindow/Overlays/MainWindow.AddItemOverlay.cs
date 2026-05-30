@@ -232,6 +232,7 @@ public partial class MainWindow
     {
         addItemWindowValues.Title = AddItemOverlay_BoothItemTitleTextBox.Text ?? string.Empty;
         addItemWindowValues.Author = AddItemOverlay_BoothItemAuthorTextBox.Text ?? string.Empty;
+        addItemWindowValues.Category = AddItemOverlay_GetItemCategoryFromIndex(AddItemOverlay_ItemTypeComboBox.SelectedIndex);
         addItemWindowValues.BoothAuthorId = AddItemOverlay_InternalAuthorIdTextBox.Text ?? string.Empty;
         addItemWindowValues.BoothId = ValueParser.Int(AddItemOverlay_InternalBoothIdTextBox.Text, -1);
         addItemWindowValues.BoothThumbnailUrl = AddItemOverlay_InternalImageURLTextBox.Text ?? string.Empty;
@@ -371,9 +372,8 @@ public partial class MainWindow
         itemCreationContext.ThumbnailUrl = _addItemOverlay_addItemWindowValues.BoothThumbnailUrl;
         itemCreationContext.BoothId = _addItemOverlay_addItemWindowValues.BoothId;
 
-        ItemCategory itemCategory = AddItemOverlay_GetItemCategoryFromIndex(AddItemOverlay_ItemTypeComboBox.SelectedIndex);
-        itemCreationContext.ItemType = itemCategory.Type;
-        itemCreationContext.CustomCategory = itemCategory.CustomCategory;
+        itemCreationContext.ItemType = _addItemOverlay_addItemWindowValues.Category.Type;
+        itemCreationContext.CustomCategory = _addItemOverlay_addItemWindowValues.Category.CustomCategory;
 
         itemCreationContext.SupportedAvatars.AddRange(_addItemOverlay_addItemWindowValues.SupportedAvatarsView);
         itemCreationContext.Tags.AddRange(_addItemOverlay_addItemWindowValues.TagsView);
