@@ -26,9 +26,10 @@ internal static class ContextMenuFactory
             MenuItem menuItem = new()
             {
                 Icon = GetMaterialIcon(contextMenuAction.ContextMenuIconType),
-                Header = Localizer.Instance[contextMenuAction.DisplayName],
+                Header = contextMenuAction.UseLocalization ? Localizer.Instance[contextMenuAction.DisplayName] : contextMenuAction.DisplayName,
                 Tag = contextMenuAction,
-                FontFamily = fontFamily
+                FontFamily = fontFamily,
+                IsEnabled = contextMenuAction.IsEnabled
             };
 
             if (onClick != null) menuItem.Click += onClick;

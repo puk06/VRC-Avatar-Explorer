@@ -25,6 +25,8 @@ internal static class ContextMenuCreator
     {
         List<ContextMenuAction> contextMenuActions =
         [
+            new ContextMenuAction(item.Title, ActionKey.None, ContextMenuIconType.None, string.Empty, addSeparator: true, isEnabled: false) { UseLocalization = false },
+
             new ContextMenuAction(LocalizationKey.ContextMenu.Item.OpenFolder, ActionKey.OpenItemFolder, ContextMenuIconType.Open, item.Id),
             new ContextMenuAction(LocalizationKey.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, item.Id, addSeparator: true),
 
