@@ -113,7 +113,7 @@ public partial class MainWindow
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return;
 
-        string itemInfo = string.Format("{0} - {1}\n{2}", item.Title, item.Author, item.BoothId != -1 ? item.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]) : "N/A");
+        string itemInfo = string.Format("{0} - {1}\n{2}", item.Title, item.Author, item.BoothId != -1 ? item.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]) : "(No Booth Link)");
         await ClipboardService.SetText(itemInfo);
     }
     private Task Main_ItemButton_ContextMenu_EditItem(string itemId)
