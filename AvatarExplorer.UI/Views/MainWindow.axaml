@@ -1235,7 +1235,7 @@
 
         <!-- PDF Viewer -->
         <Border x:Name="PdfViewerOverlay" Classes="overlaybackground" IsVisible="False">
-            <Border Classes="overlay" Width="1100" Height="760" Padding="20">
+            <Border Classes="overlay" Width="1100" Height="720" Padding="20">
                 <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
                     <TextBlock Text="PDF Viewer" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                     <StackPanel Grid.Row="1" Spacing="2">
