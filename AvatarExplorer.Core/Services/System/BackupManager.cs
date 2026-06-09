@@ -65,6 +65,7 @@ internal class BackupManager
     private static readonly string[] _backupFiles =
     [
         SystemPath.ItemDatabasePath,
+        SystemPath.ItemDatabaseMigrationVersionPath,
         SystemPath.CommonAvatarDatabasePath,
         SystemPath.RuntimeSettingsFilePath,
         SystemPath.UserPreferencesFilePath,

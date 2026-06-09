@@ -16,6 +16,7 @@ public static class SystemPath
     public static readonly string TempFolderPath = PathUtils.GetRootPath(Path.GetTempPath()); // {TempFolder}/Avatar Explorer V2
 
     public static readonly string ItemDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.Items);
+    public static readonly string ItemDatabaseMigrationVersionPath = Path.Join(DatabaseFolderPath, SystemFileName.Database.ItemsDatabaseMigrationVersion);
     public static readonly string CommonAvatarDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.CommonAvatars);
     public static readonly string BulkImportPresetDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.BulkImportPresets);
     public static readonly string TempAvatarsDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.TempAvatars);

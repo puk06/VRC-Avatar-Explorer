@@ -126,7 +126,7 @@ internal static class ItemDatabaseMigrationService
         return Path.Combine(directory, $"{name}.migration-v{fromVersion}-to-v{toVersion}.bak{extension}");
     }
 
-    private static int ReadAppliedMigrationVersion(string filePath)
+    internal static int ReadAppliedMigrationVersion(string filePath)
     {
         string versionFilePath = BuildVersionFilePath(filePath);
         if (!File.Exists(versionFilePath)) return 0;
@@ -135,7 +135,7 @@ internal static class ItemDatabaseMigrationService
         return int.TryParse(text, out int version) ? version : 0;
     }
 
-    private static void WriteAppliedMigrationVersion(string filePath, int version)
+    internal static void WriteAppliedMigrationVersion(string filePath, int version)
     {
         string versionFilePath = BuildVersionFilePath(filePath);
         File.WriteAllText(versionFilePath, version.ToString());

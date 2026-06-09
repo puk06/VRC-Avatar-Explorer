@@ -159,5 +159,52 @@ public partial class AvatarExplorerApp
     public void StartAutoBackup() => _backupManager.StartAutoBackup(RuntimeSettings.AutoBackupInterval, RuntimeSettings.AutoBackupRootDirectory);
     public async Task StopAutoBackup() => await _backupManager.StopAutoBackup();
     public async Task<ErrorOr<Success>> ExecuteBackup(string path) => await _backupManager.ExecuteBackup(path);
+    public async Task RestoreFromBackup(string backupFolderPath)
+    {
+        string itemDatabaseMigrationPath = Path.Join(backupFolderPath, SystemFileName.Database.ItemsDatabaseMigrationVersion);
+        string itemDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.Items);
+        string commonAvatarDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.CommonAvatars);
+        string bulkImportPresetDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.BulkImportPresets);
+        string tempAvatarsDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.TempAvatars);
+        string runtimeSettingsFilePath = Path.Join(backupFolderPath, SystemFileName.Settings.Runtime);
+
+        if (File.Exists(itemDatabasePath))
+        {
+            if (File.Exists(itemDatabaseMigrationPath))
+            {
+                int appliedMigrationVersion = ItemDatabaseMigrationService.ReadAppliedMigrationVersion(itemDatabasePath);
+                ItemDatabaseMigrationService.WriteAppliedMigrationVersion(itemDatabasePath, appliedMigrationVersion);
+            }
+
+            LoadItemDatabase(itemDatabasePath);
+            SaveItemDatabase();
+        }
+
+        if (File.Exists(commonAvatarDatabasePath))
+        {
+            LoadCommonAvatarDatabase(commonAvatarDatabasePath);
+            SaveCommonAvatarDatabase();
+        }
+
+        if (File.Exists(bulkImportPresetDatabasePath))
+        {
+            LoadBulkImportPresetDatabase(bulkImportPresetDatabasePath);
+            SaveBulkImportPresetDatabase();
+        }
+
+        if (File.Exists(tempAvatarsDatabasePath))
+        {
+            LoadTempAvatarsDatabase(tempAvatarsDatabasePath);
+            SaveTempAvatarsDatabase();
+        }
+
+        if (File.Exists(runtimeSettingsFilePath))
+        {
+            LoadRuntimeSettings(runtimeSettingsFilePath);
+            SaveRuntimeSettings();
+        }
+
+        UpdateSearchIndex();
+    }
     #endregion
 }
