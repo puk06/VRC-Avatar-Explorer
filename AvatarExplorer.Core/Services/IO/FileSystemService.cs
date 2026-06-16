@@ -465,7 +465,7 @@ public static class FileSystemService
 
         if (extractResult.Value.IsDirectory)
         {
-            string copiedFolderPath = GetUniquePath(destinationFolderPath, Path.GetFileNameWithoutExtension(filePath), true);
+            string copiedFolderPath = GetUniquePath(destinationFolderPath, Path.GetFileName(filePath), true);
             ErrorOr<CopyResult> copyResult = await CopyDirectoryAsync(filePath, copiedFolderPath, runtimeSettings.MaxDegreeOfParallelism);
 
             if (copyResult.IsError)
