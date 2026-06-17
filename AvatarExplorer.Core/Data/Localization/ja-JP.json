@@ -351,7 +351,7 @@
     "Settings.AboutProject.SourceCodeDescription": "GitHubでソースコードを表示",
     "Settings.AboutProject.ViewRepository": "リポジトリを表示",
     "Settings.AboutLicense.Title": "ライセンス",
-    "Settings.AboutLicense.Type": "GPL-3.0 ライセンス",
+    "Settings.AboutLicense.Type": "AGPL-3.0 ライセンス",
     "Settings.AboutLicense.Description": "このソフトウェアはGNU General Public License v3.0の下で提供されています。詳細はLICENSE.txtを参照してください。",
     "Settings.AboutLicense.ViewLicense": "ライセンスを表示",
     "Settings.AboutLicense.ViewThirdParty": "サードパーティーライセンスを表示",
