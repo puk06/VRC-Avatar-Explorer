@@ -352,7 +352,7 @@
     "Settings.AboutProject.ViewRepository": "檢視倉庫",
     "Settings.AboutLicense.Title": "授權",
     "Settings.AboutLicense.Type": "AGPL-3.0 授權",
-    "Settings.AboutLicense.Description": "本軟體依據 GNU General Affero Public License v3.0 提供。詳見 LICENSE.txt。",
+    "Settings.AboutLicense.Description": "本軟體依據 GNU Affero General Public License v3.0 提供。詳見 LICENSE.txt。",
     "Settings.AboutLicense.ViewLicense": "檢視授權",
     "Settings.AboutLicense.ViewThirdParty": "檢視第三方授權",
 
