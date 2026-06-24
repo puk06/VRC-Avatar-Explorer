@@ -128,6 +128,7 @@
     "ContextMenu.Item.Edit.Title": "Editar título",
     "ContextMenu.Item.Edit.Tag": "Editar etiqueta del elemento",
     "ContextMenu.Item.Edit.Memo": "Editar nota del elemento",
+    "ContextMenu.Item.Edit.DefaultPath": "Cambiar la ruta predeterminada",
     "ContextMenu.Item.Edit.Implemented": "Implementado / No implementado",
     "ContextMenu.Item.Thumbnail.Change": "Cambiar miniatura",
     "ContextMenu.Item.Thumbnail.Fetch": "Obtener miniatura",

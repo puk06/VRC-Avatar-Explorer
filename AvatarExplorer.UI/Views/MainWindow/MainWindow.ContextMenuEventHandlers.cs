@@ -157,6 +157,19 @@ public partial class MainWindow
 
         Main_ReloadCurrentWindow();
     }
+    private async Task Main_ItemButton_ContextMenu_EditItemDefaultPath(string itemId)
+    {
+        Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
+        if (item == null) return;
+
+        string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFilePath], false);
+        if (folders == null || folders.Length == 0) return;
+
+        string folder = folders[0];
+        AvatarExplorer.ChangeItemPath(item.Id, folder);
+
+        Main_ReloadCurrentWindow();
+    }
     private Task Main_ItemButton_ContextMenu_AddToBulkImportList(string itemId)
     {
         BulkImportPanel_AddItem(itemId);

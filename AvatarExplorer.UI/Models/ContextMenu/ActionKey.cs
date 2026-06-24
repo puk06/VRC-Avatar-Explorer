@@ -18,6 +18,7 @@ internal enum ActionKey
     AddItemFile,
     AddItemFolder,
     EditImplementedAvatar,
+    EditItemDefaultPath,
     EditItemTag,
     RemoveItem,
 

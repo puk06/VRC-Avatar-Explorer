@@ -128,6 +128,7 @@
     "ContextMenu.Item.Edit.Title": "Edit Title",
     "ContextMenu.Item.Edit.Tag": "Edit Item Tag",
     "ContextMenu.Item.Edit.Memo": "Edit Item Memo",
+    "ContextMenu.Item.Edit.DefaultPath": "Change Default Path",
     "ContextMenu.Item.Edit.Implemented": "Implemented / Not Implemented",
     "ContextMenu.Item.Thumbnail.Change": "Change Thumbnail",
     "ContextMenu.Item.Thumbnail.Fetch": "Fetch Thumbnail",

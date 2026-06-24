@@ -146,6 +146,18 @@ public partial class AvatarExplorerApp
 
         item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
     }
+    public void ChangeItemPath(string id, string path)
+    {
+        Item? item = GetItemById(id);
+        if (item == null) return;
+
+        string newPath = path;
+
+        if (path.StartsWith(RuntimeSettings.DataRootDirectory))
+            newPath = $"<sys>{Path.GetRelativePath(RuntimeSettings.DataRootDirectory, path)}";
+
+        item.ItemPath = newPath;
+    }
     #endregion
 
     #region Update Thumbnail API

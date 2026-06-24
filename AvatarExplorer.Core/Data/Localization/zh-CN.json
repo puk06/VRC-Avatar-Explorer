@@ -128,6 +128,7 @@
     "ContextMenu.Item.Edit.Title": "编辑标题",
     "ContextMenu.Item.Edit.Tag": "编辑项目标签",
     "ContextMenu.Item.Edit.Memo": "编辑项目备注",
+    "ContextMenu.Item.Edit.DefaultPath": "更改默认路径",
     "ContextMenu.Item.Edit.Implemented": "已实现 / 未实现",
     "ContextMenu.Item.Thumbnail.Change": "更改缩略图",
     "ContextMenu.Item.Thumbnail.Fetch": "获取缩略图",

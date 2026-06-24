@@ -237,6 +237,7 @@ public static class LocalizationKey
                 public const string Title = "ContextMenu.Item.Edit.Title";
                 public const string Tag = "ContextMenu.Item.Edit.Tag";
                 public const string Memo = "ContextMenu.Item.Edit.Memo";
+                public const string DefaultPath = "ContextMenu.Item.Edit.DefaultPath";
                 public const string Implemented = "ContextMenu.Item.Edit.Implemented";
             }
             public static class Thumbnail

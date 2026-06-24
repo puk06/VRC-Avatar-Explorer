@@ -128,6 +128,7 @@
     "ContextMenu.Item.Edit.Title": "編輯標題",
     "ContextMenu.Item.Edit.Tag": "編輯項目標籤",
     "ContextMenu.Item.Edit.Memo": "編輯項目備註",
+    "ContextMenu.Item.Edit.DefaultPath": "更改預設路徑",
     "ContextMenu.Item.Edit.Implemented": "已實現 / 未實現",
     "ContextMenu.Item.Thumbnail.Change": "變更縮圖",
     "ContextMenu.Item.Thumbnail.Fetch": "取得縮圖",

@@ -128,6 +128,7 @@
     "ContextMenu.Item.Edit.Title": "タイトルを編集する",
     "ContextMenu.Item.Edit.Tag": "アイテムタグを編集する",
     "ContextMenu.Item.Edit.Memo": "アイテムメモを編集する",
+    "ContextMenu.Item.Edit.DefaultPath": "デフォルトパスを変更する",
     "ContextMenu.Item.Edit.Implemented": "実装 / 未実装",
     "ContextMenu.Item.Thumbnail.Change": "サムネイルを変更する",
     "ContextMenu.Item.Thumbnail.Fetch": "サムネイルを取得する",

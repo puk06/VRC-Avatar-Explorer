@@ -72,6 +72,7 @@ public partial class MainWindow
             { ActionKey.EditItem, Main_ItemButton_ContextMenu_EditItem },
             { ActionKey.EditItemTitle, Main_ItemButton_ContextMenu_EditItemTitle },
             { ActionKey.EditItemMemo, Main_ItemButton_ContextMenu_EditMemo },
+            { ActionKey.EditItemDefaultPath, Main_ItemButton_ContextMenu_EditItemDefaultPath },
             { ActionKey.AddToBulkImportList, Main_ItemButton_ContextMenu_AddToBulkImportList },
             { ActionKey.AddItemFile, Main_ItemButton_ContextMenu_AddItemFile },
             { ActionKey.AddItemFolder, Main_ItemButton_ContextMenu_AddItemFolder },
