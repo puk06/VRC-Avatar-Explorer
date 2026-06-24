@@ -66,8 +66,8 @@
     "Dialog.Confirmation.RemovePreset": "预设名称: {0}\n\n确定要删除这个预设吗？",
     "Dialog.Confirmation.AddToExistingItem": "已添加具有相同 Booth ID 的项目。要向该项目添加文件或文件夹吗？",
     "Dialog.Confirmation.ResolveTempAvatar": "要将临时头像“{0}”\n确定为正式项目“{1}”吗？",
-    "Dialog.Confirmation.RemoveAssetData": "要一并删除该项目的资产数据吗？\n\n资产路径: {0}",
-    "Dialog.Confirmation.CopyAssetData": "要复制资产数据吗？\n\n如果不复制，将直接使用原始资产文件夹。 从 Avatar Explorer 导入时，只有材质文件夹会始终复制到文件夹内。",
+    "Dialog.Confirmation.RemoveAssetData": "是否同时删除该物品的资产数据？仅删除默认路径下的资产。\n\n资产路径：{0}",
+    "Dialog.Confirmation.CopyAssetData": "要复制资产数据吗？\n\n如果不复制，将直接使用原始资产文件夹。",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "要在支持头像栏中包含共通素体头像吗？",
 

@@ -66,8 +66,8 @@
     "Dialog.Confirmation.RemovePreset": "プリセット名: {0}\n\n本当にこのプリセットを削除しますか？",
     "Dialog.Confirmation.AddToExistingItem": "同じBoothIdのアイテムが既に追加されています。そのアイテムにファイルやフォルダを追加しますか？",
     "Dialog.Confirmation.ResolveTempAvatar": "仮アバター「{0}」を\n正式アイテム「{1}」として確定しますか？",
-    "Dialog.Confirmation.RemoveAssetData": "アイテムのアセットデータも一緒に削除しますか？\n\nアセットパス: {0}",
-    "Dialog.Confirmation.CopyAssetData": "アセットデータをコピーしますか？\n\nしない場合は、元のアセットフォルダがそのまま使用されます。Avatar Explorerからのインポート時、マテリアルフォルダのみフォルダ内に必ずコピーされます。",
+    "Dialog.Confirmation.RemoveAssetData": "アイテムのアセットデータも一緒に削除しますか？デフォルトパスのアセットのみ削除されます。\n\nアセットパス: {0}",
+    "Dialog.Confirmation.CopyAssetData": "アセットデータをコピーしますか？\n\nしない場合は、元のアセットフォルダがそのまま使用されます。",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "対応アバターの欄に共通素体アバターを含めますか？",
 

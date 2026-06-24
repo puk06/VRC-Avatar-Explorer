@@ -66,8 +66,8 @@
     "Dialog.Confirmation.RemovePreset": "프리셋 이름: {0}\n\n정말로 이 프리셋을 삭제하시겠습니까?",
     "Dialog.Confirmation.AddToExistingItem": "같은 Booth ID의 아이템이 이미 추가되어 있습니다. 해당 아이템에 파일이나 폴더를 추가하시겠습니까?",
     "Dialog.Confirmation.ResolveTempAvatar": "임시 아바타 \"{0}\"를\n정식 아이템 \"{1}\"으로 확정하시겠습니까?",
-    "Dialog.Confirmation.RemoveAssetData": "아이템의 자산 데이터도 함께 삭제하시겠습니까?\n\n자산 경로: {0}",
-    "Dialog.Confirmation.CopyAssetData": "자산 데이터를 복사하시겠습니까?\n\n복사하지 않으면 원본 자산 폴더를 그대로 사용합니다. Avatar Explorer에서 가져올 때는 재질 폴더만 폴더 안으로 반드시 복사됩니다.",
+    "Dialog.Confirmation.RemoveAssetData": "아이템의 에셋 데이터도 함께 삭제하시겠습니까? 기본 경로의 에셋만 삭제됩니다.\n\n에셋 경로: {0}",
+    "Dialog.Confirmation.CopyAssetData": "자산 데이터를 복사하시겠습니까?\n\n복사하지 않으면 원본 자산 폴더를 그대로 사용합니다.",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "대응 아바타 항목에 공통 바디 아바타를 포함하시겠습니까?",
 

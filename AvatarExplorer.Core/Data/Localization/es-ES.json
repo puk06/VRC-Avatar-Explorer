@@ -66,8 +66,8 @@
     "Dialog.Confirmation.RemovePreset": "Nombre del ajuste preestablecido: {0}\n\n¿Seguro que quieres eliminar este ajuste?",
     "Dialog.Confirmation.AddToExistingItem": "Ya se agregó un elemento con el mismo Booth ID. ¿Quieres agregar archivos o carpetas a ese elemento?",
     "Dialog.Confirmation.ResolveTempAvatar": "¿Confirmar la vinculación del avatar temporal \"{0}\" con el elemento permanente \"{1}\"?",
-    "Dialog.Confirmation.RemoveAssetData": "¿Eliminar también los datos de recursos de este elemento?\n\nRuta de recursos: {0}",
-    "Dialog.Confirmation.CopyAssetData": "¿Copiar los datos de recursos?\n\nSi no, se usará tal cual la carpeta de recursos original. Al importar desde Avatar Explorer, solo la carpeta de materiales se copiará siempre dentro de la carpeta.",
+    "Dialog.Confirmation.RemoveAssetData": "¿Desea eliminar también los datos de asset de este elemento? Solo se eliminarán los assets en la ruta predeterminada.\n\nRuta del asset: {0}",
+    "Dialog.Confirmation.CopyAssetData": "¿Copiar los datos de recursos?\n\nSi no, se usará tal cual la carpeta de recursos original.",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "¿Incluir avatares comunes en la columna de avatares compatibles?",
 

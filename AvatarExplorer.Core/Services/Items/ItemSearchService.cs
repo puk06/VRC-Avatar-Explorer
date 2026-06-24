@@ -52,9 +52,9 @@ internal static class ItemSearchService
                 SearchTokenType.SupportedAvatar => getSupportedAvatarTargets(),
                 SearchTokenType.Category => [item.Type == ItemType.Custom ? item.CustomCategory : (item.Type.GetLocalizationKey() ?? string.Empty)],
                 SearchTokenType.ItemMemo => [item.ItemMemo],
-                SearchTokenType.FolderName => [Path.GetFileName(item.ItemPath)],
-                SearchTokenType.FileName => !string.IsNullOrEmpty(ItemUtils.GetItemPath(parentFolder, item.ItemPath)) && Directory.Exists(ItemUtils.GetItemPath(parentFolder, item.ItemPath)) && searchFilter.SearchTokens.Any(i => i.Type == SearchTokenType.FileName)
-                    ? FileSystemService.EnumerateFiles(ItemUtils.GetItemPath(parentFolder, item.ItemPath)).ToArray()
+                SearchTokenType.FolderName => item.GetFolderPaths(parentFolder).Select(Path.GetFileName).Where(i => !string.IsNullOrEmpty(i)).Cast<string>().ToArray(),
+                SearchTokenType.FileName => searchFilter.SearchTokens.Any(i => i.Type == SearchTokenType.FileName)
+                    ? item.EnumerateFiles(parentFolder).Select(Path.GetFileName).Where(i => !string.IsNullOrEmpty(i)).Cast<string>().ToArray()
                     : Array.Empty<string>(),
                 SearchTokenType.ImplementedAvatar => item.ImplementedAvatarsView.Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)).Where(name => !string.IsNullOrEmpty(name)).ToArray(),
                 SearchTokenType.NotImplementedAvatar => avatarTitleMaps.Keys.Except(item.ImplementedAvatarsView).Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)).Where(name => !string.IsNullOrEmpty(name)).ToArray(),

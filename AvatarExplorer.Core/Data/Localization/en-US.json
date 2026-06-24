@@ -66,7 +66,7 @@
     "Dialog.Confirmation.RemovePreset": "Preset Name: {0}\n\nAre you sure you want to delete this preset?",
     "Dialog.Confirmation.AddToExistingItem": "An item with the same Booth ID has already been added. Do you want to add files or folders to that item?",
     "Dialog.Confirmation.ResolveTempAvatar": "Confirm linking temporary avatar \"{0}\" to permanent item \"{1}\"?",
-    "Dialog.Confirmation.RemoveAssetData": "Delete the asset data for this item as well?\n\nAsset Path: {0}",
+    "Dialog.Confirmation.RemoveAssetData": "Do you want to delete the asset data of this item as well? Only assets at the default path will be deleted.\n\nAsset path: {0}",
     "Dialog.Confirmation.CopyAssetData": "Copy asset data?\n\nIf not, the original asset folder will be used as-is. When importing from Avatar Explorer, only the material folder will always be copied within the folder.",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "Include common avatars in the supported avatar column?",

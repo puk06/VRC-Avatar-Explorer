@@ -95,7 +95,8 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(itemId);
         if (item == null) return Error.NotFound(description: "Item not found.");
 
-        ExtractResult extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), paths, RuntimeSettings);
+        ErrorOr<ExtractResult> extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), paths, RuntimeSettings);
+        if (extractResult.IsError) return Error.Failure(description: extractResult.Errors.ToErrorString());
 
         UpdateItemUpdatedDate(itemId);
         SaveItemDatabase();
@@ -112,12 +113,9 @@ public partial class AvatarExplorerApp
 
         item.SetValuesFromCreationContext(itemCreationContext);
 
-        if (itemCreationContext.ItemPaths.Count > 1)
-        {
-            ErrorOr<ExtractResult> addItemPathsResult = await AddItemPaths(item.Id, itemCreationContext.ItemPaths.Skip(1).ToArray());
-            if (addItemPathsResult.IsError) return false;
-            if (addItemPathsResult.Value.ProcessingFailedPaths.Count > 0) return false;
-        }
+        ErrorOr<ExtractResult> addItemPathsResult = await AddItemPaths(item.Id, itemCreationContext.ItemPaths.ToArray());
+        if (addItemPathsResult.IsError) return false;
+        if (addItemPathsResult.Value.ProcessingFailedPaths.Count > 0) return false;
 
         UpdateItemUpdatedDate(itemId);
         UpdateSearchIndex();
@@ -218,7 +216,10 @@ public partial class AvatarExplorerApp
         if (removeAssetData)
         {
             Item? item = GetItemById(id);
-            if (item != null) FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
+            if (item != null)
+            {
+                FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
+            }
         }
 
         bool removed = _itemDatabaseManager.Remove(id);

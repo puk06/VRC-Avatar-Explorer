@@ -66,8 +66,8 @@
     "Dialog.Confirmation.RemovePreset": "預設名稱: {0}\n\n確定要刪除此預設嗎？",
     "Dialog.Confirmation.AddToExistingItem": "已新增具有相同 Booth ID 的項目。要向該項目新增檔案或資料夾嗎？",
     "Dialog.Confirmation.ResolveTempAvatar": "要將暫時頭像「{0}」\n確定為正式項目「{1}」嗎？",
-    "Dialog.Confirmation.RemoveAssetData": "要一併刪除此項目的資產資料嗎？\n\n資產路徑: {0}",
-    "Dialog.Confirmation.CopyAssetData": "要複製資產資料嗎？\n\n如果不複製，將直接使用原始資產資料夾。從 Avatar Explorer 匯入時，只有材質資料夾會始終複製到資料夾內。",
+    "Dialog.Confirmation.RemoveAssetData": "是否同時刪除該物品的資產資料？僅刪除預設路徑下的資產。\n\n資產路徑：{0}",
+    "Dialog.Confirmation.CopyAssetData": "要複製資產資料嗎？\n\n如果不複製，將直接使用原始資產資料夾。",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "要在支援頭像欄中包含共通素體頭像嗎？",
 

@@ -1,4 +1,5 @@
 using System.Text;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Avatars;
@@ -63,7 +64,7 @@ internal static class DataExporter
                 string supportedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, supportedAvatarNames));
                 string implementedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, implementedAvatarNames));
                 string boothId = CsvUtils.EscapeCsv(item.BoothId.ToString());
-                string itemPath = CsvUtils.EscapeCsv(ItemUtils.GetItemPath(exportContext.RuntimeSettings.DataRootDirectory, item.ItemPath));
+                string itemPath = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.GetFolderPaths(exportContext.RuntimeSettings.DataRootDirectory)));
                 string tags = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.TagsView));
 
                 await sw.WriteLineAsync($"{itemId},{itemTitle},{authorName},{imagePath},{category},{memo},{supportedAvatarsList},{implementedAvatarsList},{boothId},{itemPath},{tags}");

@@ -6,7 +6,6 @@ using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Avatars.Internal;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
-using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.System;
 
@@ -112,7 +111,7 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(selectionNode.Key);
         if (item == null) return [];
 
-        return GetFoldersFromPathInternal(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
+        return GetFoldersFromPathsInternal(item.ItemPath, item.GetFolderPaths(RuntimeSettings.DataRootDirectory));
     }
     private ImmutableArray<ItemCountInfo> HandleItemFolder(SelectionNode selectionNode)
     {
@@ -122,11 +121,9 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(itemSelectionNode.Key);
         if (item == null) return [];
 
-        string itemPath = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
-        string folderPath = selectionNode.Key == ItemFolder.RootNodeName ? itemPath : Path.Combine(itemPath, selectionNode.Key);
         bool isRecursive = selectionNode.Key != ItemFolder.RootNodeName; // Rootだとアイテム直下のみ、そうでなければサブフォルダも含める
 
-        return GetCategoryItemsFromPathInternal(folderPath, isRecursive: isRecursive);
+        return GetCategoryItemsFromPathInternal(selectionNode.Key, isRecursive: isRecursive);
     }
     private ImmutableArray<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
     {
@@ -139,11 +136,9 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(itemSelectionNode.Key);
         if (item == null) return [];
 
-        string itemPath = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
-        string folderPath = folderSelectionNode.Key == ItemFolder.RootNodeName ? itemPath : Path.Combine(itemPath, folderSelectionNode.Key);
         bool isRecursive = folderSelectionNode.Key != ItemFolder.RootNodeName; // Rootだとアイテム直下のみ、そうでなければサブフォルダも含める
 
-        return GetFilesFromPathInternal(folderPath, selectionNode.Key, isRecursive: isRecursive);
+        return GetFilesFromPathInternal(folderSelectionNode.Key, selectionNode.Key, isRecursive: isRecursive);
     }
 
     private ImmutableArray<ItemCountInfo> GetItemCategoriesFromAvatarIdInternal(string avatarId)
@@ -259,25 +254,33 @@ public partial class AvatarExplorerApp
 
         return resultBuilder.ToImmutable();
     }
-    private ImmutableArray<ItemCountInfo> GetFoldersFromPathInternal(string itemPath)
+    private ImmutableArray<ItemCountInfo> GetFoldersFromPathsInternal(string rootPath, IEnumerable<string> itemPaths)
     {
-        if (!Directory.Exists(itemPath))
-        {
-            ErrorManager.Instance.PostInternalError(string.Format("Directory not found: '{0}'.", itemPath));
-            return [];
-        }
-
         var resultBuilder = ImmutableArray.CreateBuilder<ItemCountInfo>();
 
-        foreach (string folder in Directory.GetDirectories(itemPath).SortByFileName())
+        if (Directory.Exists(rootPath))
         {
-            resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(folder)), FileSystemService.EnumerateFiles(folder).Count()));
+            foreach (string folder in Directory.GetDirectories(rootPath).SortByFileName())
+            {
+                resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(folder)), FileSystemService.EnumerateFiles(folder).Count()));
+            }
+
+            IEnumerable<string> rootFiles = FileSystemService.EnumerateFiles(rootPath, isRecursive: false);
+            if (rootFiles.Any())
+            {
+                resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(rootPath), isRoot: true), rootFiles.Count()));
+            }
         }
 
-        IEnumerable<string> rootFiles = FileSystemService.EnumerateFiles(itemPath, isRecursive: false);
-        if (rootFiles.Any())
+        foreach (string itemPath in itemPaths)
         {
-            resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(itemPath), isRoot: true), rootFiles.Count()));
+            if (!Directory.Exists(itemPath))
+            {
+                ErrorManager.Instance.PostInternalError(string.Format("Directory not found: '{0}'.", itemPath));
+                continue;
+            }
+
+            resultBuilder.Add(new ItemCountInfo(new ItemFolder(itemPath), FileSystemService.EnumerateFiles(itemPath).Count()));
         }
 
         return resultBuilder.ToImmutable();

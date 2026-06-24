@@ -5,6 +5,7 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Data;
 using AvatarExplorer.UI.Localization;
@@ -29,7 +30,7 @@ internal class UISelectableItem
     private List<string> ItemTags { get; set; } = new(); // アイテムのタグ
     internal ImmutableArray<string> ItemTagsView => ItemTags.ToImmutableArray();
     internal string ItemMemo { get; private set; } = string.Empty; // アイテムTooltip表記用
-    internal string ItemPath { get; private set; } = string.Empty; // Unitypackageの一覧を取得するためのアイテムのパス
+    internal IEnumerable<string>? ItemFolderPaths { get; private set; } = null; // Unitypackageの一覧を取得するためのアイテムのパス一覧
     internal bool IsTempAvatar { get; private set; } = false; // 仮アバターかどうか
 
     internal UISelectableItem(ISelectableItem source, int itemCount, string[]? args = null)
@@ -73,7 +74,7 @@ internal class UISelectableItem
         CommonAvatarName = Args?.Length > 0 ? Args[0] : string.Empty;
         ItemTags = item.TagsView.ToList();
         ItemMemo = item.ItemMemo;
-        ItemPath = item.ItemPath;
+        ItemFolderPaths = item.GetFolderPaths(AvatarExplorerApp.Instance.GetRuntimeSettings().DataRootDirectory);
     }
 
     private void FromAuthor(Author author)
@@ -99,7 +100,7 @@ internal class UISelectableItem
         Title = itemFolder.FolderName;
         Description = (LocalizationKey.Button.Description.Item.Count, [ItemCount.ToString()]);
         ImageFileName = SystemIconKey.FolderIcon;
-        Tag = new(ItemTagStates.ItemFolder, itemFolder.IsRoot ? ItemFolder.RootNodeName : itemFolder.FolderName);
+        Tag = new(ItemTagStates.ItemFolder, itemFolder.IsRoot ? ItemFolder.RootNodeName : itemFolder.FullPath);
         IconType = IconType.None;
     }
 

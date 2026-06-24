@@ -34,6 +34,7 @@ public record CopyFailure
 public record ExtractResult
 {
     public string ItemParentFolder { get; set; } = string.Empty;
+    public List<string> FolderPaths { get; } = new();
     public List<string> ProcessingFailedPaths { get; init; } = new();
 }
 
@@ -385,47 +386,28 @@ public static class FileSystemService
     #endregion
 
     #region Extract Item Folders
-    internal static async Task<ErrorOr<ExtractResult>> ExtractItemFolders(ItemCreationContext itemCreationContext, string dataRootDirectory, RuntimeSettings runtimeSettings)
+    internal static async Task<ErrorOr<ExtractResult>> ExtractItemFolders(ItemCreationContext itemCreationContext, string dataRootDirectory, RuntimeSettings runtimeSettings, string fallbackName)
     {
         if (itemCreationContext.ItemPaths.Count == 0) return Error.Failure(description: "No item paths provided.");
 
-        ExtractResult result = new();
-
         try
         {
-            bool linkedToOriginal = false;
-
-            string parentFolder;
-            if (runtimeSettings.ShouldLinkToOriginal && Directory.Exists(itemCreationContext.ItemPaths[0]))
+            string? folderName = ItemUtils.GetSafeTitle(itemCreationContext.Title);
+            if (string.IsNullOrEmpty(folderName))
             {
-                parentFolder = itemCreationContext.ItemPaths[0];
-                linkedToOriginal = true;
+                if (itemCreationContext.BoothId != -1)
+                    folderName = itemCreationContext.BoothId.ToString();
+                else
+                    folderName = fallbackName; // 最後の手段
             }
-            else
-            {
-                parentFolder = GetUniquePath(dataRootDirectory, ItemUtils.GetSafeTitle(itemCreationContext.Title) ?? Path.GetFileNameWithoutExtension(itemCreationContext.ItemPaths[0]), true);
-            }
-            
-            Directory.CreateDirectory(parentFolder);
+            string parentFolder = GetUniquePath(dataRootDirectory, folderName, true);
 
-            foreach (string itemPath in linkedToOriginal ? itemCreationContext.ItemPaths.Skip(1) : itemCreationContext.ItemPaths)
-            {
-                ErrorOr<Success> extractResult = await ExtractItemInternalAsync(
-                    itemPath,
-                    parentFolder,
-                    runtimeSettings
-                );
+            ErrorOr<ExtractResult> extractResult = await ExtractItemPaths(parentFolder, itemCreationContext.ItemPaths.ToArray(), runtimeSettings);
+            if (extractResult.IsError) return Error.Failure(description: "Failed to extract item folders.");
 
-                if (extractResult.IsError)
-                {
-                    ErrorManager.Instance.PostInternalError($"An error occurred while processing folder '{itemPath}'.", tag: extractResult.Errors.ToErrorString());
-                    result.ProcessingFailedPaths.Add(itemPath);
-                }
-            }
+            extractResult.Value.ItemParentFolder = $"<sys>{Path.GetRelativePath(dataRootDirectory, parentFolder)}";
 
-            result.ItemParentFolder = linkedToOriginal ? parentFolder : $"<sys>{Path.GetRelativePath(dataRootDirectory, parentFolder)}";
-
-            return result;
+            return extractResult;
         }
         catch (Exception ex)
         {
@@ -433,13 +415,16 @@ public static class FileSystemService
             return Error.Failure(description: "Failed to extract item.");
         }
     }
-    internal static async Task<ExtractResult> ExtractItemPaths(string parentFolderPath, string[] itemPaths, RuntimeSettings runtimeSettings)
+    internal static async Task<ErrorOr<ExtractResult>> ExtractItemPaths(string parentFolderPath, string[] itemPaths, RuntimeSettings runtimeSettings)
     {
-        ExtractResult result = new();
+        ExtractResult result = new()
+        {
+            ItemParentFolder = parentFolderPath
+        };
 
         foreach (string itemPath in itemPaths)
         {
-            ErrorOr<Success> extractResult = await ExtractItemInternalAsync(
+            ErrorOr<FileExtractResultInternal> extractResult = await ExtractItemInternalAsync(
                 itemPath,
                 parentFolderPath,
                 runtimeSettings
@@ -450,36 +435,36 @@ public static class FileSystemService
                 ErrorManager.Instance.PostInternalError($"An error occurred while processing folder '{itemPath}'.", tag: extractResult.Errors.ToErrorString());
                 result.ProcessingFailedPaths.Add(itemPath);
             }
+            
+            if (extractResult.Value.IsDirectory)
+            {
+                if (runtimeSettings.ShouldLinkToOriginal)
+                {
+                    result.FolderPaths.Add(itemPath);
+                    continue;
+                }
+                else
+                {
+                    string copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileNameWithoutExtension(itemPath), true);
+                    ErrorOr<CopyResult> copyResult = await CopyDirectoryAsync(itemPath, copiedFolderPath, runtimeSettings.MaxDegreeOfParallelism);
+                    if (copyResult.IsError) return Error.Failure(description: "Failed to copy directory.");
+
+                    if (copyResult.Value.Failures.Count > 0)
+                    {
+                        copyResult.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError($"Failed to copy: {i.SourcePath}", tag: i.ErrorMessage));
+                    }
+                }
+            }
         }
 
         return result;
     }
-    private static async Task<ErrorOr<Success>> ExtractItemInternalAsync(string filePath, string destinationFolderPath, RuntimeSettings runtimeSettings)
+    private static async Task<ErrorOr<FileExtractResultInternal>> ExtractItemInternalAsync(string filePath, string destinationFolderPath, RuntimeSettings runtimeSettings)
     {
         ErrorOr<FileExtractResultInternal> extractResult = await FileExtractorInternalAsync(filePath, destinationFolderPath, runtimeSettings.RemoveOriginal);
+        if (extractResult.IsError) return Error.Failure(description: "Failed to process file.");
 
-        if (extractResult.IsError)
-        {
-            return Error.Failure(description: "Failed to process file.");
-        }
-
-        if (extractResult.Value.IsDirectory)
-        {
-            string copiedFolderPath = GetUniquePath(destinationFolderPath, Path.GetFileNameWithoutExtension(filePath), true);
-            ErrorOr<CopyResult> copyResult = await CopyDirectoryAsync(filePath, copiedFolderPath, runtimeSettings.MaxDegreeOfParallelism);
-
-            if (copyResult.IsError)
-            {
-                return Error.Failure(description: "Failed to copy directory.");
-            }
-
-            if (copyResult.Value.Failures.Count > 0)
-            {
-                copyResult.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError($"Failed to copy: {i.SourcePath}", tag: i.ErrorMessage));
-            }
-        }
-
-        return Result.Success;
+        return extractResult.Value;
     }
     #endregion
 
@@ -488,6 +473,7 @@ public static class FileSystemService
     {
         public bool IsDirectory { get; set; } = false;
         public string ExtractedFolderPath { get; set; } = string.Empty;
+        public bool ParentDirectoryUsed { get; set; } = false;
     }
     private static async Task<ErrorOr<FileExtractResultInternal>> FileExtractorInternalAsync(string filePath, string extractDirectory, bool removeOriginalFile)
     {

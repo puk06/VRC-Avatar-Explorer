@@ -19,20 +19,19 @@ internal static class ItemCreator
 {
     internal static async Task<ErrorOr<ItemCreationResult>> FromItemCreationContext(ItemCreationContext itemCreationContext, RuntimeSettings runtimeSettings)
     {
-        ErrorOr<ExtractResult> extractResult = await FileSystemService.ExtractItemFolders(itemCreationContext, runtimeSettings.DataRootDirectory, runtimeSettings);
-        if (extractResult.IsError) return Error.Failure(description: extractResult.Errors.ToErrorString());
-
         Item item = new()
         {
             Title = itemCreationContext.Title,
             Author = itemCreationContext.Author,
             AuthorId = itemCreationContext.AuthorId,
             BoothId = itemCreationContext.BoothId,
-            ItemPath = extractResult.Value.ItemParentFolder,
             Type = itemCreationContext.ItemType,
             CustomCategory = itemCreationContext.CustomCategory,
             ItemMemo = itemCreationContext.ItemMemo
         };
+
+        ErrorOr<ExtractResult> extractResult = await FileSystemService.ExtractItemFolders(itemCreationContext, runtimeSettings.DataRootDirectory, runtimeSettings, item.Id);
+        if (extractResult.IsError) return Error.Failure(description: extractResult.Errors.ToErrorString());
 
         if (!string.IsNullOrEmpty(itemCreationContext.ThumbnailUrl))
         {
@@ -40,6 +39,8 @@ internal static class ItemCreator
             if (thumbnailResult) item.ThumbnailFileName = item.Id;
         }
 
+        item.ItemPath = extractResult.Value.ItemParentFolder;
+        item.UpdateItemPaths(extractResult.Value.FolderPaths);
         item.UpdateSupportedAvatars(itemCreationContext.SupportedAvatars);
         item.UpdateTags(itemCreationContext.Tags);
 

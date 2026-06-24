@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using AvatarExplorer.Core.Data.Links;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
@@ -36,7 +37,7 @@ public partial class MainWindow
         AddItemOverlay_BoothLinkTextBox.Text = item.BoothId == -1 ? string.Empty : item.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]);
 
         _addItemOverlay_addItemWindowValues.ItemPaths.Clear();
-        _addItemOverlay_addItemWindowValues.ItemPaths.Add(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
+        _addItemOverlay_addItemWindowValues.ItemPaths.AddRange(item.GetFolderPaths(RuntimeSettings.DataRootDirectory, includeRootFolder: false));
         _addItemOverlay_addItemWindowValues.FromItem(item);
         AddItemOverlay_DrawFilePathsList();
         AddItemOverlay_SetValuesToUi(_addItemOverlay_addItemWindowValues);
@@ -164,11 +165,6 @@ public partial class MainWindow
         Grid.SetColumn(itemRemoveButton, 3);
         itemRemoveButton.Click += AddItemOverlay_FilePath_RemoveButton_Click;
         itemPathGrid.Children.Add(itemRemoveButton);
-
-        if (_addItemOverlay_selectedItemId != null && index == 0)
-        {
-            itemRemoveButton.IsEnabled = false; // 親フォルダは削除できないように
-        }
 
         Grid.SetRow(rowBorder, folderListPanel.RowDefinitions.Count);
         folderListPanel.RowDefinitions.Add(new RowDefinition(GridLength.Auto));

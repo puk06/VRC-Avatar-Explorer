@@ -166,7 +166,7 @@ public partial class MainWindow
             Item? currentSelectedItem = AvatarExplorer.GetSelectedItem();
             if (currentSelectedItem == null) return;
 
-            if (UnitypackageService.GetUnitypackagePaths(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, currentSelectedItem.ItemPath)).Contains(file))
+            if (UnitypackageService.GetUnitypackagePaths(currentSelectedItem.GetFolderPaths(RuntimeSettings.DataRootDirectory)).Contains(file))
             {
                 BulkImportPanel_AddItem(currentSelectedItem.Id, file);
             }

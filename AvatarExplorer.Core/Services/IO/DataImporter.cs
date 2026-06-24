@@ -93,14 +93,10 @@ internal static class DataImporter
                 else
                 {
                     string newItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
-
-                    if (!string.IsNullOrEmpty(item.MaterialPath))
-                    {
-                        string materialPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath));
-                        await FileSystemService.CopyDirectoryAsync(materialPath, newItemPath, importParallelism);
-                    }
+                    string materialPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath));
                     
                     newItem.ItemPath = newItemPath;
+                    if (!string.IsNullOrEmpty(item.MaterialPath)) newItem.UpdateItemPaths([materialPath]);
                 }
 
                 ErrorOr<Success> result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsFolderPath, newItem.Id));

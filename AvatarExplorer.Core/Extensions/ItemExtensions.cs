@@ -1,5 +1,6 @@
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Extensions;
@@ -39,5 +40,33 @@ public static class ItemExtensions
 
         if (item.Type == ItemType.Custom) return item.CustomCategory == category;
         else return item.Type.GetLocalizationKey() == category;
+    }
+
+    public static IEnumerable<string> EnumerateFiles(this Item item, string parentFolder, bool isRecursive = true)
+    {
+        List<string> fileList = new();
+
+        foreach (string itemPath in item.GetFolderPaths(parentFolder))
+        {
+            fileList.AddRange(FileSystemService.EnumerateFiles(itemPath, isRecursive));
+        }
+
+        return fileList.SortByFileName();
+    }
+
+    public static IEnumerable<string> GetFolderPaths(this Item item, string parentFolder, bool includeRootFolder = true)
+    {
+        List<string> folderList = new();
+
+        string rootPath = ItemUtils.GetItemPath(parentFolder, item.ItemPath);
+        if (includeRootFolder && Directory.Exists(rootPath)) folderList.Add(rootPath);
+
+        foreach (string itemPath in item.ItemPathsView)
+        {
+            string fullItemPath = ItemUtils.GetItemPath(parentFolder, itemPath);
+            if (Directory.Exists(fullItemPath)) folderList.AddRange(fullItemPath);
+        }
+
+        return folderList.SortByFileName();
     }
 }

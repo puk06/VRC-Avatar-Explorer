@@ -66,8 +66,8 @@
     "Dialog.Confirmation.RemovePreset": "Nom du préréglage : {0}\n\nVoulez-vous vraiment supprimer ce préréglage ?",
     "Dialog.Confirmation.AddToExistingItem": "Un élément avec le même Booth ID a déjà été ajouté. Voulez-vous ajouter des fichiers ou des dossiers à cet élément ?",
     "Dialog.Confirmation.ResolveTempAvatar": "Confirmer la liaison de l'avatar temporaire \"{0}\" à l'élément permanent \"{1}\" ?",
-    "Dialog.Confirmation.RemoveAssetData": "Supprimer également les données de ressources de cet élément ?\n\nChemin des ressources : {0}",
-    "Dialog.Confirmation.CopyAssetData": "Copier les données de ressources ?\n\nSinon, le dossier de ressources d'origine sera utilisé tel quel. Lors de l'importation depuis Avatar Explorer, seul le dossier de matériaux sera toujours copié dans le dossier.",
+    "Dialog.Confirmation.RemoveAssetData": "Voulez-vous également supprimer les données d'asset de cet élément ? Seuls les assets du chemin par défaut seront supprimés.\n\nChemin de l'asset : {0}",
+    "Dialog.Confirmation.CopyAssetData": "Copier les données de ressources ?\n\nSinon, le dossier de ressources d'origine sera utilisé tel quel.",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "Inclure les avatars communs dans la colonne des avatars pris en charge ?",
 

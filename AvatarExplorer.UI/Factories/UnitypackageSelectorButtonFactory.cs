@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 using AvatarExplorer.Core.Models.System;
-using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
 using AvatarExplorer.UI.Services.External;
@@ -40,7 +39,7 @@ internal static class UnitypackageSelectorButtonFactory
         contentStackPanel.Children.Add(contentGrid);
 
         Panel unitypackagePanel = new();
-        unitypackagePanel.Children.Add(CreateUnitypackageList(options.Item, options.Id, options.SelectedFilePath, options.RuntimeSettings, options.OnSelectionChanged));
+        unitypackagePanel.Children.Add(CreateUnitypackageList(options.Item, options.Id, options.SelectedFilePath, options.OnSelectionChanged));
 
         contentStackPanel.Children.Add(unitypackagePanel);
 
@@ -110,28 +109,31 @@ internal static class UnitypackageSelectorButtonFactory
         return textGrid;
     }
 
-    internal static ComboBox CreateUnitypackageList(UISelectableItem item, string id, string selectedFilePath, RuntimeSettings runtimeSettings, Action<string, string>? onSelectedIndexChanged = null)
+    internal static ComboBox CreateUnitypackageList(UISelectableItem item, string id, string selectedFilePath, Action<string, string>? onSelectedIndexChanged = null)
     {
         ComboBox unitypackageComboBox = new() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch, CornerRadius = new(8), FontSize = 14 };
 
         int selectedIndex = 0;
 
-        ImmutableArray<string> unitypackageFilePaths = UnitypackageService.GetUnitypackagePaths(ItemUtils.GetItemPath(runtimeSettings.DataRootDirectory, item.ItemPath));
-        for (int i = 0; i < unitypackageFilePaths.Length; i++)
+        if (item.ItemFolderPaths != null)
         {
-            string filePath = unitypackageFilePaths[i];
-
-            if (filePath == selectedFilePath) selectedIndex = i;
-
-            ComboBoxItem unitypackageFileItem = new()
+            ImmutableArray<string> unitypackageFilePaths = UnitypackageService.GetUnitypackagePaths(item.ItemFolderPaths);
+            for (int i = 0; i < unitypackageFilePaths.Length; i++)
             {
-                Content = Path.GetFileName(filePath),
-                Tag = filePath
-            };
+                string filePath = unitypackageFilePaths[i];
 
-            unitypackageComboBox.Items.Add(unitypackageFileItem);
-            ToolTip.SetTip(unitypackageFileItem, Path.GetFileName(Path.GetDirectoryName(filePath)) + " > " + Path.GetFileName(filePath));
-            ToolTip.SetBetweenShowDelay(unitypackageFileItem, -1);
+                if (filePath == selectedFilePath) selectedIndex = i;
+
+                ComboBoxItem unitypackageFileItem = new()
+                {
+                    Content = Path.GetFileName(filePath),
+                    Tag = filePath
+                };
+
+                unitypackageComboBox.Items.Add(unitypackageFileItem);
+                ToolTip.SetTip(unitypackageFileItem, Path.GetFileName(Path.GetDirectoryName(filePath)) + " > " + Path.GetFileName(filePath));
+                ToolTip.SetBetweenShowDelay(unitypackageFileItem, -1);
+            }
         }
 
         if (onSelectedIndexChanged != null) unitypackageComboBox.SelectionChanged += (s, e) => onSelectedIndexChanged(id, (unitypackageComboBox.SelectedItem as ComboBoxItem)?.Tag as string ?? string.Empty);

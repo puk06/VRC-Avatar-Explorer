@@ -26,16 +26,19 @@ internal static class UnitypackageService
         return await AvatarExplorerApp.ModifyUnitypackageFilePaths(itemPathCategoryDictionary, progressAction);
     }
 
-    internal static ImmutableArray<string> GetUnitypackagePaths(string itemPath)
+    internal static ImmutableArray<string> GetUnitypackagePaths(IEnumerable<string> itemPaths)
     {
-        if (!Directory.Exists(itemPath)) return [];
-
         var unitypackageFilePaths = ImmutableArray.CreateBuilder<string>();
-
-        foreach (string filePath in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+        
+        foreach (string itemPath in itemPaths)
         {
-            if (!PathUtils.IsUnitypackageFile(filePath)) continue;
-            unitypackageFilePaths.Add(filePath);
+            if (string.IsNullOrEmpty(itemPath)) continue;
+
+            foreach (string filePath in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+            {
+                if (!PathUtils.IsUnitypackageFile(filePath)) continue;
+                unitypackageFilePaths.Add(filePath);
+            }
         }
 
         return unitypackageFilePaths.ToImmutable();

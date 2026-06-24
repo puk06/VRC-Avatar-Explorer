@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
@@ -42,7 +43,7 @@ internal static class PathService
         if (state == ItemTagStates.ItemFolder)
         {
             // フォルダはRootかどうかで表記を変える
-            value = value == ItemFolder.RootNodeName ? Localizer.Instance[LocalizationKey.Main.Path.RootFolder] : value;
+            value = value == ItemFolder.RootNodeName ? Localizer.Instance[LocalizationKey.Main.Path.RootFolder] : Path.GetFileName(value);
         }
 
         // 翻訳できないタグ(Root以外)はここがnullになるため、valueがパスになる。ある場合はPrefixが翻訳される。
