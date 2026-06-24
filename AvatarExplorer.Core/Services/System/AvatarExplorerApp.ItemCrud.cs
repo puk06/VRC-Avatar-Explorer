@@ -216,10 +216,7 @@ public partial class AvatarExplorerApp
         if (removeAssetData)
         {
             Item? item = GetItemById(id);
-            if (item != null)
-            {
-                FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
-            }
+            if (item != null) FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
         }
 
         bool removed = _itemDatabaseManager.Remove(id);
