@@ -445,7 +445,7 @@ public static class FileSystemService
                 }
                 else
                 {
-                    string copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileNameWithoutExtension(itemPath), true);
+                    string copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileName(itemPath), true);
                     ErrorOr<CopyResult> copyResult = await CopyDirectoryAsync(itemPath, copiedFolderPath, runtimeSettings.MaxDegreeOfParallelism);
                     if (copyResult.IsError) return Error.Failure(description: "Failed to copy directory.");
 
