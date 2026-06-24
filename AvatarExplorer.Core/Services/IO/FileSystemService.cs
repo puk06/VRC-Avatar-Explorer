@@ -401,6 +401,7 @@ public static class FileSystemService
                     folderName = fallbackName; // 最後の手段
             }
             string parentFolder = GetUniquePath(dataRootDirectory, folderName, true);
+            Directory.CreateDirectory(parentFolder);
 
             ErrorOr<ExtractResult> extractResult = await ExtractItemPaths(parentFolder, itemCreationContext.ItemPaths.ToArray(), runtimeSettings);
             if (extractResult.IsError) return Error.Failure(description: "Failed to extract item folders.");
