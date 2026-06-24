@@ -473,7 +473,6 @@ public static class FileSystemService
     {
         public bool IsDirectory { get; set; } = false;
         public string ExtractedFolderPath { get; set; } = string.Empty;
-        public bool ParentDirectoryUsed { get; set; } = false;
     }
     private static async Task<ErrorOr<FileExtractResultInternal>> FileExtractorInternalAsync(string filePath, string extractDirectory, bool removeOriginalFile)
     {
