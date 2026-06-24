@@ -382,43 +382,9 @@ public partial class MainWindow
         }
 
         string backupRootPath = folderPaths[0];
+        await AvatarExplorer.RestoreFromBackup(backupRootPath);
 
-        string itemDatabasePath = Path.Join(backupRootPath, SystemFileName.Database.Items);
-        string commonAvatarDatabasePath = Path.Join(backupRootPath, SystemFileName.Database.CommonAvatars);
-        string bulkImportPresetDatabasePath = Path.Join(backupRootPath, SystemFileName.Database.BulkImportPresets);
-        string tempAvatarsDatabasePath = Path.Join(backupRootPath, SystemFileName.Database.TempAvatars);
-        string runtimeSettingsFilePath = Path.Join(backupRootPath, SystemFileName.Settings.Runtime);
         string userPreferencesFilePath = Path.Join(backupRootPath, SystemFileName.Settings.Preferences);
-
-        if (File.Exists(itemDatabasePath))
-        {
-            AvatarExplorer.LoadItemDatabase(itemDatabasePath);
-            AvatarExplorer.SaveItemDatabase();
-        }
-
-        if (File.Exists(commonAvatarDatabasePath))
-        {
-            AvatarExplorer.LoadCommonAvatarDatabase(commonAvatarDatabasePath);
-            AvatarExplorer.SaveCommonAvatarDatabase();
-        }
-
-        if (File.Exists(bulkImportPresetDatabasePath))
-        {
-            AvatarExplorer.LoadBulkImportPresetDatabase(bulkImportPresetDatabasePath);
-            AvatarExplorer.SaveBulkImportPresetDatabase();
-        }
-
-        if (File.Exists(tempAvatarsDatabasePath))
-        {
-            AvatarExplorer.LoadTempAvatarsDatabase(tempAvatarsDatabasePath);
-            AvatarExplorer.SaveTempAvatarsDatabase();
-        }
-
-        if (File.Exists(runtimeSettingsFilePath))
-        {
-            AvatarExplorer.LoadRuntimeSettings(runtimeSettingsFilePath);
-            AvatarExplorer.SaveRuntimeSettings();
-        }
 
         if (File.Exists(userPreferencesFilePath))
         {
