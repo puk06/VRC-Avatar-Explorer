@@ -5,6 +5,7 @@ public static class SystemFileName
     public static class Database
     {
         public const string Items = "items.json";
+        public const string ItemsDatabaseMigrationVersion = "items.json.migration.version";
         public const string CommonAvatars = "commonAvatars.json";
         public const string BulkImportPresets = "bulkImportPresets.json";
         public const string TempAvatars = "tempAvatars.json";
