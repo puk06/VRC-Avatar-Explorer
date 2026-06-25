@@ -190,7 +190,6 @@
     "Error.ItemNotFound": "未找到项目",
     "Error.CommonAvatarNotFound": "未找到共通素体组",
     "Error.PresetNotFound": "未找到预设",
-    "Error.Validation.NoFolders": "未选择文件夹",
     "Error.Validation.EmptyTitle": "项目标题为空",
     "Error.Validation.EmptyAuthor": "项目作者为空",
     "Error.Validation.NotClothingWithCommonAvatar": "共通素体仅对服装类别有效。当前选择将无效。",

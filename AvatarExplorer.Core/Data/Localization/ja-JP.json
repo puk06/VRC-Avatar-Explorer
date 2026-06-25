@@ -190,7 +190,6 @@
     "Error.ItemNotFound": "アイテムが見つかりませんでした",
     "Error.CommonAvatarNotFound": "共通素体グループが見つかりませんでした",
     "Error.PresetNotFound": "プリセットが見つかりませんでした",
-    "Error.Validation.NoFolders": "フォルダが選択されていません",
     "Error.Validation.EmptyTitle": "アイテムのタイトル欄が空です",
     "Error.Validation.EmptyAuthor": "アイテムの作者欄が空です",
     "Error.Validation.NotClothingWithCommonAvatar": "共通素体は衣装カテゴリでのみ有効です。現在の選択では無効になります。",

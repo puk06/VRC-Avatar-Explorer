@@ -190,7 +190,6 @@
     "Error.ItemNotFound": "아이템을 찾을 수 없습니다",
     "Error.CommonAvatarNotFound": "공통 바디 그룹을 찾을 수 없습니다",
     "Error.PresetNotFound": "프리셋을 찾을 수 없습니다",
-    "Error.Validation.NoFolders": "폴더가 선택되지 않았습니다",
     "Error.Validation.EmptyTitle": "아이템 제목이 비어 있습니다",
     "Error.Validation.EmptyAuthor": "아이템 작성자가 비어 있습니다",
     "Error.Validation.NotClothingWithCommonAvatar": "공통 바디는 의상 카테고리에서만 유효합니다. 현재 선택에서는 무효가 됩니다.",

@@ -190,7 +190,6 @@
     "Error.ItemNotFound": "Elemento no encontrado",
     "Error.CommonAvatarNotFound": "Grupo de avatares comunes no encontrado",
     "Error.PresetNotFound": "Ajuste preestablecido no encontrado",
-    "Error.Validation.NoFolders": "No se seleccionaron carpetas",
     "Error.Validation.EmptyTitle": "El campo del título del elemento está vacío",
     "Error.Validation.EmptyAuthor": "El campo del autor del elemento está vacío",
     "Error.Validation.NotClothingWithCommonAvatar": "Los avatares comunes solo son válidos para la categoría de ropa. No serán válidos en la selección actual.",

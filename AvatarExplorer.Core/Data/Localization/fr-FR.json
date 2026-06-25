@@ -190,7 +190,6 @@
     "Error.ItemNotFound": "Élément introuvable",
     "Error.CommonAvatarNotFound": "Groupe d'avatars communs introuvable",
     "Error.PresetNotFound": "Préréglage introuvable",
-    "Error.Validation.NoFolders": "Aucun dossier sélectionné",
     "Error.Validation.EmptyTitle": "Le champ du titre de l'élément est vide",
     "Error.Validation.EmptyAuthor": "Le champ de l'auteur de l'élément est vide",
     "Error.Validation.NotClothingWithCommonAvatar": "Les avatars communs ne sont valides que pour la catégorie vêtements. Ils seront invalides dans la sélection actuelle.",
