@@ -40,7 +40,7 @@ public partial class MainWindow
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to import thumbnail.", tag: result.Errors.ToErrorString());
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ImportFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ImportFailed], isError: true);
             return;
         }
 

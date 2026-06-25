@@ -67,7 +67,7 @@ public partial class MainWindow
         Item? item = AvatarExplorer.GetItemById(_editImplementedAvatarsOverlay_selectedItemId);
         if (item == null)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound], isError: true);
             return;
         }
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Notifications;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Data.Links;
@@ -616,7 +617,7 @@ public partial class MainWindow : Window
         else
         {
             ErrorOr<Success> result = await LauncherService.OpenFile(this, filePath);
-            if (result.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
+            if (result.IsError) Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed], isError: true);
         }
     }
     private async Task Main_OpenUnitypackageInternalAsync(string itemPath)
@@ -641,12 +642,28 @@ public partial class MainWindow : Window
         if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
         {
             ErrorOr<Success> result = await LauncherService.OpenFile(this, importResult.ModifiedUnitypackagePath);
-            if (result.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
+            if (result.IsError) Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed], isError: true);
         }
         else
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ImportUnitypackageFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ImportUnitypackageFailed], isError: true);
         }
     }
     #endregion
+
+    private void Main_ShowNotification(string title, string content, bool isSuccess = false, bool isWarning = false, bool isError = false)
+    {
+        NotificationType type = NotificationType.Information;
+        if (isSuccess) type = NotificationType.Success;
+        if (isWarning) type = NotificationType.Warning;
+        if (isError) type = NotificationType.Error;
+        
+        Main_NotificationManager.Show(new Notification()
+        {
+            Title = title,
+            Message = content,
+            Type = type,
+            Expiration = TimeSpan.FromSeconds(5)
+        });
+    }
 }

@@ -175,16 +175,16 @@ public partial class MainWindow
         if (result1.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to copy directory.", tag: result1.Errors.ToErrorString());
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CopyDirectoryFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CopyDirectoryFailed], isError: true);
         }
         else if (result1.Value.Failures.Count > 0)
         {
             result1.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError(string.Format("Failed to copy file: '{0}' to '{1}'", i.SourcePath, i.DestinationPath), tag: i.ErrorMessage));
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.FoundProcessingFailedPath]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.FoundProcessingFailedPath], isError: true);
         }
         else
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.CopyDirectory]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.CopyDirectory], isSuccess: true);
         }
     }
 
@@ -313,8 +313,8 @@ public partial class MainWindow
 
         ErrorOr<Success> exportResult = await AvatarExplorer.Export(DataExportType.Csv, filePath, localizedItemTypesMapping, includeCommonToSupported: result == YesNoResult.Yes);
         
-        if (!exportResult.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Export]);
-        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed]);
+        if (!exportResult.IsError) Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Export], isSuccess: true);
+        else Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed], isError: true);
     }
     private async void SettingsOverlay_EditCommonAvatars_Click(object? sender, RoutedEventArgs e) => EditCommonAvatarsOverlay_Open();
     private async void SettingsOverlay_ResetItemDatabase_Click(object? sender, RoutedEventArgs e)
@@ -353,7 +353,7 @@ public partial class MainWindow
         string licenseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LICENSE.txt");
 
         if (File.Exists(licenseFile)) await LauncherService.OpenUri(this, licenseFile);
-        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.LicenseFileNotFound]);
+        else Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.LicenseFileNotFound], isError: true);
     }
 
     private async void SettingsOverlay_ThirdPartyLicenses_Click(object? sender, RoutedEventArgs e)
@@ -361,7 +361,7 @@ public partial class MainWindow
         string licenseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "THIRD_PARTY_LICENSES.txt");
 
         if (File.Exists(licenseFile)) await LauncherService.OpenUri(this, licenseFile);
-        else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ThirdPartyLicenseFileNotFound]);
+        else Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ThirdPartyLicenseFileNotFound], isError: true);
     }
 
     private async void SettingsOverlay_OpenTwitter_Click(object? sender, RoutedEventArgs e) => await LauncherService.OpenUri(this, DeveloperLink.TwitterURL);

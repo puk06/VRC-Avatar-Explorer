@@ -59,21 +59,21 @@ public partial class MainWindow
 
         if (_resolveTempAvatarOverlay_selectedAvatar == null)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound], isError: true);
             return;
         }
 
         TempAvatar? tempAvatar = AvatarExplorer.GetTempAvatarById(TempAvatar.GetAvatarId(_resolveTempAvatarOverlay_selectedAvatar));
         if (tempAvatar == null)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound], isError: true);
             return;
         }
 
         Item? targetAvatar = AvatarExplorer.GetItemById(itemTagInfo.Value);
         if (targetAvatar == null)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound], isError: true);
             return;
         }
 

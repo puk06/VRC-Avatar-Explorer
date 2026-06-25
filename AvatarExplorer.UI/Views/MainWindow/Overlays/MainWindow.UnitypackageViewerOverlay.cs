@@ -49,7 +49,7 @@ public partial class MainWindow
     {
         if (string.IsNullOrWhiteSpace(unitypackagePath) || !File.Exists(unitypackagePath))
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed], isError: true);
             return;
         }
 
@@ -170,7 +170,7 @@ public partial class MainWindow
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to export unitypackage asset.", tag: result.Errors.ToErrorString());
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed], isError: true);
             return;
         }
 

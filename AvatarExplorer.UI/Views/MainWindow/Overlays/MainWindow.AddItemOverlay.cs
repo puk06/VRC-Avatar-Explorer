@@ -262,7 +262,7 @@ public partial class MainWindow
     {
         string errorMessage = _addItemOverlay_addItemWindowValues.Validate();
         bool result = string.IsNullOrEmpty(errorMessage);
-        if (!result) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[errorMessage]);
+        if (!result) Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[errorMessage], isError: true);
 
         return result;
     }
@@ -273,7 +273,7 @@ public partial class MainWindow
 
         if (AvatarExplorer.IsApiCooldownNow)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.BoothApiCooldown]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.BoothApiCooldown], isError: true);
             return;
         }
 
@@ -283,7 +283,7 @@ public partial class MainWindow
 
         if (fetchResult.IsError)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RetrieveBoothItemFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RetrieveBoothItemFailed], isError: true);
             return;
         }
         
@@ -392,9 +392,9 @@ public partial class MainWindow
                     ErrorOr<ExtractResult> extractResult = await AvatarExplorer.AddItemPaths(existingItem, itemCreationContext.ItemPaths.ToArray());
                     ProgressOverlay_Hide();
 
-                    if (extractResult.IsError) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.AddItemFileFailed]);
-                    else if (extractResult.Value.ProcessingFailedPaths.Count > 0) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, extractResult.Value.ProcessingFailedPaths.Count.ToString()));
-                    else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemFileAdd]);
+                    if (extractResult.IsError) Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.AddItemFileFailed], isError: true);
+                    else if (extractResult.Value.ProcessingFailedPaths.Count > 0) Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, extractResult.Value.ProcessingFailedPaths.Count.ToString()), isError: true);
+                    else Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemFileAdd], isSuccess: true);
 
                     AddItemOverlay_Close();
                     Main_ReloadCurrentWindow();
@@ -409,19 +409,19 @@ public partial class MainWindow
 
             if (itemCreationResult.IsError)
             {
-                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemAddFailed]);
+                Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemAddFailed], isError: true);
             }
             else if (itemCreationResult.Value.ExtractResult.ProcessingFailedPaths.Count > 0)
             {
-                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, itemCreationResult.Value.ExtractResult.ProcessingFailedPaths.Count.ToString()));
+                Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get(LocalizationKey.Error.FoundProcessingFailedPath, itemCreationResult.Value.ExtractResult.ProcessingFailedPaths.Count.ToString()), isError: true);
             }
             else if (itemCreationResult.Value.Item != null)
             {
-                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemAdd]);
+                Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemAdd], isSuccess: true);
             }
             else
             {
-                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemAddFailed]);
+                Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemAddFailed], isError: true);
             }
         }
         else
@@ -430,8 +430,8 @@ public partial class MainWindow
             bool result = await AvatarExplorer.EditItem(_addItemOverlay_selectedItemId, itemCreationContext);
             ProgressOverlay_Hide();
 
-            if (result) DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemEdit]);
-            else DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemEditFailed]);
+            if (result) Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.ItemEdit], isSuccess: true);
+            else Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemEditFailed], isError: true);
         }
 
         AddItemOverlay_Close();

@@ -56,7 +56,7 @@ public partial class MainWindow
         ImmutableArray<Item> allItems = AvatarExplorer.GetAllItems();
         if (allItems.Length == 0)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.Nothing]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.Nothing], isError: true);
             return;
         }
 
@@ -150,7 +150,7 @@ public partial class MainWindow
         if (isCancelled)
         {
             FetchAllThumbnailsOverlay_StatusText.Text = Localizer.Instance["FetchAllThumbnailsOverlay.Status.Cancelled"];
-            DialogOverlay_Show(
+            Main_ShowNotification(
                 Localizer.Instance[LocalizationKey.Warning.Default],
                 Localizer.Instance.Get("Warning.FetchAllItemThumbnailsCancelled", [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()])
             );
@@ -161,11 +161,11 @@ public partial class MainWindow
 
         if (failureCount == 0)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance.Get("Success.FetchAllItemThumbnails", successCount.ToString()));
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance.Get("Success.FetchAllItemThumbnails", successCount.ToString()), isSuccess: true);
         }
         else
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get("Error.FetchAllItemThumbnailsFailed", [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]));
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance.Get("Error.FetchAllItemThumbnailsFailed", [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]), isError: true);
         }
     }
 

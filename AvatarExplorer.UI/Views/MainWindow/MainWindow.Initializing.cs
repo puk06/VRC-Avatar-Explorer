@@ -45,7 +45,7 @@ public partial class MainWindow
             {
                 _main_isAdministratorMode = true;
                 Main_UpdateWindowTitle();
-                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Warning.Default], Localizer.Instance[LocalizationKey.Warning.RunningInAdministratorMode]);
+                Main_ShowNotification(Localizer.Instance[LocalizationKey.Warning.Default], Localizer.Instance[LocalizationKey.Warning.RunningInAdministratorMode], isWarning: true);
             }
         }
         catch (Exception ex)
@@ -127,7 +127,7 @@ public partial class MainWindow
             void skipScheme()
             {
                 SchemeService.MarkSchemeSkipped();
-                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterSkipped]);
+                Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterSkipped], isSuccess: true);
             }
 
             if (SchemeService.IsSchemeRegistered())
@@ -161,7 +161,7 @@ public partial class MainWindow
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError("The scheme data could not be fully validated due to an internal error.", ex);
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CheckSchemeFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CheckSchemeFailed], isError: true);
         }
     }
 
@@ -171,7 +171,7 @@ public partial class MainWindow
         {
             if (!ProcessUtils.IsWindows())
             {
-                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.NonWindowsUnsupported]);
+                Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.NonWindowsUnsupported], isError: true);
                 return;
             }
 
@@ -183,13 +183,13 @@ public partial class MainWindow
             else
             {
                 SchemeService.RegisterScheme();
-                DialogOverlay_Show(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterSuccess]);
+                Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterSuccess], isSuccess: true);
             }
         }
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError("Failed to register scheme.", ex);
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RegisterSchemeFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.RegisterSchemeFailed], isError: true);
         }
     }
 }

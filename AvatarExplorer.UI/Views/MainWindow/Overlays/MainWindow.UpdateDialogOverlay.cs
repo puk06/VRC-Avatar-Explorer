@@ -20,7 +20,7 @@ public partial class MainWindow
         VersionRelease? latestVersionRelease = await UpdateChecker.GetLatestUpdateReleaseInfo(updateChannel);
         if (latestVersionRelease == null && !silent)
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.UpdateDialog.NoUpdateAvailableTitle], Localizer.Instance.Get(LocalizationKey.UpdateDialog.NoUpdateAvailable, AvatarExplorerApp.CurrentVersion));
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.UpdateDialog.NoUpdateAvailableTitle], Localizer.Instance.Get(LocalizationKey.UpdateDialog.NoUpdateAvailable, AvatarExplorerApp.CurrentVersion));
         }
         else if (latestVersionRelease != null)
         {

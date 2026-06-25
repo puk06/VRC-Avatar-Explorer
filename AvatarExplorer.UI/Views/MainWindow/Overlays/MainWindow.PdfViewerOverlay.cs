@@ -29,7 +29,7 @@ public partial class MainWindow
     {
         if (string.IsNullOrWhiteSpace(pdfPath) || !File.Exists(pdfPath))
         {
-            DialogOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed]);
+            Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed], isError: true);
             return;
         }
 

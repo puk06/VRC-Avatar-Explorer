@@ -1286,23 +1286,6 @@
             </Border>
         </Border>
         
-        <!-- OKダイアログ -->
-        <Border x:Name="DialogOverlay" Classes="overlaybackground" IsVisible="False">
-            <Border Classes="overlay" Width="500">
-                <StackPanel Spacing="15">
-
-                    <!-- タイトル -->
-                    <TextBlock x:Name="DialogOverlay_Title" Text="Title" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
-
-                    <!-- 内容 -->
-                    <TextBlock x:Name="DialogOverlay_Content" Text="Content" FontSize="17" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="0,10,0,10" Foreground="{DynamicResource Text.Primary}"/>
-
-                    <!-- OKボタン -->
-                    <Button Classes="accentbutton" FontWeight="Bold" Content="{Binding [DialogResult.OK]}" Width="150" VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Click="DialogOverlay_OK_Click"/>
-                </StackPanel>
-            </Border>
-        </Border>
-        
         <!-- テキストダイアログ -->
         <Border x:Name="TextDialogOverlay" Classes="overlaybackground" IsVisible="False">
             <Border Classes="overlay" Width="500">
@@ -1547,6 +1530,8 @@
                 </StackPanel>
             </Border>
         </Grid>
+
+        <WindowNotificationManager x:Name="Main_NotificationManager" Position="BottomRight"/>
     </Panel>
 </Window>
 
