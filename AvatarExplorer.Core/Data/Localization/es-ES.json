@@ -179,7 +179,7 @@
     "Success.FetchAllItemThumbnails": "Obtención masiva de miniaturas completada ({0} correctos)",
 
     "Warning.Default": "Advertencia",
-    "Warning.RunningInAdministratorMode": "Este software se está ejecutando actualmente en modo administrador.\nRecomendamos ejecutarlo en modo normal salvo cuando registres esquemas.\nEn modo administrador, algunas operaciones como arrastrar y soltar pueden no estar disponibles.",
+    "Warning.RunningInAdministratorMode": "En modo administrador, algunas operaciones como arrastrar y soltar pueden no estar disponibles.",
     "Warning.FetchAllItemThumbnailsCancelled": "La obtención masiva de miniaturas se canceló. Correctos: {0} / Fallidos: {1} / Total: {2}",
 
     "Error.Default": "Error",

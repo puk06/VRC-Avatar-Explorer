@@ -179,7 +179,7 @@
     "Success.FetchAllItemThumbnails": "Récupération groupée des vignettes terminée ({0} réussies)",
 
     "Warning.Default": "Avertissement",
-    "Warning.RunningInAdministratorMode": "Ce logiciel est actuellement exécuté en mode administrateur.\nNous recommandons de l'exécuter en mode normal sauf lors de l'enregistrement des schémas.\nEn mode administrateur, certaines opérations comme le glisser-déposer peuvent ne pas être disponibles.",
+    "Warning.RunningInAdministratorMode": "En mode administrateur, certaines opérations comme le glisser-déposer peuvent ne pas être disponibles.",
     "Warning.FetchAllItemThumbnailsCancelled": "La récupération groupée des vignettes a été annulée. Réussies : {0} / Échouées : {1} / Total : {2}",
 
     "Error.Default": "Erreur",

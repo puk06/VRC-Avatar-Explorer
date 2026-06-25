@@ -179,7 +179,7 @@
     "Success.FetchAllItemThumbnails": "Bulk thumbnail fetch completed ({0} succeeded)",
 
     "Warning.Default": "Warning",
-    "Warning.RunningInAdministratorMode": "This software is currently running in administrator mode.\nWe recommend running in normal mode except when registering schemes.\nIn administrator mode, some operations like drag & drop may not be available.",
+    "Warning.RunningInAdministratorMode": "In administrator mode, some operations like drag & drop may not be available.",
     "Warning.FetchAllItemThumbnailsCancelled": "Bulk thumbnail fetch was cancelled. Success: {0} / Failed: {1} / Total: {2}",
 
     "Error.Default": "Error",

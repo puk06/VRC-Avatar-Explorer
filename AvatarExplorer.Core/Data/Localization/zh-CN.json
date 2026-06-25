@@ -179,7 +179,7 @@
     "Success.FetchAllItemThumbnails": "批量获取缩略图完成（成功 {0} 个）",
 
     "Warning.Default": "警告",
-    "Warning.RunningInAdministratorMode": "当前软件正在以管理员模式运行。\n除注册协议外，建议以普通模式运行。\n在管理员模式下，拖放等部分操作可能不可用。",
+    "Warning.RunningInAdministratorMode": "在管理员模式下，拖放等部分操作可能不可用。",
     "Warning.FetchAllItemThumbnailsCancelled": "批量获取缩略图已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",
 
     "Error.Default": "错误",

@@ -179,7 +179,7 @@
     "Success.FetchAllItemThumbnails": "썸네일 일괄 가져오기가 완료되었습니다 ({0}개 성공)",
 
     "Warning.Default": "주의",
-    "Warning.RunningInAdministratorMode": "현재 이 소프트웨어는 관리자 모드로 실행 중입니다.\n스킴 등록 외에는 일반 모드 실행을 권장합니다.\n관리자 모드에서는 드래그 앤 드롭 등 일부 작업을 사용할 수 없습니다.",
+    "Warning.RunningInAdministratorMode": "관리자 모드에서는 드래그 앤 드롭 등 일부 작업을 사용할 수 없습니다.",
     "Warning.FetchAllItemThumbnailsCancelled": "썸네일 일괄 가져오기를 취소했습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개",
 
     "Error.Default": "오류",
