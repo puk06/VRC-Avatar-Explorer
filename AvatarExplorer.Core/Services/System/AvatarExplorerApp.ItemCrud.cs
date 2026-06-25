@@ -98,6 +98,8 @@ public partial class AvatarExplorerApp
         ErrorOr<ExtractResult> extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), paths, RuntimeSettings);
         if (extractResult.IsError) return Error.Failure(description: extractResult.Errors.ToErrorString());
 
+        item.UpdateItemPaths(extractResult.Value.FolderPaths); // ItemPathは更新しない（既に設定されているため）
+
         UpdateItemUpdatedDate(itemId);
         SaveItemDatabase();
 
