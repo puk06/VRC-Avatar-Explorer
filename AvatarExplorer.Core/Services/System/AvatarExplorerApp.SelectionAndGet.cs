@@ -6,6 +6,7 @@ using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Avatars.Internal;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
+using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.System;
 
@@ -111,7 +112,9 @@ public partial class AvatarExplorerApp
         Item? item = GetItemById(selectionNode.Key);
         if (item == null) return [];
 
-        return GetFoldersFromPathsInternal(item.ItemPath, item.GetFolderPaths(RuntimeSettings.DataRootDirectory));
+        string rootPath = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+
+        return GetFoldersFromPathsInternal(rootPath, item.ItemPathsView);
     }
     private ImmutableArray<ItemCountInfo> HandleItemFolder(SelectionNode selectionNode)
     {
@@ -122,8 +125,10 @@ public partial class AvatarExplorerApp
         if (item == null) return [];
 
         bool isRecursive = selectionNode.Key != ItemFolder.RootNodeName; // Rootだとアイテム直下のみ、そうでなければサブフォルダも含める
+        string rootFolder = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+        string folder = selectionNode.Key == ItemFolder.RootNodeName ? rootFolder : selectionNode.Key;
 
-        return GetCategoryItemsFromPathInternal(selectionNode.Key, isRecursive: isRecursive);
+        return GetCategoryItemsFromPathInternal(folder, isRecursive: isRecursive);
     }
     private ImmutableArray<ItemCountInfo> HandleItemFileCategory(SelectionNode selectionNode)
     {
@@ -137,8 +142,10 @@ public partial class AvatarExplorerApp
         if (item == null) return [];
 
         bool isRecursive = folderSelectionNode.Key != ItemFolder.RootNodeName; // Rootだとアイテム直下のみ、そうでなければサブフォルダも含める
-
-        return GetFilesFromPathInternal(folderSelectionNode.Key, selectionNode.Key, isRecursive: isRecursive);
+        string rootFolder = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+        string folder = folderSelectionNode.Key == ItemFolder.RootNodeName ? rootFolder : folderSelectionNode.Key;
+        
+        return GetFilesFromPathInternal(folder, selectionNode.Key, isRecursive: isRecursive);
     }
 
     private ImmutableArray<ItemCountInfo> GetItemCategoriesFromAvatarIdInternal(string avatarId)
