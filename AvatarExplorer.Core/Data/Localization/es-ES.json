@@ -68,6 +68,7 @@
     "Dialog.Confirmation.ResolveTempAvatar": "¿Confirmar la vinculación del avatar temporal \"{0}\" con el elemento permanente \"{1}\"?",
     "Dialog.Confirmation.RemoveAssetData": "¿Desea eliminar también los datos de asset de este elemento? Solo se eliminarán los assets en la ruta predeterminada.\n\nRuta del asset: {0}",
     "Dialog.Confirmation.CopyAssetData": "¿Copiar los datos de recursos?\n\nSi no, se usará tal cual la carpeta de recursos original.",
+    "Dialog.Confirmation.NoAvatarsAndValidateType": "Hemos restaurado los datos desde la copia de seguridad, pero no se encontró ningún dato de avatar. Si había añadido avatares con estos datos, la base de datos está rota. Puede arreglarlo pulsando 'Sí'.",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "¿Incluir avatares comunes en la columna de avatares compatibles?",
 

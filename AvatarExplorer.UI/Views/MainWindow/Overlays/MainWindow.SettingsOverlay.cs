@@ -392,6 +392,20 @@ public partial class MainWindow
             _userPreferencesManager.Save();
         }
 
+        // ItemsのTypeに1が無い時は確認、11があれば確定で修正する
+        var items = AvatarExplorer.GetAllItems();
+        bool avatarExists = items.Any(i => (int)i.Type == 1);
+        bool unknownCategoryExists = items.Any(i => (int)i.Type == 11);
+        if (!avatarExists)
+        {
+            YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.NoAvatarsAndValidateType]);
+            if (result != null && result == YesNoResult.Yes) AvatarExplorer.ValidateAndAutoFixItemType();
+        }
+        else if (unknownCategoryExists)
+        {
+            AvatarExplorer.ValidateAndAutoFixItemType();
+        }
+
         SettingsOverlay_SetUiValueFromCurrentSettings();
         await SettingsOverlay_ApplySettingsValues();
 

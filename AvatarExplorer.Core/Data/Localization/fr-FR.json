@@ -68,6 +68,7 @@
     "Dialog.Confirmation.ResolveTempAvatar": "Confirmer la liaison de l'avatar temporaire \"{0}\" à l'élément permanent \"{1}\" ?",
     "Dialog.Confirmation.RemoveAssetData": "Voulez-vous également supprimer les données d'asset de cet élément ? Seuls les assets du chemin par défaut seront supprimés.\n\nChemin de l'asset : {0}",
     "Dialog.Confirmation.CopyAssetData": "Copier les données de ressources ?\n\nSinon, le dossier de ressources d'origine sera utilisé tel quel.",
+    "Dialog.Confirmation.NoAvatarsAndValidateType": "Nous avons restauré les données depuis la sauvegarde, mais aucune donnée d'avatar n'a été trouvée. Si vous avez ajouté des avatars avec ces données, la base de données est corrompue. Vous pouvez le réparer en appuyant sur 'Oui'.",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "Inclure les avatars communs dans la colonne des avatars pris en charge ?",
 

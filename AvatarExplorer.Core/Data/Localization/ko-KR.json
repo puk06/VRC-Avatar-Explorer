@@ -68,6 +68,7 @@
     "Dialog.Confirmation.ResolveTempAvatar": "임시 아바타 \"{0}\"를\n정식 아이템 \"{1}\"으로 확정하시겠습니까?",
     "Dialog.Confirmation.RemoveAssetData": "아이템의 에셋 데이터도 함께 삭제하시겠습니까? 기본 경로의 에셋만 삭제됩니다.\n\n에셋 경로: {0}",
     "Dialog.Confirmation.CopyAssetData": "자산 데이터를 복사하시겠습니까?\n\n복사하지 않으면 원본 자산 폴더를 그대로 사용합니다.",
+    "Dialog.Confirmation.NoAvatarsAndValidateType": "백업 데이터에서 복구했지만, 아바타 데이터를 찾을 수 없었습니다. 이 데이터를 사용하여 아바타를 추가한 경우, 데이터베이스가 손상되었습니다. '예'를 누르면 수정할 수 있습니다.",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "대응 아바타 항목에 공통 바디 아바타를 포함하시겠습니까?",
 

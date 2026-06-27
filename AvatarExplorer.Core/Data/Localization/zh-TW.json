@@ -68,6 +68,7 @@
     "Dialog.Confirmation.ResolveTempAvatar": "要將暫時頭像「{0}」\n確定為正式項目「{1}」嗎？",
     "Dialog.Confirmation.RemoveAssetData": "是否同時刪除該物品的資產資料？僅刪除預設路徑下的資產。\n\n資產路徑：{0}",
     "Dialog.Confirmation.CopyAssetData": "要複製資產資料嗎？\n\n如果不複製，將直接使用原始資產資料夾。",
+    "Dialog.Confirmation.NoAvatarsAndValidateType": "我們從備份數據恢復了資料，但找不到頭像數據。如果您曾用這些數據新增過頭像，資料庫已經損壞。按『是』可以進行修復。",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "要在支援頭像欄中包含共通素體頭像嗎？",
 

@@ -214,5 +214,16 @@ public partial class AvatarExplorerApp
         UpdateSearchIndex();
         EnsureAllItemsDefaultPathExist();
     }
+    public void ValidateAndAutoFixItemType()
+    {
+        var items = _itemDatabaseManager.Items;
+        bool avatarExists = items.Any(i => (int)i.Type == 1);
+        bool unknownCategoryExists = items.Any(i => (int)i.Type == 11);
+        if (!avatarExists || unknownCategoryExists)
+        {
+            foreach (Item item in items) item.Type--;
+            SaveItemDatabase();
+        }
+    }
     #endregion
 }

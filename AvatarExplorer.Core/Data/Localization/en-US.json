@@ -68,6 +68,7 @@
     "Dialog.Confirmation.ResolveTempAvatar": "Confirm linking temporary avatar \"{0}\" to permanent item \"{1}\"?",
     "Dialog.Confirmation.RemoveAssetData": "Do you want to delete the asset data of this item as well? Only assets at the default path will be deleted.\n\nAsset path: {0}",
     "Dialog.Confirmation.CopyAssetData": "Copy asset data?\n\nIf not, the original asset folder will be used as-is. When importing from Avatar Explorer, only the material folder will always be copied within the folder.",
+    "Dialog.Confirmation.NoAvatarsAndValidateType": "We have restored the data from the backup, but no avatar data was found. If you added avatars using this data, the database is broken. You can fix it by pressing 'Yes'.",
 
     "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "Include common avatars in the supported avatar column?",
 

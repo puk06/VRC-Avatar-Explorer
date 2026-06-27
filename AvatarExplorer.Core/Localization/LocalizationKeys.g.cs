@@ -126,6 +126,7 @@ public static class LocalizationKey
             public const string ResolveTempAvatar = "Dialog.Confirmation.ResolveTempAvatar";
             public const string RemoveAssetData = "Dialog.Confirmation.RemoveAssetData";
             public const string CopyAssetData = "Dialog.Confirmation.CopyAssetData";
+            public const string NoAvatarsAndValidateType = "Dialog.Confirmation.NoAvatarsAndValidateType";
             public static class ExportToCsv
             {
                 public const string IncludeImplementedToSupported = "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported";
