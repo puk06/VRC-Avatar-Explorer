@@ -61,7 +61,7 @@ public static class ItemExtensions
         string rootPath = ItemUtils.GetItemPath(parentFolder, item.ItemPath);
         if (includeRootFolder && Directory.Exists(rootPath)) folderList.Add(rootPath);
 
-        foreach (string itemPath in item.ItemPathsView)
+        foreach (string itemPath in item.ItemPaths)
         {
             string fullItemPath = ItemUtils.GetItemPath(parentFolder, itemPath);
             if (Directory.Exists(fullItemPath)) folderList.AddRange(fullItemPath);

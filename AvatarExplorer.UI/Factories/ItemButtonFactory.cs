@@ -157,7 +157,7 @@ internal static class ItemButtonFactory
             tagPanel.Children.Add(commonAvatarBorder);
         }
 
-        foreach (string itemTag in item.ItemTagsView)
+        foreach (string itemTag in item.ItemTags)
         {
             Border tagBorder = GetTagBorder(itemTag);
             if (tagBorder.Child is TextBlock tagLabel)

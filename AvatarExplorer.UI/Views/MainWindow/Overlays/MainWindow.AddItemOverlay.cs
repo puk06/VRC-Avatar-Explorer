@@ -200,9 +200,9 @@ public partial class MainWindow
     private void AddItemOverlay_UpdateSupportedAvatarsLabel()
     {
         int totalAvatarsCount = 0;
-        foreach (string avatar in _addItemOverlay_addItemWindowValues.SupportedAvatarsView)
+        foreach (string avatar in _addItemOverlay_addItemWindowValues.SupportedAvatars)
         {
-            if (avatar.StartsWith(CommonAvatar.InternalPathPrefix)) totalAvatarsCount += AvatarExplorer.GetCommonAvatarById(CommonAvatar.GetGroupId(avatar))?.AvatarsView.Length ?? 0;
+            if (avatar.StartsWith(CommonAvatar.InternalPathPrefix)) totalAvatarsCount += AvatarExplorer.GetCommonAvatarById(CommonAvatar.GetGroupId(avatar))?.Avatars.Length ?? 0;
             else totalAvatarsCount++;
         }
 
@@ -210,7 +210,7 @@ public partial class MainWindow
     }
     private void AddItemOverlay_UpdateTagsLabel()
     {
-        AddItemOverlay_EditTagsButton.Content = string.Format(Localizer.Instance.Get(LocalizationKey.AddItem.SelectedTagsCount, _addItemOverlay_addItemWindowValues.TagsView.Length.ToString()));
+        AddItemOverlay_EditTagsButton.Content = string.Format(Localizer.Instance.Get(LocalizationKey.AddItem.SelectedTagsCount, _addItemOverlay_addItemWindowValues.Tags.Length.ToString()));
     }
 
     private void AddItemOverlay_SetValuesToUi(AddItemOverlayWindowValues addItemWindowValues)
@@ -313,7 +313,7 @@ public partial class MainWindow
     }
     private async void AddItemOverlay_EditSupportedAvatars_Click(object? sender, RoutedEventArgs e)
     {
-        string[]? supportedAvatars = await EditSupportedAvatarsOverlay_OpenAsyncSafe(_addItemOverlay_addItemWindowValues.SupportedAvatarsView);
+        string[]? supportedAvatars = await EditSupportedAvatarsOverlay_OpenAsyncSafe(_addItemOverlay_addItemWindowValues.SupportedAvatars);
         if (supportedAvatars != null)
         {
             _addItemOverlay_addItemWindowValues.UpdateSupportedAvatars(supportedAvatars);
@@ -329,7 +329,7 @@ public partial class MainWindow
     }
     private async void AddItemOverlay_EditTags_Click(object? sender, RoutedEventArgs e)
     {
-        string[]? tags = await EditTagsOverlay_ShowAsyncSafe(_addItemOverlay_addItemWindowValues.TagsView);
+        string[]? tags = await EditTagsOverlay_ShowAsyncSafe(_addItemOverlay_addItemWindowValues.Tags);
         if (tags != null)
         {
             _addItemOverlay_addItemWindowValues.UpdateTags(tags);
@@ -371,8 +371,8 @@ public partial class MainWindow
         itemCreationContext.ItemType = _addItemOverlay_addItemWindowValues.Category.Type;
         itemCreationContext.CustomCategory = _addItemOverlay_addItemWindowValues.Category.CustomCategory;
 
-        itemCreationContext.SupportedAvatars.AddRange(_addItemOverlay_addItemWindowValues.SupportedAvatarsView);
-        itemCreationContext.Tags.AddRange(_addItemOverlay_addItemWindowValues.TagsView);
+        itemCreationContext.SupportedAvatars.AddRange(_addItemOverlay_addItemWindowValues.SupportedAvatars);
+        itemCreationContext.Tags.AddRange(_addItemOverlay_addItemWindowValues.Tags);
         itemCreationContext.ItemMemo = _addItemOverlay_addItemWindowValues.ItemMemo;
 
         if (_addItemOverlay_selectedItemId == null)

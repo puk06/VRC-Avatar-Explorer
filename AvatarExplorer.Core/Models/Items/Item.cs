@@ -12,26 +12,21 @@ public class Item : AbstractDatabaseItem, ISelectableItem
     public string AuthorId { get; set; } = string.Empty;
     public int BoothId { get; set; } = -1;
     public string ItemPath { get; set; } = string.Empty;
-    [JsonInclude] private List<string> ItemPaths { get; set; } = new List<string>(); // フォルダーをそのまま使用する設定のときにここに追加される
+    [JsonInclude] public ImmutableArray<string> ItemPaths { get; private set; } = []; // フォルダーをそのまま使用する設定のときにここに追加される
     public string ThumbnailFileName { get; set; } = string.Empty;
     public ItemType Type { get; set; } = ItemType.None;
     public string CustomCategory { get; set; } = string.Empty;
-    [JsonInclude] private List<string> SupportedAvatars { get; set; } = new List<string>();
-    [JsonInclude] private List<string> ImplementedAvatars { get; set; } = new List<string>();
-    [JsonInclude] private List<string> Tags { get; set; } = new List<string>();
+    [JsonInclude] public ImmutableArray<string> SupportedAvatars { get; private set; } = [];
+    [JsonInclude] public ImmutableArray<string> ImplementedAvatars { get; private set; } = [];
+    [JsonInclude] public ImmutableArray<string> Tags { get; private set; } = [];
     public string ItemMemo { get; set; } = string.Empty;
     public string CreatedDate { get; set; } = string.Empty;
     public string UpdatedDate { get; set; } = string.Empty;
 
-    [JsonIgnore] public ImmutableArray<string> ItemPathsView => ItemPaths.ToImmutableArray();
-    [JsonIgnore] public ImmutableArray<string> SupportedAvatarsView => SupportedAvatars.ToImmutableArray();
-    [JsonIgnore] public ImmutableArray<string> ImplementedAvatarsView => ImplementedAvatars.ToImmutableArray();
-    [JsonIgnore] public ImmutableArray<string> TagsView => Tags.ToImmutableArray();
-
-    public void UpdateItemPaths(IEnumerable<string> newList) => ItemPaths = newList.ToList();
-    public void UpdateSupportedAvatars(IEnumerable<string> newList) => SupportedAvatars = newList.ToList();
-    public void UpdateImplementedAvatars(IEnumerable<string> newList) => ImplementedAvatars = newList.ToList();
-    public void UpdateTags(IEnumerable<string> newList) => Tags = newList.ToList();
+    public void UpdateItemPaths(IEnumerable<string> newList) => ItemPaths = newList.ToImmutableArray();
+    public void UpdateSupportedAvatars(IEnumerable<string> newList) => SupportedAvatars = newList.ToImmutableArray();
+    public void UpdateImplementedAvatars(IEnumerable<string> newList) => ImplementedAvatars = newList.ToImmutableArray();
+    public void UpdateTags(IEnumerable<string> newList) => Tags = newList.ToImmutableArray();
     
     public string GetBoothLink(string languageCode)
     {

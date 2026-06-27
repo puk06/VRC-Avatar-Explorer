@@ -217,7 +217,7 @@ public partial class MainWindow
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return Task.CompletedTask;
 
-        EditImplementedAvatarsOverlay_Open(item.Id, item.ImplementedAvatarsView);
+        EditImplementedAvatarsOverlay_Open(item.Id, item.ImplementedAvatars);
 
         return Task.CompletedTask;
     }
@@ -226,7 +226,7 @@ public partial class MainWindow
         Item? item = Main_ItemButton_ContextMenu_GetItemById(itemId);
         if (item == null) return;
 
-        string[]? tags = await EditTagsOverlay_ShowAsyncSafe(item.TagsView);
+        string[]? tags = await EditTagsOverlay_ShowAsyncSafe(item.Tags);
         if (tags == null) return;
 
         item.UpdateTags(tags);

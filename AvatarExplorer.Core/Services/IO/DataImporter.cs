@@ -117,11 +117,11 @@ internal static class DataImporter
 
             foreach (Item item in items)
             {
-                IEnumerable<string> supportedAvatars = item.SupportedAvatarsView
+                IEnumerable<string> supportedAvatars = item.SupportedAvatars
                     .Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
                 item.UpdateSupportedAvatars(supportedAvatars);
 
-                IEnumerable<string> implementedAvatars = item.ImplementedAvatarsView
+                IEnumerable<string> implementedAvatars = item.ImplementedAvatars
                     .Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
                 item.UpdateImplementedAvatars(implementedAvatars);
             }
@@ -130,7 +130,7 @@ internal static class DataImporter
 
             foreach (CommonAvatar commonAvatar in commonAvatars)
             {
-                IEnumerable<string> avatarPaths = commonAvatar.AvatarsView
+                IEnumerable<string> avatarPaths = commonAvatar.Avatars
                     .Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
                 commonAvatar.UpdateAvatars(avatarPaths);
             }
@@ -259,7 +259,7 @@ internal static class DataImporter
                     else item.ThumbnailFileName = string.Empty;
                 }
 
-                item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => supportedAvatarMaps[i]));
+                item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => supportedAvatarMaps[i]));
 
                 if (item.Type != ItemType.Avatar)
                 {

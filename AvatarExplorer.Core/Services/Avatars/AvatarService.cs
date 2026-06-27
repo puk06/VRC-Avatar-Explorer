@@ -17,7 +17,7 @@ public static class AvatarService
                 if (groupId == null) continue;
 
                 CommonAvatar? commonAvatar = commonAvatars.FirstOrDefault(i => i.Id == groupId);
-                if (commonAvatar != null) avatarIds.AddRange(commonAvatar.AvatarsView);
+                if (commonAvatar != null) avatarIds.AddRange(commonAvatar.Avatars);
 
                 continue;
             }
@@ -26,8 +26,8 @@ public static class AvatarService
 
             if (!includeCommonAvatarToSupported) continue;
 
-            IEnumerable<CommonAvatar> commonAvatarGroup = commonAvatars.Where(commonAvatar => commonAvatar.AvatarsView.Contains(avatarId));
-            foreach (string commonAvatarId in commonAvatarGroup.SelectMany(i => i.AvatarsView))
+            IEnumerable<CommonAvatar> commonAvatarGroup = commonAvatars.Where(commonAvatar => commonAvatar.Avatars.Contains(avatarId));
+            foreach (string commonAvatarId in commonAvatarGroup.SelectMany(i => i.Avatars))
             {
                 avatarIds.Add(commonAvatarId);
             }

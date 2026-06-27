@@ -66,7 +66,7 @@ public partial class MainWindow
         foreach (ItemCountInfo itemCountInfo in avatars)
         {
             Button button = ItemButtonFactory.AddItemButton(EditCommonAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: EditCommonAvatarsOverlay_ItemButton_Click);
-            if ((itemCountInfo.Item is Item item && commonAvatar.AvatarsView.Contains(item.Id)) || (itemCountInfo.Item is TempAvatar tempAvatar && commonAvatar.AvatarsView.Contains(tempAvatar.GetInternalId()))) button.Classes.Add("accentbutton");
+            if ((itemCountInfo.Item is Item item && commonAvatar.Avatars.Contains(item.Id)) || (itemCountInfo.Item is TempAvatar tempAvatar && commonAvatar.Avatars.Contains(tempAvatar.GetInternalId()))) button.Classes.Add("accentbutton");
         }
     }
 
@@ -82,8 +82,8 @@ public partial class MainWindow
         CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null) return;
 
-        if (commonAvatar.AvatarsView.Contains(itemTagInfo.Value)) commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != itemTagInfo.Value));
-        else commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Append(itemTagInfo.Value));
+        if (commonAvatar.Avatars.Contains(itemTagInfo.Value)) commonAvatar.UpdateAvatars(commonAvatar.Avatars.Where(i => i != itemTagInfo.Value));
+        else commonAvatar.UpdateAvatars(commonAvatar.Avatars.Append(itemTagInfo.Value));
 
         EditCommonAvatarsOverlay_DrawItemButtons();
     }
@@ -179,7 +179,7 @@ public partial class MainWindow
             .Where(value => !string.IsNullOrEmpty(value))
             .Cast<string>();
 
-        commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Concat(visibleAvatarIds).Distinct());
+        commonAvatar.UpdateAvatars(commonAvatar.Avatars.Concat(visibleAvatarIds).Distinct());
 
         EditCommonAvatarsOverlay_DrawItemButtons();
     }

@@ -14,7 +14,7 @@ internal static class ItemAvatarAggregator
         // 共通素体グループをアバターとして追加して返すかどうか
         if (includeCommonAvatar)
         {
-            avatars.AddRange(commonAvatars.Select(i => new ItemCountInfo(i, i.AvatarsView.Length)));
+            avatars.AddRange(commonAvatars.Select(i => new ItemCountInfo(i, i.Avatars.Length)));
         }
         
         avatars.AddRange(

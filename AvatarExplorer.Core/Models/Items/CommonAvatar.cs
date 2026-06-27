@@ -7,11 +7,9 @@ namespace AvatarExplorer.Core.Models.Items;
 public class CommonAvatar : AbstractDatabaseItem, ISelectableItem
 {
     public string GroupName { get; set; } = string.Empty;
-    [JsonInclude] private List<string> Avatars { get; set; } = new List<string>();
+    [JsonInclude] public ImmutableArray<string> Avatars { get; private set; } = [];
 
-    [JsonIgnore] public ImmutableArray<string> AvatarsView => Avatars.ToImmutableArray();
-
-    public void UpdateAvatars(IEnumerable<string> avatars) => Avatars = avatars.ToList();
+    public void UpdateAvatars(IEnumerable<string> avatars) => Avatars = avatars.ToImmutableArray();
 
     [JsonIgnore] public static readonly string InternalPathPrefix = "<sys:commonavatar>";
     public string GetInternalId() => InternalPathPrefix + Id;

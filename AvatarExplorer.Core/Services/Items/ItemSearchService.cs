@@ -33,9 +33,9 @@ internal static class ItemSearchService
         {
             string[] getSupportedAvatarTargets()
             {
-                if (item.SupportedAvatarsView.Length > 0)
+                if (item.SupportedAvatars.Length > 0)
                 {
-                    return AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
+                    return AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatars, commonAvatars, includeCommonAvatarToSupported: true)
                         .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i))
                         .Where(name => !string.IsNullOrEmpty(name))
                         .ToArray();
@@ -56,10 +56,10 @@ internal static class ItemSearchService
                 SearchTokenType.FileName => searchFilter.SearchTokens.Any(i => i.Type == SearchTokenType.FileName)
                     ? item.EnumerateFiles(parentFolder).Select(Path.GetFileName).Where(i => !string.IsNullOrEmpty(i)).Cast<string>().ToArray()
                     : Array.Empty<string>(),
-                SearchTokenType.ImplementedAvatar => item.ImplementedAvatarsView.Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)).Where(name => !string.IsNullOrEmpty(name)).ToArray(),
-                SearchTokenType.NotImplementedAvatar => avatarTitleMaps.Keys.Except(item.ImplementedAvatarsView).Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)).Where(name => !string.IsNullOrEmpty(name)).ToArray(),
-                SearchTokenType.Tag => item.TagsView.ToArray(),
-                SearchTokenType.CommonAvatar => commonAvatars.Where(ca => ca.AvatarsView.Any(a => item.SupportedAvatarsView.Contains(a))).Select(ca => ca.GroupName).ToArray(),
+                SearchTokenType.ImplementedAvatar => item.ImplementedAvatars.Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)).Where(name => !string.IsNullOrEmpty(name)).ToArray(),
+                SearchTokenType.NotImplementedAvatar => avatarTitleMaps.Keys.Except(item.ImplementedAvatars).Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i)).Where(name => !string.IsNullOrEmpty(name)).ToArray(),
+                SearchTokenType.Tag => item.Tags.ToArray(),
+                SearchTokenType.CommonAvatar => commonAvatars.Where(ca => ca.Avatars.Any(a => item.SupportedAvatars.Contains(a))).Select(ca => ca.GroupName).ToArray(),
                 SearchTokenType.FreeWord => [searchIndex],
                 _ => Array.Empty<string>()
             };
@@ -130,8 +130,8 @@ internal static class ItemSearchService
 
     internal static string BuildItemSearchIndex(Item item, Dictionary<string, string> avatarTitleMaps, IEnumerable<CommonAvatar> commonAvatars)
     {
-        IEnumerable<string> avatars = AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, commonAvatars, includeCommonAvatarToSupported: true)
-            .Concat(item.ImplementedAvatarsView)
+        IEnumerable<string> avatars = AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatars, commonAvatars, includeCommonAvatarToSupported: true)
+            .Concat(item.ImplementedAvatars)
             .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i))
             .Where(name => !string.IsNullOrEmpty(name));
 
@@ -140,7 +140,7 @@ internal static class ItemSearchService
             item.Author,
             item.ItemMemo,
             item.BoothId.ToString(),
-            string.Join(" ", item.TagsView),
+            string.Join(" ", item.Tags),
             string.Join(" ", avatars)
         ).ToLowerInvariant();
     }

@@ -190,7 +190,7 @@ public partial class AvatarExplorerApp
 
         foreach (Item item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Clothing))
         {
-            item.UpdateSupportedAvatars(item.SupportedAvatarsView.SelectMany(i => i == internalId ? commonAvatar.AvatarsView : [i]).Distinct());
+            item.UpdateSupportedAvatars(item.SupportedAvatars.SelectMany(i => i == internalId ? commonAvatar.Avatars : [i]).Distinct());
         }
 
         UpdateSearchIndex();
@@ -205,7 +205,7 @@ public partial class AvatarExplorerApp
 
         foreach (Item item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Clothing))
         {
-            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => commonAvatar.AvatarsView.Contains(i) ? internalId : i).Distinct());
+            item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => commonAvatar.Avatars.Contains(i) ? internalId : i).Distinct());
         }
 
         UpdateSearchIndex();
@@ -237,13 +237,13 @@ public partial class AvatarExplorerApp
 
         foreach (Item item in _itemDatabaseManager.Items)
         {
-            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != id));
-            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != id));
+            item.UpdateSupportedAvatars(item.SupportedAvatars.Where(i => i != id));
+            item.UpdateImplementedAvatars(item.ImplementedAvatars.Where(i => i != id));
         }
 
         foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
         {
-            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != id));
+            commonAvatar.UpdateAvatars(commonAvatar.Avatars.Where(i => i != id));
         }
 
         UpdateSearchIndex();
@@ -262,8 +262,8 @@ public partial class AvatarExplorerApp
 
         foreach (Item item in _itemDatabaseManager.Items)
         {
-            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != internalId));
-            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != internalId));
+            item.UpdateSupportedAvatars(item.SupportedAvatars.Where(i => i != internalId));
+            item.UpdateImplementedAvatars(item.ImplementedAvatars.Where(i => i != internalId));
         }
 
         UpdateSearchIndex();
@@ -290,13 +290,13 @@ public partial class AvatarExplorerApp
 
         foreach (Item item in _itemDatabaseManager.Items)
         {
-            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Where(i => i != internalId));
-            item.UpdateImplementedAvatars(item.ImplementedAvatarsView.Where(i => i != internalId));
+            item.UpdateSupportedAvatars(item.SupportedAvatars.Where(i => i != internalId));
+            item.UpdateImplementedAvatars(item.ImplementedAvatars.Where(i => i != internalId));
         }
 
         foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
         {
-            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Where(i => i != internalId));
+            commonAvatar.UpdateAvatars(commonAvatar.Avatars.Where(i => i != internalId));
         }
 
         UpdateSearchIndex();

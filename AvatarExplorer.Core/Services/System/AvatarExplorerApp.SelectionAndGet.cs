@@ -114,7 +114,7 @@ public partial class AvatarExplorerApp
 
         string rootPath = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
 
-        return GetFoldersFromPathsInternal(rootPath, item.ItemPathsView);
+        return GetFoldersFromPathsInternal(rootPath, item.ItemPaths);
     }
     private ImmutableArray<ItemCountInfo> HandleItemFolder(SelectionNode selectionNode)
     {

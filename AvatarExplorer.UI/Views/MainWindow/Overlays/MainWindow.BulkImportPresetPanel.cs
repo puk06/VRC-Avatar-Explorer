@@ -38,7 +38,7 @@ public partial class MainWindow
             BulkImportPreset? bulkImportPreset = AvatarExplorer.GetBulkImportPresetById(itemTagInfo.Value);
             if (bulkImportPreset == null) return;
 
-            BulkImportPanel_AddItem(bulkImportPreset.ItemsView);
+            BulkImportPanel_AddItem(bulkImportPreset.Items);
         }
     }
     #endregion

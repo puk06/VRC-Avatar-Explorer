@@ -71,7 +71,7 @@ public partial class MainWindow
         EditTagsOverlay_TagComboBox.Items.Clear();
         EditTagsOverlay_TagComboBox.Items.AddRange(
             AvatarExplorer.GetAllItems()
-                .SelectMany(i => i.TagsView)
+                .SelectMany(i => i.Tags)
                 .Distinct()
                 .Select(i => new ComboBoxItem() { Content = i })
         );

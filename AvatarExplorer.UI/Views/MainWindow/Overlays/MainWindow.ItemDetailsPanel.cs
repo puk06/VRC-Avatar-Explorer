@@ -92,15 +92,15 @@ public partial class MainWindow
         }
 
         // タグ
-        if (selectedItem.TagsView.Length > 0)
+        if (selectedItem.Tags.Length > 0)
         {
-            ItemDetailsPanel_AddDetailRow(detailsPanel, "Tags", string.Join(", ", selectedItem.TagsView));
+            ItemDetailsPanel_AddDetailRow(detailsPanel, "Tags", string.Join(", ", selectedItem.Tags));
         }
 
         // サポートされているアバター
-        if (selectedItem.SupportedAvatarsView.Length > 0)
+        if (selectedItem.SupportedAvatars.Length > 0)
         {
-            string[] supportedAvatarNames = AvatarService.GetAllSupportedAvatarIds(selectedItem.SupportedAvatarsView, AvatarExplorer.GetAllCommonAvatars())
+            string[] supportedAvatarNames = AvatarService.GetAllSupportedAvatarIds(selectedItem.SupportedAvatars, AvatarExplorer.GetAllCommonAvatars())
                 .Select(id => AvatarExplorer.GetItemById(id)?.Title ?? "Unknown")
                 .Select(name => RuntimeSettings.RemoveBrackets ? ItemUtils.RemoveBrackets(name) : name)
                 .ToArray();
@@ -110,9 +110,9 @@ public partial class MainWindow
         }
 
         // 実装されているアバター
-        if (selectedItem.ImplementedAvatarsView.Length > 0)
+        if (selectedItem.ImplementedAvatars.Length > 0)
         {
-            string[] implementedAvatarNames = selectedItem.ImplementedAvatarsView
+            string[] implementedAvatarNames = selectedItem.ImplementedAvatars
                 .Select(id => AvatarExplorer.GetItemById(id)?.Title ?? "Unknown")
                 .Select(name => RuntimeSettings.RemoveBrackets ? ItemUtils.RemoveBrackets(name) : name)
                 .ToArray();

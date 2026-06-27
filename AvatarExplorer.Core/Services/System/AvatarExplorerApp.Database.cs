@@ -91,12 +91,12 @@ public partial class AvatarExplorerApp
     {
         foreach (Item item in _itemDatabaseManager.Items)
         {
-            item.UpdateSupportedAvatars(item.SupportedAvatarsView.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
+            item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
         }
 
         foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
         {
-            commonAvatar.UpdateAvatars(commonAvatar.AvatarsView.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
+            commonAvatar.UpdateAvatars(commonAvatar.Avatars.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
         }
 
         SaveItemDatabase();

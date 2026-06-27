@@ -22,21 +22,20 @@ internal class UISelectableItem
     internal IconType IconType { get; private set; } = IconType.None;
 
     internal int ItemCount { get; set; } = 0; // カテゴリなどの数表記用
-    internal string[]? Args { get; set; } = null;
+    internal ImmutableArray<string>? Args { get; set; } = null;
 
     internal string CommonAvatarName { get; private set; } = string.Empty; // アイテム表記用
     internal string CreatedDate { get; private set; } = string.Empty; // アイテムTooltip表記用
     internal string UpdatedDate { get; private set; } = string.Empty; // アイテムTooltip表記用
-    private List<string> ItemTags { get; set; } = new(); // アイテムのタグ
-    internal ImmutableArray<string> ItemTagsView => ItemTags.ToImmutableArray();
+    internal ImmutableArray<string> ItemTags { get; private set; } = []; // アイテムのタグ
     internal string ItemMemo { get; private set; } = string.Empty; // アイテムTooltip表記用
-    internal IEnumerable<string>? ItemFolderPaths { get; private set; } = null; // Unitypackageの一覧を取得するためのアイテムのパス一覧
+    internal ImmutableArray<string>? ItemFolderPaths { get; private set; } = null; // Unitypackageの一覧を取得するためのアイテムのパス一覧
     internal bool IsTempAvatar { get; private set; } = false; // 仮アバターかどうか
 
     internal UISelectableItem(ISelectableItem source, int itemCount, string[]? args = null)
     {
         ItemCount = itemCount;
-        if (args != null) Args = args.ToArray();
+        if (args != null) Args = args.ToImmutableArray();
 
         if (source is Item item) FromItem(item);
         else if (source is Author author) FromAuthor(author);
@@ -71,10 +70,10 @@ internal class UISelectableItem
         CreatedDate = DatetimeUtils.GetDateStringFromUnixTime(item.CreatedDate);
         UpdatedDate = DatetimeUtils.GetDateStringFromUnixTime(item.UpdatedDate);
 
-        CommonAvatarName = Args?.Length > 0 ? Args[0] : string.Empty;
-        ItemTags = item.TagsView.ToList();
+        CommonAvatarName = Args?.Length > 0 ? (Args?[0] ?? string.Empty) : string.Empty;
+        ItemTags = item.Tags;
         ItemMemo = item.ItemMemo;
-        ItemFolderPaths = item.GetFolderPaths(AvatarExplorerApp.Instance.GetRuntimeSettings().DataRootDirectory);
+        ItemFolderPaths = item.GetFolderPaths(AvatarExplorerApp.Instance.GetRuntimeSettings().DataRootDirectory).ToImmutableArray();
     }
 
     private void FromAuthor(Author author)
@@ -128,7 +127,7 @@ internal class UISelectableItem
     private void FromCommonAvatar(CommonAvatar commonAvatar)
     {
         Title = Localizer.Instance.Get(LocalizationKey.Button.Tag.CommonAvatar, commonAvatar.GroupName);
-        Description = (LocalizationKey.Button.Description.CommonAvatar.Count, [commonAvatar.AvatarsView.Length.ToString()]);
+        Description = (LocalizationKey.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]);
         ImageFileName = SystemIconKey.GroupIcon;
         Tag = new(ItemTagStates.None, commonAvatar.GetInternalId());
         IconType = IconType.None;
@@ -137,7 +136,7 @@ internal class UISelectableItem
     private void FromBulkImportPreset(BulkImportPreset bulkImportPreset)
     {
         Title = bulkImportPreset.PresetName;
-        Description = (LocalizationKey.Button.Description.BulkImportPreset.Count, [bulkImportPreset.ItemsView.Length.ToString()]);
+        Description = (LocalizationKey.Button.Description.BulkImportPreset.Count, [bulkImportPreset.Items.Length.ToString()]);
         ImageFileName = SystemIconKey.FolderIcon;
         Tag = new(ItemTagStates.None, bulkImportPreset.Id);
         IconType = IconType.None;

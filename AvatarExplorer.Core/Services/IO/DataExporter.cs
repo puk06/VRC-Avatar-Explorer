@@ -33,7 +33,7 @@ internal static class DataExporter
             foreach (Item item in exportContext.Items)
             {
                 List<string> supportedAvatarNames = new();
-                foreach (string supportedAvatarId in AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatarsView, exportContext.CommonAvatars, exportRequest.IncludeCommonToSupported))
+                foreach (string supportedAvatarId in AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatars, exportContext.CommonAvatars, exportRequest.IncludeCommonToSupported))
                 {
                     string avatarTitle = ItemUtils.GetTitleFromDictionary(avatarTitleMaps, supportedAvatarId);
                     if (string.IsNullOrEmpty(avatarTitle)) continue;
@@ -42,7 +42,7 @@ internal static class DataExporter
                 }
 
                 List<string> implementedAvatarNames = new();
-                foreach (string implementedAvatarId in item.ImplementedAvatarsView.Distinct())
+                foreach (string implementedAvatarId in item.ImplementedAvatars.Distinct())
                 {
                     string avatarTitle = ItemUtils.GetTitleFromDictionary(avatarTitleMaps, implementedAvatarId);
                     if (string.IsNullOrEmpty(avatarTitle)) continue;
@@ -65,7 +65,7 @@ internal static class DataExporter
                 string implementedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, implementedAvatarNames));
                 string boothId = CsvUtils.EscapeCsv(item.BoothId.ToString());
                 string itemPath = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.GetFolderPaths(exportContext.RuntimeSettings.DataRootDirectory)));
-                string tags = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.TagsView));
+                string tags = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.Tags));
 
                 await sw.WriteLineAsync($"{itemId},{itemTitle},{authorName},{imagePath},{category},{memo},{supportedAvatarsList},{implementedAvatarsList},{boothId},{itemPath},{tags}");
             }
