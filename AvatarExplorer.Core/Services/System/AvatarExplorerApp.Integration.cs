@@ -228,6 +228,7 @@ public partial class AvatarExplorerApp
         }
 
         UpdateSearchIndex();
+        EnsureAllItemsDefaultPathExist();
     }
     #endregion
 }

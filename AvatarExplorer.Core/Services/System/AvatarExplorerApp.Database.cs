@@ -16,6 +16,14 @@ public partial class AvatarExplorerApp
         _itemDatabaseManager.Load(loadPath);
         UpdateSearchIndex();
     }
+    internal void EnsureAllItemsDefaultPathExist()
+    {
+        foreach (Item item in _itemDatabaseManager.Items)
+        {
+            string path = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+        }
+    }
 
     public void LoadCommonAvatarDatabase(string? path = null) => _commonAvatarDatabaseManager.Load(path);
     public void LoadBulkImportPresetDatabase(string? path = null) => _bulkImportPresetDatabaseManager.Load(path);
