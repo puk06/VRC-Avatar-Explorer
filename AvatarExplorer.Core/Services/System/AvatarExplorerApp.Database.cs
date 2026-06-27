@@ -1,4 +1,3 @@
-using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
