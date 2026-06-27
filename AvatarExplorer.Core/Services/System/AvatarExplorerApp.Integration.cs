@@ -178,23 +178,7 @@ public partial class AvatarExplorerApp
             }
             else
             {
-                // バージョンを推定
-                // 1: 3/25 (居ない)
-                // 2: 5/9 - v2.6.0 (おそらくここが多い)
-                int estimatedAppliedMigrationVersion = 1;
-                const string migration2Date = "2026-05-09";
-                
-                try
-                {
-                    string pathName = Path.GetFileName(backupFolderPath);
-                    if (DateConverter.IsAfter(pathName, migration2Date)) estimatedAppliedMigrationVersion = 2;
-                }
-                catch
-                {
-                    estimatedAppliedMigrationVersion = 2;
-                }
-
-                ItemDatabaseMigrationService.WriteAppliedMigrationVersion(_itemDatabaseManager.DatabaseFilePath, estimatedAppliedMigrationVersion);
+                ItemDatabaseMigrationService.WriteAppliedMigrationVersion(_itemDatabaseManager.DatabaseFilePath, 0);
             }
 
             await FileSystemService.CopyFileAsync(itemDatabasePath, _itemDatabaseManager.DatabaseFilePath);

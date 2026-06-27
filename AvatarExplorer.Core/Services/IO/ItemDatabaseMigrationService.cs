@@ -115,6 +115,39 @@ internal static class ItemDatabaseMigrationService
             changed = true;
         }
 
+        // Migration後、Avatar(1)が存在しない、もしくはCustomの上(11)が一つでもあった場合は戻す（既にv2のものをMigrationした結果なので）
+        bool avatarExist = false;
+        bool unknownCategoryExist = false;
+
+        foreach (JsonNode? itemNode in items)
+        {
+            if (itemNode is not JsonObject itemObject) continue;
+            if (!itemObject.ContainsKey("Type")) continue;
+
+            JsonNode? typeNode = itemObject["Type"];
+            if (typeNode is not JsonValue typeValue || !typeValue.TryGetValue(out int typeInt)) continue;
+
+            if (typeInt == 1) avatarExist = true;
+            else if (typeInt == 11) unknownCategoryExist = true;
+        }
+
+        bool revertRequired = !avatarExist || unknownCategoryExist;
+        if (revertRequired)
+        {
+            foreach (JsonNode? itemNode in items)
+            {
+                if (itemNode is not JsonObject itemObject) continue;
+                if (!itemObject.ContainsKey("Type")) continue;
+
+                JsonNode? typeNode = itemObject["Type"];
+                if (typeNode is not JsonValue typeValue || !typeValue.TryGetValue(out int typeInt)) continue;
+
+                int migratedTypeInt = typeInt - ItemTypeOffset;
+                itemObject["Type"] = migratedTypeInt;
+                changed = true;
+            }
+        }
+
         return changed;
     }
 
