@@ -394,16 +394,16 @@ public partial class MainWindow
 
         // ItemsのTypeに1が無い時は確認、11があれば確定で修正する
         var items = AvatarExplorer.GetAllItems();
-        bool avatarExists = items.Any(i => (int)i.Type == 1);
-        bool unknownCategoryExists = items.Any(i => (int)i.Type == 11);
+        bool avatarExists = items.Any(i => i.Type == ItemType.Avatar);
+        bool unknownCategoryExists = items.Any(i => (int)i.Type >= 11);
         if (!avatarExists)
         {
             YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.NoAvatarsAndValidateType]);
-            if (result != null && result == YesNoResult.Yes) AvatarExplorer.ValidateAndAutoFixItemType();
+            if (result != null && result == YesNoResult.Yes) AvatarExplorer.ValidateAndAutoFixItemType(true);
         }
         else if (unknownCategoryExists)
         {
-            AvatarExplorer.ValidateAndAutoFixItemType();
+            AvatarExplorer.ValidateAndAutoFixItemType(false);
         }
 
         SettingsOverlay_SetUiValueFromCurrentSettings();

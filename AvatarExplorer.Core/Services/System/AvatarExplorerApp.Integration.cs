@@ -214,14 +214,16 @@ public partial class AvatarExplorerApp
         UpdateSearchIndex();
         EnsureAllItemsDefaultPathExist();
     }
-    public void ValidateAndAutoFixItemType()
+    public void ValidateAndAutoFixItemType(bool avatarExist)
     {
         var items = _itemDatabaseManager.Items;
-        bool avatarExists = items.Any(i => (int)i.Type == 1);
-        bool unknownCategoryExists = items.Any(i => (int)i.Type == 11);
-        if (!avatarExists || unknownCategoryExists)
+        bool unknownCategoryExists = items.Any(i => (int)i.Type >= 11);
+        if (avatarExist || unknownCategoryExists)
         {
-            foreach (Item item in items) item.Type--;
+            int offset = 0;
+            if (avatarExist) offset = (int)items.Min(i => i.Type) - (int)ItemType.Avatar;
+            if (unknownCategoryExists) offset = (int)items.Max(i => i.Type) - (int)ItemType.Custom;
+            foreach (Item item in items) item.Type -= offset;
             SaveItemDatabase();
         }
     }
