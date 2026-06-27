@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -31,6 +32,28 @@ internal static class ContextMenuFactory
                 FontFamily = fontFamily,
                 IsEnabled = contextMenuAction.IsEnabled
             };
+
+            if (contextMenuAction.SubMenuItems.Count > 0)
+            {
+                List<MenuItem> subMenus = new();
+
+                foreach (ContextMenuAction subAction in contextMenuAction.SubMenuItems)
+                {
+                    MenuItem subItem = new()
+                    {
+                        Icon = GetMaterialIcon(subAction.ContextMenuIconType),
+                        Header = subAction.UseLocalization ? Localizer.Instance[subAction.DisplayName] : subAction.DisplayName,
+                        Tag = subAction,
+                        FontFamily = fontFamily,
+                        IsEnabled = subAction.IsEnabled
+                    };
+
+                    if (onClick != null) subItem.Click += onClick;
+                    subMenus.Add(subItem);
+                }
+                
+                menuItem.ItemsSource = subMenus;
+            }
 
             if (onClick != null) menuItem.Click += onClick;
 
