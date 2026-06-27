@@ -8,6 +8,7 @@ using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.Network;
+using AvatarExplorer.Core.Utils;
 using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
@@ -173,10 +174,32 @@ public partial class AvatarExplorerApp
             if (File.Exists(itemDatabaseMigrationPath))
             {
                 int appliedMigrationVersion = ItemDatabaseMigrationService.ReadAppliedMigrationVersion(itemDatabasePath);
-                ItemDatabaseMigrationService.WriteAppliedMigrationVersion(itemDatabasePath, appliedMigrationVersion);
+                ItemDatabaseMigrationService.WriteAppliedMigrationVersion(_itemDatabaseManager.DatabaseFilePath, appliedMigrationVersion);
+            }
+            else
+            {
+                // バージョンを推定
+                // 1: 3/25 (居ない)
+                // 2: 5/9 - v2.6.0 (おそらくここが多い)
+                int estimatedAppliedMigrationVersion = 1;
+                const string migration2Date = "2026-05-09";
+                
+                try
+                {
+                    string pathName = Path.GetFileName(backupFolderPath);
+                    if (DateConverter.IsAfter(pathName, migration2Date)) estimatedAppliedMigrationVersion = 2;
+                }
+                catch
+                {
+                    estimatedAppliedMigrationVersion = 2;
+                }
+
+                ItemDatabaseMigrationService.WriteAppliedMigrationVersion(_itemDatabaseManager.DatabaseFilePath, estimatedAppliedMigrationVersion);
             }
 
-            LoadItemDatabase(itemDatabasePath);
+            await FileSystemService.CopyFileAsync(itemDatabasePath, _itemDatabaseManager.DatabaseFilePath);
+
+            LoadItemDatabase();
             SaveItemDatabase();
         }
 

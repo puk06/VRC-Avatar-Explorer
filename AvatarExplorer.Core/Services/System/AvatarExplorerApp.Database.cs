@@ -11,7 +11,7 @@ public partial class AvatarExplorerApp
     #region Database
     public void LoadItemDatabase(string? path = null)
     {
-        string loadPath = path ?? SystemPath.ItemDatabasePath;
+        string loadPath = path ?? _itemDatabaseManager.DatabaseFilePath;
         ItemDatabaseMigrationService.Migrate(loadPath);
         _itemDatabaseManager.Load(loadPath);
         UpdateSearchIndex();
