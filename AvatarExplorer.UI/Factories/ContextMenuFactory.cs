@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using AvatarExplorer.Core.Localization;
@@ -35,7 +36,7 @@ internal static class ContextMenuFactory
 
             if (contextMenuAction.SubMenuItems.Count > 0)
             {
-                var subMenus = new List<MenuItem>();
+                var subMenus = new List<TemplatedControl>();
 
                 foreach (var subAction in contextMenuAction.SubMenuItems)
                 {
@@ -50,6 +51,7 @@ internal static class ContextMenuFactory
 
                     if (onClick != null) subItem.Click += onClick;
                     subMenus.Add(subItem);
+                    if (subAction.AddSeparator) subMenus.Add(new Separator());
                 }
                 
                 menuItem.ItemsSource = subMenus;
