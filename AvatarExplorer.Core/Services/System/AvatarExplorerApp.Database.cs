@@ -20,7 +20,14 @@ public partial class AvatarExplorerApp
         foreach (Item item in _itemDatabaseManager.Items)
         {
             string path = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            if (!Directory.Exists(path) && !string.IsNullOrWhiteSpace(path))
+            {
+                try { Directory.CreateDirectory(path); }
+                catch (Exception ex)
+                {
+                    ErrorManager.Instance.PostInternalError($"Failed to create directory for '{item.Id}'.", ex);
+                }
+            }
         }
     }
 
