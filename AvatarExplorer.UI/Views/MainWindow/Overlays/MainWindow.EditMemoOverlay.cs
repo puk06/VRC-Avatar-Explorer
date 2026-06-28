@@ -40,7 +40,7 @@ public partial class MainWindow
         EditMemoOverlay.IsVisible = false;
         EditMemoOverlay_MemoTextBox.Text = string.Empty;
 
-        TaskCompletionSource<string?>? tcs = _editMemoOverlay_tcs;
+        var tcs = _editMemoOverlay_tcs;
         _editMemoOverlay_tcs = null;
 
         tcs?.TrySetResult(result);

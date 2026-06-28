@@ -7,15 +7,12 @@ using Avalonia.Platform.Storage;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.IO;
-using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
 using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Utils;
-using ErrorOr;
 
 namespace AvatarExplorer.UI;
 
@@ -27,7 +24,7 @@ public partial class MainWindow
     {
         BulkImportPanel_Focus();
 
-        BulkImportItem bulkImportItem = new BulkImportItem(itemId);
+        var bulkImportItem = new BulkImportItem(itemId);
         if (filePath != null) bulkImportItem.FilePath = filePath;
         
         _bulkImportPanel_bulkImportItems.Add(bulkImportItem);
@@ -57,9 +54,9 @@ public partial class MainWindow
     {
         SidePanel_BulkImportPanel.Children.Clear();
 
-        foreach (BulkImportItem bulkImportItem in _bulkImportPanel_bulkImportItems)
+        foreach (var bulkImportItem in _bulkImportPanel_bulkImportItems)
         {
-            Item? item = AvatarExplorer.GetItemById(bulkImportItem.ItemId);
+            var item = AvatarExplorer.GetItemById(bulkImportItem.ItemId);
             if (item == null) continue;
 
             UnitypackageSelectorButtonFactory.AddItemButton(new UnitypackageSelectorButtonOptions
@@ -80,7 +77,7 @@ public partial class MainWindow
     #region Event Handler
     private void BulkImportPanel_ItemButton_Copy_Click(string id)
     {
-        BulkImportItem? item = _bulkImportPanel_bulkImportItems.FirstOrDefault(i => i.Id == id);
+        var item = _bulkImportPanel_bulkImportItems.FirstOrDefault(i => i.Id == id);
         if (item == null) return;
 
         BulkImportPanel_AddItem(item.ItemId);
@@ -92,27 +89,27 @@ public partial class MainWindow
     }
     private void BulkImportPanel_ItemButton_SelectionChanged(string id, string filePath)
     {
-        BulkImportItem? item = _bulkImportPanel_bulkImportItems.FirstOrDefault(i => i.Id == id);
-        if (item != null) item.FilePath = filePath;
+        var item = _bulkImportPanel_bulkImportItems.FirstOrDefault(i => i.Id == id);
+        item?.FilePath = filePath;
     }
     
     private async void BulkImportPanel_Import_Click(object? sender, RoutedEventArgs e)
     {
-        Dictionary<string, string> itemPathCategoryDictionary = new();
+        var itemPathCategoryDictionary = new Dictionary<string, string>();
 
-        foreach (BulkImportItem bulkImportItem in _bulkImportPanel_bulkImportItems)
+        foreach (var bulkImportItem in _bulkImportPanel_bulkImportItems)
         {
-            Item? item = AvatarExplorer.GetItemById(bulkImportItem.ItemId);
+            var item = AvatarExplorer.GetItemById(bulkImportItem.ItemId);
             if (item == null) continue;
 
             if (!itemPathCategoryDictionary.ContainsKey(bulkImportItem.FilePath))
             {
-                string categoryName = item.Type == ItemType.Custom ? item.CustomCategory : Localizer.Instance[item.Type.GetLocalizationKey() ?? item.Type.ToString()];
+                var categoryName = item.Type == ItemType.Custom ? item.CustomCategory : Localizer.Instance[item.Type.GetLocalizationKey() ?? item.Type.ToString()];
                 itemPathCategoryDictionary[bulkImportItem.FilePath] = categoryName;
             }
         }
 
-        ModifiedUnitypackagesResult importResult = await UnitypackageService.Import(
+        var importResult = await UnitypackageService.Import(
             itemPathCategoryDictionary,
             onProgress: async (name, percent) =>
             {
@@ -125,7 +122,7 @@ public partial class MainWindow
 
         if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
         {
-            ErrorOr<Success> result = await LauncherService.OpenFile(this, importResult.ModifiedUnitypackagePath);
+            var result = await LauncherService.OpenFile(this, importResult.ModifiedUnitypackagePath);
             if (result.IsError) Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed], isError: true);
         }
         else
@@ -135,7 +132,7 @@ public partial class MainWindow
     }
     private async void BulkImportPanel_Save_Click(object? sender, RoutedEventArgs e)
     {
-        string? presetName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewBulkImportPresetName]);
+        var presetName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewBulkImportPresetName]);
         if (string.IsNullOrEmpty(presetName)) return;
 
         AvatarExplorer.AddBulkImportPreset(presetName, _bulkImportPanel_bulkImportItems);
@@ -153,17 +150,17 @@ public partial class MainWindow
     {
         if (!(e.DataTransfer.Contains(DataFormat.Text) || e.DataTransfer.Contains(DataFormat.File))) return;
 
-        string? text = e.DataTransfer.TryGetText();
+        var text = e.DataTransfer.TryGetText();
         if (!string.IsNullOrEmpty(text) && AvatarExplorer.GetItemById(text) != null)
         {
             BulkImportPanel_AddItem(text);
             return;
         }
 
-        string? file = e.DataTransfer.TryGetFile()?.TryGetLocalPath();
+        var file = e.DataTransfer.TryGetFile()?.TryGetLocalPath();
         if (!string.IsNullOrEmpty(file))
         {
-            Item? currentSelectedItem = AvatarExplorer.GetSelectedItem();
+            var currentSelectedItem = AvatarExplorer.GetSelectedItem();
             if (currentSelectedItem == null) return;
 
             if (UnitypackageService.GetUnitypackagePaths(currentSelectedItem.GetFolderPaths(RuntimeSettings.DataRootDirectory)).Contains(file))

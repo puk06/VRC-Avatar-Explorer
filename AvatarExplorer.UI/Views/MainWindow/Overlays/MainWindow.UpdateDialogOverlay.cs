@@ -17,7 +17,7 @@ public partial class MainWindow
     
     private async Task UpdateDialogOverlay_CheckAsync(UpdateChannel updateChannel = UpdateChannel.Stable, bool silent = true)
     {
-        VersionRelease? latestVersionRelease = await UpdateChecker.GetLatestUpdateReleaseInfo(updateChannel);
+        var latestVersionRelease = await UpdateChecker.GetLatestUpdateReleaseInfo(updateChannel);
         if (latestVersionRelease == null && !silent)
         {
             Main_ShowNotification(Localizer.Instance[LocalizationKey.UpdateDialog.NoUpdateAvailableTitle], Localizer.Instance.Get(LocalizationKey.UpdateDialog.NoUpdateAvailable, AvatarExplorerApp.CurrentVersion));

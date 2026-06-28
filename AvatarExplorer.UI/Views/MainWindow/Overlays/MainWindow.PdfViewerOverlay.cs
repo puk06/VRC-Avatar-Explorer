@@ -40,7 +40,7 @@ public partial class MainWindow
 
         try
         {
-            List<PdfPageViewModel> pageItems = await Task.Run(() => PdfViewerOverlay_LoadPages(pdfPath));
+            var pageItems = await Task.Run(() => PdfViewerOverlay_LoadPages(pdfPath));
             _pdfViewerOverlay_pageItems = pageItems;
             PdfViewerOverlay_PageItemsControl.ItemsSource = pageItems;
             PdfViewerOverlay_StatusText.Text = $"{pageItems.Count} pages";
@@ -54,17 +54,17 @@ public partial class MainWindow
 
     private static List<PdfPageViewModel> PdfViewerOverlay_LoadPages(string pdfPath)
     {
-        using FileStream pdfStream = File.OpenRead(pdfPath);
+        using var pdfStream = File.OpenRead(pdfPath);
 #pragma warning disable CA1416
-        IList<System.Drawing.SizeF> pageSizes = Conversion.GetPageSizes(pdfStream, leaveOpen: true);
-        IEnumerable<int> pages = Enumerable.Range(0, pageSizes.Count);
-        IEnumerable<SKBitmap> pdfBitmaps = Conversion.ToImages(pdfStream, pages, leaveOpen: true);
+        var pageSizes = Conversion.GetPageSizes(pdfStream, leaveOpen: true);
+        var pages = Enumerable.Range(0, pageSizes.Count);
+        var pdfBitmaps = Conversion.ToImages(pdfStream, pages, leaveOpen: true);
 #pragma warning restore CA1416
 
-        List<PdfPageViewModel> pageItems = new(pageSizes.Count);
+        var pageItems = new List<PdfPageViewModel>(pageSizes.Count);
 
         int index = 0;
-        foreach (SKBitmap pdfBitmap in pdfBitmaps)
+        foreach (var pdfBitmap in pdfBitmaps)
         {
             pageItems.Add(new PdfPageViewModel(
                 PdfViewerOverlay_CreateBitmap(pdfBitmap),
@@ -80,10 +80,10 @@ public partial class MainWindow
 
     private static Bitmap PdfViewerOverlay_CreateBitmap(SKBitmap pdfBitmap)
     {
-        using SKImage image = SKImage.FromBitmap(pdfBitmap);
-        using SKData encodedImage = image.Encode(SKEncodedImageFormat.Png, 100);
-        using Stream encodedStream = encodedImage.AsStream();
-        return new Bitmap(encodedStream);
+        using var image = SKImage.FromBitmap(pdfBitmap);
+        using var encodedImage = image.Encode(SKEncodedImageFormat.Png, 100);
+        using var encodedStream = encodedImage.AsStream();
+        return new(encodedStream);
     }
 
     private void PdfViewerOverlay_Close()
@@ -91,7 +91,7 @@ public partial class MainWindow
         PdfViewerOverlay_PageItemsControl.ItemsSource = null;
         if (_pdfViewerOverlay_pageItems != null)
         {
-            foreach (PdfPageViewModel pageItem in _pdfViewerOverlay_pageItems)
+            foreach (var pageItem in _pdfViewerOverlay_pageItems)
             {
                 pageItem.Dispose();
             }

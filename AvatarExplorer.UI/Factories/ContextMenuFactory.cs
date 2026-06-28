@@ -16,15 +16,15 @@ internal static class ContextMenuFactory
 {
     internal static ContextMenu GetContextMenu(ContextMenuAction[] contextMenuActions, EventHandler<RoutedEventArgs>? onClick = null)
     {
-        FontFamily fontFamily = new($"avares://AvatarExplorer/Assets/Fonts#{Localizer.Instance[LocalizationKey.FontFamily]}");
-        ContextMenu contextMenu = new()
+        var fontFamily = new FontFamily($"avares://AvatarExplorer/Assets/Fonts#{Localizer.Instance[LocalizationKey.FontFamily]}");
+        var contextMenu = new ContextMenu()
         {
             FontFamily = fontFamily
         };
 
-        foreach (ContextMenuAction contextMenuAction in contextMenuActions)
+        foreach (var contextMenuAction in contextMenuActions)
         {
-            MenuItem menuItem = new()
+            var menuItem = new MenuItem()
             {
                 Icon = GetMaterialIcon(contextMenuAction.ContextMenuIconType),
                 Header = contextMenuAction.UseLocalization ? Localizer.Instance[contextMenuAction.DisplayName] : contextMenuAction.DisplayName,
@@ -35,11 +35,11 @@ internal static class ContextMenuFactory
 
             if (contextMenuAction.SubMenuItems.Count > 0)
             {
-                List<MenuItem> subMenus = new();
+                var subMenus = new List<MenuItem>();
 
-                foreach (ContextMenuAction subAction in contextMenuAction.SubMenuItems)
+                foreach (var subAction in contextMenuAction.SubMenuItems)
                 {
-                    MenuItem subItem = new()
+                    var subItem = new MenuItem()
                     {
                         Icon = GetMaterialIcon(subAction.ContextMenuIconType),
                         Header = subAction.UseLocalization ? Localizer.Instance[subAction.DisplayName] : subAction.DisplayName,
@@ -67,7 +67,7 @@ internal static class ContextMenuFactory
 
     private static MaterialIcon? GetMaterialIcon(ContextMenuIconType contextMenuIconType, double size = 16)
     {
-        MaterialIconKind? materialIconKind = contextMenuIconType.GetMaterialIconKind();
+        var materialIconKind = contextMenuIconType.GetMaterialIconKind();
         if (materialIconKind == null) return null;
 
         return new MaterialIcon()

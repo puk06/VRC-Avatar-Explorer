@@ -26,12 +26,12 @@ internal static class ItemButtonFactory
 
     internal static Button AddItemButton(StackPanel parent, UISelectableItem item, RuntimeSettings runtimeSettings, UserPreferences userPreferences, ContextMenu? contextMenu = null, EventHandler<RoutedEventArgs>? onClick = null)
     {
-        Button itemButton = CreateBaseButton(item);
+        var itemButton = CreateBaseButton(item);
 
-        Grid contentGrid = new() { ColumnSpacing = 10, ColumnDefinitions = new("Auto,*") };
+        var contentGrid = new Grid() { ColumnSpacing = 10, ColumnDefinitions = new("Auto,*") };
 
         // アイコン (アイコンにCornerRadiusを適用するため、ChildにImageが指定されたBorderが返ってくる)
-        Border? itemIconBorder = CreateItemIconBorder(item, userPreferences);
+        var itemIconBorder = CreateItemIconBorder(item, userPreferences);
         if (itemIconBorder != null)
         {
             contentGrid.Children.Add(itemIconBorder);
@@ -39,7 +39,7 @@ internal static class ItemButtonFactory
         }
 
         // テキスト + タグ部分
-        Grid textGrid = CreateTextAndTagGrid(item, runtimeSettings);
+        var textGrid = CreateTextAndTagGrid(item, runtimeSettings);
         contentGrid.Children.Add(textGrid);
         Grid.SetColumn(textGrid, 1);
 
@@ -52,21 +52,21 @@ internal static class ItemButtonFactory
 
     internal static Button CreateBaseButton(UISelectableItem item)
     {
-        Button button = new() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Top, Tag = item.Tag, CornerRadius = new(8), Padding = new(7) };
+        var button = new Button() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Top, Tag = item.Tag, CornerRadius = new(8), Padding = new(7) };
         button.Classes.Add(ButtonClass);
         return button;
     }
 
     internal static Border? CreateItemIconBorder(UISelectableItem item, UserPreferences userPreferences, bool enableHoverIconSize = true)
     {
-        Bitmap? itemIconBitmap = ImageService.Get(item.ImageFileName, item.IconType);
-        bool isFallbackIcon = itemIconBitmap == null;
+        var itemIconBitmap = ImageService.Get(item.ImageFileName, item.IconType);
+        var isFallbackIcon = itemIconBitmap == null;
 
         if (isFallbackIcon && item.ImageFileName == SystemIconKey.None) return null; // アイコンがなく、アイコンタイプも指定されていない場合はアイコンなし
 
-        Border iconBorder = new() { CornerRadius = new(8), ClipToBounds = true, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Top };
+        var iconBorder = new Border() { CornerRadius = new(8), ClipToBounds = true, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Top };
 
-        Image itemIcon = new()
+        var itemIcon = new Image()
         {
             Source = itemIconBitmap ?? ImageService.Get(SystemIconKey.FileIcon),
             Width = userPreferences.NormalIconSize,
@@ -79,7 +79,7 @@ internal static class ItemButtonFactory
         iconBorder.Width = itemIcon.Width;
         iconBorder.Height = itemIcon.Height;
 
-        BitmapInterpolationMode bitmapInterpolationMode = userPreferences.AntiAliasingMode.GetInterpolationMode();
+        var bitmapInterpolationMode = userPreferences.AntiAliasingMode.GetInterpolationMode();
         if (bitmapInterpolationMode != BitmapInterpolationMode.None && bitmapInterpolationMode != BitmapInterpolationMode.Unspecified) RenderOptions.SetBitmapInterpolationMode(itemIcon, bitmapInterpolationMode);
 
         if (!ImageService.IsSystemIcon(item.ImageFileName) && !isFallbackIcon && userPreferences.EnableHoverIconSize && enableHoverIconSize)
@@ -108,19 +108,19 @@ internal static class ItemButtonFactory
 
     internal static Grid CreateTextAndTagGrid(UISelectableItem item, RuntimeSettings runtimeSettings)
     {
-        Grid textGrid = new() { RowDefinitions = new("Auto,Auto,5,*") };
+        var textGrid = new Grid() { RowDefinitions = new("Auto,Auto,5,*") };
 
-        string itemTitle = GetFormattedTitle(item, runtimeSettings);
+        var itemTitle = GetFormattedTitle(item, runtimeSettings);
 
-        TextBlock titleTextBlock = new() { Text = itemTitle, FontSize = 16, FontWeight = FontWeight.Bold, TextTrimming = TextTrimming.CharacterEllipsis };
+        var titleTextBlock = new TextBlock() { Text = itemTitle, FontSize = 16, FontWeight = FontWeight.Bold, TextTrimming = TextTrimming.CharacterEllipsis };
         Grid.SetRow(titleTextBlock, 0);
         textGrid.Children.Add(titleTextBlock);
 
-        TextBlock descriptionTextBlock = new() { Text = Localizer.Instance.Get(item.Description.LocalizationKey, item.Description.Args), FontSize = 13, TextTrimming = TextTrimming.CharacterEllipsis };
+        var descriptionTextBlock = new TextBlock() { Text = Localizer.Instance.Get(item.Description.LocalizationKey, item.Description.Args), FontSize = 13, TextTrimming = TextTrimming.CharacterEllipsis };
         Grid.SetRow(descriptionTextBlock, 1);
         textGrid.Children.Add(descriptionTextBlock);
 
-        WrapPanel tagPanel = CreateTagPanel(item);
+        var tagPanel = CreateTagPanel(item);
         Grid.SetRow(tagPanel, 3);
         textGrid.Children.Add(tagPanel);
 
@@ -129,7 +129,7 @@ internal static class ItemButtonFactory
 
     internal static string GetFormattedTitle(UISelectableItem item, RuntimeSettings runtimeSettings)
     {
-        string title = StateFlagUtils.IsCategoryState(item.Tag.State) ? Localizer.Instance[item.Title] : item.Title;
+        var title = StateFlagUtils.IsCategoryState(item.Tag.State) ? Localizer.Instance[item.Title] : item.Title;
 
         // アイテムの場合は設定をチェックして括弧を削除してあげる
         if (runtimeSettings.RemoveBrackets && StateFlagUtils.IsItemState(item.Tag.State))
@@ -142,11 +142,11 @@ internal static class ItemButtonFactory
 
     internal static WrapPanel CreateTagPanel(UISelectableItem item)
     {
-        WrapPanel tagPanel = new() { Orientation = Orientation.Horizontal, ItemSpacing = 5, LineSpacing = 5 };
+        var tagPanel = new WrapPanel() { Orientation = Orientation.Horizontal, ItemSpacing = 5, LineSpacing = 5 };
 
         if (!string.IsNullOrEmpty(item.CommonAvatarName))
         {
-            Border commonAvatarBorder = GetTagBorder(Localizer.Instance.Get(LocalizationKey.Button.Tag.CommonAvatar, item.CommonAvatarName));
+            var commonAvatarBorder = GetTagBorder(Localizer.Instance.Get(LocalizationKey.Button.Tag.CommonAvatar, item.CommonAvatarName));
             if (commonAvatarBorder.Child is TextBlock tagLabel)
             {
                 tagLabel.FontWeight = FontWeight.Bold;
@@ -157,9 +157,9 @@ internal static class ItemButtonFactory
             tagPanel.Children.Add(commonAvatarBorder);
         }
 
-        foreach (string itemTag in item.ItemTags)
+        foreach (var itemTag in item.ItemTags)
         {
-            Border tagBorder = GetTagBorder(itemTag);
+            var tagBorder = GetTagBorder(itemTag);
             if (tagBorder.Child is TextBlock tagLabel)
             {
                 tagLabel.FontWeight = FontWeight.Bold;
@@ -195,8 +195,8 @@ internal static class ItemButtonFactory
 
     internal static Border GetTagBorder(string text)
     {
-        Border tagButton = new() { CornerRadius = new(15), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
-        TextBlock tagLabel = new() { Text = text, FontSize = 13, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Padding = new(8, 5) };
+        var tagButton = new Border() { CornerRadius = new(15), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+        var tagLabel = new TextBlock() { Text = text, FontSize = 13, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Padding = new(8, 5) };
         tagButton.Child = tagLabel;
 
         return tagButton;
@@ -204,7 +204,7 @@ internal static class ItemButtonFactory
 
     internal static string? GetTooltipTextFromItem(UISelectableItem item)
     {
-        StringBuilder toolTipTextBuilder = new();
+        var toolTipTextBuilder = new StringBuilder();
 
         toolTipTextBuilder.Append(item.Title);
 

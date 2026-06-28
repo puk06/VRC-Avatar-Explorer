@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
@@ -30,11 +29,11 @@ internal static class UnitypackageService
     {
         var unitypackageFilePaths = ImmutableArray.CreateBuilder<string>();
         
-        foreach (string itemPath in itemPaths)
+        foreach (var itemPath in itemPaths)
         {
             if (string.IsNullOrEmpty(itemPath)) continue;
 
-            foreach (string filePath in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+            foreach (var filePath in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
             {
                 if (!PathUtils.IsUnitypackageFile(filePath)) continue;
                 unitypackageFilePaths.Add(filePath);

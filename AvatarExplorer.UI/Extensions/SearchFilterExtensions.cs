@@ -10,7 +10,7 @@ internal static class SearchFilterExtensions
 {
     internal static string ToPathString(this SearchFilter searchFilter)
     {
-        List<string> searchFilterStrings = new();
+        var searchFilterStrings = new List<string>();
 
         string localize(string key, IEnumerable<string> values) => Localizer.Instance.Get(key, toSeparatedString(values));
         void addKey(string key, IEnumerable<string> values) => searchFilterStrings.Add(localize(key, values));
@@ -40,7 +40,7 @@ internal static class SearchFilterExtensions
         if (getSearchTokensByType(SearchTokenType.CommonAvatar).Any()) addKey(LocalizationKey.SearchFilter.CommonAvatar, getSearchTokensByType(SearchTokenType.CommonAvatar));
         if (getSearchTokensByType(SearchTokenType.FreeWord).Any()) addKey(LocalizationKey.SearchFilter.SearchWord, getSearchTokensByType(SearchTokenType.FreeWord));
 
-        string result = toSeparatedString(searchFilterStrings, " / ");
+        var result = toSeparatedString(searchFilterStrings, " / ");
         return Localizer.Instance.Get(LocalizationKey.SearchFilter.Default, result);
     }
 }

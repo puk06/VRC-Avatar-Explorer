@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -17,14 +16,14 @@ internal static class UnitypackageSelectorButtonFactory
 {
     internal static Button AddItemButton(UnitypackageSelectorButtonOptions options)
     {
-        Button itemButton = ItemButtonFactory.CreateBaseButton(options.Item);
+        var itemButton = ItemButtonFactory.CreateBaseButton(options.Item);
 
-        StackPanel contentStackPanel = new() { Spacing = 5 };
+        var contentStackPanel = new StackPanel() { Spacing = 5 };
 
-        Grid contentGrid = new() { ColumnSpacing = 10, ColumnDefinitions = new("Auto,*") };
+        var contentGrid = new Grid() { ColumnSpacing = 10, ColumnDefinitions = new("Auto,*") };
 
         // アイコン (アイコンにCornerRadiusを適用するため、ChildにImageが指定されたBorderが返ってくる)
-        Border? itemIconBorder = ItemButtonFactory.CreateItemIconBorder(options.Item, options.UserPreferences, false);
+        var itemIconBorder = ItemButtonFactory.CreateItemIconBorder(options.Item, options.UserPreferences, false);
         if (itemIconBorder != null)
         {
             contentGrid.Children.Add(itemIconBorder);
@@ -32,13 +31,13 @@ internal static class UnitypackageSelectorButtonFactory
         }
 
         // タイトルリスト
-        Grid textGrid = CreateTextAndIconGrid(options.Item, options.RuntimeSettings, options.Id, options.OnCopyClick, options.OnRemoveClick);
+        var textGrid = CreateTextAndIconGrid(options.Item, options.RuntimeSettings, options.Id, options.OnCopyClick, options.OnRemoveClick);
         contentGrid.Children.Add(textGrid);
         Grid.SetColumn(textGrid, 1);
 
         contentStackPanel.Children.Add(contentGrid);
 
-        Panel unitypackagePanel = new();
+        var unitypackagePanel = new Panel();
         unitypackagePanel.Children.Add(CreateUnitypackageList(options.Item, options.Id, options.SelectedFilePath, options.OnSelectionChanged));
 
         contentStackPanel.Children.Add(unitypackagePanel);
@@ -52,22 +51,22 @@ internal static class UnitypackageSelectorButtonFactory
 
     internal static Grid CreateTextAndIconGrid(UISelectableItem item, RuntimeSettings runtimeSettings, string id, Action<string>? onCopyClick = null, Action<string>? onRemoveClick = null)
     {
-        Grid textGrid = new() { RowDefinitions = new("Auto,Auto,5,*") };
+        var textGrid = new Grid() { RowDefinitions = new("Auto,Auto,5,*") };
 
-        string itemTitle = ItemButtonFactory.GetFormattedTitle(item, runtimeSettings);
+        var itemTitle = ItemButtonFactory.GetFormattedTitle(item, runtimeSettings);
 
-        TextBlock titleTextBlock = new() { Text = itemTitle, FontSize = 16, FontWeight = FontWeight.Bold, TextTrimming = TextTrimming.CharacterEllipsis };
+        var titleTextBlock = new TextBlock() { Text = itemTitle, FontSize = 16, FontWeight = FontWeight.Bold, TextTrimming = TextTrimming.CharacterEllipsis };
         Grid.SetRow(titleTextBlock, 0);
         textGrid.Children.Add(titleTextBlock);
 
-        TextBlock descriptionTextBlock = new() { Text = Localizer.Instance.Get(item.Description.LocalizationKey, item.Description.Args), FontSize = 13, TextTrimming = TextTrimming.CharacterEllipsis };
+        var descriptionTextBlock = new TextBlock() { Text = Localizer.Instance.Get(item.Description.LocalizationKey, item.Description.Args), FontSize = 13, TextTrimming = TextTrimming.CharacterEllipsis };
         Grid.SetRow(descriptionTextBlock, 1);
         textGrid.Children.Add(descriptionTextBlock);
 
-        Panel iconPanel = new();
-        StackPanel iconStackPanel = new() { Orientation = Orientation.Horizontal, Spacing = 5 };
+        var iconPanel = new Panel();
+        var iconStackPanel = new StackPanel() { Orientation = Orientation.Horizontal, Spacing = 5 };
 
-        Button copyButton = new()
+        var copyButton = new Button()
         {
             Content = new MaterialIcon()
             {
@@ -84,7 +83,7 @@ internal static class UnitypackageSelectorButtonFactory
 
         iconStackPanel.Children.Add(copyButton);
 
-        Button removeButton = new Button()
+        var removeButton = new Button()
         {
             Content = new MaterialIcon()
             {
@@ -111,16 +110,16 @@ internal static class UnitypackageSelectorButtonFactory
 
     internal static ComboBox CreateUnitypackageList(UISelectableItem item, string id, string selectedFilePath, Action<string, string>? onSelectedIndexChanged = null)
     {
-        ComboBox unitypackageComboBox = new() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch, CornerRadius = new(8), FontSize = 14 };
+        var unitypackageComboBox = new ComboBox() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch, CornerRadius = new(8), FontSize = 14 };
 
         int selectedIndex = 0;
 
         if (item.ItemFolderPaths != null)
         {
-            ImmutableArray<string> unitypackageFilePaths = UnitypackageService.GetUnitypackagePaths(item.ItemFolderPaths);
+            var unitypackageFilePaths = UnitypackageService.GetUnitypackagePaths(item.ItemFolderPaths);
             for (int i = 0; i < unitypackageFilePaths.Length; i++)
             {
-                string filePath = unitypackageFilePaths[i];
+                var filePath = unitypackageFilePaths[i];
 
                 if (filePath == selectedFilePath) selectedIndex = i;
 

@@ -42,18 +42,18 @@ public partial class MainWindow
         if (EditImplementedAvatarsOverlay_AvatarsList == null) return;
         EditImplementedAvatarsOverlay_AvatarsList.Children.Clear();
 
-        string searchText = EditImplementedAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
-        string[] parsedText = TextParser.Parse(searchText);
+        var searchText = EditImplementedAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
+        var parsedText = TextParser.Parse(searchText);
 
-        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars()
+        var avatars = AvatarExplorer.GetAvatars()
             .Where(i =>
                 string.IsNullOrEmpty(searchText) ||
                 (i.Item is Item item && EditImplementedAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId(item.Id), parsedText))
             );
 
-        foreach (ItemCountInfo itemCountInfo in avatars)
+        foreach (var itemCountInfo in avatars)
         {
-            Button button = ItemButtonFactory.AddItemButton(EditImplementedAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: EditImplementedAvatarsOverlay_ItemButton_Click);
+            var button = ItemButtonFactory.AddItemButton(EditImplementedAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: EditImplementedAvatarsOverlay_ItemButton_Click);
             if (_editImplementedAvatarsOverlay_selectedAvatars.Contains(((Item)itemCountInfo.Item).Id)) button.Classes.Add("accentbutton");
         }
     }
@@ -64,7 +64,7 @@ public partial class MainWindow
     private void EditImplementedAvatarsOverlay_Cancel_Click(object? sender, RoutedEventArgs e) => EditImplementedAvatarsOverlay_Close();
     private void EditImplementedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e)
     {
-        Item? item = AvatarExplorer.GetItemById(_editImplementedAvatarsOverlay_selectedItemId);
+        var item = AvatarExplorer.GetItemById(_editImplementedAvatarsOverlay_selectedItemId);
         if (item == null)
         {
             Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound], isError: true);

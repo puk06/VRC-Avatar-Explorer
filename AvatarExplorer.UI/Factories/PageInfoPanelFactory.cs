@@ -21,11 +21,11 @@ internal static class PageInfoPanelFactory
         int totalPages = (int)Math.Ceiling((double)totalItemCount / itemsPerPage);
         if (totalPages <= 0) return null;
 
-        Panel pageInfoPanel = new();
+        var pageInfoPanel = new Panel();
 
-        StackPanel pageInfo = CreatePageInfoPanel(currentPageValue, totalPages, itemsPerPage, totalItemCount);
+        var pageInfo = CreatePageInfoPanel(currentPageValue, totalPages, itemsPerPage, totalItemCount);
 
-        Grid pageButtonGrid = new() { ColumnDefinitions = new("Auto,Auto,*,Auto,Auto"), ColumnSpacing = 10, Margin = new(15, 0, 15, 0) };
+        var pageButtonGrid = new Grid() { ColumnDefinitions = new("Auto,Auto,*,Auto,Auto"), ColumnSpacing = 10, Margin = new(15, 0, 15, 0) };
         AddNavigationButtons(pageButtonGrid, itemTagState, currentPageValue, totalPages, onClick);
 
         pageInfoPanel.Children.Add(pageButtonGrid);
@@ -36,14 +36,14 @@ internal static class PageInfoPanelFactory
 
     private static StackPanel CreatePageInfoPanel(int currentPage, int totalPages, int itemsPerPage, int totalCount)
     {
-        StackPanel panel = new() { Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+        var panel = new StackPanel() { Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
 
-        string pageText = Localizer.Instance.Get(LocalizationKey.ItemWindow.CurrentPage, [(currentPage + 1).ToString(), totalPages.ToString()]);
+        var pageText = Localizer.Instance.Get(LocalizationKey.ItemWindow.CurrentPage, [(currentPage + 1).ToString(), totalPages.ToString()]);
         panel.Children.Add(new TextBlock { Text = pageText, FontSize = 15, HorizontalAlignment = HorizontalAlignment.Center });
 
         int start = (currentPage * itemsPerPage) + 1;
         int end = Math.Min(start + itemsPerPage - 1, totalCount);
-        string rangeText = Localizer.Instance.Get(LocalizationKey.ItemWindow.PageItemCount, [start.ToString(), end.ToString(), totalCount.ToString()]);
+        var rangeText = Localizer.Instance.Get(LocalizationKey.ItemWindow.PageItemCount, [start.ToString(), end.ToString(), totalCount.ToString()]);
         panel.Children.Add(new TextBlock { Text = rangeText, FontSize = 15, HorizontalAlignment = HorizontalAlignment.Center });
 
         return panel;
@@ -64,7 +64,7 @@ internal static class PageInfoPanelFactory
 
     private static Button CreateButton(MaterialIcon content, int column, PageButtonInfo info, EventHandler<RoutedEventArgs>? onClick)
     {
-        Button button = new() { Content = content, HorizontalAlignment = HorizontalAlignment.Center, Tag = info };
+        var button = new Button() { Content = content, HorizontalAlignment = HorizontalAlignment.Center, Tag = info };
         button.Classes.AddRange([ButtonClass, PageButtonClass]);
         if (onClick != null) button.Click += onClick;
 

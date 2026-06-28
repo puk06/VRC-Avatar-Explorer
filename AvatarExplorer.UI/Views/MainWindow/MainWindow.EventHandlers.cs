@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +41,7 @@ public partial class MainWindow
 
         if (button.Tag is ItemTagInfo itemTagInfo)
         {
-            DataTransferItem item = new();
+            var item = new DataTransferItem();
 
             // ファイルの場合はUnityなどに対応するためにファイルをD&Dで追加する
             if (itemTagInfo.State == ItemTagStates.ItemFileCategoryOpen) item.Set(DataFormat.File, await StorageService.GetStorageFileFromPath(this, itemTagInfo.Value));
@@ -50,7 +49,7 @@ public partial class MainWindow
 
             _main_lastDragAndDropItem = itemTagInfo.Value;
 
-            DataTransfer dragData = new();
+            var dragData = new DataTransfer();
             dragData.Add(item);
 
             await Task.Delay(300);
@@ -70,13 +69,14 @@ public partial class MainWindow
     {
         if (!e.DataTransfer.Contains(DataFormat.File)) return;
 
-        IEnumerable<IStorageItem?> storageItems = e.DataTransfer.GetItems(DataFormat.File).Select(i => i.TryGetFile());
+        var storageItems = e.DataTransfer.GetItems(DataFormat.File).Select(i => i.TryGetFile());
         if (storageItems == null) return;
 
-        string[] storageItemPaths = storageItems
+        var storageItemPaths = storageItems
             .Select(i => i?.TryGetLocalPath())
             .Where(i => !string.IsNullOrEmpty(i) && (Directory.Exists(i) || File.Exists(i)))
-            .ToArray()!;
+            .Cast<string>()
+            .ToArray();
 
         // ソフト内からD&Dしたアイテムはスキップするように
         if (storageItemPaths.Length == 1 && storageItemPaths[0] == _main_lastDragAndDropItem) return;
@@ -88,7 +88,7 @@ public partial class MainWindow
     #region Mouse Event
     private void Main_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        PointerPointProperties pointerProperties = e.GetCurrentPoint(this).Properties;
+        var pointerProperties = e.GetCurrentPoint(this).Properties;
         if (pointerProperties.IsXButton1Pressed) Main_ExecuteUndo(); // XButton1はマウスの横ボタンなので戻る処理を実行する
     }
     #endregion

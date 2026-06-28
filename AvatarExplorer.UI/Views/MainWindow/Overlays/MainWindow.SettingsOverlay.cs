@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -100,9 +99,9 @@ public partial class MainWindow
     }
     private async Task SettingsOverlay_ApplySettingsValues(bool checkDataCopy = true, bool reloadWindow = true)
     {
-        string previousDataRootDirectoryPath = RuntimeSettings.DataRootDirectory;
+        var previousDataRootDirectoryPath = RuntimeSettings.DataRootDirectory;
 
-        RuntimeSettings runtimeSettings = new()
+        var runtimeSettings = new RuntimeSettings()
         {
             DataRootDirectory = SettingsOverlay_ItemsFolderPathTextBox?.Text ?? string.Empty,
             ItemSortOrder = (ItemSortOrder)(SettingsOverlay_SortOrderComboBox?.SelectedIndex ?? 0),
@@ -115,7 +114,7 @@ public partial class MainWindow
             MaxDegreeOfParallelism = ValueParser.Int(SettingsOverlay_MaxDegreeOfParallelismTextBox?.Text, 4)
         };
 
-        UserPreferences userPreferences = new()
+        var userPreferences = new UserPreferences()
         {
             Language = SettingsOverlay_LanguageComboBox?.SelectedIndex >= 0 ? SettingsOverlay_LanguageComboBox.SelectedIndex : 0,
             Theme = (Theme)(SettingsOverlay_ThemeComboBox?.SelectedIndex ?? 0),
@@ -149,12 +148,12 @@ public partial class MainWindow
     private async Task SettingsOverlay_CheckDataCopy(string previousPath, string currentPath)
     {
         // データをコピーするか
-        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.StoragePathChange.CopyData]);
+        var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.StoragePathChange.CopyData]);
         if (result == null) return;
 
         if (result == YesNoResult.No)
         {
-            YesNoResult? convertPathResult = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.StoragePathChange.ConvertRelativePath]);
+            var convertPathResult = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.StoragePathChange.ConvertRelativePath]);
             if (convertPathResult != null && convertPathResult == YesNoResult.Yes) AvatarExplorer.ConvertDatabaseRelativePathsToFullPaths(previousPath);
 
             return;
@@ -169,7 +168,7 @@ public partial class MainWindow
             });
         }
 
-        ErrorOr<CopyResult> result1 = await FileSystemService.CopyDirectoryAsync(previousPath, currentPath, RuntimeSettings.MaxDegreeOfParallelism, progressAction);
+        var result1 = await FileSystemService.CopyDirectoryAsync(previousPath, currentPath, RuntimeSettings.MaxDegreeOfParallelism, progressAction);
         ProgressOverlay_Hide();
 
         if (result1.IsError)
@@ -250,7 +249,7 @@ public partial class MainWindow
     private void SettingsOverlay_ApplyLanguage(int language, bool reloadWindow = true)
     {
         int validLanguageIndex = Math.Clamp(language, 0, Localizer.Instance.LanguageCount - 1);
-        bool isLanguageChanged = Localizer.Instance.CurrentLanguageIndex != validLanguageIndex;
+        var isLanguageChanged = Localizer.Instance.CurrentLanguageIndex != validLanguageIndex;
         if (isLanguageChanged)
         {
             Localizer.Instance.SetLanguage(validLanguageIndex);
@@ -263,21 +262,21 @@ public partial class MainWindow
     #region Event Handler
     private async void SettingsOverlay_OpenFolder_Click(object? sender, RoutedEventArgs e)
     {
-        string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
+        var folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
         if (folders == null || folders.Length == 0) return;
 
         SettingsOverlay_ItemsFolderPathTextBox?.Text = folders[0];
     }
     private async void SettingsOverlay_OpenBackgroundFile_Click(object? sender, RoutedEventArgs e)
     {
-        string[]? files = await StorageService.OpenFileDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFilePath], false);
+        var files = await StorageService.OpenFileDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFilePath], false);
         if (files == null || files.Length == 0) return;
 
         SettingsOverlay_BackgroundImagePathTextBox?.Text = files[0];
     }
     private async void SettingsOverlay_OpenAutoBackupRootFolder_Click(object? sender, RoutedEventArgs e)
     {
-        string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false, RuntimeSettings.AutoBackupRootDirectory);
+        var folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false, RuntimeSettings.AutoBackupRootDirectory);
         if (folders == null || folders.Length == 0) return;
 
         SettingsOverlay_AutoBackupPathTextBox?.Text = folders[0];
@@ -303,15 +302,15 @@ public partial class MainWindow
 
     private async void SettingsOverlay_ExportDataToCsv_Click(object? sender, RoutedEventArgs e)
     {
-        string? filePath = await StorageService.SaveFileDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectSaveFilePath], "csv");
+        var filePath = await StorageService.SaveFileDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectSaveFilePath], "csv");
         if (filePath == null) return;
 
-        Dictionary<ItemType, string> localizedItemTypesMapping = Enum.GetValues<ItemType>().ToDictionary(i => i, i => Localizer.Instance[i.GetLocalizationKey() ?? i.ToString()]);
+        var localizedItemTypesMapping = Enum.GetValues<ItemType>().ToDictionary(i => i, i => Localizer.Instance[i.GetLocalizationKey() ?? i.ToString()]);
 
-        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported]);
+        var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported]);
         if (result == null) return;
 
-        ErrorOr<Success> exportResult = await AvatarExplorer.Export(DataExportType.Csv, filePath, localizedItemTypesMapping, includeCommonToSupported: result == YesNoResult.Yes);
+        var exportResult = await AvatarExplorer.Export(DataExportType.Csv, filePath, localizedItemTypesMapping, includeCommonToSupported: result == YesNoResult.Yes);
         
         if (!exportResult.IsError) Main_ShowNotification(Localizer.Instance[LocalizationKey.Success.Default], Localizer.Instance[LocalizationKey.Success.Export], isSuccess: true);
         else Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ExportFailed], isError: true);
@@ -319,7 +318,7 @@ public partial class MainWindow
     private async void SettingsOverlay_EditCommonAvatars_Click(object? sender, RoutedEventArgs e) => EditCommonAvatarsOverlay_Open();
     private async void SettingsOverlay_ResetItemDatabase_Click(object? sender, RoutedEventArgs e)
     {
-        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetItemDatabase]);
+        var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetItemDatabase]);
         if (result == null || result != YesNoResult.Yes) return;
 
         AvatarExplorer.ResetItemDatabase();
@@ -330,7 +329,7 @@ public partial class MainWindow
 
     private async void SettingsOverlay_ResetCommonAvatarDatabase_Click(object? sender, RoutedEventArgs e)
     {
-        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetCommonAvatarDatabase]);
+        var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetCommonAvatarDatabase]);
         if (result == null || result != YesNoResult.Yes) return;
 
         AvatarExplorer.ResetCommonAvatarDatabase();
@@ -339,7 +338,7 @@ public partial class MainWindow
 
     private async void SettingsOverlay_ResetBulkImportPresetDatabase_Click(object? sender, RoutedEventArgs e)
     {
-        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetBulkImportPresetDatabase]);
+        var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ResetBulkImportPresetDatabase]);
         if (result == null || result != YesNoResult.Yes) return;
 
         AvatarExplorer.ResetBulkImportPresetDatabase();
@@ -350,7 +349,7 @@ public partial class MainWindow
 
     private async void SettingsOverlay_ViewLicenses_Click(object? sender, RoutedEventArgs e)
     {
-        string licenseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LICENSE.txt");
+        var licenseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LICENSE.txt");
 
         if (File.Exists(licenseFile)) await LauncherService.OpenUri(this, licenseFile);
         else Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.LicenseFileNotFound], isError: true);
@@ -358,7 +357,7 @@ public partial class MainWindow
 
     private async void SettingsOverlay_ThirdPartyLicenses_Click(object? sender, RoutedEventArgs e)
     {
-        string licenseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "THIRD_PARTY_LICENSES.txt");
+        var licenseFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "THIRD_PARTY_LICENSES.txt");
 
         if (File.Exists(licenseFile)) await LauncherService.OpenUri(this, licenseFile);
         else Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ThirdPartyLicenseFileNotFound], isError: true);
@@ -369,22 +368,22 @@ public partial class MainWindow
 
     private async void SettingsOverlay_RestoreDataFromBackup_Click(object? sender, RoutedEventArgs e)
     {
-        string[]? folderPaths = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false, RuntimeSettings.AutoBackupRootDirectory);
+        var folderPaths = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false, RuntimeSettings.AutoBackupRootDirectory);
         if (folderPaths == null || folderPaths.Length == 0) return;
 
         // バックアップを復元する前に、今の状態をバックアップしておく
-        ErrorOr<Success> backupResult = await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+        var backupResult = await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
 
         if (backupResult.IsError)
         {
-            YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ContinueRestoreFromBackup]);
+            var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.ContinueRestoreFromBackup]);
             if (result == null || result != YesNoResult.Yes) return;
         }
 
-        string backupRootPath = folderPaths[0];
+        var backupRootPath = folderPaths[0];
         await AvatarExplorer.RestoreFromBackup(backupRootPath);
 
-        string userPreferencesFilePath = Path.Join(backupRootPath, SystemFileName.Settings.Preferences);
+        var userPreferencesFilePath = Path.Join(backupRootPath, SystemFileName.Settings.Preferences);
 
         if (File.Exists(userPreferencesFilePath))
         {
@@ -403,11 +402,11 @@ public partial class MainWindow
     private async Task SettingsOverlay_AutoFixDatabase()
     {
         var items = AvatarExplorer.GetAllItems();
-        bool avatarExists = items.Any(i => i.Type == ItemType.Avatar);
-        bool unknownCategoryExists = items.Any(i => (int)i.Type >= 11);
+        var avatarExists = items.Any(i => i.Type == ItemType.Avatar);
+        var unknownCategoryExists = items.Any(i => (int)i.Type >= 11);
         if (!avatarExists)
         {
-            YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.NoAvatarsAndValidateType]);
+            var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.NoAvatarsAndValidateType]);
             if (result != null && result == YesNoResult.Yes)
             {
                 await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);

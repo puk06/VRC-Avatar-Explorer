@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -34,16 +33,16 @@ public partial class MainWindow
     {
         ResolveTempAvatarOverlay_AvatarsList.Children.Clear();
 
-        string searchText = ResolveTempAvatarOverlay_SearchTextBox.Text ?? string.Empty;
-        string[] parsedText = TextParser.Parse(searchText);
+        var searchText = ResolveTempAvatarOverlay_SearchTextBox.Text ?? string.Empty;
+        var parsedText = TextParser.Parse(searchText);
 
-        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars()
+        var avatars = AvatarExplorer.GetAvatars()
             .Where(i =>
                 string.IsNullOrEmpty(searchText) ||
                 (i.Item is Item item && ResolveTempAvatarOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId(item.Id), parsedText))
             );
         
-        foreach (ItemCountInfo itemCountInfo in avatars)
+        foreach (var itemCountInfo in avatars)
         {
             ItemButtonFactory.AddItemButton(ResolveTempAvatarOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: ResolveTempAvatarOverlay_ItemButton_Click);
         }
@@ -63,21 +62,21 @@ public partial class MainWindow
             return;
         }
 
-        TempAvatar? tempAvatar = AvatarExplorer.GetTempAvatarById(TempAvatar.GetAvatarId(_resolveTempAvatarOverlay_selectedAvatar));
+        var tempAvatar = AvatarExplorer.GetTempAvatarById(TempAvatar.GetAvatarId(_resolveTempAvatarOverlay_selectedAvatar));
         if (tempAvatar == null)
         {
             Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound], isError: true);
             return;
         }
 
-        Item? targetAvatar = AvatarExplorer.GetItemById(itemTagInfo.Value);
+        var targetAvatar = AvatarExplorer.GetItemById(itemTagInfo.Value);
         if (targetAvatar == null)
         {
             Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.ItemNotFound], isError: true);
             return;
         }
 
-        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.ResolveTempAvatar, [tempAvatar.AvatarName, targetAvatar.Title]));
+        var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.ResolveTempAvatar, [tempAvatar.AvatarName, targetAvatar.Title]));
         if (result == null || result != YesNoResult.Yes) return;
 
         AvatarExplorer.ResolveTempAvatar(tempAvatar.GetInternalId(), targetAvatar.Id);

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -19,7 +18,6 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
-using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Services.System;
@@ -30,7 +28,6 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
 using AvatarExplorer.UI.Models.Navigation;
 using AvatarExplorer.UI.Models.Settings;
-using AvatarExplorer.UI.Models.System;
 using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
@@ -80,7 +77,7 @@ public partial class MainWindow : Window
 
     private async ValueTask<string?> Main_GetArchivePasswordAsync(ArchivePasswordRequest request)
     {
-        string? password = await ArchivePasswordDialogOverlay_ShowSafeAsync(Path.GetFileName(request.ArchivePath), request.Attempt, request.MaxAttempts);
+        var password = await ArchivePasswordDialogOverlay_ShowSafeAsync(Path.GetFileName(request.ArchivePath), request.Attempt, request.MaxAttempts);
         if (password == null) return null; // キャンセルされた場合はnullを返す
 
         return password;
@@ -94,7 +91,7 @@ public partial class MainWindow : Window
 
         for (int step = 0; step <= fadeSteps; step++)
         {
-            double opacity = 1 - (step / (double)fadeSteps);
+            var opacity = 1 - (step / (double)fadeSteps);
             await Dispatcher.UIThread.InvokeAsync(() => StartupLoadingOverlay.Opacity = opacity);
             if (step < fadeSteps) await Task.Delay(stepDelayMs);
         }
@@ -105,7 +102,7 @@ public partial class MainWindow : Window
 
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
-        ErrorOr<Success> initializationResult = await Main_Initialize();
+        var initializationResult = await Main_Initialize();
         if (initializationResult.IsError)
         {
             StartupLoadingOverlay.IsVisible = false;
@@ -116,7 +113,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        IEnumerable<string> thumbnailFileNames = AvatarExplorer.GetAllItems().Select(i => i.ThumbnailFileName).Where(p => !string.IsNullOrEmpty(p));
+        var thumbnailFileNames = AvatarExplorer.GetAllItems().Select(i => i.ThumbnailFileName).Where(p => !string.IsNullOrEmpty(p));
         ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
 
         Main_DockPanel.IsVisible = true;
@@ -146,7 +143,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        string[]? args = desktop.Args;
+        var args = desktop.Args;
         if (args == null || args.Length == 0) return;
 
         await SetApplicationArgs(args);
@@ -210,27 +207,27 @@ public partial class MainWindow : Window
             string githubOwner = Main_GetRepositoryOwner();
             string profileApiUrl = string.Format(Main_GithubApiBaseUrl, githubOwner);
 
-            using HttpRequestMessage request = new(HttpMethod.Get, profileApiUrl);
+            using var request = new HttpRequestMessage(HttpMethod.Get, profileApiUrl);
             request.Headers.UserAgent.ParseAdd("AvatarExplorer");
 
-            using HttpResponseMessage response = await HttpService.Client.SendAsync(request);
+            using var response = await HttpService.Client.SendAsync(request);
             if (!response.IsSuccessStatusCode) return;
 
-            await using Stream responseStream = await response.Content.ReadAsStreamAsync();
-            using JsonDocument jsonDocument = await JsonDocument.ParseAsync(responseStream);
+            await using var responseStream = await response.Content.ReadAsStreamAsync();
+            using var jsonDocument = await JsonDocument.ParseAsync(responseStream);
 
             if (!jsonDocument.RootElement.TryGetProperty("avatar_url", out JsonElement avatarUrlElement)) return;
 
-            string? avatarUrl = avatarUrlElement.GetString();
+            var avatarUrl = avatarUrlElement.GetString();
             if (string.IsNullOrWhiteSpace(avatarUrl)) return;
 
-            using HttpRequestMessage avatarRequest = new(HttpMethod.Get, avatarUrl);
+            using var avatarRequest = new HttpRequestMessage(HttpMethod.Get, avatarUrl);
             avatarRequest.Headers.UserAgent.ParseAdd("AvatarExplorer");
 
-            using HttpResponseMessage avatarResponse = await HttpService.Client.SendAsync(avatarRequest);
+            using var avatarResponse = await HttpService.Client.SendAsync(avatarRequest);
             if (!avatarResponse.IsSuccessStatusCode) return;
 
-            await using Stream avatarStream = await avatarResponse.Content.ReadAsStreamAsync();
+            await using var avatarStream = await avatarResponse.Content.ReadAsStreamAsync();
             SettingsOverlay_DeveloperProfileImage.Source = new Avalonia.Media.Imaging.Bitmap(avatarStream);
         }
         catch (Exception ex)
@@ -243,9 +240,8 @@ public partial class MainWindow : Window
     {
         try
         {
-            Uri repositoryUri = new(SoftwareLink.RepositoryURL);
-            string[] segments = repositoryUri.AbsolutePath
-                .Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var repositoryUri = new Uri(SoftwareLink.RepositoryURL);
+            var segments = repositoryUri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
             if (segments.Length > 0 && !string.IsNullOrWhiteSpace(segments[0])) return segments[0];
         }
@@ -261,7 +257,7 @@ public partial class MainWindow : Window
     {
         if (args == null || args.Length == 0 || string.IsNullOrEmpty(args[0])) return;
 
-        LaunchInfo? launchInfo = LaunchInfoService.GetLaunchInfo(args[0]);
+        var launchInfo = LaunchInfoService.GetLaunchInfo(args[0]);
         if (launchInfo == null) return;
 
         if (launchInfo.AssetPaths.Length != 0 && !string.IsNullOrEmpty(launchInfo.BoothId)) await AddItemOverlay_Open(launchInfo);
@@ -273,9 +269,9 @@ public partial class MainWindow : Window
         if (Main_LeftPanel == null) return;
         Main_LeftPanel.Children.Clear();
 
-        List<ItemCountInfo> items = new();
+        var items = new List<ItemCountInfo>();
 
-        ItemTagStates customState = ItemTagStates.None;
+        var customState = ItemTagStates.None;
         switch (Main_LeftFilter.SelectedIndex)
         {
             case 0:
@@ -300,10 +296,10 @@ public partial class MainWindow : Window
 
         int currentPage = _main_pageManager.Get(customState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
 
-        foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
+        foreach (var itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
         {
-            ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
-            Button itemButton = ItemButtonFactory.AddItemButton(Main_LeftPanel, new UISelectableItem(itemCountInfo).SetState(customState), RuntimeSettings, UserPreferences, itemContextMenu, LeftPanel_ItemButton_Click);
+            var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
+            var itemButton = ItemButtonFactory.AddItemButton(Main_LeftPanel, new UISelectableItem(itemCountInfo).SetState(customState), RuntimeSettings, UserPreferences, itemContextMenu, LeftPanel_ItemButton_Click);
 
             // アイテム(アバター)の場合はD&Dイベントを登録してあげる
             if (StateFlagUtils.IsDraggableState(customState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
@@ -312,7 +308,7 @@ public partial class MainWindow : Window
         if (currentPage != -1 && items.Count != 0)
         {
             Main_LeftPanelPageInfo.Children.Clear();
-            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(customState, currentPage, UserPreferences.ItemsPerPage, items.Count, LeftPanel_ItemButton_Click);
+            var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(customState, currentPage, UserPreferences.ItemsPerPage, items.Count, LeftPanel_ItemButton_Click);
             if (pageInfoPanel != null) Main_LeftPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_LeftPanelPageInfo.Children.Clear();
@@ -350,13 +346,13 @@ public partial class MainWindow : Window
         if (Main_RightPanel == null) return;
         Main_RightPanel.Children.Clear();
 
-        ImmutableArray<ItemCountInfo> items = AvatarExplorer.GetItemsForCurrentState();
-        bool isRootItemState = AvatarExplorer.GetCurrentNode() == null; // Nodeがない場合は全てのアイテムが返されるため、それをRootItem状態として扱う
+        var items = AvatarExplorer.GetItemsForCurrentState();
+        var isRootItemState = AvatarExplorer.GetCurrentNode() == null; // Nodeがない場合は全てのアイテムが返されるため、それをRootItem状態として扱う
 
         if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
 
-        ItemTagStates itemTagState = ItemTagStates.None;
+        var itemTagState = ItemTagStates.None;
 
         if (isRootItemState) itemTagState = ItemTagStates.RootItem;
         else if (items.Length > 0) itemTagState = new UISelectableItem(items[0]).Tag.State;
@@ -365,10 +361,10 @@ public partial class MainWindow : Window
 
         int currentPage = _main_pageManager.Get(itemTagState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
 
-        foreach (ItemCountInfo itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
+        foreach (var itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
         {
-            ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
-            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(itemCountInfo).SetState(itemTagState), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
+            var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
+            var itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(itemCountInfo).SetState(itemTagState), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
 
             // アイテムの場合はD&Dイベントを登録してあげる
             if (StateFlagUtils.IsDraggableState(itemTagState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
@@ -377,7 +373,7 @@ public partial class MainWindow : Window
         if (currentPage != -1 && items.Length != 0)
         {
             Main_RightPanelPageInfo.Children.Clear();
-            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(itemTagState, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
+            var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(itemTagState, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
             if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_RightPanelPageInfo.Children.Clear();
@@ -397,7 +393,7 @@ public partial class MainWindow : Window
         {
             if (itemTagInfo.State == ItemTagStates.ItemFileCategoryOpen) // ファイルを押されると、アイテムを開く処理に移行する
             {
-                string itemPath = itemTagInfo.Value; // ItemFileCategoryOpenのValueはファイルのパスになっている
+                var itemPath = itemTagInfo.Value; // ItemFileCategoryOpenのValueはファイルのパスになっている
                 await Main_OpenFileInternalAsync(itemPath);
             }
             else
@@ -452,7 +448,7 @@ public partial class MainWindow : Window
     {
         if (!string.IsNullOrEmpty(searchText)) _main_searchTextCache = searchText;
 
-        SearchFilter searchFilter = new();
+        var searchFilter = new SearchFilter();
         AdvancedSearchPanel_ApplyValues(searchFilter);
         SearchFilterBuilder.Build(searchFilter, _main_searchTextCache, SearchUtils.ParseCategory);
 
@@ -475,17 +471,17 @@ public partial class MainWindow : Window
 
         Main_RightPanel.Children.Clear();
 
-        ImmutableArray<Item> items = AvatarExplorer.SearchItems(searchFilter);
+        var items = AvatarExplorer.SearchItems(searchFilter);
 
         if (items.Length == 0) Main_ShowNoItemsLabel();
         else Main_HideNoItemsLabel();
 
         int currentPage = _main_pageManager.Get(ItemTagStates.SearchItem); // SearchItemは必ずページが存在しているため
 
-        foreach (Item item in items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage))
+        foreach (var item in items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage))
         {
-            ContextMenu itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(item), Main_ItemButton_ContextMenuItem_Click);
-            Button itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(item, 0).SetState(ItemTagStates.SearchItem), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
+            var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(item), Main_ItemButton_ContextMenuItem_Click);
+            var itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(item, 0).SetState(ItemTagStates.SearchItem), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
 
             // D&Dイベントを登録してあげる
             itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
@@ -494,7 +490,7 @@ public partial class MainWindow : Window
         if (items.Length != 0)
         {
             Main_RightPanelPageInfo.Children.Clear();
-            Panel? pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(ItemTagStates.SearchItem, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
+            var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(ItemTagStates.SearchItem, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
             if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
         }
         else Main_RightPanelPageInfo.Children.Clear();
@@ -514,22 +510,22 @@ public partial class MainWindow : Window
     {
         if (Main_PathTextBox == null) return;
 
-        IEnumerable<SelectionNode> currentSelectionNodes = AvatarExplorer.GetCurrentSelectionNodes();
+        var currentSelectionNodes = AvatarExplorer.GetCurrentSelectionNodes();
         if (!currentSelectionNodes.Any())
         {
             Main_PathTextBox.Text = string.Empty;
             return;
         }
 
-        List<SelectionNode> selectionNodes = new();
-        foreach (SelectionNode node in currentSelectionNodes)
+        var selectionNodes = new List<SelectionNode>();
+        foreach (var node in currentSelectionNodes)
         {
             if (node.State == ItemTagStates.SearchItem) selectionNodes.Clear();
             selectionNodes.Add(node);
         }
 
-        ImmutableArray<Item> items = AvatarExplorer.GetAllItems();
-        ImmutableArray<TempAvatar> tempAvatars = AvatarExplorer.GetAllTempAvatars();
+        var items = AvatarExplorer.GetAllItems();
+        var tempAvatars = AvatarExplorer.GetAllTempAvatars();
         Main_PathTextBox.Text = string.Join(" > ", selectionNodes.Select(i => PathService.BuildPath(items, tempAvatars, i, RuntimeSettings.RemoveBrackets)));
         Main_PathTextBox.CaretIndex = Main_PathTextBox.Text.Length;
     }
@@ -539,7 +535,7 @@ public partial class MainWindow : Window
     private void Main_ExecuteUndo()
     {
         // 選択されていたアイテムが検索結果時のものだったら、キャッシュを元にもう一度検索してあげる
-        bool isCurrentSearchNode = AvatarExplorer.GetCurrentNode()?.State == ItemTagStates.SearchItem;
+        var isCurrentSearchNode = AvatarExplorer.GetCurrentNode()?.State == ItemTagStates.SearchItem;
 
         Main_CheckPageStates(); // SelectUndoより前にやってあげないと、戻った先の画面のページ情報がリセットされる
         Main_CheckScrollStates(); // SelectUndoより前にやってあげないと、戻った先の画面のスクロール情報がリセットされる
@@ -574,9 +570,9 @@ public partial class MainWindow : Window
 
     private void Main_CheckPageStates()
     {
-        List<ItemTagStates> selectedItemTagStates = new();
+        var selectedItemTagStates = new List<ItemTagStates>();
 
-        foreach (SelectionNode selectionNode in AvatarExplorer.GetCurrentSelectionNodes().Where(i => !selectedItemTagStates.Contains(i.State)))
+        foreach (var selectionNode in AvatarExplorer.GetCurrentSelectionNodes().Where(i => !selectedItemTagStates.Contains(i.State)))
         {
             selectedItemTagStates.Add(selectionNode.State);
         }
@@ -589,9 +585,9 @@ public partial class MainWindow : Window
     }
     private void Main_CheckScrollStates()
     {
-        List<ItemTagStates> selectedItemTagStates = new();
+        var selectedItemTagStates = new List<ItemTagStates>();
 
-        foreach (SelectionNode selectionNode in AvatarExplorer.GetCurrentSelectionNodes().Where(i => !selectedItemTagStates.Contains(i.State)))
+        foreach (var selectionNode in AvatarExplorer.GetCurrentSelectionNodes().Where(i => !selectedItemTagStates.Contains(i.State)))
         {
             selectedItemTagStates.Add(selectionNode.State);
         }
@@ -616,17 +612,17 @@ public partial class MainWindow : Window
         if (PathUtils.IsUnitypackageFile(filePath)) await Main_OpenUnitypackageInternalAsync(filePath); // Unitypackageだと自動展開処理に移る
         else
         {
-            ErrorOr<Success> result = await LauncherService.OpenFile(this, filePath);
+            var result = await LauncherService.OpenFile(this, filePath);
             if (result.IsError) Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed], isError: true);
         }
     }
     private async Task Main_OpenUnitypackageInternalAsync(string itemPath)
     {
-        Item? selectedItem = AvatarExplorer.GetSelectedItem();
+        var selectedItem = AvatarExplorer.GetSelectedItem();
         if (selectedItem == null) return;
 
-        ModifiedUnitypackagesResult importResult = await UnitypackageService.Import(
-            new Dictionary<string, string>
+        var importResult = await UnitypackageService.Import(
+            new()
             {
                 { itemPath, selectedItem.Type == ItemType.Custom ? selectedItem.CustomCategory : Localizer.Instance[selectedItem.Type.GetLocalizationKey() ?? selectedItem.Type.ToString()]}
             },
@@ -641,7 +637,7 @@ public partial class MainWindow : Window
 
         if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
         {
-            ErrorOr<Success> result = await LauncherService.OpenFile(this, importResult.ModifiedUnitypackagePath);
+            var result = await LauncherService.OpenFile(this, importResult.ModifiedUnitypackagePath);
             if (result.IsError) Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.OpenFileFailed], isError: true);
         }
         else
@@ -653,7 +649,7 @@ public partial class MainWindow : Window
 
     private void Main_ShowNotification(string title, string content, bool isSuccess = false, bool isWarning = false, bool isError = false)
     {
-        NotificationType type = NotificationType.Information;
+        var type = NotificationType.Information;
         if (isSuccess) type = NotificationType.Success;
         if (isWarning) type = NotificationType.Warning;
         if (isError) type = NotificationType.Error;

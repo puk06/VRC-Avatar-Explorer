@@ -11,7 +11,6 @@ using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.Utilities;
-using ErrorOr;
 
 namespace AvatarExplorer.UI;
 
@@ -63,7 +62,7 @@ public partial class MainWindow
         UnitypackageViewerOverlay_TreeView.ItemsSource = null;
         UnitypackageViewerOverlay.IsVisible = true;
 
-        ErrorOr<List<string>> result = await FileSystemService.GetUnitypackagePathnamesAsync(unitypackagePath);
+        var result = await FileSystemService.GetUnitypackagePathnamesAsync(unitypackagePath);
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to load unitypackage pathname list.", tag: result.Errors.ToErrorString());
@@ -71,7 +70,7 @@ public partial class MainWindow
             return;
         }
 
-        IEnumerable<UnitypackagePathNode> rootNodes = UnitypackageViewerOverlay_BuildPathTree(result.Value);
+        var rootNodes = UnitypackageViewerOverlay_BuildPathTree(result.Value);
         UnitypackageViewerOverlay_TreeView.ItemsSource = rootNodes;
         UnitypackageViewerOverlay_StatusText.Text = $"{result.Value.Count} entries";
     }
@@ -90,17 +89,17 @@ public partial class MainWindow
 
     private static IEnumerable<UnitypackagePathNode> UnitypackageViewerOverlay_BuildPathTree(IEnumerable<string> pathnames)
     {
-        Dictionary<string, UnitypackagePathNode> rootMap = new(StringComparer.OrdinalIgnoreCase);
+        var rootMap = new Dictionary<string, UnitypackagePathNode>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (string rawPath in pathnames)
+        foreach (var rawPath in pathnames)
         {
             if (string.IsNullOrWhiteSpace(rawPath)) continue;
 
-            string normalizedPath = rawPath.Trim().Replace('\\', '/');
-            string[] segments = normalizedPath.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var normalizedPath = rawPath.Trim().Replace('\\', '/');
+            var segments = normalizedPath.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             if (segments.Length == 0) continue;
 
-            string rootSegment = segments[0];
+            var rootSegment = segments[0];
             if (!rootMap.TryGetValue(rootSegment, out UnitypackagePathNode? currentNode))
             {
                 currentNode = new UnitypackagePathNode(rootSegment, rootSegment);
@@ -115,8 +114,8 @@ public partial class MainWindow
             currentNode.MarkAsFile();
         }
 
-        IEnumerable<UnitypackagePathNode> rootNodes = rootMap.Values.OrderBy(i => i.Name, StringComparer.OrdinalIgnoreCase);
-        foreach (UnitypackagePathNode node in rootNodes)
+        var rootNodes = rootMap.Values.OrderBy(i => i.Name, StringComparer.OrdinalIgnoreCase);
+        foreach (var node in rootNodes)
         {
             UnitypackageViewerOverlay_SortChildren(node);
         }
@@ -128,7 +127,7 @@ public partial class MainWindow
     {
         node.Children.Sort((x, y) => string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase));
 
-        foreach (UnitypackagePathNode child in node.Children)
+        foreach (var child in node.Children)
         {
             UnitypackageViewerOverlay_SortChildren(child);
         }
@@ -155,13 +154,13 @@ public partial class MainWindow
         if (_unitypackageViewerOverlay_unitypackagePath == null || _unitypackageViewerOverlay_selectedNode == null || !_unitypackageViewerOverlay_selectedNode.IsFile)
             return;
 
-        string? initialPath = Path.GetDirectoryName(_unitypackageViewerOverlay_unitypackagePath);
-        string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false, initialPath);
+        var initialPath = Path.GetDirectoryName(_unitypackageViewerOverlay_unitypackagePath);
+        var folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false, initialPath);
         if (folders == null || folders.Length == 0) return;
 
-        string selectedFolder = folders[0];
+        var selectedFolder = folders[0];
 
-        ErrorOr<string> result = await FileSystemService.ExtractUnitypackageAssetAsync(
+        var result = await FileSystemService.ExtractUnitypackageAssetAsync(
             _unitypackageViewerOverlay_unitypackagePath,
             _unitypackageViewerOverlay_selectedNode.FullPath,
             selectedFolder

@@ -44,7 +44,7 @@ public partial class MainWindow
         ArchivePasswordDialogOverlay.IsVisible = false;
         ArchivePasswordDialogOverlay_PasswordBox.Text = string.Empty;
 
-        TaskCompletionSource<string?>? tcs = _archivePasswordDialogOverlay_tcs;
+        var tcs = _archivePasswordDialogOverlay_tcs;
         _archivePasswordDialogOverlay_tcs = null;
 
         tcs?.TrySetResult(result);

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Interactivity;
@@ -12,7 +11,6 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Services.Utilities;
-using ErrorOr;
 
 namespace AvatarExplorer.UI;
 
@@ -23,10 +21,10 @@ public partial class MainWindow
 
     private async Task SelectImportTypeOverlay_DataImportInternal(DataImportType dataImportType)
     {
-        string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
+        var folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
         if (folders == null || folders.Length == 0) return;
 
-        string selectedFolder = folders[0];
+        var selectedFolder = folders[0];
 
         SelectImportTypeOverlay.IsVisible = false;
         
@@ -39,14 +37,14 @@ public partial class MainWindow
             });
         }
 
-        Dictionary<ItemType, string> localizedItemTypesMapping = Enum.GetValues<ItemType>().ToDictionary(i => i, i => Localizer.Instance[i.GetLocalizationKey() ?? i.ToString()]);
+        var localizedItemTypesMapping = Enum.GetValues<ItemType>().ToDictionary(i => i, i => Localizer.Instance[i.GetLocalizationKey() ?? i.ToString()]);
 
-        YesNoResult? copyAssetData = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.CopyAssetData]);
+        var copyAssetData = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.CopyAssetData]);
         if (copyAssetData == null) return;
 
-        bool shouldCopyAssetData = copyAssetData == YesNoResult.Yes;
+        var shouldCopyAssetData = copyAssetData == YesNoResult.Yes;
 
-        ErrorOr<Success> result = await AvatarExplorer.Import(dataImportType, selectedFolder, localizedItemTypesMapping, shouldCopyAssetData, progressAction);
+        var result = await AvatarExplorer.Import(dataImportType, selectedFolder, localizedItemTypesMapping, shouldCopyAssetData, progressAction);
         ProgressOverlay_Hide();
 
         if (result.IsError)

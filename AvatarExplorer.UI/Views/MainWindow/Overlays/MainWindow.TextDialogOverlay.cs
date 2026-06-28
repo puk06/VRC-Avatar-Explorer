@@ -41,7 +41,7 @@ public partial class MainWindow
         TextDialogOverlay.IsVisible = false;
         TextDialogOverlay_Content.Text = string.Empty;
 
-        TaskCompletionSource<string?>? tcs = _textDialogOverlay_tcs;
+        var tcs = _textDialogOverlay_tcs;
         _textDialogOverlay_tcs = null;
 
         tcs?.TrySetResult(result);

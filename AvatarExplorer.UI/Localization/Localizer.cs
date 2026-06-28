@@ -8,7 +8,6 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
-using ErrorOr;
 
 namespace AvatarExplorer.UI.Localization;
 
@@ -36,18 +35,18 @@ public class Localizer : INotifyPropertyChanged
 
     private Localizer()
     {
-        _map = new();
+        _map = [];
     }
 
     public void LoadFromFolder(string path)
     {
         if (!Directory.Exists(path)) return;
 
-        List<Dictionary<string, string>> languageMaps = new();
+        var languageMaps = new List<Dictionary<string, string>>();
 
-        foreach (string filePath in FileSystemService.EnumerateFiles(path))
+        foreach (var filePath in FileSystemService.EnumerateFiles(path))
         {
-            ErrorOr<Dictionary<string, string>> deserializeResult = FileSystemService.DeserializeClass<Dictionary<string, string>>(filePath);
+            var deserializeResult = FileSystemService.DeserializeClass<Dictionary<string, string>>(filePath);
             if (deserializeResult.IsError)
             {
                 ErrorManager.Instance.PostInternalError($"Failed to load language: '{Path.GetFileName(filePath)}'.", tag: deserializeResult.Errors.ToErrorString());
@@ -63,7 +62,7 @@ public class Localizer : INotifyPropertyChanged
         }
 
         _map.Clear();
-        List<Dictionary<string, string>> sortedMaps = languageMaps.OrderBy(i => ValueParser.Int(i.TryGetValue(LocalizationKey.LanguagePriority, out string? value) ? value : string.Empty, int.MaxValue)).ToList();
+        var sortedMaps = languageMaps.OrderBy(i => ValueParser.Int(i.TryGetValue(LocalizationKey.LanguagePriority, out string? value) ? value : string.Empty, int.MaxValue)).ToList();
         _map.AddRange(sortedMaps);
     }
 
@@ -81,13 +80,13 @@ public class Localizer : INotifyPropertyChanged
     public string Get(string localizationKey, string arg)
     {
         if (!IsValidIndex) return localizationKey;
-        string localizedText = _map[_selectedLanguageIndex].TryGetValue(localizationKey, out var value) ? value : localizationKey;
+        var localizedText = _map[_selectedLanguageIndex].TryGetValue(localizationKey, out var value) ? value : localizationKey;
         return string.Format(localizedText, arg);
     }
     public string Get(string localizationKey, string[] args)
     {
         if (!IsValidIndex) return localizationKey;
-        string localizedText = _map[_selectedLanguageIndex].TryGetValue(localizationKey, out var value) ? value : localizationKey;
+        var localizedText = _map[_selectedLanguageIndex].TryGetValue(localizationKey, out var value) ? value : localizationKey;
         return args.Length > 0 ? string.Format(localizedText, args) : localizedText;
     }
 

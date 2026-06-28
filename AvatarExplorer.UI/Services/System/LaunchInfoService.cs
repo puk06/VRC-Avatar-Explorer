@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Specialized;
 using System.Web;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Models.System;
@@ -12,8 +11,8 @@ public static class LaunchInfoService
     {
         try
         {
-            Uri uri = new(url);
-            NameValueCollection query = HttpUtility.ParseQueryString(uri.Query);
+            var uri = new Uri(url);
+            var query = HttpUtility.ParseQueryString(uri.Query);
             
             return new LaunchInfo
             {

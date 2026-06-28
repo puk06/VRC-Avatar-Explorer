@@ -43,7 +43,7 @@ public partial class MainWindow
 
     private async void InitialSetupOverlay_OpenFolder_Click(object? sender, RoutedEventArgs e)
     {
-        string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
+        var folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
         if (folders == null || folders.Length == 0) return;
 
         if (InitialSetupOverlay_ItemsFolderPathTextBox != null)

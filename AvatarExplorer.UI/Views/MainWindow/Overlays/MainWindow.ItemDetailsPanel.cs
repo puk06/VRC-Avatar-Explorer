@@ -27,12 +27,12 @@ public partial class MainWindow
         SidePanel_ItemDetailsContent.RowDefinitions.Clear();
         SidePanel_ItemDetailsContent.Children.Clear();
 
-        Item? selectedItem = AvatarExplorer.GetSelectedItem();
+        var selectedItem = AvatarExplorer.GetSelectedItem();
         if (selectedItem == null)
         {
             // アイテムが選択されていない場合
             SidePanel_ItemDetailsContent.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
-            TextBlock noItemText = new() { Text = Localizer.Instance[LocalizationKey.Error.Nothing], FontSize = 14, Opacity = 0.75, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Margin = new(0, 20, 0, 0) };
+            var noItemText = new TextBlock() { Text = Localizer.Instance[LocalizationKey.Error.Nothing], FontSize = 14, Opacity = 0.75, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Margin = new(0, 20, 0, 0) };
             Grid.SetRow(noItemText, 0);
             SidePanel_ItemDetailsContent.Children.Add(noItemText);
             return;
@@ -42,7 +42,7 @@ public partial class MainWindow
 
         // サムネイル画像
         SidePanel_ItemDetailsContent.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
-        Image thumbnailImage = new() { Width = 200, Height = 200, Margin = new(0, 10, 0, 10) };
+        var thumbnailImage = new Image() { Width = 200, Height = 200, Margin = new(0, 10, 0, 10) };
 
         if (!string.IsNullOrEmpty(selectedItem.ThumbnailFileName))
         {
@@ -53,8 +53,8 @@ public partial class MainWindow
             thumbnailImage.Source = ImageService.Get(SystemIconKey.FileIcon);
         }
 
-        Panel thumbnailPanel = new();
-        Border thumbnailBorder = new() { CornerRadius = new(12), ClipToBounds = true, Child = thumbnailImage };
+        var thumbnailPanel = new Panel();
+        var thumbnailBorder = new Border() { CornerRadius = new(12), ClipToBounds = true, Child = thumbnailImage };
         thumbnailPanel.Children.Add(thumbnailBorder);
 
         Grid.SetRow(thumbnailPanel, rowIndex++);
@@ -62,27 +62,27 @@ public partial class MainWindow
 
         // タイトル
         SidePanel_ItemDetailsContent.RowDefinitions.Add(new(GridLength.Auto));
-        TextBlock titleText = new() { Text = selectedItem.Title, FontSize = 18, FontWeight = FontWeight.Bold, TextWrapping = TextWrapping.Wrap, Foreground = new SolidColorBrush(Colors.White), Margin = new(0, 5, 0, 0) };
+        var titleText = new TextBlock() { Text = selectedItem.Title, FontSize = 18, FontWeight = FontWeight.Bold, TextWrapping = TextWrapping.Wrap, Foreground = new SolidColorBrush(Colors.White), Margin = new(0, 5, 0, 0) };
         Grid.SetRow(titleText, rowIndex++);
         SidePanel_ItemDetailsContent.Children.Add(titleText);
 
         // 作者
         SidePanel_ItemDetailsContent.RowDefinitions.Add(new(GridLength.Auto));
-        TextBlock authorText = new() { Text = selectedItem.Author, FontSize = 13, Opacity = 0.7, Foreground = new SolidColorBrush(Colors.White), Margin = new(0, 2, 0, 12) };
+        var authorText = new TextBlock() { Text = selectedItem.Author, FontSize = 13, Opacity = 0.7, Foreground = new SolidColorBrush(Colors.White), Margin = new(0, 2, 0, 12) };
         Grid.SetRow(authorText, rowIndex++);
         SidePanel_ItemDetailsContent.Children.Add(authorText);
 
         // Separator
         SidePanel_ItemDetailsContent.RowDefinitions.Add(new(GridLength.Auto));
-        Separator separator = new() { Margin = new(0, 5, 0, 5), Classes = { "separator" } };
+        var separator = new Separator() { Margin = new(0, 5, 0, 5), Classes = { "separator" } };
         Grid.SetRow(separator, rowIndex++);
         SidePanel_ItemDetailsContent.Children.Add(separator);
 
         // 詳細情報
-        StackPanel detailsPanel = new() { Spacing = 8 };
+        var detailsPanel = new StackPanel() { Spacing = 8 };
 
         // カテゴリ
-        string categoryText = selectedItem.Type == ItemType.Custom ? selectedItem.CustomCategory : Localizer.Instance[selectedItem.Type.GetLocalizationKey() ?? selectedItem.Type.ToString()];
+        var categoryText = selectedItem.Type == ItemType.Custom ? selectedItem.CustomCategory : Localizer.Instance[selectedItem.Type.GetLocalizationKey() ?? selectedItem.Type.ToString()];
         ItemDetailsPanel_AddDetailRow(detailsPanel, "Category", categoryText);
 
         // BoothID
@@ -100,7 +100,7 @@ public partial class MainWindow
         // サポートされているアバター
         if (selectedItem.SupportedAvatars.Length > 0)
         {
-            string[] supportedAvatarNames = AvatarService.GetAllSupportedAvatarIds(selectedItem.SupportedAvatars, AvatarExplorer.GetAllCommonAvatars())
+            var supportedAvatarNames = AvatarService.GetAllSupportedAvatarIds(selectedItem.SupportedAvatars, AvatarExplorer.GetAllCommonAvatars())
                 .Select(id => AvatarExplorer.GetItemById(id)?.Title ?? "Unknown")
                 .Select(name => RuntimeSettings.RemoveBrackets ? ItemUtils.RemoveBrackets(name) : name)
                 .ToArray();
@@ -112,7 +112,7 @@ public partial class MainWindow
         // 実装されているアバター
         if (selectedItem.ImplementedAvatars.Length > 0)
         {
-            string[] implementedAvatarNames = selectedItem.ImplementedAvatars
+            var implementedAvatarNames = selectedItem.ImplementedAvatars
                 .Select(id => AvatarExplorer.GetItemById(id)?.Title ?? "Unknown")
                 .Select(name => RuntimeSettings.RemoveBrackets ? ItemUtils.RemoveBrackets(name) : name)
                 .ToArray();
@@ -146,13 +146,13 @@ public partial class MainWindow
 
     private void ItemDetailsPanel_AddDetailRow(StackPanel panel, string label, string value)
     {
-        Grid row = new() { ColumnDefinitions = new("Auto,*"), ColumnSpacing = 8, Margin = new(0, 0, 0, 0) };
+        var row = new Grid() { ColumnDefinitions = new("Auto,*"), ColumnSpacing = 8, Margin = new(0, 0, 0, 0) };
 
-        TextBlock labelText = new() { Text = $"{label}:", FontSize = 12, FontWeight = FontWeight.Bold, Opacity = 0.75, VerticalAlignment = VerticalAlignment.Top };
+        var labelText = new TextBlock() { Text = $"{label}:", FontSize = 12, FontWeight = FontWeight.Bold, Opacity = 0.75, VerticalAlignment = VerticalAlignment.Top };
         Grid.SetColumn(labelText, 0);
         row.Children.Add(labelText);
 
-        TextBlock valueText = new() { Text = value, FontSize = 12, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Top };
+        var valueText = new TextBlock() { Text = value, FontSize = 12, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Top };
         Grid.SetColumn(valueText, 1);
         row.Children.Add(valueText);
 

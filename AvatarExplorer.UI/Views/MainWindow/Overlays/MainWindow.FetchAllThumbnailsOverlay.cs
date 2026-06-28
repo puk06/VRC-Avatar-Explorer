@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Interactivity;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
-using ErrorOr;
 
 namespace AvatarExplorer.UI;
 
@@ -53,7 +50,7 @@ public partial class MainWindow
     {
         if (_fetchAllThumbnailsOverlay_isRunning) return;
 
-        ImmutableArray<Item> allItems = AvatarExplorer.GetAllItems();
+        var allItems = AvatarExplorer.GetAllItems();
         if (allItems.Length == 0)
         {
             Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.Nothing], isError: true);
@@ -61,8 +58,8 @@ public partial class MainWindow
         }
 
         _fetchAllThumbnailsOverlay_isRunning = true;
-        _fetchAllThumbnailsOverlay_cancellationTokenSource = new CancellationTokenSource();
-        CancellationToken cancellationToken = _fetchAllThumbnailsOverlay_cancellationTokenSource.Token;
+        _fetchAllThumbnailsOverlay_cancellationTokenSource = new();
+        var cancellationToken = _fetchAllThumbnailsOverlay_cancellationTokenSource.Token;
 
         FetchAllThumbnailsOverlay_StartButton.IsEnabled = false;
         FetchAllThumbnailsOverlay_CancelButton.IsEnabled = true;
@@ -71,8 +68,8 @@ public partial class MainWindow
 
         int successCount = 0;
         int failureCount = 0;
-        bool isCancelled = false;
-        DateTime startedAt = DateTime.UtcNow;
+        var isCancelled = false;
+        var startedAt = DateTime.UtcNow;
 
         try
         {
@@ -84,14 +81,14 @@ public partial class MainWindow
                     break;
                 }
 
-                Item item = allItems[index];
+                var item = allItems[index];
 
                 FetchAllThumbnailsOverlay_StatusText.Text = Localizer.Instance["FetchAllThumbnailsOverlay.Status.Running"];
                 FetchAllThumbnailsOverlay_CurrentItemText.Text = Localizer.Instance.Get("FetchAllThumbnailsOverlay.CurrentItem", item.Title);
 
                 await AvatarExplorer.WaitForApiCooldownAsync(cancellationToken: cancellationToken);
 
-                ErrorOr<Success> result = await AvatarExplorer.FetchAndUpdateThumbnailImage(item.Id);
+                var result = await AvatarExplorer.FetchAndUpdateThumbnailImage(item.Id);
                 if (result.IsError)
                 {
                     failureCount++;
@@ -113,7 +110,7 @@ public partial class MainWindow
                 int remainingCount = allItems.Length - processedCount;
                 if (processedCount > 0 && remainingCount > 0)
                 {
-                    double averageSecondsPerItem = (DateTime.UtcNow - startedAt).TotalSeconds / processedCount;
+                    var averageSecondsPerItem = (DateTime.UtcNow - startedAt).TotalSeconds / processedCount;
                     int estimatedRemainingSeconds = (int)Math.Round(averageSecondsPerItem * remainingCount, MidpointRounding.AwayFromZero);
                     FetchAllThumbnailsOverlay_EtaText.Text = FormatRemainingTime(estimatedRemainingSeconds);
                 }

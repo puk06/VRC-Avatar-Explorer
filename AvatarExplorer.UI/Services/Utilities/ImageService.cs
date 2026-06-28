@@ -64,13 +64,13 @@ internal static class ImageService
         {
             if (IsSystemIcon(fileName)) return SystemIconsDictionary[fileName];
 
-            string filePath = iconType switch
+            var filePath = iconType switch
             {
                 IconType.Item => Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName),
                 _ => fileName,
             };
 
-            bool compressThumbnail = iconType == IconType.Item;
+            var compressThumbnail = iconType == IconType.Item;
             return GetFromFileCache(filePath, compressThumbnail);
         }
         catch (Exception ex)
@@ -86,7 +86,7 @@ internal static class ImageService
 
         try
         {
-            using Stream fileStream = AssetLoader.Open(uri);
+            using var fileStream = AssetLoader.Open(uri);
             return new Bitmap(fileStream);
         }
         catch (Exception ex)
@@ -108,7 +108,7 @@ internal static class ImageService
             {
                 if (!Directory.Exists(SystemPath.ItemThumbnailsFolderPath)) return;
 
-                foreach (string filePath in imageFileNames)
+                foreach (var filePath in imageFileNames)
                 {
                     _ = GetFromFileCache(Path.Join(SystemPath.ItemThumbnailsFolderPath, filePath), compressThumbnail: true);
                 }
@@ -126,8 +126,8 @@ internal static class ImageService
 
     private static Bitmap? GetFromFileCache(string filePath, bool compressThumbnail)
     {
-        bool exists = File.Exists(filePath);
-        DateTime lastWriteTimeUtc = DateTime.MinValue;
+        var exists = File.Exists(filePath);
+        var lastWriteTimeUtc = DateTime.MinValue;
         if (exists)
         {
             try
@@ -148,7 +148,7 @@ internal static class ImageService
                 return cacheEntry.Bitmap;
             }
 
-            Bitmap? bitmap = exists ? LoadBitmap(filePath, compressThumbnail) : null;
+            var bitmap = exists ? LoadBitmap(filePath, compressThumbnail) : null;
 
             if (cacheEntry?.Bitmap != null && !ReferenceEquals(cacheEntry.Bitmap, bitmap))
             {
@@ -174,17 +174,17 @@ internal static class ImageService
             sourceBitmap = new(filePath);
             if (!compressThumbnail) return sourceBitmap;
 
-            PixelSize sourceSize = sourceBitmap.PixelSize;
+            var sourceSize = sourceBitmap.PixelSize;
             int maxEdge = Math.Max(sourceSize.Width, sourceSize.Height);
             if (maxEdge <= _compressedThumbnailMaxEdge) return sourceBitmap;
 
-            double scale = (double)_compressedThumbnailMaxEdge / maxEdge;
-            PixelSize targetSize = new(
+            var scale = (double)_compressedThumbnailMaxEdge / maxEdge;
+            var targetSize = new PixelSize(
                 Math.Max(1, (int)Math.Round(sourceSize.Width * scale)),
                 Math.Max(1, (int)Math.Round(sourceSize.Height * scale))
             );
 
-            Bitmap compressedBitmap = sourceBitmap.CreateScaledBitmap(targetSize, BitmapInterpolationMode.HighQuality);
+            var compressedBitmap = sourceBitmap.CreateScaledBitmap(targetSize, BitmapInterpolationMode.HighQuality);
             sourceBitmap.Dispose();
 
             return compressedBitmap;

@@ -52,7 +52,7 @@ public partial class MainWindow
         _editTagsOverlay_selectedTags.Clear();
         EditTagsOverlay_TagTextBox.Text = string.Empty;
 
-        TaskCompletionSource<string[]?>? tcs = _editTagsOverlay_tcs;
+        var tcs = _editTagsOverlay_tcs;
         _editTagsOverlay_tcs = null;
 
         tcs?.TrySetResult(result);
@@ -80,9 +80,9 @@ public partial class MainWindow
     {
         EditTagsOverlay_TagList.Children.Clear();
 
-        foreach (string tag in _editTagsOverlay_selectedTags)
+        foreach (var tag in _editTagsOverlay_selectedTags)
         {
-            Border tagBorder = ItemButtonFactory.GetTagBorder(tag);
+            var tagBorder = ItemButtonFactory.GetTagBorder(tag);
             if (tagBorder.Child is TextBlock tagLabel)
             {
                 tagLabel.FontWeight = FontWeight.Bold;
@@ -125,7 +125,7 @@ public partial class MainWindow
     }
     private void EditTagsOverlay_TagComboBox_SelectionChanged(object? sender, RoutedEventArgs e)
     {
-        string? selectedTag = (EditTagsOverlay_TagComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+        var selectedTag = (EditTagsOverlay_TagComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
         if (string.IsNullOrEmpty(selectedTag) || _editTagsOverlay_selectedTags.Contains(selectedTag))
         {
             EditTagsOverlay_TagComboBox.SelectedIndex = -1;

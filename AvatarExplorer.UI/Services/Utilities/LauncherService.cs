@@ -17,10 +17,10 @@ internal static class LauncherService
     {
         try
         {
-            ILauncher? launcher = GetLauncher(visual);
+            var launcher = GetLauncher(visual);
             if (launcher == null) return Error.Failure(description: "Failed to get launcher.");
 
-            FileInfo fileInfo = new(filePath);
+            var fileInfo = new FileInfo(filePath);
             await launcher.LaunchFileInfoAsync(fileInfo);
 
             return Result.Success;
@@ -36,10 +36,10 @@ internal static class LauncherService
     {
         try
         {
-            ILauncher? launcher = GetLauncher(visual);
+            var launcher = GetLauncher(visual);
             if (launcher == null) return Error.Failure(description: "Failed to get launcher.");
 
-            DirectoryInfo folderInfo = new(folderPath);
+            var folderInfo = new DirectoryInfo(folderPath);
             await launcher.LaunchDirectoryInfoAsync(folderInfo);
             
             return Result.Success;
@@ -55,10 +55,10 @@ internal static class LauncherService
     {
         try
         {
-            ILauncher? launcher = GetLauncher(visual);
+            var launcher = GetLauncher(visual);
             if (launcher == null) return Error.Failure(description: "Failed to get launcher.");
 
-            Uri uriInfo = new(uri);
+            var uriInfo = new Uri(uri);
             await launcher.LaunchUriAsync(uriInfo);
 
             return Result.Success;

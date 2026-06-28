@@ -7,7 +7,6 @@ using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.Utilities;
-using ErrorOr;
 
 namespace AvatarExplorer.UI;
 
@@ -18,10 +17,10 @@ public partial class MainWindow
 
     private async Task SelectThumbnailImportTypeOverlay_ImportInternal(ThumbnailImportType importType)
     {
-        string[]? folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
+        var folders = await StorageService.OpenFolderDialog(this, Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath], false);
         if (folders == null || folders.Length == 0) return;
 
-        string selectedFolder = folders[0];
+        var selectedFolder = folders[0];
 
         SelectThumbnailImportTypeOverlay_Hide();
 
@@ -34,7 +33,7 @@ public partial class MainWindow
             });
         }
 
-        ErrorOr<Success> result = await AvatarExplorer.ImportThumbnail(importType, selectedFolder, progressAction);
+        var result = await AvatarExplorer.ImportThumbnail(importType, selectedFolder, progressAction);
         ProgressOverlay_Hide();
 
         if (result.IsError)

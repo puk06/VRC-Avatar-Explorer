@@ -43,7 +43,7 @@ public partial class MainWindow
         YesNoDialogOverlay_Title.Text = string.Empty;
         YesNoDialogOverlay_Content.Text = string.Empty;
 
-        TaskCompletionSource<YesNoResult>? tcs = _yesNoDialogOverlay_tcs;
+        var tcs = _yesNoDialogOverlay_tcs;
         _yesNoDialogOverlay_tcs = null;
 
         tcs?.TrySetResult(result);

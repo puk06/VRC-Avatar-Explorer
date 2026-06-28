@@ -50,7 +50,7 @@ public partial class MainWindow
         EditSupportedAvatarsOverlay_SearchTextBox.Text = string.Empty;
         EditSupportedAvatarsOverlay_AvatarsList.Children.Clear();
 
-        TaskCompletionSource<string[]?>? tcs = _editSupportedAvatarsOverlay_tcs;
+        var tcs = _editSupportedAvatarsOverlay_tcs;
         _editSupportedAvatarsOverlay_tcs = null;
 
         tcs?.TrySetResult(result);
@@ -67,10 +67,10 @@ public partial class MainWindow
         if (EditSupportedAvatarsOverlay_AvatarsList == null) return;
         EditSupportedAvatarsOverlay_AvatarsList.Children.Clear();
 
-        string searchText = EditSupportedAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
-        string[] parsedText = TextParser.Parse(searchText);
+        var searchText = EditSupportedAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
+        var parsedText = TextParser.Parse(searchText);
 
-        IEnumerable<ItemCountInfo> avatars = AvatarExplorer
+        var avatars = AvatarExplorer
             .GetAvatars(includeCommonAvatar: true, includeTempAvatar: true)
             .Where(
                 i =>
@@ -80,11 +80,11 @@ public partial class MainWindow
                     (i.Item is TempAvatar tempAvatar && EditSupportedAvatarsOverlay_IsMatch(tempAvatar.AvatarName, parsedText))
             );
 
-        foreach (ItemCountInfo itemCountInfo in avatars)
+        foreach (var itemCountInfo in avatars)
         {
-            Button button = ItemButtonFactory.AddItemButton(EditSupportedAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: EditSupportedAvatarsOverlay_ItemButton_Click);
+            var button = ItemButtonFactory.AddItemButton(EditSupportedAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: EditSupportedAvatarsOverlay_ItemButton_Click);
 
-            string avatarId = string.Empty;
+            var avatarId = string.Empty;
 
             if (itemCountInfo.Item is Item item) avatarId = item.Id;
             else if (itemCountInfo.Item is CommonAvatar commonAvatar) avatarId = commonAvatar.GetInternalId();
@@ -101,7 +101,7 @@ public partial class MainWindow
     private void EditSupportedAvatarsOverlay_Confirm_Click(object? sender, RoutedEventArgs e) => EditSupportedAvatarsOverlay_Close(_editSupportedAvatarsOverlay_selectedAvatars.ToArray());
     private async void EditSupportedAvatarsOverlay_AddTempAvatar_Click(object? sender, RoutedEventArgs e)
     {
-        string? tempAvatarName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewTempAvatarName]);
+        var tempAvatarName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewTempAvatarName]);
         if (string.IsNullOrEmpty(tempAvatarName)) return;
 
         AvatarExplorer.AddTempAvatar(tempAvatarName);

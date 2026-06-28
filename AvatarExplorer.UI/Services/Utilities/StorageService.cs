@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,19 +17,20 @@ internal static class StorageService
     {
         try
         {
-            IStorageProvider? storageProvider = GetStorageProvider(visual);
+            var storageProvider = GetStorageProvider(visual);
             if (storageProvider == null) return [];
 
-            IReadOnlyList<IStorageFile> files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = title,
                 AllowMultiple = allowMultiple
             });
 
-            string[] filePaths = files
+            var filePaths = files
                 .Select(i => i.TryGetLocalPath())
                 .Where(i => !string.IsNullOrEmpty(i) && File.Exists(i))
-                .ToArray()!;
+                .Cast<string>()
+                .ToArray();
 
             return filePaths.Length == 0 ? null : filePaths;
         }
@@ -45,10 +45,10 @@ internal static class StorageService
     {
         try
         {
-            IStorageProvider? storageProvider = GetStorageProvider(visual);
+            var storageProvider = GetStorageProvider(visual);
             if (storageProvider == null) return [];
 
-            FolderPickerOpenOptions folderPickerOpenOptions = new()
+            var folderPickerOpenOptions = new FolderPickerOpenOptions()
             {
                 Title = title,
                 AllowMultiple = allowMultiple
@@ -56,12 +56,13 @@ internal static class StorageService
 
             if (!string.IsNullOrEmpty(initialPath)) folderPickerOpenOptions.SuggestedStartLocation = await storageProvider.TryGetFolderFromPathAsync(initialPath);
 
-            IReadOnlyList<IStorageFolder> folders = await storageProvider.OpenFolderPickerAsync(folderPickerOpenOptions);
+            var folders = await storageProvider.OpenFolderPickerAsync(folderPickerOpenOptions);
 
-            string[] FolderPaths = folders
+            var FolderPaths = folders
                 .Select(i => i.TryGetLocalPath())
                 .Where(i => !string.IsNullOrEmpty(i) && Directory.Exists(i))
-                .ToArray()!;
+                .Cast<string>()
+                .ToArray();
 
             return FolderPaths.Length == 0 ? null : FolderPaths;
         }
@@ -75,11 +76,11 @@ internal static class StorageService
     internal static async Task<string?> SaveFileDialog(Visual visual, string title, string defaultExtension)
     {
         try
-            {
-            IStorageProvider? storageProvider = GetStorageProvider(visual);
+        {
+            var storageProvider = GetStorageProvider(visual);
             if (storageProvider == null) return null;
 
-            IStorageFile? file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = title,
                 DefaultExtension = defaultExtension
@@ -98,7 +99,7 @@ internal static class StorageService
     {
         try
         {
-            IStorageProvider? storageProvider = GetStorageProvider(visual);
+            var storageProvider = GetStorageProvider(visual);
             if (storageProvider == null) return null;
 
             return await storageProvider.TryGetFileFromPathAsync(filePath);

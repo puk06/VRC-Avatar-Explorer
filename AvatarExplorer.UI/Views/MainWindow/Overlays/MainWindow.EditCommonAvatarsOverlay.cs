@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -35,7 +34,7 @@ public partial class MainWindow
     private void EditCommonAvatarsOverlay_RefleshGroupList()
     {
         EditCommonAvatarsOverlay_GroupComboBox.Items.Clear();
-        foreach (CommonAvatar commonAvatar in AvatarExplorer.GetAllCommonAvatars())
+        foreach (var commonAvatar in AvatarExplorer.GetAllCommonAvatars())
         {
             EditCommonAvatarsOverlay_GroupComboBox.Items.Add(new ComboBoxItem
             {
@@ -50,22 +49,22 @@ public partial class MainWindow
         if (EditCommonAvatarsOverlay_AvatarsList == null) return;
         EditCommonAvatarsOverlay_AvatarsList.Children.Clear();
 
-        string searchText = EditCommonAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
-        string[] parsedText = TextParser.Parse(searchText);
+        var searchText = EditCommonAvatarsOverlay_SearchTextBox.Text ?? string.Empty;
+        var parsedText = TextParser.Parse(searchText);
 
-        IEnumerable<ItemCountInfo> avatars = AvatarExplorer.GetAvatars(includeTempAvatar: true)
+        var avatars = AvatarExplorer.GetAvatars(includeTempAvatar: true)
             .Where(i =>
                 string.IsNullOrEmpty(searchText) ||
                 (i.Item is Item item && EditCommonAvatarsOverlay_IsMatch(AvatarExplorer.GetSearchIndexByItemId(item.Id), parsedText)) ||
                 (i.Item is TempAvatar tempAvatar && EditCommonAvatarsOverlay_IsMatch(tempAvatar.AvatarName, parsedText))
             );
 
-        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        var commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null) return;
 
-        foreach (ItemCountInfo itemCountInfo in avatars)
+        foreach (var itemCountInfo in avatars)
         {
-            Button button = ItemButtonFactory.AddItemButton(EditCommonAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: EditCommonAvatarsOverlay_ItemButton_Click);
+            var button = ItemButtonFactory.AddItemButton(EditCommonAvatarsOverlay_AvatarsList, new UISelectableItem(itemCountInfo), RuntimeSettings, UserPreferences, onClick: EditCommonAvatarsOverlay_ItemButton_Click);
             if ((itemCountInfo.Item is Item item && commonAvatar.Avatars.Contains(item.Id)) || (itemCountInfo.Item is TempAvatar tempAvatar && commonAvatar.Avatars.Contains(tempAvatar.GetInternalId()))) button.Classes.Add("accentbutton");
         }
     }
@@ -79,7 +78,7 @@ public partial class MainWindow
         if (_editCommonAvatarsOverlay_selectedGroupId == null) return;
         if (sender is not Button button || button.Tag is not ItemTagInfo itemTagInfo) return;
 
-        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        var commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null) return;
 
         if (commonAvatar.Avatars.Contains(itemTagInfo.Value)) commonAvatar.UpdateAvatars(commonAvatar.Avatars.Where(i => i != itemTagInfo.Value));
@@ -89,7 +88,7 @@ public partial class MainWindow
     }
     private async void EditCommonAvatarsOverlay_AddGroup_Click(object? sender, RoutedEventArgs e)
     {
-        string? commonAvatarGroupName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.AddCommonAvatarGroup]);
+        var commonAvatarGroupName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.AddCommonAvatarGroup]);
         if (string.IsNullOrEmpty(commonAvatarGroupName)) return;
 
         AvatarExplorer.AddCommonAvatar(commonAvatarGroupName);
@@ -104,14 +103,14 @@ public partial class MainWindow
     }
     private async void EditCommonAvatarsOverlay_RenameGroup_Click(object? sender, RoutedEventArgs e)
     {
-        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        var commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null)
         {
             Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CommonAvatarNotFound], isError: true);
             return;
         }
         
-        string? commonAvatarGroupName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewCommonAvatarGroupName], commonAvatar.GroupName);
+        var commonAvatarGroupName = await TextDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Title.NewCommonAvatarGroupName], commonAvatar.GroupName);
         if (string.IsNullOrEmpty(commonAvatarGroupName)) return;
         
         commonAvatar.GroupName = commonAvatarGroupName;
@@ -126,14 +125,14 @@ public partial class MainWindow
     }
     private async void EditCommonAvatarsOverlay_ReplaceAvatarsToGroup_Click(object? sender, RoutedEventArgs e)
     {
-        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        var commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null)
         {
             Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CommonAvatarNotFound], isError: true);
             return;
         }
 
-        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup));
+        var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup));
         if (result == null || result != YesNoResult.Yes) return;
 
         AvatarExplorer.ReplaceSupportedAvatarsToCommonAvatarGroup(commonAvatar.Id);
@@ -141,17 +140,17 @@ public partial class MainWindow
     }
     private async void EditCommonAvatarsOverlay_RemoveGroup_Click(object? sender, RoutedEventArgs e)
     {
-        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        var commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null)
         {
             Main_ShowNotification(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.CommonAvatarNotFound], isError: true);
             return;
         }
 
-        YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveCommonAvatarGroup, commonAvatar.GroupName));
+        var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.RemoveCommonAvatarGroup, commonAvatar.GroupName));
         if (result == null || result != YesNoResult.Yes) return;
 
-        YesNoResult? result1 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars));
+        var result1 = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars));
         if (result1 != null && result1 == YesNoResult.Yes) AvatarExplorer.ReplaceCommonAvatarGroupToSupportedAvatars(commonAvatar.Id);
 
         AvatarExplorer.RemoveCommonAvatar(commonAvatar.GetInternalId());
@@ -170,10 +169,10 @@ public partial class MainWindow
     }
     private void EditCommonAvatarsOverlay_SelectVisible_Click(object? sender, RoutedEventArgs e)
     {
-        CommonAvatar? commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
+        var commonAvatar = AvatarExplorer.GetCommonAvatarById(_editCommonAvatarsOverlay_selectedGroupId);
         if (commonAvatar == null) return;
 
-        IEnumerable<string> visibleAvatarIds = EditCommonAvatarsOverlay_AvatarsList.Children
+        var visibleAvatarIds = EditCommonAvatarsOverlay_AvatarsList.Children
             .OfType<Button>()
             .Select(button => (button.Tag as ItemTagInfo)?.Value)
             .Where(value => !string.IsNullOrEmpty(value))

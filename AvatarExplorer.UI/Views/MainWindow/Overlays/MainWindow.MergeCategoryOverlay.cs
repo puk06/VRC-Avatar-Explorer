@@ -50,7 +50,7 @@ public partial class MainWindow
         MergeCategoryOverlay.IsVisible = false;
         MergeCategoryOverlay_ItemTypeComboBox.Items.Clear();
 
-        TaskCompletionSource<ItemCategory?>? tcs = _mergeCategoryOverlay_tcs;
+        var tcs = _mergeCategoryOverlay_tcs;
         _mergeCategoryOverlay_tcs = null;
 
         tcs?.TrySetResult(result);
@@ -70,10 +70,10 @@ public partial class MainWindow
 
         if (selectedIndex >= MergeCategoryOverlay_CustomCategoryIndex)
         {
-            return new ItemCategory(MergeCategoryOverlay_ItemTypeComboBox.SelectedItem?.ToString() ?? string.Empty);
+            return new(MergeCategoryOverlay_ItemTypeComboBox.SelectedItem?.ToString() ?? string.Empty);
         }
 
-        return new ItemCategory((ItemType)selectedIndex);
+        return new((ItemType)selectedIndex);
     }
 
     #region Event Handler

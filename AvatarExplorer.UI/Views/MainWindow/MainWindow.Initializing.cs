@@ -17,17 +17,13 @@ public partial class MainWindow
 {
     private void Main_UpdateWindowTitle()
     {
-        string title = string.Format("VRC Avatar Explorer v{0}", AvatarExplorerApp.CurrentVersion);
+        var title = string.Format("VRC Avatar Explorer v{0}", AvatarExplorerApp.CurrentVersion);
 
         if (_main_isAdministratorMode)
-        {
             title += string.Format(" - [{0}]", Localizer.Instance[LocalizationKey.Title.AdministratorMode]);
-        }
 
         if (_main_isThumbnailCacheWarmupRunning)
-        {
             title += string.Format(" - {0}", Localizer.Instance[LocalizationKey.Title.CacheGeneration]);
-        }
 
         Title = title;
     }
@@ -94,7 +90,7 @@ public partial class MainWindow
     }
     private void Main_InitializeLanguageBox()
     {
-        string[] languages = Localizer.Instance.GetLanguageList();
+        var languages = Localizer.Instance.GetLanguageList();
 
         SettingsOverlay_LanguageComboBox.Items.Clear();
         SettingsOverlay_LanguageComboBox.Items.AddRange(languages);
@@ -132,18 +128,18 @@ public partial class MainWindow
 
             if (SchemeService.IsSchemeRegistered())
             {
-                string? currentInternalSchemePath = SchemeService.GetInternalSchemePath();
+                var currentInternalSchemePath = SchemeService.GetInternalSchemePath();
 
                 if (!string.IsNullOrEmpty(currentInternalSchemePath) && !SchemeService.IsSkipped(currentInternalSchemePath) && currentInternalSchemePath != ProcessUtils.GetCurrentProcessPath())
                 {
-                    YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.PathChanged]);
+                    var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.PathChanged]);
                     if (result == null || result != YesNoResult.Yes) return;
                     
                     await Main_RegisterSchemeAsync();
                 }
                 else if (string.IsNullOrEmpty(currentInternalSchemePath))
                 {
-                    YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterAgain]);
+                    var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RegisterAgain]);
                     if (result == null || result != YesNoResult.Yes) return;
                     
                     await Main_RegisterSchemeAsync();
@@ -151,7 +147,7 @@ public partial class MainWindow
             }
             else
             {
-                YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.Register]);
+                var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.Register]);
                 if (result == null) return;
                 
                 if (result == YesNoResult.Yes) await Main_RegisterSchemeAsync();
@@ -177,7 +173,7 @@ public partial class MainWindow
 
             if (!SchemeService.IsRunAsAdmin())
             {
-                YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RestartAsAdmin]);
+                var result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Scheme.RestartAsAdmin]);
                 if (result != null && result == YesNoResult.Yes) SchemeService.RestartAsAdmin();
             }
             else
