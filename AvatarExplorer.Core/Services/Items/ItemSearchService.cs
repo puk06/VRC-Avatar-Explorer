@@ -2,7 +2,6 @@ using System.Collections.Immutable;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Avatars;
-using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.Items;
@@ -11,12 +10,12 @@ internal static class ItemSearchService
 {
     internal static ImmutableArray<Item> ExecuteSearch(SearchContext searchContext, SearchFilter searchFilter)
     {
-        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(searchContext.Items.Where(i => i.Type == ItemType.Avatar), searchContext.TempAvatars);
+        var avatarTitleMaps = ItemUtils.GetItemTitleMaps(searchContext.Items.Where(i => i.Type == ItemType.Avatar), searchContext.TempAvatars);
 
-        List<Item> matchedItems = new();
-        foreach (Item item in searchContext.Items)
+        var matchedItems = new List<Item>();
+        foreach (var item in searchContext.Items)
         {
-            string searchIndex = searchContext.SearchIndexDictionary.TryGetValue(item.Id, out string? value) ? value : string.Empty;
+            var searchIndex = searchContext.SearchIndexDictionary.TryGetValue(item.Id, out string? value) ? value : string.Empty;
             if (Matches(item, searchFilter, searchIndex, avatarTitleMaps, searchContext.CommonAvatars, searchContext.RuntimeSettings.DataRootDirectory))
             {
                 matchedItems.Add(item);
@@ -89,12 +88,12 @@ internal static class ItemSearchService
         }
         else
         {
-            foreach (SearchToken token in searchFilter.SearchTokens)
+            foreach (var token in searchFilter.SearchTokens)
             {
-                bool isNegation = token.IsNegation;
-                string filterValue = token.Value;
+                var isNegation = token.IsNegation;
+                var filterValue = token.Value;
 
-                string[] targets = getTargets(token.Type);
+                var targets = getTargets(token.Type);
 
                 if (searchFilter.IsOrCondition)
                 {
@@ -130,7 +129,7 @@ internal static class ItemSearchService
 
     internal static string BuildItemSearchIndex(Item item, Dictionary<string, string> avatarTitleMaps, IEnumerable<CommonAvatar> commonAvatars)
     {
-        IEnumerable<string> avatars = AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatars, commonAvatars, includeCommonAvatarToSupported: true)
+        var avatars = AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatars, commonAvatars, includeCommonAvatarToSupported: true)
             .Concat(item.ImplementedAvatars)
             .Select(i => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, i))
             .Where(name => !string.IsNullOrEmpty(name));

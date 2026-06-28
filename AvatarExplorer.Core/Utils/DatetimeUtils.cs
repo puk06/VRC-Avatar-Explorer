@@ -10,7 +10,7 @@ public static class DatetimeUtils
 
         if (long.TryParse(unixTime, out long unixTimeLong))
         {
-            DateTime dateTime = DateTimeOffset.FromUnixTimeMilliseconds(unixTimeLong).ToLocalTime().DateTime;
+            var dateTime = DateTimeOffset.FromUnixTimeMilliseconds(unixTimeLong).ToLocalTime().DateTime;
             return dateTime.ToString("yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture);
         }
 

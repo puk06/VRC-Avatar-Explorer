@@ -68,15 +68,15 @@ public class ItemCategory : ISelectableItem
 
         if (internalId.StartsWith(CustomCategoryPrefix))
         {
-            category = new ItemCategory(internalId[CustomCategoryPrefix.Length..]);
+            category = new(internalId[CustomCategoryPrefix.Length..]);
             return true;
         }
         else if (internalId.StartsWith(ItemCategoryPrefix))
         {
-            string itemTypeString = internalId[ItemCategoryPrefix.Length..];
-            if (Enum.TryParse(itemTypeString, out ItemType itemType))
+            var type = internalId[ItemCategoryPrefix.Length..];
+            if (Enum.TryParse(type, out ItemType itemType))
             {
-                category = new ItemCategory(itemType);
+                category = new(itemType);
                 return true;
             }
         }

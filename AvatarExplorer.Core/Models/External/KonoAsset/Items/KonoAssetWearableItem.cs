@@ -14,7 +14,7 @@ public class KonoAssetWearableItem : AbstractKonoAssetItem
 
     public override Item ToItem()
     {
-        Item migratedItem = ItemCreator.FromKonoAssetDescription(Description);
+        var migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.ItemPath = $"<sys>{Id}";
         migratedItem.Type = ItemType.Custom;
         migratedItem.CustomCategory = string.IsNullOrEmpty(Category) ? "Wearables" : Category;

@@ -215,26 +215,25 @@ public partial class AvatarExplorerApp
             return [];
         }
 
-        IEnumerable<ItemFileCategoryType> allCategories = Enum.GetValues<ItemFileCategoryType>();
-        IEnumerable<ItemFileCategoryType> validCategories = allCategories.Where(c => !string.IsNullOrEmpty(c.GetLocalizationKey()));
+        var allCategories = Enum.GetValues<ItemFileCategoryType>();
+        var validCategories = allCategories.Where(c => !string.IsNullOrEmpty(c.GetLocalizationKey()));
 
-        Dictionary<ItemFileCategoryType, List<string>> buckets = new();
-        foreach (var c in validCategories) buckets[c] = new List<string>();
+        var buckets = new Dictionary<ItemFileCategoryType, List<string>>();
+        foreach (var c in validCategories) buckets[c] = [];
 
-        IEnumerable<ItemFileCategoryType> categoriesWithFilters = validCategories
-            .Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null);
+        var categoriesWithFilters = validCategories.Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null);
 
         foreach (string file in FileSystemService.EnumerateFiles(itemPath, isRecursive: isRecursive).SortByFileName())
         {
-            string extension = Path.GetExtension(file);
-            string fileName = Path.GetFileNameWithoutExtension(file);
+            var extension = Path.GetExtension(file);
+            var fileName = Path.GetFileNameWithoutExtension(file);
 
             bool matchedAny = false;
 
             foreach (var c in categoriesWithFilters)
             {
-                string[]? exts = c.GetExtensionFilters();
-                string[]? names = c.GetFileNameFilters();
+                var exts = c.GetExtensionFilters();
+                var names = c.GetFileNameFilters();
                 if (exts != null && exts.Contains(extension) && (names == null || names.Any(f => fileName.Contains(f, StringComparison.CurrentCultureIgnoreCase))))
                 {
                     buckets[c].Add(Path.GetFullPath(file));
@@ -253,7 +252,7 @@ public partial class AvatarExplorerApp
         {
             if (kv.Value.Count == 0) continue;
 
-            FileCategoryItem item = new(kv.Key);
+            var item = new FileCategoryItem(kv.Key);
             item.FilePaths.AddRange(kv.Value);
 
             resultBuilder.Add(new ItemCountInfo(item, kv.Value.Count));
@@ -267,19 +266,19 @@ public partial class AvatarExplorerApp
 
         if (Directory.Exists(rootPath))
         {
-            foreach (string folder in Directory.GetDirectories(rootPath).SortByFileName())
+            foreach (var folder in Directory.GetDirectories(rootPath).SortByFileName())
             {
                 resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(folder)), FileSystemService.EnumerateFiles(folder).Count()));
             }
 
-            IEnumerable<string> rootFiles = FileSystemService.EnumerateFiles(rootPath, isRecursive: false);
+            var rootFiles = FileSystemService.EnumerateFiles(rootPath, isRecursive: false);
             if (rootFiles.Any())
             {
                 resultBuilder.Add(new ItemCountInfo(new ItemFolder(Path.GetFullPath(rootPath), isRoot: true), rootFiles.Count()));
             }
         }
 
-        foreach (string itemPath in itemPaths)
+        foreach (var itemPath in itemPaths)
         {
             if (!Directory.Exists(itemPath))
             {
@@ -294,13 +293,11 @@ public partial class AvatarExplorerApp
     }
     private ImmutableArray<ItemCountInfo> GetFilesFromPathInternal(string itemPath, string category, bool isRecursive)
     {
-        ItemFileCategoryType targetCategory = Enum.GetValues<ItemFileCategoryType>()
-            .FirstOrDefault(i => i.GetLocalizationKey() == category);
-
+        var targetCategory = Enum.GetValues<ItemFileCategoryType>().FirstOrDefault(i => i.GetLocalizationKey() == category);
         if (targetCategory == default) return [];
 
-        string[]? extensionFilters = targetCategory.GetExtensionFilters();
-        string[]? fileNameFilters = targetCategory.GetFileNameFilters();
+        var extensionFilters = targetCategory.GetExtensionFilters();
+        var fileNameFilters = targetCategory.GetFileNameFilters();
 
         if (!Directory.Exists(itemPath))
         {
@@ -312,13 +309,12 @@ public partial class AvatarExplorerApp
 
         if (targetCategory == ItemFileCategoryType.Unknown)
         {
-            var categoriesWithFilters = Enum.GetValues<ItemFileCategoryType>()
-                .Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null);
+            var categoriesWithFilters = Enum.GetValues<ItemFileCategoryType>().Where(c => c != ItemFileCategoryType.Unknown && c.GetExtensionFilters() != null);
 
             foreach (string file in FileSystemService.EnumerateFiles(itemPath, isRecursive: isRecursive).SortByFileName())
             {
-                string extension = Path.GetExtension(file);
-                string fileName = Path.GetFileNameWithoutExtension(file);
+                var extension = Path.GetExtension(file);
+                var fileName = Path.GetFileNameWithoutExtension(file);
 
                 bool matched = categoriesWithFilters.Any(c =>
                 {
@@ -332,10 +328,10 @@ public partial class AvatarExplorerApp
         }
         else
         {
-            foreach (string file in FileSystemService.EnumerateFiles(itemPath, isRecursive: isRecursive).SortByFileName())
+            foreach (var file in FileSystemService.EnumerateFiles(itemPath, isRecursive: isRecursive).SortByFileName())
             {
-                string extension = Path.GetExtension(file);
-                string fileName = Path.GetFileNameWithoutExtension(file);
+                var extension = Path.GetExtension(file);
+                var fileName = Path.GetFileNameWithoutExtension(file);
 
                 if (extensionFilters != null && extensionFilters.Contains(extension) && (fileNameFilters == null || fileNameFilters.Any(f => fileName.Contains(f, StringComparison.CurrentCultureIgnoreCase))))
                 {
@@ -354,7 +350,7 @@ public partial class AvatarExplorerApp
 
     public Item? GetSelectedItem()
     {
-        SelectionNode? itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
+        var itemSelectionNode = _selectionState.FirstOrDefault(ItemTagStates.RootSelectedItem | ItemTagStates.SearchItem | ItemTagStates.RootItem);
         if (itemSelectionNode == null) return null;
 
         return _itemDatabaseManager.GetById(itemSelectionNode.Key);

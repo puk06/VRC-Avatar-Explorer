@@ -1,5 +1,3 @@
-using AvatarExplorer.Core.Models.Items;
-
 namespace AvatarExplorer.Core.Models.External.V1;
 
 public class ItemV1

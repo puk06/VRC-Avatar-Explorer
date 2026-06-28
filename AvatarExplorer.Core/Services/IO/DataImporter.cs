@@ -51,39 +51,39 @@ internal static class DataImporter
     {
         try
         {
-            string dataFolderPath = importRequest.DataFolderPath;
-            bool copyAssetData = importRequest.CopyAssetData;
-            RuntimeSettings runtimeSettings = importRequest.RuntimeSettings;
-            Func<(string, int), Task>? reportProgress = importRequest.ReportProgress;
+            var dataFolderPath = importRequest.DataFolderPath;
+            var copyAssetData = importRequest.CopyAssetData;
+            var runtimeSettings = importRequest.RuntimeSettings;
+            var reportProgress = importRequest.ReportProgress;
 
-            DataImportResult dataImportResult = new();
-            int importParallelism = GetImportParallelism(runtimeSettings);
+            var dataImportResult = new DataImportResult();
+            var importParallelism = GetImportParallelism(runtimeSettings);
         
             if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 0));
 
             // AEソフト本体のフォルダが渡された時はパスを変換して上げる
             if (Directory.Exists(Path.Combine(dataFolderPath, V1DatasFolderName))) dataFolderPath = Path.Combine(dataFolderPath, V1DatasFolderName);
 
-            List<ItemV1> v1Items = FileSystemService.DeserializeClass<List<ItemV1>>(SystemPathV1.ItemDatabasePath(dataFolderPath)).Value ?? [];
-            List<CommonAvatarV1> v1CommonAvatars = FileSystemService.DeserializeClass<List<CommonAvatarV1>>(SystemPathV1.CommonAvatarDatabasePath(dataFolderPath)).Value ?? [];
+            var v1Items = FileSystemService.DeserializeClass<List<ItemV1>>(SystemPathV1.ItemDatabasePath(dataFolderPath)).Value ?? [];
+            var v1CommonAvatars = FileSystemService.DeserializeClass<List<CommonAvatarV1>>(SystemPathV1.CommonAvatarDatabasePath(dataFolderPath)).Value ?? [];
 
-            List<Item> items = new();
+            var items = new List<Item>();
 
-            Dictionary<string, string> pathMapping = new();
+            var pathMapping = new Dictionary<string, string>();
 
             // データ移行処理
             int lastPercent = -1;
             for (int i = 0; i < v1Items.Count; i++)
             {
-                ItemV1 item = v1Items[i];
-                string previousItemPath = item.ItemPath;
+                var item = v1Items[i];
+                var previousItemPath = item.ItemPath;
                 
-                Item newItem = CreateItemFromItemV1(item);
+                var newItem = CreateItemFromItemV1(item);
 
                 if (copyAssetData)
                 {
-                    string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
-                    string newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true) ?? throw new DirectoryNotFoundException("Counldn't get unique item path");
+                    var safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
+                    var newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true) ?? throw new DirectoryNotFoundException("Counldn't get unique item path");
                     
                     await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath)), newItemPath, importParallelism);
                     if (!string.IsNullOrEmpty(item.MaterialPath)) await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath)), newItemPath, importParallelism);
@@ -92,14 +92,14 @@ internal static class DataImporter
                 }
                 else
                 {
-                    string newItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
-                    string materialPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath));
+                    var newItemPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ItemPath));
+                    var materialPath = ItemUtils.GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.MaterialPath));
                     
                     newItem.ItemPath = newItemPath;
                     if (!string.IsNullOrEmpty(item.MaterialPath)) newItem.UpdateItemPaths([materialPath]);
                 }
 
-                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsFolderPath, newItem.Id));
+                var result = await FileSystemService.CopyFileAsync(ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(item.ImagePath)), Path.Combine(SystemPath.ItemThumbnailsFolderPath, newItem.Id));
                 if (!result.IsError) newItem.ThumbnailFileName = newItem.Id;
                 else newItem.ThumbnailFileName = string.Empty;
 
@@ -117,21 +117,17 @@ internal static class DataImporter
 
             foreach (Item item in items)
             {
-                IEnumerable<string> supportedAvatars = item.SupportedAvatars
-                    .Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
+                var supportedAvatars = item.SupportedAvatars.Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
                 item.UpdateSupportedAvatars(supportedAvatars);
 
-                IEnumerable<string> implementedAvatars = item.ImplementedAvatars
-                    .Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
+                var implementedAvatars = item.ImplementedAvatars.Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
                 item.UpdateImplementedAvatars(implementedAvatars);
             }
 
-            List<CommonAvatar> commonAvatars = v1CommonAvatars.Select(CreateCommonAvatarFromCommonAvatarV1).ToList();
-
-            foreach (CommonAvatar commonAvatar in commonAvatars)
+            var commonAvatars = v1CommonAvatars.Select(CreateCommonAvatarFromCommonAvatarV1).ToList();
+            foreach (var commonAvatar in commonAvatars)
             {
-                IEnumerable<string> avatarPaths = commonAvatar.Avatars
-                    .Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
+                var avatarPaths = commonAvatar.Avatars.Select(a => pathMapping.TryGetValue(a, out string? value) ? value : a);
                 commonAvatar.UpdateAvatars(avatarPaths);
             }
 
@@ -150,7 +146,7 @@ internal static class DataImporter
     }
     private static Item CreateItemFromItemV1(ItemV1 item)
     {
-        Item migratedItem = new()
+        var migratedItem = new Item()
         {
             Title = item.Title,
             Author = item.AuthorName,
@@ -173,7 +169,7 @@ internal static class DataImporter
     }
     private static CommonAvatar CreateCommonAvatarFromCommonAvatarV1(CommonAvatarV1 commonAvatar)
     {
-        CommonAvatar migratedCommonAvatar = new()
+        var migratedCommonAvatar = new CommonAvatar()
         {
             GroupName = commonAvatar.Name
         };
@@ -184,7 +180,7 @@ internal static class DataImporter
     }
     private static string MigrateAvatarExplorerV1Path(string path)
     {
-        string migratedPath = path;
+        var migratedPath = path;
 
         // 古すぎるAEの場合は./が初めについていることがある
         if (path.StartsWith("./")) migratedPath = path[2..];
@@ -203,13 +199,13 @@ internal static class DataImporter
     {
         try
         {
-            string dataFolderPath = importRequest.DataFolderPath;
-            bool copyAssetData = importRequest.CopyAssetData;
-            RuntimeSettings runtimeSettings = importRequest.RuntimeSettings;
-            Func<(string, int), Task>? reportProgress = importRequest.ReportProgress;
+            var dataFolderPath = importRequest.DataFolderPath;
+            var copyAssetData = importRequest.CopyAssetData;
+            var runtimeSettings = importRequest.RuntimeSettings;
+            var reportProgress = importRequest.ReportProgress;
 
-            DataImportResult dataImportResult = new();
-            int importParallelism = GetImportParallelism(runtimeSettings);
+            var dataImportResult = new DataImportResult();
+            var importParallelism = GetImportParallelism(runtimeSettings);
 
             if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 0));
 
@@ -221,12 +217,12 @@ internal static class DataImporter
                 .. (FileSystemService.DeserializeClass<KonoAssetOtherDatabase>(KonoAssetPath.OtherAssetsDatabasePath(dataFolderPath)).Value ?? new()).Data,
             ];
 
-            Dictionary<string, string> supportedAvatarMaps = new();
-            foreach (string avatarName in konoAssetItems.OfType<KonoAssetWearableItem>().SelectMany(i => i.SupportedAvatars).Distinct())
+            var supportedAvatarMaps = new Dictionary<string, string>();
+            foreach (var avatarName in konoAssetItems.OfType<KonoAssetWearableItem>().SelectMany(i => i.SupportedAvatars).Distinct())
             {
                 if (supportedAvatarMaps.ContainsKey(avatarName)) continue;
 
-                TempAvatar tempAvatar = new TempAvatar(avatarName);
+                var tempAvatar = new TempAvatar(avatarName);
                 supportedAvatarMaps.Add(avatarName, tempAvatar.GetInternalId());
                 dataImportResult.TempAvatars.Add(tempAvatar);
             }
@@ -234,13 +230,13 @@ internal static class DataImporter
             int lastPercent = -1;
             for (int i = 0; i < konoAssetItems.Count; i++)
             {
-                AbstractKonoAssetItem konoAssetItem = konoAssetItems[i];
-                Item item = konoAssetItem.ToItem();
+                var konoAssetItem = konoAssetItems[i];
+                var item = konoAssetItem.ToItem();
 
                 string newItemPath;
                 if (copyAssetData)
                 {
-                    string safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
+                    var safeItemTitle = ItemUtils.GetSafeTitle(item.Title) ?? Path.GetFileNameWithoutExtension(item.ItemPath);
                     newItemPath = FileSystemService.GetUniquePath(runtimeSettings.DataRootDirectory, safeItemTitle, isDirectory: true);
                     
                     await FileSystemService.CopyDirectoryAsync(ItemUtils.GetItemPath(KonoAssetPath.DataPath(dataFolderPath), item.ItemPath), newItemPath, importParallelism);
@@ -263,8 +259,8 @@ internal static class DataImporter
 
                 if (item.Type != ItemType.Avatar)
                 {
-                    bool categoryFoundFlag = false;
-                    foreach (KeyValuePair<ItemType, string> itemTypeKpv in importRequest.LocalizedItemTypesMapping)
+                    var categoryFoundFlag = false;
+                    foreach (var itemTypeKpv in importRequest.LocalizedItemTypesMapping)
                     {
                         if (item.CustomCategory == itemTypeKpv.Value)
                         {
@@ -309,15 +305,15 @@ internal static class DataImporter
             // AEソフト本体のフォルダが渡された時はパスを変換して上げる
             if (Directory.Exists(Path.Combine(dataFolderPath, V1DatasFolderName))) dataFolderPath = Path.Combine(dataFolderPath, V1DatasFolderName);
 
-            List<ItemV1> v1Items = FileSystemService.DeserializeClass<List<ItemV1>>(SystemPathV1.ItemDatabasePath(dataFolderPath)).Value ?? [];
-            Dictionary<int, string> sourceThumbnailMap = new();
+            var v1Items = FileSystemService.DeserializeClass<List<ItemV1>>(SystemPathV1.ItemDatabasePath(dataFolderPath)).Value ?? [];
+            var sourceThumbnailMap = new Dictionary<int, string>();
 
-            foreach (ItemV1 sourceItem in v1Items)
+            foreach (var sourceItem in v1Items)
             {
                 if (sourceItem.BoothId == -1 || string.IsNullOrWhiteSpace(sourceItem.ImagePath)) continue;
                 if (sourceThumbnailMap.ContainsKey(sourceItem.BoothId)) continue;
 
-                string thumbnailPath = ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(sourceItem.ImagePath));
+                var thumbnailPath = ItemUtils.GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateAvatarExplorerV1Path(sourceItem.ImagePath));
                 if (File.Exists(thumbnailPath)) sourceThumbnailMap[sourceItem.BoothId] = thumbnailPath;
             }
 
@@ -346,15 +342,15 @@ internal static class DataImporter
                 .. (FileSystemService.DeserializeClass<KonoAssetOtherDatabase>(KonoAssetPath.OtherAssetsDatabasePath(dataFolderPath)).Value ?? new()).Data,
             ];
 
-            Dictionary<int, string> sourceThumbnailMap = new();
-            foreach (AbstractKonoAssetItem sourceItem in konoAssetItems)
+            var sourceThumbnailMap = new Dictionary<int, string>();
+            foreach (var sourceItem in konoAssetItems)
             {
                 if (string.IsNullOrWhiteSpace(sourceItem.Description.ImageFilename)) continue;
 
-                Item item = sourceItem.ToItem();
+                var item = sourceItem.ToItem();
                 if (item.BoothId == -1 || sourceThumbnailMap.ContainsKey(item.BoothId)) continue;
 
-                string thumbnailPath = Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), sourceItem.Description.ImageFilename!);
+                var thumbnailPath = Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), sourceItem.Description.ImageFilename!);
                 if (File.Exists(thumbnailPath)) sourceThumbnailMap[item.BoothId] = thumbnailPath;
             }
 
@@ -371,24 +367,24 @@ internal static class DataImporter
 
     private static async Task ApplyThumbnailMap(IEnumerable<Item> currentItems, Dictionary<int, string> sourceThumbnailMap, Func<(string, int), Task>? reportProgress = null)
     {
-        List<Item> targets = currentItems.Where(i => i.BoothId != -1).ToList();
-        if (targets.Count == 0)
+        var targets = currentItems.Where(i => i.BoothId != -1).ToArray();
+        if (targets.Length == 0)
         {
             if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Import.Copying, 100));
             return;
         }
 
-        int lastPercent = -1;
-        for (int i = 0; i < targets.Count; i++)
+        var lastPercent = -1;
+        for (int i = 0; i < targets.Length; i++)
         {
-            Item targetItem = targets[i];
+            var targetItem = targets[i];
             if (sourceThumbnailMap.TryGetValue(targetItem.BoothId, out string? sourcePath))
             {
-                ErrorOr<Success> copyResult = await FileSystemService.CopyFileAsync(sourcePath, Path.Combine(SystemPath.ItemThumbnailsFolderPath, targetItem.Id));
+                var copyResult = await FileSystemService.CopyFileAsync(sourcePath, Path.Combine(SystemPath.ItemThumbnailsFolderPath, targetItem.Id));
                 if (!copyResult.IsError) targetItem.ThumbnailFileName = targetItem.Id;
             }
 
-            int percent = (int)(100.0 * (i + 1) / targets.Count);
+            var percent = (int)(100.0 * (i + 1) / targets.Length);
             if (percent != lastPercent)
             {
                 lastPercent = percent;

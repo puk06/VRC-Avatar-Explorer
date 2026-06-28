@@ -44,7 +44,7 @@ public partial class AvatarExplorerApp
     }
     public string AddTempAvatar(string avatarName)
     {
-        TempAvatar tempAvatar = new TempAvatar(avatarName);
+        var tempAvatar = new TempAvatar(avatarName);
 
         _tempAvatarsDatabaseManager.Add(tempAvatar);
 
@@ -56,7 +56,7 @@ public partial class AvatarExplorerApp
     }
     public string AddBulkImportPreset(string presetName, IEnumerable<BulkImportItem>? items = null)
     {
-        BulkImportPreset bulkImportPreset = new()
+        var bulkImportPreset = new BulkImportPreset()
         {
             PresetName = presetName
         };
@@ -74,12 +74,12 @@ public partial class AvatarExplorerApp
     }
     public async Task<ErrorOr<ItemCreationResult>> AddItem(ItemCreationContext itemCreationContext)
     {
-        ErrorOr<ItemCreationResult> itemCreationResult = await ItemCreator.FromItemCreationContext(itemCreationContext, RuntimeSettings);
+        var itemCreationResult = await ItemCreator.FromItemCreationContext(itemCreationContext, RuntimeSettings);
         if (itemCreationResult.IsError) return Error.Failure(description: itemCreationResult.Errors.ToErrorString());
 
         if (itemCreationResult.Value.Item == null) return itemCreationResult;
 
-        string currentUnixTime = DatetimeUtils.GetCurrentUnixTime();
+        var currentUnixTime = DatetimeUtils.GetCurrentUnixTime();
         itemCreationResult.Value.Item.CreatedDate = currentUnixTime;
         itemCreationResult.Value.Item.UpdatedDate = currentUnixTime;
 
@@ -92,10 +92,10 @@ public partial class AvatarExplorerApp
     }
     public async Task<ErrorOr<ExtractResult>> AddItemPaths(string itemId, string[] paths)
     {
-        Item? item = GetItemById(itemId);
+        var item = GetItemById(itemId);
         if (item == null) return Error.NotFound(description: "Item not found.");
 
-        ErrorOr<ExtractResult> extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), paths, RuntimeSettings);
+        var extractResult = await FileSystemService.ExtractItemPaths(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath), paths, RuntimeSettings);
         if (extractResult.IsError) return Error.Failure(description: extractResult.Errors.ToErrorString());
 
         item.UpdateItemPaths(extractResult.Value.FolderPaths); // ItemPathは更新しない（既に設定されているため）
@@ -110,12 +110,12 @@ public partial class AvatarExplorerApp
     #region Edit API
     public async Task<bool> EditItem(string itemId, ItemCreationContext itemCreationContext)
     {
-        Item? item = GetItemById(itemId);
+        var item = GetItemById(itemId);
         if (item == null) return false;
 
         item.SetValuesFromCreationContext(itemCreationContext);
 
-        ErrorOr<ExtractResult> addItemPathsResult = await AddItemPaths(item.Id, itemCreationContext.ItemPaths.ToArray());
+        var addItemPathsResult = await AddItemPaths(item.Id, itemCreationContext.ItemPaths.ToArray());
         if (addItemPathsResult.IsError) return false;
         if (addItemPathsResult.Value.ProcessingFailedPaths.Count > 0) return false;
 
@@ -129,7 +129,7 @@ public partial class AvatarExplorerApp
 
     public void EditCustomCategoryName(string previousName, string newName)
     {
-        foreach (Item item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Custom && i.CustomCategory == previousName))
+        foreach (var item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Custom && i.CustomCategory == previousName))
         {
             item.CustomCategory = newName;
         }
@@ -143,17 +143,17 @@ public partial class AvatarExplorerApp
     #region Update API
     public void UpdateItemUpdatedDate(string id)
     {
-        Item? item = GetItemById(id);
+        var item = GetItemById(id);
         if (item == null) return;
 
         item.UpdatedDate = DatetimeUtils.GetCurrentUnixTime();
     }
     public void ChangeItemPath(string id, string path)
     {
-        Item? item = GetItemById(id);
+        var item = GetItemById(id);
         if (item == null) return;
 
-        string newPath = path;
+        var newPath = path;
 
         if (path.StartsWith(RuntimeSettings.DataRootDirectory))
             newPath = $"<sys>{Path.GetRelativePath(RuntimeSettings.DataRootDirectory, path)}";
@@ -165,10 +165,10 @@ public partial class AvatarExplorerApp
     #region Update Thumbnail API
     public async Task<ErrorOr<Success>> UpdateItemThumbnail(string itemId, string imageFilePath)
     {
-        Item? item = GetItemById(itemId);
+        var item = GetItemById(itemId);
         if (item == null) return Error.NotFound(description: "Item not found.");
 
-        ErrorOr<Success> result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsFolderPath, Path.GetFileName(imageFilePath)));
+        var result = await FileSystemService.CopyFileAsync(imageFilePath, Path.Combine(SystemPath.ItemThumbnailsFolderPath, Path.GetFileName(imageFilePath)));
         if (result.IsError) return Error.Failure(description: result.Errors.ToErrorString());
 
         item.ThumbnailFileName = Path.GetFileName(imageFilePath);
@@ -183,12 +183,12 @@ public partial class AvatarExplorerApp
     #region Replace API
     public void ReplaceCommonAvatarGroupToSupportedAvatars(string groupId)
     {
-        CommonAvatar? commonAvatar = GetCommonAvatarById(groupId);
+        var commonAvatar = GetCommonAvatarById(groupId);
         if (commonAvatar == null) return;
 
-        string internalId = commonAvatar.GetInternalId();
+        var internalId = commonAvatar.GetInternalId();
 
-        foreach (Item item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Clothing))
+        foreach (var item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Clothing))
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.SelectMany(i => i == internalId ? commonAvatar.Avatars : [i]).Distinct());
         }
@@ -198,12 +198,12 @@ public partial class AvatarExplorerApp
     }
     public void ReplaceSupportedAvatarsToCommonAvatarGroup(string groupId)
     {
-        CommonAvatar? commonAvatar = GetCommonAvatarById(groupId);
+        var commonAvatar = GetCommonAvatarById(groupId);
         if (commonAvatar == null) return;
 
-        string internalId = commonAvatar.GetInternalId();
+        var internalId = commonAvatar.GetInternalId();
 
-        foreach (Item item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Clothing))
+        foreach (var item in _itemDatabaseManager.Items.Where(i => i.Type == ItemType.Clothing))
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => commonAvatar.Avatars.Contains(i) ? internalId : i).Distinct());
         }
@@ -214,9 +214,9 @@ public partial class AvatarExplorerApp
 
     public void ConvertDatabaseRelativePathsToFullPaths(string previousDataRootDirectory)
     {
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (var item in _itemDatabaseManager.Items)
         {
-            string currentPath = ItemUtils.GetItemPath(previousDataRootDirectory, item.ItemPath);
+            var currentPath = ItemUtils.GetItemPath(previousDataRootDirectory, item.ItemPath);
             item.ItemPath = currentPath;
         }
 
@@ -229,19 +229,19 @@ public partial class AvatarExplorerApp
     {
         if (removeAssetData)
         {
-            Item? item = GetItemById(id);
+            var item = GetItemById(id);
             if (item != null) FileSystemService.DeleteDirectory(ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath));
         }
 
         bool removed = _itemDatabaseManager.Remove(id);
 
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (var item in _itemDatabaseManager.Items)
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.Where(i => i != id));
             item.UpdateImplementedAvatars(item.ImplementedAvatars.Where(i => i != id));
         }
 
-        foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
+        foreach (var commonAvatar in _commonAvatarDatabaseManager.Items)
         {
             commonAvatar.UpdateAvatars(commonAvatar.Avatars.Where(i => i != id));
         }
@@ -255,12 +255,12 @@ public partial class AvatarExplorerApp
 
     public bool RemoveCommonAvatar(string internalId)
     {
-        string? id = CommonAvatar.GetGroupId(internalId);
+        var id = CommonAvatar.GetGroupId(internalId);
         if (id == null) return false;
 
         bool removed = _commonAvatarDatabaseManager.Remove(id);
 
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (var item in _itemDatabaseManager.Items)
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.Where(i => i != internalId));
             item.UpdateImplementedAvatars(item.ImplementedAvatars.Where(i => i != internalId));
@@ -283,18 +283,18 @@ public partial class AvatarExplorerApp
 
     public bool RemoveTempAvatar(string internalId)
     {
-        string? id = TempAvatar.GetAvatarId(internalId);
+        var id = TempAvatar.GetAvatarId(internalId);
         if (id == null) return false;
 
         bool removed = _tempAvatarsDatabaseManager.Remove(id);
 
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (var item in _itemDatabaseManager.Items)
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.Where(i => i != internalId));
             item.UpdateImplementedAvatars(item.ImplementedAvatars.Where(i => i != internalId));
         }
 
-        foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
+        foreach (var commonAvatar in _commonAvatarDatabaseManager.Items)
         {
             commonAvatar.UpdateAvatars(commonAvatar.Avatars.Where(i => i != internalId));
         }
@@ -311,14 +311,13 @@ public partial class AvatarExplorerApp
     #region Merge API
     public void MergeItemCategories(ItemCategory sourceCategory, ItemCategory targetCategory)
     {
-        foreach (Item item in _itemDatabaseManager.Items.Where(i => i.IsCategoryMatch(sourceCategory.CategoryName)))
+        foreach (var item in _itemDatabaseManager.Items.Where(i => i.IsCategoryMatch(sourceCategory.CategoryName)))
         {
             item.Type = targetCategory.Type;
             item.CustomCategory = targetCategory.CustomCategory;
         }
 
         UpdateSearchIndex();
-
         SaveItemDatabase();
     }
     #endregion

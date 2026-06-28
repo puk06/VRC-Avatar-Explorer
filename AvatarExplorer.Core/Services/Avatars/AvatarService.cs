@@ -7,17 +7,17 @@ public static class AvatarService
 {
     public static ImmutableArray<string> GetAllSupportedAvatarIds(IEnumerable<string> avatars, IEnumerable<CommonAvatar> commonAvatars, bool includeCommonAvatarToSupported = false)
     {
-        List<string> avatarIds = new();
+        var avatarIds = new HashSet<string>();
 
-        foreach (string avatarId in avatars)
+        foreach (var avatarId in avatars)
         {
             if (avatarId.StartsWith(CommonAvatar.InternalPathPrefix))
             {
-                string? groupId = CommonAvatar.GetGroupId(avatarId);
+                var groupId = CommonAvatar.GetGroupId(avatarId);
                 if (groupId == null) continue;
 
-                CommonAvatar? commonAvatar = commonAvatars.FirstOrDefault(i => i.Id == groupId);
-                if (commonAvatar != null) avatarIds.AddRange(commonAvatar.Avatars);
+                var commonAvatar = commonAvatars.FirstOrDefault(i => i.Id == groupId);
+                if (commonAvatar != null) avatarIds.UnionWith(commonAvatar.Avatars);
 
                 continue;
             }
@@ -26,13 +26,13 @@ public static class AvatarService
 
             if (!includeCommonAvatarToSupported) continue;
 
-            IEnumerable<CommonAvatar> commonAvatarGroup = commonAvatars.Where(commonAvatar => commonAvatar.Avatars.Contains(avatarId));
-            foreach (string commonAvatarId in commonAvatarGroup.SelectMany(i => i.Avatars))
+            var commonAvatarGroup = commonAvatars.Where(commonAvatar => commonAvatar.Avatars.Contains(avatarId));
+            foreach (var commonAvatarId in commonAvatarGroup.SelectMany(i => i.Avatars))
             {
                 avatarIds.Add(commonAvatarId);
             }
         }
 
-        return avatarIds.Distinct().ToImmutableArray();
+        return avatarIds.ToImmutableArray();
     }
 }

@@ -23,7 +23,7 @@ public static class FileNameUtils
 
         itemTitle = itemTitle.Normalize(NormalizationForm.FormC);
 
-        StringBuilder builder = new();
+        var builder = new StringBuilder();
         int runeCount = 0;
 
         foreach (var rune in itemTitle.EnumerateRunes())
@@ -35,10 +35,10 @@ public static class FileNameUtils
             runeCount++;
         }
 
-        string safe = TrimUnsafeEdges(builder.ToString());
+        var safe = TrimUnsafeEdges(builder.ToString());
         if (safe.Length == 0) return null;
 
-        string baseName = GetWindowsBaseName(safe);
+        var baseName = GetWindowsBaseName(safe);
         if (WindowsReservedNames.Contains(baseName)) safe = "_" + safe;
 
         return safe;

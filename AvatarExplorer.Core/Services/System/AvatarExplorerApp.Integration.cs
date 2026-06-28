@@ -162,12 +162,12 @@ public partial class AvatarExplorerApp
     public async Task<ErrorOr<Success>> ExecuteBackup(string path) => await _backupManager.ExecuteBackup(path);
     public async Task RestoreFromBackup(string backupFolderPath)
     {
-        string itemDatabaseMigrationPath = Path.Join(backupFolderPath, SystemFileName.Database.ItemsDatabaseMigrationVersion);
-        string itemDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.Items);
-        string commonAvatarDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.CommonAvatars);
-        string bulkImportPresetDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.BulkImportPresets);
-        string tempAvatarsDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.TempAvatars);
-        string runtimeSettingsFilePath = Path.Join(backupFolderPath, SystemFileName.Settings.Runtime);
+        var itemDatabaseMigrationPath = Path.Join(backupFolderPath, SystemFileName.Database.ItemsDatabaseMigrationVersion);
+        var itemDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.Items);
+        var commonAvatarDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.CommonAvatars);
+        var bulkImportPresetDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.BulkImportPresets);
+        var tempAvatarsDatabasePath = Path.Join(backupFolderPath, SystemFileName.Database.TempAvatars);
+        var runtimeSettingsFilePath = Path.Join(backupFolderPath, SystemFileName.Settings.Runtime);
 
         if (File.Exists(itemDatabasePath))
         {
@@ -217,13 +217,13 @@ public partial class AvatarExplorerApp
     public void ValidateAndAutoFixItemType(bool avatarExist)
     {
         var items = _itemDatabaseManager.Items;
-        bool unknownCategoryExists = items.Any(i => (int)i.Type >= 11);
+        var unknownCategoryExists = items.Any(i => (int)i.Type >= 11);
         if (avatarExist || unknownCategoryExists)
         {
             int offset = 0;
             if (avatarExist) offset = (int)items.Min(i => i.Type) - (int)ItemType.Avatar;
             if (unknownCategoryExists) offset = (int)items.Max(i => i.Type) - (int)ItemType.Custom;
-            foreach (Item item in items) item.Type -= offset;
+            foreach (var item in items) item.Type -= offset;
             SaveItemDatabase();
         }
     }

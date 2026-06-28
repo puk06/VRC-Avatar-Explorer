@@ -27,7 +27,7 @@ internal class SelectionState
     public SelectionNode? Pop()
     {
         if (_stack.Count == 0) return null;
-        SelectionNode node = _stack.Pop();
+        var node = _stack.Pop();
         SelectionChanged?.Invoke();
         return node;
     }

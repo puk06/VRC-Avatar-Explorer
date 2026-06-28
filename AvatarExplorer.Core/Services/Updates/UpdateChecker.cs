@@ -13,7 +13,7 @@ public static class UpdateChecker
     {
         try
         {
-            string response = await HttpService.Client.GetStringAsync(SoftwareLink.UpdateCheckURL);
+            var response = await HttpService.Client.GetStringAsync(SoftwareLink.UpdateCheckURL);
             return JsonManager.Deserialize<UpdateManifest>(response);
         }
         catch (Exception ex)
@@ -27,23 +27,23 @@ public static class UpdateChecker
     {
         try
         {
-            UpdateManifest? updateManifest = await GetUpdateManifest();
+            var updateManifest = await GetUpdateManifest();
             if (updateManifest == null) return null;
 
-            IEnumerable<VersionRelease> pendingReleases = updateManifest.Releases.GetPendingUpdates();
+            var pendingReleases = updateManifest.Releases.GetPendingUpdates();
             if (!pendingReleases.Any()) return null;
 
-            VersionRelease? latestVersion = pendingReleases.GetLatestUpdate(updateChannel);
+            var latestVersion = pendingReleases.GetLatestUpdate(updateChannel);
             if (latestVersion == null) return null;
 
-            VersionRelease latestUpdateReleaseInfo = new()
+            var latestUpdateReleaseInfo = new VersionRelease()
             {
                 Version = latestVersion.Version,
                 ReleaseDate = latestVersion.ReleaseDate,
                 ReleaseUrl = latestVersion.ReleaseUrl
             };
 
-            foreach (VersionRelease pendingRelease in pendingReleases)
+            foreach (var pendingRelease in pendingReleases)
             {
                 latestUpdateReleaseInfo.ChangeLogs.AddRange(pendingRelease.ChangeLogs);
             }

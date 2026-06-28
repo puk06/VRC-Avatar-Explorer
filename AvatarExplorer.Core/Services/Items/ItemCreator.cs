@@ -19,7 +19,7 @@ internal static class ItemCreator
 {
     internal static async Task<ErrorOr<ItemCreationResult>> FromItemCreationContext(ItemCreationContext itemCreationContext, RuntimeSettings runtimeSettings)
     {
-        Item item = new()
+        var item = new Item()
         {
             Title = itemCreationContext.Title,
             Author = itemCreationContext.Author,
@@ -30,12 +30,12 @@ internal static class ItemCreator
             ItemMemo = itemCreationContext.ItemMemo
         };
 
-        ErrorOr<ExtractResult> extractResult = await FileSystemService.ExtractItemFolders(itemCreationContext, runtimeSettings.DataRootDirectory, runtimeSettings, item.Id);
+        var extractResult = await FileSystemService.ExtractItemFolders(itemCreationContext, runtimeSettings.DataRootDirectory, runtimeSettings, item.Id);
         if (extractResult.IsError) return Error.Failure(description: extractResult.Errors.ToErrorString());
 
         if (!string.IsNullOrEmpty(itemCreationContext.ThumbnailUrl))
         {
-            bool thumbnailResult = await ImageDownloader.Fetch(itemCreationContext.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id), true);
+            var thumbnailResult = await ImageDownloader.Fetch(itemCreationContext.ThumbnailUrl, Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id), true);
             if (thumbnailResult) item.ThumbnailFileName = item.Id;
         }
 
@@ -53,7 +53,7 @@ internal static class ItemCreator
 
     internal static Item FromKonoAssetDescription(KonoAssetDescription konoAssetDescription)
     {
-        Item newItem = new()
+        var newItem = new Item()
         {
             Title = konoAssetDescription.Name,
             Author = konoAssetDescription.Creator,

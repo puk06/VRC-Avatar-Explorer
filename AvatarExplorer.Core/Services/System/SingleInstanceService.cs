@@ -13,10 +13,10 @@ public static class SingleInstanceService
     {
         try
         {
-            using NamedPipeClientStream client = new(".", PipeName, PipeDirection.Out);
+            using var client = new NamedPipeClientStream(".", PipeName, PipeDirection.Out);
             client.Connect(1000);
 
-            using StreamWriter writer = new(client) { AutoFlush = true };
+            using var writer = new StreamWriter(client) { AutoFlush = true };
             writer.WriteLine(string.Join(ArgumentSeparator, args));
         }
         catch
@@ -31,12 +31,11 @@ public static class SingleInstanceService
         {
             while (true)
             {
-                using NamedPipeServerStream server = new(PipeName, PipeDirection.In);
-
+                using var server = new NamedPipeServerStream(PipeName, PipeDirection.In);
                 await server.WaitForConnectionAsync();
 
-                using StreamReader reader = new(server);
-                string? message = await reader.ReadLineAsync() ?? string.Empty;
+                using var reader = new StreamReader(server);
+                var message = await reader.ReadLineAsync() ?? string.Empty;
 
                 OnPipeMessageReceived?.Invoke(message.Split(ArgumentSeparator));
             }

@@ -6,7 +6,7 @@ internal static class SearchUtils
     {
         int count = 0;
 
-        foreach (string word in words)
+        foreach (var word in words)
         {
             int index = 0;
 

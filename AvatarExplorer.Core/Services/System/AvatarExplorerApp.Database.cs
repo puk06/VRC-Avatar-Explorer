@@ -10,16 +10,16 @@ public partial class AvatarExplorerApp
     #region Database
     public void LoadItemDatabase(string? path = null)
     {
-        string loadPath = path ?? _itemDatabaseManager.DatabaseFilePath;
+        var loadPath = path ?? _itemDatabaseManager.DatabaseFilePath;
         ItemDatabaseMigrationService.Migrate(loadPath);
         _itemDatabaseManager.Load(loadPath);
         UpdateSearchIndex();
     }
     internal void EnsureAllItemsDefaultPathExist()
     {
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (var item in _itemDatabaseManager.Items)
         {
-            string path = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
+            var path = ItemUtils.GetItemPath(RuntimeSettings.DataRootDirectory, item.ItemPath);
             if (!Directory.Exists(path) && !string.IsNullOrWhiteSpace(path))
             {
                 try { Directory.CreateDirectory(path); }
@@ -78,11 +78,11 @@ public partial class AvatarExplorerApp
     #region Update API
     public void UpdateSearchIndex(string? itemId = null)
     {
-        Dictionary<string, string> avatarTitleMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
+        var avatarTitleMaps = ItemUtils.GetItemTitleMaps(_itemDatabaseManager.Items.Where(i => i.Type == ItemType.Avatar), _tempAvatarsDatabaseManager.Items);
 
         if (itemId != null)
         {
-            Item? item = GetItemById(itemId);
+            var item = GetItemById(itemId);
             if (item == null) return;
 
             _itemSearchIndexDictionary[item.Id] = ItemSearchService.BuildItemSearchIndex(item, avatarTitleMaps, _commonAvatarDatabaseManager.Items);
@@ -91,9 +91,9 @@ public partial class AvatarExplorerApp
         {
             _itemSearchIndexDictionary.Clear();
 
-            foreach (Item item in _itemDatabaseManager.Items)
+            foreach (var item in _itemDatabaseManager.Items)
             {
-                string index = ItemSearchService.BuildItemSearchIndex(item, avatarTitleMaps, _commonAvatarDatabaseManager.Items);
+                var index = ItemSearchService.BuildItemSearchIndex(item, avatarTitleMaps, _commonAvatarDatabaseManager.Items);
                 _itemSearchIndexDictionary[item.Id] = index;
             }
         }
@@ -103,12 +103,12 @@ public partial class AvatarExplorerApp
     #region Resolve API
     public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
     {
-        foreach (Item item in _itemDatabaseManager.Items)
+        foreach (var item in _itemDatabaseManager.Items)
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
         }
 
-        foreach (CommonAvatar commonAvatar in _commonAvatarDatabaseManager.Items)
+        foreach (var commonAvatar in _commonAvatarDatabaseManager.Items)
         {
             commonAvatar.UpdateAvatars(commonAvatar.Avatars.Select(i => i == tempAvatarId ? targetItemId : i).Distinct());
         }

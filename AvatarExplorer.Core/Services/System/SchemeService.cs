@@ -38,7 +38,7 @@ public static class SchemeService
         {
             if (!IsRunAsAdmin()) return;
 
-            string? processPath = ProcessUtils.GetCurrentProcessPath();
+            var processPath = ProcessUtils.GetCurrentProcessPath();
             if (string.IsNullOrEmpty(processPath)) return;
 
             RegisterCustomScheme(REG_PROTCOL, processPath);
@@ -68,8 +68,8 @@ public static class SchemeService
     {
         if (!ProcessUtils.IsWindows()) return false;
 
-        using WindowsIdentity identity = WindowsIdentity.GetCurrent();
-        WindowsPrincipal principal = new(identity);
+        using var identity = WindowsIdentity.GetCurrent();
+        var principal = new WindowsPrincipal(identity);
         return principal.IsInRole(WindowsBuiltInRole.Administrator);
     }
 
@@ -77,10 +77,10 @@ public static class SchemeService
     {
         try
         {
-            string? processPath = ProcessUtils.GetCurrentProcessPath();
+            var processPath = ProcessUtils.GetCurrentProcessPath();
             if (string.IsNullOrEmpty(processPath)) return;
 
-            ProcessStartInfo processStartInfo = new()
+            var processStartInfo = new ProcessStartInfo()
             {
                 FileName = processPath,
                 UseShellExecute = true,
@@ -102,14 +102,14 @@ public static class SchemeService
         {
             if (!ProcessUtils.IsWindows()) return;
 
-            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(protocol))
+            using (var key = Registry.ClassesRoot.CreateSubKey(protocol))
             {
                 key.SetValue(string.Empty, "URL:" + protocol + " Protocol");
                 key.SetValue("URL Protocol", string.Empty);
             }
 
-            string commandKey = $@"{protocol}\shell\open\command";
-            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(commandKey))
+            var commandKey = $@"{protocol}\shell\open\command";
+            using (var key = Registry.ClassesRoot.CreateSubKey(commandKey))
             {
                 key.SetValue(string.Empty, $"\"{processPath}\" \"%1\"");
             }
@@ -125,7 +125,7 @@ public static class SchemeService
         {
             if (!ProcessUtils.IsWindows()) return false;
 
-            using RegistryKey? key = Registry.ClassesRoot.OpenSubKey(protocol);
+            using var key = Registry.ClassesRoot.OpenSubKey(protocol);
             return key != null;
         }
         catch (Exception ex)

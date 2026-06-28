@@ -21,13 +21,13 @@ internal static class ItemDatabaseMigrationService
             int appliedVersion = ReadAppliedMigrationVersion(filePath);
             if (appliedVersion >= CurrentMigrationVersion) return;
 
-            string json = File.ReadAllText(filePath);
+            var json = File.ReadAllText(filePath);
             if (string.IsNullOrWhiteSpace(json)) return;
 
-            JsonNode? root = JsonNode.Parse(json);
+            var root = JsonNode.Parse(json);
             if (root is not JsonArray items) return;
 
-            bool changed = false;
+            var changed = false;
             for (int targetVersion = appliedVersion + 1; targetVersion <= CurrentMigrationVersion; targetVersion++)
             {
                 changed |= ApplyMigration(items, targetVersion);
@@ -35,10 +35,10 @@ internal static class ItemDatabaseMigrationService
 
             if (changed)
             {
-                string backupPath = BuildBackupPath(filePath, appliedVersion, CurrentMigrationVersion);
+                var backupPath = BuildBackupPath(filePath, appliedVersion, CurrentMigrationVersion);
                 File.Copy(filePath, backupPath, overwrite: true);
 
-                string migratedJson = root.ToJsonString(JsonManager.JsonSerializerOptions);
+                var migratedJson = root.ToJsonString(JsonManager.JsonSerializerOptions);
                 File.WriteAllText(filePath, migratedJson);
             }
 
@@ -75,21 +75,18 @@ internal static class ItemDatabaseMigrationService
 
     private static bool MigrateV1RenameThumbnailKey(JsonArray items)
     {
-        bool changed = false;
+        var changed = false;
 
-        foreach (JsonNode? itemNode in items)
+        foreach (var itemNode in items)
         {
             if (itemNode is not JsonObject itemObject) continue;
 
-            bool hasLegacy = itemObject.ContainsKey(LegacyThumbnailKey);
-            bool hasCurrent = itemObject.ContainsKey(ThumbnailKey);
+            var hasLegacy = itemObject.ContainsKey(LegacyThumbnailKey);
+            var hasCurrent = itemObject.ContainsKey(ThumbnailKey);
             if (!hasLegacy) continue;
 
-            JsonNode? legacyValue = itemObject[LegacyThumbnailKey];
-            if (!hasCurrent)
-            {
-                itemObject[ThumbnailKey] = legacyValue?.DeepClone();
-            }
+            var legacyValue = itemObject[LegacyThumbnailKey];
+            if (!hasCurrent) itemObject[ThumbnailKey] = legacyValue?.DeepClone();
 
             itemObject.Remove(LegacyThumbnailKey);
             changed = true;
@@ -100,14 +97,14 @@ internal static class ItemDatabaseMigrationService
 
     private static bool MigrateV2ItemTypeOffset(JsonArray items)
     {
-        bool changed = false;
+        var changed = false;
 
-        foreach (JsonNode? itemNode in items)
+        foreach (var itemNode in items)
         {
             if (itemNode is not JsonObject itemObject) continue;
             if (!itemObject.ContainsKey("Type")) continue;
 
-            JsonNode? typeNode = itemObject["Type"];
+            var typeNode = itemObject["Type"];
             if (typeNode is not JsonValue typeValue || !typeValue.TryGetValue(out int typeInt)) continue;
 
             int migratedTypeInt = typeInt + ItemTypeOffset;
@@ -120,24 +117,24 @@ internal static class ItemDatabaseMigrationService
 
     private static string BuildBackupPath(string filePath, int fromVersion, int toVersion)
     {
-        string directory = Path.GetDirectoryName(filePath) ?? string.Empty;
-        string name = Path.GetFileNameWithoutExtension(filePath);
-        string extension = Path.GetExtension(filePath);
+        var directory = Path.GetDirectoryName(filePath) ?? string.Empty;
+        var name = Path.GetFileNameWithoutExtension(filePath);
+        var extension = Path.GetExtension(filePath);
         return Path.Combine(directory, $"{name}.migration-v{fromVersion}-to-v{toVersion}.bak{extension}");
     }
 
     internal static int ReadAppliedMigrationVersion(string filePath)
     {
-        string versionFilePath = BuildVersionFilePath(filePath);
+        var versionFilePath = BuildVersionFilePath(filePath);
         if (!File.Exists(versionFilePath)) return 0;
 
-        string text = File.ReadAllText(versionFilePath).Trim();
+        var text = File.ReadAllText(versionFilePath).Trim();
         return int.TryParse(text, out int version) ? version : 0;
     }
 
     internal static void WriteAppliedMigrationVersion(string filePath, int version)
     {
-        string versionFilePath = BuildVersionFilePath(filePath);
+        var versionFilePath = BuildVersionFilePath(filePath);
         File.WriteAllText(versionFilePath, version.ToString());
     }
 

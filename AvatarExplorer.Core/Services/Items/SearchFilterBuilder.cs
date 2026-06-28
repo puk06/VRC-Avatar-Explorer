@@ -32,15 +32,15 @@ public static partial class SearchFilterBuilder
 
     private static List<RawSearchToken> Parse(string text)
     {
-        List<RawSearchToken> rawSearchTokens = new();
+        var rawSearchTokens = new List<RawSearchToken>();
 
-        foreach (string token in TextParser.Parse(text))
+        foreach (var token in TextParser.Parse(text))
         {
             int separatorIndex = token.IndexOf('=');
             if (separatorIndex > 0)
             {
-                string key = token[..separatorIndex];
-                string value = token[(separatorIndex + 1)..];
+                var key = token[..separatorIndex];
+                var value = token[(separatorIndex + 1)..];
 
                 if (!AvailableFilterKeys.Contains(key))
                 {
@@ -74,9 +74,9 @@ public static partial class SearchFilterBuilder
 
     public static SearchFilter Build(SearchFilter filter, string searchText, Func<string, string>? toLocalizationKey = null)
     {
-        List<RawSearchToken> rawSearchTokens = Parse(searchText);
+        var rawSearchTokens = Parse(searchText);
 
-        foreach (RawSearchToken token in rawSearchTokens)
+        foreach (var token in rawSearchTokens)
         {
             switch (token.Key)
             {

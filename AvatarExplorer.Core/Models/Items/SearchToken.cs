@@ -27,17 +27,14 @@ public class SearchToken
     public SearchToken(SearchTokenType type, string value)
     {
         Type = type;
-
         IsNegation = value.StartsWith(NegationPrefix);
-        
-        if (IsNegation) Value = value[1..];
-        else Value = value;
+        Value = IsNegation ? value[1..] : value;
     }
 
     public SearchToken(SearchTokenType type, string value, bool isNegation)
     {
         Type = type;
-        Value = value;
         IsNegation = isNegation;
+        Value = value;
     }
 }

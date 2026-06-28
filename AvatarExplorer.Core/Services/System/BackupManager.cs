@@ -76,8 +76,8 @@ internal class BackupManager
     {
         try
         {
-            string now = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
-            string backupFolderPath = Path.Combine(backupRootFolderPath, now);
+            var now = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
+            var backupFolderPath = Path.Combine(backupRootFolderPath, now);
             
             try
             {
@@ -91,9 +91,9 @@ internal class BackupManager
 
             int successCount = 0;
             int failureCount = 0;
-            IEnumerable<string> filesToBackup = _backupFiles.Where(File.Exists);
+            var filesToBackup = _backupFiles.Where(File.Exists);
 
-            foreach (string filePath in filesToBackup)
+            foreach (var filePath in filesToBackup)
             {
                 if (token.IsCancellationRequested)
                 {
@@ -106,10 +106,10 @@ internal class BackupManager
                     return Result.Success;
                 }
 
-                string fileName = Path.GetFileName(filePath);
-                string backupPath = Path.Combine(backupFolderPath, fileName);
+                var fileName = Path.GetFileName(filePath);
+                var backupPath = Path.Combine(backupFolderPath, fileName);
 
-                ErrorOr<Success> result = await FileSystemService.CopyFileAsync(filePath, backupPath);
+                var result = await FileSystemService.CopyFileAsync(filePath, backupPath);
                 if (result.IsError)
                 {
                     ErrorManager.Instance.PostInternalError($"Failed to copy file: {filePath}.", tag: result.Errors.ToErrorString());
@@ -135,7 +135,7 @@ internal class BackupManager
             }
             catch { /* Ignore cleanup errors */ }
 
-            string errorMessage = $"Backup completed with errors: {successCount} succeeded, {failureCount} failed.";
+            var errorMessage = $"Backup completed with errors: {successCount} succeeded, {failureCount} failed.";
             ErrorManager.Instance.PostInternalError(errorMessage);
             return Error.Failure(description: errorMessage);
         }

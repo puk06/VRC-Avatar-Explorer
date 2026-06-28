@@ -4,7 +4,6 @@ using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.Core.Utils;
 using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.Network;
@@ -17,10 +16,10 @@ internal static class BoothService
         {
             if (boothId.Any(c => !char.IsNumber(c))) return Error.Failure(description: "The BoothId contains characters other than numbers.");
 
-            string url = string.Format(BoothLink.ItemJsonURLFormat, boothId);
-            string response = await HttpService.Client.GetStringAsync(url);
+            var url = string.Format(BoothLink.ItemJsonURLFormat, boothId);
+            var response = await HttpService.Client.GetStringAsync(url);
 
-            BoothItem? boothItem = JsonManager.Deserialize<BoothItem>(response);
+            var boothItem = JsonManager.Deserialize<BoothItem>(response);
             if (boothItem == null) return Error.Failure(description: "Failed to deserialize data.");
 
             return boothItem with
@@ -39,7 +38,7 @@ internal static class BoothService
         if (!BoothMapping.CategoryMappings.TryGetValue(type, out ItemType categorySuggestedType))
             categorySuggestedType = ItemType.None;
 
-        IEnumerable<ItemType> titleSuggestedTypes = BoothMapping.TitleMappings
+        var titleSuggestedTypes = BoothMapping.TitleMappings
             .Where(mapping => mapping.Key.Any(title.Contains))
             .Select(mapping => mapping.Value);
 

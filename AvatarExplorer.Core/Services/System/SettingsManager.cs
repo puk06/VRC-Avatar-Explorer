@@ -20,7 +20,7 @@ public class SettingsManager<T>(string filePath) where T : class, new()
 
     public void Load(string? path = null)
     {
-        T? loadedSettings = JsonFileManager<T>.Load(path ?? _filePath);
+        var loadedSettings = JsonFileManager<T>.Load(path ?? _filePath);
         if (loadedSettings != null) Update(loadedSettings);
         else Update(new T());
     }

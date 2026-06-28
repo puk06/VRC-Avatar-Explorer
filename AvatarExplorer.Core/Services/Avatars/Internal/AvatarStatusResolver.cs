@@ -7,44 +7,42 @@ internal static class AvatarStatusResolver
 {
     internal static AvatarStatus Resolve(Item item, string? avatarId, IEnumerable<CommonAvatar> commonAvatars, bool treatEmptySupportedAvatarAsNone = false)
     {
-        AvatarStatus avatarStatus = new();
-        if (string.IsNullOrEmpty(avatarId)) return avatarStatus;
+        var result = new AvatarStatus();
+        if (string.IsNullOrEmpty(avatarId)) return result;
 
         if ((!treatEmptySupportedAvatarAsNone && !item.SupportedAvatars.Any()) || item.SupportedAvatars.Contains(avatarId))
-            avatarStatus.IsSupported = true;
+            result.IsSupported = true;
 
-        if (item.Type != ItemType.Clothing) return avatarStatus;
+        if (item.Type != ItemType.Clothing) return result;
 
         // アイテムの対応アバターが共通素体グループで登録されていた時用の処理
-        foreach (string supportedAvatar in item.SupportedAvatars)
+        foreach (var avatar in item.SupportedAvatars)
         {
-            if (!supportedAvatar.StartsWith(CommonAvatar.InternalPathPrefix)) continue;
+            if (!avatar.StartsWith(CommonAvatar.InternalPathPrefix)) continue;
 
-            CommonAvatar? group = commonAvatars.FirstOrDefault(g => g.Id == CommonAvatar.GetGroupId(supportedAvatar));
+            var group = commonAvatars.FirstOrDefault(g => g.Id == CommonAvatar.GetGroupId(avatar));
             if (group != null && group.Avatars.Contains(avatarId))
             {
-                avatarStatus.IsCommon = true;
-                avatarStatus.CommonAvatarName = group.GroupName;
-                return avatarStatus;
+                result.IsCommon = true;
+                result.CommonAvatarName = group.GroupName;
+                return result;
             }
         }
 
-        IEnumerable<CommonAvatar> groupsForPath = commonAvatars
-            .Where(x => x.Avatars.Contains(avatarId));
+        var groupsForPath = commonAvatars.Where(x => x.Avatars.Contains(avatarId));
+        if (!groupsForPath.Any()) return result;
 
-        if (!groupsForPath.Any()) return avatarStatus;
-
-        foreach (string supportedAvatar in item.SupportedAvatars)
+        foreach (var supportedAvatar in item.SupportedAvatars)
         {
-            CommonAvatar? group = groupsForPath.FirstOrDefault(g => g.Avatars.Contains(supportedAvatar));
+            var group = groupsForPath.FirstOrDefault(g => g.Avatars.Contains(supportedAvatar));
             if (group != null)
             {
-                avatarStatus.IsCommon = true;
-                avatarStatus.CommonAvatarName = group.GroupName;
-                return avatarStatus;
+                result.IsCommon = true;
+                result.CommonAvatarName = group.GroupName;
+                return result;
             }
         }
 
-        return avatarStatus;
+        return result;
     }
 }

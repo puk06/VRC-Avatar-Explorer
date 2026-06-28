@@ -55,7 +55,7 @@ public class ErrorLogWriter : IDisposable
     {
         if (_writer != null) return;
         
-        FileStream stream = new(_logFilePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+        var stream = new FileStream(_logFilePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
         _writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
     }
 

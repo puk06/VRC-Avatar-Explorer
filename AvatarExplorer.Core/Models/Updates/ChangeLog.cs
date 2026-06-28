@@ -15,12 +15,8 @@ public class ChangeLog
         void AppendSection(string title, List<string> items)
         {
             if (stringBuilder.Length > 0) stringBuilder.AppendLine();
-            
             stringBuilder.AppendLine($"# {title}");
-            foreach (string item in items)
-            {
-                stringBuilder.AppendLine($"・ {item}");
-            }
+            foreach (var item in items) stringBuilder.AppendLine($"・ {item}");
         }
 
         AppendSection("Added - 追加点", Added);

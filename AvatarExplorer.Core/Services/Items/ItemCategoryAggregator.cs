@@ -10,11 +10,11 @@ internal static class ItemCategoryAggregator
     {
         var categories = ImmutableArray.CreateBuilder<ItemCountInfo>();
 
-        Dictionary<ItemType, int> itemsByType = items
+        var itemsByType = items
             .GroupBy(i => i.Type)
             .ToDictionary(g => g.Key, g => g.Count());
 
-        Dictionary<string, int> itemsByCustomCategory = items
+        var itemsByCustomCategory = items
             .Where(i => !string.IsNullOrEmpty(i.CustomCategory))
             .GroupBy(i => i.CustomCategory)
             .ToDictionary(g => g.Key, g => g.Count());

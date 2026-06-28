@@ -769,12 +769,12 @@ public static class FileSystemService
     {
         if (!Directory.Exists(rootDirectory)) throw new DirectoryNotFoundException($"Directory not found: {rootDirectory}.");
 
-        Stack<string> directories = new();
+        var directories = new Stack<string>();
         directories.Push(rootDirectory);
 
         while (directories.Count > 0)
         {
-            string directory = directories.Pop();
+            var directory = directories.Pop();
 
             string[] subDirectories;
 
@@ -790,7 +790,7 @@ public static class FileSystemService
 
             if (isRecursive)
             {
-                foreach (string subDirectory in subDirectories)
+                foreach (var subDirectory in subDirectories)
                 {
                     directories.Push(subDirectory);
                 }
@@ -808,7 +808,7 @@ public static class FileSystemService
                 continue;
             }
 
-            foreach (string file in files)
+            foreach (var file in files)
             {
                 yield return file;
             }
@@ -817,18 +817,18 @@ public static class FileSystemService
 
     public static string GetUniquePath(string directory, string fileName, bool isDirectory = false)
     {
-        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
-        string extension = Path.GetExtension(fileName);
+        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+        var extension = Path.GetExtension(fileName);
 
-        string path = Path.Combine(directory, fileName);
+        var path = Path.Combine(directory, fileName);
         if ((!isDirectory && !File.Exists(path)) || (isDirectory && !Directory.Exists(path))) return path;
 
-        int index = 1;
+        var index = 1;
 
         while (true)
         {
-            string newName = $"{fileNameWithoutExtension} - {index}{extension}";
-            string newPath = Path.Combine(directory, newName);
+            var newName = $"{fileNameWithoutExtension} - {index}{extension}";
+            var newPath = Path.Combine(directory, newName);
 
             if ((!isDirectory && !File.Exists(newPath)) || (isDirectory && !Directory.Exists(newPath)))
                 return newPath;
