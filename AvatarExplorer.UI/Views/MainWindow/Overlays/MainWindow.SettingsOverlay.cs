@@ -408,10 +408,15 @@ public partial class MainWindow
         if (!avatarExists)
         {
             YesNoResult? result = await YesNoDialogOverlay_ShowSafeAsync(Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default], Localizer.Instance[LocalizationKey.Dialog.Confirmation.NoAvatarsAndValidateType]);
-            if (result != null && result == YesNoResult.Yes) AvatarExplorer.ValidateAndAutoFixItemType(true);
+            if (result != null && result == YesNoResult.Yes)
+            {
+                await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+                AvatarExplorer.ValidateAndAutoFixItemType(true);
+            }
         }
         else if (unknownCategoryExists)
         {
+            await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
             AvatarExplorer.ValidateAndAutoFixItemType(false);
         }
     }
