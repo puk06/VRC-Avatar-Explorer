@@ -533,6 +533,12 @@ public static class LocalizationKey
             public const string Description = "Settings.RestoreFromBackup.Description";
             public const string SelectBackup = "Settings.RestoreFromBackup.SelectBackup";
         }
+        public static class AutoFixDatabase
+        {
+            public const string Title = "Settings.AutoFixDatabase.Title";
+            public const string Description = "Settings.AutoFixDatabase.Description";
+            public const string Fix = "Settings.AutoFixDatabase.Fix";
+        }
         public static class ResetItemDatabase
         {
             public const string Title = "Settings.ResetItemDatabase.Title";

@@ -392,7 +392,16 @@ public partial class MainWindow
             _userPreferencesManager.Save();
         }
 
-        // ItemsのTypeに1が無い時は確認、11があれば確定で修正する
+        await SettingsOverlay_AutoFixDatabase();
+
+        SettingsOverlay_SetUiValueFromCurrentSettings();
+        await SettingsOverlay_ApplySettingsValues();
+
+        Main_ReloadCurrentWindow();
+    }
+    private async void SettingsOverlay_AutoFixDatabase_Click(object? sender, RoutedEventArgs e) => await SettingsOverlay_AutoFixDatabase();
+    private async Task SettingsOverlay_AutoFixDatabase()
+    {
         var items = AvatarExplorer.GetAllItems();
         bool avatarExists = items.Any(i => i.Type == ItemType.Avatar);
         bool unknownCategoryExists = items.Any(i => (int)i.Type >= 11);
@@ -405,11 +414,6 @@ public partial class MainWindow
         {
             AvatarExplorer.ValidateAndAutoFixItemType(false);
         }
-
-        SettingsOverlay_SetUiValueFromCurrentSettings();
-        await SettingsOverlay_ApplySettingsValues();
-
-        Main_ReloadCurrentWindow();
     }
     private async void SettingsOverlay_ShowErrorLog_Click(object? sender, RoutedEventArgs e) => ErrorLogOverlay_Open();
     #endregion
