@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Overlays.ImportThumbnailOverlay"
+    x:DataType="vm:ImportThumbnailViewModel">
+
+    <UserControl.DataContext>
+        <vm:ImportThumbnailViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="500" Padding="24">
+            <StackPanel Spacing="14">
+
+                <!-- タイトル -->
+                <TextBlock Text="{Binding [SelectImportType.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource Text.Primary}"/>
+                <Separator Classes="separator"/>
+
+                <!-- インポートタイプ選択ボタン -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="0" Content="{Binding [SelectImportType.Options.V1], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding FromV1Command}"/>
+                    <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [SelectImportType.Options.KonoAsset], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding FromKonoAssetCommand}"/>
+                </Grid>
+                <Button Classes="button" FontWeight="Bold" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Margin="0,2,0,0" Command="{Binding CancelCommand}"/>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

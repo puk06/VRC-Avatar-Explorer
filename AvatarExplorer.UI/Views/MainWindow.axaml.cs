@@ -33,12 +33,14 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.Utils;
+using AvatarExplorer.UI.ViewModels.Overlays;
 using ErrorOr;
 
 namespace AvatarExplorer.UI;
 
 public partial class MainWindow : Window
 {
+    public EditTagsViewModel EditTagsVM { get; } = new();
     private readonly PageManager _main_pageManager = new(defaultValue: -1);
     private readonly ScrollManager _main_scrollManager = new(defaultValue: Vector.Zero);
 
@@ -92,47 +94,47 @@ public partial class MainWindow : Window
         for (int step = 0; step <= fadeSteps; step++)
         {
             var opacity = 1 - (step / (double)fadeSteps);
-            await Dispatcher.UIThread.InvokeAsync(() => StartupLoadingOverlay.Opacity = opacity);
+            // await Dispatcher.UIThread.InvokeAsync(() => StartupLoadingOverlay.Opacity = opacity);
             if (step < fadeSteps) await Task.Delay(stepDelayMs);
         }
 
-        StartupLoadingOverlay.IsVisible = false;
-        StartupLoadingOverlay.Opacity = 0;
+        // StartupLoadingOverlay.IsVisible = false;
+        // StartupLoadingOverlay.Opacity = 0;
     }
 
     private async void Main_Loaded(object? sender, RoutedEventArgs e)
     {
-        var initializationResult = await Main_Initialize();
-        if (initializationResult.IsError)
-        {
-            StartupLoadingOverlay.IsVisible = false;
-            if (!_main_initializationErrorShown) FatalErrorOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.InitializationFailed]);
+        // var initializationResult = await Main_Initialize();
+        // if (initializationResult.IsError)
+        // {
+        //     // StartupLoadingOverlay.IsVisible = false;
+        //     if (!_main_initializationErrorShown) FatalErrorOverlay_Show(Localizer.Instance[LocalizationKey.Error.Default], Localizer.Instance[LocalizationKey.Error.InitializationFailed]);
 
-            await Task.Delay(5000);
-            Close();
-            return;
-        }
+        //     await Task.Delay(5000);
+        //     Close();
+        //     return;
+        // }
 
-        var thumbnailFileNames = AvatarExplorer.GetAllItems().Select(i => i.ThumbnailFileName).Where(p => !string.IsNullOrEmpty(p));
-        ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
+        // var thumbnailFileNames = AvatarExplorer.GetAllItems().Select(i => i.ThumbnailFileName).Where(p => !string.IsNullOrEmpty(p));
+        // ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
 
-        Main_DockPanel.IsVisible = true;
-        Main_ReloadCurrentWindow();
-        await Main_HideStartupLoadingOverlayAsync();
+        // Main_DockPanel.IsVisible = true;
+        // Main_ReloadCurrentWindow();
+        // await Main_HideStartupLoadingOverlayAsync();
         
-        // 初回起動かチェック
-        if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
+        // // 初回起動かチェック
+        // if (AvatarExplorer.GetAllItems().Length == 0) await InitialSetupOverlay_ShowAsync();
 
-        // Scheme & Administrator Mode Check (Windows)
-        if (ProcessUtils.IsWindows())
-        {
-            await Main_CheckSchemeAsync();
-            Main_CheckAdministratorMode();
-        }
+        // // Scheme & Administrator Mode Check (Windows)
+        // if (ProcessUtils.IsWindows())
+        // {
+        //     await Main_CheckSchemeAsync();
+        //     Main_CheckAdministratorMode();
+        // }
 
-        if (UserPreferences.CheckForUpdate) await UpdateDialogOverlay_CheckAsync(UserPreferences.UpdateChannel);
+        // if (UserPreferences.CheckForUpdate) await UpdateDialogOverlay_CheckAsync(UserPreferences.UpdateChannel);
 
-        await Main_LoadApplicationArgsAsync();
+        // await Main_LoadApplicationArgsAsync();
     }
 
     private async Task Main_LoadApplicationArgsAsync()
@@ -200,7 +202,7 @@ public partial class MainWindow : Window
 
     private async Task Main_LoadDeveloperProfileIconAsync()
     {
-        if (SettingsOverlay_DeveloperProfileImage == null) return;
+        // if (SettingsOverlay_DeveloperProfileImage == null) return;
 
         try
         {
@@ -228,7 +230,7 @@ public partial class MainWindow : Window
             if (!avatarResponse.IsSuccessStatusCode) return;
 
             await using var avatarStream = await avatarResponse.Content.ReadAsStreamAsync();
-            SettingsOverlay_DeveloperProfileImage.Source = new Avalonia.Media.Imaging.Bitmap(avatarStream);
+            // SettingsOverlay_DeveloperProfileImage.Source = new Avalonia.Media.Imaging.Bitmap(avatarStream);
         }
         catch (Exception ex)
         {
@@ -260,62 +262,62 @@ public partial class MainWindow : Window
         var launchInfo = LaunchInfoService.GetLaunchInfo(args[0]);
         if (launchInfo == null) return;
 
-        if (launchInfo.AssetPaths.Length != 0 && !string.IsNullOrEmpty(launchInfo.BoothId)) await AddItemOverlay_Open(launchInfo);
+        // if (launchInfo.AssetPaths.Length != 0 && !string.IsNullOrEmpty(launchInfo.BoothId)) await AddItemOverlay_Open(launchInfo);
     }
 
     #region Left Panel
     private void Main_RenderLeftPanel()
     {
-        if (Main_LeftPanel == null) return;
-        Main_LeftPanel.Children.Clear();
+        // if (Main_LeftPanel == null) return;
+        // Main_LeftPanel.Children.Clear();
 
-        var items = new List<ItemCountInfo>();
+        // var items = new List<ItemCountInfo>();
 
-        var customState = ItemTagStates.None;
-        switch (Main_LeftFilter.SelectedIndex)
-        {
-            case 0:
-                {
-                    items.AddRange(AvatarExplorer.GetAvatars(includeTempAvatar: true));
-                    customState = ItemTagStates.RootAvatar;
-                    break;
-                }
-            case 1:
-                {
-                    items.AddRange(AvatarExplorer.GetAuthors());
-                    customState = ItemTagStates.RootAuthor;
-                    break;
-                }
-            case 2:
-                {
-                    items.AddRange(AvatarExplorer.GetCategories(includeAllCategory: true));
-                    customState = ItemTagStates.RootCategory;
-                    break;
-                }
-        }
+        // var customState = ItemTagStates.None;
+        // switch (Main_LeftFilter.SelectedIndex)
+        // {
+        //     case 0:
+        //         {
+        //             items.AddRange(AvatarExplorer.GetAvatars(includeTempAvatar: true));
+        //             customState = ItemTagStates.RootAvatar;
+        //             break;
+        //         }
+        //     case 1:
+        //         {
+        //             items.AddRange(AvatarExplorer.GetAuthors());
+        //             customState = ItemTagStates.RootAuthor;
+        //             break;
+        //         }
+        //     case 2:
+        //         {
+        //             items.AddRange(AvatarExplorer.GetCategories(includeAllCategory: true));
+        //             customState = ItemTagStates.RootCategory;
+        //             break;
+        //         }
+        // }
 
-        int currentPage = _main_pageManager.Get(customState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
+        // int currentPage = _main_pageManager.Get(customState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
 
-        foreach (var itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
-        {
-            var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
-            var itemButton = ItemButtonFactory.AddItemButton(Main_LeftPanel, new UISelectableItem(itemCountInfo).SetState(customState), RuntimeSettings, UserPreferences, itemContextMenu, LeftPanel_ItemButton_Click);
+        // foreach (var itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
+        // {
+        //     var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
+        //     var itemButton = ItemButtonFactory.AddItemButton(Main_LeftPanel, new UISelectableItem(itemCountInfo).SetState(customState), RuntimeSettings, UserPreferences, itemContextMenu, LeftPanel_ItemButton_Click);
 
-            // アイテム(アバター)の場合はD&Dイベントを登録してあげる
-            if (StateFlagUtils.IsDraggableState(customState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
-        }
+        //     // アイテム(アバター)の場合はD&Dイベントを登録してあげる
+        //     if (StateFlagUtils.IsDraggableState(customState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
+        // }
 
-        if (currentPage != -1 && items.Count != 0)
-        {
-            Main_LeftPanelPageInfo.Children.Clear();
-            var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(customState, currentPage, UserPreferences.ItemsPerPage, items.Count, LeftPanel_ItemButton_Click);
-            if (pageInfoPanel != null) Main_LeftPanelPageInfo.Children.Add(pageInfoPanel);
-        }
-        else Main_LeftPanelPageInfo.Children.Clear();
+        // if (currentPage != -1 && items.Count != 0)
+        // {
+        //     Main_LeftPanelPageInfo.Children.Clear();
+        //     var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(customState, currentPage, UserPreferences.ItemsPerPage, items.Count, LeftPanel_ItemButton_Click);
+        //     if (pageInfoPanel != null) Main_LeftPanelPageInfo.Children.Add(pageInfoPanel);
+        // }
+        // else Main_LeftPanelPageInfo.Children.Clear();
 
-        // スクロール位置をDictionaryから復元してあげる
-        Main_LeftPanelScrollViewer.Presenter?.UpdateLayout();
-        Main_LeftPanelScrollViewer.Offset = _main_scrollManager.Get(customState);
+        // // スクロール位置をDictionaryから復元してあげる
+        // Main_LeftPanelScrollViewer.Presenter?.UpdateLayout();
+        // Main_LeftPanelScrollViewer.Offset = _main_scrollManager.Get(customState);
     }
     private void LeftPanel_ItemButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -343,78 +345,78 @@ public partial class MainWindow : Window
     #region Right Panel
     private void Main_RenderRightPanel()
     {
-        if (Main_RightPanel == null) return;
-        Main_RightPanel.Children.Clear();
+        // if (Main_RightPanel == null) return;
+        // Main_RightPanel.Children.Clear();
 
-        var items = AvatarExplorer.GetItemsForCurrentState();
-        var isRootItemState = AvatarExplorer.GetCurrentNode() == null; // Nodeがない場合は全てのアイテムが返されるため、それをRootItem状態として扱う
+        // var items = AvatarExplorer.GetItemsForCurrentState();
+        // var isRootItemState = AvatarExplorer.GetCurrentNode() == null; // Nodeがない場合は全てのアイテムが返されるため、それをRootItem状態として扱う
 
-        if (items.Length == 0) Main_ShowNoItemsLabel();
-        else Main_HideNoItemsLabel();
+        // if (items.Length == 0) Main_ShowNoItemsLabel();
+        // else Main_HideNoItemsLabel();
 
-        var itemTagState = ItemTagStates.None;
+        // var itemTagState = ItemTagStates.None;
 
-        if (isRootItemState) itemTagState = ItemTagStates.RootItem;
-        else if (items.Length > 0) itemTagState = new UISelectableItem(items[0]).Tag.State;
+        // if (isRootItemState) itemTagState = ItemTagStates.RootItem;
+        // else if (items.Length > 0) itemTagState = new UISelectableItem(items[0]).Tag.State;
 
-        _main_lastRightPanelItemTagState = itemTagState;
+        // _main_lastRightPanelItemTagState = itemTagState;
 
-        int currentPage = _main_pageManager.Get(itemTagState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
+        // int currentPage = _main_pageManager.Get(itemTagState); // -1が返された場合は対応していないStateのため、全てのアイテムを表示してあげる
 
-        foreach (var itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
-        {
-            var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
-            var itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(itemCountInfo).SetState(itemTagState), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
+        // foreach (var itemCountInfo in currentPage != -1 ? items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage) : items)
+        // {
+        //     var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(itemCountInfo.Item), Main_ItemButton_ContextMenuItem_Click);
+        //     var itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(itemCountInfo).SetState(itemTagState), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
 
-            // アイテムの場合はD&Dイベントを登録してあげる
-            if (StateFlagUtils.IsDraggableState(itemTagState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
-        }
+        //     // アイテムの場合はD&Dイベントを登録してあげる
+        //     if (StateFlagUtils.IsDraggableState(itemTagState)) itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
+        // }
 
-        if (currentPage != -1 && items.Length != 0)
-        {
-            Main_RightPanelPageInfo.Children.Clear();
-            var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(itemTagState, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
-            if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
-        }
-        else Main_RightPanelPageInfo.Children.Clear();
+        // if (currentPage != -1 && items.Length != 0)
+        // {
+        //     Main_RightPanelPageInfo.Children.Clear();
+        //     var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(itemTagState, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
+        //     if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
+        // }
+        // else Main_RightPanelPageInfo.Children.Clear();
 
-        _main_isLastWindowSearch = false;
-        Main_LoadCurrentPath();
+        // _main_isLastWindowSearch = false;
+        // Main_LoadCurrentPath();
         
-        // スクロール位置をDictionaryから復元してあげる
-        Main_RightPanelScrollViewer.Presenter?.UpdateLayout();
-        Main_RightPanelScrollViewer.Offset = _main_scrollManager.Get(itemTagState);
+        // // スクロール位置をDictionaryから復元してあげる
+        // Main_RightPanelScrollViewer.Presenter?.UpdateLayout();
+        // Main_RightPanelScrollViewer.Offset = _main_scrollManager.Get(itemTagState);
     }
     private async void RightPanel_ItemButton_Click(object? sender, RoutedEventArgs e)
     {
-        if (sender is not Button button) return;
+        // if (sender is not Button button) return;
 
-        if (button.Tag is ItemTagInfo itemTagInfo)
-        {
-            if (itemTagInfo.State == ItemTagStates.ItemFileCategoryOpen) // ファイルを押されると、アイテムを開く処理に移行する
-            {
-                var itemPath = itemTagInfo.Value; // ItemFileCategoryOpenのValueはファイルのパスになっている
-                await Main_OpenFileInternalAsync(itemPath);
-            }
-            else
-            {
-                AvatarExplorer.Select(itemTagInfo.State, itemTagInfo.Value);
-                Main_CheckPageStates();
-                Main_CheckScrollStates();
-                _main_scrollManager.Add(itemTagInfo.State, Main_RightPanelScrollViewer.Offset); // 次の画面に行くため、今のStateのスクロール位置を保存する
+        // if (button.Tag is ItemTagInfo itemTagInfo)
+        // {
+        //     if (itemTagInfo.State == ItemTagStates.ItemFileCategoryOpen) // ファイルを押されると、アイテムを開く処理に移行する
+        //     {
+        //         var itemPath = itemTagInfo.Value; // ItemFileCategoryOpenのValueはファイルのパスになっている
+        //         await Main_OpenFileInternalAsync(itemPath);
+        //     }
+        //     else
+        //     {
+        //         AvatarExplorer.Select(itemTagInfo.State, itemTagInfo.Value);
+        //         Main_CheckPageStates();
+        //         Main_CheckScrollStates();
+        //         _main_scrollManager.Add(itemTagInfo.State, Main_RightPanelScrollViewer.Offset); // 次の画面に行くため、今のStateのスクロール位置を保存する
 
-                Main_RenderRightPanel();
-            }
-        }
+        //         Main_RenderRightPanel();
+        //     }
+        // }
 
-        if (button.Tag is PageButtonInfo pageButtonInfo)
-        {
-            _main_pageManager.Add(pageButtonInfo.ItemTagState, pageButtonInfo.NextPageValue);
-            _main_scrollManager.Remove(pageButtonInfo.ItemTagState); // ページは今のStateをリセットしてあげる
+        // if (button.Tag is PageButtonInfo pageButtonInfo)
+        // {
+        //     _main_pageManager.Add(pageButtonInfo.ItemTagState, pageButtonInfo.NextPageValue);
+        //     _main_scrollManager.Remove(pageButtonInfo.ItemTagState); // ページは今のStateをリセットしてあげる
 
-            if (pageButtonInfo.ItemTagState == ItemTagStates.SearchItem) Main_ExecuteSearchItems();
-            else Main_RenderRightPanel();
-        }
+        //     if (pageButtonInfo.ItemTagState == ItemTagStates.SearchItem) Main_ExecuteSearchItems();
+        //     else Main_RenderRightPanel();
+        // }
     }
     #endregion
 
@@ -423,14 +425,14 @@ public partial class MainWindow : Window
     private void Main_SearchValue_Changed(object? sender, RoutedEventArgs e)
     {
         // OR検索とカテゴリーOR検索は排他にする
-        if (sender == AdvancedSearchPanel_OrSearch && (AdvancedSearchPanel_OrSearch.IsChecked ?? false) && (AdvancedSearchPanel_CategoryOrSearch.IsChecked ?? false))
-        {
-            AdvancedSearchPanel_CategoryOrSearch.IsChecked = false;
-        }
-        else if (sender == AdvancedSearchPanel_CategoryOrSearch && (AdvancedSearchPanel_CategoryOrSearch.IsChecked ?? false) && (AdvancedSearchPanel_OrSearch.IsChecked ?? false))
-        {
-            AdvancedSearchPanel_OrSearch.IsChecked = false;
-        }
+        // if (sender == AdvancedSearchPanel_OrSearch && (AdvancedSearchPanel_OrSearch.IsChecked ?? false) && (AdvancedSearchPanel_CategoryOrSearch.IsChecked ?? false))
+        // {
+        //     AdvancedSearchPanel_CategoryOrSearch.IsChecked = false;
+        // }
+        // else if (sender == AdvancedSearchPanel_CategoryOrSearch && (AdvancedSearchPanel_CategoryOrSearch.IsChecked ?? false) && (AdvancedSearchPanel_OrSearch.IsChecked ?? false))
+        // {
+        //     AdvancedSearchPanel_OrSearch.IsChecked = false;
+        // }
 
         _searchTimer.Stop();
         _searchTimer.Tick -= Main_OnSearchTimerTick;
@@ -439,95 +441,95 @@ public partial class MainWindow : Window
     }
     private void Main_OnSearchTimerTick(object? sender, EventArgs e)
     {
-        _searchTimer.Stop();
-        _main_searchTextCache = Main_SearchTextBox.Text ?? string.Empty;
-        Main_ExecuteSearchItems();
+        // _searchTimer.Stop();
+        // _main_searchTextCache = Main_SearchTextBox.Text ?? string.Empty;
+        // Main_ExecuteSearchItems();
     }
 
     private void Main_ExecuteSearchItems(string searchText = "")
     {
-        if (!string.IsNullOrEmpty(searchText)) _main_searchTextCache = searchText;
+        // if (!string.IsNullOrEmpty(searchText)) _main_searchTextCache = searchText;
 
-        var searchFilter = new SearchFilter();
-        AdvancedSearchPanel_ApplyValues(searchFilter);
-        SearchFilterBuilder.Build(searchFilter, _main_searchTextCache, SearchUtils.ParseCategory);
+        // var searchFilter = new SearchFilter();
+        // AdvancedSearchPanel_ApplyValues(searchFilter);
+        // SearchFilterBuilder.Build(searchFilter, _main_searchTextCache, SearchUtils.ParseCategory);
 
-        if (string.IsNullOrEmpty(_main_searchTextCache) && searchFilter.SearchTokens.Count == 0)
-        {
-            Main_RenderRightPanel();
-            return;
-        }
+        // if (string.IsNullOrEmpty(_main_searchTextCache) && searchFilter.SearchTokens.Count == 0)
+        // {
+        //     Main_RenderRightPanel();
+        //     return;
+        // }
 
-        // 検索画面に切り替わる時に、前の画面のスクロール位置を保存してあげる
-        if (!_main_isLastWindowSearch) _main_scrollManager.Add(_main_lastRightPanelItemTagState, Main_RightPanelScrollViewer.Offset);
+        // // 検索画面に切り替わる時に、前の画面のスクロール位置を保存してあげる
+        // if (!_main_isLastWindowSearch) _main_scrollManager.Add(_main_lastRightPanelItemTagState, Main_RightPanelScrollViewer.Offset);
 
-        // 検索文字列が前回と違う場合はページ、スクロール位置をリセットする
-        if (searchFilter.ToString() != _main_lastSearchTextCache)
-        {
-            _main_pageManager.Add(ItemTagStates.SearchItem, 0);
-            _main_scrollManager.Remove(ItemTagStates.SearchItem);
-        }
-        _main_lastSearchTextCache = searchFilter.ToString();
+        // // 検索文字列が前回と違う場合はページ、スクロール位置をリセットする
+        // if (searchFilter.ToString() != _main_lastSearchTextCache)
+        // {
+        //     _main_pageManager.Add(ItemTagStates.SearchItem, 0);
+        //     _main_scrollManager.Remove(ItemTagStates.SearchItem);
+        // }
+        // _main_lastSearchTextCache = searchFilter.ToString();
 
-        Main_RightPanel.Children.Clear();
+        // Main_RightPanel.Children.Clear();
 
-        var items = AvatarExplorer.SearchItems(searchFilter);
+        // var items = AvatarExplorer.SearchItems(searchFilter);
 
-        if (items.Length == 0) Main_ShowNoItemsLabel();
-        else Main_HideNoItemsLabel();
+        // if (items.Length == 0) Main_ShowNoItemsLabel();
+        // else Main_HideNoItemsLabel();
 
-        int currentPage = _main_pageManager.Get(ItemTagStates.SearchItem); // SearchItemは必ずページが存在しているため
+        // int currentPage = _main_pageManager.Get(ItemTagStates.SearchItem); // SearchItemは必ずページが存在しているため
 
-        foreach (var item in items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage))
-        {
-            var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(item), Main_ItemButton_ContextMenuItem_Click);
-            var itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(item, 0).SetState(ItemTagStates.SearchItem), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
+        // foreach (var item in items.Skip(currentPage * UserPreferences.ItemsPerPage).Take(UserPreferences.ItemsPerPage))
+        // {
+        //     var itemContextMenu = ContextMenuFactory.GetContextMenu(ContextMenuCreator.Create(item), Main_ItemButton_ContextMenuItem_Click);
+        //     var itemButton = ItemButtonFactory.AddItemButton(Main_RightPanel, new UISelectableItem(item, 0).SetState(ItemTagStates.SearchItem), RuntimeSettings, UserPreferences, itemContextMenu, RightPanel_ItemButton_Click);
 
-            // D&Dイベントを登録してあげる
-            itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
-        }
+        //     // D&Dイベントを登録してあげる
+        //     itemButton.AddHandler(PointerPressedEvent, Main_ItemButton_PointerPressed, RoutingStrategies.Tunnel);
+        // }
 
-        if (items.Length != 0)
-        {
-            Main_RightPanelPageInfo.Children.Clear();
-            var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(ItemTagStates.SearchItem, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
-            if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
-        }
-        else Main_RightPanelPageInfo.Children.Clear();
+        // if (items.Length != 0)
+        // {
+        //     Main_RightPanelPageInfo.Children.Clear();
+        //     var pageInfoPanel = PageInfoPanelFactory.CreatePageInfoPanel(ItemTagStates.SearchItem, currentPage, UserPreferences.ItemsPerPage, items.Length, RightPanel_ItemButton_Click);
+        //     if (pageInfoPanel != null) Main_RightPanelPageInfo.Children.Add(pageInfoPanel);
+        // }
+        // else Main_RightPanelPageInfo.Children.Clear();
 
-        _main_isLastWindowSearch = true;
+        // _main_isLastWindowSearch = true;
 
-        Main_PathTextBox.Text = searchFilter.ToPathString();
+        // Main_PathTextBox.Text = searchFilter.ToPathString();
 
-        // スクロール位置をDictionaryから復元してあげる
-        Main_RightPanelScrollViewer.Presenter?.UpdateLayout();
-        Main_RightPanelScrollViewer.Offset = _main_scrollManager.Get(ItemTagStates.SearchItem);
+        // // スクロール位置をDictionaryから復元してあげる
+        // Main_RightPanelScrollViewer.Presenter?.UpdateLayout();
+        // Main_RightPanelScrollViewer.Offset = _main_scrollManager.Get(ItemTagStates.SearchItem);
     }
     #endregion
 
     #region Path Processing
     private void Main_LoadCurrentPath()
     {
-        if (Main_PathTextBox == null) return;
+        // if (Main_PathTextBox == null) return;
 
-        var currentSelectionNodes = AvatarExplorer.GetCurrentSelectionNodes();
-        if (!currentSelectionNodes.Any())
-        {
-            Main_PathTextBox.Text = string.Empty;
-            return;
-        }
+        // var currentSelectionNodes = AvatarExplorer.GetCurrentSelectionNodes();
+        // if (!currentSelectionNodes.Any())
+        // {
+        //     Main_PathTextBox.Text = string.Empty;
+        //     return;
+        // }
 
-        var selectionNodes = new List<SelectionNode>();
-        foreach (var node in currentSelectionNodes)
-        {
-            if (node.State == ItemTagStates.SearchItem) selectionNodes.Clear();
-            selectionNodes.Add(node);
-        }
+        // var selectionNodes = new List<SelectionNode>();
+        // foreach (var node in currentSelectionNodes)
+        // {
+        //     if (node.State == ItemTagStates.SearchItem) selectionNodes.Clear();
+        //     selectionNodes.Add(node);
+        // }
 
-        var items = AvatarExplorer.GetAllItems();
-        var tempAvatars = AvatarExplorer.GetAllTempAvatars();
-        Main_PathTextBox.Text = string.Join(" > ", selectionNodes.Select(i => PathService.BuildPath(items, tempAvatars, i, RuntimeSettings.RemoveBrackets)));
-        Main_PathTextBox.CaretIndex = Main_PathTextBox.Text.Length;
+        // var items = AvatarExplorer.GetAllItems();
+        // var tempAvatars = AvatarExplorer.GetAllTempAvatars();
+        // Main_PathTextBox.Text = string.Join(" > ", selectionNodes.Select(i => PathService.BuildPath(items, tempAvatars, i, RuntimeSettings.RemoveBrackets)));
+        // Main_PathTextBox.CaretIndex = Main_PathTextBox.Text.Length;
     }
     #endregion
 
@@ -560,7 +562,7 @@ public partial class MainWindow : Window
         else
         {
             // 再読込する前に、前の画面のスクロール位置を保存してあげる
-            _main_scrollManager.Add(_main_lastRightPanelItemTagState, Main_RightPanelScrollViewer.Offset);
+            // _main_scrollManager.Add(_main_lastRightPanelItemTagState, Main_RightPanelScrollViewer.Offset);
             Main_RenderRightPanel();
         }
 
@@ -600,11 +602,11 @@ public partial class MainWindow : Window
 
     private void Main_ShowNoItemsLabel()
     {
-        Main_RightPanelParent.IsVisible = true;
+        // Main_RightPanelParent.IsVisible = true;
     }
     private void Main_HideNoItemsLabel()
     {
-        Main_RightPanelParent.IsVisible = false;
+        // Main_RightPanelParent.IsVisible = false;
     }
 
     private async Task Main_OpenFileInternalAsync(string filePath)
@@ -654,7 +656,7 @@ public partial class MainWindow : Window
         if (isWarning) type = NotificationType.Warning;
         if (isError) type = NotificationType.Error;
         
-        Main_NotificationManager.Show(new Notification()
+        NotificationManager.Show(new Notification()
         {
             Title = title,
             Message = content,

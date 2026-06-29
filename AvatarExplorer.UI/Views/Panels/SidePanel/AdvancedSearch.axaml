@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Panels"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Panels.AdvancedSearch"
+    x:DataType="vm:AdvancedSearchViewModel">
+
+    <UserControl.DataContext>
+        <vm:AdvancedSearchViewModel/>
+    </UserControl.DataContext>
+
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
+        <StackPanel Spacing="3">
+            <TextBlock Text="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+            <TextBlock Text="{Binding [AdvancedSearch.NegationHint], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
+        </StackPanel>
+        <Separator Classes="separator" Grid.Row="1"/>
+
+        <ScrollViewer Grid.Row="2" VerticalAlignment="Stretch">
+            <StackPanel Spacing="14" Margin="0,10,10,0">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.OrSearch], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <ToggleSwitch IsChecked="{Binding OrSearch}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.CategoryOrSearch], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <ToggleSwitch IsChecked="{Binding CategoryOrSearch}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding Title}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.Author], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding Author}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Author], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.BoothId], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding BoothId}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.BoothId], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.SupportedAvatar], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding SupportedAvatar}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.SupportedAvatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.EmptySupportedAvatarAsNone], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <ToggleSwitch IsChecked="{Binding TreatEmptySupportedAvatarAsNone}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.Category], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding Category}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Category], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.Memo], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding Memo}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Memo], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.Folder], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding Folder}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Folder], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.File], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding File}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.File], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.ImplementedAvatar], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding ImplementedAvatar}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.ImplementedAvatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.NotImplementedAvatar], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding NotImplementedAvatar}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.NotImplementedAvatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.Tag], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding Tag}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Tag], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="{Binding [AdvancedSearch.CommonAvatar], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
+                    <Separator Classes="separator"/>
+                    <TextBox Text="{Binding CommonAvatar}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.CommonAvatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

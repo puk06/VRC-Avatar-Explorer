@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Overlays.UpdateDialogOverlay"
+    x:DataType="vm:UpdateDialogViewModel">
+
+    <UserControl.DataContext>
+        <vm:UpdateDialogViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="500" Padding="20">
+            <StackPanel Spacing="15">
+
+                <!-- タイトル + バージョンテキスト -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [UpdateDialog.Available], Source={x:Static loc:Localizer.Instance}}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Text="{Binding VersionText}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                </StackPanel>
+
+                <Separator Classes="separator"/>
+
+                <!-- 更新履歴 -->
+                <TextBlock Text="{Binding [UpdateDialog.ChangeLogs], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
+                <Border Classes="panelbackground" Height="200" Background="{DynamicResource Background.Surface}">
+                    <ScrollViewer>
+                        <TextBlock Text="{Binding Content}" FontSize="14" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- 下のボタン -->
+                <Grid ColumnDefinitions="*,10,120,10,120">
+                    <Button Grid.Column="2" Classes="button" Content="{Binding [UpdateDialog.Later], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button Grid.Column="4" Classes="accentbutton" Content="{Binding [UpdateDialog.UpdateNow], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

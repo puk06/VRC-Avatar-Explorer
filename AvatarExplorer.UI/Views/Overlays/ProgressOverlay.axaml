@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Overlays.ProgressOverlay"
+    x:DataType="vm:ProgressViewModel">
+
+    <UserControl.DataContext>
+        <vm:ProgressViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="400">
+            <StackPanel Spacing="20">
+
+                <!-- タイトル -->
+                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Margin="0,5,0,5" Foreground="{DynamicResource Text.Primary}"/>
+
+                <!-- 進捗バー -->
+                <ProgressBar Value="{Binding Progress}" IsIndeterminate="{Binding IsIndeterminate}"/>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

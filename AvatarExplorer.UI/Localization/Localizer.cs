@@ -18,6 +18,7 @@ public class Localizer : INotifyPropertyChanged
     private bool IsValidIndex => _selectedLanguageIndex >= 0 && _selectedLanguageIndex < _map.Count;
 
     public static Localizer Instance { get; private set; } = new Localizer();
+    public event Action? LanguageChanged;
 
     public int CurrentLanguageIndex
     {
@@ -26,6 +27,7 @@ public class Localizer : INotifyPropertyChanged
         {
             _selectedLanguageIndex = value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+            LanguageChanged?.Invoke();
         }
     }
 
@@ -36,6 +38,7 @@ public class Localizer : INotifyPropertyChanged
     private Localizer()
     {
         _map = [];
+        LoadFromFolder("locales");
     }
 
     public void LoadFromFolder(string path)

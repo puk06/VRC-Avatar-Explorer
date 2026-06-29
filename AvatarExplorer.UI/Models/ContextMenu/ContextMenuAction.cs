@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AvatarExplorer.UI.Models.ContextMenu;
 
-internal class ContextMenuAction(string name, ActionKey actionKey = ActionKey.None, ContextMenuIconType contextMenuIconType = ContextMenuIconType.None, string tag = "", bool reloadRequired = false, bool addSeparator = false, bool isEnabled = true)
+public class ContextMenuAction(string name, ActionKey actionKey = ActionKey.None, ContextMenuIconType contextMenuIconType = ContextMenuIconType.None, string tag = "", bool reloadRequired = false, bool addSeparator = false, bool isEnabled = true)
 {
     public string DisplayName { get; } = name;
     public ActionKey ActionKey { get; } = actionKey;

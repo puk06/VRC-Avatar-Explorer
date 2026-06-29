@@ -1,13 +1,12 @@
-using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using AvatarExplorer.Core.Models.Common;
 
 namespace AvatarExplorer.Core.Services.System;
 
 public class ErrorManager
 {
-    private readonly List<ErrorContext> _errorContexts = new();
     public static ErrorManager Instance { get; } = new();
-    public ImmutableArray<ErrorContext> ErrorContexts => _errorContexts.ToImmutableArray();
+    public ObservableCollection<ErrorContext> ErrorContexts { get; } = [];
 
     public event Action<string, Exception?, string>? OnErrorOccured;
     public event Action<string, Exception?, string>? OnInternalErrorOccured;
@@ -19,14 +18,14 @@ public class ErrorManager
     // 内部処理のエラー
     public void PostInternalError(string message, Exception? exception = null, string tag = "")
     {
-        _errorContexts.Add(new(true, message, exception, tag));
+        ErrorContexts.Add(new(true, message, exception, tag));
         OnInternalErrorOccured?.Invoke(message, exception, tag);
     }
 
     // AvaloniaなどのUIやLauncherのエラー
     public void PostError(string message, Exception? exception = null, string tag = "")
     {
-        _errorContexts.Add(new(false, message, exception, tag));
+        ErrorContexts.Add(new(false, message, exception, tag));
         OnErrorOccured?.Invoke(message, exception, tag);
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Text;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Common;
@@ -11,26 +12,26 @@ using AvatarExplorer.UI.Models.ContextMenu;
 
 namespace AvatarExplorer.UI.Models.Items;
 
-internal class UISelectableItem
+public class UISelectableItem
 {
-    internal string Title { get; private set; } = string.Empty;
-    internal (string LocalizationKey, string[] Args) Description { get; set; } = new();
-    internal string ImageFileName { get; private set; } = string.Empty;
-    internal ItemTagInfo Tag { get; private set; } = new(ItemTagStates.None, string.Empty); // ボタンが選択されたときに使用されるタグ
-    internal IconType IconType { get; private set; } = IconType.None;
+    public string Title { get; private set; } = string.Empty;
+    public (string LocalizationKey, string[] Args) Description { get; set; } = new();
+    public string ImageFileName { get; private set; } = string.Empty;
+    public ItemTagInfo Tag { get; private set; } = new(ItemTagStates.None, string.Empty); // ボタンが選択されたときに使用されるタグ
+    public IconType IconType { get; private set; } = IconType.None;
 
-    internal int ItemCount { get; set; } = 0; // カテゴリなどの数表記用
-    internal ImmutableArray<string>? Args { get; set; } = null;
+    public int ItemCount { get; set; } = 0; // カテゴリなどの数表記用
+    public ImmutableArray<string>? Args { get; set; } = null;
 
-    internal string CommonAvatarName { get; private set; } = string.Empty; // アイテム表記用
-    internal string CreatedDate { get; private set; } = string.Empty; // アイテムTooltip表記用
-    internal string UpdatedDate { get; private set; } = string.Empty; // アイテムTooltip表記用
-    internal ImmutableArray<string> ItemTags { get; private set; } = []; // アイテムのタグ
-    internal string ItemMemo { get; private set; } = string.Empty; // アイテムTooltip表記用
-    internal ImmutableArray<string>? ItemFolderPaths { get; private set; } = null; // Unitypackageの一覧を取得するためのアイテムのパス一覧
-    internal bool IsTempAvatar { get; private set; } = false; // 仮アバターかどうか
+    public string CommonAvatarName { get; private set; } = string.Empty; // アイテム表記用
+    public string CreatedDate { get; private set; } = string.Empty; // アイテムTooltip表記用
+    public string UpdatedDate { get; private set; } = string.Empty; // アイテムTooltip表記用
+    public ImmutableArray<string> ItemTags { get; private set; } = []; // アイテムのタグ
+    public string ItemMemo { get; private set; } = string.Empty; // アイテムTooltip表記用
+    public ImmutableArray<string>? ItemFolderPaths { get; private set; } = null; // Unitypackageの一覧を取得するためのアイテムのパス一覧
+    public bool IsTempAvatar { get; private set; } = false; // 仮アバターかどうか
 
-    internal UISelectableItem(ISelectableItem source, int itemCount, string[]? args = null)
+    public UISelectableItem(ISelectableItem source, int itemCount = 0, string[]? args = null)
     {
         ItemCount = itemCount;
         if (args != null) Args = args.ToImmutableArray();
@@ -46,12 +47,12 @@ internal class UISelectableItem
         else if (source is TempAvatar tempAvatar) FromTempAvatar(tempAvatar);
     }
 
-    internal UISelectableItem(ItemCountInfo itemCountInfo)
+    public UISelectableItem(ItemCountInfo itemCountInfo)
         : this(itemCountInfo.Item, itemCountInfo.Count, itemCountInfo.Args)
     {
     }
 
-    internal UISelectableItem SetState(ItemTagStates state)
+    public UISelectableItem SetState(ItemTagStates state)
     {
         Tag = new ItemTagInfo(state, Tag.Value);
         return this;
@@ -149,5 +150,29 @@ internal class UISelectableItem
         IconType = IconType.None;
 
         IsTempAvatar = true;
+    }
+
+    public string GetToolTipText()
+    {
+        var toolTipTextBuilder = new StringBuilder();
+
+        toolTipTextBuilder.Append(Title);
+
+        toolTipTextBuilder.AppendLine();
+        toolTipTextBuilder.AppendLine();
+
+        toolTipTextBuilder.Append(Localizer.Instance.Get(LocalizationKey.Button.ToolTip.CreatedDate, CreatedDate));
+        toolTipTextBuilder.AppendLine();
+        toolTipTextBuilder.Append(Localizer.Instance.Get(LocalizationKey.Button.ToolTip.UpdatedDate, UpdatedDate));
+
+        if (!string.IsNullOrEmpty(ItemMemo))
+        {
+            toolTipTextBuilder.AppendLine();
+            toolTipTextBuilder.AppendLine();
+
+            toolTipTextBuilder.Append(ItemMemo);
+        }
+
+        return toolTipTextBuilder.ToString();
     }
 }

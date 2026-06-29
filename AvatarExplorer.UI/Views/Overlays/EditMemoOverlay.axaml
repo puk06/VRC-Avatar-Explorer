@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Overlays.EditMemoOverlay"
+    x:DataType="vm:EditMemoViewModel">
+
+    <UserControl.DataContext>
+        <vm:EditMemoViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="500">
+            <StackPanel Spacing="15">
+                
+                <!-- タイトル -->
+                <TextBlock Text="{Binding [EditMemo.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+
+                <!-- メモテキスト -->
+                <TextBox Height="150" Text="{Binding Memo}" PlaceholderText="{Binding [EditMemo.Memo], Source={x:Static loc:Localizer.Instance}}" AcceptsReturn="True"/>
+
+                <!-- 下のボタン -->
+                <Grid ColumnDefinitions="150,*,150">
+                    <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CancelCommand}"/>
+                    <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.OK], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding ConfirmCommand}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

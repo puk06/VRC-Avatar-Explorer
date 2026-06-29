@@ -4,6 +4,7 @@ using System.Threading;
 using Avalonia;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
+using ReactiveUI.Avalonia;
 
 namespace AvatarExplorer.UI;
 
@@ -47,5 +48,7 @@ static class Program
             .WithDeveloperTools()
 #endif
             .WithInterFont()
+            .UseReactiveUI(exui => {})
+            .RegisterReactiveUIViewsFromEntryAssembly()
             .LogToTrace();
 }

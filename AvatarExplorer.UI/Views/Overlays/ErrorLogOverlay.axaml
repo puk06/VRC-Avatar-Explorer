@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:common="clr-namespace:AvatarExplorer.Core.Models.Common;assembly=AvatarExplorer.Core"
+    x:Class="AvatarExplorer.UI.Views.Overlays.ErrorLogOverlay"
+    x:DataType="vm:ErrorLogViewModel">
+
+    <UserControl.DataContext>
+        <vm:ErrorLogViewModel/>
+    </UserControl.DataContext>
+
+    <!-- エラーログオーバーレイ -->
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="900" Height="600" Padding="20">
+            <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="15">
+
+                <!-- タイトル -->
+                <TextBlock Text="{Binding [ErrorLog.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+
+                <Separator Classes="separator" Grid.Row="1"/>
+
+                <Panel Grid.Row="2">
+                    <ScrollViewer>
+                        <DataGrid GridLinesVisibility="All" ItemsSource="{Binding ErrorContexts}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Timestamp" Binding="{Binding Date, StringFormat={}{0:yyyy/MM/dd HH:mm:ss}}"/>
+                                <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*"/>
+                                <DataGridTextColumn Header="Tag" Binding="{Binding Tag}"/>
+                            </DataGrid.Columns>
+
+                            <DataGrid.Styles>
+                                <Style Selector="TextBlock">
+                                    <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+                                </Style>
+                            </DataGrid.Styles>
+                        </DataGrid>
+                    </ScrollViewer>
+                </Panel>
+
+                <!-- 下のボタン -->
+                <Grid Grid.Row="3" ColumnDefinitions="120,*,200,120" ColumnSpacing="20">
+                    <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CloseCommand}"/>
+                    <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [ErrorLog.OpenLogFolder], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding OpenFolderCommand}"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</UserControl>

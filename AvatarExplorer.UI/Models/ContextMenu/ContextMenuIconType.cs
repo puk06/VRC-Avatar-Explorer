@@ -3,7 +3,7 @@ using Material.Icons;
 
 namespace AvatarExplorer.UI.Models.ContextMenu;
 
-internal enum ContextMenuIconType
+public enum ContextMenuIconType
 {
     None,
 

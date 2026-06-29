@@ -1,0 +1,132 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    x:Class="AvatarExplorer.UI.Views.Overlays.AddItemOverlay"
+    x:DataType="vm:AddItemViewModel">
+
+    <UserControl.DataContext>
+        <vm:AddItemViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" CornerRadius="12">
+            <Grid ColumnDefinitions="350,500" Height="550" ColumnSpacing="20">
+                <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="15">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <Button Classes="accentbutton" FontSize="12" Command="{Binding AddFolderCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <materialIcons:MaterialIcon Kind="FolderPlus" Width="20" Height="20"/>
+                                <TextBlock Text="{Binding [AddItem.AddFolder], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Classes="accentbutton" FontSize="12" Command="{Binding AddFileCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <materialIcons:MaterialIcon Kind="FilePlus" Width="20" Height="20"/>
+                                <TextBlock Text="{Binding [AddItem.AddFile], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <Border Grid.Row="1" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
+                        <ScrollViewer>
+                            <!-- <Grid x:Name="AddItemOverlay_ItemPathsList"/> -->
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+
+                <!-- Boothアイテム情報 -->
+                <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" RowSpacing="25">
+                    <TextBlock Grid.Row="0" Text="{Binding [AddItem.BoothItemInfo], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource Text.Primary}"/>
+
+                    <ScrollViewer Grid.Row="1">
+                        <StackPanel Spacing="15" Margin="10">
+                            <StackPanel Spacing="15">
+                                <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
+                                    <TextBlock Grid.Column="0" Text="{Binding [AddItem.BoothUrl], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                    <TextBox Text="{Binding BoothUrl}" Grid.Column="1" PlaceholderText="{Binding [AddItem.BoothUrlPlaceholder], Source={x:Static loc:Localizer.Instance}}"/>
+                                    <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [AddItem.FetchInfo], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding FetchBoothDataCommand}"/>
+                                </Grid>
+
+                                <Separator Classes="separator"/>
+
+                                <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
+                                    <TextBlock Grid.Column="0" Text="{Binding [AddItem.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                    <TextBox Text="{Binding Title}" Grid.Column="1" PlaceholderText="{Binding [AddItem.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                </Grid>
+
+                                <Grid ColumnDefinitions="100,*" ColumnSpacing="12">
+                                    <TextBlock Grid.Column="0" Text="{Binding [AddItem.Author], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                    <TextBox Text="{Binding Author}" Grid.Column="1" PlaceholderText="{Binding [AddItem.Author], Source={x:Static loc:Localizer.Instance}}"/>
+                                </Grid>
+                            </StackPanel>
+
+                            <UniformGrid Columns="2">
+                                <StackPanel Spacing="8" Margin="0,0,10,0">
+                                    <TextBlock Text="{Binding [AddItem.Category], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                    <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
+                                        <ComboBox SelectedIndex="{Binding SelectedItemCategory}" HorizontalAlignment="Stretch"/>
+                                        <Button Grid.Column="1" Classes="button" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" FontSize="19" Command="{Binding AddCustomCategoryCommand}"/>
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Spacing="8" Margin="10,0,0,0">
+                                    <TextBlock Text="{Binding [AddItem.SupportedAvatars], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                    <Button Content="{Binding SupportedAvatarsText}" Classes="accentbutton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding SelectSupportedAvatarsCommand}"/>
+                                </StackPanel>
+                            </UniformGrid>
+
+                            <StackPanel Spacing="10">
+                                <CheckBox Content="{Binding [AddItem.ShowAdvancedSettings], Source={x:Static loc:Localizer.Instance}}" FontSize="13" x:Name="ShowAdvancedSettingsCheckBox"/>
+
+                                <StackPanel IsVisible="{Binding #ShowAdvancedSettingsCheckBox.IsChecked}">
+                                    <UniformGrid Columns="2">
+                                        <StackPanel Spacing="8" Margin="0,0,0,0">
+                                            <TextBlock Text="{Binding [AddItem.ItemMemo], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                            <Button Content="{Binding [AddItem.EditItemMemo], Source={x:Static loc:Localizer.Instance}}" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding EditItemMemoCommand}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Spacing="8" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding [AddItem.Tags], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                            <Button Content="{Binding TagsText}" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding EditItemTagsCommand}"/>
+                                        </StackPanel>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <Separator Classes="separator" Height="1"/>
+
+                            <StackPanel Spacing="10">
+                                <CheckBox x:Name="ShowInternalInfo" Content="{Binding [AddItem.ShowInternalInfo], Source={x:Static loc:Localizer.Instance}}" FontSize="13"/>
+                                
+                                <StackPanel IsVisible="{Binding #ShowInternalInfo.IsChecked}" Spacing="12" Margin="10,5,0,0">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                                        <StackPanel Grid.Column="0" Spacing="5">
+                                            <TextBlock Text="{Binding [AddItem.AuthorId], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
+                                            <TextBox Text="{Binding AuthorId}" FontSize="13"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Spacing="5">
+                                            <TextBlock Text="{Binding [AddItem.BoothId], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
+                                            <TextBox Text="{Binding BoothId}" FontSize="13"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    
+                                    <StackPanel Spacing="5">
+                                        <TextBlock Text="{Binding [AddItem.ImageUrl], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
+                                        <TextBox Text="{Binding BoothId}" FontSize="13"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="15" Margin="0,10,0,0">
+                        <Button Grid.Column="1" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" Width="160" Height="40" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding CancelCommand}"/>
+                        <Button Grid.Column="2" Content="{Binding [AddItem.ConfirmAndSave], Source={x:Static loc:Localizer.Instance}}" Width="160" Height="40" Classes="accentbutton" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ConfirmCommand}"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</UserControl>

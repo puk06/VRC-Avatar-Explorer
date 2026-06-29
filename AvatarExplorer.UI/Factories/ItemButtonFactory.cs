@@ -178,7 +178,7 @@ internal static class ItemButtonFactory
     {
         if (StateFlagUtils.IsItemState(item.Tag.State))
         {
-            ToolTip.SetTip(button, item.IsTempAvatar ? item.Title : GetTooltipTextFromItem(item));
+            // ToolTip.SetTip(button, item.IsTempAvatar ? item.Title : GetTooltipTextFromItem(item));
             ToolTip.SetShowDelay(button, 1500);
             ToolTip.SetBetweenShowDelay(button, -1);
         }
@@ -200,29 +200,5 @@ internal static class ItemButtonFactory
         tagButton.Child = tagLabel;
 
         return tagButton;
-    }
-
-    internal static string? GetTooltipTextFromItem(UISelectableItem item)
-    {
-        var toolTipTextBuilder = new StringBuilder();
-
-        toolTipTextBuilder.Append(item.Title);
-
-        toolTipTextBuilder.AppendLine();
-        toolTipTextBuilder.AppendLine();
-
-        toolTipTextBuilder.Append(Localizer.Instance.Get(LocalizationKey.Button.ToolTip.CreatedDate, item.CreatedDate));
-        toolTipTextBuilder.AppendLine();
-        toolTipTextBuilder.Append(Localizer.Instance.Get(LocalizationKey.Button.ToolTip.UpdatedDate, item.UpdatedDate));
-
-        if (!string.IsNullOrEmpty(item.ItemMemo))
-        {
-            toolTipTextBuilder.AppendLine();
-            toolTipTextBuilder.AppendLine();
-
-            toolTipTextBuilder.Append(item.ItemMemo);
-        }
-
-        return toolTipTextBuilder.ToString();
     }
 }

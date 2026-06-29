@@ -1,6 +1,6 @@
 namespace AvatarExplorer.UI.Models.ContextMenu;
 
-internal enum ActionKey
+public enum ActionKey
 {
     None,
     

@@ -1,0 +1,587 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    x:Class="AvatarExplorer.UI.Views.Overlays.SettingsOverlay"
+    x:DataType="vm:SettingsViewModel">
+
+    <UserControl.DataContext>
+        <vm:SettingsViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="900" Height="650">
+            <Grid RowDefinitions="*,5,Auto">
+                <TabControl Grid.Row="0" TabStripPlacement="Left">
+
+                    <TabItem Header="{Binding [Settings.Basic], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
+                        <Panel>
+                            <ScrollViewer>
+                                <StackPanel Spacing="20" Margin="0,0,10,0">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.Language.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.Language.Description], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
+                                            <ComboBox Grid.Column="1" ItemsSource="{Binding Languages}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectedIndex="{Binding SelectedLanguage}"/>
+                                        </Grid>
+                                    </Grid>
+
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.SortOrder.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.SortOrder.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
+                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedSortOrder}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Author], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Created], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Updated], Source={x:Static loc:Localizer.Instance}}"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.Theme.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.Theme.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
+                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedTheme}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Dark], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Light], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sakura], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mint], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Lavender], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Ocean], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sunset], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Forest], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mocha], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Slate], Source={x:Static loc:Localizer.Instance}}"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Panel>
+                    </TabItem>
+
+                    <TabItem Header="{Binding [Settings.Display], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
+                        <Panel>
+                            <ScrollViewer>
+                                <StackPanel Spacing="20" Margin="0,0,10,0">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RemoveBrackets.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RemoveBrackets.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <ToggleSwitch IsChecked="{Binding RemoveBrackets}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.IconSize.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.IconSize.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
+                                            <Slider Value="{Binding NormalIconSize}" Minimum="0" Maximum="200" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding NormalIconSize, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.EnableHoverIcon.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.EnableHoverIcon.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <ToggleSwitch IsChecked="{Binding EnableHoverIconSize}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" IsVisible="{Binding EnableHoverIconSize}">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.HoverIconSize.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.HoverIconSize.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
+                                            <Slider Value="{Binding HoverIconSize}" Minimum="0" Maximum="800" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding HoverIconSize, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.AntiAliasing.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.AntiAliasing.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*" ColumnSpacing="5">
+                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedAntiAliasing}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                                <ComboBoxItem Content="{Binding [Settings.AntiAliasing.Options.None], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.AntiAliasing.Options.Low], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.AntiAliasing.Options.Medium], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.AntiAliasing.Options.High], Source={x:Static loc:Localizer.Instance}}"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ItemsPerPage.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ItemsPerPage.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*" ColumnSpacing="5">
+                                            <TextBox Grid.Column="1" Text="{Binding ItemsPerPage}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Panel>
+                    </TabItem>
+
+                    <TabItem Header="{Binding [Settings.Item], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
+                        <Panel>
+                            <ScrollViewer>
+                                <StackPanel Spacing="20" Margin="0,0,10,0">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RemoveOriginal.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RemoveOriginal.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <ToggleSwitch IsChecked="{Binding RemoveOriginal}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.LinkToOriginal.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.LinkToOriginal.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <ToggleSwitch IsChecked="{Binding LinkToOriginal}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.TreatEmptySupportedAvatarAsNone.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.TreatEmptySupportedAvatarAsNone.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <ToggleSwitch IsChecked="{Binding TreatEmptySupportedAvatarAsNone}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ThumbnailCompressionMaxSize.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ThumbnailCompressionMaxSize.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,45" ColumnSpacing="5">
+                                            <Slider Value="{Binding ThumbnailCompressionMaxSize}" Minimum="64" Maximum="1024" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding ThumbnailCompressionMaxSize, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Panel>
+                    </TabItem>
+
+                    <TabItem Header="{Binding [Settings.Background], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
+                        <Panel>
+                            <ScrollViewer>
+                                <StackPanel Spacing="20" Margin="0,0,10,0">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.UseCustomBackground.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.UseCustomBackground.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <ToggleSwitch IsChecked="{Binding UseBackgroundImage}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" IsVisible="{Binding UseBackgroundImage}">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.BackgroundImage.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.BackgroundImage.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <TextBox Text="{Binding BackgroundImagePath}" IsReadOnly="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <Button Classes="button" Grid.Column="1" Content="{Binding [Settings.BackgroundImage.Browse], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Command="{Binding OpenBackgroundImageCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" IsVisible="{Binding UseBackgroundImage}">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.Opacity.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.Opacity.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
+                                            <Slider Value="{Binding BackgroundImageOpacity}" Minimum="0" Maximum="100" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding BackgroundImageOpacity, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Panel>
+                    </TabItem>
+
+                    <TabItem Header="{Binding [Settings.CommonAvatar], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
+                        <Panel>
+                            <ScrollViewer>
+                                <StackPanel Spacing="20" Margin="0,0,10,0">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.CommonAvatarManagement.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.CommonAvatarManagement.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.CommonAvatarManagement.OpenManagement], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding OpenCommonAvatarManagerCommand}"/>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Panel>
+                    </TabItem>
+
+                    <TabItem Header="{Binding [Settings.Data], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
+                        <Panel>
+                            <ScrollViewer>
+                                <StackPanel Spacing="20" Margin="0,0,10,0">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ItemsFolder.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ItemsFolder.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <TextBox Text="{Binding ItemsFolderPath}" IsReadOnly="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <Button Classes="button" Grid.Column="1" Content="{Binding [Settings.ItemsFolder.Browse], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Command="{Binding OpenItemsFolderCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.AutoBackupPath.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.AutoBackupPath.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <TextBox Text="{Binding AutoBackupFolderPath}" IsReadOnly="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <Button Classes="button" Grid.Column="1" Content="{Binding [Settings.AutoBackupPath.Browse], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Command="{Binding OpenAutoBackupFolderCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.AutoBackupInterval.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.AutoBackupInterval.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <TextBox Grid.Column="1" Text="{Binding AutoBackupInterval}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ImportFromOther.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ImportFromOther.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ImportFromOther.Import], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ImportDataCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ExportCsv.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ExportCsv.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ExportCsv.Export], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ExportDataToCsvCommand}"/>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ImportThumbnail.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ImportThumbnail.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ImportThumbnail.Import], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ImportThumbnailCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.FetchAllThumbnails.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.FetchAllThumbnails.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.FetchAllThumbnails.Open], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding FetchAllThumbnailsCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RestoreFromBackup.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RestoreFromBackup.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.RestoreFromBackup.SelectBackup], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding RestoreFromBackupCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.AutoFixDatabase.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.AutoFixDatabase.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.AutoFixDatabase.Fix], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding AutoFixDatabaseCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ResetItemDatabase.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ResetItemDatabase.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [Settings.ResetItemDatabase.Reset], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ResetItemDatabaseCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ResetCommonAvatarDatabase.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ResetCommonAvatarDatabase.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [Settings.ResetCommonAvatarDatabase.Reset], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ResetCommonAvatarDatabaseCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ResetBulkImportPresetDatabase.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ResetBulkImportPresetDatabase.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [Settings.ResetBulkImportPresetDatabase.Reset], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ResetBulkImportPresetDatabaseCommand}"/>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Panel>
+                    </TabItem>
+
+                    <TabItem Header="{Binding [Settings.System], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}">
+                        <Panel>
+                            <ScrollViewer>
+                                <StackPanel Spacing="20" Margin="0,0,10,0">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ErrorLog.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ErrorLog.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ErrorLog.OpenErrorLog], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ShowErrorLogCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RegisterScheme.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RegisterScheme.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.RegisterScheme.Register], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding RegisterSchemeCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.MaxDegreeOfParallelism.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.MaxDegreeOfParallelism.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <TextBox Grid.Column="1" Text="{Binding MaxDegreeOfParallelism}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.CheckForUpdate.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.CheckForUpdate.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <ToggleSwitch IsChecked="{Binding CheckForUpdate}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" IsVisible="{Binding CheckForUpdate}">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.UpdateChannel.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.UpdateChannel.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*" ColumnSpacing="5">
+                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedUpdateChannel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                                <ComboBoxItem Content="{Binding [Settings.UpdateChannel.Options.Stable], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.UpdateChannel.Options.Beta], Source={x:Static loc:Localizer.Instance}}"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.CheckForUpdateNow.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.CheckForUpdateNow.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.CheckForUpdateNow.Check], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding CheckForUpdateNowCommand}"/>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Panel>
+                    </TabItem>
+
+                    <TabItem FontWeight="Bold">
+                        <TabItem.Header>
+                            <StackPanel Spacing="8" Orientation="Horizontal">
+                                <materialIcons:MaterialIcon Kind="InformationOutline" Width="20" Height="20" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding [Settings.About], Source={x:Static loc:Localizer.Instance}}" FontSize="16" Foreground="{DynamicResource Text.Primary}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+
+                        <Panel>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Spacing="25" Margin="20">
+                                    <StackPanel Spacing="10" HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding [Settings.AboutInfo.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="32" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                        <TextBlock Text="{Binding [Settings.AboutInfo.Subtitle], Source={x:Static loc:Localizer.Instance}}" TextAlignment="Center" FontSize="14" Foreground="{DynamicResource Text.Secondary}"/>
+                                    </StackPanel>
+
+                                    <Separator Classes="separator"/>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="30">
+                                        <StackPanel Grid.Column="0" Spacing="15">
+
+                                            <TextBlock Text="{Binding [Settings.AboutDeveloper.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <Grid Grid.Column="0">
+                                                    <Border HorizontalAlignment="Center" Width="100" Height="100" CornerRadius="50" ClipToBounds="True">
+                                                        <Image Source="{Binding GithubUserImage}" Stretch="UniformToFill"/>
+                                                    </Border>
+                                                </Grid>
+
+                                                <StackPanel Grid.Column="1" Spacing="10">
+                                                    <StackPanel Spacing="5">
+                                                        <TextBlock Text="{Binding [Settings.AboutDeveloper.Label], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                                                        <TextBlock Text="ぷこるふ" FontSize="14" Foreground="{DynamicResource Text.Primary}"/>
+                                                    </StackPanel>
+
+                                                    <Button Classes="button" Padding="10,6" CornerRadius="6" Command="{Binding OpenTwitterCommand}">
+                                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                                            <materialIcons:MaterialIcon Kind="Twitter" Width="16" Height="16"/>
+                                                            <TextBlock Text="Twitter" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
+                                                        </StackPanel>
+                                                    </Button>
+
+                                                    <Button Classes="button" Padding="10,6" CornerRadius="6" Command="{Binding OpenGithubCommand}">
+                                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                                            <materialIcons:MaterialIcon Kind="Github" Width="16" Height="16"/>
+                                                            <TextBlock Text="Github" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" Spacing="15">
+                                            <TextBlock Text="{Binding [Settings.AboutProject.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+
+                                            <StackPanel Spacing="5">
+                                                <TextBlock Text="{Binding [Settings.AboutProject.SourceCodeDescription], Source={x:Static loc:Localizer.Instance}}" FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource Text.Secondary}" />
+                                                <Button Classes="button" Padding="10,6" CornerRadius="6" Command="{Binding OpenSourceCodeCommand}">
+                                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                                        <materialIcons:MaterialIcon Kind="Github" Width="16" Height="16"/>
+                                                        <TextBlock Text="{Binding [Settings.AboutProject.ViewRepository], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Separator Classes="separator"/>
+
+                                    <StackPanel Spacing="10">
+                                        <TextBlock Text="{Binding [Settings.AboutLicense.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                                        <TextBlock Text="{Binding [Settings.AboutLicense.Type], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
+                                        <TextBlock Text="{Binding [Settings.AboutLicense.Description], Source={x:Static loc:Localizer.Instance}}" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Text.Secondary}"/>
+                                    </StackPanel>
+
+                                    <Button Classes="button" Padding="10,8" CornerRadius="8" HorizontalAlignment="Stretch" FontWeight="SemiBold" Command="{Binding ViewLicenseCommand}">
+                                        <TextBlock Text="{Binding [Settings.AboutLicense.ViewLicense], Source={x:Static loc:Localizer.Instance}}" Foreground="{DynamicResource Text.Primary}"/>
+                                    </Button>
+
+                                    <Button Classes="button" Padding="10,8" CornerRadius="8" HorizontalAlignment="Stretch" FontWeight="SemiBold" Command="{Binding ViewThirdPartyLicensesCommand}">
+                                        <TextBlock Text="{Binding [Settings.AboutLicense.ViewThirdParty], Source={x:Static loc:Localizer.Instance}}" Foreground="{DynamicResource Text.Primary}"/>
+                                    </Button>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Panel>
+                    </TabItem>
+                </TabControl>
+
+                <!-- 下のボタン -->
+                <Grid Grid.Row="2" ColumnDefinitions="200,*,200" Margin="10,20,10,0">
+                    <Button Classes="button" FontWeight="Bold" CornerRadius="20" Grid.Column="0" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding CloseCommand}" />
+                    <Button Classes="accentbutton" FontWeight="Bold" CornerRadius="20" Grid.Column="2" Content="{Binding [Settings.Apply], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding ApplyCommand}" />
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</UserControl>

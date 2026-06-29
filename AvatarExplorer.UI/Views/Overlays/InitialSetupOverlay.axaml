@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    x:Class="AvatarExplorer.UI.Views.Overlays.InitialSetupOverlay"
+    x:DataType="vm:InitialSetupViewModel">
+
+    <UserControl.DataContext>
+        <vm:InitialSetupViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="450" Padding="25">
+            <StackPanel Spacing="20">
+
+                <StackPanel Spacing="5">
+                    <TextBlock Text="初期設定 / Initial Setup" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Text="{Binding [InitialSetup.ChangeLaterNotice], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                </StackPanel>
+
+                <Separator Classes="separator"/>
+
+                <StackPanel Spacing="20">
+                    <StackPanel Spacing="5">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="{Binding [Settings.Language.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                <materialIcons:MaterialIcon Kind="Translate" HorizontalAlignment="Center" Width="30" Height="30" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding [Settings.Language.Description], Source={x:Static loc:Localizer.Instance}}" FontSize="14" VerticalAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
+                        </StackPanel>
+                        <ComboBox ItemsSource="{Binding Languages}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedLanguage}"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="5">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="{Binding [Settings.ItemsFolder.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                <materialIcons:MaterialIcon Kind="Folder" HorizontalAlignment="Center" Width="30" Height="30" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding [Settings.ItemsFolder.Description], Source={x:Static loc:Localizer.Instance}}" FontSize="14" VerticalAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
+                        </StackPanel>
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                            <TextBox Grid.Column="0" Text="{Binding ItemsFolder}" IsReadOnly="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                            <Button Classes="button" Grid.Column="1" Content="{Binding [Settings.ItemsFolder.Browse], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,120">
+                    <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [DialogResult.OK], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CloseCommand}"/>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

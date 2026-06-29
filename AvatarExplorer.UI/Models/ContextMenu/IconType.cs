@@ -1,6 +1,6 @@
 namespace AvatarExplorer.UI.Models.ContextMenu;
 
-internal enum IconType
+public enum IconType
 {
     None,
     Item

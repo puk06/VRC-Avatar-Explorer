@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Overlays.PdfViewerOverlay"
+    x:DataType="vm:PdfViewerViewModel">
+
+    <UserControl.DataContext>
+        <vm:PdfViewerViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="1100" Height="720" Padding="20">
+            <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
+                <TextBlock Text="PDF Viewer" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                <StackPanel Grid.Row="1" Spacing="2">
+                    <TextBlock Text="{Binding FileName}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                    <TextBlock Text="{Binding Status}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                </StackPanel>
+
+                <Border Grid.Row="2" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Pages}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="16" Margin="0,0,12,0"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vmcomponent:PdfPageViewModel">
+                                    <Border Classes="panelbackground" Background="{DynamicResource Background.Surface}" Padding="12">
+                                        <StackPanel Spacing="8">
+                                            <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                                            <Image Source="{Binding Image}" Stretch="Uniform" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <Grid Grid.Row="3" ColumnDefinitions="*,120" ColumnSpacing="10">
+                    <Button Grid.Column="1" Classes="button" FontWeight="Bold" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CloseCommand}"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</UserControl>

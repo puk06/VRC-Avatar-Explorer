@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:sys="using:System"
+    x:Class="AvatarExplorer.UI.Views.Overlays.EditTagsOverlay"
+    x:DataType="vm:EditTagsViewModel">
+
+    <UserControl.DataContext>
+        <vm:EditTagsViewModel/>
+    </UserControl.DataContext>
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="450">
+            <StackPanel Spacing="15">
+
+                <!-- タイトル -->
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditTags.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+
+                <!-- アイテムタグリスト -->
+                <Border Classes="panelbackground" Background="{DynamicResource Background.Surface}" Height="180">
+                    <ScrollViewer Margin="3">
+                        <ItemsControl ItemsSource="{Binding Tags}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel VerticalAlignment="Stretch" LineSpacing="5" ItemSpacing="5"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="sys:String">
+                                    <Border Classes="tag" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Classes="tag" Text="{Binding}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- タグの追加 -->
+                <TextBlock Text="{Binding [EditTags.AddTag], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                    <TextBox Text="{Binding NewTag}" Grid.Column="0" PlaceholderText="{Binding [EditTags.NewTag], Source={x:Static loc:Localizer.Instance}}">
+                        <TextBox.KeyBindings>
+                            <KeyBinding Gesture="Enter" Command="{Binding CreateTagCommand}"/>
+                            <KeyBinding Gesture="Escape" Command="{Binding ClearNewTagCommand}"/>
+                        </TextBox.KeyBindings>
+                    </TextBox>
+                    <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [EditTags.AddTag], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CreateTagCommand}"/>
+                </Grid>
+                <ComboBox ItemsSource="{Binding ExistTags}" SelectedIndex="{Binding SelectedIndex}" PlaceholderText="{Binding [EditTags.SelectTag], Source={x:Static loc:Localizer.Instance}}" Grid.Row="8" HorizontalAlignment="Stretch"/>
+
+                <!-- 下のボタン -->
+                <Grid ColumnDefinitions="150,*,150" Margin="0,10,0,0">
+                    <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CancelCommand}"/>
+                    <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [DialogResult.OK], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding ConfirmCommand}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

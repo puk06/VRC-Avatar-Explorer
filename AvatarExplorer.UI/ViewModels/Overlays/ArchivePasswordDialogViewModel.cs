@@ -1,0 +1,32 @@
+using System.Threading.Tasks;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+
+namespace AvatarExplorer.UI.ViewModels.Overlays;
+
+public class ArchivePasswordDialogViewModel : ViewModelBase
+{
+    public string FileName { get; set; } = string.Empty;
+    public int CurrentAttempt { get; set; } = 0;
+    public int MaxAttempt { get; set; } = 3;
+
+    [Reactive] public string FileNameText { get; set; } = string.Empty;
+    [Reactive] public string AttemptInfoText { get; set; } = string.Empty;
+    [Reactive] public string Password { get; set; } = string.Empty;
+    private TaskCompletionSource<string?> _tcs = new();
+
+    public IReactiveCommand CancelCommand { get; }
+    public IReactiveCommand ConfirmCommand { get; }
+
+    public ArchivePasswordDialogViewModel()
+    {
+        CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
+        ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Password));
+    }
+
+    public Task<string?> WaitForResult()
+    {
+        _tcs = new TaskCompletionSource<string?>();
+        return _tcs.Task;
+    }
+}

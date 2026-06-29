@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Panels"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:component="using:AvatarExplorer.UI.ViewModels.Component"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    x:Class="AvatarExplorer.UI.Views.Panels.BulkImport"
+    x:DataType="vm:BulkImportViewModel">
+
+    <UserControl.DataContext>
+        <vm:BulkImportViewModel/>
+    </UserControl.DataContext>
+
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
+        <TextBlock Text="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+
+        <Separator Classes="separator" Grid.Row="1"/>
+
+        <Grid Grid.Row="2" RowDefinitions="*,Auto,Auto" RowSpacing="10" Margin="-10,0,-10,0" VerticalAlignment="Stretch">
+            <ScrollViewer DragDrop.AllowDrop="True" DragDrop.Drop="OnDrop">
+                <ItemsControl ItemsSource="{Binding Items}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel VerticalAlignment="Stretch" LineSpacing="5" ItemSpacing="5"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="component:BulkImportItemViewModel">
+                            <Button HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7">
+                                <StackPanel Spacing="5">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                        <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top"/>
+                                        </Border>
+
+                                        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,5,*">
+                                            <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                            <Panel Grid.Row="3">
+                                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                                    <Button Background="Transparent" Command="{Binding $parent[UserControl].DataContext.CopyCommand}" CommandParameter="{Binding}">
+                                                        <materialIcons:MaterialIcon Kind="ContentCopy" Width="20" Height="20"/>
+                                                    </Button>
+                                                    <Button Background="Transparent" Foreground="rgb(210,0,0)" Command="{Binding $parent[UserControl].DataContext.RemoveCommand}" CommandParameter="{Binding}">
+                                                        <materialIcons:MaterialIcon Kind="TrashCan" Width="20" Height="20"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </Panel>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Panel>
+                                        <ComboBox ItemsSource="{Binding UnitypackageNames}" SelectedIndex="{Binding SelectedUnitypackage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" FontSize="14"/>
+                                    </Panel>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <Button Grid.Row="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [BulkImport.Import], Source={x:Static loc:Localizer.Instance}}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Command="{Binding ImportCommand}"/>
+            <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0" Classes="accentbutton" FontWeight="Bold" Content="{Binding [BulkImport.Save], Source={x:Static loc:Localizer.Instance}}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Command="{Binding SaveCommand}"/>
+                <Button Grid.Column="1" Classes="button" FontWeight="Bold" Content="{Binding [BulkImport.Reset], Source={x:Static loc:Localizer.Instance}}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Command="{Binding ResetCommand}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
