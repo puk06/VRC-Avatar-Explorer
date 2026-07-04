@@ -257,10 +257,25 @@ public partial class MainWindow : Window
     {
         if (args == null || args.Length == 0 || string.IsNullOrEmpty(args[0])) return;
 
-        var launchInfo = LaunchInfoService.GetLaunchInfo(args[0]);
-        if (launchInfo == null) return;
+        var uri = args[0];
+        if (uri.StartsWith("booth-library-manager://"))
+        {
+            var blmImportItemInfo = BLMImportItemService.GetBLMImportItemInfo(uri);
+            if (blmImportItemInfo == null) return;
 
-        if (launchInfo.AssetPaths.Length != 0 && !string.IsNullOrEmpty(launchInfo.BoothId)) await AddItemOverlay_Open(launchInfo);
+            // TODO : this is stab
+            if (!string.IsNullOrEmpty(blmImportItemInfo.ItemID)) await AddItemOverlay_Open(new Models.System.LaunchInfo()
+            {
+                BoothId = blmImportItemInfo.ItemID
+            });
+        }
+        else
+        {
+            var launchInfo = LaunchInfoService.GetLaunchInfo(uri);
+            if (launchInfo == null) return;
+
+            if (launchInfo.AssetPaths.Length != 0 && !string.IsNullOrEmpty(launchInfo.BoothId)) await AddItemOverlay_Open(launchInfo);
+        }
     }
 
     #region Left Panel
