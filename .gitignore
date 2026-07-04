@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # テスト用プロジェクト
 AvatarExplorer.Test/
+
+# vscode 設定
+.vscode
