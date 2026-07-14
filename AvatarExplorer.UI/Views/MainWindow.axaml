@@ -1,24 +1,24 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AvatarExplorer.UI.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        xmlns:overlays="using:AvatarExplorer.UI.Views.Overlays"
+        xmlns:views="using:AvatarExplorer.UI.Views"
+        xmlns:vm="using:AvatarExplorer.UI.ViewModels"
         Icon="avares://AvatarExplorer/Assets/Internal/SoftwareIcon.png"
         WindowStartupLocation="CenterScreen"
         DragDrop.AllowDrop="True"
-        DragDrop.DragOver="Main_DragDrop_Over"
-        DragDrop.Drop="Main_DragDrop_Drop"
-        Closing="Main_Closing"
-        Loaded="Main_Loaded"
         FontFamily="avares://AvatarExplorer/Assets/Fonts#Noto Sans JP"
-        xmlns:overlays="using:AvatarExplorer.UI.Views.Overlays"
-        xmlns:views="using:AvatarExplorer.UI.Views"
-        MinWidth="1280"
-        MinHeight="720"
-        Width="1280"
-        Height="720">
+        Title="{Binding WindowTitle}"
+        MinWidth="1280" MinHeight="720"
+        Width="1280" Height="720">
 
-    <Panel x:Name="WindowPanel" PointerPressed="Main_PointerPressed">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
 
-        <views:MainView IsVisible="false"/>
+    <Panel Background="{Binding BackgroundImage}">
+        <views:MainView/>
 
         <overlays:SettingsOverlay IsVisible="false"/>
         <overlays:AddItemOverlay IsVisible="false"/>
@@ -38,7 +38,7 @@
         <overlays:ArchivePasswordDialogOverlay IsVisible="false"/>
         <overlays:YesNoDialogOverlay IsVisible="false"/>
         <overlays:UpdateDialogOverlay IsVisible="false"/>
-        <overlays:MergeCategoryOverlay IsVisible="false"/>
+        <overlays:MergeCategoryDialog IsVisible="false"/>
         <overlays:InitialSetupOverlay IsVisible="false"/>
         <overlays:ErrorLogOverlay IsVisible="false"/>
         <overlays:FatalErrorOverlay IsVisible="false"/>

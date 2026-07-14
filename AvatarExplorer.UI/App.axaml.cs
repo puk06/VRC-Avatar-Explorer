@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using AvatarExplorer.UI.Services;
 using ReactiveUI.Builder;
 
 namespace AvatarExplorer.UI;
@@ -17,6 +18,8 @@ public partial class App : Application
         RxAppBuilder.CreateReactiveUIBuilder()
             .WithCoreServices()
             .BuildApp();
+
+        AppInitializer.Initialize();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

@@ -25,9 +25,9 @@ public class MergeCategoryViewModel : ViewModelBase
 
     public void Reload()
     {
-        ItemCategories = AvatarExplorerApp.Instance
-            .GetCategories(includeEmptyCategory: true, includeAllCategory: false)
-            .Select(i => Localizer.Instance[((ItemCategory)i.Item).ToString()]);
+        // ItemCategories = AvatarExplorerApp.Instance
+        //     .GetCategories(includeEmptyCategory: true, includeAllCategory: false)
+        //     .Select(i => Localizer.Instance[((ItemCategory)i.Item).ToString()]);
     }
 
     public void OnCancel()

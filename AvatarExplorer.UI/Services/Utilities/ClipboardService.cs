@@ -17,7 +17,8 @@ internal static class ClipboardService
     {
         try
         {
-            if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop || desktop.MainWindow?.Clipboard is not { } provider)
+            var lifetime = Application.Current?.ApplicationLifetime;
+            if (lifetime is not IClassicDesktopStyleApplicationLifetime desktop || desktop.MainWindow?.Clipboard is not { } provider)
             {
                 return Error.Failure(description: "Failed to get clipboard provider.");
             }

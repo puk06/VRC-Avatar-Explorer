@@ -38,7 +38,6 @@ public class Localizer : INotifyPropertyChanged
     private Localizer()
     {
         _map = [];
-        LoadFromFolder("locales");
     }
 
     public void LoadFromFolder(string path)

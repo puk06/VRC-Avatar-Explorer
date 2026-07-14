@@ -404,7 +404,7 @@ public static class FileSystemService
             ErrorOr<ExtractResult> extractResult = await ExtractItemPaths(parentFolder, itemCreationContext.ItemPaths.ToArray(), runtimeSettings);
             if (extractResult.IsError) return Error.Failure(description: "Failed to extract item folders.");
 
-            extractResult.Value.ItemParentFolder = $"<sys>{Path.GetRelativePath(dataRootDirectory, parentFolder)}";
+            extractResult.Value.ItemParentFolder = parentFolder;
 
             return extractResult;
         }
@@ -531,7 +531,7 @@ public static class FileSystemService
             }
             catch (Exception ex) when (IsPasswordRelatedException(ex))
             {
-                Func<ArchivePasswordRequest, ValueTask<string?>>? passwordProvider = AvatarExplorerApp.Instance.PasswordProvider;
+                Func<ArchivePasswordRequest, ValueTask<string?>>? passwordProvider = AvatarExplorerApp.Instance.ArchivePasswordProvider;
                 if (passwordProvider == null) throw;
 
                 string? result = await passwordProvider.Invoke(new ArchivePasswordRequest

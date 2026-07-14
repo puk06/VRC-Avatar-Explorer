@@ -1,0 +1,4 @@
+[*.{cs,vb}]
+
+# IDE0305: コレクションの初期化を簡略化します
+dotnet_diagnostic.IDE0305.severity = none

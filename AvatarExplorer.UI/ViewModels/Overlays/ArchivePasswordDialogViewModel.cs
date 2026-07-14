@@ -1,4 +1,6 @@
+using System.IO;
 using System.Threading.Tasks;
+using AvatarExplorer.Core.Models.External;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -24,8 +26,12 @@ public class ArchivePasswordDialogViewModel : ViewModelBase
         ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Password));
     }
 
-    public Task<string?> WaitForResult()
+    public Task<string?> WaitForResult(ArchivePasswordRequest request)
     {
+        FileName = Path.GetFileName(request.ArchivePath);
+        CurrentAttempt = request.Attempt;
+        MaxAttempt = request.MaxAttempts;
+
         _tcs = new TaskCompletionSource<string?>();
         return _tcs.Task;
     }

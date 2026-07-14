@@ -19,20 +19,6 @@ public static class ItemExtensions
         };
     }
 
-    internal static IEnumerable<ItemCountInfo> GetSortedItemsFromCountInfo(this IEnumerable<ItemCountInfo> itemCountInfos, RuntimeSettings runtimeSettings)
-    {
-        if (itemCountInfos.Any(i => i.Item is not Item)) return itemCountInfos;
-
-        return runtimeSettings.ItemSortOrder switch
-        {
-            ItemSortOrder.Title => itemCountInfos.OrderBy(i => runtimeSettings.RemoveBrackets ? ItemUtils.RemoveBrackets(((Item)i.Item).Title) : ((Item)i.Item).Title),
-            ItemSortOrder.Author => itemCountInfos.OrderBy(i => ((Item)i.Item).Author),
-            ItemSortOrder.Created => itemCountInfos.OrderByDescending(i => ((Item)i.Item).CreatedDate),
-            ItemSortOrder.Updated => itemCountInfos.OrderByDescending(i => ((Item)i.Item).UpdatedDate),
-            _ => itemCountInfos.OrderBy(i => ((Item)i.Item).Title)
-        };
-    }
-
     internal static bool IsCategoryMatch(this Item item, string category)
     {
         // カテゴリがすべてだった場合、常にマッチとする
@@ -42,11 +28,11 @@ public static class ItemExtensions
         else return item.Type.GetLocalizationKey() == category;
     }
 
-    public static IEnumerable<string> EnumerateFiles(this Item item, string parentFolder, bool isRecursive = true)
+    public static IEnumerable<string> EnumerateFiles(this Item item, bool isRecursive = true)
     {
         List<string> fileList = new();
 
-        foreach (string itemPath in item.GetFolderPaths(parentFolder))
+        foreach (string itemPath in item.GetFolderPaths())
         {
             fileList.AddRange(FileSystemService.EnumerateFiles(itemPath, isRecursive));
         }
@@ -54,17 +40,15 @@ public static class ItemExtensions
         return fileList.SortByFileName();
     }
 
-    public static IEnumerable<string> GetFolderPaths(this Item item, string parentFolder, bool includeRootFolder = true)
+    public static IEnumerable<string> GetFolderPaths(this Item item, bool includeRootFolder = true)
     {
         List<string> folderList = new();
 
-        string rootPath = ItemUtils.GetItemPath(parentFolder, item.ItemPath);
-        if (includeRootFolder && Directory.Exists(rootPath)) folderList.Add(rootPath);
+        if (includeRootFolder && Directory.Exists(item.ItemPath)) folderList.Add(item.ItemPath);
 
         foreach (string itemPath in item.ItemPaths)
         {
-            string fullItemPath = ItemUtils.GetItemPath(parentFolder, itemPath);
-            if (Directory.Exists(fullItemPath)) folderList.AddRange(fullItemPath);
+            if (Directory.Exists(itemPath)) folderList.Add(itemPath);
         }
 
         return folderList.SortByFileName();

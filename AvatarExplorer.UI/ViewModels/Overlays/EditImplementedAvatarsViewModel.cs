@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 

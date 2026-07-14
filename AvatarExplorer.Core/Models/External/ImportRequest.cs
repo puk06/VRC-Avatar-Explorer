@@ -7,7 +7,6 @@ public class ImportRequest
 {
     public DataImportType ImportType { get; set; }
     public string DataFolderPath { get; set; } = string.Empty;
-    public Dictionary<ItemType, string> LocalizedItemTypesMapping { get; set; } = new();
     public bool CopyAssetData { get; set; }
     public RuntimeSettings RuntimeSettings { get; set; } = new();
     public Func<(string, int), Task>? ReportProgress { get; set; }

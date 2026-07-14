@@ -22,7 +22,9 @@ internal static class UnitypackageService
             });
         }
 
-        return await AvatarExplorerApp.ModifyUnitypackageFilePaths(itemPathCategoryDictionary, progressAction);
+        return await Task.FromResult(new ModifiedUnitypackagesResult());
+
+        // return await AvatarExplorerApp.ModifyUnitypackageFilePaths(itemPathCategoryDictionary, progressAction);
     }
 
     internal static ImmutableArray<string> GetUnitypackagePaths(IEnumerable<string> itemPaths)

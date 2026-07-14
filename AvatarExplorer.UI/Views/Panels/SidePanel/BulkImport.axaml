@@ -21,13 +21,13 @@
                 <ItemsControl ItemsSource="{Binding Items}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel VerticalAlignment="Stretch" LineSpacing="5" ItemSpacing="5"/>
+                            <StackPanel Spacing="5" Margin="0,0,10,0"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="component:BulkImportItemViewModel">
-                            <Button HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7">
+                            <Button Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7">
                                 <StackPanel Spacing="5">
                                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                         <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">

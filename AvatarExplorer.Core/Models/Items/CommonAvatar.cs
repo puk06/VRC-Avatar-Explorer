@@ -11,11 +11,5 @@ public class CommonAvatar : AbstractDatabaseItem, ISelectableItem
 
     public void UpdateAvatars(IEnumerable<string> avatars) => Avatars = avatars.ToImmutableArray();
 
-    [JsonIgnore] public static readonly string InternalPathPrefix = "<sys:commonavatar>";
-    public string GetInternalId() => InternalPathPrefix + Id;
-    public static string? GetGroupId(string internalId)
-    {
-        if (string.IsNullOrEmpty(internalId) || !internalId.StartsWith(InternalPathPrefix)) return null;
-        return internalId[InternalPathPrefix.Length..];
-    }
+    [JsonIgnore] public string Identifier => "commonavatar:" + Id;
 }

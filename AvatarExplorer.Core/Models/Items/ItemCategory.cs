@@ -1,9 +1,8 @@
 using AvatarExplorer.Core.Extensions;
-using AvatarExplorer.Core.Models.Common;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class ItemCategory : ISelectableItem
+public class ItemCategory
 {
     public ItemType Type { get; private set; } = ItemType.None;
     public string CustomCategory { get; private set; } = string.Empty;

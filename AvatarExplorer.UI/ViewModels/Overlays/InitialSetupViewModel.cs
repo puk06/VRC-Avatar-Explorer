@@ -21,15 +21,15 @@ public class InitialSetupViewModel : ViewModelBase
     {
         Languages = Localizer.Instance.GetLanguageList();
         SelectedLanguage = Localizer.Instance.CurrentLanguageIndex;
-        ItemsFolder = AvatarExplorerApp.Instance.GetRuntimeSettings().DataRootDirectory;
+        ItemsFolder = AvatarExplorerApp.Instance.RuntimeSettings.Settings.DataRootDirectory;
         
         CloseCommand = ReactiveCommand.Create(OnClose);
 
         this.WhenAnyValue(x => x.SelectedLanguage)
             .Subscribe(Localizer.Instance.SetLanguage);
 
-        this.WhenAnyValue(x => x.ItemsFolder)
-            .Subscribe(path => AvatarExplorerApp.Instance.SetRuntimeSettings(AvatarExplorerApp.Instance.GetRuntimeSettings() with { DataRootDirectory = path }));
+        // this.WhenAnyValue(x => x.ItemsFolder)
+        //     .Subscribe(path => AvatarExplorerApp.Instance.SetRuntimeSettings(AvatarExplorerApp.Instance.GetRuntimeSettings() with { DataRootDirectory = path }));
     }
 
     private void OnClose()

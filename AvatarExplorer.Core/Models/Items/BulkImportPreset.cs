@@ -10,4 +10,6 @@ public class BulkImportPreset : AbstractDatabaseItem, ISelectableItem
     [JsonInclude] public ImmutableArray<BulkImportItem> Items { get; private set; } = [];
 
     public void UpdateItems(IEnumerable<BulkImportItem> items) => Items = items.ToImmutableArray();
+
+    public string Identifier => "bulkimportpreset:" + Id;
 }

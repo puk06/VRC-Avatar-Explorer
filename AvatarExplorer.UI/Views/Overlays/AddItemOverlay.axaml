@@ -31,7 +31,7 @@
 
                     <Border Grid.Row="1" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
                         <ScrollViewer>
-                            <!-- <Grid x:Name="AddItemOverlay_ItemPathsList"/> -->
+                            <!-- <Grid x:Name="AddItemOverlay_ItemPathsList"/> TODO: 作る-->
                         </ScrollViewer>
                     </Border>
                 </Grid>

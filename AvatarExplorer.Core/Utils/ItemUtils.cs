@@ -14,6 +14,7 @@ public static partial class ItemUtils
         return itemTitleMaps.TryGetValue(itemId, out string? avatarName) ? avatarName : string.Empty;
     }
 
+    [Obsolete("v2.7.0からデータベースのパスがフルパスに移行するため、そのままItem.ItemPathをご利用ください。")]
     public static string GetItemPath(string parentFolder, string itemPath)
     {
         // <sys>で始まっていたら相対パスと認識して親フォルダに置き換える
@@ -34,10 +35,10 @@ public static partial class ItemUtils
         var itemTitleMaps = new Dictionary<string, string>();
         
         foreach (var item in items)
-            itemTitleMaps.Add(item.Id, item.Title);
+            itemTitleMaps.Add(item.Identifier, item.Title);
         
         foreach (var tempAvatar in tempAvatars)
-            itemTitleMaps.Add(tempAvatar.GetInternalId(), tempAvatar.AvatarName);
+            itemTitleMaps.Add(tempAvatar.Identifier, tempAvatar.AvatarName);
 
         return itemTitleMaps;
     }

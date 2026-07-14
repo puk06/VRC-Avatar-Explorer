@@ -6,25 +6,25 @@ internal class SelectionState
 {
     public event Action? SelectionChanged;
 
-    private readonly Stack<SelectionNode> _stack = new();
+    private readonly Stack<string> _stack = new();
 
-    public void Push(ItemTagStates state, string key)
+    public void Push(string value)
     {
-        if (state == ItemTagStates.SearchItem && FirstOrDefault(ItemTagStates.SearchItem) != null)
-        {
-            foreach (ItemTagStates itemTagState in _stack.Select(i => i.State).ToArray())
-            {
-                Pop();
-                if (itemTagState == ItemTagStates.SearchItem) break;
-            }
-        }
+        // if (state == ItemTagStates.SearchItem && FirstOrDefault(ItemTagStates.SearchItem) != null)
+        // {
+        //     foreach (string itemTagState in _stack)
+        //     {
+        //         Pop();
+        //         if (itemTagState.StartsWith("searchitem")) break;
+        //     }
+        // }
 
-        _stack.Push(new SelectionNode(state, key));
+        _stack.Push(value);
 
         SelectionChanged?.Invoke();
     }
 
-    public SelectionNode? Pop()
+    public string? Pop()
     {
         if (_stack.Count == 0) return null;
         var node = _stack.Pop();
@@ -32,9 +32,9 @@ internal class SelectionState
         return node;
     }
 
-    public SelectionNode? Current => _stack.Count > 0 ? _stack.Peek() : null;
+    public string? Current => _stack.Count > 0 ? _stack.Peek() : null;
 
-    public SelectionNode? Root => _stack.Count > 0 ? _stack.Last() : null;
+    public string? Root => _stack.Count > 0 ? _stack.Last() : null;
 
     public void Clear()
     {
@@ -42,7 +42,7 @@ internal class SelectionState
         SelectionChanged?.Invoke();
     }
 
-    public SelectionNode? FirstOrDefault(ItemTagStates state) => _stack.FirstOrDefault(i => state.HasFlag(i.State));
+    public string? FirstOrDefault(string prefix) => _stack.FirstOrDefault(i => i.StartsWith(prefix));
     
-    public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _stack.Reverse();
+    public IEnumerable<string> GetCurrentSelectionNodes() => _stack.Reverse();
 }

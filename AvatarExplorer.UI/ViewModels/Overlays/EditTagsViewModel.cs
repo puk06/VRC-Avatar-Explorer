@@ -71,7 +71,7 @@ public class EditTagsViewModel : ViewModelBase
 
     public void RefleshTags()
     {
-        ExistTags = AvatarExplorerApp.Instance.GetAllItems()
+        ExistTags = AvatarExplorerApp.Instance.Items.GetAll()
             .SelectMany(i => i.Tags)
             .Distinct();
     }

@@ -73,7 +73,7 @@ internal static class StorageService
         }
     }
 
-    internal static async Task<string?> SaveFileDialog(Visual visual, string title, string defaultExtension)
+    internal static async Task<string?> OpenSaveFileDialog(Visual visual, string title, string defaultExtension)
     {
         try
         {

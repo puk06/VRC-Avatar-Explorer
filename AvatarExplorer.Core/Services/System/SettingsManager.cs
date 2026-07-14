@@ -12,10 +12,11 @@ public class SettingsManager<T>(string filePath) where T : class, new()
     public T Settings => _settings;
     public string FilePath => _filePath;
 
-    public void Update(T newSettings)
+    public void Update(T newSettings, bool save = true)
     {
         _settings = newSettings;
         SettingsChanged?.Invoke(this, newSettings);
+        if (save) Save();
     }
 
     public void Load(string? path = null)

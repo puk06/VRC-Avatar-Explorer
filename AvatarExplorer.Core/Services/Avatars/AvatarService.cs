@@ -9,24 +9,21 @@ public static class AvatarService
     {
         var avatarIds = new HashSet<string>();
 
-        foreach (var avatarId in avatars)
+        foreach (var id in avatars)
         {
-            if (avatarId.StartsWith(CommonAvatar.InternalPathPrefix))
+            if (id.StartsWith("commonavatar:"))
             {
-                var groupId = CommonAvatar.GetGroupId(avatarId);
-                if (groupId == null) continue;
-
-                var commonAvatar = commonAvatars.FirstOrDefault(i => i.Id == groupId);
+                var commonAvatar = commonAvatars.FirstOrDefault(i => i.Identifier == id);
                 if (commonAvatar != null) avatarIds.UnionWith(commonAvatar.Avatars);
 
                 continue;
             }
 
-            avatarIds.Add(avatarId);
+            avatarIds.Add(id);
 
             if (!includeCommonAvatarToSupported) continue;
 
-            var commonAvatarGroup = commonAvatars.Where(commonAvatar => commonAvatar.Avatars.Contains(avatarId));
+            var commonAvatarGroup = commonAvatars.Where(commonAvatar => commonAvatar.Avatars.Contains(id));
             foreach (var commonAvatarId in commonAvatarGroup.SelectMany(i => i.Avatars))
             {
                 avatarIds.Add(commonAvatarId);

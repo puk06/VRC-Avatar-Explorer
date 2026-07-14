@@ -11,7 +11,7 @@ public class Item : AbstractDatabaseItem, ISelectableItem
     public string Author { get; set; } = string.Empty;
     public string AuthorId { get; set; } = string.Empty;
     public int BoothId { get; set; } = -1;
-    public string ItemPath { get; set; } = string.Empty;
+    public string ItemPath { get; set; } = string.Empty; // TODO: フルパスに変更する 追加時だけRuntimeSettingsのDataRootは使う
     [JsonInclude] public ImmutableArray<string> ItemPaths { get; private set; } = []; // フォルダーをそのまま使用する設定のときにここに追加される
     public string ThumbnailFileName { get; set; } = string.Empty;
     public ItemType Type { get; set; } = ItemType.None;
@@ -23,6 +23,8 @@ public class Item : AbstractDatabaseItem, ISelectableItem
     public string CreatedDate { get; set; } = string.Empty;
     public string UpdatedDate { get; set; } = string.Empty;
 
+    [JsonIgnore] public string Identifier => "item:" + Id;
+
     public void UpdateItemPaths(IEnumerable<string> newList) => ItemPaths = newList.ToImmutableArray();
     public void UpdateSupportedAvatars(IEnumerable<string> newList) => SupportedAvatars = newList.ToImmutableArray();
     public void UpdateImplementedAvatars(IEnumerable<string> newList) => ImplementedAvatars = newList.ToImmutableArray();
@@ -32,20 +34,5 @@ public class Item : AbstractDatabaseItem, ISelectableItem
     {
         if (string.IsNullOrEmpty(AuthorId)) return string.Format(BoothLink.ItemURLWithoutAuthorFormat, languageCode, BoothId);
         else return string.Format(BoothLink.ItemURLFormat, AuthorId, BoothId);
-    }
-    
-    internal Item SetValuesFromCreationContext(ItemCreationContext itemCreationContext)
-    {
-        Title = itemCreationContext.Title;
-        Author = itemCreationContext.Author;
-        AuthorId = itemCreationContext.AuthorId;
-        BoothId = itemCreationContext.BoothId;
-        Type = itemCreationContext.ItemType;
-        CustomCategory = itemCreationContext.CustomCategory;
-        UpdateSupportedAvatars(itemCreationContext.SupportedAvatars);
-        UpdateTags(itemCreationContext.Tags);
-        ItemMemo = itemCreationContext.ItemMemo;
-
-        return this;
     }
 }

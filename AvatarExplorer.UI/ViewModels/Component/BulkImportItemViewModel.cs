@@ -14,52 +14,52 @@ namespace AvatarExplorer.UI.ViewModels.Component;
 
 public class BulkImportItemViewModel : ViewModelBase
 {
-    private readonly UISelectableItem _item;
-    [Reactive] public string Id { get; private set; } = Guid.NewGuid().ToString();
+    // private readonly UISelectableItem _item;
+
     [Reactive] public Bitmap? Thumbnail { get; set; } = null;
-    [Reactive] public string ImageFileName { get; set; } = string.Empty;
     [Reactive] public string Title { get; set; } = string.Empty;
     [Reactive] public string Description { get; set; } = string.Empty;
+
     [Reactive] public IEnumerable<string> UnitypackageNames { get; set; } = [];
     public IEnumerable<string> UnitypackageFullPaths { get; set; } = [];
     [Reactive] public int SelectedUnitypackage { get; set; } = 0;
+
     [Reactive] public string ToolTip { get; set; } = string.Empty;
 
     [Reactive] public double Width { get; set; } = 0;
     [Reactive] public double Height { get; set; } = 0;
     [Reactive] public BitmapInterpolationMode BitmapInterpolationMode { get; set; } = BitmapInterpolationMode.None;
 
-    public BulkImportItemViewModel(UISelectableItem item, string? fileName = null)
-    {
-        _item = item;
+    // public BulkImportItemViewModel(UISelectableItem item, string? fileName = null)
+    // {
+    //     _item = item;
 
-        Thumbnail = ImageService.Get(_item.ImageFileName, _item.IconType);
-        ImageFileName = _item.ImageFileName;
-        Title = _item.Title;
+    //     Thumbnail = ImageService.Get(_item.ImageFileName, _item.IconType);
+        
+    //     Title = _item.Title;
 
-        if (_item.ItemFolderPaths != null)
-        {
-            UnitypackageFullPaths = UnitypackageService.GetUnitypackagePaths(_item.ItemFolderPaths);
-            UnitypackageNames = UnitypackageFullPaths
-                .Select(Path.GetFileName)
-                .Where(i => !string.IsNullOrEmpty(i))
-                .Cast<string>();
+    //     if (_item.ItemFolderPaths != null)
+    //     {
+    //         UnitypackageFullPaths = UnitypackageService.GetUnitypackagePaths(_item.ItemFolderPaths);
+    //         UnitypackageNames = UnitypackageFullPaths
+    //             .Select(i => Path.GetFileName(i) ?? string.Empty)
+    //             .Where(i => !string.IsNullOrEmpty(i));
 
-            if (fileName != null)
-            {
-                int index = UnitypackageFullPaths.IndexOf(fileName);
-                if (index != -1) SelectedUnitypackage = index;
-            }
-        }
+    //         if (fileName != null)
+    //         {
+    //             int index = UnitypackageFullPaths.IndexOf(fileName);
+    //             if (index != -1) SelectedUnitypackage = index;
+    //         }
+    //     }
 
-        UpdateLocalization();
-    }
+    //     UpdateLocalization();
+    // }
 
-    public BulkImportItemViewModel Copy() => new(_item);
+    public BulkImportItemViewModel Copy() => new();
 
-    public void UpdateLocalization()
-    {
-        Description = Localizer.Instance.Get(_item.Description.LocalizationKey, _item.Description.Args);
-        ToolTip = _item.GetToolTipText();
-    }
+    // public void UpdateLocalization()
+    // {
+    //     Description = Localizer.Instance.Get(_item.Description.LocalizationKey, _item.Description.Args);
+    //     ToolTip = _item.GetToolTipText();
+    // }
 }

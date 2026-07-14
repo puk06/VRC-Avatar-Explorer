@@ -1,154 +1,155 @@
+using System;
 using System.Collections.Generic;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Models.ContextMenu;
 
 namespace AvatarExplorer.UI.Services.ViewControl;
 
+public enum ViewModelType
+{
+    Item,
+    Folder,
+    File,
+    BulkImportPreset,
+    TempAvatar,
+    ItemCategory
+}
+
 internal static class ContextMenuCreator
 {
-    internal static ContextMenuAction[] Create(ISelectableItem selectableItem)
+    internal static ContextMenuAction[] Create(ViewModelType type, string value)
     {
-        if (selectableItem is Item item) return CreateFromItem(item);
-        if (selectableItem is ItemFolder itemFolder) return CreateFromItemFolder(itemFolder);
-        if (selectableItem is ItemFile itemFile) return CreateFromItemFile(itemFile);
-        if (selectableItem is BulkImportPreset bulkImportPreset) return CreateFromBulkImportPreset(bulkImportPreset);
-        if (selectableItem is TempAvatar tempAvatar) return CreateFromTempAvatar(tempAvatar);
-        if (selectableItem is ItemCategory itemCategory) return CreateFromItemCategory(itemCategory);
-        
-        return [];
+        return type switch
+        {
+            ViewModelType.Item => CreateFromItem(value),
+            ViewModelType.Folder => CreateFromItemFolder(value),
+            ViewModelType.File => CreateFromItemFile(value),
+            ViewModelType.BulkImportPreset => CreateFromBulkImportPreset(value),
+            ViewModelType.TempAvatar => CreateFromTempAvatar(value),
+            ViewModelType.ItemCategory => CreateFromItemCategory(value),
+            _ => []
+        };
     }
 
-    private static ContextMenuAction[] CreateFromItem(Item item)
+    private static ContextMenuAction[] CreateFromItem(string itemId)
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(item.Title, ActionKey.None, ContextMenuIconType.None, string.Empty, addSeparator: true, isEnabled: false) { UseLocalization = false },
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.OpenFolder, ActionKey.OpenItemFolder, ContextMenuIconType.Open, itemId),
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, itemId, addSeparator: true),
 
-            new ContextMenuAction(LocalizationKey.ContextMenu.Item.OpenFolder, ActionKey.OpenItemFolder, ContextMenuIconType.Open, item.Id),
-            new ContextMenuAction(LocalizationKey.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, item.Id, addSeparator: true),
-
-            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Add.BulkImportList, ActionKey.AddToBulkImportList, ContextMenuIconType.Add, item.Id),
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Add.BulkImportList, ActionKey.AddToBulkImportList, ContextMenuIconType.Add, itemId),
             new ContextMenuAction(LocalizationKey.ContextMenu.Item.Add.File, ActionKey.None, ContextMenuIconType.Add, addSeparator: true)
             {
                 SubMenuItems =
                 {
-                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Add.File, ActionKey.AddItemFile, ContextMenuIconType.Add, item.Id),
-                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Add.Folder, ActionKey.AddItemFolder, ContextMenuIconType.Add, item.Id)
+                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Add.File, ActionKey.AddItemFile, ContextMenuIconType.Add, itemId),
+                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Add.Folder, ActionKey.AddItemFolder, ContextMenuIconType.Add, itemId)
                 }
-            }
-        ];
+            },
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Booth.Open, ActionKey.OpenBoothLink, ContextMenuIconType.Open, itemId),
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Booth.Copy, ActionKey.CopyBoothLink, ContextMenuIconType.Copy, itemId, addSeparator: true),
 
-        if (item.BoothId != -1)
-        {
-            contextMenuActions.AddRange(
-                [
-                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Booth.Open, ActionKey.OpenBoothLink, ContextMenuIconType.Open, item.Id),
-                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Booth.Copy, ActionKey.CopyBoothLink, ContextMenuIconType.Copy, item.Id, addSeparator: true)
-                ]
-            );
-        }
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.CopyItemInfo, ActionKey.CopyItemInfo, ContextMenuIconType.Copy, itemId, addSeparator: true),
 
-        contextMenuActions.AddRange(
-            [
-                new ContextMenuAction(LocalizationKey.ContextMenu.Item.CopyItemInfo, ActionKey.CopyItemInfo, ContextMenuIconType.Copy, item.Id, addSeparator: true),
-
-                new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Tag, ActionKey.EditItemTag, ContextMenuIconType.Edit, item.Id),
-                new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Memo, ActionKey.EditItemMemo, ContextMenuIconType.Edit, item.Id),
-                new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Implemented, ActionKey.EditImplementedAvatar, ContextMenuIconType.Edit, item.Id, addSeparator: true),
-                new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Default, ActionKey.None, ContextMenuIconType.Edit, item.Id, addSeparator: true)
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Tag, ActionKey.EditItemTag, ContextMenuIconType.Edit, itemId),
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Memo, ActionKey.EditItemMemo, ContextMenuIconType.Edit, itemId),
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Implemented, ActionKey.EditImplementedAvatar, ContextMenuIconType.Edit, itemId, addSeparator: true),
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Default, ActionKey.None, ContextMenuIconType.Edit, itemId, addSeparator: true)
+            {
+                SubMenuItems =
                 {
-                    SubMenuItems =
-                    {
-                        new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Default, ActionKey.EditItem, ContextMenuIconType.Edit, item.Id),
-                        new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Title, ActionKey.EditItemTitle, ContextMenuIconType.Edit, item.Id),
-                        new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.DefaultPath, ActionKey.EditItemDefaultPath, ContextMenuIconType.Edit, item.Id, addSeparator: true),
-                        new ContextMenuAction(LocalizationKey.ContextMenu.Item.Thumbnail.Change, ActionKey.ChangeThumbnail, ContextMenuIconType.Edit, item.Id),
-                        new ContextMenuAction(LocalizationKey.ContextMenu.Item.Thumbnail.Fetch, ActionKey.FetchThumbnail, ContextMenuIconType.Fetch, item.Id)
-                    }
-                },
+                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Default, ActionKey.EditItem, ContextMenuIconType.Edit, itemId),
+                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.Title, ActionKey.EditItemTitle, ContextMenuIconType.Edit, itemId),
+                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Edit.DefaultPath, ActionKey.EditItemDefaultPath, ContextMenuIconType.Edit, itemId, addSeparator: true),
+                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Thumbnail.Change, ActionKey.ChangeThumbnail, ContextMenuIconType.Edit, itemId),
+                    new ContextMenuAction(LocalizationKey.ContextMenu.Item.Thumbnail.Fetch, ActionKey.FetchThumbnail, ContextMenuIconType.Fetch, itemId)
+                }
+            },
 
-                new ContextMenuAction(LocalizationKey.ContextMenu.Item.Remove, ActionKey.RemoveItem, ContextMenuIconType.Delete, item.Id)
-            ]
-        );
+            new ContextMenuAction(LocalizationKey.ContextMenu.Item.Remove, ActionKey.RemoveItem, ContextMenuIconType.Delete, itemId)
+        ];
 
         return contextMenuActions.ToArray();
     }
 
-    private static ContextMenuAction[] CreateFromItemFolder(ItemFolder itemFolder)
+    private static ContextMenuAction[] CreateFromItemFolder(string path)
     {
         List<ContextMenuAction> contextMenuActions = [];
 
         if (ProcessUtils.IsWindows())
         {
-            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, itemFolder.FullPath));
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, path));
         }
 
         return contextMenuActions.ToArray();
     }
 
-    private static ContextMenuAction[] CreateFromItemFile(ItemFile itemFile)
+    private static ContextMenuAction[] CreateFromItemFile(string path)
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFile, ActionKey.OpenFile, ContextMenuIconType.Open, itemFile.FullPath),
-            new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.BulkImportList, ActionKey.AddFileToBulkImportList, ContextMenuIconType.Add, itemFile.FullPath)
+            new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFile, ActionKey.OpenFile, ContextMenuIconType.Open, path),
+            new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.BulkImportList, ActionKey.AddFileToBulkImportList, ContextMenuIconType.Add, path)
         ];
 
         if (ProcessUtils.IsWindows())
         {
-            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, itemFile.FullPath));
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, path));
         }
 
-        if (PathUtils.IsUnitypackageFile(itemFile.FullPath))
+        if (PathUtils.IsUnitypackageFile(path))
         {
-            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenUnitypackageViewer, ActionKey.OpenUnitypackageViewer, ContextMenuIconType.Open, itemFile.FullPath));
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenUnitypackageViewer, ActionKey.OpenUnitypackageViewer, ContextMenuIconType.Open, path));
         }
 
-        if (PathUtils.IsPdfFile(itemFile.FullPath))
+        if (PathUtils.IsPdfFile(path))
         {
-            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenPdfViewer, ActionKey.OpenPdfViewer, ContextMenuIconType.Open, itemFile.FullPath));
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenPdfViewer, ActionKey.OpenPdfViewer, ContextMenuIconType.Open, path));
         }
 
         return contextMenuActions.ToArray();
     }
 
-    private static ContextMenuAction[] CreateFromBulkImportPreset(BulkImportPreset bulkImportPreset)
+    private static ContextMenuAction[] CreateFromBulkImportPreset(string itemId)
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(LocalizationKey.ContextMenu.BulkImportPreset.RemovePreset, ActionKey.RemovePreset, ContextMenuIconType.Delete, bulkImportPreset.Id),
+            new ContextMenuAction(LocalizationKey.ContextMenu.BulkImportPreset.RemovePreset, ActionKey.RemovePreset, ContextMenuIconType.Delete, itemId),
         ];
 
         return contextMenuActions.ToArray();
     }
 
-    private static ContextMenuAction[] CreateFromTempAvatar(TempAvatar tempAvatar)
+    private static ContextMenuAction[] CreateFromTempAvatar(string itemId)
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit, tempAvatar.GetInternalId()),
-            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, tempAvatar.GetInternalId(), addSeparator: true),
-            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete, tempAvatar.GetInternalId()),
+            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit, itemId),
+            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, itemId, addSeparator: true),
+            new ContextMenuAction(LocalizationKey.ContextMenu.TempAvatar.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete, itemId),
         ];
 
         return contextMenuActions.ToArray();
     }
     
-    private static ContextMenuAction[] CreateFromItemCategory(ItemCategory itemCategory)
+    private static ContextMenuAction[] CreateFromItemCategory(string category)
     {
         List<ContextMenuAction> contextMenuActions = new();
 
-        if (itemCategory.Type != ItemType.All)
+        if (category.StartsWith("type:")) // type: => Enum
         {
-            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, itemCategory.GetInternalId()));
+            var raw = category["type:".Length..];
+            if (Enum.TryParse<ItemType>(raw, out var itemType) && itemType != ItemType.All)
+            {
+                contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
+            }
         }
-
-        if (itemCategory.Type == ItemType.Custom)
+        else // custom: => CustomCategory
         {
-            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemCategory.EditCustomCategoryName, ActionKey.EditCustomCategoryName, ContextMenuIconType.Edit, itemCategory.CustomCategory));
+            contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
         }
 
         return contextMenuActions.ToArray();

@@ -1,4 +1,5 @@
 using System;
+using AvatarExplorer.Core.Models.Items;
 using DynamicData.Binding;
 using ReactiveUI.Fody.Helpers;
 
@@ -28,5 +29,10 @@ public class AdvancedSearchViewModel : ViewModelBase
     {
         this.WhenAnyPropertyChanged()
             .Subscribe(i => SearchPropertyChanged?.Invoke());
+    }
+
+    public void ApplyFilter(SearchFilter filter)
+    {
+        
     }
 }

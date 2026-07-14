@@ -46,20 +46,20 @@ public class BulkImportViewModel
     
     public void OnBulkImportDropped(string value, bool isFile = false)
     {
-        if (isFile)
-        {
-            var currentItem = AvatarExplorerApp.Instance.GetSelectedItem();
-            if (currentItem == null) return;
+        // if (isFile)
+        // {
+        //     var currentItem = AvatarExplorerApp.Instance.GetSelectedItem();
+        //     if (currentItem == null) return;
 
-            var folderPaths = currentItem.GetFolderPaths(AvatarExplorerApp.Instance.GetRuntimeSettings().DataRootDirectory);
-            var unitypackagePaths = UnitypackageService.GetUnitypackagePaths(folderPaths);
+        //     var folderPaths = currentItem.GetFolderPaths(AvatarExplorerApp.Instance.GetRuntimeSettings().DataRootDirectory);
+        //     var unitypackagePaths = UnitypackageService.GetUnitypackagePaths(folderPaths);
 
-            var uiSelectableItem = new UISelectableItem(currentItem);
+        //     var uiSelectableItem = new UISelectableItem(currentItem);
 
-            if (unitypackagePaths.Contains(value))
-            {
-                Items.Add(new BulkImportItemViewModel(uiSelectableItem));
-            }
-        }
+        //     if (unitypackagePaths.Contains(value))
+        //     {
+        //         Items.Add(new BulkImportItemViewModel(uiSelectableItem));
+        //     }
+        // }
     }
 }
