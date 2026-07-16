@@ -11,6 +11,7 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.ViewModels.Component;
+using AvatarExplorer.UI.ViewModels.Panels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -18,6 +19,11 @@ namespace AvatarExplorer.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+    public static MainViewModel Instance { get; private set; } = null!;
+    public AdvancedSearchViewModel AdvancedSearchVM { get; } = new();
+    public BulkImportViewModel BulkImportVM { get; } = new();
+    public BulkImportPresetViewModel BulkImportPresetVM { get; } = new();
+
     [Reactive] public string Path { get; set; } = string.Empty;
     [Reactive] public string SearchText { get; set; } = string.Empty;
 
@@ -45,13 +51,15 @@ public class MainViewModel : ViewModelBase
 
     public MainViewModel()
     {
+        Instance = this;
+
         _itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
         _itemNavigationService = AvatarExplorerApp.Instance.ItemNavigationService;
 
         UndoCommand = ReactiveCommand.Create(Undo);
         HomeCommand = ReactiveCommand.Create(GoHome);
         OpenSettingsCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.IsSettingsVisible = true);
-        AddItemCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.IsAddItemVisible = true);
+        AddItemCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.ShowAddItem());
         SidePanelButtonPressedCommand = ReactiveCommand.Create<int>(SidePanelButtonPressed);
         SelectLeftItemCommand = ReactiveCommand.Create<ItemViewModel>(OnLeftItemSelected);
         SelectRightItemCommand = ReactiveCommand.Create<ItemViewModel>(OnRightItemSelected);
@@ -109,10 +117,10 @@ public class MainViewModel : ViewModelBase
             return value;
 
         if (prefix == "avatar")
-            return AvatarExplorerApp.Instance.Items.GetById(value)?.Title ?? value;
+            return AvatarExplorerApp.Instance.Items.Get(value)?.Title ?? value;
 
         if (prefix == "item")
-            return AvatarExplorerApp.Instance.Items.GetById(state)?.Title ?? value;
+            return AvatarExplorerApp.Instance.Items.Get(state)?.Title ?? value;
 
         if (prefix == "folder")
             return System.IO.Path.GetFileName(value);
@@ -136,15 +144,19 @@ public class MainViewModel : ViewModelBase
         return true;
     }
 
-    private static ItemViewModel CreateItemViewModel(ISelectableItem item, string customPrefix = "")
+    private static ItemViewModel CreateItemViewModel(ISelectableItem item)
     {
-        return NavigationItemFactory.CreateFromSelectableItem(item, customPrefix);
+        return NavigationItemFactory.CreateFromSelectableItem(item);
     }
 
     private void UpdateLeftPanelItems(QueryType type)
     {
         LeftItems = _itemGroupService.GetQueryFilters(type)
-            .Select(i => CreateItemViewModel(i, "avatar:"))
+            .Select(i => {
+                var item = CreateItemViewModel(i);
+                if (i is Item) item.Tag = "avatar:" + item.Tag;
+                return item;
+            })
             .Select(i => i.Update());
     }
 

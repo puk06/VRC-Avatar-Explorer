@@ -3,7 +3,6 @@ using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System.Repositories;
-using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.System;
 

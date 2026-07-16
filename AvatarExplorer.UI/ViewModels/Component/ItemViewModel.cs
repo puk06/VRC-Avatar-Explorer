@@ -25,6 +25,8 @@ public class ItemViewModel : ViewModelBase
     public LoclizableDescription DescriptionRaw = new();
     [Reactive] public string ToolTip { get; set; } = string.Empty;
     public ContextMenuAction[] Actions { get; private set; } = [];
+    [Reactive] public bool IsSelected { get; set; } = false;
+    [Reactive] public bool IsVisible { get; set; } = true;
 
     public string Tag { get; set; } = string.Empty;
 

@@ -44,11 +44,8 @@ public class EditTagsViewModel : ViewModelBase
             {
                 Debug.WriteLine(ex);
             }
-
-        }, outputScheduler: RxSchedulers.MainThreadScheduler);
+        });
         ClearNewTagCommand = ReactiveCommand.Create(() => NewTag = string.Empty);
-
-        
 
         this.WhenAnyValue(i => i.SelectedIndex)
             .Subscribe(i =>

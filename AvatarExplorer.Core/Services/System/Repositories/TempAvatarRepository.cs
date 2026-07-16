@@ -10,8 +10,20 @@ public class TempAvatarRepository
 
     public void Load(string? path = null) => _db.Load(path);
     public IReadOnlyList<TempAvatar> GetAll() => _db.Items;
-    public TempAvatar? GetById(string id) => _db.GetById(id);
-    public void Add(TempAvatar avatar) => _db.Add(avatar);
+
+    public TempAvatar? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);
+
+    public void Create(string avatarName)
+    {
+        _db.Add(new(avatarName));
+    }
+
     public void Save() => _db.Save();
-    public void Remove(string id) => _db.Remove(id);
+    public void Remove(string identifier)
+    {
+        var item = Get(identifier);
+        if (item == null) return;
+
+        _db.Remove(item.Id);
+    }
 }

@@ -4,10 +4,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.FatalErrorOverlay"
     x:DataType="vm:FatalErrorViewModel">
 
-    <UserControl.DataContext>
-        <vm:FatalErrorViewModel/>
-    </UserControl.DataContext>
-
     <!-- 致命的なエラーオーバーレイ -->
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="520" Padding="24">

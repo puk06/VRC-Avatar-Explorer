@@ -5,10 +5,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.FetchAllThumbnailsOverlay"
     x:DataType="vm:FetchAllThumbnailsViewModel">
 
-    <UserControl.DataContext>
-        <vm:FetchAllThumbnailsViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="680" Padding="24">
             <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="12">

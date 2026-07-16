@@ -5,7 +5,7 @@ namespace AvatarExplorer.Core.Services.Avatars;
 
 public static class AvatarService
 {
-    public static ImmutableArray<string> GetAllSupportedAvatarIds(IEnumerable<string> avatars, IEnumerable<CommonAvatar> commonAvatars, bool includeCommonAvatarToSupported = false)
+    public static string[] GetAllSupportedAvatarIds(IEnumerable<string> avatars, IEnumerable<CommonAvatar> commonAvatars, bool includeCommonAvatarToSupported = false)
     {
         var avatarIds = new HashSet<string>();
 
@@ -30,6 +30,6 @@ public static class AvatarService
             }
         }
 
-        return avatarIds.ToImmutableArray();
+        return avatarIds.ToArray();
     }
 }

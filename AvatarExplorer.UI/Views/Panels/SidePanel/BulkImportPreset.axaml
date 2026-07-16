@@ -7,10 +7,6 @@
     x:Class="AvatarExplorer.UI.Views.Panels.BulkImportPreset"
     x:DataType="vm:BulkImportPresetViewModel">
 
-    <UserControl.DataContext>
-        <vm:BulkImportPresetViewModel/>
-    </UserControl.DataContext>
-
     <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
         <TextBlock Text="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
 
@@ -26,7 +22,7 @@
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="component:ItemButtonViewModel">
+                        <DataTemplate x:DataType="component:ItemViewModel">
                             <Button Classes="button" ContextMenu="{Binding ContextMenu}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Command="{Binding $parent[UserControl].DataContext.SelectItemCommand}" CommandParameter="{Binding}">
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                     <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">

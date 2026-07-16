@@ -13,6 +13,8 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
+        DataContext = MainWindowViewModel.Instance.MainVM;
+
         RegisterSidePanelEvent();
         RegisterCategoryTabEvent();
     }

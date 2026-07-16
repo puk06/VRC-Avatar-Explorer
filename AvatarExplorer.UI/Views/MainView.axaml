@@ -10,10 +10,6 @@
     x:Class="AvatarExplorer.UI.Views.MainView"
     x:DataType="vm:MainViewModel">
 
-    <UserControl.DataContext>
-        <vm:MainViewModel/>
-    </UserControl.DataContext>
-
     <DockPanel Margin="12">
         <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*" ColumnSpacing="12">
             <Border Grid.Column="1" Classes="panelbackground">

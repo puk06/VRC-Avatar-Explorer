@@ -25,3 +25,24 @@ public record BoothItem
     [JsonIgnore]
     public string ThumbnailUrl => Thumbnails.Count > 0 ? Thumbnails[0].Original : string.Empty;
 }
+
+public record CategoryInfo
+{
+    public string Name { get; init; } = string.Empty;
+}
+
+public record ImageInfo
+{
+    public string Original { get; init; } = string.Empty;
+}
+
+public record ShopInfo
+{
+    public string Name { get; init; } = string.Empty;
+
+    [JsonPropertyName("subdomain")]
+    public string Id { get; init; } = string.Empty;
+
+    [JsonPropertyName("thumbnail_url")]
+    public string ThumbnailUrl { get; init; } = string.Empty;
+}

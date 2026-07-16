@@ -7,10 +7,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.EditTagsOverlay"
     x:DataType="vm:EditTagsViewModel">
 
-    <UserControl.DataContext>
-        <vm:EditTagsViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="450">
             <StackPanel Spacing="15">

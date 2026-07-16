@@ -11,7 +11,7 @@ namespace AvatarExplorer.UI.ViewModels.Panels;
 
 public class BulkImportPresetViewModel
 {
-    [Reactive] public ObservableCollection<ItemButtonViewModel> Items { get; set; } = [];
+    [Reactive] public ObservableCollection<ItemViewModel> Items { get; set; } = [];
 
     public IReactiveCommand SelectItemCommand { get; }
 

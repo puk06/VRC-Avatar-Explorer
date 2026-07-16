@@ -6,10 +6,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.EditCommonAvatarsOverlay"
     x:DataType="vm:EditCommonAvatarsViewModel">
 
-    <UserControl.DataContext>
-        <vm:EditCommonAvatarsViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="800">
             <StackPanel Spacing="10">
@@ -21,7 +17,7 @@
                     <!-- グループ選択欄 -->
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="10,0,10,0" Grid.Row="2" ColumnSpacing="10">
                         <TextBlock Text="{Binding [EditCommonAvatars.Group], Source={x:Static loc:Localizer.Instance}}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Groups}" SelectedIndex="{Binding SelectedGroup}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="10,0,10,0"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="10,0,10,0"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [EditCommonAvatars.AddGroup], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Command="{Binding AddGroupCommand}"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="3" Content="{Binding [EditCommonAvatars.RenameGroup], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Command="{Binding RenameGroupCommand}"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="4" Content="{Binding [EditCommonAvatars.RemoveGroup], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Command="{Binding RemoveGroupCommand}"/>
@@ -43,7 +39,7 @@
                             </ItemsControl.ItemsPanel>
 
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vmcomponent:ItemButtonViewModel">
+                                <DataTemplate x:DataType="vmcomponent:ItemViewModel">
                                     <Button Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Command="{Binding $parent[UserControl].DataContext.SelectItemCommand}" CommandParameter="{Binding}">
                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">

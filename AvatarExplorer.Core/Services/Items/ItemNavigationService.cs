@@ -7,14 +7,14 @@ namespace AvatarExplorer.Core.Services.Items;
 
 public class ItemNavigationService
 {
-    private const string AvatarPrefix = "avatar";
-    private const string AuthorPrefix = "author";
-    private const string TypePrefix = "type";
-    private const string CustomPrefix = "custom";
-    private const string ItemPrefix = "item";
-    private const string FolderPrefix = "folder";
-    private const string ExtensionPrefix = "extension";
-    private const string FilePrefix = "file";
+    public const string AvatarPrefix = "avatar";
+    public const string AuthorPrefix = "author";
+    public const string TypePrefix = "type";
+    public const string CustomPrefix = "custom";
+    public const string ItemPrefix = "item";
+    public const string FolderPrefix = "folder";
+    public const string ExtensionPrefix = "extension";
+    public const string FilePrefix = "file";
 
     private readonly ItemGroupService _items;
     private readonly SelectionState _state = new();
@@ -23,7 +23,7 @@ public class ItemNavigationService
 
     public event Action<string>? FileOpenRequested = null;
 
-    public ItemNavigationService(ItemGroupService itemGroupService)
+    internal ItemNavigationService(ItemGroupService itemGroupService)
     {
         _handlers = new()
         {
@@ -235,7 +235,7 @@ public class ItemNavigationService
             : [];
     }
 
-    private static bool TryParseState(string rawState, out string key, out string value)
+    public static bool TryParseState(string rawState, out string key, out string value)
     {
         key = string.Empty;
         value = string.Empty;
@@ -248,7 +248,7 @@ public class ItemNavigationService
         return true;
     }
 
-    private static bool TryResolveItemType(string raw, out ItemType itemType)
+    public static bool TryResolveItemType(string raw, out ItemType itemType)
     {
         if (Enum.TryParse(raw, out itemType))
             return true;

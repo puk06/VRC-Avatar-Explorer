@@ -5,10 +5,6 @@
     x:Class="AvatarExplorer.UI.Views.Panels.AdvancedSearch"
     x:DataType="vm:AdvancedSearchViewModel">
 
-    <UserControl.DataContext>
-        <vm:AdvancedSearchViewModel/>
-    </UserControl.DataContext>
-
     <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
         <StackPanel Spacing="3">
             <TextBlock Text="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>

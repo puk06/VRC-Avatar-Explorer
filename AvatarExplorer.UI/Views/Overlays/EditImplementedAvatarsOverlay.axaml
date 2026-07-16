@@ -6,10 +6,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.EditImplementedAvatarsOverlay"
     x:DataType="vm:EditImplementedAvatarsViewModel">
 
-    <UserControl.DataContext>
-        <vm:EditImplementedAvatarsViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="800">
             <StackPanel Spacing="10">
@@ -34,7 +30,7 @@
                             </ItemsControl.ItemsPanel>
 
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vmcomponent:ItemButtonViewModel">
+                                <DataTemplate x:DataType="vmcomponent:ItemViewModel">
                                     <Button Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Command="{Binding $parent[UserControl].DataContext.SelectItemCommand}" CommandParameter="{Binding}">
                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">

@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Services.System;
 using ReactiveUI;
@@ -8,6 +9,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 public class ErrorLogViewModel : ViewModelBase
 {
     public ObservableCollection<ErrorContext> ErrorContexts { get; } = ErrorManager.Instance.ErrorContexts;
+    private TaskCompletionSource<string[]?> _tcs = new();
     public IReactiveCommand CloseCommand { get; }
     public IReactiveCommand OpenFolderCommand { get; }
 

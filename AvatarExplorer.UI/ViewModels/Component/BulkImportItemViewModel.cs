@@ -1,13 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Avalonia.Media.Imaging;
-using AvatarExplorer.UI.Localization;
-using AvatarExplorer.UI.Models.Items;
-using AvatarExplorer.UI.Services.External;
-using AvatarExplorer.UI.Services.Utilities;
-using DynamicData;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Component;

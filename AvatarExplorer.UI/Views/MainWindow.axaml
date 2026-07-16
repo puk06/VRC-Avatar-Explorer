@@ -18,11 +18,14 @@
     </Window.DataContext>
 
     <Panel Background="{Binding BackgroundImage}">
+
         <views:MainView/>
 
-        <overlays:SettingsOverlay IsVisible="false"/>
-        <overlays:AddItemOverlay IsVisible="false"/>
-        <overlays:EditSupportedAvatarsOverlay IsVisible="false"/>
+        <!-- <overlays:SettingsOverlay IsVisible="false"/> -->
+        <ContentControl IsVisible="{Binding IsAddItemVisible}">
+            <overlays:AddItemOverlay/>
+        </ContentControl>
+        <!-- <overlays:EditSupportedAvatarsOverlay IsVisible="false"/>
         <overlays:EditImplementedAvatarsOverlay IsVisible="false"/>
         <overlays:ResolveTempAvatarOverlay IsVisible="false"/>
         <overlays:EditCommonAvatarsOverlay IsVisible="false"/>
@@ -42,7 +45,7 @@
         <overlays:InitialSetupOverlay IsVisible="false"/>
         <overlays:ErrorLogOverlay IsVisible="false"/>
         <overlays:FatalErrorOverlay IsVisible="false"/>
-        <overlays:StartupLoadingOverlay IsVisible="false"/>
+        <overlays:StartupLoadingOverlay IsVisible="false"/> -->
 
         <WindowNotificationManager x:Name="NotificationManager" Position="BottomRight"/>
     </Panel>

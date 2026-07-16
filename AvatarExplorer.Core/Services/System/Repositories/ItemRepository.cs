@@ -9,15 +9,25 @@ namespace AvatarExplorer.Core.Services.System.Repositories;
 public class ItemRepository
 {
     private readonly DatabaseManager<Item> _db = new(SystemPath.ItemDatabasePath);
-
     public void Load(string? path = null) => _db.Load(path);
-    public IReadOnlyList<Item> GetAll() => _db.Items;
-    public Item? GetById(string id) => _db.Items.FirstOrDefault(i => i.Identifier == id);
-    public void Add(Item item) => _db.Add(item);
-    public void Save() => _db.Save();
-    public void Remove(string id) => _db.Remove(id);
 
-    public Dictionary<string, List<string>> CategorizeItems(IEnumerable<Item> items)
+    public IReadOnlyList<Item> GetAll() => _db.Items;
+    public Item? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);
+
+    public void Remove(string identifier)
+    {
+        var item = Get(identifier);
+        if (item == null) return;
+
+        _db.Remove(item.Id);
+    }
+
+    public void Create()
+    {
+        // TODO: 作る
+    }
+
+    public Dictionary<string, List<string>> CategorizeItems(IEnumerable<Item> items) // TODO: 順番どうにかしろ
     {
         var result = new Dictionary<string, List<string>>();
 
@@ -38,12 +48,10 @@ public class ItemRepository
 
         return result;
     }
-
-    
     public List<ItemFile> EnumerateItemFiles(string id)
     {
         // Root
-        var item = GetById(id);
+        var item = Get(id);
         if (item == null) return [];
 
         var files = new List<ItemFile>();
@@ -64,4 +72,6 @@ public class ItemRepository
 
         return files;
     }
+
+    public void Save() => _db.Save();
 }

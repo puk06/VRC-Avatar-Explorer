@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using AvatarExplorer.Core.Localization;
@@ -21,6 +22,8 @@ public class MainWindowViewModel : ViewModelBase
 
     public static MainWindowViewModel Instance { get; private set; } = null!;
 
+    public MainViewModel MainVM { get; } = new();
+
     public AddItemViewModel AddItemVM { get; } = new();
     [Reactive] public bool IsAddItemVisible { get; set; }
     
@@ -40,7 +43,7 @@ public class MainWindowViewModel : ViewModelBase
     [Reactive] public bool IsEditSupportedAvatarsVisible { get; set; }
 
     public EditTagsViewModel EditTagsVM { get; } = new();
-    [Reactive] public bool IsEditTagVisible { get; set; }
+    [Reactive] public bool IsEditTagsVisible { get; set; }
 
     public ErrorLogViewModel ErrorLogVM { get; } = new();
     [Reactive] public bool IsErrorLogVisible { get; set; }
@@ -87,6 +90,8 @@ public class MainWindowViewModel : ViewModelBase
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
     [Reactive] public bool IsYesNoDialogVisible { get; set; }
 
+    public WindowNotificationManager NotificationManager { get; } = new();
+
     public MainWindowViewModel()
     {
         Instance = this;
@@ -95,7 +100,7 @@ public class MainWindowViewModel : ViewModelBase
         Localizer.Instance.LanguageChanged += UpdateWindowTitle;
         AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
 
-        SetBackgroundImage("D:\\VRChat\\VRChat Pictures\\2026-06\\VRChat_2026-06-23_23-59-53.110_3840x2160_wrld_e7701aa4-377e-4e1e-a1ba-38784032128f.png", 100);
+        SetBackgroundImage("D:\\VRChat\\VRChat Pictures\\2026-07\\VRChat_2026-07-13_01-23-26.027_3840x2160_wrld_b4eef105-5db1-4c1f-8800-a6e6de4a20e7.png", 100);
     }
 
     private void UpdateWindowTitle()
@@ -108,11 +113,55 @@ public class MainWindowViewModel : ViewModelBase
         WindowTitle = title;
     }
 
+    public void ShowAddItem(string? itemId = null)
+    {
+        AddItemVM.Open(itemId);
+        IsAddItemVisible = true;
+    }
+
     public void ShowEditCommonAvatars()
     {
         IsEditCommonAvatarsVisible = true;
     }
     
+    public void ShowEditImplementedAvatars()
+    {
+        IsEditImplementedAvatarsVisible = true;
+    }
+
+    public async Task<string?> ShowEditMemoDialog(string memo)
+    {
+        EditMemoVM.Memo = memo;
+        
+        IsEditMemoVisible = true;
+        var result = await EditMemoVM.WaitForResult();
+        IsEditMemoVisible = false;
+
+        return result;
+    }
+
+    public async Task<string[]?> ShowEditSupportedAvatars(string[]? avatars = null)
+    {
+        EditSupportedAvatarsVM.Open(avatars);
+
+        IsEditSupportedAvatarsVisible = true;
+        var result = await EditSupportedAvatarsVM.WaitForResult();
+        IsEditSupportedAvatarsVisible = false;
+
+        return result;
+    }
+
+    public async Task<string[]?> ShowEditTagsDialog(string[]? tags = null)
+    {
+        EditTagsVM.Open(tags);
+        
+        IsEditTagsVisible = true;
+        var result = await EditTagsVM.WaitForResult();
+        IsEditTagsVisible = false;
+
+        return result;
+    }
+
     public async Task<bool> ShowYesNoDialog(string title, string content)
     {
         YesNoDialogVM.Title = title;
@@ -121,6 +170,18 @@ public class MainWindowViewModel : ViewModelBase
         IsYesNoDialogVisible = true;
         var result = await YesNoDialogVM.WaitForResult();
         IsYesNoDialogVisible = false;
+
+        return result;
+    }
+
+    public async Task<string?> ShowTextDialog(string title, string content = "")
+    {
+        TextDialogVM.Title = title;
+        TextDialogVM.Content = content;
+        
+        IsTextDialogVisible = true;
+        var result = await TextDialogVM.WaitForResult();
+        IsTextDialogVisible = false;
 
         return result;
     }
@@ -144,11 +205,23 @@ public class MainWindowViewModel : ViewModelBase
                 Opacity = Math.Clamp(opacity / 100.0, 0, 1),
                 Stretch = Stretch.UniformToFill
             };
+
             BackgroundImage = image;
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
         }
+    }
+
+    public void ShowNotification(string title, string content, NotificationType type)
+    {
+        NotificationManager.Show(new Notification()
+        {
+            Title = title,
+            Message = content,
+            Type = type,
+            Expiration = TimeSpan.FromSeconds(5)
+        });
     }
 }

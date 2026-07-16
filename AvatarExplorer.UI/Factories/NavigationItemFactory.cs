@@ -13,7 +13,7 @@ namespace AvatarExplorer.UI.Factories;
 
 public static class NavigationItemFactory
 {
-    public static ItemViewModel CreateFromSelectableItem(ISelectableItem source, string customPrefix = "")
+    public static ItemViewModel CreateFromSelectableItem(ISelectableItem source)
     {
         if (source is Item item)
         {
@@ -24,7 +24,7 @@ public static class NavigationItemFactory
                 TitleRaw = item.Title,
                 TitleLocalizable = false,
                 DescriptionRaw = new(LocalizationKey.Button.Description.Item.Author, [item.Author]),
-                Tag = customPrefix + source.Identifier
+                Tag = source.Identifier
             };
         }
 
@@ -80,9 +80,9 @@ public static class NavigationItemFactory
         };
     }
 
-    public static ItemButtonViewModel CreateCategoryNode(string key, int count)
+    public static ItemViewModel CreateCategoryNode(string key, int count)
     {
-        return new ItemButtonViewModel
+        return new ItemViewModel
         {
             ImageFileName = SystemIconKey.FolderIcon,
             IconType = IconType.None,
@@ -93,13 +93,13 @@ public static class NavigationItemFactory
         };
     }
 
-    public static ItemButtonViewModel CreateFolderNode(string folderPath, int fileCount)
+    public static ItemViewModel CreateFolderNode(string folderPath, int fileCount)
     {
         var folderName = Path.GetFileName(folderPath);
         if (string.IsNullOrWhiteSpace(folderName))
             folderName = folderPath;
 
-        return new ItemButtonViewModel
+        return new ItemViewModel
         {
             ImageFileName = SystemIconKey.FolderIcon,
             IconType = IconType.None,
@@ -110,10 +110,10 @@ public static class NavigationItemFactory
         };
     }
 
-    public static ItemButtonViewModel CreateFileCategoryNode(ItemFileCategoryType categoryType, int fileCount)
+    public static ItemViewModel CreateFileCategoryNode(ItemFileCategoryType categoryType, int fileCount)
     {
         var localizationKey = categoryType.GetLocalizationKey();
-        return new ItemButtonViewModel
+        return new ItemViewModel
         {
             ImageFileName = SystemIconKey.FolderIcon,
             IconType = IconType.None,
@@ -124,13 +124,13 @@ public static class NavigationItemFactory
         };
     }
 
-    public static ItemButtonViewModel CreateFileButton(ItemFile file)
+    public static ItemViewModel CreateFileButton(ItemFile file)
     {
         var description = string.IsNullOrEmpty(file.Extension)
             ? new LoclizableDescription(LocalizationKey.Button.Description.File.NoExtension, [])
             : new LoclizableDescription(LocalizationKey.Button.Description.File.Extension, [file.Extension]);
 
-        return new ItemButtonViewModel
+        return new ItemViewModel
         {
             ImageFileName = SystemIconKey.FileIcon,
             IconType = IconType.None,

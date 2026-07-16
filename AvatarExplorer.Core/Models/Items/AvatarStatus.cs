@@ -1,4 +1,4 @@
-namespace AvatarExplorer.Core.Models.Items.Internal;
+namespace AvatarExplorer.Core.Models.Items;
 
 public class AvatarStatus
 {

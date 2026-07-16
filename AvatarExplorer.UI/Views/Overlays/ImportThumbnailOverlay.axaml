@@ -5,10 +5,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.ImportThumbnailOverlay"
     x:DataType="vm:ImportThumbnailViewModel">
 
-    <UserControl.DataContext>
-        <vm:ImportThumbnailViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="500" Padding="24">
             <StackPanel Spacing="14">

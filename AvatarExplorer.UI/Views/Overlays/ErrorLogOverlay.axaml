@@ -6,10 +6,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.ErrorLogOverlay"
     x:DataType="vm:ErrorLogViewModel">
 
-    <UserControl.DataContext>
-        <vm:ErrorLogViewModel/>
-    </UserControl.DataContext>
-
     <!-- エラーログオーバーレイ -->
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="900" Height="600" Padding="20">

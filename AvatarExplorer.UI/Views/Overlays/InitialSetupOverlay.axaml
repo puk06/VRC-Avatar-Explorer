@@ -6,10 +6,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.InitialSetupOverlay"
     x:DataType="vm:InitialSetupViewModel">
 
-    <UserControl.DataContext>
-        <vm:InitialSetupViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="450" Padding="25">
             <StackPanel Spacing="20">

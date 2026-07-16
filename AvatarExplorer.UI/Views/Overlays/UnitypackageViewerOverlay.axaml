@@ -6,10 +6,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.UnitypackageViewerOverlay"
     x:DataType="vm:UnitypackageViewerViewModel">
 
-    <UserControl.DataContext>
-        <vm:UnitypackageViewerViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="800" Height="600" Padding="20">
             <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">

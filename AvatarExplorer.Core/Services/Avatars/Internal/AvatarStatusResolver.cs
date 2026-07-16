@@ -1,5 +1,4 @@
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Models.Items.Internal;
 
 namespace AvatarExplorer.Core.Services.Avatars.Internal;
 

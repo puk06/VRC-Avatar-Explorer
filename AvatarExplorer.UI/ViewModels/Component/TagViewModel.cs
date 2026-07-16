@@ -3,7 +3,7 @@ using AvatarExplorer.UI.Localization;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
-public class TagViewModel() : ViewModelBase
+public class TagViewModel : ViewModelBase
 {
     public string Label { get; set; } = string.Empty;
     public bool IsCommonAvatar { get; set; } = false;

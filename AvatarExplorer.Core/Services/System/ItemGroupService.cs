@@ -3,10 +3,10 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Services.Avatars.Internal;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System.Repositories;
-using AvatarExplorer.Core.Utils;
 using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
@@ -148,7 +148,6 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
 
         return categories.ToList<ISelectableItem>();
     }
-
     public List<Item> GetItemsFromAvatar(string id)
     {
         var items = _items.GetAll();
@@ -168,6 +167,22 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         return _items.GetAll()
             .Where(i => i.Author == author)
             .ToList();
+    }
+
+    public string[] GetAllSupportedAvatarsIds(IEnumerable<string> avatars, bool includeCommonAvatarToSupported = false)
+    {
+        return AvatarService.GetAllSupportedAvatarIds(avatars, _commonAvatars.GetAll(), includeCommonAvatarToSupported);
+    }
+
+    public void ReplaceSupportedAvatarsToCommonAvatarGroup(string groupIdentifier)
+    {
+        var commonAvatar = _commonAvatars.Get(groupIdentifier);
+        if (commonAvatar == null) return;
+
+        foreach (var item in _items.GetAll().Where(i => i.Type == ItemType.Clothing))
+        {
+            item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => commonAvatar.Avatars.Contains(i) ? commonAvatar.Identifier : i).Distinct());
+        }
     }
 
     public List<ISelectableItem> Search(SearchFilter filter, SearchQueryTypes queryType)

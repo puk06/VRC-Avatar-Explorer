@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Avalonia.Platform.Storage;
 using AvatarExplorer.UI.ViewModels.Panels;
+using AvatarExplorer.UI.ViewModels;
 
 namespace AvatarExplorer.UI.Views.Panels;
 
@@ -12,6 +13,7 @@ public partial class BulkImport : UserControl
     public BulkImport()
     {
         InitializeComponent();
+        DataContext = MainViewModel.Instance.BulkImportVM;
     }
 
     private void OnDrop(object? sender, DragEventArgs e)

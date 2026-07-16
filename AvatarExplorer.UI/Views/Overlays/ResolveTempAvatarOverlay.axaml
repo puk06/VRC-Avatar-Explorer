@@ -6,10 +6,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.ResolveTempAvatarOverlay"
     x:DataType="vm:ResolveTempAvatarViewModel">
 
-    <UserControl.DataContext>
-        <vm:ResolveTempAvatarViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="800">
             <StackPanel Spacing="10">
@@ -31,7 +27,7 @@
                             </ItemsControl.ItemsPanel>
 
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vmcomponent:ItemButtonViewModel">
+                                <DataTemplate x:DataType="vmcomponent:ItemViewModel">
                                     <Button Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Command="{Binding $parent[UserControl].DataContext.SelectItemCommand}" CommandParameter="{Binding}">
                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -50,7 +46,7 @@
                     </ScrollViewer>
 
                     <Grid ColumnDefinitions="*,180" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
-                        <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CloseCommand}"/>
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CancelCommand}"/>
                     </Grid>
                 </Grid>
             </StackPanel>

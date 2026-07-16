@@ -9,18 +9,18 @@ using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
 
-internal static class BoothService
+public static class BoothService
 {
     private static DateTime _lastBoothApiGetTime;
     public static bool IsApiCooldownNow => _lastBoothApiGetTime.AddSeconds(2) > DateTime.Now;
 
-    public static async Task WaitForApiCooldownAsync(int pollingIntervalMs = 100, CancellationToken cancellationToken = default)
+    private static async Task WaitForApiCooldownAsync(int pollingIntervalMs = 100, CancellationToken cancellationToken = default)
     {
         if (pollingIntervalMs < 10) pollingIntervalMs = 10;
         while (IsApiCooldownNow) await Task.Delay(pollingIntervalMs, cancellationToken);
     }
 
-    internal static async Task<ErrorOr<BoothItem>> GetItem(string boothId)
+    private static async Task<ErrorOr<BoothItem>> GetItem(string boothId)
     {
         try
         {
@@ -55,7 +55,7 @@ internal static class BoothService
         return titleSuggestedTypes.Any() ? titleSuggestedTypes.First() : categorySuggestedType;
     }
 
-    public static async Task<ErrorOr<BoothItem>> GetBoothItem(string boothUrl, bool waitCooldown = true)
+    public static async Task<ErrorOr<BoothItem>> Fetch(string boothUrl, bool waitCooldown = true)
     {
         if (string.IsNullOrEmpty(boothUrl)) return Error.Failure(description: "Invalid Url.");
     

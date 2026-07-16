@@ -1,4 +1,3 @@
-using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 
 namespace AvatarExplorer.Core.Models.External;

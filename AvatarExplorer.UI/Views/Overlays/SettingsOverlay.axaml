@@ -6,10 +6,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.SettingsOverlay"
     x:DataType="vm:SettingsViewModel">
 
-    <UserControl.DataContext>
-        <vm:SettingsViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="900" Height="650">
             <Grid RowDefinitions="*,5,Auto">

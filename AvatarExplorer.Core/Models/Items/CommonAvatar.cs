@@ -12,4 +12,13 @@ public class CommonAvatar : AbstractDatabaseItem, ISelectableItem
     public void UpdateAvatars(IEnumerable<string> avatars) => Avatars = avatars.ToImmutableArray();
 
     [JsonIgnore] public string Identifier => "commonavatar:" + Id;
+
+    public CommonAvatar()
+    {
+    }
+
+    public CommonAvatar(string groupName)
+    {
+        GroupName = groupName;
+    }
 }

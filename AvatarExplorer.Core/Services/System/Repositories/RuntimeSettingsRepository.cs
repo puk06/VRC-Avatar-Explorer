@@ -1,4 +1,3 @@
-using System;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.System;
 

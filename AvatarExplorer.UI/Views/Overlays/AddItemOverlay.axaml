@@ -2,13 +2,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     x:Class="AvatarExplorer.UI.Views.Overlays.AddItemOverlay"
     x:DataType="vm:AddItemViewModel">
-
-    <UserControl.DataContext>
-        <vm:AddItemViewModel/>
-    </UserControl.DataContext>
 
     <Border Classes="overlaybackground">
         <Border Classes="overlay" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" CornerRadius="12">
@@ -31,7 +28,32 @@
 
                     <Border Grid.Row="1" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
                         <ScrollViewer>
-                            <!-- <Grid x:Name="AddItemOverlay_ItemPathsList"/> TODO: 作る-->
+                            <ItemsControl ItemsSource="{Binding ItemPaths}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Spacing="5"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vmcomponent:ItemPathViewModel">
+                                        <Border Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7">
+                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                                <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                                    <Image Source="{Binding IconImage}" Width="40" Height="40" Stretch="Fill" VerticalAlignment="Top"/>
+                                                </Border>
+
+                                                <Grid Grid.Column="1" RowDefinitions="Auto,Auto">
+                                                    <TextBlock Text="{Binding FileName}" FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock Grid.Row="1" Text="{Binding FullPath}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                                </Grid>
+
+                                                <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [AddItem.RemoveFolder], Source={x:Static loc:Localizer.Instance}}" FontSize="14" BorderThickness="1" Padding="10,4" Command="{Binding $parent[UserControl].DataContext.RemovePathCommand}" CommandParameter="{Binding}"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </ScrollViewer>
                     </Border>
                 </Grid>
@@ -66,7 +88,13 @@
                                 <StackPanel Spacing="8" Margin="0,0,10,0">
                                     <TextBlock Text="{Binding [AddItem.Category], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
                                     <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
-                                        <ComboBox SelectedIndex="{Binding SelectedItemCategory}" HorizontalAlignment="Stretch"/>
+                                        <ComboBox ItemsSource="{Binding Categories}" SelectedIndex="{Binding SelectedItemCategoryIndex}" HorizontalAlignment="Stretch">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate x:DataType="vmcomponent:ItemCategoryViewModel">
+                                                    <TextBlock Text="{Binding DisplayName}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                         <Button Grid.Column="1" Classes="button" Content="{materialIcons:MaterialIconExt Kind=TabPlus}" Width="35" FontSize="19" Command="{Binding AddCustomCategoryCommand}"/>
                                     </Grid>
                                 </StackPanel>
@@ -114,7 +142,7 @@
                                     
                                     <StackPanel Spacing="5">
                                         <TextBlock Text="{Binding [AddItem.ImageUrl], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.6" Foreground="{DynamicResource Text.Primary}"/>
-                                        <TextBox Text="{Binding BoothId}" FontSize="13"/>
+                                        <TextBox Text="{Binding ThumbnailUrl}" FontSize="13"/>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>

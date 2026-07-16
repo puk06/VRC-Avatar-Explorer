@@ -6,10 +6,6 @@
     x:Class="AvatarExplorer.UI.Views.Overlays.PdfViewerOverlay"
     x:DataType="vm:PdfViewerViewModel">
 
-    <UserControl.DataContext>
-        <vm:PdfViewerViewModel/>
-    </UserControl.DataContext>
-
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="1100" Height="720" Padding="20">
             <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
