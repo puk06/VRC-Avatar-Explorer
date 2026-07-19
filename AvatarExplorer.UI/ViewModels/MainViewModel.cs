@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using AvatarExplorer.Core.Extensions;
+using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels.Component;
 using AvatarExplorer.UI.ViewModels.Panels;
 using ReactiveUI;
@@ -92,7 +93,7 @@ public class MainViewModel : ViewModelBase
             .Select(i => CreateItemViewModel(i))
             .Select(i => i.Update());
 
-        Path = BuildLocalizedPath(_itemNavigationService.GetCurrentSelectionNodes());
+        Path = BuildLocalizedPath(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value));
     }
 
     private static string BuildLocalizedPath(IEnumerable<string> states)
@@ -144,9 +145,12 @@ public class MainViewModel : ViewModelBase
         return true;
     }
 
-    private static ItemViewModel CreateItemViewModel(ISelectableItem item)
+    private static ItemViewModel CreateItemViewModel(INavigationable item)
     {
-        return NavigationItemFactory.CreateFromSelectableItem(item);
+        var navigationItem = NavigationItemFactory.CreateFromNavigationable(item);
+        navigationItem.Actions = ContextMenuCreator.Create(navigationItem.ViewModelType, navigationItem.Identifier);
+
+        return navigationItem;
     }
 
     private void UpdateLeftPanelItems(QueryType type)
@@ -154,7 +158,7 @@ public class MainViewModel : ViewModelBase
         LeftItems = _itemGroupService.GetQueryFilters(type)
             .Select(i => {
                 var item = CreateItemViewModel(i);
-                if (i is Item) item.Tag = "avatar:" + item.Tag;
+                if (i is Item) item.Identifier = "avatar:" + item.Identifier;
                 return item;
             })
             .Select(i => i.Update());
@@ -162,19 +166,19 @@ public class MainViewModel : ViewModelBase
 
     private void OnLeftItemSelected(ItemViewModel? item)
     {
-        if (item == null || string.IsNullOrWhiteSpace(item.Tag)) return;
+        if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
         _itemNavigationService.Clear();
-        _itemNavigationService.Select(item.Tag);
+        _itemNavigationService.Select(item.Identifier);
         Refresh();
     }
 
     private void OnRightItemSelected(ItemViewModel? item)
     {
-        if (item == null || string.IsNullOrWhiteSpace(item.Tag)) return;
-        if (!IsNavigableTag(item.Tag)) return;
+        if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
+        if (!IsNavigableTag(item.Identifier)) return;
 
-        _itemNavigationService.Select(item.Tag);
+        _itemNavigationService.Select(item.Identifier);
         Refresh();
     }
 

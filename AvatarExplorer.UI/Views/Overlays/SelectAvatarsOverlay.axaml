@@ -3,8 +3,8 @@
     xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
     xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
-    x:Class="AvatarExplorer.UI.Views.Overlays.EditImplementedAvatarsOverlay"
-    x:DataType="vm:EditImplementedAvatarsViewModel">
+    x:Class="AvatarExplorer.UI.Views.Overlays.SelectAvatarsOverlay"
+    x:DataType="vm:SelectAvatarsViewModel">
 
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="800">
@@ -16,7 +16,7 @@
                     
                     <!-- 検索バー -->
                     <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                        <TextBox Grid.Column="0" Text="{Binding SearchText}" PlaceholderText="{Binding [EditSupportedAvatars.Search], Source={x:Static loc:Localizer.Instance}}"/>
+                        <TextBox Grid.Column="0" Text="{Binding SearchText}" PlaceholderText="{Binding [SelectAvatars.Search], Source={x:Static loc:Localizer.Instance}}"/>
                         <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Command="{Binding SelectVisibleCommand}"/>
                     </Grid>
 
@@ -49,9 +49,10 @@
                     </ScrollViewer>
 
                     <!-- 下のボタン -->
-                    <Grid ColumnDefinitions="*,180,180" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
-                        <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CancelCommand}"/>
-                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Confirm], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding ConfirmCommand}"/>
+                    <Grid ColumnDefinitions="200,*,150,150" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="0" IsEnabled="{Binding AllowTempAvatarCreation}" Content="{Binding [SelectAvatars.AddTempAvatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding AddTempAvatarCommand}"/>
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CancelCommand}"/>
+                        <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="3" Content="{Binding [Button.Confirm], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding ConfirmCommand}"/>
                     </Grid>
                 </Grid>
             </StackPanel>

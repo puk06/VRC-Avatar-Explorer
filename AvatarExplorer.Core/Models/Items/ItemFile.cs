@@ -1,8 +1,8 @@
-using AvatarExplorer.Core.Models.Common;
+using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class ItemFile(string folderPath, string filePath) : ISelectableItem
+public class ItemFile(string folderPath, string filePath) : INavigationable
 {
     public string ParentFolderPath { get; } = folderPath; // UI側で開くためにこれはフルパスが良いかも
     public string ParentFolderName { get; } = Path.GetFileName(folderPath) ?? string.Empty;

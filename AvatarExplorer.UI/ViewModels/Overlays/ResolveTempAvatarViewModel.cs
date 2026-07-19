@@ -56,6 +56,6 @@ public class ResolveTempAvatarViewModel : ViewModelBase
         );
         if (resolveConfirmationResult is false) return;
 
-        AvatarExplorerApp.Instance.ItemGroupService.ResolveTempAvatar(SelectedAvatar, item.Tag);
+        AvatarExplorerApp.Instance.ItemGroupService.ResolveTempAvatar(SelectedAvatar, item.Identifier);
     }
 }

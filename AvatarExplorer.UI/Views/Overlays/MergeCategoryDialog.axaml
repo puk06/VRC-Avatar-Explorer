@@ -2,6 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     x:Class="AvatarExplorer.UI.Views.Overlays.MergeCategoryDialog"
     x:DataType="vm:MergeCategoryViewModel">
 
@@ -14,10 +15,21 @@
                 <TextBlock Text="{Binding [MergeCategory.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
 
                 <!-- 統合先のカテゴリ -->
-                <StackPanel Spacing="8" Margin="0,10,0,10">
-                    <TextBlock Text="{Binding [MergeCategory.TargetCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>
-                    <ComboBox ItemsSource="{Binding ItemCategories}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedCategory}"/>
+                <StackPanel Margin="0,10,0,10">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding [MergeCategory.TargetCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>
+                        <ComboBox ItemsSource="{Binding Categories}" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedSourceCategory}"/>
+                    </StackPanel>
+
+                    <materialIcons:MaterialIcon Kind="ArrowDown" Width="25" Height="25" VerticalAlignment="Center"/>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{Binding [MergeCategory.TargetCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>
+                        <ComboBox ItemsSource="{Binding Categories}" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedTargetCategory}"/>
+                    </StackPanel>
                 </StackPanel>
+
+
 
                 <Grid ColumnDefinitions="100,*,100">
                     <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CancelCommand}"/>

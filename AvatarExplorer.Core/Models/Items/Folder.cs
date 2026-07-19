@@ -1,8 +1,8 @@
-using AvatarExplorer.Core.Models.Common;
+using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class Folder(string identifier) : ISelectableItem
+public class Folder(string identifier) : INavigationable
 {
     public string Title { get; set; } = string.Empty;
     public bool TitleLocalizable { get; set; } = false;

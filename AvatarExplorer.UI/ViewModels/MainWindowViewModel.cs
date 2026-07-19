@@ -33,14 +33,11 @@ public class MainWindowViewModel : ViewModelBase
     public EditCommonAvatarsViewModel EditCommonAvatarsVM { get; } = new();
     [Reactive] public bool IsEditCommonAvatarsVisible { get; set; }
 
-    public EditImplementedAvatarsViewModel EditImplementedAvatarsVM { get; } = new();
-    [Reactive] public bool IsEditImplementedAvatarsVisible { get; set; }
+    public SelectAvatarsViewModel SelectAvatarsVM { get; } = new();
+    [Reactive] public bool SelectAvatarsVisible { get; set; }
 
     public EditMemoViewModel EditMemoVM { get; } = new();
     [Reactive] public bool IsEditMemoVisible { get; set; }
-
-    public EditSupportedAvatarsViewModel EditSupportedAvatarsVM { get; } = new();
-    [Reactive] public bool IsEditSupportedAvatarsVisible { get; set; }
 
     public EditTagsViewModel EditTagsVM { get; } = new();
     [Reactive] public bool IsEditTagsVisible { get; set; }
@@ -126,7 +123,7 @@ public class MainWindowViewModel : ViewModelBase
     
     public void ShowEditImplementedAvatars()
     {
-        IsEditImplementedAvatarsVisible = true;
+        SelectAvatarsVisible = true;
     }
 
     public async Task<string?> ShowEditMemoDialog(string memo)
@@ -140,13 +137,13 @@ public class MainWindowViewModel : ViewModelBase
         return result;
     }
 
-    public async Task<string[]?> ShowEditSupportedAvatars(string[]? avatars = null)
+    public async Task<string[]?> ShowSelectAvatars(string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
     {
-        EditSupportedAvatarsVM.Open(avatars);
+        SelectAvatarsVM.Open(avatars, includeCommonAvatar, includeTempAvatar, allowCreateTempAvatar);
 
-        IsEditSupportedAvatarsVisible = true;
-        var result = await EditSupportedAvatarsVM.WaitForResult();
-        IsEditSupportedAvatarsVisible = false;
+        SelectAvatarsVisible = true;
+        var result = await SelectAvatarsVM.WaitForResult();
+        SelectAvatarsVisible = false;
 
         return result;
     }

@@ -36,4 +36,19 @@ public class ItemCategory
     #endregion
 
     public override string ToString() => Type == ItemType.Custom ? CustomCategory : (Type.GetLocalizationKey() ?? Type.ToString());
+    
+    public override bool Equals(object? obj)
+    {
+        if (obj is ItemCategory other)
+        {
+            return Type == other.Type && CustomCategory == other.CustomCategory;
+        }
+        
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Type, CustomCategory);
+    }
 }

@@ -9,7 +9,9 @@ namespace AvatarExplorer.UI.Services.ViewControl;
 
 public enum ViewModelType
 {
+    None,
     Item,
+    Author,
     Folder,
     File,
     BulkImportPreset,

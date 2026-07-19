@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
-using AvatarExplorer.Core.Models.Common;
+using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class BulkImportPreset : AbstractDatabaseItem, ISelectableItem
+public class BulkImportPreset : AbstractDatabaseItem, INavigationable
 {
     public string PresetName { get; set; } = string.Empty;
     [JsonInclude] public ImmutableArray<BulkImportItem> Items { get; private set; } = [];

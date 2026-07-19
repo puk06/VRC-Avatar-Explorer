@@ -1,9 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Linq;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -11,8 +13,9 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class MergeCategoryViewModel : ViewModelBase
 {
-    public IEnumerable<string> ItemCategories { get; set; } = [];
-    [Reactive] public int SelectedCategory { get; set; } = 0;
+    public IEnumerable<ItemCategoryViewModel> Categories { get; set; } = [];
+    [Reactive] public ItemCategoryViewModel? SelectedSourceCategory { get; set; } = null;
+    [Reactive] public ItemCategoryViewModel? SelectedTargetCategory { get; set; } = null;
 
     public IReactiveCommand CancelCommand { get; }
     public IReactiveCommand MergeCommand { get; }
@@ -23,11 +26,49 @@ public class MergeCategoryViewModel : ViewModelBase
         MergeCommand = ReactiveCommand.Create(OnMerge);
     }
 
-    public void Reload()
+    public void Open(ItemCategory initialSourceCategory)
     {
-        // ItemCategories = AvatarExplorerApp.Instance
-        //     .GetCategories(includeEmptyCategory: true, includeAllCategory: false)
-        //     .Select(i => Localizer.Instance[((ItemCategory)i.Item).ToString()]);
+        RefleshCategories();
+
+        SelectedTargetCategory = GetVMFromCategory(initialSourceCategory);
+        SelectedTargetCategory = GetVMFromCategory(new(ItemType.Avatar));
+    }
+
+    private ItemCategoryViewModel? GetVMFromCategory(ItemCategory category)
+    {
+        foreach (var cat in Categories)
+        {
+            if (cat.Category.Equals(category)) return cat;
+        }
+
+        return null;
+    }
+
+    private void RefleshCategories()
+    {
+        Categories = AvatarExplorerApp.Instance
+            .ItemGroupService
+            .GetCategories(includeEmptyCategory: true, includeAllCategory: false)
+            .Select(i => new ItemCategoryViewModel(ResolveCategory(i.Identifier)));
+    }
+    
+    private static ItemCategory ResolveCategory(string groupKey)
+    {
+        if (!ItemNavigationService.TryParseState(groupKey, out var prefix, out var value)) return new(ItemType.Avatar);
+
+        if (prefix == ItemNavigationService.TypePrefix)
+        {
+            if (ItemNavigationService.TryResolveItemType(value, out var itemType))
+            {
+                return new(itemType);
+            }
+
+            return new(ItemType.Avatar);
+        }
+
+        if (prefix == ItemNavigationService.CustomPrefix) return new(value);
+
+        return new(ItemType.Avatar);
     }
 
     public void OnCancel()

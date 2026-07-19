@@ -19,7 +19,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase
     public event Action? RequestClose;
     
     [Reactive] public IEnumerable<CommonAvatarViewModel> Groups { get; set; } = [];
-    [Reactive] public CommonAvatarViewModel? SelectedGroup { get; set; } = null; // TODO: Indexじゃなくて普通にViewModelを渡しても良いかも
+    [Reactive] public CommonAvatarViewModel? SelectedGroup { get; set; } = null;
 
     [Reactive] public string SearchText { get; set; } = string.Empty;
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
@@ -123,7 +123,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         var avatars = ItemService.GetAvatars(includeCommonAvatar: true, includeTempAvatar: true);
 
         Avatars = avatars
-            .Select(NavigationItemFactory.CreateFromSelectableItem)
+            .Select(NavigationItemFactory.CreateFromNavigationable)
             .Select(i => i.Update());
     }
 
@@ -145,13 +145,13 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         var group = CommonAvatarRep.Get(SelectedGroup.Identifier);
         if (group == null) return;
 
-        Avatars.ForEach(i => i.IsSelected = group.Avatars.Contains(i.Tag));
+        Avatars.ForEach(i => i.IsSelected = group.Avatars.Contains(i.Identifier));
     }
 
     private void UpdateGroupAvatars()
     {
         if (SelectedGroup == null) return;
 
-        CommonAvatarRep.UpdateAvatars(SelectedGroup.Identifier, Avatars.Where(i => i.IsSelected).Select(i => i.Tag));
+        CommonAvatarRep.UpdateAvatars(SelectedGroup.Identifier, Avatars.Where(i => i.IsSelected).Select(i => i.Identifier));
     }
 }

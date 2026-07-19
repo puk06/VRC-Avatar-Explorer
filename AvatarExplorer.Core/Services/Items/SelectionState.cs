@@ -1,14 +1,15 @@
-using AvatarExplorer.Core.Models.Items;
 
 namespace AvatarExplorer.Core.Services.Items;
+
+public record SelectionNode(Guid Id, string Value);
 
 internal class SelectionState
 {
     public event Action? SelectionChanged;
+    
+    private readonly Stack<SelectionNode> _stack = new();
 
-    private readonly Stack<string> _stack = new();
-
-    public void Push(string value)
+    public Guid Push(string value)
     {
         // if (state == ItemTagStates.SearchItem && FirstOrDefault(ItemTagStates.SearchItem) != null)
         // {
@@ -18,13 +19,16 @@ internal class SelectionState
         //         if (itemTagState.StartsWith("searchitem")) break;
         //     }
         // }
+        // TODO: 検索結果は複数無いようにする
 
-        _stack.Push(value);
-
+        var newNode = new SelectionNode(Guid.NewGuid(), value);
+        _stack.Push(newNode);
         SelectionChanged?.Invoke();
+
+        return newNode.Id;
     }
 
-    public string? Pop()
+    public SelectionNode? Pop()
     {
         if (_stack.Count == 0) return null;
         var node = _stack.Pop();
@@ -32,9 +36,9 @@ internal class SelectionState
         return node;
     }
 
-    public string? Current => _stack.Count > 0 ? _stack.Peek() : null;
+    public SelectionNode? Current => _stack.Count > 0 ? _stack.Peek() : null;
 
-    public string? Root => _stack.Count > 0 ? _stack.Last() : null;
+    public SelectionNode? Root => _stack.Count > 0 ? _stack.Last() : null;
 
     public void Clear()
     {
@@ -42,7 +46,7 @@ internal class SelectionState
         SelectionChanged?.Invoke();
     }
 
-    public string? FirstOrDefault(string prefix) => _stack.FirstOrDefault(i => i.StartsWith(prefix));
+    public SelectionNode? FirstOrDefault(string prefix) => _stack.FirstOrDefault(i => i.Value.StartsWith(prefix));
     
-    public IEnumerable<string> GetCurrentSelectionNodes() => _stack.Reverse();
+    public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _stack.Reverse();
 }

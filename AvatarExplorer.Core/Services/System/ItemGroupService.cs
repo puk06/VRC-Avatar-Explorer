@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using AvatarExplorer.Core.Extensions;
-using AvatarExplorer.Core.Models.Common;
+using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Avatars;
@@ -62,7 +62,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         _tempAvatars.Save();
     }
 
-    public List<ISelectableItem> GetQueryFilters(QueryType type)
+    public List<INavigationable> GetQueryFilters(QueryType type)
     {
         return type switch
         {
@@ -72,9 +72,9 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
             _ => []
         };
     }
-    public List<ISelectableItem> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false)
+    public List<INavigationable> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false)
     {
-        var avatars = new List<ISelectableItem>();
+        var avatars = new List<INavigationable>();
 
         if (includeCommonAvatar) avatars.AddRange(_commonAvatars.GetAll());
         avatars.AddRange(_items.GetAll().Where(i => i.Type == ItemType.Avatar));
@@ -82,7 +82,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
 
         return avatars;
     }
-    public List<ISelectableItem> GetAuthors()
+    public List<INavigationable> GetAuthors()
     {
         return _items.GetAll()
             .GroupBy(i => i.Author)
@@ -91,9 +91,9 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
                 Name = i.Key,
                 ItemCount = i.Count()
             })
-            .ToList<ISelectableItem>();
+            .ToList<INavigationable>();
     }
-    public List<ISelectableItem> GetCategories(bool includeEmptyCategory = false, bool includeAllCategory = false)
+    public List<INavigationable> GetCategories(bool includeEmptyCategory = false, bool includeAllCategory = false)
     {
         var categories = new List<Folder>();
         
@@ -146,7 +146,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
             };
         }));
 
-        return categories.ToList<ISelectableItem>();
+        return categories.ToList<INavigationable>();
     }
     public List<Item> GetItemsFromAvatar(string id)
     {
@@ -185,7 +185,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         }
     }
 
-    public List<ISelectableItem> Search(SearchFilter filter, SearchQueryTypes queryType)
+    public List<INavigationable> Search(SearchFilter filter, SearchQueryTypes queryType)
     {
         // それぞれのSearchFilterを取得し、Matchを実行する
         return [];

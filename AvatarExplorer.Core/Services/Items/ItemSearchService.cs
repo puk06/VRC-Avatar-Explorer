@@ -29,7 +29,10 @@ internal static class ItemSearchService
                     return 0;
                 return SearchUtils.GetScore(
                     index.FreeWord,
-                    searchFilter.SearchTokens.Where(t => t.Type == SearchTokenType.FreeWord).Select(t => t.Value));
+                    searchFilter.SearchTokens
+                        .Where(t => t.Type == SearchTokenType.FreeWord)
+                        .Select(t => t.Value)
+                );
             })
             .ToImmutableArray();
     }

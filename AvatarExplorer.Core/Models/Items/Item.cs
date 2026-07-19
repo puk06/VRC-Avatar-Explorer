@@ -1,11 +1,11 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 using AvatarExplorer.Core.Data.Links;
-using AvatarExplorer.Core.Models.Common;
+using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class Item : AbstractDatabaseItem, ISelectableItem
+public class Item : AbstractDatabaseItem, INavigationable
 {
     public string Title { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;

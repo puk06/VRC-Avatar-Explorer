@@ -1,44 +1,53 @@
+using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Models.Items;
 using AvatarExplorer.UI.Services.Utilities;
+using AvatarExplorer.UI.Services.ViewControl;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
 public class ItemViewModel : ViewModelBase
 {
+    [Reactive] public bool IsVisible { get; set; } = true;
+    [Reactive] public bool IsSelected { get; set; } = false;
+
     [Reactive] public Bitmap? Thumbnail { get; set; } = null;
     [Reactive] public string Title { get; private set; } = string.Empty;
     [Reactive] public string Description { get; private set; } = string.Empty;
     [Reactive] public IEnumerable<TagViewModel> Tags { get; set; } = [];
     [Reactive] public ContextMenu? ContextMenu { get; set; } = null;
+    [Reactive] public string ToolTip { get; set; } = string.Empty;
+
+    [Reactive] public double Width { get; set; } = 0;
+    [Reactive] public double Height { get; set; } = 0;
 
     public string ImageFileName { get; set; } = string.Empty;
-    public IconType IconType { get; set; } = IconType.None;
     public string TitleRaw { get; set; } = string.Empty;
     public bool TitleLocalizable { get; set; } = false;
-    public LoclizableDescription DescriptionRaw = new();
-    [Reactive] public string ToolTip { get; set; } = string.Empty;
-    public ContextMenuAction[] Actions { get; private set; } = [];
-    [Reactive] public bool IsSelected { get; set; } = false;
-    [Reactive] public bool IsVisible { get; set; } = true;
 
-    public string Tag { get; set; } = string.Empty;
+    public LoclizableField DescriptionRaw = new();
 
-    [Reactive] public double Width { get; set; } = 80;
-    [Reactive] public double Height { get; set; } = 80;
+    public ContextMenuAction[] Actions { get; set; } = [];
+    public Action<ContextMenuAction>? onMenuClick = null;
+
+    public string Identifier { get; set; } = string.Empty;
+    public required ViewModelType ViewModelType { get; set; }
 
     public ItemViewModel Update()
     {
-        Thumbnail = ImageService.Get(ImageFileName, IconType);
+        Thumbnail = ImageService.Get(ImageFileName);
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
-        Description = Localizer.Instance.Get(DescriptionRaw.LocalizationKey, DescriptionRaw.Args);
-        ContextMenu = ContextMenuFactory.GetContextMenu(Actions);
+        Description = Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
+        ContextMenu = ContextMenuFactory.GetContextMenu(Actions, onMenuClick);
+
+        Width = Height = (Thumbnail != null) ? 80 : 0;
         return this;
     }
 }

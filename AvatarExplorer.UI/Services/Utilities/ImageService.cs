@@ -9,7 +9,6 @@ using Avalonia.Platform;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Data;
-using AvatarExplorer.UI.Models.ContextMenu;
 
 namespace AvatarExplorer.UI.Services.Utilities;
 
@@ -31,13 +30,15 @@ internal static class ImageService
 
     internal static event Action<bool>? ThumbnailCacheWarmupStateChanged;
 
+    private const string ResourceRootPath = "avares://AvatarExplorer/Assets/Internal/";
+    private static Uri GetAssetUri(string fileName) => new(ResourceRootPath + fileName);
     internal static readonly Dictionary<string, Bitmap?> SystemIconsDictionary = new()
     {
         { SystemIconKey.None, null },
-        { SystemIconKey.FolderIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/FolderIcon.png")) },
-        { SystemIconKey.FileIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/FileIcon.png")) },
-        { SystemIconKey.GroupIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/GroupIcon.png")) },
-        { SystemIconKey.AvatarIcon, Load(new Uri("avares://AvatarExplorer/Assets/Internal/AvatarIcon.png")) }
+        { SystemIconKey.FolderIcon, Load(GetAssetUri("FolderIcon.png")) },
+        { SystemIconKey.FileIcon, Load(GetAssetUri("FileIcon.png")) },
+        { SystemIconKey.GroupIcon, Load(GetAssetUri("GroupIcon.png")) },
+        { SystemIconKey.AvatarIcon, Load(GetAssetUri("AvatarIcon.png")) }
     };
 
     internal static bool IsSystemIcon(string fileName) => SystemIconsDictionary.ContainsKey(fileName);
@@ -58,20 +59,14 @@ internal static class ImageService
         }
     }
 
-    internal static Bitmap? Get(string fileName, IconType iconType = IconType.None)
+    internal static Bitmap? Get(string fileName)
     {
         try
         {
             if (IsSystemIcon(fileName)) return SystemIconsDictionary[fileName];
 
-            var filePath = iconType switch
-            {
-                IconType.Item => Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName),
-                _ => fileName,
-            };
-
-            var compressThumbnail = iconType == IconType.Item;
-            return GetFromFileCache(filePath, compressThumbnail);
+            var filePath = Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName);
+            return GetFromFileCache(filePath, compressThumbnail: true);
         }
         catch (Exception ex)
         {
@@ -143,7 +138,7 @@ internal static class ImageService
 
         lock (BitmapCacheLock)
         {
-            if (BitmapCache.TryGetValue(filePath, out CacheEntry? cacheEntry) && cacheEntry.Exists == exists && cacheEntry.LastWriteTimeUtc == lastWriteTimeUtc)
+            if (BitmapCache.TryGetValue(filePath, out var cacheEntry) && cacheEntry.Exists == exists && cacheEntry.LastWriteTimeUtc == lastWriteTimeUtc)
             {
                 return cacheEntry.Bitmap;
             }
@@ -155,7 +150,7 @@ internal static class ImageService
                 cacheEntry.Bitmap.Dispose();
             }
 
-            BitmapCache[filePath] = new CacheEntry
+            BitmapCache[filePath] = new()
             {
                 Bitmap = bitmap,
                 LastWriteTimeUtc = lastWriteTimeUtc,
@@ -169,6 +164,7 @@ internal static class ImageService
     private static Bitmap? LoadBitmap(string filePath, bool compressThumbnail)
     {
         Bitmap? sourceBitmap = null;
+
         try
         {
             sourceBitmap = new(filePath);

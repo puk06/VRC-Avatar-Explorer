@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Extensions;
@@ -15,7 +14,7 @@ namespace AvatarExplorer.UI.Factories;
 
 internal static class ContextMenuFactory
 {
-    internal static ContextMenu GetContextMenu(ContextMenuAction[] contextMenuActions, EventHandler<RoutedEventArgs>? onClick = null)
+    internal static ContextMenu GetContextMenu(ContextMenuAction[] contextMenuActions, Action<ContextMenuAction>? onContextClick = null)
     {
         var fontFamily = new FontFamily($"avares://AvatarExplorer/Assets/Fonts#{Localizer.Instance[LocalizationKey.FontFamily]}");
         var contextMenu = new ContextMenu()
@@ -25,6 +24,15 @@ internal static class ContextMenuFactory
 
         foreach (var contextMenuAction in contextMenuActions)
         {
+            // TODO: これ、メモリリーク起こすかも（イベントが解除されない気がする）。まあこれはいつか改善します
+            void SetClickHandlers(MenuItem item, ContextMenuAction tagData)
+            {
+                if (onContextClick != null)
+                {
+                    item.Click += (s, e) => onContextClick(tagData);
+                }
+            }
+            
             var menuItem = new MenuItem()
             {
                 Icon = GetMaterialIcon(contextMenuAction.ContextMenuIconType),
@@ -49,7 +57,7 @@ internal static class ContextMenuFactory
                         IsEnabled = subAction.IsEnabled
                     };
 
-                    if (onClick != null) subItem.Click += onClick;
+                    SetClickHandlers(subItem, subAction);
                     subMenus.Add(subItem);
                     if (subAction.AddSeparator) subMenus.Add(new Separator());
                 }
@@ -57,7 +65,7 @@ internal static class ContextMenuFactory
                 menuItem.ItemsSource = subMenus;
             }
 
-            if (onClick != null) menuItem.Click += onClick;
+            SetClickHandlers(menuItem, contextMenuAction);
 
             contextMenu.Items.Add(menuItem);
 

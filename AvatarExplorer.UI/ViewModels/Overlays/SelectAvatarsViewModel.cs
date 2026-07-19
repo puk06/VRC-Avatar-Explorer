@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,27 +12,33 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class EditSupportedAvatarsViewModel : ViewModelBase
+public class SelectAvatarsViewModel : ViewModelBase
 {
-    [Reactive] public string SearchText { get; set; } = string.Empty;
+    [Reactive] public bool AllowTempAvatarCreation { get; set; } = false;
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
+    [Reactive] public string SearchText { get; set; } = string.Empty;
     private TaskCompletionSource<string[]?> _tcs = new();
-    
-    public IReactiveCommand SelectItemCommand { get; }
 
+    public IReactiveCommand SelectItemCommand { get; }
     public IReactiveCommand SelectVisibleCommand { get; }
+
     public IReactiveCommand AddTempAvatarCommand { get; }
     public IReactiveCommand CancelCommand { get; }
     public IReactiveCommand ConfirmCommand { get; }
 
-    public EditSupportedAvatarsViewModel()
+    private static ItemGroupService ItemService => AvatarExplorerApp.Instance.ItemGroupService;
+
+    private bool IncludeCommonAvatar = false;
+    private bool IncludeTempAvatar = true;
+
+    public SelectAvatarsViewModel()
     {
+        AddTempAvatarCommand = ReactiveCommand.Create(AddTempAvatar);
         SelectItemCommand = ReactiveCommand.Create<ItemViewModel>(SelectItem);
         SelectVisibleCommand = ReactiveCommand.Create(SelectVisible);
-        AddTempAvatarCommand = ReactiveCommand.Create(AddTempAvatar);
 
         CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
-        ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Avatars.Select(i => i.Tag).ToArray()));
+        ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Avatars.Select(i => i.Identifier).ToArray()));
     }
 
     private void SelectItem(ItemViewModel item)
@@ -50,29 +55,24 @@ public class EditSupportedAvatarsViewModel : ViewModelBase
         });
     }
 
-    public void Open(string[]? avatars = null)
+    public void Open(string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
     {
-        RefleshAvatars();
+        IncludeCommonAvatar = includeCommonAvatar;
+        IncludeTempAvatar = includeTempAvatar;
+        AllowTempAvatarCreation = allowCreateTempAvatar;
 
-        if (avatars != null)
-        {
-            Avatars.ForEach(i => i.IsSelected = avatars.Contains(i.Tag));
-        }
+        RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
+
+        if (avatars == null) return;
+        Avatars.ForEach(i => i.IsSelected = avatars.Contains(i.Identifier));
     }
 
-    public Task<string[]?> WaitForResult()
+    private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)
     {
-        _tcs = new TaskCompletionSource<string[]?>();
-        return _tcs.Task;
-    }
-
-    private void RefleshAvatars()
-    {
-        var itemGroup = AvatarExplorerApp.Instance.ItemGroupService;
-        var avatars = itemGroup.GetAvatars(includeCommonAvatar: true, includeTempAvatar: true);
+        var avatars = ItemService.GetAvatars(includeCommonAvatar, includeTempAvatar);
 
         Avatars = avatars
-            .Select(NavigationItemFactory.CreateFromSelectableItem)
+            .Select(NavigationItemFactory.CreateFromNavigationable)
             .Select(i => i.Update());
     }
 
@@ -82,6 +82,12 @@ public class EditSupportedAvatarsViewModel : ViewModelBase
         if (string.IsNullOrEmpty(newTempAvatarName)) return;
 
         AvatarExplorerApp.Instance.TempAvatars.Create(newTempAvatarName);
-        RefleshAvatars();
+        RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
+    }
+
+    public Task<string[]?> WaitForResult()
+    {
+        _tcs = new();
+        return _tcs.Task;
     }
 }

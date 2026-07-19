@@ -158,7 +158,12 @@ public class AddItemViewModel : ViewModelBase
 
     private async Task SelectSupportedAvatars()
     {
-        var avatars = await MainWindowViewModel.Instance.ShowEditSupportedAvatars(SupportedAvatars.ToArray());
+        var avatars = await MainWindowViewModel.Instance.ShowSelectAvatars(
+            SupportedAvatars.ToArray(),
+            includeCommonAvatar: true,
+            includeTempAvatar: true,
+            allowCreateTempAvatar: true
+        );
         if (avatars == null) return;
 
         SupportedAvatars = avatars;
