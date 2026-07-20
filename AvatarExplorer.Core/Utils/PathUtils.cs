@@ -15,4 +15,22 @@ public static class PathUtils
 
     public static bool IsUnitypackageFile(string filePath) => Path.GetExtension(filePath).Equals(".unitypackage", StringComparison.CurrentCultureIgnoreCase);
     public static bool IsPdfFile(string filePath) => Path.GetExtension(filePath).Equals(".pdf", StringComparison.CurrentCultureIgnoreCase);
+
+    public static string ComputeHash(string path)
+    {
+        unchecked
+        {
+            const uint basis = 2166136261;
+            const uint prime = 16777619;
+            uint hash = basis;
+
+            foreach (var c in path)
+            {
+                hash ^= (uint)c;
+                hash *= prime;
+            }
+
+            return hash.ToString("X8");
+        }
+    }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Models.ContextMenu;
 
@@ -21,16 +22,17 @@ public enum ViewModelType
 
 internal static class ContextMenuCreator
 {
-    internal static ContextMenuAction[] Create(ViewModelType type, string value)
+    // TODO: Identifierから内部のIdに変換する部分を作る
+    internal static ContextMenuAction[] Create(ViewModelType type, string identifier)
     {
         return type switch
         {
-            ViewModelType.Item => CreateFromItem(value),
-            ViewModelType.Folder => CreateFromItemFolder(value),
-            ViewModelType.File => CreateFromItemFile(value),
-            ViewModelType.BulkImportPreset => CreateFromBulkImportPreset(value),
-            ViewModelType.TempAvatar => CreateFromTempAvatar(value),
-            ViewModelType.ItemCategory => CreateFromItemCategory(value),
+            ViewModelType.Item => CreateFromItem(identifier),
+            ViewModelType.Folder => CreateFromFolder(identifier),
+            ViewModelType.File => CreateFromItemFile(identifier),
+            ViewModelType.BulkImportPreset => CreateFromBulkImportPreset(identifier),
+            ViewModelType.TempAvatar => CreateFromTempAvatar(identifier),
+            ViewModelType.ItemCategory => CreateFromItemCategory(identifier),
             _ => []
         };
     }
@@ -77,11 +79,11 @@ internal static class ContextMenuCreator
         return contextMenuActions.ToArray();
     }
 
-    private static ContextMenuAction[] CreateFromItemFolder(string path)
+    private static ContextMenuAction[] CreateFromFolder(string path)
     {
         List<ContextMenuAction> contextMenuActions = [];
 
-        if (ProcessUtils.IsWindows())
+        if (ProcessUtils.IsWindows() && path.StartsWith(ItemNavigationService.FolderPrefix))
         {
             contextMenuActions.Add(new ContextMenuAction(LocalizationKey.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, path));
         }

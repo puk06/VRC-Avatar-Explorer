@@ -19,6 +19,8 @@ public class ItemNavigationService
 
     private readonly ItemGroupService _items;
     private readonly SelectionState _state = new();
+    private readonly Dictionary<string, string> _folderPathMap = new();
+    private readonly Dictionary<string, string> _filePathMap = new();
 
     private readonly Dictionary<string, Func<string, INavigationable[]>> _handlers;
 
@@ -42,17 +44,46 @@ public class ItemNavigationService
         _items = itemGroupService;
     }
 
-    public void Select(string state)
+    public Guid? Select(string state)
     {
         if (TryParseState(state, out var prefix, out var value))
         {
-            if (prefix == FilePrefix) FileOpenRequested?.Invoke(value);
-            else _state.Push(state);
+            if (prefix == FilePrefix)
+            {
+                if (!_filePathMap.TryGetValue(value, out var path))
+                {
+                    PopulateFileCache();
+                    _filePathMap.TryGetValue(value, out path);
+                }
+
+                FileOpenRequested?.Invoke(path ?? value);
+            }
+            else return _state.Push(state);
         }
+
+        return null;
     }
     public SelectionNode? Undo() => _state.Pop();
-    public void Clear() => _state.Clear();
+    public void Clear()
+    {
+        _state.Clear();
+        _folderPathMap.Clear();
+        _filePathMap.Clear();
+    }
+
     public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _state.GetCurrentSelectionNodes();
+
+    public string? ResolveFolderPath(string state)
+    {
+        if (!TryParseState(state, out _, out var hash)) return null;
+        return _folderPathMap.TryGetValue(hash, out var path) ? path : null;
+    }
+
+    public string? ResolveFilePath(string state)
+    {
+        if (!TryParseState(state, out _, out var hash)) return null;
+        return _filePathMap.TryGetValue(hash, out var path) ? path : null;
+    }
     
     public INavigationable[] GetCurrentSelectionView()
     {
@@ -151,7 +182,9 @@ public class ItemNavigationService
 
         return folders.Select(i =>
         {
-            return new Folder(GetPrefix(FolderPrefix, i.Key))
+            var hash = PathUtils.ComputeHash(i.Key);
+            _folderPathMap[hash] = i.Key;
+            return new Folder(GetPrefix(FolderPrefix, hash))
             {
                 Title = Path.GetFileName(i.Key),
                 TitleLocalizable = false,
@@ -165,7 +198,13 @@ public class ItemNavigationService
         var itemState = _state.FirstOrDefault(ItemPrefix)?.Value;
         if (itemState == null) return [];
 
-        if (!TryParseState(state, out _, out var selectedFolderPath)) return [];
+        if (!TryParseState(state, out _, out var hash)) return [];
+
+        if (!_folderPathMap.TryGetValue(hash, out var selectedFolderPath))
+        {
+            PopulateFolderCache(itemState);
+            if (!_folderPathMap.TryGetValue(hash, out selectedFolderPath)) return [];
+        }
 
         var itemFiles = _items.ItemRepository.EnumerateItemFiles(itemState);
         var files = itemFiles.Where(i => i.ParentFolderPath == selectedFolderPath);
@@ -175,7 +214,7 @@ public class ItemNavigationService
         return categolized.Select(i =>
         {
             var localizationKey = i.Key.GetLocalizationKey();
-            return new Folder(GetPrefix(ExtensionPrefix, i.Key.ToString()))
+            return new Folder(GetPrefix(ExtensionPrefix, ((int)i.Key).ToString()))
             {
                 Title = localizationKey ?? i.Key.ToString(),
                 TitleLocalizable = localizationKey != null,
@@ -225,23 +264,61 @@ public class ItemNavigationService
         return ItemFileCategoryType.Unknown;
     }
 
+    private void PopulateFolderCache(string itemState)
+    {
+        var itemFiles = _items.ItemRepository.EnumerateItemFiles(itemState);
+        foreach (var group in itemFiles.GroupBy(i => i.ParentFolderPath))
+        {
+            var hash = PathUtils.ComputeHash(group.Key);
+            _folderPathMap[hash] = group.Key;
+        }
+    }
+
+    private void PopulateFileCache()
+    {
+        var itemState = _state.FirstOrDefault(ItemPrefix)?.Value;
+        if (itemState == null) return;
+
+        var itemFiles = _items.ItemRepository.EnumerateItemFiles(itemState);
+        foreach (var file in itemFiles)
+        {
+            var hash = PathUtils.ComputeHash(file.FilePath);
+            _filePathMap[hash] = file.FilePath;
+        }
+    }
+
     private INavigationable[] HandleExtension(string state)
     {
         var itemState = _state.FirstOrDefault(ItemPrefix)?.Value;
         var folderState = _state.FirstOrDefault(FolderPrefix)?.Value;
 
         if (itemState == null || folderState == null) return [];
-        if (!TryParseState(folderState, out _, out var selectedFolderPath)) return [];
+        if (!TryParseState(folderState, out _, out var hash)) return [];
+
+        if (!_folderPathMap.TryGetValue(hash, out var selectedFolderPath))
+        {
+            PopulateFolderCache(itemState);
+            if (!_folderPathMap.TryGetValue(hash, out selectedFolderPath)) return [];
+        }
+
         if (!TryParseState(state, out _, out var categoryRaw)) return [];
-        if (!Enum.TryParse<ItemFileCategoryType>(categoryRaw, out var categoryType)) return [];
+        
+        var categoryIndex = ValueParser.Int(categoryRaw);
+        if (!Enum.IsDefined(typeof(ItemFileCategoryType), categoryIndex)) return [];
 
         var itemFiles = _items.ItemRepository.EnumerateItemFiles(itemState);
         var files = itemFiles.Where(i => i.ParentFolderPath == selectedFolderPath);
 
         var categolized = CategorizeFiles(files);
-        return categolized.TryGetValue(categoryType, out var categorizedFiles)
-            ? categorizedFiles.ToArray()
-            : [];
+        if (!categolized.TryGetValue((ItemFileCategoryType)categoryIndex, out var categorizedFiles)) return [];
+
+        foreach (var file in categorizedFiles)
+        {
+            var fileHash = PathUtils.ComputeHash(file.FilePath);
+            _filePathMap[fileHash] = file.FilePath;
+        }
+
+        return categorizedFiles.ToArray();
     }
 
     public static bool TryParseState(string rawState, out string key, out string value)

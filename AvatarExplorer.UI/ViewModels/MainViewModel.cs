@@ -52,8 +52,11 @@ public class MainViewModel : ViewModelBase
     private readonly ItemGroupService _itemGroupService;
     private readonly ItemNavigationService _itemNavigationService;
 
-    private CacheManager<string, int> _pageCache = new(0);
-    private CacheManager<string, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
+    private CacheManager<Guid, int> _pageCache = new(0);
+    private CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
+
+    private int _currentPage = 0;
+    private Vector _currentScrollValue = AvaloniaVectorUtils.MinValue;
 
 
     public MainViewModel()
@@ -81,6 +84,7 @@ public class MainViewModel : ViewModelBase
 
         UpdateColumn();
         OnCategoryChanged((int)QueryType.Avatar);
+        Refresh();
     }
 
     public void OnCategoryChanged(int categoryIndex)
@@ -157,7 +161,12 @@ public class MainViewModel : ViewModelBase
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
         _itemNavigationService.Clear();
-        _itemNavigationService.Select(item.Identifier);
+        var guid = _itemNavigationService.Select(item.Identifier);
+        if (guid != null)
+        {
+            _pageCache.Add((Guid)guid, _currentPage);
+            _scrollValueCache.Add((Guid)guid, _currentScrollValue);
+        }
         Refresh();
     }
 

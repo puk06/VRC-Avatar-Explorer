@@ -14,8 +14,10 @@ namespace AvatarExplorer.UI.Factories;
 
 internal static class ContextMenuFactory
 {
-    internal static ContextMenu GetContextMenu(ContextMenuAction[] contextMenuActions, Action<ContextMenuAction>? onContextClick = null)
+    internal static ContextMenu? GetContextMenu(ContextMenuAction[] contextMenuActions, Action<ContextMenuAction>? onContextClick = null)
     {
+        if (contextMenuActions.Length == 0) return null;
+
         var fontFamily = new FontFamily($"avares://AvatarExplorer/Assets/Fonts#{Localizer.Instance[LocalizationKey.FontFamily]}");
         var contextMenu = new ContextMenu()
         {
