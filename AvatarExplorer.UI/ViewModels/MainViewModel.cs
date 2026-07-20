@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
@@ -11,6 +12,7 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.ViewControl;
+using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Component;
 using AvatarExplorer.UI.ViewModels.Panels;
 using ReactiveUI;
@@ -49,6 +51,10 @@ public class MainViewModel : ViewModelBase
 
     private readonly ItemGroupService _itemGroupService;
     private readonly ItemNavigationService _itemNavigationService;
+
+    private CacheManager<string, int> _pageCache = new(0);
+    private CacheManager<string, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
+
 
     public MainViewModel()
     {
@@ -90,7 +96,7 @@ public class MainViewModel : ViewModelBase
     private void Refresh()
     {
         MainItems = _itemNavigationService.GetCurrentSelectionView()
-            .Select(i => CreateItemViewModel(i))
+            .Select(CreateItemViewModel)
             .Select(i => i.Update());
 
         Path = BuildLocalizedPath(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value));
@@ -98,51 +104,37 @@ public class MainViewModel : ViewModelBase
 
     private static string BuildLocalizedPath(IEnumerable<string> states)
     {
+        static string FormatPathNode(string state)
+        {
+            if (!ItemNavigationService.TryParseState(state, out var prefix, out var value)) return state;
+
+            if (prefix == ItemNavigationService.TypePrefix)
+            {
+                var categoryDisplay = ItemNavigationService.GetCategoryDisplayName(state);
+                return Localizer.Instance[categoryDisplay];
+            }
+
+            if (prefix == ItemNavigationService.CustomPrefix || prefix == ItemNavigationService.AuthorPrefix)
+                return value;
+
+            if (prefix == ItemNavigationService.AvatarPrefix)
+                return AvatarExplorerApp.Instance.Items.Get(value)?.Title ?? value;
+
+            if (prefix == ItemNavigationService.ItemPrefix)
+                return AvatarExplorerApp.Instance.Items.Get(state)?.Title ?? value;
+
+            if (prefix == ItemNavigationService.FolderPrefix)
+                return System.IO.Path.GetFileName(value);
+
+            if (prefix == ItemNavigationService.ExtensionPrefix && Enum.TryParse<ItemFileCategoryType>(value, out var extensionCategory))
+                return Localizer.Instance[extensionCategory.GetLocalizationKey() ?? value];
+
+            return value;
+        }
         var pathNodes = states.Select(FormatPathNode).Where(i => !string.IsNullOrWhiteSpace(i)).ToArray();
 
         if (pathNodes.Length == 0) return Localizer.Instance[LocalizationKey.Main.Path.Placeholder];
         return string.Join(" > ", pathNodes);
-    }
-
-    private static string FormatPathNode(string state)
-    {
-        if (!TryParseState(state, out var prefix, out var value)) return state;
-
-        if (prefix == "type")
-        {
-            var categoryDisplay = ItemNavigationService.GetCategoryDisplayName(state);
-            return Localizer.Instance[categoryDisplay];
-        }
-
-        if (prefix == "custom" || prefix == "author")
-            return value;
-
-        if (prefix == "avatar")
-            return AvatarExplorerApp.Instance.Items.Get(value)?.Title ?? value;
-
-        if (prefix == "item")
-            return AvatarExplorerApp.Instance.Items.Get(state)?.Title ?? value;
-
-        if (prefix == "folder")
-            return System.IO.Path.GetFileName(value);
-
-        if (prefix == "extension" && Enum.TryParse<ItemFileCategoryType>(value, out var extensionCategory))
-            return Localizer.Instance[extensionCategory.GetLocalizationKey() ?? value];
-
-        return value;
-    }
-
-    private static bool TryParseState(string state, out string prefix, out string value)
-    {
-        prefix = string.Empty;
-        value = string.Empty;
-
-        var delimiterIndex = state.IndexOf(':');
-        if (delimiterIndex < 0) return false;
-
-        prefix = state[..delimiterIndex];
-        value = state[(delimiterIndex + 1)..];
-        return true;
     }
 
     private static ItemViewModel CreateItemViewModel(INavigationable item)
@@ -156,11 +148,7 @@ public class MainViewModel : ViewModelBase
     private void UpdateLeftPanelItems(QueryType type)
     {
         LeftItems = _itemGroupService.GetQueryFilters(type)
-            .Select(i => {
-                var item = CreateItemViewModel(i);
-                if (i is Item) item.Identifier = "avatar:" + item.Identifier;
-                return item;
-            })
+            .Select(CreateItemViewModel)
             .Select(i => i.Update());
     }
 
@@ -176,17 +164,9 @@ public class MainViewModel : ViewModelBase
     private void OnRightItemSelected(ItemViewModel? item)
     {
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
-        if (!IsNavigableTag(item.Identifier)) return;
 
         _itemNavigationService.Select(item.Identifier);
         Refresh();
-    }
-
-    private static bool IsNavigableTag(string tag)
-    {
-        if (!TryParseState(tag, out var prefix, out _)) return false;
-
-        return prefix is "avatar" or "author" or "type" or "custom" or "item" or "folder" or "extension";
     }
 
     private void Undo()
@@ -197,7 +177,8 @@ public class MainViewModel : ViewModelBase
 
     private void GoHome()
     {
-        OnCategoryChanged((int)QueryType.Avatar);
+        _itemNavigationService.Clear();
+        Refresh();
     }
 
     private void UpdateColumn()

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Items;

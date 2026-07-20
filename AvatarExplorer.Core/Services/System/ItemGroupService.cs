@@ -26,8 +26,6 @@ public enum SearchQueryTypes
     TempAvatar
 }
 
-public record struct FilterQuery(QueryType Type, string Value);
-
 public class ItemGroupService(ItemRepository items, CommonAvatarRepository commonAvatars, TempAvatarRepository tempAvatars, RuntimeSettingsRepository settings)
 {
     private readonly ItemRepository _items = items;
@@ -77,7 +75,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         var avatars = new List<INavigationable>();
 
         if (includeCommonAvatar) avatars.AddRange(_commonAvatars.GetAll());
-        avatars.AddRange(_items.GetAll().Where(i => i.Type == ItemType.Avatar));
+        avatars.AddRange(_items.GetAll().Where(i => i.Type == ItemType.Avatar).Select(i => new Avatar(i)));
         if (includeTempAvatar) avatars.AddRange(_tempAvatars.GetAll());
 
         return avatars;

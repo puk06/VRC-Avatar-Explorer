@@ -2,6 +2,7 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.Items;
 
@@ -19,9 +20,11 @@ public class ItemNavigationService
     private readonly ItemGroupService _items;
     private readonly SelectionState _state = new();
 
-    private readonly Dictionary<string, Func<string, INavigationable[]>> _handlers; // TODO: ISelectableItemではなく、INavigationableItemみたいにするべきかも
+    private readonly Dictionary<string, Func<string, INavigationable[]>> _handlers;
 
     public event Action<string>? FileOpenRequested = null;
+
+    public static string GetPrefix(string prefix, string value) => $"{prefix}:{value}";
 
     internal ItemNavigationService(ItemGroupService itemGroupService)
     {
@@ -50,6 +53,16 @@ public class ItemNavigationService
     public SelectionNode? Undo() => _state.Pop();
     public void Clear() => _state.Clear();
     public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _state.GetCurrentSelectionNodes();
+    
+    public INavigationable[] GetCurrentSelectionView()
+    {
+        var state = _state.Current?.Value;
+        if (state == null) return _items.ItemRepository.GetAll().ToArray<INavigationable>();
+        if (!TryParseState(state, out var key, out _)) return [];
+
+        if (_handlers.TryGetValue(key, out var func)) return func(state);
+        return [];
+    }
 
     private INavigationable[] HandleRoot(string state)
     {
@@ -65,11 +78,13 @@ public class ItemNavigationService
 
         return categolized.Select(i =>
         {
-            var category = ResolveCategoryDisplay(i.Key);
-            return new Folder(i.Key)
+            var identifier = i.Key;
+            var (displayName, isLocalizable) = ResolveCategoryDisplay(identifier);
+            
+            return new Folder(identifier)
             {
-                Title = category.displayName,
-                TitleLocalizable = category.isLocalizable,
+                Title = displayName,
+                TitleLocalizable = isLocalizable,
                 ItemCount = i.Value.Count
             };
         }).ToArray<INavigationable>();
@@ -85,17 +100,11 @@ public class ItemNavigationService
         if (root == null) return [];
         
         if (TryParseState(root, out var rootPrefix, out var rootValue) && rootPrefix == AvatarPrefix)
-        {
             items = _items.GetItemsFromAvatar(rootValue);
-        }
         else if (TryParseState(root, out rootPrefix, out rootValue) && rootPrefix == AuthorPrefix)
-        {
             items = _items.GetItemsFromAuthor(rootValue);
-        }
         else
-        {
             items = _items.ItemRepository.GetAll();
-        }
 
         if (prefix == TypePrefix)
         {
@@ -142,7 +151,7 @@ public class ItemNavigationService
 
         return folders.Select(i =>
         {
-            return new Folder("folder:" + i.Key)
+            return new Folder(GetPrefix(FolderPrefix, i.Key))
             {
                 Title = Path.GetFileName(i.Key),
                 TitleLocalizable = false,
@@ -153,7 +162,7 @@ public class ItemNavigationService
 
     private INavigationable[] HandleFolder(string state)
     {
-        var itemState = _state.FirstOrDefault("item:")?.Value;
+        var itemState = _state.FirstOrDefault(ItemPrefix)?.Value;
         if (itemState == null) return [];
 
         if (!TryParseState(state, out _, out var selectedFolderPath)) return [];
@@ -166,10 +175,10 @@ public class ItemNavigationService
         return categolized.Select(i =>
         {
             var localizationKey = i.Key.GetLocalizationKey();
-            return new Folder("extension:" + i.Key)
+            return new Folder(GetPrefix(ExtensionPrefix, i.Key.ToString()))
             {
                 Title = localizationKey ?? i.Key.ToString(),
-                TitleLocalizable = !string.IsNullOrEmpty(localizationKey),
+                TitleLocalizable = localizationKey != null,
                 ItemCount = i.Value.Count
             };
         }).ToArray<INavigationable>();
@@ -218,8 +227,8 @@ public class ItemNavigationService
 
     private INavigationable[] HandleExtension(string state)
     {
-        var itemState = _state.FirstOrDefault("item:")?.Value;
-        var folderState = _state.FirstOrDefault("folder:")?.Value;
+        var itemState = _state.FirstOrDefault(ItemPrefix)?.Value;
+        var folderState = _state.FirstOrDefault(FolderPrefix)?.Value;
 
         if (itemState == null || folderState == null) return [];
         if (!TryParseState(folderState, out _, out var selectedFolderPath)) return [];
@@ -250,30 +259,12 @@ public class ItemNavigationService
 
     public static bool TryResolveItemType(string raw, out ItemType itemType)
     {
-        if (Enum.TryParse(raw, out itemType))
-            return true;
-
-        foreach (var candidate in Enum.GetValues<ItemType>())
-        {
-            var localizationKey = candidate.GetLocalizationKey();
-            if (string.Equals(localizationKey, raw, StringComparison.Ordinal))
-            {
-                itemType = candidate;
-                return true;
-            }
-        }
-
         itemType = ItemType.None;
-        return false;
-    }
 
-    public INavigationable[] GetCurrentSelectionView()
-    {
-        var state = _state.Current?.Value;
-        if (state == null) return _items.ItemRepository.GetAll().ToArray<INavigationable>();
-        if (!TryParseState(state, out var key, out _)) return [];
+        var index = ValueParser.Int(raw);
+        if (!Enum.IsDefined(typeof(ItemType),index)) return false;
 
-        if (_handlers.TryGetValue(key, out var func)) return func(state);
-        return [];
+        itemType = (ItemType)index;
+        return true;
     }
 }

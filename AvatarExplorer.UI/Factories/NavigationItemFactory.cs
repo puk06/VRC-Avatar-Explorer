@@ -13,6 +13,19 @@ public static class NavigationItemFactory
 {
     public static ItemViewModel CreateFromNavigationable(INavigationable source)
     {
+        if (source is Avatar avatar)
+        {
+            return new ItemViewModel
+            {
+                ImageFileName = avatar.Item.ThumbnailFileName,
+                TitleRaw = avatar.Item.Title,
+                TitleLocalizable = false,
+                DescriptionRaw = new(LocalizationKey.Button.Description.Item.Author, [avatar.Item.Author]),
+                Identifier = source.Identifier,
+                ViewModelType = ViewModelType.Item
+            };
+        }
+
         if (source is Item item)
         {
             return new ItemViewModel

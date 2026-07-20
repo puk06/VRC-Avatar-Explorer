@@ -40,7 +40,8 @@ public class EditTagsViewModel : ViewModelBase
                     Tags.Add(NewTag);
                     NewTag = string.Empty;
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
@@ -63,6 +64,7 @@ public class EditTagsViewModel : ViewModelBase
 
     public void Open(IEnumerable<string>? tags = null)
     {
+        RefleshTags();
         if (tags != null) Tags = new ObservableCollection<string>(tags);
     }
 

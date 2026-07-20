@@ -35,7 +35,7 @@ public class ItemRepository
         {
             var key = item.Type == ItemType.Custom && !string.IsNullOrWhiteSpace(item.CustomCategory)
                 ? $"custom:{item.CustomCategory}"
-                : $"type:{item.Type.GetLocalizationKey()}";
+                : $"type:{(int)item.Type}";
 
             if (!result.TryGetValue(key, out var list))
             {
