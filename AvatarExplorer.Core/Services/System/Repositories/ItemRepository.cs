@@ -62,7 +62,7 @@ public class ItemRepository
             files.Add(new(root, rootFile));
 
         foreach (var rootFolder in Directory.GetDirectories(root))
-            foreach (var rootFolderFile in FileSystemService.EnumerateFiles(root, isRecursive: true))
+            foreach (var rootFolderFile in FileSystemService.EnumerateFiles(rootFolder, isRecursive: true))
                 files.Add(new(rootFolder, rootFolderFile));
 
         // Other Folders
