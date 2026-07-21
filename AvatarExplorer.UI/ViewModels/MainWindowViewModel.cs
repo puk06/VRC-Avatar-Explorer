@@ -58,6 +58,7 @@ public class MainWindowViewModel : ViewModelBase
     public FetchAllThumbnailsViewModel FetchAllThumbnailsVM { get; } = new();
 
     public ImportDataViewModel ImportDataVM { get; } = new();
+    public ExportDataViewModel ExportDataVM { get; } = new();
 
     public InitialSetupViewModel InitialSetupVM { get; } = new();
 
@@ -200,9 +201,11 @@ public class MainWindowViewModel : ViewModelBase
         return password;
     }
 
-    public void ShowUnitypackageViewer(string filePath)
+    public void ShowUnitypackageViewer(string filePath) => UnitypackageViewerVM.Open(filePath);
+
+    public void ShowErrorLog()
     {
-        UnitypackageViewerVM.Open(filePath);
+        ErrorLogVM.IsVisible = true;
     }
 
     private void SetBackgroundImage(string path, int opacity)

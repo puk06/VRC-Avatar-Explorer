@@ -303,9 +303,6 @@
     "Settings.FetchAllThumbnails.Title": "썸네일 일괄 가져오기",
     "Settings.FetchAllThumbnails.Description": "모든 아이템에 대해 Booth에서 썸네일 가져오기를 실행합니다",
     "Settings.FetchAllThumbnails.Open": "일괄 가져오기",
-    "Settings.ExportCsv.Title": "CSV 데이터 출력",
-    "Settings.ExportCsv.Description": "현재 데이터베이스를 CSV 형식으로 내보냅니다",
-    "Settings.ExportCsv.Export": "내보내기",
     "Settings.RestoreFromBackup.Title": "자동 백업에서 복원",
     "Settings.RestoreFromBackup.Description": "자동 백업에서 데이터베이스 정보를 복원합니다",
     "Settings.RestoreFromBackup.SelectBackup": "백업 선택",
@@ -445,6 +442,13 @@
     "ImportData.SelectData": "가져올 데이터",
     "ImportData.Database": "아이템 데이터베이스",
     "ImportData.Thumbnails": "썸네일",
+
+    "ExportData.Title": "데이터 내보내기",
+    "ExportData.Description": "현재 데이터베이스를 파일로 내보냅니다",
+    "ExportData.ExportType": "내보내기 유형",
+    "ExportData.FolderPath.Title": "출력 폴더",
+    "ExportData.FolderPath.Browse": "찾아보기",
+    "ExportData.Export": "내보내기",
 
     "FetchAllThumbnailsOverlay.Title": "썸네일 일괄 가져오기",
     "FetchAllThumbnailsOverlay.Description": "모든 아이템에 대해 썸네일 가져오기를 실행합니다. Booth API 제한으로 인해 완료까지 시간이 걸릴 수 있습니다.",

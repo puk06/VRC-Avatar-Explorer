@@ -303,9 +303,6 @@
     "Settings.FetchAllThumbnails.Title": "Obtener miniaturas en masa",
     "Settings.FetchAllThumbnails.Description": "Obtener miniaturas de Booth para todos los elementos",
     "Settings.FetchAllThumbnails.Open": "Obtención masiva",
-    "Settings.ExportCsv.Title": "Exportar datos CSV",
-    "Settings.ExportCsv.Description": "Exportar la base de datos actual en formato CSV",
-    "Settings.ExportCsv.Export": "Exportar",
     "Settings.RestoreFromBackup.Title": "Restaurar desde copia de seguridad automática",
     "Settings.RestoreFromBackup.Description": "Restaurar la información de la base de datos desde la copia de seguridad automática",
     "Settings.RestoreFromBackup.SelectBackup": "Seleccionar copia",
@@ -445,6 +442,13 @@
     "ImportData.SelectData": "Datos a importar",
     "ImportData.Database": "Base de datos de elementos",
     "ImportData.Thumbnails": "Miniaturas",
+
+    "ExportData.Title": "Exportar datos",
+    "ExportData.Description": "Exportar la base de datos actual a un archivo",
+    "ExportData.ExportType": "Tipo de exportación",
+    "ExportData.FolderPath.Title": "Carpeta de salida",
+    "ExportData.FolderPath.Browse": "Examinar",
+    "ExportData.Export": "Exportar",
 
     "FetchAllThumbnailsOverlay.Title": "Obtención masiva de miniaturas",
     "FetchAllThumbnailsOverlay.Description": "Ejecuta la obtención de miniaturas para todos los elementos. Puede tardar debido a los límites de la API de Booth.",

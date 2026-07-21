@@ -303,9 +303,6 @@
     "Settings.FetchAllThumbnails.Title": "サムネイルを一括取得",
     "Settings.FetchAllThumbnails.Description": "全てのアイテムに対してBoothからサムネイル取得を実行します",
     "Settings.FetchAllThumbnails.Open": "一括取得",
-    "Settings.ExportCsv.Title": "CSVデータの出力",
-    "Settings.ExportCsv.Description": "現在のデータベースをCSV形式でエクスポートします",
-    "Settings.ExportCsv.Export": "エクスポート",
     "Settings.RestoreFromBackup.Title": "自動バックアップから復元",
     "Settings.RestoreFromBackup.Description": "自動バックアップからデータベース情報を復元します",
     "Settings.RestoreFromBackup.SelectBackup": "バックアップの選択",
@@ -445,6 +442,13 @@
     "ImportData.SelectData": "インポートするデータ",
     "ImportData.Database": "アイテムデータベース",
     "ImportData.Thumbnails": "サムネイル",
+
+    "ExportData.Title": "データをエクスポート",
+    "ExportData.Description": "現在のデータベースをファイルにエクスポートします",
+    "ExportData.ExportType": "出力タイプ",
+    "ExportData.FolderPath.Title": "出力先フォルダー",
+    "ExportData.FolderPath.Browse": "参照",
+    "ExportData.Export": "エクスポート",
 
     "FetchAllThumbnailsOverlay.Title": "サムネイル一括取得",
     "FetchAllThumbnailsOverlay.Description": "全アイテムに対してサムネイル取得を実行します。Booth APIの制限により完了まで時間がかかる場合があります。",

@@ -515,12 +515,6 @@ public static class Loc
             public const string Description = "Settings.FetchAllThumbnails.Description";
             public const string Open = "Settings.FetchAllThumbnails.Open";
         }
-        public static class ExportCsv
-        {
-            public const string Title = "Settings.ExportCsv.Title";
-            public const string Description = "Settings.ExportCsv.Description";
-            public const string Export = "Settings.ExportCsv.Export";
-        }
         public static class RestoreFromBackup
         {
             public const string Title = "Settings.RestoreFromBackup.Title";
@@ -736,6 +730,18 @@ public static class Loc
         public const string SelectData = "ImportData.SelectData";
         public const string Database = "ImportData.Database";
         public const string Thumbnails = "ImportData.Thumbnails";
+    }
+    public static class ExportData
+    {
+        public const string Title = "ExportData.Title";
+        public const string Description = "ExportData.Description";
+        public const string ExportType = "ExportData.ExportType";
+        public static class FolderPath
+        {
+            public const string Title = "ExportData.FolderPath.Title";
+            public const string Browse = "ExportData.FolderPath.Browse";
+        }
+        public const string Export = "ExportData.Export";
     }
     public static class FetchAllThumbnailsOverlay
     {

@@ -317,12 +317,12 @@
 
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                                         <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
-                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ExportCsv.Title], Source={x:Static loc:Localizer.Instance}}"/>
-                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ExportCsv.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [ExportData.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [ExportData.Description], Source={x:Static loc:Localizer.Instance}}"/>
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.ExportCsv.Export], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ExportDataToCsvCommand}"/>
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [ExportData.Export], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ExportDataCommand}"/>
                                         </Grid>
                                     </Grid>
 

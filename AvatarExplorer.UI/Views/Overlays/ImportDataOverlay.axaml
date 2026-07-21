@@ -43,8 +43,8 @@
 
                 <!-- ボタン -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                    <Button Classes="button" Grid.Column="0" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CancelCommand}"/>
-                    <Button Classes="accentbutton" Grid.Column="1" Content="{Binding [ImportData.Import], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding ImportCommand}"/>
+                    <Button Classes="button" Grid.Column="0" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" Padding="0,7" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CancelCommand}"/>
+                    <Button Classes="accentbutton" Grid.Column="1" Content="{Binding [ImportData.Import], Source={x:Static loc:Localizer.Instance}}" Padding="0,7" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding ImportCommand}"/>
                 </Grid>
             </StackPanel>
         </Border>

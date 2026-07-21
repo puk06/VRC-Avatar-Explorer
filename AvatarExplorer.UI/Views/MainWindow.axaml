@@ -53,6 +53,10 @@
             <overlays:ImportDataOverlay/>
         </ContentControl>
 
+        <ContentControl IsVisible="{Binding ExportDataVM.IsVisible}">
+            <overlays:ExportDataOverlay/>
+        </ContentControl>
+
         <ContentControl IsVisible="{Binding FetchAllThumbnailsVM.IsVisible}">
             <overlays:FetchAllThumbnailsOverlay/>
         </ContentControl>

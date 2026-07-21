@@ -303,9 +303,6 @@
     "Settings.FetchAllThumbnails.Title": "Fetch Thumbnails in Bulk",
     "Settings.FetchAllThumbnails.Description": "Fetch thumbnails from Booth for all items",
     "Settings.FetchAllThumbnails.Open": "Bulk Fetch",
-    "Settings.ExportCsv.Title": "Export CSV Data",
-    "Settings.ExportCsv.Description": "Export the current database in CSV format",
-    "Settings.ExportCsv.Export": "Export",
     "Settings.RestoreFromBackup.Title": "Restore from Auto Backup",
     "Settings.RestoreFromBackup.Description": "Restore database information from auto backup",
     "Settings.RestoreFromBackup.SelectBackup": "Select Backup",
@@ -445,6 +442,13 @@
     "ImportData.SelectData": "Data to Import",
     "ImportData.Database": "Item Database",
     "ImportData.Thumbnails": "Thumbnails",
+
+    "ExportData.Title": "Export Data",
+    "ExportData.Description": "Export the current database to a file",
+    "ExportData.ExportType": "Export Type",
+    "ExportData.FolderPath.Title": "Output Folder",
+    "ExportData.FolderPath.Browse": "Browse",
+    "ExportData.Export": "Export",
 
     "FetchAllThumbnailsOverlay.Title": "Bulk Thumbnail Fetch",
     "FetchAllThumbnailsOverlay.Description": "Run thumbnail fetching for all items. This may take time due to Booth API limits.",

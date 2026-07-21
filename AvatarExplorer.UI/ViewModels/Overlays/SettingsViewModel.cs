@@ -55,7 +55,7 @@ public class SettingsViewModel : ViewModelBase
     public IReactiveCommand OpenItemsFolderCommand { get; }
     public IReactiveCommand OpenAutoBackupFolderCommand { get; }
     public IReactiveCommand ImportDataCommand { get; }
-    public IReactiveCommand ExportDataToCsvCommand { get; }
+    public IReactiveCommand ExportDataCommand { get; }
     public IReactiveCommand FetchAllThumbnailsCommand { get; }
     public IReactiveCommand RestoreFromBackupCommand { get; }
     public IReactiveCommand AutoFixDatabaseCommand { get; }
@@ -84,7 +84,7 @@ public class SettingsViewModel : ViewModelBase
         OpenItemsFolderCommand = ReactiveCommand.CreateFromTask(OpenItemsFolder);
         OpenAutoBackupFolderCommand = ReactiveCommand.CreateFromTask(OpenAutoBackupFolder);
         ImportDataCommand = ReactiveCommand.Create(ImportData);
-        ExportDataToCsvCommand = ReactiveCommand.Create(ExportDataToCsv);
+        ExportDataCommand = ReactiveCommand.Create(ExportData);
         FetchAllThumbnailsCommand = ReactiveCommand.Create(FetchAllThumbnails);
         RestoreFromBackupCommand = ReactiveCommand.Create(RestoreFromBackup);
         AutoFixDatabaseCommand = ReactiveCommand.Create(AutoFixDatabase);
@@ -97,8 +97,8 @@ public class SettingsViewModel : ViewModelBase
         OpenTwitterCommand = ReactiveCommand.CreateFromTask(OpenTwitter);
         OpenGithubCommand = ReactiveCommand.CreateFromTask(OpenGithub);
         OpenSourceCodeCommand = ReactiveCommand.CreateFromTask(OpenSourceCode);
-        ViewLicenseCommand = ReactiveCommand.Create(ViewLicense);
-        ViewThirdPartyLicensesCommand = ReactiveCommand.Create(ViewThirdPartyLicenses);
+        ViewLicenseCommand = ReactiveCommand.CreateFromTask(ViewLicense);
+        ViewThirdPartyLicensesCommand = ReactiveCommand.CreateFromTask(ViewThirdPartyLicenses);
         CloseCommand = ReactiveCommand.Create(OnClose);
         ApplyCommand = ReactiveCommand.Create(OnApply);
     }
@@ -213,8 +213,9 @@ public class SettingsViewModel : ViewModelBase
         MainWindowViewModel.Instance.ImportDataVM.Open();
     }
 
-    private void ExportDataToCsv()
+    private void ExportData()
     {
+        MainWindowViewModel.Instance.ExportDataVM.Open();
     }
 
     private void FetchAllThumbnails()
@@ -268,7 +269,7 @@ public class SettingsViewModel : ViewModelBase
 
     private void ShowErrorLog()
     {
-        MainWindowViewModel.Instance.ErrorLogVM.IsVisible = true;
+        MainWindowViewModel.Instance.ShowErrorLog();
     }
 
     private void RegisterScheme()
@@ -303,15 +304,15 @@ public class SettingsViewModel : ViewModelBase
         await LauncherService.OpenUri(TopLevelProvider.Current, SoftwareLink.RepositoryURL);
     }
 
-    private void ViewLicense()
+    private async Task ViewLicense()
     {
-        var licensePath = Path.Combine(System.AppContext.BaseDirectory, "LICENSE.txt");
-        if (File.Exists(licensePath)) Process.Start(new ProcessStartInfo(licensePath) { UseShellExecute = true });
+        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.Lisence);
+        if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
     }
 
-    private void ViewThirdPartyLicenses()
+    private async Task ViewThirdPartyLicenses()
     {
-        var licensePath = Path.Combine(System.AppContext.BaseDirectory, "THIRD_PARTY_LICENSES.txt");
-        if (File.Exists(licensePath)) Process.Start(new ProcessStartInfo(licensePath) { UseShellExecute = true });
+        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.ThirdPartyLisences);
+        if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
     }
 }

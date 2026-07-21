@@ -303,9 +303,6 @@
     "Settings.FetchAllThumbnails.Title": "批次取得縮圖",
     "Settings.FetchAllThumbnails.Description": "對所有項目執行從 Booth 取得縮圖",
     "Settings.FetchAllThumbnails.Open": "批次取得",
-    "Settings.ExportCsv.Title": "匯出 CSV 資料",
-    "Settings.ExportCsv.Description": "以 CSV 格式匯出目前資料庫",
-    "Settings.ExportCsv.Export": "匯出",
     "Settings.RestoreFromBackup.Title": "從自動備份還原",
     "Settings.RestoreFromBackup.Description": "從自動備份還原資料庫資訊",
     "Settings.RestoreFromBackup.SelectBackup": "選擇備份",
@@ -445,6 +442,13 @@
     "ImportData.SelectData": "要匯入的資料",
     "ImportData.Database": "項目資料庫",
     "ImportData.Thumbnails": "縮圖",
+
+    "ExportData.Title": "匯出資料",
+    "ExportData.Description": "將目前資料庫匯出為檔案",
+    "ExportData.ExportType": "匯出類型",
+    "ExportData.FolderPath.Title": "輸出資料夾",
+    "ExportData.FolderPath.Browse": "瀏覽",
+    "ExportData.Export": "匯出",
 
     "FetchAllThumbnailsOverlay.Title": "批次取得縮圖",
     "FetchAllThumbnailsOverlay.Description": "對所有項目執行縮圖取得。由於 Booth API 限制，完成可能需要一些時間。",

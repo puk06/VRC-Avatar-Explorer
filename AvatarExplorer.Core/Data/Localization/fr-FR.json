@@ -303,9 +303,6 @@
     "Settings.FetchAllThumbnails.Title": "Récupérer les vignettes en masse",
     "Settings.FetchAllThumbnails.Description": "Récupère les vignettes de Booth pour tous les éléments",
     "Settings.FetchAllThumbnails.Open": "Récupération en masse",
-    "Settings.ExportCsv.Title": "Exporter les données CSV",
-    "Settings.ExportCsv.Description": "Exporte la base de données actuelle au format CSV",
-    "Settings.ExportCsv.Export": "Exporter",
     "Settings.RestoreFromBackup.Title": "Restaurer depuis la sauvegarde automatique",
     "Settings.RestoreFromBackup.Description": "Restaure les informations de la base de données depuis la sauvegarde automatique",
     "Settings.RestoreFromBackup.SelectBackup": "Sélectionner la sauvegarde",
@@ -445,6 +442,13 @@
     "ImportData.SelectData": "Données à importer",
     "ImportData.Database": "Base de données d'éléments",
     "ImportData.Thumbnails": "Vignettes",
+
+    "ExportData.Title": "Exporter des données",
+    "ExportData.Description": "Exporter la base de données actuelle vers un fichier",
+    "ExportData.ExportType": "Type d'exportation",
+    "ExportData.FolderPath.Title": "Dossier de sortie",
+    "ExportData.FolderPath.Browse": "Parcourir",
+    "ExportData.Export": "Exporter",
 
     "FetchAllThumbnailsOverlay.Title": "Récupération groupée des vignettes",
     "FetchAllThumbnailsOverlay.Description": "Lance la récupération des vignettes pour tous les éléments. Cela peut prendre du temps en raison des limites de l'API Booth.",

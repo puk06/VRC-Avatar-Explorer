@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Overlays.ExportDataOverlay"
+    x:DataType="vm:ExportDataViewModel">
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="500" Padding="24">
+            <StackPanel Spacing="20">
+
+                <!-- タイトル -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [ExportData.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Text="{Binding [ExportData.Description], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                </StackPanel>
+
+                <Separator Classes="separator"/>
+
+                <!-- 出力タイプ選択 -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [ExportData.ExportType], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
+                    <ComboBox ItemsSource="{Binding ExportTypes}" SelectedIndex="{Binding SelectedExportTypeIndex}" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
+                <!-- フォルダー選択 -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [ExportData.FolderPath.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                        <TextBox Grid.Column="0" Text="{Binding FolderPath}" IsReadOnly="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <Button Classes="button" Grid.Column="1" Content="{Binding [ExportData.FolderPath.Browse], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Command="{Binding BrowseFolderCommand}"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- ボタン -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Classes="button" Grid.Column="0" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" Padding="0,7" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CancelCommand}"/>
+                    <Button Classes="accentbutton" Grid.Column="1" Content="{Binding [ExportData.Export], Source={x:Static loc:Localizer.Instance}}" Padding="0,7" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding ExportCommand}"/>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>
