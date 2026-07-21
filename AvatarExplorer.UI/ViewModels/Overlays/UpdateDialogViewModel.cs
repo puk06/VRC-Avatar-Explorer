@@ -1,6 +1,10 @@
+using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services.Utilities;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
@@ -16,8 +20,13 @@ public class UpdateDialogViewModel : ViewModelBase
     [Reactive] public string VersionText { get; set; } = string.Empty;
     [Reactive] public string Content { get; set; } = string.Empty;
 
+    public IReactiveCommand LaterCommand { get; }
+    public IReactiveCommand UpdateNowCommand { get; }
+
     public UpdateDialogViewModel()
     {
+        LaterCommand = ReactiveCommand.Create(OnLater);
+        UpdateNowCommand = ReactiveCommand.CreateFromTask(OnUpdateNow);
     }
 
     public void Open(string currentVersion, VersionRelease latestRelease)
@@ -29,11 +38,22 @@ public class UpdateDialogViewModel : ViewModelBase
         Content = latestRelease.ChangeLogs.ToString();
 
         UpdateVersionText();
-        Localizer.Instance.LanguageChanged += UpdateVersionText;
+        IsVisible = true;
     }
 
     private void UpdateVersionText()
     {
         VersionText = Localizer.Instance.Get(LocalizationKey.UpdateDialog.VersionText, [$"v{LatestVersion}", $"v{CurrentVersion}", ReleaseDate]);
+    }
+
+    private void OnLater()
+    {
+        IsVisible = false;
+    }
+
+    private async Task OnUpdateNow()
+    {
+        await LauncherService.OpenUri(TopLevelProvider.Current, ReleaseUrl);
+        IsVisible = false;
     }
 }

@@ -1,5 +1,6 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Models.Updates;
 
 namespace AvatarExplorer.Core.Models.System;
 
@@ -13,4 +14,6 @@ public record RuntimeSettings
     public int AutoBackupInterval { get; init; } = 5;
     public bool TreatEmptySupportedAvatarAsNone { get; init; } = false;
     public int MaxDegreeOfParallelism { get; init; } = 4;
+    public bool CheckForUpdate { get; init; } = true;
+    public UpdateChannel UpdateChannel { get; init; } = UpdateChannel.Stable;
 }

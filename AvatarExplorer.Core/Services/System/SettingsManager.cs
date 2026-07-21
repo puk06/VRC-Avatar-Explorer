@@ -4,7 +4,7 @@ namespace AvatarExplorer.Core.Services.System;
 
 public class SettingsManager<T>(string filePath) where T : class, new()
 {
-    public event EventHandler<T>? SettingsChanged;
+    public event Action<T>? SettingsChanged;
 
     private T _settings = new();
     private readonly string _filePath = filePath;
@@ -15,15 +15,15 @@ public class SettingsManager<T>(string filePath) where T : class, new()
     public void Update(T newSettings, bool save = true)
     {
         _settings = newSettings;
-        SettingsChanged?.Invoke(this, newSettings);
+        SettingsChanged?.Invoke(newSettings);
         if (save) Save();
     }
 
     public void Load(string? path = null)
     {
         var loadedSettings = JsonFileManager<T>.Load(path ?? _filePath);
-        if (loadedSettings != null) Update(loadedSettings);
-        else Update(new T());
+        if (loadedSettings != null) Update(loadedSettings, false);
+        else Update(new T(), false);
     }
 
     public void Save() => JsonFileManager<T>.Save(_settings, _filePath);

@@ -1,12 +1,20 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using AvatarExplorer.Core.Data.Links;
+using AvatarExplorer.Core.Data.Paths;
+using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Models.Updates;
+using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -73,27 +81,58 @@ public class SettingsViewModel : ViewModelBase
 
         OpenBackgroundImageCommand = ReactiveCommand.CreateFromTask(OpenBackgroundImage);
         OpenCommonAvatarManagerCommand = ReactiveCommand.Create(OpenCommonAvatarManager);
-        OpenItemsFolderCommand = ReactiveCommand.Create(OpenItemsFolder);
-        OpenAutoBackupFolderCommand = ReactiveCommand.Create(OpenAutoBackupFolder);
+        OpenItemsFolderCommand = ReactiveCommand.CreateFromTask(OpenItemsFolder);
+        OpenAutoBackupFolderCommand = ReactiveCommand.CreateFromTask(OpenAutoBackupFolder);
         ImportDataCommand = ReactiveCommand.Create(ImportData);
         ExportDataToCsvCommand = ReactiveCommand.Create(ExportDataToCsv);
         ImportThumbnailCommand = ReactiveCommand.Create(ImportThumbnail);
         FetchAllThumbnailsCommand = ReactiveCommand.Create(FetchAllThumbnails);
         RestoreFromBackupCommand = ReactiveCommand.Create(RestoreFromBackup);
         AutoFixDatabaseCommand = ReactiveCommand.Create(AutoFixDatabase);
-        ResetItemDatabaseCommand = ReactiveCommand.Create(ResetItemDatabase);
-        ResetCommonAvatarDatabaseCommand = ReactiveCommand.Create(ResetCommonAvatarDatabase);
-        ResetBulkImportPresetDatabaseCommand = ReactiveCommand.Create(ResetBulkImportPresetDatabase);
+        ResetItemDatabaseCommand = ReactiveCommand.CreateFromTask(ResetItemDatabase);
+        ResetCommonAvatarDatabaseCommand = ReactiveCommand.CreateFromTask(ResetCommonAvatarDatabase);
+        ResetBulkImportPresetDatabaseCommand = ReactiveCommand.CreateFromTask(ResetBulkImportPresetDatabase);
         ShowErrorLogCommand = ReactiveCommand.Create(ShowErrorLog);
         RegisterSchemeCommand = ReactiveCommand.Create(RegisterScheme);
         CheckForUpdateNowCommand = ReactiveCommand.Create(CheckForUpdateNow);
-        OpenTwitterCommand = ReactiveCommand.Create(OpenTwitter);
-        OpenGithubCommand = ReactiveCommand.Create(OpenGithub);
-        OpenSourceCodeCommand = ReactiveCommand.Create(OpenSourceCode);
+        OpenTwitterCommand = ReactiveCommand.CreateFromTask(OpenTwitter);
+        OpenGithubCommand = ReactiveCommand.CreateFromTask(OpenGithub);
+        OpenSourceCodeCommand = ReactiveCommand.CreateFromTask(OpenSourceCode);
         ViewLicenseCommand = ReactiveCommand.Create(ViewLicense);
         ViewThirdPartyLicensesCommand = ReactiveCommand.Create(ViewThirdPartyLicenses);
         CloseCommand = ReactiveCommand.Create(OnClose);
         ApplyCommand = ReactiveCommand.Create(OnApply);
+    }
+
+    public void Open()
+    {
+        var runtimeSettings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
+        var preferences = MainWindowViewModel.Instance.UserPreferences.Settings;
+
+        SelectedLanguage = preferences.Language;
+        SelectedSortOrder = (int)runtimeSettings.ItemSortOrder;
+        SelectedTheme = (int)preferences.Theme;
+        RemoveBrackets = preferences.RemoveBrackets;
+        NormalIconSize = preferences.NormalIconSize;
+        EnableHoverIconSize = preferences.EnableHoverIconSize;
+        HoverIconSize = preferences.HoverIconSize;
+        SelectedAntiAliasing = (int)preferences.AntiAliasingMode;
+        ItemsPerPage = preferences.ItemsPerPage;
+        RemoveOriginal = runtimeSettings.RemoveOriginal;
+        LinkToOriginal = runtimeSettings.ShouldLinkToOriginal;
+        TreatEmptySupportedAvatarAsNone = runtimeSettings.TreatEmptySupportedAvatarAsNone;
+        ThumbnailCompressionMaxSize = preferences.ThumbnailCompressionMaxEdge;
+        UseBackgroundImage = preferences.UseBackgroundImage;
+        BackgroundImagePath = preferences.BackgroundImage;
+        BackgroundImageOpacity = preferences.BackgroundOpacity;
+        ItemsFolderPath = runtimeSettings.DataRootDirectory;
+        AutoBackupFolderPath = runtimeSettings.AutoBackupRootDirectory;
+        AutoBackupInterval = runtimeSettings.AutoBackupInterval;
+        MaxDegreeOfParallelism = runtimeSettings.MaxDegreeOfParallelism;
+        CheckForUpdate = runtimeSettings.CheckForUpdate;
+        SelectedUpdateChannel = (int)runtimeSettings.UpdateChannel;
+
+        IsVisible = true;
     }
 
     public RuntimeSettings CreateRuntimeSettings()
@@ -107,7 +146,9 @@ public class SettingsViewModel : ViewModelBase
             ShouldLinkToOriginal = LinkToOriginal,
             AutoBackupInterval = AutoBackupInterval,
             TreatEmptySupportedAvatarAsNone = TreatEmptySupportedAvatarAsNone,
-            MaxDegreeOfParallelism = MaxDegreeOfParallelism
+            MaxDegreeOfParallelism = MaxDegreeOfParallelism,
+            CheckForUpdate = CheckForUpdate,
+            UpdateChannel = (UpdateChannel)SelectedUpdateChannel
         };
     }
 
@@ -126,9 +167,7 @@ public class SettingsViewModel : ViewModelBase
             ThumbnailCompressionMaxEdge = (int)ThumbnailCompressionMaxSize,
             UseBackgroundImage = UseBackgroundImage,
             BackgroundImage = BackgroundImagePath,
-            BackgroundOpacity = (int)BackgroundImageOpacity,
-            CheckForUpdate = CheckForUpdate,
-            UpdateChannel = (UpdateChannel)SelectedUpdateChannel
+            BackgroundOpacity = (int)BackgroundImageOpacity
         };
     }
 
@@ -143,22 +182,36 @@ public class SettingsViewModel : ViewModelBase
 
     private void OpenCommonAvatarManager()
     {
+        MainWindowViewModel.Instance.EditCommonAvatarsVM.IsVisible = true;
     }
 
     private async Task OpenBackgroundImage()
     {
+        var files = await StorageService.OpenFileDialog(TopLevelProvider.Current, "Select Background Image");
+        if (files == null || files.Length == 0) return;
+
+        BackgroundImagePath = files[0];
     }
 
-    private void OpenItemsFolder()
+    private async Task OpenItemsFolder()
     {
+        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Items Folder");
+        if (folders == null || folders.Length == 0) return;
+
+        ItemsFolderPath = folders[0];
     }
 
-    private void OpenAutoBackupFolder()
+    private async Task OpenAutoBackupFolder()
     {
+        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Auto Backup Folder");
+        if (folders == null || folders.Length == 0) return;
+
+        AutoBackupFolderPath = folders[0];
     }
 
     private void ImportData()
     {
+        MainWindowViewModel.Instance.ImportDataVM.IsVisible = true;
     }
 
     private void ExportDataToCsv()
@@ -167,10 +220,12 @@ public class SettingsViewModel : ViewModelBase
 
     private void ImportThumbnail()
     {
+        MainWindowViewModel.Instance.ImportThumbnailVM.IsVisible = true;
     }
 
     private void FetchAllThumbnails()
     {
+        MainWindowViewModel.Instance.FetchAllThumbnailsVM.IsVisible = true;
     }
 
     private void RestoreFromBackup()
@@ -181,16 +236,40 @@ public class SettingsViewModel : ViewModelBase
     {
     }
 
-    private void ResetItemDatabase()
+    private async Task ResetItemDatabase()
     {
+        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[LocalizationKey.Settings.ResetItemDatabase.Title],
+            Localizer.Instance[LocalizationKey.Settings.ResetItemDatabase.Description]
+        );
+        if (!result) return;
+
+        var dbPath = SystemPath.ItemDatabasePath;
+        if (File.Exists(dbPath)) File.Delete(dbPath);
     }
 
-    private void ResetCommonAvatarDatabase()
+    private async Task ResetCommonAvatarDatabase()
     {
+        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[LocalizationKey.Settings.ResetCommonAvatarDatabase.Title],
+            Localizer.Instance[LocalizationKey.Settings.ResetCommonAvatarDatabase.Description]
+        );
+        if (!result) return;
+
+        var dbPath = SystemPath.CommonAvatarDatabasePath;
+        if (File.Exists(dbPath)) File.Delete(dbPath);
     }
 
-    private void ResetBulkImportPresetDatabase()
+    private async Task ResetBulkImportPresetDatabase()
     {
+        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[LocalizationKey.Settings.ResetBulkImportPresetDatabase.Title],
+            Localizer.Instance[LocalizationKey.Settings.ResetBulkImportPresetDatabase.Description]
+        );
+        if (!result) return;
+
+        var dbPath = SystemPath.BulkImportPresetDatabasePath;
+        if (File.Exists(dbPath)) File.Delete(dbPath);
     }
 
     private void ShowErrorLog()
@@ -200,29 +279,43 @@ public class SettingsViewModel : ViewModelBase
 
     private void RegisterScheme()
     {
+        if (!SchemeService.IsRunAsAdmin())
+        {
+            SchemeService.RestartAsAdmin();
+            return;
+        }
+
+        SchemeService.RegisterScheme();
     }
 
     private void CheckForUpdateNow()
     {
     }
 
-    private void OpenTwitter()
+    private async Task OpenTwitter()
     {
+        await LauncherService.OpenUri(TopLevelProvider.Current, DeveloperLink.TwitterURL);
     }
 
-    private void OpenGithub()
+    private async Task OpenGithub()
     {
+        await LauncherService.OpenUri(TopLevelProvider.Current, DeveloperLink.GithubURL);
     }
 
-    private void OpenSourceCode()
+    private async Task OpenSourceCode()
     {
+        await LauncherService.OpenUri(TopLevelProvider.Current, SoftwareLink.RepositoryURL);
     }
 
     private void ViewLicense()
     {
+        var licensePath = Path.Combine(System.AppContext.BaseDirectory, "LICENSE.txt");
+        if (File.Exists(licensePath)) Process.Start(new ProcessStartInfo(licensePath) { UseShellExecute = true });
     }
 
     private void ViewThirdPartyLicenses()
     {
+        var licensePath = Path.Combine(System.AppContext.BaseDirectory, "THIRD_PARTY_LICENSES.txt");
+        if (File.Exists(licensePath)) Process.Start(new ProcessStartInfo(licensePath) { UseShellExecute = true });
     }
 }

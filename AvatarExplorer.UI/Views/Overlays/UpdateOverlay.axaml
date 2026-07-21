@@ -27,8 +27,8 @@
 
                 <!-- 下のボタン -->
                 <Grid ColumnDefinitions="*,10,120,10,120">
-                    <Button Grid.Column="2" Classes="button" Content="{Binding [UpdateDialog.Later], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                    <Button Grid.Column="4" Classes="accentbutton" Content="{Binding [UpdateDialog.UpdateNow], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button Grid.Column="2" Classes="button" Content="{Binding [UpdateDialog.Later], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding LaterCommand}"/>
+                    <Button Grid.Column="4" Classes="accentbutton" Content="{Binding [UpdateDialog.UpdateNow], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding UpdateNowCommand}"/>
                 </Grid>
             </StackPanel>
         </Border>

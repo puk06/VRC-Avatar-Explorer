@@ -1,14 +1,22 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls.Notifications;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
+using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Services.Updates;
 using AvatarExplorer.Core.Utils;
+using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.Common;
+using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Overlays;
 using ReactiveUI.Fody.Helpers;
 
@@ -21,6 +29,8 @@ public class MainWindowViewModel : ViewModelBase
     public static AvatarExplorerApp AvatarExplorerApp => AvatarExplorerApp.Instance;
 
     public static MainWindowViewModel Instance { get; private set; } = null!;
+
+    public UserPreferencesRepository UserPreferences { get; } = new();
 
     public MainViewModel MainVM { get; } = new();
 
@@ -70,6 +80,7 @@ public class MainWindowViewModel : ViewModelBase
     public UnitypackageViewerViewModel UnitypackageViewerVM { get; } = new();
 
     public UpdateDialogViewModel UpdateDialogVM { get; } = new();
+    [Reactive] public bool IsUpdateDialogVisible { get; set; }
 
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
     [Reactive] public bool IsYesNoDialogVisible { get; set; }
@@ -80,11 +91,33 @@ public class MainWindowViewModel : ViewModelBase
     {
         Instance = this;
 
+        UserPreferences.OnSettingsChanged += OnPreferenceSettingsUpdated;
+        UserPreferences.Load();
+
         UpdateWindowTitle();
         Localizer.Instance.LanguageChanged += UpdateWindowTitle;
         AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
+        UpdateChecker.UpdateAvailable += OnUpdateAvailable;
 
-        SetBackgroundImage("D:\\VRChat\\VRChat Pictures\\2026-07\\VRChat_2026-07-13_01-23-26.027_3840x2160_wrld_b4eef105-5db1-4c1f-8800-a6e6de4a20e7.png", 100);
+        _ = CheckForUpdateOnStartup();
+    }
+
+    private void OnPreferenceSettingsUpdated(UserPreferences settings)
+    {
+        SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
+        SetTheme(settings.Theme);
+    }
+
+    private void OnUpdateAvailable(VersionRelease release)
+    {
+        UpdateDialogVM.Open(AvatarExplorerApp.CurrentVersion, release);
+        IsUpdateDialogVisible = true;
+    }
+
+    private async Task CheckForUpdateOnStartup()
+    {
+        var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
+        await UpdateChecker.CheckForUpdate(settings);
     }
 
     private void UpdateWindowTitle()
@@ -169,7 +202,7 @@ public class MainWindowViewModel : ViewModelBase
         return password;
     }
 
-    public void SetBackgroundImage(string path, int opacity)
+    private void SetBackgroundImage(string path, int opacity)
     {
         try
         {
@@ -187,6 +220,13 @@ public class MainWindowViewModel : ViewModelBase
             Debug.WriteLine(ex);
         }
     }
+    private static void SetTheme(Theme theme)
+    {
+        var application = Application.Current;
+        if (application == null) return;
+
+        application.RequestedThemeVariant = theme.GetThemeVariant();
+    }
 
     public void ShowNotification(string title, string content, NotificationType type)
     {
@@ -197,5 +237,11 @@ public class MainWindowViewModel : ViewModelBase
             Type = type,
             Expiration = TimeSpan.FromSeconds(5)
         });
+    }
+
+    public static async Task CheckForUpdate()
+    {
+        var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
+        await UpdateChecker.CheckForUpdate(settings);
     }
 }
