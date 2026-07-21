@@ -12,9 +12,8 @@ public class KonoAssetOtherItem : AbstractKonoAssetItem
     public override Item ToItem()
     {
         var migratedItem = ItemCreator.FromKonoAssetDescription(Description);
-        migratedItem.ItemPath = $"<sys>{Id}";
-        migratedItem.Type = ItemType.Custom;
-        migratedItem.CustomCategory = string.IsNullOrEmpty(Category) ? "Others" : Category;
+        migratedItem.UpdateItemPath($"<sys>{Id}");
+        migratedItem.UpdateMetadata(migratedItem.Title, migratedItem.Author, migratedItem.AuthorId, migratedItem.BoothId, ItemType.Custom, string.IsNullOrEmpty(Category) ? "Others" : Category, migratedItem.ItemMemo);
 
         return migratedItem;
     }

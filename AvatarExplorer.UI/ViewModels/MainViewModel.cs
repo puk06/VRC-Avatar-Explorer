@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -66,21 +67,19 @@ public class MainViewModel : ViewModelBase
         _itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
         _itemNavigationService = AvatarExplorerApp.Instance.ItemNavigationService;
 
+        _itemNavigationService.FileOpenRequested+= (file) =>
+        {
+            Process.Start("explorer.exe", "/select," + file);
+        };
+
         UndoCommand = ReactiveCommand.Create(Undo);
         HomeCommand = ReactiveCommand.Create(GoHome);
-        OpenSettingsCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.IsSettingsVisible = true);
+        OpenSettingsCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.SettingsVM.IsVisible = true);
         AddItemCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.ShowAddItem());
         SidePanelButtonPressedCommand = ReactiveCommand.Create<int>(SidePanelButtonPressed);
         SelectLeftItemCommand = ReactiveCommand.Create<ItemViewModel>(OnLeftItemSelected);
         SelectRightItemCommand = ReactiveCommand.Create<ItemViewModel>(OnRightItemSelected);
-        OpenSidePanelCommand = ReactiveCommand.Create<string>(index =>
-        {
-            if (!int.TryParse(index, out var selected)) return;
-
-            SelectedSidePanelTab = selected;
-            IsSidePanelVisible = true;
-            UpdateColumn();
-        });
+        OpenSidePanelCommand = ReactiveCommand.Create<string>(OpenSidePanel);
 
         UpdateColumn();
         OnCategoryChanged((int)QueryType.Avatar);
@@ -97,6 +96,15 @@ public class MainViewModel : ViewModelBase
         UpdateLeftPanelItems((QueryType)categoryIndex);
     }
 
+    public void OpenSidePanel(string index)
+    {
+        if (!int.TryParse(index, out var selected)) return;
+
+        SelectedSidePanelTab = selected;
+        IsSidePanelVisible = true;
+        UpdateColumn();
+    }
+
     private void Refresh()
     {
         MainItems = _itemNavigationService.GetCurrentSelectionView()
@@ -106,9 +114,9 @@ public class MainViewModel : ViewModelBase
         Path = BuildLocalizedPath(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value));
     }
 
-    private static string BuildLocalizedPath(IEnumerable<string> states)
+    private string BuildLocalizedPath(IEnumerable<string> states)
     {
-        static string FormatPathNode(string state)
+        string FormatPathNode(string state)
         {
             if (!ItemNavigationService.TryParseState(state, out var prefix, out var value)) return state;
 
@@ -128,7 +136,7 @@ public class MainViewModel : ViewModelBase
                 return AvatarExplorerApp.Instance.Items.Get(state)?.Title ?? value;
 
             if (prefix == ItemNavigationService.FolderPrefix)
-                return System.IO.Path.GetFileName(value);
+                return System.IO.Path.GetFileName(_itemNavigationService.ResolveFolderPath(state) ?? "Unknown Folder");
 
             if (prefix == ItemNavigationService.ExtensionPrefix && Enum.TryParse<ItemFileCategoryType>(value, out var extensionCategory))
                 return Localizer.Instance[extensionCategory.GetLocalizationKey() ?? value];

@@ -7,6 +7,7 @@ using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Models.Items;
+using AvatarExplorer.UI.Services.ContextMenu;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
 using ReactiveUI.Fody.Helpers;
@@ -44,10 +45,15 @@ public class ItemViewModel : ViewModelBase
     {
         Thumbnail = ImageService.Get(ImageFileName);
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
-        Description = Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
-        ContextMenu = ContextMenuFactory.GetContextMenu(Actions, onMenuClick);
+        Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
+        ContextMenu = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
 
         Width = Height = (Thumbnail != null) ? 80 : 0;
         return this;
+    }
+
+    private void HandleMenuClick(ContextMenuAction action)
+    {
+        ContextMenuHandlerService.Handle(action.ActionKey, Identifier);
     }
 }

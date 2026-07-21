@@ -1,7 +1,6 @@
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
-using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Extensions;
 
@@ -11,7 +10,8 @@ public static class ItemExtensions
     {
         return runtimeSettings.ItemSortOrder switch
         {
-            ItemSortOrder.Title => items.OrderBy(item => runtimeSettings.RemoveBrackets ? ItemUtils.RemoveBrackets(item.Title) : item.Title),
+            // TODO: Implementedも作る。RemoveBracketでも。
+            ItemSortOrder.Title => items.OrderBy(item => item.Title),
             ItemSortOrder.Author => items.OrderBy(item => item.Author),
             ItemSortOrder.Created => items.OrderByDescending(item => item.CreatedDate),
             ItemSortOrder.Updated => items.OrderByDescending(item => item.UpdatedDate),

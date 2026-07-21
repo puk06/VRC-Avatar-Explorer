@@ -410,11 +410,10 @@
     "AddItem.ConfirmAndSave": "Confirm and Save",
     "AddItem.RemoveFolder": "Remove",
 
-    "EditSupportedAvatars.Title": "Select Supported Avatars",
-    "EditSupportedAvatars.Search": "Search",
-    "EditSupportedAvatars.AddTempAvatar": "Add Temporary Avatar",
-
-    "EditImplementedAvatars.Title": "Select Implemented Avatars",
+    "SelectAvatars.Title.SupportedAvatars": "Select Supported Avatars",
+    "SelectAvatars.Title.ImplementedAvatars": "Select Implemented Avatars",
+    "SelectAvatars.Search": "Search",
+    "SelectAvatars.AddTempAvatar": "Add Temporary Avatar",
 
     "EditCommonAvatars.Title": "Manage Common Avatar Avatars",
     "EditCommonAvatars.Group": "Common Avatar Group",
@@ -443,6 +442,7 @@
     "SelectImportType.Title": "Import Data",
     "SelectImportType.Options.V1": "Avatar Explorer V1.x.x",
     "SelectImportType.Options.KonoAsset": "KonoAsset",
+
     "FetchAllThumbnailsOverlay.Title": "Bulk Thumbnail Fetch",
     "FetchAllThumbnailsOverlay.Description": "Run thumbnail fetching for all items. This may take time due to Booth API limits.",
     "FetchAllThumbnailsOverlay.Start": "Start",

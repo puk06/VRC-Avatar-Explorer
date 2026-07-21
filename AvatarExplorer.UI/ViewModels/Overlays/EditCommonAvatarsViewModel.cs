@@ -16,8 +16,8 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class EditCommonAvatarsViewModel : ViewModelBase
 {
-    public event Action? RequestClose;
-    
+    [Reactive] public bool IsVisible { get; set; }
+
     [Reactive] public IEnumerable<CommonAvatarViewModel> Groups { get; set; } = [];
     [Reactive] public CommonAvatarViewModel? SelectedGroup { get; set; } = null;
 
@@ -44,7 +44,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         RemoveGroupCommand = ReactiveCommand.Create(RemoveGroup);
         SelectVisibleCommand = ReactiveCommand.Create(SelectVisible);
         ReplaceAvatarsToGroupCommand = ReactiveCommand.CreateFromTask(ReplaceAvatarsToGroup);
-        CloseCommand = ReactiveCommand.Create(() => RequestClose?.Invoke());
+        CloseCommand = ReactiveCommand.Create(() => IsVisible = false);
 
         this.WhenAnyValue(i => i.SelectedGroup)
             .Subscribe(i => UpdateSelectedGroupAvatars());

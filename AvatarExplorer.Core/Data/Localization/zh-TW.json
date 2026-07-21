@@ -410,11 +410,10 @@
     "AddItem.ConfirmAndSave": "確認並儲存",
     "AddItem.RemoveFolder": "刪除",
 
-    "EditSupportedAvatars.Title": "選擇支援頭像",
-    "EditSupportedAvatars.Search": "搜尋",
-    "EditSupportedAvatars.AddTempAvatar": "新增暫時頭像",
-
-    "EditImplementedAvatars.Title": "選擇已實現頭像",
+    "SelectAvatars.Title.SupportedAvatars": "選擇支援頭像",
+    "SelectAvatars.Title.ImplementedAvatars": "選擇已實現頭像",
+    "SelectAvatars.Search": "搜尋",
+    "SelectAvatars.AddTempAvatar": "新增暫時頭像",
 
     "EditCommonAvatars.Title": "管理共通素體頭像",
     "EditCommonAvatars.Group": "共通素體群組",

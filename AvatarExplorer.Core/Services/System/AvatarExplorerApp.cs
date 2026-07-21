@@ -62,7 +62,8 @@ public class AvatarExplorerApp
         var items = Items.GetAll();
         items.ForEach(i =>
         {
-            i.ItemPath = i.ItemPath.StartsWith("<sys>") ? Path.Join(RuntimeSettings.Settings.DataRootDirectory, i.ItemPath.Replace("<sys>", string.Empty)) : i.ItemPath;
+            var migratedPath = i.ItemPath.StartsWith("<sys>") ? Path.Join(RuntimeSettings.Settings.DataRootDirectory, i.ItemPath.Replace("<sys>", string.Empty)) : i.ItemPath;
+            i.UpdateItemPath(migratedPath);
 
             i.UpdateSupportedAvatars(i.SupportedAvatars.Select(i =>
             {

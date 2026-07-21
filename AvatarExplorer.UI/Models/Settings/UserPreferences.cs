@@ -18,4 +18,6 @@ public record UserPreferences
     public BitmapAntiAliasingMode AntiAliasingMode { get; init; } = BitmapAntiAliasingMode.None;
     public bool CheckForUpdate { get; init; } = true;
     public UpdateChannel UpdateChannel { get; init; } = UpdateChannel.Stable;
+
+    public bool RemoveBrackets { get; init; } = false;
 }

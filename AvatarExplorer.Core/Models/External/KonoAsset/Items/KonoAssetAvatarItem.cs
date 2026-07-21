@@ -8,8 +8,8 @@ public class KonoAssetAvatarItem : AbstractKonoAssetItem
     public override Item ToItem()
     {
         Item migratedItem = ItemCreator.FromKonoAssetDescription(Description);
-        migratedItem.ItemPath = $"<sys>{Id}";
-        migratedItem.Type = ItemType.Avatar;
+        migratedItem.UpdateItemPath($"<sys>{Id}");
+        migratedItem.UpdateMetadata(migratedItem.Title, migratedItem.Author, migratedItem.AuthorId, migratedItem.BoothId, ItemType.Avatar, migratedItem.CustomCategory, migratedItem.ItemMemo);
 
         return migratedItem;
     }

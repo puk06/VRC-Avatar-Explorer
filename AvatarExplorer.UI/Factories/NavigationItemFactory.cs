@@ -1,5 +1,3 @@
-using System;
-using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.UI.Data;
@@ -15,15 +13,7 @@ public static class NavigationItemFactory
     {
         if (source is Avatar avatar)
         {
-            return new ItemViewModel
-            {
-                ImageFileName = avatar.Item.ThumbnailFileName,
-                TitleRaw = avatar.Item.Title,
-                TitleLocalizable = false,
-                DescriptionRaw = new(LocalizationKey.Button.Description.Item.Author, [avatar.Item.Author]),
-                Identifier = source.Identifier,
-                ViewModelType = ViewModelType.Item
-            };
+            return FromAvatar(avatar);
         }
 
         if (source is Item item)
@@ -91,23 +81,58 @@ public static class NavigationItemFactory
         };
     }
 
-    private static string GetCategoryLocalizationKey(string groupKey)
+    private static ItemViewModel FromAvatar(Avatar avatar)
     {
-        if (groupKey.StartsWith("type:"))
+        if (avatar.Type == AvatarType.Item)
         {
-            var raw = groupKey["type:".Length..];
-            if (Enum.TryParse<ItemType>(raw, out var itemType))
+            var item = (Item)avatar.Item;
+            return new ItemViewModel
             {
-                var key = itemType.GetLocalizationKey();
-                return string.IsNullOrEmpty(key) ? raw : key;
-            }
+                ImageFileName = item.ThumbnailFileName,
+                TitleRaw = item.Title,
+                TitleLocalizable = false,
+                DescriptionRaw = new(LocalizationKey.Button.Description.Item.Author, [item.Author]),
+                Identifier = avatar.Identifier,
+                ViewModelType = ViewModelType.Item
+            };
+        }
+        else if (avatar.Type == AvatarType.CommonAvatar)
+        {
+            var commonAvatar = (CommonAvatar)avatar.Item;
 
-            return raw;
+            return new ItemViewModel
+            {
+                ImageFileName = SystemIconKey.GroupIcon,
+                TitleRaw = commonAvatar.GroupName,
+                TitleLocalizable = false,
+                DescriptionRaw = new(LocalizationKey.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]),
+                Identifier = avatar.Identifier,
+                ViewModelType = ViewModelType.Item
+            };
+        }
+        else if (avatar.Type == AvatarType.TempAvatar)
+        {
+            var tempAvatar = (TempAvatar)avatar.Item;
+
+            return new ItemViewModel
+            {
+                ImageFileName = SystemIconKey.AvatarIcon,
+                TitleRaw = tempAvatar.AvatarName,
+                TitleLocalizable = false,
+                DescriptionRaw = new(LocalizationKey.Button.Description.TempAvatar),
+                Identifier = avatar.Identifier,
+                ViewModelType = ViewModelType.Item
+            };
         }
 
-        if (groupKey.StartsWith("custom:"))
-            return groupKey["custom:".Length..];
-
-        return groupKey;
+        return new ItemViewModel
+        {
+            ImageFileName = SystemIconKey.None,
+            TitleRaw = string.Empty,
+            TitleLocalizable = false,
+            DescriptionRaw = new(string.Empty, []),
+            Identifier = string.Empty,
+            ViewModelType = ViewModelType.None
+        };
     }
 }

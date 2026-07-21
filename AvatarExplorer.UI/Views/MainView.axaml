@@ -67,7 +67,8 @@
 
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="component:ItemViewModel">
-                                                    <Button Classes="button" ContextMenu="{Binding ContextMenu}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Command="{Binding $parent[UserControl].DataContext.SelectLeftItemCommand}" CommandParameter="{Binding}">
+                                                <!-- TODO: Implemented用のクラスも作るべきかも -->
+                                                    <Button Classes="button" Classes.accentbutton="{Binding IsSelected}" ContextMenu="{Binding ContextMenu}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Command="{Binding $parent[UserControl].DataContext.SelectLeftItemCommand}" CommandParameter="{Binding}">
                                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
                                                                 <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top"/>

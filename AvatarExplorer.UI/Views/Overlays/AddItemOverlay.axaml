@@ -88,7 +88,7 @@
                                 <StackPanel Spacing="8" Margin="0,0,10,0">
                                     <TextBlock Text="{Binding [AddItem.Category], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
                                     <Grid ColumnDefinitions="*, Auto" ColumnSpacing="5">
-                                        <ComboBox ItemsSource="{Binding Categories}" SelectedIndex="{Binding SelectedItemCategoryIndex}" HorizontalAlignment="Stretch">
+                                        <ComboBox ItemsSource="{Binding Categories}" SelectedIndex="{Binding SelectedCategoryIndex}" HorizontalAlignment="Stretch">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate x:DataType="vmcomponent:ItemCategoryViewModel">
                                                     <TextBlock Text="{Binding DisplayName}"/>

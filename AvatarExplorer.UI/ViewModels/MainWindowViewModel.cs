@@ -26,12 +26,11 @@ public class MainWindowViewModel : ViewModelBase
 
     public AddItemViewModel AddItemVM { get; } = new();
     [Reactive] public bool IsAddItemVisible { get; set; }
-    
+
     public ArchivePasswordDialogViewModel ArchivePasswordDialogVM { get; } = new();
     [Reactive] public bool IsArchivePasswordDialogVisible { get; set; }
 
     public EditCommonAvatarsViewModel EditCommonAvatarsVM { get; } = new();
-    [Reactive] public bool IsEditCommonAvatarsVisible { get; set; }
 
     public SelectAvatarsViewModel SelectAvatarsVM { get; } = new();
     [Reactive] public bool SelectAvatarsVisible { get; set; }
@@ -43,46 +42,34 @@ public class MainWindowViewModel : ViewModelBase
     [Reactive] public bool IsEditTagsVisible { get; set; }
 
     public ErrorLogViewModel ErrorLogVM { get; } = new();
-    [Reactive] public bool IsErrorLogVisible { get; set; }
 
     public FatalErrorViewModel FatalErrorVM { get; } = new();
-    [Reactive] public bool IsFatalErrorVisible { get; set; }
 
     public FetchAllThumbnailsViewModel FetchAllThumbnailsVM { get; } = new();
-    [Reactive] public bool IsFetchAllThumbnailsVisible { get; set; }
 
     public ImportDataViewModel ImportDataVM { get; } = new();
-    [Reactive] public bool IsImportDataVisible { get; set; }
-    
+
     public ImportThumbnailViewModel ImportThumbnailVM { get; } = new();
-    [Reactive] public bool IsImportThumbnailVisible { get; set; }
 
     public InitialSetupViewModel InitialSetupVM { get; } = new();
-    [Reactive] public bool IsInitialSetupVisible { get; set; }
 
     public MergeCategoryViewModel MergeCategoryVM { get; } = new();
-    [Reactive] public bool IsMergeCategoryVisible { get; set; }
 
     public PdfViewerViewModel PdfViewerVM { get; } = new();
-    [Reactive] public bool IsPdfViewerVisible { get; set; }
 
     public ProgressViewModel ProgressVM { get; } = new();
-    [Reactive] public bool IsProgressVisible { get; set; }
 
     public ResolveTempAvatarViewModel ResolveTempAvatarVM { get; } = new();
     [Reactive] public bool IsResolveTempAvatarVisible { get; set; }
 
     public SettingsViewModel SettingsVM { get; } = new();
-    [Reactive] public bool IsSettingsVisible { get; set; }
 
     public TextDialogViewModel TextDialogVM { get; } = new();
     [Reactive] public bool IsTextDialogVisible { get; set; }
 
     public UnitypackageViewerViewModel UnitypackageViewerVM { get; } = new();
-    [Reactive] public bool IsUnitypackageViewerVisible { get; set; }
 
     public UpdateDialogViewModel UpdateDialogVM { get; } = new();
-    [Reactive] public bool IsUpdateDialogVisible { get; set; }
 
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
     [Reactive] public bool IsYesNoDialogVisible { get; set; }
@@ -116,16 +103,6 @@ public class MainWindowViewModel : ViewModelBase
         IsAddItemVisible = true;
     }
 
-    public void ShowEditCommonAvatars()
-    {
-        IsEditCommonAvatarsVisible = true;
-    }
-    
-    public void ShowEditImplementedAvatars()
-    {
-        SelectAvatarsVisible = true;
-    }
-
     public async Task<string?> ShowEditMemoDialog(string memo)
     {
         EditMemoVM.Memo = memo;
@@ -137,9 +114,9 @@ public class MainWindowViewModel : ViewModelBase
         return result;
     }
 
-    public async Task<string[]?> ShowSelectAvatars(string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
+    public async Task<string[]?> ShowSelectAvatars(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
     {
-        SelectAvatarsVM.Open(avatars, includeCommonAvatar, includeTempAvatar, allowCreateTempAvatar);
+        SelectAvatarsVM.Open(title, avatars, includeCommonAvatar, includeTempAvatar, allowCreateTempAvatar);
 
         SelectAvatarsVisible = true;
         var result = await SelectAvatarsVM.WaitForResult();

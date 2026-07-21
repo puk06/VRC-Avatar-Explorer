@@ -21,31 +21,93 @@
 
         <views:MainView/>
 
-        <!-- <overlays:SettingsOverlay IsVisible="false"/> -->
+        <ContentControl IsVisible="{Binding SettingsVM.IsVisible}">
+            <overlays:SettingsOverlay/>
+        </ContentControl>
+
         <ContentControl IsVisible="{Binding IsAddItemVisible}">
             <overlays:AddItemOverlay/>
         </ContentControl>
-        <!-- <overlays:EditSupportedAvatarsOverlay IsVisible="false"/>
-        <overlays:EditImplementedAvatarsOverlay IsVisible="false"/>
-        <overlays:ResolveTempAvatarOverlay IsVisible="false"/>
-        <overlays:EditCommonAvatarsOverlay IsVisible="false"/>
-        <overlays:EditMemoOverlay IsVisible="false"/>
-        <overlays:EditTagsOverlay IsVisible="false"/>
-        <overlays:ImportDataOverlay IsVisible="false"/>
-        <overlays:ImportThumbnailOverlay IsVisible="false"/>
-        <overlays:FetchAllThumbnailsOverlay IsVisible="false"/>
-        <overlays:UnitypackageViewerOverlay IsVisible="false"/>
-        <overlays:PdfViewerOverlay IsVisible="false"/>
-        <overlays:ProgressOverlay IsVisible="false"/>
-        <overlays:TextDialogOverlay IsVisible="false"/>
-        <overlays:ArchivePasswordDialogOverlay IsVisible="false"/>
-        <overlays:YesNoDialogOverlay IsVisible="false"/>
-        <overlays:UpdateDialogOverlay IsVisible="false"/>
-        <overlays:MergeCategoryDialog IsVisible="false"/>
-        <overlays:InitialSetupOverlay IsVisible="false"/>
-        <overlays:ErrorLogOverlay IsVisible="false"/>
-        <overlays:FatalErrorOverlay IsVisible="false"/>
-        <overlays:StartupLoadingOverlay IsVisible="false"/> -->
+
+        <ContentControl IsVisible="{Binding SelectAvatarsVisible}">
+            <overlays:SelectAvatarsOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding IsResolveTempAvatarVisible}">
+            <overlays:ResolveTempAvatarOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding EditCommonAvatarsVM.IsVisible}">
+            <overlays:EditCommonAvatarsOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding IsEditMemoVisible}">
+            <overlays:EditMemoOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding IsEditTagsVisible}">
+            <overlays:EditTagsOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding ImportDataVM.IsVisible}">
+            <overlays:ImportDataOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding ImportThumbnailVM.IsVisible}">
+            <overlays:ImportThumbnailOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding FetchAllThumbnailsVM.IsVisible}">
+            <overlays:FetchAllThumbnailsOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding UnitypackageViewerVM.IsVisible}">
+            <overlays:UnitypackageViewerOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding PdfViewerVM.IsVisible}">
+            <overlays:PdfViewerOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding ProgressVM.IsVisible}">
+            <overlays:ProgressOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding IsTextDialogVisible}">
+            <overlays:TextDialogOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding IsArchivePasswordDialogVisible}">
+            <overlays:ArchivePasswordDialogOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding IsYesNoDialogVisible}">
+            <overlays:YesNoDialogOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding UpdateDialogVM.IsVisible}">
+            <overlays:UpdateDialogOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding MergeCategoryVM.IsVisible}">
+            <overlays:MergeCategoryDialog/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding InitialSetupVM.IsVisible}">
+            <overlays:InitialSetupOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding ErrorLogVM.IsVisible}">
+            <overlays:ErrorLogOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding FatalErrorVM.IsVisible}">
+            <overlays:FatalErrorOverlay/>
+        </ContentControl>
+
+        <ContentControl IsVisible="False">
+            <overlays:StartupLoadingOverlay/>
+        </ContentControl>
 
         <WindowNotificationManager x:Name="NotificationManager" Position="BottomRight"/>
     </Panel>

@@ -410,11 +410,10 @@
     "AddItem.ConfirmAndSave": "확정하고 저장",
     "AddItem.RemoveFolder": "삭제",
 
-    "EditSupportedAvatars.Title": "대응 아바타 선택",
-    "EditSupportedAvatars.Search": "검색",
-    "EditSupportedAvatars.AddTempAvatar": "임시 아바타 추가",
-
-    "EditImplementedAvatars.Title": "구현 아바타 선택",
+    "SelectAvatars.Title.SupportedAvatars": "대응 아바타 선택",
+    "SelectAvatars.Title.ImplementedAvatars": "구현 아바타 선택",
+    "SelectAvatars.Search": "검색",
+    "SelectAvatars.AddTempAvatar": "임시 아바타 추가",
 
     "EditCommonAvatars.Title": "공통 바디 아바타 관리",
     "EditCommonAvatars.Group": "공통 바디 그룹",

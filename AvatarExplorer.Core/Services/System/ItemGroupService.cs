@@ -38,33 +38,11 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
     public TempAvatarRepository TempAvatarRepository => _tempAvatars;
     public RuntimeSettingsRepository RuntimeSettings => _runtimesettings;
 
-    public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
-    {
-        _items.GetAll()
-            .ForEach(i => i.UpdateSupportedAvatars(
-                i.SupportedAvatars
-                    .Select(i => i == tempAvatarId ? targetItemId : i)
-                    .Distinct()
-            ));
-        _items.Save();
-
-        _commonAvatars.GetAll()
-            .ForEach(c => c.UpdateAvatars(
-                c.Avatars
-                    .Select(i => i == tempAvatarId ? targetItemId : i)
-                    .Distinct()
-            ));
-        _commonAvatars.Save();
-
-        _tempAvatars.Remove(tempAvatarId);
-        _tempAvatars.Save();
-    }
-
     public List<INavigationable> GetQueryFilters(QueryType type)
     {
         return type switch
         {
-            QueryType.Avatar => GetAvatars(),
+            QueryType.Avatar => GetAvatars(includeTempAvatar: true),
             QueryType.Author => GetAuthors(),
             QueryType.Category => GetCategories(),
             _ => []
@@ -74,9 +52,9 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
     {
         var avatars = new List<INavigationable>();
 
-        if (includeCommonAvatar) avatars.AddRange(_commonAvatars.GetAll());
+        if (includeCommonAvatar) avatars.AddRange(_commonAvatars.GetAll().Select(i => new Avatar(i)));
         avatars.AddRange(_items.GetAll().Where(i => i.Type == ItemType.Avatar).Select(i => new Avatar(i)));
-        if (includeTempAvatar) avatars.AddRange(_tempAvatars.GetAll());
+        if (includeTempAvatar) avatars.AddRange(_tempAvatars.GetAll().Select(i => new Avatar(i)));
 
         return avatars;
     }
@@ -99,7 +77,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         
         if (includeAllCategory)
         {
-            categories.Add(new Folder("type:" + ItemType.All)
+            categories.Add(new Folder("type:" + (int)ItemType.All)
             {
                 Title = ItemType.All.GetLocalizationKey() ?? string.Empty,
                 TitleLocalizable = true,
@@ -125,7 +103,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
                 .Where(i => includeEmptyCategory || existCategories.Contains(i))
                 .Select(i =>
                 {
-                    return new Folder("type:" + i)
+                    return new Folder("type:" + (int)i)
                     {
                         Title = i.GetLocalizationKey() ?? string.Empty,
                         TitleLocalizable = true,
@@ -167,11 +145,34 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
             .ToList();
     }
 
+    public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
+    {
+        _items.GetAll()
+            .ForEach(i => i.UpdateSupportedAvatars(
+                i.SupportedAvatars
+                    .Select(i => i == tempAvatarId ? targetItemId : i)
+                    .Distinct()
+            ));
+        _items.Save();
+
+        _commonAvatars.GetAll()
+            .ForEach(c => c.UpdateAvatars(
+                c.Avatars
+                    .Select(i => i == tempAvatarId ? targetItemId : i)
+                    .Distinct()
+            ));
+        _commonAvatars.Save();
+
+        _tempAvatars.Remove(tempAvatarId);
+        _tempAvatars.Save();
+    }
+
     public string[] GetAllSupportedAvatarsIds(IEnumerable<string> avatars, bool includeCommonAvatarToSupported = false)
     {
         return AvatarService.GetAllSupportedAvatarIds(avatars, _commonAvatars.GetAll(), includeCommonAvatarToSupported);
     }
 
+    // TODO: 逆も作る
     public void ReplaceSupportedAvatarsToCommonAvatarGroup(string groupIdentifier)
     {
         var commonAvatar = _commonAvatars.Get(groupIdentifier);

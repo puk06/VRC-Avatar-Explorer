@@ -11,6 +11,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class MergeCategoryViewModel : ViewModelBase
 {
+    [Reactive] public bool IsVisible { get; set; }
     public IEnumerable<ItemCategoryViewModel> Categories { get; set; } = [];
     [Reactive] public ItemCategoryViewModel? SelectedSourceCategory { get; set; } = null;
     [Reactive] public ItemCategoryViewModel? SelectedTargetCategory { get; set; } = null;
@@ -71,11 +72,11 @@ public class MergeCategoryViewModel : ViewModelBase
 
     public void OnCancel()
     {
-        
+        IsVisible = false;
     }
 
     public void OnMerge()
     {
-        
+        IsVisible = false;
     }
 }

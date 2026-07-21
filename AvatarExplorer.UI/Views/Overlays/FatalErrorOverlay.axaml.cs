@@ -8,6 +8,6 @@ public partial class FatalErrorOverlay : UserControl
     public FatalErrorOverlay()
     {
         InitializeComponent();
-        DataContext = MainWindowViewModel.Instance.ErrorLogVM;
+        DataContext = MainWindowViewModel.Instance.FatalErrorVM;
     }
 }

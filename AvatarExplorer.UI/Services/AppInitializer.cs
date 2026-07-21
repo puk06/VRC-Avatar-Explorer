@@ -1,6 +1,7 @@
 using System.Linq;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services.ContextMenu;
 using AvatarExplorer.UI.Services.Utilities;
 
 namespace AvatarExplorer.UI.Services;
@@ -13,6 +14,8 @@ public static class AppInitializer
 
         Localizer.Instance.LoadFromFolder("locales");
         Localizer.Instance.SetLanguage(0);
+
+        ContextMenuHandlerService.Initialize();
 
         StartThumbnailCacheWampup();
     }

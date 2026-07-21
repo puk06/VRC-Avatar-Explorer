@@ -410,11 +410,10 @@
     "AddItem.ConfirmAndSave": "確定して保存",
     "AddItem.RemoveFolder": "削除",
 
-    "EditSupportedAvatars.Title": "対応アバターの選択",
-    "EditSupportedAvatars.Search": "検索",
-    "EditSupportedAvatars.AddTempAvatar": "仮アバターの追加",
-
-    "EditImplementedAvatars.Title": "実装アバターの選択",
+    "SelectAvatars.Title.SupportedAvatars": "対応アバターの選択",
+    "SelectAvatars.Title.ImplementedAvatars": "実装アバターの選択",
+    "SelectAvatars.Search": "検索",
+    "SelectAvatars.AddTempAvatar": "仮アバターの追加",
 
     "EditCommonAvatars.Title": "共通素体アバターの管理",
     "EditCommonAvatars.Group": "共通素体グループ",
@@ -443,6 +442,7 @@
     "SelectImportType.Title": "データをインポートする",
     "SelectImportType.Options.V1": "Avatar Explorer V1.x.x",
     "SelectImportType.Options.KonoAsset": "KonoAsset",
+
     "FetchAllThumbnailsOverlay.Title": "サムネイル一括取得",
     "FetchAllThumbnailsOverlay.Description": "全アイテムに対してサムネイル取得を実行します。Booth APIの制限により完了まで時間がかかる場合があります。",
     "FetchAllThumbnailsOverlay.Start": "開始",

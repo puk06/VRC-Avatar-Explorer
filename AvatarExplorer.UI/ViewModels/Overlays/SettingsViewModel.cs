@@ -1,6 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Models.System;
+using AvatarExplorer.Core.Models.Updates;
+using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.Common;
+using AvatarExplorer.UI.Models.Settings;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -8,6 +14,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class SettingsViewModel : ViewModelBase
 {
+    [Reactive] public bool IsVisible { get; set; }
     public IEnumerable<string> Languages { get; }
     [Reactive] public int SelectedLanguage { get; set; }
 
@@ -34,7 +41,7 @@ public class SettingsViewModel : ViewModelBase
     [Reactive] public int SelectedUpdateChannel { get; set; }
     [Reactive] public Image GithubUserImage { get; set; }
 
-    public IReactiveCommand OpenBackgroundImageCommand { get; } // TODO: 作る
+    public IReactiveCommand OpenBackgroundImageCommand { get; }
     public IReactiveCommand OpenCommonAvatarManagerCommand { get; }
     public IReactiveCommand OpenItemsFolderCommand { get; }
     public IReactiveCommand OpenAutoBackupFolderCommand { get; }
@@ -55,29 +62,167 @@ public class SettingsViewModel : ViewModelBase
     public IReactiveCommand OpenSourceCodeCommand { get; }
     public IReactiveCommand ViewLicenseCommand { get; }
     public IReactiveCommand ViewThirdPartyLicensesCommand { get; }
-    
+
     public IReactiveCommand CloseCommand { get; }
     public IReactiveCommand ApplyCommand { get; }
 
     public SettingsViewModel()
     {
+        Languages = Localizer.Instance.GetLanguageList();
+        SelectedLanguage = Localizer.Instance.CurrentLanguageIndex;
+
         OpenBackgroundImageCommand = ReactiveCommand.CreateFromTask(OpenBackgroundImage);
         OpenCommonAvatarManagerCommand = ReactiveCommand.Create(OpenCommonAvatarManager);
+        OpenItemsFolderCommand = ReactiveCommand.Create(OpenItemsFolder);
+        OpenAutoBackupFolderCommand = ReactiveCommand.Create(OpenAutoBackupFolder);
+        ImportDataCommand = ReactiveCommand.Create(ImportData);
+        ExportDataToCsvCommand = ReactiveCommand.Create(ExportDataToCsv);
+        ImportThumbnailCommand = ReactiveCommand.Create(ImportThumbnail);
+        FetchAllThumbnailsCommand = ReactiveCommand.Create(FetchAllThumbnails);
+        RestoreFromBackupCommand = ReactiveCommand.Create(RestoreFromBackup);
+        AutoFixDatabaseCommand = ReactiveCommand.Create(AutoFixDatabase);
+        ResetItemDatabaseCommand = ReactiveCommand.Create(ResetItemDatabase);
+        ResetCommonAvatarDatabaseCommand = ReactiveCommand.Create(ResetCommonAvatarDatabase);
+        ResetBulkImportPresetDatabaseCommand = ReactiveCommand.Create(ResetBulkImportPresetDatabase);
+        ShowErrorLogCommand = ReactiveCommand.Create(ShowErrorLog);
+        RegisterSchemeCommand = ReactiveCommand.Create(RegisterScheme);
+        CheckForUpdateNowCommand = ReactiveCommand.Create(CheckForUpdateNow);
+        OpenTwitterCommand = ReactiveCommand.Create(OpenTwitter);
+        OpenGithubCommand = ReactiveCommand.Create(OpenGithub);
+        OpenSourceCodeCommand = ReactiveCommand.Create(OpenSourceCode);
+        ViewLicenseCommand = ReactiveCommand.Create(ViewLicense);
+        ViewThirdPartyLicensesCommand = ReactiveCommand.Create(ViewThirdPartyLicenses);
         CloseCommand = ReactiveCommand.Create(OnClose);
+        ApplyCommand = ReactiveCommand.Create(OnApply);
+    }
+
+    public RuntimeSettings CreateRuntimeSettings()
+    {
+        return new RuntimeSettings
+        {
+            DataRootDirectory = ItemsFolderPath,
+            AutoBackupRootDirectory = AutoBackupFolderPath,
+            ItemSortOrder = (ItemSortOrder)SelectedSortOrder,
+            RemoveOriginal = RemoveOriginal,
+            ShouldLinkToOriginal = LinkToOriginal,
+            AutoBackupInterval = AutoBackupInterval,
+            TreatEmptySupportedAvatarAsNone = TreatEmptySupportedAvatarAsNone,
+            MaxDegreeOfParallelism = MaxDegreeOfParallelism
+        };
+    }
+
+    public UserPreferences CreateUserPreferences()
+    {
+        return new UserPreferences
+        {
+            Language = SelectedLanguage,
+            Theme = (Theme)SelectedTheme,
+            RemoveBrackets = RemoveBrackets,
+            NormalIconSize = (int)NormalIconSize,
+            EnableHoverIconSize = EnableHoverIconSize,
+            HoverIconSize = (int)HoverIconSize,
+            AntiAliasingMode = (BitmapAntiAliasingMode)SelectedAntiAliasing,
+            ItemsPerPage = ItemsPerPage,
+            ThumbnailCompressionMaxEdge = (int)ThumbnailCompressionMaxSize,
+            UseBackgroundImage = UseBackgroundImage,
+            BackgroundImage = BackgroundImagePath,
+            BackgroundOpacity = (int)BackgroundImageOpacity,
+            CheckForUpdate = CheckForUpdate,
+            UpdateChannel = (UpdateChannel)SelectedUpdateChannel
+        };
+    }
+
+    private void OnApply()
+    {
     }
 
     private void OnClose()
     {
-        // ボタンが押されたときの処理
+        IsVisible = false;
     }
 
     private void OpenCommonAvatarManager()
     {
-        // ボタンが押されたときの処理
     }
 
     private async Task OpenBackgroundImage()
     {
-        // ボタンが押されたときの処理
+    }
+
+    private void OpenItemsFolder()
+    {
+    }
+
+    private void OpenAutoBackupFolder()
+    {
+    }
+
+    private void ImportData()
+    {
+    }
+
+    private void ExportDataToCsv()
+    {
+    }
+
+    private void ImportThumbnail()
+    {
+    }
+
+    private void FetchAllThumbnails()
+    {
+    }
+
+    private void RestoreFromBackup()
+    {
+    }
+
+    private void AutoFixDatabase()
+    {
+    }
+
+    private void ResetItemDatabase()
+    {
+    }
+
+    private void ResetCommonAvatarDatabase()
+    {
+    }
+
+    private void ResetBulkImportPresetDatabase()
+    {
+    }
+
+    private void ShowErrorLog()
+    {
+        MainWindowViewModel.Instance.ErrorLogVM.IsVisible = true;
+    }
+
+    private void RegisterScheme()
+    {
+    }
+
+    private void CheckForUpdateNow()
+    {
+    }
+
+    private void OpenTwitter()
+    {
+    }
+
+    private void OpenGithub()
+    {
+    }
+
+    private void OpenSourceCode()
+    {
+    }
+
+    private void ViewLicense()
+    {
+    }
+
+    private void ViewThirdPartyLicenses()
+    {
     }
 }

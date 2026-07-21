@@ -12,7 +12,7 @@
                 <Grid RowDefinitions="Auto,20,Auto,10,Auto,20,Auto">
 
                     <!-- タイトル -->
-                    <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding [EditImplementedAvatars.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding Title}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                     
                     <!-- 検索バー -->
                     <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
@@ -31,7 +31,7 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="vmcomponent:ItemViewModel">
-                                    <Button Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Command="{Binding $parent[UserControl].DataContext.SelectItemCommand}" CommandParameter="{Binding}">
+                                    <Button Classes="button" Classes.accentbutton="{Binding IsSelected}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Command="{Binding $parent[UserControl].DataContext.SelectItemCommand}" CommandParameter="{Binding}">
                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
                                                 <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top"/>
@@ -50,7 +50,7 @@
 
                     <!-- 下のボタン -->
                     <Grid ColumnDefinitions="200,*,150,150" Grid.Row="6" Margin="10,0,10,0" ColumnSpacing="20">
-                        <Button Classes="button" FontWeight="Bold" Grid.Column="0" IsEnabled="{Binding AllowTempAvatarCreation}" Content="{Binding [SelectAvatars.AddTempAvatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding AddTempAvatarCommand}"/>
+                        <Button Classes="button" FontWeight="Bold" Grid.Column="0" IsVisible="{Binding AllowTempAvatarCreation}" Content="{Binding [SelectAvatars.AddTempAvatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding AddTempAvatarCommand}"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CancelCommand}"/>
                         <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="3" Content="{Binding [Button.Confirm], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding ConfirmCommand}"/>
                     </Grid>

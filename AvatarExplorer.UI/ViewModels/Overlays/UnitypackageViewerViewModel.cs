@@ -8,6 +8,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class UnitypackageViewerViewModel : ViewModelBase
 {
+    [Reactive] public bool IsVisible { get; set; }
     [Reactive] public IEnumerable<UnitypackagePathNode> Nodes { get; set; } = [];
     [Reactive] public string FileName { get; set; } = string.Empty;
     [Reactive] public string Status { get; set; } = string.Empty;
@@ -33,9 +34,10 @@ public class UnitypackageViewerViewModel : ViewModelBase
         SelectedPath = node?.FullPath ?? string.Empty;
         IsExportable = node?.IsFile ?? false;
     }
+    
 
     private void OnClose()
     {
-        //
+        IsVisible = false;
     }
 }

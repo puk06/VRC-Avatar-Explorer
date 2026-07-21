@@ -9,7 +9,6 @@ public record RuntimeSettings
     public string AutoBackupRootDirectory { get; init; } = SystemPath.BackupFolderPath;
     public ItemSortOrder ItemSortOrder { get; init; } = ItemSortOrder.Updated;
     public bool RemoveOriginal { get; init; } = false;
-    public bool RemoveBrackets { get; init; } = false; // TODO: これはUIで管理すべき
     public bool ShouldLinkToOriginal { get; init; } = false;
     public int AutoBackupInterval { get; init; } = 5;
     public bool TreatEmptySupportedAvatarAsNone { get; init; } = false;

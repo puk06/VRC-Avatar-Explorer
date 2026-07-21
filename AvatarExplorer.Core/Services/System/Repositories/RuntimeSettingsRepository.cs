@@ -9,4 +9,5 @@ public class RuntimeSettingsRepository
     public RuntimeSettings Settings => _manager.Settings;
 
     public void Load(string? path = null) => _manager.Load(path);
+    public void Update(RuntimeSettings settings) => _manager.Update(settings);
 }

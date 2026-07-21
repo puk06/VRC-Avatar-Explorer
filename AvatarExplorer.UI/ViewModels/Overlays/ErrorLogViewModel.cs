@@ -1,15 +1,17 @@
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Services.System;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+
+// TODO: 未完成
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class ErrorLogViewModel : ViewModelBase
 {
     public ObservableCollection<ErrorContext> ErrorContexts { get; } = ErrorManager.Instance.ErrorContexts;
-    private TaskCompletionSource<string[]?> _tcs = new();
+    [Reactive] public bool IsVisible { get; set; }
     public IReactiveCommand CloseCommand { get; }
     public IReactiveCommand OpenFolderCommand { get; }
 
@@ -21,7 +23,7 @@ public class ErrorLogViewModel : ViewModelBase
 
     private void OnClose()
     {
-        // ボタンが押されたときの処理
+        IsVisible = false;
     }
 
     private void OpenFolder()

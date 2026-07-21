@@ -410,11 +410,10 @@
     "AddItem.ConfirmAndSave": "Confirmer et enregistrer",
     "AddItem.RemoveFolder": "Supprimer",
 
-    "EditSupportedAvatars.Title": "Sélectionner les avatars pris en charge",
-    "EditSupportedAvatars.Search": "Rechercher",
-    "EditSupportedAvatars.AddTempAvatar": "Ajouter un avatar temporaire",
-
-    "EditImplementedAvatars.Title": "Sélectionner les avatars implémentés",
+    "SelectAvatars.Title.SupportedAvatars": "Sélectionner les avatars pris en charge",
+    "SelectAvatars.Title.ImplementedAvatars": "Sélectionner les avatars implémentés",
+    "SelectAvatars.Search": "Rechercher",
+    "SelectAvatars.AddTempAvatar": "Ajouter un avatar temporaire",
 
     "EditCommonAvatars.Title": "Gérer les avatars communs",
     "EditCommonAvatars.Group": "Groupe d'avatars communs",

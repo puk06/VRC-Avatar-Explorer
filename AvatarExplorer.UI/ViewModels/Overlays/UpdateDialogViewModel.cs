@@ -7,6 +7,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class UpdateDialogViewModel : ViewModelBase
 {
+    [Reactive] public bool IsVisible { get; set; }
     private string CurrentVersion { get; set; } = string.Empty;
     private string LatestVersion { get; set; } = string.Empty;
     private string ReleaseDate { get; set; } = string.Empty;

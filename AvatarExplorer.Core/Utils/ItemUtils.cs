@@ -1,13 +1,9 @@
-﻿using System.Text.RegularExpressions;
-using AvatarExplorer.Core.Models.Items;
+﻿using AvatarExplorer.Core.Models.Items;
 
 namespace AvatarExplorer.Core.Utils;
 
 public static partial class ItemUtils
 {
-    [GeneratedRegex(@"\u3010[^\u3011]+\u3011")]
-    private static partial Regex TextBracketsRegex();
-
     internal static string GetTitleFromDictionary(Dictionary<string, string> itemTitleMaps, string itemId)
     {
         if (string.IsNullOrEmpty(itemId)) return string.Empty;
@@ -21,8 +17,6 @@ public static partial class ItemUtils
         // 始まっていないものはフルパスと認識してそのまま変えす
         return itemPath.StartsWith("<sys>") ? Path.Join(parentFolder, itemPath.Replace("<sys>", string.Empty)) : itemPath;
     }
-
-    public static string RemoveBrackets(string value) => TextBracketsRegex().Replace(value, string.Empty);
 
     public static string? GetSafeTitle(string itemTitle)
     {

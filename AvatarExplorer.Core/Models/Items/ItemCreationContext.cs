@@ -2,7 +2,6 @@ namespace AvatarExplorer.Core.Models.Items;
 
 public class ItemCreationContext
 {
-    public List<string> ItemPaths { get; set; } = new(); // TODO: 後からインポートする形で作る
     public string Title { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
     public string AuthorId { get; set; } = string.Empty;

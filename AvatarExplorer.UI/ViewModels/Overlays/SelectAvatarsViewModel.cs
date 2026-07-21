@@ -14,6 +14,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class SelectAvatarsViewModel : ViewModelBase
 {
+    [Reactive] public string Title { get; set; } = string.Empty;
     [Reactive] public bool AllowTempAvatarCreation { get; set; } = false;
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
     [Reactive] public string SearchText { get; set; } = string.Empty;
@@ -55,8 +56,9 @@ public class SelectAvatarsViewModel : ViewModelBase
         });
     }
 
-    public void Open(string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
+    public void Open(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
     {
+        Title = title;
         IncludeCommonAvatar = includeCommonAvatar;
         IncludeTempAvatar = includeTempAvatar;
         AllowTempAvatarCreation = allowCreateTempAvatar;

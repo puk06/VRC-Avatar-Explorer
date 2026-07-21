@@ -682,15 +682,15 @@ public static class LocalizationKey
         public const string ConfirmAndSave = "AddItem.ConfirmAndSave";
         public const string RemoveFolder = "AddItem.RemoveFolder";
     }
-    public static class EditSupportedAvatars
+    public static class SelectAvatars
     {
-        public const string Title = "EditSupportedAvatars.Title";
-        public const string Search = "EditSupportedAvatars.Search";
-        public const string AddTempAvatar = "EditSupportedAvatars.AddTempAvatar";
-    }
-    public static class EditImplementedAvatars
-    {
-        public const string Title = "EditImplementedAvatars.Title";
+        public static class Title
+        {
+            public const string SupportedAvatars = "SelectAvatars.Title.SupportedAvatars";
+            public const string ImplementedAvatars = "SelectAvatars.Title.ImplementedAvatars";
+        }
+        public const string Search = "SelectAvatars.Search";
+        public const string AddTempAvatar = "SelectAvatars.AddTempAvatar";
     }
     public static class EditCommonAvatars
     {
