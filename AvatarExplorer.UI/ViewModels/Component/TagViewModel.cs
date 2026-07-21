@@ -12,7 +12,7 @@ public class TagViewModel : ViewModelBase
 
     public void Update()
     {
-        if (IsCommonAvatar) Label = Localizer.Instance.Get(LocalizationKey.Button.Tag.CommonAvatar, ValueRaw);
+        if (IsCommonAvatar) Label = Localizer.Instance.Get(Loc.Button.Tag.CommonAvatar, ValueRaw);
         else Label = ValueRaw;
     }
 }

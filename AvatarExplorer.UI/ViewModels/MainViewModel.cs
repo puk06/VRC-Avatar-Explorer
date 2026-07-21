@@ -145,7 +145,7 @@ public class MainViewModel : ViewModelBase
         }
         var pathNodes = states.Select(FormatPathNode).Where(i => !string.IsNullOrWhiteSpace(i)).ToArray();
 
-        if (pathNodes.Length == 0) return Localizer.Instance[LocalizationKey.Main.Path.Placeholder];
+        if (pathNodes.Length == 0) return Localizer.Instance[Loc.Main.Path.Placeholder];
         return string.Join(" > ", pathNodes);
     }
 

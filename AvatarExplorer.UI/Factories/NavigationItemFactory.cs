@@ -23,7 +23,7 @@ public static class NavigationItemFactory
                 ImageFileName = item.ThumbnailFileName,
                 TitleRaw = item.Title,
                 TitleLocalizable = false,
-                DescriptionRaw = new(LocalizationKey.Button.Description.Item.Author, [item.Author]),
+                DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = source.Identifier,
                 ViewModelType = ViewModelType.Item
             };
@@ -36,7 +36,7 @@ public static class NavigationItemFactory
                 ImageFileName = SystemIconKey.AvatarIcon,
                 TitleRaw = author.Name,
                 TitleLocalizable = false,
-                DescriptionRaw = new(LocalizationKey.Button.Description.Item.Count, [author.ItemCount.ToString()]),
+                DescriptionRaw = new(Loc.Button.Description.Item.Count, [author.ItemCount.ToString()]),
                 Identifier = source.Identifier,
                 ViewModelType = ViewModelType.None
             };
@@ -49,7 +49,7 @@ public static class NavigationItemFactory
                 ImageFileName = SystemIconKey.FolderIcon,
                 TitleRaw = folder.Title,
                 TitleLocalizable = folder.TitleLocalizable,
-                DescriptionRaw = new(LocalizationKey.Button.Description.Item.Count, [folder.ItemCount.ToString()]),
+                DescriptionRaw = new(Loc.Button.Description.Item.Count, [folder.ItemCount.ToString()]),
                 Identifier = folder.Identifier,
                 ViewModelType = ViewModelType.Folder
             };
@@ -64,7 +64,7 @@ public static class NavigationItemFactory
                 ImageFileName = SystemIconKey.FileIcon,
                 TitleRaw = file.FileName,
                 TitleLocalizable = false,
-                DescriptionRaw = new(hasExtension ? LocalizationKey.Button.Description.File.Extension : LocalizationKey.Button.Description.File.NoExtension, [file.Extension]),
+                DescriptionRaw = new(hasExtension ? Loc.Button.Description.File.Extension : Loc.Button.Description.File.NoExtension, [file.Extension]),
                 Identifier = file.Identifier,
                 ViewModelType = ViewModelType.File
             };
@@ -91,7 +91,7 @@ public static class NavigationItemFactory
                 ImageFileName = item.ThumbnailFileName,
                 TitleRaw = item.Title,
                 TitleLocalizable = false,
-                DescriptionRaw = new(LocalizationKey.Button.Description.Item.Author, [item.Author]),
+                DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = avatar.Identifier,
                 ViewModelType = ViewModelType.Item
             };
@@ -105,7 +105,7 @@ public static class NavigationItemFactory
                 ImageFileName = SystemIconKey.GroupIcon,
                 TitleRaw = commonAvatar.GroupName,
                 TitleLocalizable = false,
-                DescriptionRaw = new(LocalizationKey.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]),
+                DescriptionRaw = new(Loc.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]),
                 Identifier = avatar.Identifier,
                 ViewModelType = ViewModelType.Item
             };
@@ -119,7 +119,7 @@ public static class NavigationItemFactory
                 ImageFileName = SystemIconKey.AvatarIcon,
                 TitleRaw = tempAvatar.AvatarName,
                 TitleLocalizable = false,
-                DescriptionRaw = new(LocalizationKey.Button.Description.TempAvatar),
+                DescriptionRaw = new(Loc.Button.Description.TempAvatar),
                 Identifier = avatar.Identifier,
                 ViewModelType = ViewModelType.Item
             };

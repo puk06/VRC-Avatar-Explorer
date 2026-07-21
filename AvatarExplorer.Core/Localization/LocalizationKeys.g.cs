@@ -12,7 +12,7 @@
 
 namespace AvatarExplorer.Core.Localization;
 
-public static class LocalizationKey
+public static class Loc
 {
     public const string LanguageName = "LanguageName";
     public const string LanguagePriority = "LanguagePriority";
@@ -509,12 +509,6 @@ public static class LocalizationKey
             public const string Description = "Settings.ImportFromOther.Description";
             public const string Import = "Settings.ImportFromOther.Import";
         }
-        public static class ImportThumbnail
-        {
-            public const string Title = "Settings.ImportThumbnail.Title";
-            public const string Description = "Settings.ImportThumbnail.Description";
-            public const string Import = "Settings.ImportThumbnail.Import";
-        }
         public static class FetchAllThumbnails
         {
             public const string Title = "Settings.FetchAllThumbnails.Title";
@@ -728,14 +722,20 @@ public static class LocalizationKey
         public const string NewTag = "EditTags.NewTag";
         public const string SelectTag = "EditTags.SelectTag";
     }
-    public static class SelectImportType
+    public static class ImportData
     {
-        public const string Title = "SelectImportType.Title";
-        public static class Options
+        public const string Title = "ImportData.Title";
+        public const string Description = "ImportData.Description";
+        public const string ImportSource = "ImportData.ImportSource";
+        public static class FolderPath
         {
-            public const string V1 = "SelectImportType.Options.V1";
-            public const string KonoAsset = "SelectImportType.Options.KonoAsset";
+            public const string Title = "ImportData.FolderPath.Title";
+            public const string Browse = "ImportData.FolderPath.Browse";
         }
+        public const string Import = "ImportData.Import";
+        public const string SelectData = "ImportData.SelectData";
+        public const string Database = "ImportData.Database";
+        public const string Thumbnails = "ImportData.Thumbnails";
     }
     public static class FetchAllThumbnailsOverlay
     {

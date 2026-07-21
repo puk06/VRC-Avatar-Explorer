@@ -51,7 +51,7 @@ sb.AppendLine("/// *************************************************************
 sb.AppendLine();
 sb.AppendLine("namespace AvatarExplorer.Core.Localization;");
 sb.AppendLine();
-sb.AppendLine("public static class LocalizationKey");
+sb.AppendLine("public static class Loc");
 sb.AppendLine("{");
 
 WriteClass(tree, sb, 1);

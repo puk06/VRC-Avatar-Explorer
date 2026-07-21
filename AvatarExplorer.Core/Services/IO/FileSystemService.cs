@@ -226,12 +226,12 @@ public static class FileSystemService
 
         try
         {
-            if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Unitypackage.Status.Preparing, 0));
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Unitypackage.Status.Preparing, 0));
 
             string saveFolderPath = PrepareSaveFolderPath();
             string unitypackagePath = saveFolderPath + ".unitypackage";
 
-            if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Unitypackage.Status.Extracting, 10));
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Unitypackage.Status.Extracting, 10));
 
             int totalEntries = 0;
             foreach (string itemPath in itemPathCategoryDictionary.Keys)
@@ -260,13 +260,13 @@ public static class FileSystemService
                 }
             }
 
-            reportProgress?.Invoke((LocalizationKey.Processing.Unitypackage.Status.Creating, 90));
+            reportProgress?.Invoke((Loc.Processing.Unitypackage.Status.Creating, 90));
 
             await CreateTarArchive(saveFolderPath, unitypackagePath);
 
             DeleteDirectory(saveFolderPath, true);
 
-            reportProgress?.Invoke((LocalizationKey.Processing.Unitypackage.Status.Completed, 100));
+            reportProgress?.Invoke((Loc.Processing.Unitypackage.Status.Completed, 100));
 
             await Task.Delay(500); // すぐ閉じるのではなく、100%の表記を出してから0.5秒経って返すようにする
 
@@ -361,7 +361,7 @@ public static class FileSystemService
 
             if (currentProgress != lastProgress)
             {
-                if (reportProgress != null) await reportProgress.Invoke((LocalizationKey.Processing.Unitypackage.Status.Extracting, currentProgress));
+                if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Unitypackage.Status.Extracting, currentProgress));
                 lastProgress = currentProgress;
             }
         }
@@ -688,7 +688,7 @@ public static class FileSystemService
                     {
                         try
                         {
-                            await reportProgress.Invoke((LocalizationKey.Processing.DirectoryCopy.Copying, percent));
+                            await reportProgress.Invoke((Loc.Processing.DirectoryCopy.Copying, percent));
                         }
                         catch
                         {

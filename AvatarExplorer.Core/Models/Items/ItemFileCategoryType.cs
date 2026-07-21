@@ -9,33 +9,33 @@ public enum ItemFileCategoryType
 
     [FileNamesFilter("Material|マテリアル")]
     [ExtensionsFilter(".unitypackage")]
-    [LocalizationKey(LocalizationKey.FileCategory.Material)]
+    [LocalizationKey(Loc.FileCategory.Material)]
     Material,
 
     [ExtensionsFilter(".unitypackage")]
-    [LocalizationKey(LocalizationKey.FileCategory.Unitypackage)]
+    [LocalizationKey(Loc.FileCategory.Unitypackage)]
     Unitypackage,
 
     [ExtensionsFilter(".png|.jpg|.jpeg|.webp|.tga|.bmp|.dds|.tiff|.tif|.gif|.hdr|.exr")]
-    [LocalizationKey(LocalizationKey.FileCategory.Texture)]
+    [LocalizationKey(Loc.FileCategory.Texture)]
     Texture,
 
     [ExtensionsFilter(".psd|.psb|.clip|.kra|.sai|.sai2|.blend|.fbx|.obj|.gltf|.glb|.dae|.stl")]
-    [LocalizationKey(LocalizationKey.FileCategory.Modification)]
+    [LocalizationKey(Loc.FileCategory.Modification)]
     Modification,
 
     [ExtensionsFilter(".txt|.md|.pdf|.rtf|.doc|.docx")]
-    [LocalizationKey(LocalizationKey.FileCategory.Document)]
+    [LocalizationKey(Loc.FileCategory.Document)]
     Document,
 
     [ExtensionsFilter(".ttf|.otf|.woff|.woff2|.eot|.fon")]
-    [LocalizationKey(LocalizationKey.FileCategory.Font)]
+    [LocalizationKey(Loc.FileCategory.Font)]
     Font,
 
     [ExtensionsFilter(".url")]
-    [LocalizationKey(LocalizationKey.FileCategory.UrlShortcut)]
+    [LocalizationKey(Loc.FileCategory.UrlShortcut)]
     UrlShortcut,
 
-    [LocalizationKey(LocalizationKey.FileCategory.Unknown)]
+    [LocalizationKey(Loc.FileCategory.Unknown)]
     Unknown
 }

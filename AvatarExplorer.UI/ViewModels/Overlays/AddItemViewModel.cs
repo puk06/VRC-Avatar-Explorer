@@ -173,7 +173,7 @@ public class AddItemViewModel : ViewModelBase
     {
         var folders = await StorageService.OpenFolderDialog(
             TopLevelProvider.Current,
-            Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath],
+            Localizer.Instance[Loc.Dialog.SelectFolderPath],
             allowMultiple: true
         );
         if (folders == null || folders.Length == 0) return;
@@ -184,7 +184,7 @@ public class AddItemViewModel : ViewModelBase
     {
         var files = await StorageService.OpenFileDialog(
             TopLevelProvider.Current,
-            Localizer.Instance[LocalizationKey.Dialog.SelectFilePath],
+            Localizer.Instance[Loc.Dialog.SelectFilePath],
             allowMultiple: true
         );
         if (files == null || files.Length == 0) return;
@@ -196,7 +196,11 @@ public class AddItemViewModel : ViewModelBase
         var fetchResult = await BoothService.Fetch(BoothUrl, waitCooldown: true);
         if (fetchResult.IsError)
         {
-            // TODO: MainWindowViewModel.Instance 通知
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.RetrieveBoothItemFailed],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
             return;
         }
 
@@ -245,7 +249,7 @@ public class AddItemViewModel : ViewModelBase
 
     private async Task AddCustomCategory()
     {
-        var newCategory = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[LocalizationKey.Dialog.Title.NewCustomCategoryName]);
+        var newCategory = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewCustomCategoryName]);
         if (string.IsNullOrEmpty(newCategory)) return;
 
         Categories.Add(new ItemCategoryViewModel(new ItemCategory(newCategory)).Update());
@@ -254,7 +258,7 @@ public class AddItemViewModel : ViewModelBase
     private async Task SelectSupportedAvatars()
     {
         var avatars = await MainWindowViewModel.Instance.ShowSelectAvatars(
-            Localizer.Instance[LocalizationKey.SelectAvatars.Title.SupportedAvatars],
+            Localizer.Instance[Loc.SelectAvatars.Title.SupportedAvatars],
             SupportedAvatars.ToArray(),
             includeCommonAvatar: true,
             includeTempAvatar: true,
@@ -289,7 +293,7 @@ public class AddItemViewModel : ViewModelBase
 
     private void UpdateCountField()
     {
-        TagsText = Localizer.Instance.Get(LocalizationKey.AddItem.SelectedTagsCount, Tags.Count().ToString());
-        SupportedAvatarsText = Localizer.Instance.Get(LocalizationKey.AddItem.SelectedAvatarsCount, GetSupportedAvatarsCount().ToString());
+        TagsText = Localizer.Instance.Get(Loc.AddItem.SelectedTagsCount, Tags.Count().ToString());
+        SupportedAvatarsText = Localizer.Instance.Get(Loc.AddItem.SelectedAvatarsCount, GetSupportedAvatarsCount().ToString());
     }
 }

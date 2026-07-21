@@ -18,7 +18,7 @@ internal static class ContextMenuFactory
     {
         if (contextMenuActions.Length == 0) return null;
 
-        var fontFamily = new FontFamily($"avares://AvatarExplorer/Assets/Fonts#{Localizer.Instance[LocalizationKey.FontFamily]}");
+        var fontFamily = new FontFamily($"avares://AvatarExplorer/Assets/Fonts#{Localizer.Instance[Loc.FontFamily]}");
         var contextMenu = new ContextMenu()
         {
             FontFamily = fontFamily

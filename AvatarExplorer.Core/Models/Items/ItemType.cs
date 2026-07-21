@@ -8,37 +8,37 @@ public enum ItemType
     [NonSelectable]
     None,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.Avatar)]
+    [LocalizationKey(Loc.ItemCategory.Avatar)]
     Avatar,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.Clothing)]
+    [LocalizationKey(Loc.ItemCategory.Clothing)]
     Clothing,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.Texture)]
+    [LocalizationKey(Loc.ItemCategory.Texture)]
     Texture,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.Gimmick)]
+    [LocalizationKey(Loc.ItemCategory.Gimmick)]
     Gimmick,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.Accessory)]
+    [LocalizationKey(Loc.ItemCategory.Accessory)]
     Accessory,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.HairStyle)]
+    [LocalizationKey(Loc.ItemCategory.HairStyle)]
     HairStyle,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.Animation)]
+    [LocalizationKey(Loc.ItemCategory.Animation)]
     Animation,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.Tool)]
+    [LocalizationKey(Loc.ItemCategory.Tool)]
     Tool,
 
-    [LocalizationKey(LocalizationKey.ItemCategory.Shader)]
+    [LocalizationKey(Loc.ItemCategory.Shader)]
     Shader,
 
     [NonSelectable]
     Custom,
 
     [NonSelectable]
-    [LocalizationKey(LocalizationKey.ItemCategory.All)]
+    [LocalizationKey(Loc.ItemCategory.All)]
     All,
 }

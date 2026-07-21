@@ -32,8 +32,8 @@ public class ResolveTempAvatarViewModel : ViewModelBase
         if (SelectedAvatar == null)
         {
             MainWindowViewModel.Instance.ShowNotification(
-                Localizer.Instance[LocalizationKey.Error.Default],
-                Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound],
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.TempAvatarNotFound],
                 Avalonia.Controls.Notifications.NotificationType.Error
             );
             return;
@@ -43,16 +43,16 @@ public class ResolveTempAvatarViewModel : ViewModelBase
         if (tempAvatar == null)
         {
             MainWindowViewModel.Instance.ShowNotification(
-                Localizer.Instance[LocalizationKey.Error.Default],
-                Localizer.Instance[LocalizationKey.Error.TempAvatarNotFound],
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.TempAvatarNotFound],
                 Avalonia.Controls.Notifications.NotificationType.Error
             );
             return;
         }
 
         var resolveConfirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default],
-            Localizer.Instance.Get(LocalizationKey.Dialog.Confirmation.ResolveTempAvatar, [tempAvatar.AvatarName, item.Title])
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.ResolveTempAvatar, [tempAvatar.AvatarName, item.Title])
         );
         if (resolveConfirmationResult is false) return;
 

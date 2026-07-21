@@ -43,7 +43,7 @@ public class UpdateDialogViewModel : ViewModelBase
 
     private void UpdateVersionText()
     {
-        VersionText = Localizer.Instance.Get(LocalizationKey.UpdateDialog.VersionText, [$"v{LatestVersion}", $"v{CurrentVersion}", ReleaseDate]);
+        VersionText = Localizer.Instance.Get(Loc.UpdateDialog.VersionText, [$"v{LatestVersion}", $"v{CurrentVersion}", ReleaseDate]);
     }
 
     private void OnLater()

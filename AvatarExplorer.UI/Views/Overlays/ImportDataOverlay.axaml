@@ -7,18 +7,45 @@
 
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="500" Padding="24">
-            <StackPanel Spacing="14">
+            <StackPanel Spacing="20">
 
                 <!-- タイトル -->
-                <TextBlock Text="{Binding [SelectImportType.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource Text.Primary}"/>
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [ImportData.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Text="{Binding [ImportData.Description], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                </StackPanel>
+
                 <Separator Classes="separator"/>
 
-                <!-- インポートタイプ選択ボタン -->
+                <!-- インポート元データタイプ選択 -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [ImportData.ImportSource], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
+                    <ComboBox ItemsSource="{Binding ImportSources}" SelectedIndex="{Binding SelectedImportSourceIndex}" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+
+                <!-- フォルダー選択 -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [ImportData.FolderPath.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                        <TextBox Grid.Column="0" Text="{Binding FolderPath}" IsReadOnly="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <Button Classes="button" Grid.Column="1" Content="{Binding [ImportData.FolderPath.Browse], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Command="{Binding BrowseFolderCommand}"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- インポートするデータ選択 -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [ImportData.SelectData], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
+                    <StackPanel Spacing="8">
+                        <CheckBox IsChecked="{Binding ImportItems}" Content="{Binding [ImportData.Database], Source={x:Static loc:Localizer.Instance}}"/>
+                        <CheckBox IsChecked="{Binding ImportThumbnails}" Content="{Binding [ImportData.Thumbnails], Source={x:Static loc:Localizer.Instance}}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- ボタン -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                    <Button Classes="accentbutton" FontWeight="Bold" Grid.Column="0" Content="{Binding [SelectImportType.Options.V1], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding FromV1Command}"/>
-                    <Button Classes="button" FontWeight="Bold" Grid.Column="1" Content="{Binding [SelectImportType.Options.KonoAsset], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding FromKonoAssetCommand}"/>
+                    <Button Classes="button" Grid.Column="0" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CancelCommand}"/>
+                    <Button Classes="accentbutton" Grid.Column="1" Content="{Binding [ImportData.Import], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding ImportCommand}"/>
                 </Grid>
-                <Button Classes="button" FontWeight="Bold" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Margin="0,2,0,0" Command="{Binding CancelCommand}"/>
             </StackPanel>
         </Border>
     </Border>

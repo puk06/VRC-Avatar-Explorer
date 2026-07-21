@@ -28,7 +28,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
     public void Open()
     {
-        Status = Localizer.Instance[LocalizationKey.FetchAllThumbnailsOverlay.Status.Ready];
+        Status = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.Status.Ready];
     }
 
     private static string FormatRemainingTime(int totalSeconds)
@@ -36,6 +36,6 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
         int clamped = Math.Max(0, totalSeconds);
         int minutes = clamped / 60;
         int seconds = clamped % 60;
-        return Localizer.Instance.Get(LocalizationKey.FetchAllThumbnailsOverlay.Eta, [minutes.ToString(), seconds.ToString()]);
+        return Localizer.Instance.Get(Loc.FetchAllThumbnailsOverlay.Eta, [minutes.ToString(), seconds.ToString()]);
     }
 }

@@ -23,25 +23,25 @@ internal static class SearchFilterExtensions
                 .Select(t => (t.IsNegation ? SearchToken.NegationPrefix : string.Empty) + (localize ? Localizer.Instance[t.Value] : t.Value));
         }
 
-        if (searchFilter.IsOrCondition) searchFilterStrings.Add(Localizer.Instance[LocalizationKey.SearchFilter.IsOrSearch]);
-        if (searchFilter.IsCategoryOrCondition) searchFilterStrings.Add(Localizer.Instance[LocalizationKey.SearchFilter.IsCategoryOrSearch]);
-        if (searchFilter.TreatEmptySupportedAvatarAsNone) searchFilterStrings.Add(Localizer.Instance[LocalizationKey.SearchFilter.EmptySupportedAvatarAsNone]);
-        if (getSearchTokensByType(SearchTokenType.Title).Any()) addKey(LocalizationKey.SearchFilter.Title, getSearchTokensByType(SearchTokenType.Title));
-        if (getSearchTokensByType(SearchTokenType.Author).Any()) addKey(LocalizationKey.SearchFilter.Author, getSearchTokensByType(SearchTokenType.Author));
-        if (getSearchTokensByType(SearchTokenType.BoothId).Any()) addKey(LocalizationKey.SearchFilter.Booth, getSearchTokensByType(SearchTokenType.BoothId));
-        if (getSearchTokensByType(SearchTokenType.SupportedAvatar).Any()) addKey(LocalizationKey.SearchFilter.SupportedAvatar, getSearchTokensByType(SearchTokenType.SupportedAvatar));
-        if (getSearchTokensByType(SearchTokenType.Category).Any()) addKey(LocalizationKey.SearchFilter.Category, getSearchTokensByType(SearchTokenType.Category, true));
-        if (getSearchTokensByType(SearchTokenType.ItemMemo).Any()) addKey(LocalizationKey.SearchFilter.ItemMemo, getSearchTokensByType(SearchTokenType.ItemMemo));
-        if (getSearchTokensByType(SearchTokenType.FolderName).Any()) addKey(LocalizationKey.SearchFilter.FolderName, getSearchTokensByType(SearchTokenType.FolderName));
-        if (getSearchTokensByType(SearchTokenType.FileName).Any()) addKey(LocalizationKey.SearchFilter.FileName, getSearchTokensByType(SearchTokenType.FileName));
-        if (getSearchTokensByType(SearchTokenType.ImplementedAvatar).Any()) addKey(LocalizationKey.SearchFilter.ImplementedAvatar, getSearchTokensByType(SearchTokenType.ImplementedAvatar));
-        if (getSearchTokensByType(SearchTokenType.NotImplementedAvatar).Any()) addKey(LocalizationKey.SearchFilter.NotImplementedAvatar, getSearchTokensByType(SearchTokenType.NotImplementedAvatar));
-        if (getSearchTokensByType(SearchTokenType.Tag).Any()) addKey(LocalizationKey.SearchFilter.Tag, getSearchTokensByType(SearchTokenType.Tag));
-        if (getSearchTokensByType(SearchTokenType.CommonAvatar).Any()) addKey(LocalizationKey.SearchFilter.CommonAvatar, getSearchTokensByType(SearchTokenType.CommonAvatar));
-        if (getSearchTokensByType(SearchTokenType.FreeWord).Any()) addKey(LocalizationKey.SearchFilter.SearchWord, getSearchTokensByType(SearchTokenType.FreeWord));
+        if (searchFilter.IsOrCondition) searchFilterStrings.Add(Localizer.Instance[Loc.SearchFilter.IsOrSearch]);
+        if (searchFilter.IsCategoryOrCondition) searchFilterStrings.Add(Localizer.Instance[Loc.SearchFilter.IsCategoryOrSearch]);
+        if (searchFilter.TreatEmptySupportedAvatarAsNone) searchFilterStrings.Add(Localizer.Instance[Loc.SearchFilter.EmptySupportedAvatarAsNone]);
+        if (getSearchTokensByType(SearchTokenType.Title).Any()) addKey(Loc.SearchFilter.Title, getSearchTokensByType(SearchTokenType.Title));
+        if (getSearchTokensByType(SearchTokenType.Author).Any()) addKey(Loc.SearchFilter.Author, getSearchTokensByType(SearchTokenType.Author));
+        if (getSearchTokensByType(SearchTokenType.BoothId).Any()) addKey(Loc.SearchFilter.Booth, getSearchTokensByType(SearchTokenType.BoothId));
+        if (getSearchTokensByType(SearchTokenType.SupportedAvatar).Any()) addKey(Loc.SearchFilter.SupportedAvatar, getSearchTokensByType(SearchTokenType.SupportedAvatar));
+        if (getSearchTokensByType(SearchTokenType.Category).Any()) addKey(Loc.SearchFilter.Category, getSearchTokensByType(SearchTokenType.Category, true));
+        if (getSearchTokensByType(SearchTokenType.ItemMemo).Any()) addKey(Loc.SearchFilter.ItemMemo, getSearchTokensByType(SearchTokenType.ItemMemo));
+        if (getSearchTokensByType(SearchTokenType.FolderName).Any()) addKey(Loc.SearchFilter.FolderName, getSearchTokensByType(SearchTokenType.FolderName));
+        if (getSearchTokensByType(SearchTokenType.FileName).Any()) addKey(Loc.SearchFilter.FileName, getSearchTokensByType(SearchTokenType.FileName));
+        if (getSearchTokensByType(SearchTokenType.ImplementedAvatar).Any()) addKey(Loc.SearchFilter.ImplementedAvatar, getSearchTokensByType(SearchTokenType.ImplementedAvatar));
+        if (getSearchTokensByType(SearchTokenType.NotImplementedAvatar).Any()) addKey(Loc.SearchFilter.NotImplementedAvatar, getSearchTokensByType(SearchTokenType.NotImplementedAvatar));
+        if (getSearchTokensByType(SearchTokenType.Tag).Any()) addKey(Loc.SearchFilter.Tag, getSearchTokensByType(SearchTokenType.Tag));
+        if (getSearchTokensByType(SearchTokenType.CommonAvatar).Any()) addKey(Loc.SearchFilter.CommonAvatar, getSearchTokensByType(SearchTokenType.CommonAvatar));
+        if (getSearchTokensByType(SearchTokenType.FreeWord).Any()) addKey(Loc.SearchFilter.SearchWord, getSearchTokensByType(SearchTokenType.FreeWord));
 
         var result = toSeparatedString(searchFilterStrings, " / ");
-        return Localizer.Instance.Get(LocalizationKey.SearchFilter.Default, result);
+        return Localizer.Instance.Get(Loc.SearchFilter.Default, result);
     }
 }
 

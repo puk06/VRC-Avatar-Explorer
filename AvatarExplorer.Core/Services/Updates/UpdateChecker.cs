@@ -12,11 +12,9 @@ public static class UpdateChecker
 {
     public static event Action<VersionRelease>? UpdateAvailable;
 
-    public static async Task CheckForUpdate(RuntimeSettings settings)
+    public static async Task CheckForUpdate(UpdateChannel updateChannel)
     {
-        if (!settings.CheckForUpdate) return;
-
-        var latestRelease = await GetLatestUpdateReleaseInfo(settings.UpdateChannel);
+        var latestRelease = await GetLatestUpdateReleaseInfo(updateChannel);
         if (latestRelease == null) return;
 
         UpdateAvailable?.Invoke(latestRelease);

@@ -53,7 +53,7 @@ public class Localizer : INotifyPropertyChanged
             {
                 ErrorManager.Instance.PostInternalError($"Failed to load language: '{Path.GetFileName(filePath)}'.", tag: deserializeResult.Errors.ToErrorString());
             }
-            else if (!deserializeResult.Value.ContainsKey(LocalizationKey.LanguageName))
+            else if (!deserializeResult.Value.ContainsKey(Loc.LanguageName))
             {
                 ErrorManager.Instance.PostInternalError($"Failed to load language: '{Path.GetFileName(filePath)}'.", tag: "No language name was defined.");
             }
@@ -64,11 +64,11 @@ public class Localizer : INotifyPropertyChanged
         }
 
         _map.Clear();
-        var sortedMaps = languageMaps.OrderBy(i => ValueParser.Int(i.TryGetValue(LocalizationKey.LanguagePriority, out string? value) ? value : string.Empty, int.MaxValue)).ToList();
+        var sortedMaps = languageMaps.OrderBy(i => ValueParser.Int(i.TryGetValue(Loc.LanguagePriority, out string? value) ? value : string.Empty, int.MaxValue)).ToList();
         _map.AddRange(sortedMaps);
     }
 
-    public string[] GetLanguageList() => _map.Select(i => i[LocalizationKey.LanguageName]).ToArray();
+    public string[] GetLanguageList() => _map.Select(i => i[Loc.LanguageName]).ToArray();
 
     public void SetLanguage(int index) => CurrentLanguageIndex = GetValidLanguageIndex(index);
 

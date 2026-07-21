@@ -59,8 +59,6 @@ public class MainWindowViewModel : ViewModelBase
 
     public ImportDataViewModel ImportDataVM { get; } = new();
 
-    public ImportThumbnailViewModel ImportThumbnailVM { get; } = new();
-
     public InitialSetupViewModel InitialSetupVM { get; } = new();
 
     public MergeCategoryViewModel MergeCategoryVM { get; } = new();
@@ -92,13 +90,12 @@ public class MainWindowViewModel : ViewModelBase
         Instance = this;
 
         UserPreferences.OnSettingsChanged += OnPreferenceSettingsUpdated;
-        UserPreferences.Load();
-
-        UpdateWindowTitle();
         Localizer.Instance.LanguageChanged += UpdateWindowTitle;
         AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;
 
+        UserPreferences.Load();
+        UpdateWindowTitle();
         _ = CheckForUpdateOnStartup();
     }
 
@@ -114,10 +111,11 @@ public class MainWindowViewModel : ViewModelBase
         IsUpdateDialogVisible = true;
     }
 
-    private async Task CheckForUpdateOnStartup()
+    private static async Task CheckForUpdateOnStartup()
     {
         var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
-        await UpdateChecker.CheckForUpdate(settings);
+        if (!settings.CheckForUpdate) return;
+        await UpdateChecker.CheckForUpdate(settings.UpdateChannel);
     }
 
     private void UpdateWindowTitle()
@@ -125,7 +123,7 @@ public class MainWindowViewModel : ViewModelBase
         var title = string.Format("VRC Avatar Explorer v{0}", AvatarExplorerApp.CurrentVersion);
 
         if (ProcessUtils.IsWindows() && SchemeService.IsRunAsAdmin())
-            title += string.Format(" - [{0}]", Localizer.Instance[LocalizationKey.Title.AdministratorMode]);
+            title += string.Format(" - [{0}]", Localizer.Instance[Loc.Title.AdministratorMode]);
 
         WindowTitle = title;
     }
@@ -237,11 +235,5 @@ public class MainWindowViewModel : ViewModelBase
             Type = type,
             Expiration = TimeSpan.FromSeconds(5)
         });
-    }
-
-    public static async Task CheckForUpdate()
-    {
-        var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
-        await UpdateChecker.CheckForUpdate(settings);
     }
 }

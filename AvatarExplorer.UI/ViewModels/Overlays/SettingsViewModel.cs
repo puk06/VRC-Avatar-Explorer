@@ -10,6 +10,7 @@ using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Services.Updates;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
@@ -55,7 +56,6 @@ public class SettingsViewModel : ViewModelBase
     public IReactiveCommand OpenAutoBackupFolderCommand { get; }
     public IReactiveCommand ImportDataCommand { get; }
     public IReactiveCommand ExportDataToCsvCommand { get; }
-    public IReactiveCommand ImportThumbnailCommand { get; }
     public IReactiveCommand FetchAllThumbnailsCommand { get; }
     public IReactiveCommand RestoreFromBackupCommand { get; }
     public IReactiveCommand AutoFixDatabaseCommand { get; }
@@ -85,7 +85,6 @@ public class SettingsViewModel : ViewModelBase
         OpenAutoBackupFolderCommand = ReactiveCommand.CreateFromTask(OpenAutoBackupFolder);
         ImportDataCommand = ReactiveCommand.Create(ImportData);
         ExportDataToCsvCommand = ReactiveCommand.Create(ExportDataToCsv);
-        ImportThumbnailCommand = ReactiveCommand.Create(ImportThumbnail);
         FetchAllThumbnailsCommand = ReactiveCommand.Create(FetchAllThumbnails);
         RestoreFromBackupCommand = ReactiveCommand.Create(RestoreFromBackup);
         AutoFixDatabaseCommand = ReactiveCommand.Create(AutoFixDatabase);
@@ -211,16 +210,11 @@ public class SettingsViewModel : ViewModelBase
 
     private void ImportData()
     {
-        MainWindowViewModel.Instance.ImportDataVM.IsVisible = true;
+        MainWindowViewModel.Instance.ImportDataVM.Open();
     }
 
     private void ExportDataToCsv()
     {
-    }
-
-    private void ImportThumbnail()
-    {
-        MainWindowViewModel.Instance.ImportThumbnailVM.IsVisible = true;
     }
 
     private void FetchAllThumbnails()
@@ -239,8 +233,8 @@ public class SettingsViewModel : ViewModelBase
     private async Task ResetItemDatabase()
     {
         var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[LocalizationKey.Settings.ResetItemDatabase.Title],
-            Localizer.Instance[LocalizationKey.Settings.ResetItemDatabase.Description]
+            Localizer.Instance[Loc.Settings.ResetItemDatabase.Title],
+            Localizer.Instance[Loc.Settings.ResetItemDatabase.Description]
         );
         if (!result) return;
 
@@ -251,8 +245,8 @@ public class SettingsViewModel : ViewModelBase
     private async Task ResetCommonAvatarDatabase()
     {
         var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[LocalizationKey.Settings.ResetCommonAvatarDatabase.Title],
-            Localizer.Instance[LocalizationKey.Settings.ResetCommonAvatarDatabase.Description]
+            Localizer.Instance[Loc.Settings.ResetCommonAvatarDatabase.Title],
+            Localizer.Instance[Loc.Settings.ResetCommonAvatarDatabase.Description]
         );
         if (!result) return;
 
@@ -263,8 +257,8 @@ public class SettingsViewModel : ViewModelBase
     private async Task ResetBulkImportPresetDatabase()
     {
         var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[LocalizationKey.Settings.ResetBulkImportPresetDatabase.Title],
-            Localizer.Instance[LocalizationKey.Settings.ResetBulkImportPresetDatabase.Description]
+            Localizer.Instance[Loc.Settings.ResetBulkImportPresetDatabase.Title],
+            Localizer.Instance[Loc.Settings.ResetBulkImportPresetDatabase.Description]
         );
         if (!result) return;
 
@@ -288,8 +282,10 @@ public class SettingsViewModel : ViewModelBase
         SchemeService.RegisterScheme();
     }
 
-    private void CheckForUpdateNow()
+    private async void CheckForUpdateNow()
     {
+        // 現在選択されているチャンネルでチェックする
+        await UpdateChecker.CheckForUpdate((UpdateChannel)SelectedUpdateChannel);
     }
 
     private async Task OpenTwitter()

@@ -80,7 +80,7 @@ public class SelectAvatarsViewModel : ViewModelBase
 
     private async Task AddTempAvatar()
     {
-        var newTempAvatarName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[LocalizationKey.Dialog.Title.NewTempAvatarName]);
+        var newTempAvatarName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewTempAvatarName]);
         if (string.IsNullOrEmpty(newTempAvatarName)) return;
 
         AvatarExplorerApp.Instance.TempAvatars.Create(newTempAvatarName);

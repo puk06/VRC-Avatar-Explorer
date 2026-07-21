@@ -78,14 +78,14 @@ public static class ContextMenuHandlerService
     }
     private static async void CopyBoothLink(string identifier)
     {
-        var link = Items.Get(identifier)?.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]);
+        var link = Items.Get(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
         if (string.IsNullOrEmpty(link)) return;
 
         await ClipboardService.SetText(link);
     }
     private static async void OpenBoothLink(string identifier)
     {
-        var link = Items.Get(identifier)?.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]);
+        var link = Items.Get(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
         if (string.IsNullOrEmpty(link)) return;
 
         await LauncherService.OpenUri(TopLevelProvider.Current, link);
@@ -109,7 +109,7 @@ public static class ContextMenuHandlerService
         var item = Items.Get(identifier);
         if (item == null) return;
 
-        string itemInfo = string.Format("{0} - {1}\n{2}", item.Title, item.Author, item.BoothId != -1 ? item.GetBoothLink(Localizer.Instance[LocalizationKey.BoothLanguageCode]) : "(No Booth Link)");
+        string itemInfo = string.Format("{0} - {1}\n{2}", item.Title, item.Author, item.BoothId != -1 ? item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]) : "(No Booth Link)");
         await ClipboardService.SetText(itemInfo);
     }
     private static void EditItem(string identifier)
@@ -122,7 +122,7 @@ public static class ContextMenuHandlerService
         if (item == null) return;
 
         var newTitle = await MainWindowViewModel.Instance.ShowTextDialog(
-            Localizer.Instance[LocalizationKey.Dialog.Title.NewItemTitle],
+            Localizer.Instance[Loc.Dialog.Title.NewItemTitle],
             item.Title
         );
         if (newTitle == null) return;
@@ -135,7 +135,7 @@ public static class ContextMenuHandlerService
         if (item == null) return;
 
         var newMemo = await MainWindowViewModel.Instance.ShowTextDialog(
-            Localizer.Instance[LocalizationKey.Dialog.Title.NewItemTitle],
+            Localizer.Instance[Loc.Dialog.Title.NewItemTitle],
             item.Title
         );
         if (newMemo == null) return;
@@ -150,7 +150,7 @@ public static class ContextMenuHandlerService
         
         var files = await StorageService.OpenFileDialog(
             TopLevelProvider.Current,
-            Localizer.Instance[LocalizationKey.Dialog.SelectFilePath],
+            Localizer.Instance[Loc.Dialog.SelectFilePath],
             allowMultiple: true
         );
         if (files == null || files.Length == 0) return;
@@ -164,7 +164,7 @@ public static class ContextMenuHandlerService
         
         var folders = await StorageService.OpenFolderDialog(
             TopLevelProvider.Current,
-            Localizer.Instance[LocalizationKey.Dialog.SelectFolderPath],
+            Localizer.Instance[Loc.Dialog.SelectFolderPath],
             allowMultiple: true
         );
         if (folders == null || folders.Length == 0) return;
@@ -177,7 +177,7 @@ public static class ContextMenuHandlerService
         if (item == null) return;
 
         var newAvatars = await MainWindowViewModel.Instance.ShowSelectAvatars(
-            Localizer.Instance[LocalizationKey.SelectAvatars.Title.ImplementedAvatars],
+            Localizer.Instance[Loc.SelectAvatars.Title.ImplementedAvatars],
             item.ImplementedAvatars.ToArray(),
             includeCommonAvatar: false,
             includeTempAvatar: false,

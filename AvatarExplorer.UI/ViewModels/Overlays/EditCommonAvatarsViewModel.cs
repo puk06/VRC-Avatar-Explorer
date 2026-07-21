@@ -64,7 +64,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase
 
     private async Task AddGroup()
     {
-        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[LocalizationKey.Dialog.Title.AddCommonAvatarGroup]);
+        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCommonAvatarGroup]);
         if (string.IsNullOrEmpty(newGroupName)) return;
 
         CommonAvatarRep.Create(newGroupName);
@@ -75,7 +75,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase
     {
         if (SelectedGroup == null) return;
         
-        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[LocalizationKey.Dialog.Title.AddCommonAvatarGroup]);
+        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCommonAvatarGroup]);
         if (string.IsNullOrEmpty(newGroupName)) return;
 
         CommonAvatarRep.RenameGroup(SelectedGroup.Identifier, newGroupName);
@@ -87,8 +87,8 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         if (SelectedGroup == null) return;
 
         var confirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default],
-            Localizer.Instance[LocalizationKey.Dialog.Confirmation.RemoveCommonAvatarGroup]
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.RemoveCommonAvatarGroup]
         );
         if (confirmationResult is false) return;
         
@@ -110,8 +110,8 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         if (SelectedGroup == null) return;
 
         var confirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[LocalizationKey.Dialog.Confirmation.Default],
-            Localizer.Instance[LocalizationKey.Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup]
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup]
         );
         if (confirmationResult is false) return;
 
