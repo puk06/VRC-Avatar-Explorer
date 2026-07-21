@@ -481,6 +481,12 @@
     "MergeCategory.TargetCategory": "目標類別",
     "MergeCategory.Merge": "合併",
 
+    "UnitypackageViewer.Export": "匯出",
+    "UnitypackageViewer.Title": "Unitypackage Viewer",
+    "UnitypackageViewer.Status.Loading": "載入中...",
+    "UnitypackageViewer.Status.LoadFailed": "載入路徑項目失敗",
+    "UnitypackageViewer.Status.Entries": "{0} 件項目",
+
     "DialogResult.OK": "完成",
     "DialogResult.Yes": "是",
     "DialogResult.No": "否",

@@ -5,6 +5,7 @@ using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Models.ContextMenu;
+using AvatarExplorer.UI.ViewModels.Component;
 
 namespace AvatarExplorer.UI.Services.ViewControl;
 
@@ -22,17 +23,16 @@ public enum ViewModelType
 
 internal static class ContextMenuCreator
 {
-    // TODO: Identifierから内部のIdに変換する部分を作る
-    internal static ContextMenuAction[] Create(ViewModelType type, string identifier)
+    internal static ContextMenuAction[] Create(ViewModelType type, ItemViewModel viewModel)
     {
         return type switch
         {
-            ViewModelType.Item => CreateFromItem(identifier),
-            ViewModelType.Folder => CreateFromFolder(identifier),
-            ViewModelType.File => CreateFromItemFile(identifier),
-            ViewModelType.BulkImportPreset => CreateFromBulkImportPreset(identifier),
-            ViewModelType.TempAvatar => CreateFromTempAvatar(identifier),
-            ViewModelType.ItemCategory => CreateFromItemCategory(identifier),
+            ViewModelType.Item => CreateFromItem(viewModel.Identifier),
+            ViewModelType.Folder => CreateFromFolder(viewModel.ActualValue ?? string.Empty),
+            ViewModelType.File => CreateFromItemFile(viewModel.ActualValue ?? string.Empty),
+            ViewModelType.BulkImportPreset => CreateFromBulkImportPreset(viewModel.Identifier),
+            ViewModelType.TempAvatar => CreateFromTempAvatar(viewModel.Identifier),
+            ViewModelType.ItemCategory => CreateFromItemCategory(viewModel.Identifier),
             _ => []
         };
     }

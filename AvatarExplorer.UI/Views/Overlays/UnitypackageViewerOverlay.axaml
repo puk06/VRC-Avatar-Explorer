@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
-    xmlns:uimodel="using:AvatarExplorer.UI.Models.Overlay"
+    xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
     x:Class="AvatarExplorer.UI.Views.Overlays.UnitypackageViewerOverlay"
     x:DataType="vm:UnitypackageViewerViewModel">
@@ -9,7 +9,7 @@
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="800" Height="600" Padding="20">
             <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
-                <TextBlock Text="Unitypackage Viewer" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                <TextBlock Text="{Binding [UnitypackageViewer.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                 <StackPanel Grid.Row="1" Spacing="2">
                     <TextBlock Text="{Binding FileName}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
                     <TextBlock Text="{Binding Status}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
@@ -18,18 +18,17 @@
 
                 <Border Grid.Row="2" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
                     <ScrollViewer>
-                        <TreeView SelectedItem="{Binding SelectedNode}">
+                        <TreeView ItemsSource="{Binding Nodes}" SelectedItem="{Binding SelectedNode}">
                             <TreeView.ItemTemplate>
-                                <TreeDataTemplate x:DataType="uimodel:UnitypackagePathNode" ItemsSource="{Binding Children}">
+                                <TreeDataTemplate x:DataType="vmcomponent:UnitypackagePathNodeViewModel" ItemsSource="{Binding Children}">
                                     <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Text.Primary}"/>
                                 </TreeDataTemplate>
                             </TreeView.ItemTemplate>
                         </TreeView>
                     </ScrollViewer>
                 </Border>
-                <!-- TODO: エクスポートのLocalizationを面倒くさがっているのを修正する -->
                 <Grid Grid.Row="3" ColumnDefinitions="*,120,120" ColumnSpacing="10">
-                    <Button Grid.Column="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [Settings.ExportCsv.Export], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding ExportCommand}"/>
+                    <Button Grid.Column="1" Classes="accentbutton" FontWeight="Bold" Content="{Binding [UnitypackageViewer.Export], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding ExportCommand}"/>
                     <Button Grid.Column="2" Classes="button" FontWeight="Bold" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CloseCommand}"/>
                 </Grid>
             </Grid>

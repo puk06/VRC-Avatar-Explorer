@@ -200,6 +200,11 @@ public class MainWindowViewModel : ViewModelBase
         return password;
     }
 
+    public void ShowUnitypackageViewer(string filePath)
+    {
+        UnitypackageViewerVM.Open(filePath);
+    }
+
     private void SetBackgroundImage(string path, int opacity)
     {
         try

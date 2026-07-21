@@ -481,6 +481,12 @@
     "MergeCategory.TargetCategory": "Categoría de destino",
     "MergeCategory.Merge": "Fusionar",
 
+    "UnitypackageViewer.Export": "Exportar",
+    "UnitypackageViewer.Title": "Visor de Unitypackage",
+    "UnitypackageViewer.Status.Loading": "Cargando...",
+    "UnitypackageViewer.Status.LoadFailed": "Error al cargar las entradas de ruta",
+    "UnitypackageViewer.Status.Entries": "{0} entradas",
+
     "DialogResult.OK": "Listo",
     "DialogResult.Yes": "Sí",
     "DialogResult.No": "No",

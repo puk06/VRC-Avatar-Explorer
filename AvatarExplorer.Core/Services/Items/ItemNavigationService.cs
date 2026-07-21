@@ -135,7 +135,7 @@ public class ItemNavigationService
         return itemFiles.GroupBy(i => i.ParentFolderPath).Select(i =>
         {
             var hash = PathUtils.ComputeHash(i.Key);
-            return new Folder(GetPrefix(FolderPrefix, hash))
+            return new Folder(GetPrefix(FolderPrefix, hash), i.Key)
             {
                 Title = Path.GetFileName(i.Key),
                 TitleLocalizable = false,

@@ -51,7 +51,8 @@ public static class NavigationItemFactory
                 TitleLocalizable = folder.TitleLocalizable,
                 DescriptionRaw = new(Loc.Button.Description.Item.Count, [folder.ItemCount.ToString()]),
                 Identifier = folder.Identifier,
-                ViewModelType = ViewModelType.Folder
+                ViewModelType = ViewModelType.Folder,
+                ActualValue = folder.Path
             };
         }
 
@@ -66,7 +67,8 @@ public static class NavigationItemFactory
                 TitleLocalizable = false,
                 DescriptionRaw = new(hasExtension ? Loc.Button.Description.File.Extension : Loc.Button.Description.File.NoExtension, [file.Extension]),
                 Identifier = file.Identifier,
-                ViewModelType = ViewModelType.File
+                ViewModelType = ViewModelType.File,
+                ActualValue = file.FilePath
             };
         }
 

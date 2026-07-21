@@ -481,6 +481,12 @@
     "MergeCategory.TargetCategory": "Target Category",
     "MergeCategory.Merge": "Merge",
 
+    "UnitypackageViewer.Export": "Export",
+    "UnitypackageViewer.Title": "Unitypackage Viewer",
+    "UnitypackageViewer.Status.Loading": "Loading...",
+    "UnitypackageViewer.Status.LoadFailed": "Failed to load pathname entries",
+    "UnitypackageViewer.Status.Entries": "{0} entries",
+
     "DialogResult.OK": "OK",
     "DialogResult.Yes": "Yes",
     "DialogResult.No": "No",

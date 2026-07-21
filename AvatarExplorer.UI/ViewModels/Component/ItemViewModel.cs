@@ -39,6 +39,7 @@ public class ItemViewModel : ViewModelBase
     public Action<ContextMenuAction>? onMenuClick = null;
 
     public string Identifier { get; set; } = string.Empty;
+    public string? ActualValue { get; set; }
     public required ViewModelType ViewModelType { get; set; }
 
     public ItemViewModel Update()

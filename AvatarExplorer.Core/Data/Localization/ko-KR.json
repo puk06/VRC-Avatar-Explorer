@@ -481,6 +481,12 @@
     "MergeCategory.TargetCategory": "통합 대상 카테고리",
     "MergeCategory.Merge": "통합",
 
+    "UnitypackageViewer.Export": "내보내기",
+    "UnitypackageViewer.Title": "Unitypackage Viewer",
+    "UnitypackageViewer.Status.Loading": "로딩 중...",
+    "UnitypackageViewer.Status.LoadFailed": "경로 항목 로딩 실패",
+    "UnitypackageViewer.Status.Entries": "{0}개 항목",
+
     "DialogResult.OK": "완료",
     "DialogResult.Yes": "예",
     "DialogResult.No": "아니오",

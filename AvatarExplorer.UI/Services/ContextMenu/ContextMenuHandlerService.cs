@@ -193,7 +193,13 @@ public static class ContextMenuHandlerService
     private static void OpenFile(string identifier) { }
     private static void AddFileToBulkImportList(string identifier) { }
     private static void OpenFileInExplorer(string identifier) { }
-    private static void OpenUnitypackageViewer(string identifier) { }
+    private static void OpenUnitypackageViewer(string identifier)
+    {
+        var filePath = ItemNavigationService.ResolveFilePath(identifier);
+        if (string.IsNullOrEmpty(filePath)) return;
+
+        MainWindowViewModel.Instance.ShowUnitypackageViewer(filePath);
+    }
     private static void OpenPdfViewer(string identifier) { }
     private static void RemovePreset(string identifier) { }
     private static void EditTempAvatarName(string identifier) { }

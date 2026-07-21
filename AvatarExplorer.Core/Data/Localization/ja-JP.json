@@ -481,6 +481,12 @@
     "MergeCategory.TargetCategory": "統合先のカテゴリ",
     "MergeCategory.Merge": "統合",
 
+    "UnitypackageViewer.Export": "エクスポート",
+    "UnitypackageViewer.Title": "Unitypackage Viewer",
+    "UnitypackageViewer.Status.Loading": "読み込み中...",
+    "UnitypackageViewer.Status.LoadFailed": "パス名項目の読み込みに失敗しました",
+    "UnitypackageViewer.Status.Entries": "{0} 件の項目",
+
     "DialogResult.OK": "完了",
     "DialogResult.Yes": "はい",
     "DialogResult.No": "いいえ",

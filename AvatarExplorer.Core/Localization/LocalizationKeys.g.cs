@@ -784,6 +784,17 @@ public static class Loc
         public const string TargetCategory = "MergeCategory.TargetCategory";
         public const string Merge = "MergeCategory.Merge";
     }
+    public static class UnitypackageViewer
+    {
+        public const string Export = "UnitypackageViewer.Export";
+        public const string Title = "UnitypackageViewer.Title";
+        public static class Status
+        {
+            public const string Loading = "UnitypackageViewer.Status.Loading";
+            public const string LoadFailed = "UnitypackageViewer.Status.LoadFailed";
+            public const string Entries = "UnitypackageViewer.Status.Entries";
+        }
+    }
     public static class DialogResult
     {
         public const string OK = "DialogResult.OK";

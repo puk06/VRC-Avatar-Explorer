@@ -481,6 +481,12 @@
     "MergeCategory.TargetCategory": "Catégorie cible",
     "MergeCategory.Merge": "Fusionner",
 
+    "UnitypackageViewer.Export": "Exporter",
+    "UnitypackageViewer.Title": "Visionneuse Unitypackage",
+    "UnitypackageViewer.Status.Loading": "Chargement...",
+    "UnitypackageViewer.Status.LoadFailed": "Échec du chargement des entrées de chemin",
+    "UnitypackageViewer.Status.Entries": "{0} entrées",
+
     "DialogResult.OK": "Terminé",
     "DialogResult.Yes": "Oui",
     "DialogResult.No": "Non",

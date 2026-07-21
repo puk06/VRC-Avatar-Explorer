@@ -152,7 +152,7 @@ public class MainViewModel : ViewModelBase
     private static ItemViewModel CreateItemViewModel(INavigationable item)
     {
         var navigationItem = NavigationItemFactory.CreateFromNavigationable(item);
-        navigationItem.Actions = ContextMenuCreator.Create(navigationItem.ViewModelType, navigationItem.Identifier);
+        navigationItem.Actions = ContextMenuCreator.Create(navigationItem.ViewModelType, navigationItem);
 
         return navigationItem;
     }
