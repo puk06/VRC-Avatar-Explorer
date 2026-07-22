@@ -6,10 +6,7 @@ using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
-using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.Core.Utils;
 using ErrorOr;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Tar;
@@ -251,7 +248,7 @@ public static class FileSystemService
             {
                 try
                 {
-                    currentProcessedEntries = await ExtractTarToFolderAsync(itemPathCategoryKpv.Key, saveFolderPath, itemPathCategoryKpv.Value, totalEntries, currentProcessedEntries, reportProgress);
+                    currentProcessedEntries = await ExtractUnitypackageToFolderAsync(itemPathCategoryKpv.Key, saveFolderPath, itemPathCategoryKpv.Value, totalEntries, currentProcessedEntries, reportProgress);
                     result.Success.Add(itemPathCategoryKpv.Key);
                 }
                 catch
@@ -313,7 +310,7 @@ public static class FileSystemService
             count++;
         return count;
     }
-    private static async Task<int> ExtractTarToFolderAsync(string tarGzFilePath, string saveFilePath, string category, int totalEntries, int currentProcessedEntries = 0, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<int> ExtractUnitypackageToFolderAsync(string tarGzFilePath, string saveFilePath, string category, int totalEntries, int currentProcessedEntries = 0, Func<(string, int), Task>? reportProgress = null)
     {
         int processedEntries = currentProcessedEntries;
 

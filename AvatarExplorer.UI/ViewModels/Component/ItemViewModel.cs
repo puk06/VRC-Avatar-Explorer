@@ -55,6 +55,6 @@ public class ItemViewModel : ViewModelBase
 
     private void HandleMenuClick(ContextMenuAction action)
     {
-        ContextMenuHandlerService.Handle(action.ActionKey, Identifier);
+        ContextMenuHandlerService.Handle(action.ActionKey, ActualValue ?? Identifier);
     }
 }

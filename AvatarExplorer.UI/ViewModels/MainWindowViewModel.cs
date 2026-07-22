@@ -83,7 +83,7 @@ public class MainWindowViewModel : ViewModelBase
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
     [Reactive] public bool IsYesNoDialogVisible { get; set; }
 
-    public WindowNotificationManager NotificationManager { get; } = new();
+    public WindowNotificationManager? NotificationManager { get; set; }
 
     public MainWindowViewModel()
     {
@@ -200,6 +200,7 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     public void ShowUnitypackageViewer(string filePath) => UnitypackageViewerVM.Open(filePath);
+    public void ShowPdfViewer(string filePath) => PdfViewerVM.Open(filePath);
 
     public void ShowErrorLog()
     {
@@ -234,7 +235,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public void ShowNotification(string title, string content, NotificationType type)
     {
-        NotificationManager.Show(new Notification()
+        NotificationManager?.Show(new Notification()
         {
             Title = title,
             Message = content,

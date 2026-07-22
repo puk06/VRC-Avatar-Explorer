@@ -8,6 +8,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        NotificationManager = MainWindowViewModel.Instance.NotificationManager;
+        MainWindowViewModel.Instance.NotificationManager = NotificationManager;
     }
 }

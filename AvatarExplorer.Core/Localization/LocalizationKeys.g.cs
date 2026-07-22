@@ -127,10 +127,6 @@ public static class Loc
             public const string RemoveAssetData = "Dialog.Confirmation.RemoveAssetData";
             public const string CopyAssetData = "Dialog.Confirmation.CopyAssetData";
             public const string NoAvatarsAndValidateType = "Dialog.Confirmation.NoAvatarsAndValidateType";
-            public static class ExportToCsv
-            {
-                public const string IncludeImplementedToSupported = "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported";
-            }
             public static class EditCommonAvatars
             {
                 public const string ReplaceAvatarsToGroup = "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup";
@@ -742,6 +738,7 @@ public static class Loc
             public const string Title = "ExportData.FolderPath.Title";
             public const string Browse = "ExportData.FolderPath.Browse";
         }
+        public const string IncludeCommonToSupported = "ExportData.IncludeCommonToSupported";
         public const string Export = "ExportData.Export";
     }
     public static class FetchAllThumbnailsOverlay

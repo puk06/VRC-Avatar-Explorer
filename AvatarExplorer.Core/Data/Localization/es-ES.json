@@ -70,8 +70,6 @@
     "Dialog.Confirmation.CopyAssetData": "¿Copiar los datos de recursos?\n\nSi no, se usará tal cual la carpeta de recursos original.",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "Hemos restaurado los datos desde la copia de seguridad, pero no se encontró ningún dato de avatar. Si había añadido avatares con estos datos, la base de datos está rota. Puede arreglarlo pulsando 'Sí'.",
 
-    "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "¿Incluir avatares comunes en la columna de avatares compatibles?",
-
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "¿Reemplazar los avatares compatibles de los elementos que contienen avatares en el grupo de avatares comunes por el grupo de avatares comunes?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "¿Reemplazar los avatares compatibles de los elementos que tienen el grupo de avatares comunes configurado como avatares compatibles por avatares individuales?",
 
@@ -449,6 +447,7 @@
     "ExportData.ExportType": "Tipo de exportación",
     "ExportData.FolderPath.Title": "Carpeta de salida",
     "ExportData.FolderPath.Browse": "Examinar",
+    "ExportData.IncludeCommonToSupported": "Incluir avatares comunes en la columna de avatares compatibles",
     "ExportData.Export": "Exportar",
 
     "FetchAllThumbnailsOverlay.Title": "Obtención masiva de miniaturas",

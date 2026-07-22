@@ -70,8 +70,6 @@
     "Dialog.Confirmation.CopyAssetData": "アセットデータをコピーしますか？\n\nしない場合は、元のアセットフォルダがそのまま使用されます。",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "バックアップデータから復元しましたが、アバターデータが見つかりませんでした。アバターを追加していたなら、データベースが壊れています。「はい」を押すことで修正できます。",
 
-    "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "対応アバターの欄に共通素体アバターを含めますか？",
-
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "共通素体グループ内のアバターが含まれているアイテムの対応アバターを共通素体グループに置き換えますか？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "共通素体グループが対応アバターとして設定されているアイテムの対応アバターを、個別のアバターに置き換えますか？",
 
@@ -449,6 +447,7 @@
     "ExportData.ExportType": "出力タイプ",
     "ExportData.FolderPath.Title": "出力先フォルダー",
     "ExportData.FolderPath.Browse": "参照",
+    "ExportData.IncludeCommonToSupported": "対応アバターの欄に共通素体アバターを含める",
     "ExportData.Export": "エクスポート",
 
     "FetchAllThumbnailsOverlay.Title": "サムネイル一括取得",

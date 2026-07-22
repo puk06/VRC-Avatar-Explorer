@@ -70,8 +70,6 @@
     "Dialog.Confirmation.CopyAssetData": "要复制资产数据吗？\n\n如果不复制，将直接使用原始资产文件夹。",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "我们已从备份数据恢复，但未找到头像数据。如果您曾使用这些数据添加过头像，数据库已经损坏。按‘是’可以进行修复。",
 
-    "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "要在支持头像栏中包含共通素体头像吗？",
-
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要将包含共通素体组头像的项目的支持头像替换为共通素体组吗？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要将将共通素体组设置为支持头像的项目的支持头像替换为单独头像吗？",
 
@@ -449,6 +447,7 @@
     "ExportData.ExportType": "导出类型",
     "ExportData.FolderPath.Title": "输出文件夹",
     "ExportData.FolderPath.Browse": "浏览",
+    "ExportData.IncludeCommonToSupported": "在支持头像栏中包含共通素体头像",
     "ExportData.Export": "导出",
 
     "FetchAllThumbnailsOverlay.Title": "批量获取缩略图",

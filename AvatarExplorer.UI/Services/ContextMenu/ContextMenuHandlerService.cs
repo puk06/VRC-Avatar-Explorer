@@ -29,11 +29,12 @@ public static class ContextMenuHandlerService
         _handlers[key] = handler;
     }
 
-    public static void Handle(ActionKey key, string identifier)
+    // valueはActualValueがあればActualValue（ファイルパスなど）、無ければIdentidier
+    public static void Handle(ActionKey key, string value)
     {
         if (_handlers.TryGetValue(key, out var handler))
         {
-            handler(identifier);
+            handler(value);
         }
     }
 
@@ -145,9 +146,6 @@ public static class ContextMenuHandlerService
     private static void AddToBulkImportList(string identifier) { } // TODO: 作る
     private static async void AddItemFile(string identifier)
     {
-        var item = Items.Get(identifier);
-        if (item == null) return;
-        
         var files = await StorageService.OpenFileDialog(
             TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFilePath],
@@ -159,9 +157,6 @@ public static class ContextMenuHandlerService
     }
     private static async void AddItemFolder(string identifier)
     {
-        var item = Items.Get(identifier);
-        if (item == null) return;
-        
         var folders = await StorageService.OpenFolderDialog(
             TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFolderPath],
@@ -193,14 +188,14 @@ public static class ContextMenuHandlerService
     private static void OpenFile(string identifier) { }
     private static void AddFileToBulkImportList(string identifier) { }
     private static void OpenFileInExplorer(string identifier) { }
-    private static void OpenUnitypackageViewer(string identifier)
+    private static void OpenUnitypackageViewer(string path)
     {
-        var filePath = ItemNavigationService.ResolveFilePath(identifier);
-        if (string.IsNullOrEmpty(filePath)) return;
-
-        MainWindowViewModel.Instance.ShowUnitypackageViewer(filePath);
+        MainWindowViewModel.Instance.ShowUnitypackageViewer(path);
     }
-    private static void OpenPdfViewer(string identifier) { }
+    private static void OpenPdfViewer(string path)
+    {
+        MainWindowViewModel.Instance.ShowPdfViewer(path);
+    }
     private static void RemovePreset(string identifier) { }
     private static void EditTempAvatarName(string identifier) { }
     private static void ResolveTempAvatar(string identifier) { }

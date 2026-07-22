@@ -20,7 +20,7 @@
                 <!-- 出力タイプ選択 -->
                 <StackPanel Spacing="5">
                     <TextBlock Text="{Binding [ExportData.ExportType], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
-                    <ComboBox ItemsSource="{Binding ExportTypes}" SelectedIndex="{Binding SelectedExportTypeIndex}" HorizontalAlignment="Stretch"/>
+                    <ComboBox ItemsSource="{Binding ExportTypeNames}" SelectedIndex="{Binding SelectedExportTypeIndex}" HorizontalAlignment="Stretch"/>
                 </StackPanel>
 
                 <!-- フォルダー選択 -->
@@ -31,6 +31,9 @@
                         <Button Classes="button" Grid.Column="1" Content="{Binding [ExportData.FolderPath.Browse], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Command="{Binding BrowseFolderCommand}"/>
                     </Grid>
                 </StackPanel>
+
+                <!-- 共通素体アバターを含める -->
+                <CheckBox IsChecked="{Binding IncludeCommonToSupported}" Content="{Binding [ExportData.IncludeCommonToSupported], Source={x:Static loc:Localizer.Instance}}" FontSize="13"/>
 
                 <!-- ボタン -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">

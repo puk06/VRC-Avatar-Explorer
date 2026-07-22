@@ -70,8 +70,6 @@
     "Dialog.Confirmation.CopyAssetData": "Copier les données de ressources ?\n\nSinon, le dossier de ressources d'origine sera utilisé tel quel.",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "Nous avons restauré les données depuis la sauvegarde, mais aucune donnée d'avatar n'a été trouvée. Si vous avez ajouté des avatars avec ces données, la base de données est corrompue. Vous pouvez le réparer en appuyant sur 'Oui'.",
 
-    "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "Inclure les avatars communs dans la colonne des avatars pris en charge ?",
-
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Remplacer les avatars pris en charge des éléments contenant des avatars du groupe d'avatars communs par le groupe d'avatars communs ?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Remplacer les avatars pris en charge des éléments dont les avatars pris en charge sont définis sur le groupe d'avatars communs par des avatars individuels ?",
 
@@ -449,6 +447,7 @@
     "ExportData.ExportType": "Type d'exportation",
     "ExportData.FolderPath.Title": "Dossier de sortie",
     "ExportData.FolderPath.Browse": "Parcourir",
+    "ExportData.IncludeCommonToSupported": "Inclure les avatars communs dans la colonne des avatars pris en charge",
     "ExportData.Export": "Exporter",
 
     "FetchAllThumbnailsOverlay.Title": "Récupération groupée des vignettes",

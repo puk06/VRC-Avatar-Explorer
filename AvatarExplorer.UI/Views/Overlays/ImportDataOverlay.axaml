@@ -20,7 +20,7 @@
                 <!-- インポート元データタイプ選択 -->
                 <StackPanel Spacing="5">
                     <TextBlock Text="{Binding [ImportData.ImportSource], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
-                    <ComboBox ItemsSource="{Binding ImportSources}" SelectedIndex="{Binding SelectedImportSourceIndex}" HorizontalAlignment="Stretch"/>
+                    <ComboBox ItemsSource="{Binding ImportSourceNames}" SelectedIndex="{Binding SelectedImportSourceIndex}" HorizontalAlignment="Stretch"/>
                 </StackPanel>
 
                 <!-- フォルダー選択 -->

@@ -44,7 +44,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         {
             QueryType.Avatar => GetAvatars(includeTempAvatar: true),
             QueryType.Author => GetAuthors(),
-            QueryType.Category => GetCategories(),
+            QueryType.Category => GetCategories(includeAllCategory: true),
             _ => []
         };
     }
@@ -148,7 +148,8 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
     public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
     {
         _items.GetAll()
-            .ForEach(i => i.UpdateSupportedAvatars(
+            .ForEach(i =>
+            i.UpdateSupportedAvatars(
                 i.SupportedAvatars
                     .Select(i => i == tempAvatarId ? targetItemId : i)
                     .Distinct()
@@ -190,21 +191,21 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         return [];
     }
 
-    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string filePath, Dictionary<ItemType, string> localizedItemTypesMapping, bool includeCommonToSupported)
+    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string folderPath, Func<ItemType, ValueTask<string?>>? itemTypeLocalizer, bool includeCommonToSupported)
     {
         var exportContext = new ExportContext()
         {
             Items = _items.GetAll(),
             CommonAvatars = _commonAvatars.GetAll(),
             TempAvatars = _tempAvatars.GetAll(),
-            LocalizedItemTypesMapping = localizedItemTypesMapping,
+            ItemTypeLocalizer = itemTypeLocalizer,
             RuntimeSettings = _runtimesettings.Settings
         };
 
         var exportRequest = new ExportRequest()
         {
             ExportType = exportType,
-            FilePath = filePath,
+            FolderPath = folderPath,
             IncludeCommonToSupported = includeCommonToSupported
         };
 

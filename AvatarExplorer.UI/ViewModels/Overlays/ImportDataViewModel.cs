@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
@@ -18,11 +20,15 @@ public class ImportDataViewModel : ViewModelBase
     [Reactive] public bool ImportItems { get; set; } = true;
     [Reactive] public bool ImportThumbnails { get; set; } = true;
     
-    public List<string> ImportSources { get; } = new()
-    {
-        "Avatar Explorer V1.x.x",
-        "KonoAsset"
-    };
+    private List<(string Name, DataImportType Type)> ImportSourceOptions { get; } =
+    [
+        ("Avatar Explorer V1.x.x", DataImportType.V1),
+        ("KonoAsset", DataImportType.KonoAsset),
+    ];
+
+    public List<string> ImportSourceNames => ImportSourceOptions.ConvertAll(o => o.Name);
+
+    private DataImportType SelectedImportSource => ImportSourceOptions[SelectedImportSourceIndex].Type;
 
     public IReactiveCommand BrowseFolderCommand { get; }
     public IReactiveCommand ImportCommand { get; }

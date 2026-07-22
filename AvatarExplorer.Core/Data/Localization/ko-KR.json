@@ -70,8 +70,6 @@
     "Dialog.Confirmation.CopyAssetData": "자산 데이터를 복사하시겠습니까?\n\n복사하지 않으면 원본 자산 폴더를 그대로 사용합니다.",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "백업 데이터에서 복구했지만, 아바타 데이터를 찾을 수 없었습니다. 이 데이터를 사용하여 아바타를 추가한 경우, 데이터베이스가 손상되었습니다. '예'를 누르면 수정할 수 있습니다.",
 
-    "Dialog.Confirmation.ExportToCsv.IncludeImplementedToSupported": "대응 아바타 항목에 공통 바디 아바타를 포함하시겠습니까?",
-
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "공통 바디 그룹에 포함된 아바타가 들어 있는 아이템의 대응 아바타를 공통 바디 그룹으로 바꾸시겠습니까?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "공통 바디 그룹이 대응 아바타로 설정된 아이템의 대응 아바타를 개별 아바타로 바꾸시겠습니까?",
 
@@ -449,6 +447,7 @@
     "ExportData.ExportType": "내보내기 유형",
     "ExportData.FolderPath.Title": "출력 폴더",
     "ExportData.FolderPath.Browse": "찾아보기",
+    "ExportData.IncludeCommonToSupported": "대응 아바타 항목에 공통 바디 아바타 포함",
     "ExportData.Export": "내보내기",
 
     "FetchAllThumbnailsOverlay.Title": "썸네일 일괄 가져오기",
