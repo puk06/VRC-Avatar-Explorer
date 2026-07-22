@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -21,8 +22,9 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class AddItemViewModel : ViewModelBase
+public class ItemEditorViewModel : ViewModelBase
 {
+    [Reactive] public bool IsVisible { get; set; } = false;
     public string? ItemId { get; set; } = null;
     public ObservableCollection<ItemPathViewModel> ItemPaths { get; set; } = [];
     [Reactive] public bool ShouldLinkToOriginal { get; set; } = false;
@@ -32,7 +34,7 @@ public class AddItemViewModel : ViewModelBase
     [Reactive] public string Author { get; set; } = string.Empty;
     [Reactive] public int SelectedCategoryIndex { get; set; } = 0;
     public ItemCategoryViewModel? SelectedCategory => Categories.Count > SelectedCategoryIndex ? Categories[SelectedCategoryIndex] : null;
-    public ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
+    [Reactive] public ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
 
     [Reactive] public string SupportedAvatarsText { get; set; } = string.Empty;
     public IEnumerable<string> SupportedAvatars { get; set; } = []; // 変更時、もしくはLocalizerの言語変更時にテキストを更新する
@@ -58,7 +60,7 @@ public class AddItemViewModel : ViewModelBase
     public IReactiveCommand CancelCommand { get; }
     public IReactiveCommand ConfirmCommand { get; }
 
-    public AddItemViewModel()
+    public ItemEditorViewModel()
     {
         AddFolderCommand = ReactiveCommand.CreateFromTask(SelectAndAddFolders);
         AddFileCommand = ReactiveCommand.CreateFromTask(SelectAndAddFiles);
@@ -81,9 +83,10 @@ public class AddItemViewModel : ViewModelBase
 
         if (itemId != null)
         {
-            var item = AvatarExplorerApp.Instance.Items.GetById(itemId);
+            var item = AvatarExplorerApp.Instance.Items.Get(itemId);
             if (item != null)
             {
+                BoothUrl = item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
                 Title = item.Title;
                 Author = item.Author;
                 AuthorId = item.AuthorId;
@@ -92,11 +95,7 @@ public class AddItemViewModel : ViewModelBase
                 SupportedAvatars = item.SupportedAvatars.ToList();
                 Tags = item.Tags.ToList();
 
-                var categoryIndex = Categories.ToList().FindIndex(c => c.Category.Equals(new ItemCategory(item.Type)));
-                if (item.Type == ItemType.Custom && !string.IsNullOrEmpty(item.CustomCategory))
-                {
-                    categoryIndex = Categories.ToList().FindIndex(c => c.Category.Equals(new ItemCategory(item.CustomCategory)));
-                }
+                var categoryIndex = GetCategoryIndex(new ItemCategory(item.Type, item.CustomCategory));
                 SelectedCategoryIndex = categoryIndex >= 0 ? categoryIndex : 0;
             }
         }
@@ -109,64 +108,132 @@ public class AddItemViewModel : ViewModelBase
             Memo = string.Empty;
             SupportedAvatars = [];
             Tags = [];
+            SelectedCategoryIndex = -1;
             SelectedCategoryIndex = 0;
         }
 
         ShouldLinkToOriginal = AvatarExplorerApp.Instance.RuntimeSettings.Settings.ShouldLinkToOriginal;
 
         UpdateCountField();
+        IsVisible = true;
+    }
+
+    public void Close()
+    {
+        SelectedCategoryIndex = -1;
+        IsVisible = false;
+    }
+
+    public int GetCategoryIndex(ItemCategory category)
+    {
+        for (int i = 0; i < Categories.Count; i++)
+        {
+            if (Categories[i].Category.Equals(category))
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     private void Cancel()
     {
-        MainWindowViewModel.Instance.IsAddItemVisible = false;
+        Close();
     }
 
     private async Task Confirm()
     {
-        var identifier = string.Empty;
-        if (ItemId != null)
+        var identifier = ItemId != null ? await ConfirmEdit() : await ConfirmCreate();
+        await AddPathsAsync(identifier);
+    }
+
+    private async Task<string> ConfirmEdit()
+    {
+        var editContext = new ItemEditContext
         {
-            var editContext = new ItemEditContext
-            {
-                Title = Title,
-                Author = Author,
-                AuthorId = AuthorId,
-                BoothId = ValueParser.Int(BoothId, -1),
-                ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
-                CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory ?? string.Empty : string.Empty,
-                ItemMemo = Memo
-            };
-            editContext.SupportedAvatars.AddRange(SupportedAvatars);
-            editContext.Tags.AddRange(Tags);
+            Title = Title,
+            Author = Author,
+            AuthorId = AuthorId,
+            BoothId = ValueParser.Int(BoothId, -1),
+            ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
+            CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory : string.Empty,
+            SupportedAvatars = SupportedAvatars.ToList(),
+            ItemMemo = Memo,
+            Tags = Tags.ToList()
+        };
 
-            identifier = $"item:{ItemId}";
-            AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
-        }
-        else
+        var identifier = $"item:{ItemId}";
+        bool updateResult = AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
+        MainWindowViewModel.Instance.ShowNotification(
+            Localizer.Instance[updateResult ? Loc.Success.Default : Loc.Error.Default],
+            Localizer.Instance[updateResult ? Loc.Success.ItemEdit : Loc.Error.ItemEditFailed],
+            updateResult ? Avalonia.Controls.Notifications.NotificationType.Success : Avalonia.Controls.Notifications.NotificationType.Error
+        );
+        return identifier;
+    }
+
+    private async Task<string> ConfirmCreate()
+    {
+        var creationContext = new ItemCreationContext
         {
-            var creationContext = new ItemCreationContext
-            {
-                Title = Title,
-                Author = Author,
-                AuthorId = AuthorId,
-                BoothId = int.TryParse(BoothId, out var boothId) ? boothId : -1,
-                ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
-                CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory ?? string.Empty : string.Empty,
-                ItemMemo = Memo
-            };
-            creationContext.SupportedAvatars.AddRange(SupportedAvatars);
-            creationContext.Tags.AddRange(Tags);
+            Title = Title,
+            Author = Author,
+            AuthorId = AuthorId,
+            BoothId = int.TryParse(BoothId, out var boothId) ? boothId : -1,
+            ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
+            CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory ?? string.Empty : string.Empty,
+            ItemMemo = Memo
+        };
+        creationContext.SupportedAvatars.AddRange(SupportedAvatars);
+        creationContext.Tags.AddRange(Tags);
 
-            var item = AvatarExplorerApp.Instance.Items.Create(creationContext);
-            identifier = item.Identifier;
+        var existingSameBoothIdItem = AvatarExplorerApp.Instance.Items.GetAll().FirstOrDefault(i => i.BoothId == creationContext.BoothId);
+        var addToExistingItem = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.AddToExistingItem]
+        );
+
+        if (existingSameBoothIdItem != null && addToExistingItem)
+        {
+            return existingSameBoothIdItem.Identifier;
         }
 
+        var item = AvatarExplorerApp.Instance.Items.Create(creationContext);
+        MainWindowViewModel.Instance.ShowNotification(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.ItemAdd],
+            Avalonia.Controls.Notifications.NotificationType.Success
+        );
+        return item.Identifier;
+    }
+
+    private async Task AddPathsAsync(string identifier)
+    {
+        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Default]);
+        MainWindowViewModel.Instance.ProgressVM.Update(0);
         var result = await AvatarExplorerApp.Instance.Items.AddPaths(identifier, ItemPaths.Select(i => i.FullPath), ShouldLinkToOriginal);
-        // TODO: resultのハンドリングを追加する
+        MainWindowViewModel.Instance.ProgressVM.Close();
+        
+        if (result.IsError)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.AddItemFileFailed],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
+        else if (result.Value.ProcessingFailedPaths.Count > 0)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()),
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
 
         AvatarExplorerApp.Instance.Items.Save();
-        MainWindowViewModel.Instance.IsAddItemVisible = false;
+        Close();
     }
 
     private async Task SelectAndAddFolders()
@@ -193,7 +260,11 @@ public class AddItemViewModel : ViewModelBase
     }
     private async Task FetchBoothData()
     {
+        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Booth.Status.Fetching]);
+        MainWindowViewModel.Instance.ProgressVM.Update(0);
         var fetchResult = await BoothService.Fetch(BoothUrl, waitCooldown: true);
+        MainWindowViewModel.Instance.ProgressVM.Close();
+
         if (fetchResult.IsError)
         {
             MainWindowViewModel.Instance.ShowNotification(
@@ -212,10 +283,7 @@ public class AddItemViewModel : ViewModelBase
         ThumbnailUrl = boothData.ThumbnailUrl;
     }
 
-    private void RemovePath(ItemPathViewModel pathModel)
-    {
-        ItemPaths.Remove(pathModel);
-    }
+    private void RemovePath(ItemPathViewModel pathModel) => ItemPaths.Remove(pathModel);
 
     private void RefleshCategories()
     {
@@ -293,7 +361,7 @@ public class AddItemViewModel : ViewModelBase
 
     private void UpdateCountField()
     {
-        TagsText = Localizer.Instance.Get(Loc.AddItem.SelectedTagsCount, Tags.Count().ToString());
-        SupportedAvatarsText = Localizer.Instance.Get(Loc.AddItem.SelectedAvatarsCount, GetSupportedAvatarsCount().ToString());
+        TagsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedTagsCount, Tags.Count().ToString());
+        SupportedAvatarsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedAvatarsCount, GetSupportedAvatarsCount().ToString());
     }
 }

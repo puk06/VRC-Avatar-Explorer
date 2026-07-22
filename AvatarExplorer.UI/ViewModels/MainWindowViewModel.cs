@@ -34,8 +34,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainViewModel MainVM { get; } = new();
 
-    public AddItemViewModel AddItemVM { get; } = new();
-    [Reactive] public bool IsAddItemVisible { get; set; }
+    public ItemEditorViewModel ItemEditorVM { get; } = new();
 
     public ArchivePasswordDialogViewModel ArchivePasswordDialogVM { get; } = new();
     [Reactive] public bool IsArchivePasswordDialogVisible { get; set; }
@@ -131,8 +130,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public void ShowAddItem(string? itemId = null)
     {
-        AddItemVM.Open(itemId);
-        IsAddItemVisible = true;
+        ItemEditorVM.Open(itemId);
     }
 
     public async Task<string?> ShowEditMemoDialog(string memo)

@@ -9,9 +9,16 @@ public class ProgressViewModel : ViewModelBase
     [Reactive] public int Progress { get; set; } = 0;
     [Reactive] public bool IsIndeterminate { get; set; } = false;
 
-    public ProgressViewModel()
+    public void Open(string title)
     {
-        
+        Title = title;
+        IsVisible = true;
+    }
+
+    public void Close()
+    {
+        Title = string.Empty;
+        IsVisible = false;
     }
 
     public void Update(string title, int progress)

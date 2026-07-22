@@ -3,11 +3,11 @@ using AvatarExplorer.UI.ViewModels;
 
 namespace AvatarExplorer.UI.Views.Overlays;
 
-public partial class AddItemOverlay : UserControl
+public partial class ItemEditorOverlay : UserControl
 {
-    public AddItemOverlay()
+    public ItemEditorOverlay()
     {
         InitializeComponent();
-        DataContext = MainWindowViewModel.Instance.AddItemVM;
+        DataContext = MainWindowViewModel.Instance.ItemEditorVM;
     }
 }

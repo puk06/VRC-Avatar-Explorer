@@ -17,7 +17,6 @@ public class ItemRepository
 
     public IReadOnlyList<Item> GetAll() => _db.Items;
     public Item? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);
-    public Item? GetById(string id) => _db.Items.FirstOrDefault(i => i.Id == id);
 
     public void Remove(string identifier)
     {
@@ -71,7 +70,7 @@ public class ItemRepository
         return true;
     }
 
-    public async Task<ErrorOr<ExtractResult>?> AddPaths(string identifier, IEnumerable<string> paths, bool shouldLinkToOriginal)
+    public async Task<ErrorOr<ExtractResult>> AddPaths(string identifier, IEnumerable<string> paths, bool shouldLinkToOriginal)
     {
         static string GetSafePath(Item item, string dataRootDirectory)
         {
@@ -88,7 +87,7 @@ public class ItemRepository
         }
         
         var item = Get(identifier);
-        if (item == null) return null;
+        if (item == null) return Error.NotFound(description: "Item not found.");
 
         var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
 

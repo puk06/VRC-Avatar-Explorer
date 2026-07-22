@@ -180,6 +180,7 @@ public static class Loc
     }
     public static class Processing
     {
+        public const string Default = "Processing.Default";
         public static class Unitypackage
         {
             public static class Status
@@ -644,31 +645,31 @@ public static class Loc
         public const string Save = "BulkImport.Save";
         public const string Reset = "BulkImport.Reset";
     }
-    public static class AddItem
+    public static class ItemEditor
     {
-        public const string BoothItemInfo = "AddItem.BoothItemInfo";
-        public const string AddFolder = "AddItem.AddFolder";
-        public const string AddFile = "AddItem.AddFile";
-        public const string BoothUrl = "AddItem.BoothUrl";
-        public const string BoothUrlPlaceholder = "AddItem.BoothUrlPlaceholder";
-        public const string FetchInfo = "AddItem.FetchInfo";
-        public const string Title = "AddItem.Title";
-        public const string Author = "AddItem.Author";
-        public const string Category = "AddItem.Category";
-        public const string SupportedAvatars = "AddItem.SupportedAvatars";
-        public const string SelectedAvatarsCount = "AddItem.SelectedAvatarsCount";
-        public const string ShowAdvancedSettings = "AddItem.ShowAdvancedSettings";
-        public const string ItemMemo = "AddItem.ItemMemo";
-        public const string EditItemMemo = "AddItem.EditItemMemo";
-        public const string Tags = "AddItem.Tags";
-        public const string SelectedTagsCount = "AddItem.SelectedTagsCount";
-        public const string ShowInternalInfo = "AddItem.ShowInternalInfo";
-        public const string AuthorId = "AddItem.AuthorId";
-        public const string BoothId = "AddItem.BoothId";
-        public const string ImageUrl = "AddItem.ImageUrl";
-        public const string AuthorImageUrl = "AddItem.AuthorImageUrl";
-        public const string ConfirmAndSave = "AddItem.ConfirmAndSave";
-        public const string RemoveFolder = "AddItem.RemoveFolder";
+        public const string BoothItemInfo = "ItemEditor.BoothItemInfo";
+        public const string AddFolder = "ItemEditor.AddFolder";
+        public const string AddFile = "ItemEditor.AddFile";
+        public const string BoothUrl = "ItemEditor.BoothUrl";
+        public const string BoothUrlPlaceholder = "ItemEditor.BoothUrlPlaceholder";
+        public const string FetchInfo = "ItemEditor.FetchInfo";
+        public const string Title = "ItemEditor.Title";
+        public const string Author = "ItemEditor.Author";
+        public const string Category = "ItemEditor.Category";
+        public const string SupportedAvatars = "ItemEditor.SupportedAvatars";
+        public const string SelectedAvatarsCount = "ItemEditor.SelectedAvatarsCount";
+        public const string ShowAdvancedSettings = "ItemEditor.ShowAdvancedSettings";
+        public const string ItemMemo = "ItemEditor.ItemMemo";
+        public const string EditItemMemo = "ItemEditor.EditItemMemo";
+        public const string Tags = "ItemEditor.Tags";
+        public const string SelectedTagsCount = "ItemEditor.SelectedTagsCount";
+        public const string ShowInternalInfo = "ItemEditor.ShowInternalInfo";
+        public const string AuthorId = "ItemEditor.AuthorId";
+        public const string BoothId = "ItemEditor.BoothId";
+        public const string ImageUrl = "ItemEditor.ImageUrl";
+        public const string AuthorImageUrl = "ItemEditor.AuthorImageUrl";
+        public const string ConfirmAndSave = "ItemEditor.ConfirmAndSave";
+        public const string RemoveFolder = "ItemEditor.RemoveFolder";
     }
     public static class SelectAvatars
     {

@@ -25,8 +25,8 @@
             <overlays:SettingsOverlay/>
         </ContentControl>
 
-        <ContentControl IsVisible="{Binding IsAddItemVisible}">
-            <overlays:AddItemOverlay/>
+        <ContentControl IsVisible="{Binding ItemEditorVM.IsVisible}">
+            <overlays:ItemEditorOverlay/>
         </ContentControl>
 
         <ContentControl IsVisible="{Binding SelectAvatarsVisible}">
