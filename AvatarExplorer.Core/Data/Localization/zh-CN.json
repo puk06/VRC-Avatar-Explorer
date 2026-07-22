@@ -413,6 +413,7 @@
     "EditCommonAvatars.AddGroup": "添加",
     "EditCommonAvatars.RenameGroup": "重命名",
     "EditCommonAvatars.RemoveGroup": "删除",
+    "EditCommonAvatars.Search": "搜索",
     "EditCommonAvatars.ReplaceToGroup": "将支持头像替换为组",
 
     "ResolveTempAvatar.Title": "关联到正式项目",

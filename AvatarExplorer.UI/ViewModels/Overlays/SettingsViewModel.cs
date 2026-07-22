@@ -181,7 +181,7 @@ public class SettingsViewModel : ViewModelBase
 
     private void OpenCommonAvatarManager()
     {
-        MainWindowViewModel.Instance.EditCommonAvatarsVM.IsVisible = true;
+        MainWindowViewModel.Instance.EditCommonAvatarsVM.Open();
     }
 
     private async Task OpenBackgroundImage()

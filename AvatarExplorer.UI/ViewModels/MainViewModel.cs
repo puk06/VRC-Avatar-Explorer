@@ -75,7 +75,7 @@ public class MainViewModel : ViewModelBase
         UndoCommand = ReactiveCommand.Create(Undo);
         HomeCommand = ReactiveCommand.Create(GoHome);
         OpenSettingsCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.SettingsVM.Open());
-        AddItemCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.ShowAddItem());
+        AddItemCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.ShowItemEditor());
         SidePanelButtonPressedCommand = ReactiveCommand.Create<int>(SidePanelButtonPressed);
         SelectLeftItemCommand = ReactiveCommand.Create<ItemViewModel>(OnLeftItemSelected);
         SelectRightItemCommand = ReactiveCommand.Create<ItemViewModel>(OnRightItemSelected);

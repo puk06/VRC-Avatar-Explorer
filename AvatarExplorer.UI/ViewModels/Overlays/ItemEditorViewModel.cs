@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -116,6 +116,12 @@ public class ItemEditorViewModel : ViewModelBase
 
         UpdateCountField();
         IsVisible = true;
+    }
+
+    public void AddPaths(string[] paths)
+    {
+        if (!IsVisible) Open();
+        ItemPaths.AddRange(paths.Select(i => new ItemPathViewModel(i, File.Exists(i) ? ItemPathType.File : ItemPathType.Folder)));
     }
 
     public void Close()

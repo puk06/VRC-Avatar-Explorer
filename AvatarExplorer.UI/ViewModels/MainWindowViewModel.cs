@@ -128,7 +128,7 @@ public class MainWindowViewModel : ViewModelBase
         WindowTitle = title;
     }
 
-    public void ShowAddItem(string? itemId = null)
+    public void ShowItemEditor(string? itemId = null)
     {
         ItemEditorVM.Open(itemId);
     }
@@ -242,5 +242,10 @@ public class MainWindowViewModel : ViewModelBase
             Type = type,
             Expiration = TimeSpan.FromSeconds(5)
         });
+    }
+
+    public void OnFilesDrop(string[] filePaths)
+    {
+        ItemEditorVM.AddPaths(filePaths);
     }
 }

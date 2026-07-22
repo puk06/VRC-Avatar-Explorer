@@ -48,7 +48,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
             _ => []
         };
     }
-    public List<INavigationable> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false)
+    public List<INavigationable> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false, bool rawIdentifier = false)
     {
         var avatars = new List<INavigationable>();
 
@@ -57,7 +57,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         if (includeTempAvatar) avatars.AddRange(_tempAvatars.GetAll());
 
         return avatars
-            .Select(i => new Avatar(i))
+            .Select(i => new Avatar(i, rawIdentifier))
             .ToList<INavigationable>();
     }
     public List<INavigationable> GetAuthors()

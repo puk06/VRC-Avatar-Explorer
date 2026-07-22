@@ -684,6 +684,7 @@ public static class Loc
         public const string AddGroup = "EditCommonAvatars.AddGroup";
         public const string RenameGroup = "EditCommonAvatars.RenameGroup";
         public const string RemoveGroup = "EditCommonAvatars.RemoveGroup";
+        public const string Search = "EditCommonAvatars.Search";
         public const string ReplaceToGroup = "EditCommonAvatars.ReplaceToGroup";
     }
     public static class ResolveTempAvatar

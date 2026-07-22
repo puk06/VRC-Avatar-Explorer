@@ -115,7 +115,7 @@ public static class ContextMenuHandlerService
     }
     private static void EditItem(string identifier)
     {
-        MainWindowViewModel.Instance.ShowAddItem(identifier);
+        MainWindowViewModel.Instance.ShowItemEditor(identifier);
     }
     private static async void EditItemTitle(string identifier)
     {

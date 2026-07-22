@@ -414,6 +414,7 @@
     "EditCommonAvatars.AddGroup": "Add",
     "EditCommonAvatars.RenameGroup": "Rename",
     "EditCommonAvatars.RemoveGroup": "Remove",
+    "EditCommonAvatars.Search": "Search",
     "EditCommonAvatars.ReplaceToGroup": "Replace Supported Avatars with Group",
 
     "ResolveTempAvatar.Title": "Link to Permanent Item",

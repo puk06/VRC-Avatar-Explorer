@@ -413,6 +413,7 @@
     "EditCommonAvatars.AddGroup": "Agregar",
     "EditCommonAvatars.RenameGroup": "Cambiar nombre",
     "EditCommonAvatars.RemoveGroup": "Eliminar",
+    "EditCommonAvatars.Search": "Buscar",
     "EditCommonAvatars.ReplaceToGroup": "Reemplazar avatares compatibles con el grupo",
 
     "ResolveTempAvatar.Title": "Vincular al elemento permanente",

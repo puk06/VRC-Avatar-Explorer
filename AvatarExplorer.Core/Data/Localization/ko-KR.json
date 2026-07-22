@@ -413,6 +413,7 @@
     "EditCommonAvatars.AddGroup": "추가",
     "EditCommonAvatars.RenameGroup": "이름 변경",
     "EditCommonAvatars.RemoveGroup": "삭제",
+    "EditCommonAvatars.Search": "검색",
     "EditCommonAvatars.ReplaceToGroup": "대응 아바타를 그룹으로 바꾸기",
 
     "ResolveTempAvatar.Title": "정식 아이템과 연결",

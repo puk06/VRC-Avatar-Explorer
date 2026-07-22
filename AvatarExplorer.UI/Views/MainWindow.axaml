@@ -7,11 +7,13 @@
         xmlns:vm="using:AvatarExplorer.UI.ViewModels"
         Icon="avares://AvatarExplorer/Assets/Internal/SoftwareIcon.png"
         WindowStartupLocation="CenterScreen"
-        DragDrop.AllowDrop="True"
         FontFamily="avares://AvatarExplorer/Assets/Fonts#Noto Sans JP"
         Title="{Binding WindowTitle}"
         MinWidth="1280" MinHeight="720"
-        Width="1280" Height="720">
+        Width="1280" Height="720"
+        DragDrop.AllowDrop="True"
+        DragDrop.DragOver="OnDragDropOver"
+        DragDrop.Drop="OnDragDrop">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>

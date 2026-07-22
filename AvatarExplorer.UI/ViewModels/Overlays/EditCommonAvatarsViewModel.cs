@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
@@ -18,8 +18,9 @@ public class EditCommonAvatarsViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; }
 
-    [Reactive] public IEnumerable<CommonAvatarViewModel> Groups { get; set; } = [];
-    [Reactive] public CommonAvatarViewModel? SelectedGroup { get; set; } = null;
+    [Reactive] public ObservableCollection<CommonAvatarViewModel> Groups { get; set; } = [];
+    [Reactive] public int SelectedGroupIndex { get; set; } = -1;
+    public CommonAvatarViewModel? SelectedGroup => SelectedGroupIndex >= 0 && SelectedGroupIndex < Groups.Count ? Groups[SelectedGroupIndex] : null;
 
     [Reactive] public string SearchText { get; set; } = string.Empty;
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
@@ -44,16 +45,25 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         RemoveGroupCommand = ReactiveCommand.Create(RemoveGroup);
         SelectVisibleCommand = ReactiveCommand.Create(SelectVisible);
         ReplaceAvatarsToGroupCommand = ReactiveCommand.CreateFromTask(ReplaceAvatarsToGroup);
-        CloseCommand = ReactiveCommand.Create(() => IsVisible = false);
+        CloseCommand = ReactiveCommand.Create(Close);
 
-        this.WhenAnyValue(i => i.SelectedGroup)
-            .Subscribe(i => UpdateSelectedGroupAvatars());
+        this.WhenAnyValue(i => i.SelectedGroupIndex)
+            .Subscribe(_ => UpdateSelectedGroupAvatars());
     }
 
     public void Open()
     {
+        SelectedGroupIndex = -1;
         RefleshAvatars();
         RefleshGroups();
+        SelectedGroupIndex = Groups.Count > 0 ? 0 : -1;
+        IsVisible = true;
+    }
+
+    private void Close()
+    {
+        SelectedGroupIndex = -1;
+        IsVisible = false;
     }
 
     private void SelectItem(ItemViewModel item)
@@ -69,22 +79,26 @@ public class EditCommonAvatarsViewModel : ViewModelBase
 
         CommonAvatarRep.Create(newGroupName);
         RefleshGroups();
+
+        SelectedGroupIndex = Groups.Count - 1;
     }
 
     private async Task RenameGroup()
     {
-        if (SelectedGroup == null) return;
+        var group = SelectedGroup;
+        if (group == null) return;
         
         var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCommonAvatarGroup]);
         if (string.IsNullOrEmpty(newGroupName)) return;
 
-        CommonAvatarRep.RenameGroup(SelectedGroup.Identifier, newGroupName);
+        CommonAvatarRep.RenameGroup(group.Identifier, newGroupName);
         RefleshGroups();
     }
 
     private async Task RemoveGroup()
     {
-        if (SelectedGroup == null) return;
+        var group = SelectedGroup;
+        if (group == null) return;
 
         var confirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
@@ -92,22 +106,27 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         );
         if (confirmationResult is false) return;
         
-        CommonAvatarRep.Remove(SelectedGroup.Identifier);
+        CommonAvatarRep.Remove(group.Identifier);
         RefleshGroups();
+        if (Groups.Count == 0) SelectedGroupIndex = -1;
+        else if (SelectedGroupIndex >= Groups.Count) SelectedGroupIndex = Groups.Count - 1;
     }
 
     private void SelectVisible()
     {
-        Avatars.ForEach(i =>
+        var items = Avatars.ToList();
+        items.ForEach(i =>
         {
             if (!i.IsVisible) return;
             i.IsSelected = true;
         });
+        Avatars = items;
     }
 
     private async Task ReplaceAvatarsToGroup()
     {
-        if (SelectedGroup == null) return;
+        var group = SelectedGroup;
+        if (group == null) return;
 
         var confirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
@@ -115,12 +134,12 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         );
         if (confirmationResult is false) return;
 
-        ItemService.ReplaceSupportedAvatarsToCommonAvatarGroup(SelectedGroup.Identifier);
+        ItemService.ReplaceSupportedAvatarsToCommonAvatarGroup(group.Identifier);
     }
 
     private void RefleshAvatars()
     {
-        var avatars = ItemService.GetAvatars(includeCommonAvatar: true, includeTempAvatar: true);
+        var avatars = ItemService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
 
         Avatars = avatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
@@ -131,27 +150,33 @@ public class EditCommonAvatarsViewModel : ViewModelBase
     {
         var groups = CommonAvatarRep.GetAll();
 
-        Groups = groups.Select(i => new CommonAvatarViewModel()
-        {
-            DisplayName = i.GroupName,
-            Identifier = i.Identifier
-        });
+        Groups = new ObservableCollection<CommonAvatarViewModel>(
+            groups.Select(i => new CommonAvatarViewModel()
+            {
+                DisplayName = i.GroupName,
+                Identifier = i.Identifier
+            })
+        );
     }
 
     private void UpdateSelectedGroupAvatars()
     {
-        if (SelectedGroup == null) return;
-        
-        var group = CommonAvatarRep.Get(SelectedGroup.Identifier);
+        var group = SelectedGroup;
         if (group == null) return;
+        
+        var commonAvatar = CommonAvatarRep.Get(group.Identifier);
+        if (commonAvatar == null) return;
 
-        Avatars.ForEach(i => i.IsSelected = group.Avatars.Contains(i.Identifier));
+        var items = Avatars.ToList();
+        items.ForEach(i => i.IsSelected = commonAvatar.Avatars.Contains(i.Identifier));
+        Avatars = items;
     }
 
     private void UpdateGroupAvatars()
     {
-        if (SelectedGroup == null) return;
+        var group = SelectedGroup;
+        if (group == null) return;
 
-        CommonAvatarRep.UpdateAvatars(SelectedGroup.Identifier, Avatars.Where(i => i.IsSelected).Select(i => i.Identifier));
+        CommonAvatarRep.UpdateAvatars(group.Identifier, Avatars.Where(i => i.IsSelected).Select(i => i.Identifier));
     }
 }

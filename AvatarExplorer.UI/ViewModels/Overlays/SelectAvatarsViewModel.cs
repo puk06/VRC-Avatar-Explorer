@@ -71,7 +71,7 @@ public class SelectAvatarsViewModel : ViewModelBase
 
     private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)
     {
-        var avatars = ItemService.GetAvatars(includeCommonAvatar, includeTempAvatar);
+        var avatars = ItemService.GetAvatars(includeCommonAvatar, includeTempAvatar, rawIdentifier: true);
 
         Avatars = avatars
             .Select(NavigationItemFactory.CreateFromNavigationable)

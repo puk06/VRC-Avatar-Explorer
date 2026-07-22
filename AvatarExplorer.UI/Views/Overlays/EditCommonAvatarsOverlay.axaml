@@ -17,7 +17,7 @@
                     <!-- グループ選択欄 -->
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="10,0,10,0" Grid.Row="2" ColumnSpacing="10">
                         <TextBlock Text="{Binding [EditCommonAvatars.Group], Source={x:Static loc:Localizer.Instance}}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding Groups}" DisplayMemberBinding="{Binding DisplayName}" SelectedItem="{Binding SelectedGroup}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="10,0,10,0"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Groups}" DisplayMemberBinding="{Binding DisplayName}" SelectedIndex="{Binding SelectedGroupIndex}" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="10,0,10,0"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [EditCommonAvatars.AddGroup], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Command="{Binding AddGroupCommand}"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="3" Content="{Binding [EditCommonAvatars.RenameGroup], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Command="{Binding RenameGroupCommand}"/>
                         <Button Classes="button" FontWeight="Bold" Grid.Column="4" Content="{Binding [EditCommonAvatars.RemoveGroup], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Command="{Binding RemoveGroupCommand}"/>
@@ -25,7 +25,7 @@
                     
                     <!-- 検索バー -->
                     <Grid Grid.Row="4" ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                        <TextBox Grid.Column="0" Text="{Binding SearchText}" PlaceholderText="{Binding [EditSupportedAvatars.Search], Source={x:Static loc:Localizer.Instance}}"/>
+                        <TextBox Grid.Column="0" Text="{Binding SearchText}" PlaceholderText="{Binding [EditCommonAvatars.Search], Source={x:Static loc:Localizer.Instance}}"/>
                         <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Command="{Binding SelectVisibleCommand}"/>
                     </Grid>
 

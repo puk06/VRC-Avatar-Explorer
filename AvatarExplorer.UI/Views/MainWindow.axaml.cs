@@ -1,5 +1,9 @@
+using System.IO;
+using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Input;
 using AvatarExplorer.UI.ViewModels;
+using Avalonia.Platform.Storage;
 
 namespace AvatarExplorer.UI;
 
@@ -9,5 +13,30 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         MainWindowViewModel.Instance.NotificationManager = NotificationManager;
+    }
+
+    private void OnDragDropOver(object? sender, DragEventArgs e)
+    {
+        // ファイルのD&D: File | アイテムボタンのD&D: Text
+        if (e.DataTransfer.Contains(DataFormat.File) || e.DataTransfer.Contains(DataFormat.Text)) e.DragEffects = DragDropEffects.Copy;
+    }
+    private void OnDragDrop(object? sender, DragEventArgs e)
+    {
+        // ファイルのみ受け付ける
+        if (!e.DataTransfer.Contains(DataFormat.File)) return;
+
+        var storageItems = e.DataTransfer.GetItems(DataFormat.File).Select(i => i.TryGetFile());
+        if (storageItems == null) return;
+
+        var storageItemPaths = storageItems
+            .Select(i => i?.TryGetLocalPath())
+            .Where(i => !string.IsNullOrEmpty(i) && (Directory.Exists(i) || File.Exists(i)))
+            .Cast<string>()
+            .ToArray();
+
+        if (DataContext is MainWindowViewModel vm)
+        {
+            vm.OnFilesDrop(storageItemPaths);
+        }
     }
 }

@@ -413,6 +413,7 @@
     "EditCommonAvatars.AddGroup": "追加",
     "EditCommonAvatars.RenameGroup": "改名",
     "EditCommonAvatars.RemoveGroup": "削除",
+    "EditCommonAvatars.Search": "検索",
     "EditCommonAvatars.ReplaceToGroup": "対応アバターをグループに置き換え",
 
     "ResolveTempAvatar.Title": "正式アイテムとの紐づけ",
