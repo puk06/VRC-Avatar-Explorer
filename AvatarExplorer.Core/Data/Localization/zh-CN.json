@@ -482,6 +482,7 @@
     "ArchivePasswordDialog.Placeholder": "输入密码...",
 
     "MergeCategory.Title": "合并类别",
+    "MergeCategory.SourceCategory": "源类别",
     "MergeCategory.TargetCategory": "目标类别",
     "MergeCategory.Merge": "合并",
 

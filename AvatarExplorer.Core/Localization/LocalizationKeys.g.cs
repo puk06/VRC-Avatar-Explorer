@@ -785,6 +785,7 @@ public static class Loc
     public static class MergeCategory
     {
         public const string Title = "MergeCategory.Title";
+        public const string SourceCategory = "MergeCategory.SourceCategory";
         public const string TargetCategory = "MergeCategory.TargetCategory";
         public const string Merge = "MergeCategory.Merge";
     }

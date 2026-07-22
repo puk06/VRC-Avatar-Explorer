@@ -482,6 +482,7 @@
     "ArchivePasswordDialog.Placeholder": "パスワードを入力...",
 
     "MergeCategory.Title": "カテゴリの統合",
+    "MergeCategory.SourceCategory": "統合元のカテゴリ",
     "MergeCategory.TargetCategory": "統合先のカテゴリ",
     "MergeCategory.Merge": "統合",
 

@@ -15,17 +15,17 @@
                 <TextBlock Text="{Binding [MergeCategory.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
 
                 <!-- 統合先のカテゴリ -->
-                <StackPanel Margin="0,10,0,10">
+                <StackPanel Margin="0,10,0,10" Spacing="10">
                     <StackPanel Spacing="8">
-                        <TextBlock Text="{Binding [MergeCategory.TargetCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>
-                        <ComboBox ItemsSource="{Binding Categories}" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedSourceCategory}"/>
+                        <TextBlock Text="{Binding [MergeCategory.SourceCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>
+                        <ComboBox ItemsSource="{Binding Categories}" DisplayMemberBinding="{Binding DisplayName}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedSourceCategoryIndex}"/>
                     </StackPanel>
 
                     <materialIcons:MaterialIcon Kind="ArrowDown" Width="25" Height="25" VerticalAlignment="Center"/>
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding [MergeCategory.TargetCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>
-                        <ComboBox ItemsSource="{Binding Categories}" HorizontalAlignment="Stretch" SelectedItem="{Binding SelectedTargetCategory}"/>
+                        <ComboBox ItemsSource="{Binding Categories}" DisplayMemberBinding="{Binding DisplayName}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedTargetCategoryIndex}"/>
                     </StackPanel>
                 </StackPanel>
 

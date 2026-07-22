@@ -26,7 +26,7 @@ public class ItemRepository
         _db.Remove(item.Id);
     }
 
-    public Item Create(ItemCreationContext context)
+    public Item Create(ItemCreationContext context, bool save = true)
     {
         var item = new Item();
         item.UpdateMetadata(
@@ -34,8 +34,7 @@ public class ItemRepository
             context.Author,
             context.AuthorId,
             context.BoothId,
-            context.ItemType,
-            context.CustomCategory,
+            new ItemCategory(context.ItemType, context.CustomCategory),
             context.ItemMemo
         );
         var now = DatetimeUtils.GetCurrentUnixTime();
@@ -44,9 +43,12 @@ public class ItemRepository
         item.UpdateTags(context.Tags);
 
         _db.Add(item);
+
+        if (save) Save();
+
         return item;
     }
-    public bool Update(string identifier, ItemEditContext context)
+    public bool Update(string identifier, ItemEditContext context, bool save = true)
     {
         var item = Get(identifier);
         if (item == null) return false;
@@ -55,7 +57,7 @@ public class ItemRepository
         if (context.Author != null) item.UpdateAuthor(context.Author);
         if (context.AuthorId != null) item.UpdateAuthorId(context.AuthorId);
         if (context.BoothId != null) item.UpdateBoothId(context.BoothId.Value);
-        if (context.ItemType != null) item.UpdateItemType(context.ItemType.Value, context.CustomCategory ?? item.CustomCategory);
+        if (context.ItemType != null) item.UpdateCategory(new ItemCategory(context.ItemType.Value, context.CustomCategory ?? item.Category.CustomCategory));
         if (context.ItemMemo != null) item.UpdateMemo(context.ItemMemo);
 
         if (context.SupportedAvatars != null) item.UpdateSupportedAvatars(context.SupportedAvatars);
@@ -65,7 +67,7 @@ public class ItemRepository
         var now = DatetimeUtils.GetCurrentUnixTime();
         item.UpdateTimestamp(now);
 
-        Save();
+        if (save) Save();
 
         return true;
     }
@@ -107,9 +109,9 @@ public class ItemRepository
 
         foreach (var item in items)
         {
-            var key = item.Type == ItemType.Custom && !string.IsNullOrWhiteSpace(item.CustomCategory)
-                ? $"custom:{item.CustomCategory}"
-                : $"type:{(int)item.Type}";
+            var key = item.Category.Type == ItemType.Custom && !string.IsNullOrWhiteSpace(item.Category.CustomCategory)
+                ? $"custom:{item.Category.CustomCategory}"
+                : $"type:{(int)item.Category.Type}";
 
             if (!result.TryGetValue(key, out var list))
             {
@@ -184,6 +186,15 @@ public class ItemRepository
         Save();
 
         return Result.Success;
+    }
+
+    public void MergeCategory(ItemCategory sourceCategory, ItemCategory targetCategory)
+    {
+        GetAll()
+            .Where(i => i.Category.Equals(sourceCategory))
+            .ForEach(i => i.UpdateCategory(targetCategory));
+
+        // Save();
     }
 
     public void Save() => _db.Save();

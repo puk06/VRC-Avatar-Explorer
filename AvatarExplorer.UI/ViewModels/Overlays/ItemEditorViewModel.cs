@@ -95,7 +95,7 @@ public class ItemEditorViewModel : ViewModelBase
                 SupportedAvatars = item.SupportedAvatars.ToList();
                 Tags = item.Tags.ToList();
 
-                var categoryIndex = GetCategoryIndex(new ItemCategory(item.Type, item.CustomCategory));
+                var categoryIndex = GetCategoryIndex(item.Category);
                 SelectedCategoryIndex = categoryIndex >= 0 ? categoryIndex : 0;
             }
         }
@@ -288,7 +288,7 @@ public class ItemEditorViewModel : ViewModelBase
     private void RefleshCategories()
     {
         var itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
-        var categories = itemGroupService.GetCategories(includeEmptyCategory: true)
+        var categories = itemGroupService.GetCategoryFolders(includeEmptyCategory: true)
             .Select(i => ResolveCategory(i.Identifier))
             .Where(i => i != null)
             .Cast<ItemCategory>();

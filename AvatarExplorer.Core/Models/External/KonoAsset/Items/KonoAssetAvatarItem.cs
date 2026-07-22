@@ -9,7 +9,7 @@ public class KonoAssetAvatarItem : AbstractKonoAssetItem
     {
         Item migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.UpdateItemPath($"<sys>{Id}");
-        migratedItem.UpdateMetadata(migratedItem.Title, migratedItem.Author, migratedItem.AuthorId, migratedItem.BoothId, ItemType.Avatar, migratedItem.CustomCategory, migratedItem.ItemMemo);
+        migratedItem.UpdateCategory(new ItemCategory(ItemType.Avatar));
 
         return migratedItem;
     }

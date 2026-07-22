@@ -482,6 +482,7 @@
     "ArchivePasswordDialog.Placeholder": "Saisissez le mot de passe...",
 
     "MergeCategory.Title": "Fusionner la catégorie",
+    "MergeCategory.SourceCategory": "Catégorie source",
     "MergeCategory.TargetCategory": "Catégorie cible",
     "MergeCategory.Merge": "Fusionner",
 

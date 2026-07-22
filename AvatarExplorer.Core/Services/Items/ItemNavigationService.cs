@@ -118,14 +118,7 @@ public class ItemNavigationService
         else
             items = _items.ItemRepository.GetAll();
 
-        if (prefix == TypePrefix)
-        {
-            if (!TryResolveItemType(value, out var itemType)) return [];
-            return items.Where(i => itemType == ItemType.All || i.Type == itemType).ToArray();
-        }
-
-        if (prefix != CustomPrefix) return [];
-        return items.Where(i => i.Type == ItemType.Custom && i.CustomCategory == value).ToArray();
+        return items.Where(i => i.IsCategoryMatch(state)).ToArray();
     }
 
     private INavigationable[] HandleItem(string state)

@@ -482,6 +482,7 @@
     "ArchivePasswordDialog.Placeholder": "비밀번호를 입력...",
 
     "MergeCategory.Title": "카테고리 통합",
+    "MergeCategory.SourceCategory": "통합 원본 카테고리",
     "MergeCategory.TargetCategory": "통합 대상 카테고리",
     "MergeCategory.Merge": "통합",
 

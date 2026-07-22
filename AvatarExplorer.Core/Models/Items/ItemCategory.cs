@@ -1,15 +1,14 @@
 using AvatarExplorer.Core.Extensions;
+using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class ItemCategory
+public record ItemCategory : INavigationable
 {
-    public ItemType Type { get; private set; } = ItemType.None;
-    public string CustomCategory { get; private set; } = string.Empty;
+    public ItemType Type { get; init; } = ItemType.None;
+    public string CustomCategory { get; init; } = string.Empty;
     
-    public bool IsEmpty => Type == ItemType.None && CustomCategory == string.Empty;
-    public string CategoryName => Type == ItemType.Custom ? CustomCategory : Type.ToString();
-    public string LocalizationKey => Type == ItemType.Custom ? string.Empty : (Type.GetLocalizationKey() ?? string.Empty);
+    public string Identifier => Type == ItemType.Custom ? $"custom:{CustomCategory}" : $"type:{(int)Type}";
 
     #region Constructor
     public ItemCategory()
@@ -36,19 +35,4 @@ public class ItemCategory
     #endregion
 
     public override string ToString() => Type == ItemType.Custom ? CustomCategory : (Type.GetLocalizationKey() ?? Type.ToString());
-    
-    public override bool Equals(object? obj)
-    {
-        if (obj is ItemCategory other)
-        {
-            return Type == other.Type && CustomCategory == other.CustomCategory;
-        }
-        
-        return false;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Type, CustomCategory);
-    }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
@@ -13,6 +12,7 @@ public enum ViewModelType
 {
     None,
     Item,
+    CommonAvatar,
     Author,
     Folder,
     File,
@@ -146,7 +146,7 @@ internal static class ContextMenuCreator
         if (category.StartsWith("type:")) // type: => Enum
         {
             var raw = category["type:".Length..];
-            if (Enum.TryParse<ItemType>(raw, out var itemType) && itemType != ItemType.All)
+            if ((ItemType)ValueParser.Int(raw) != ItemType.All)
             {
                 contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
             }

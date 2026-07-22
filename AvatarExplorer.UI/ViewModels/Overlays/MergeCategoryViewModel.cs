@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.ViewModels.Component;
+using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -12,48 +15,69 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 public class MergeCategoryViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; }
-    public IEnumerable<ItemCategoryViewModel> Categories { get; set; } = [];
-    [Reactive] public ItemCategoryViewModel? SelectedSourceCategory { get; set; } = null;
-    [Reactive] public ItemCategoryViewModel? SelectedTargetCategory { get; set; } = null;
+    [Reactive] public ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
+    [Reactive] public int SelectedSourceCategoryIndex { get; set; } = 0;
+    [Reactive] public int SelectedTargetCategoryIndex { get; set; } = 0;
+    public ItemCategoryViewModel? SelectedSourceCategory => Categories.Count > SelectedSourceCategoryIndex && SelectedSourceCategoryIndex >= 0 ? Categories[SelectedSourceCategoryIndex] : null;
+    public ItemCategoryViewModel? SelectedTargetCategory => Categories.Count > SelectedTargetCategoryIndex && SelectedTargetCategoryIndex >= 0 ? Categories[SelectedTargetCategoryIndex] : null;
 
     public IReactiveCommand CancelCommand { get; }
     public IReactiveCommand MergeCommand { get; }
 
+    private static ItemRepository Items => AvatarExplorerApp.Instance.Items;
+
     public MergeCategoryViewModel()
     {
-        CancelCommand = ReactiveCommand.Create(OnCancel);
-        MergeCommand = ReactiveCommand.Create(OnMerge);
+        CancelCommand = ReactiveCommand.Create(Cancel);
+        MergeCommand = ReactiveCommand.Create(Merge);
     }
 
-    public void Open(ItemCategory initialSourceCategory)
+    public void Open(string state)
     {
+        SelectedSourceCategoryIndex = -1;
+        SelectedTargetCategoryIndex = -1;
+
         RefleshCategories();
 
-        SelectedTargetCategory = GetVMFromCategory(initialSourceCategory);
-        SelectedTargetCategory = GetVMFromCategory(new(ItemType.Avatar));
+        var sourceIndex = GetCategoryIndex(ResolveCategory(state));
+        SelectedSourceCategoryIndex = sourceIndex >= 0 ? sourceIndex : 0;
+
+        var targetIndex = GetCategoryIndex(new(ItemType.Avatar));
+        SelectedTargetCategoryIndex = targetIndex >= 0 ? targetIndex : 0;
+
+        IsVisible = true;
     }
 
-    private ItemCategoryViewModel? GetVMFromCategory(ItemCategory category)
+    public int GetCategoryIndex(ItemCategory? category)
     {
-        foreach (var cat in Categories)
+        if (category == null) return 0;
+
+        for (int i = 0; i < Categories.Count; i++)
         {
-            if (cat.Category.Equals(category)) return cat;
+            if (Categories[i].Category.Equals(category))
+            {
+                return i;
+            }
         }
 
-        return null;
+        return -1;
     }
 
     private void RefleshCategories()
     {
-        Categories = AvatarExplorerApp.Instance
-            .ItemGroupService
-            .GetCategories(includeEmptyCategory: true, includeAllCategory: false)
-            .Select(i => new ItemCategoryViewModel(ResolveCategory(i.Identifier)));
+        var itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
+        var categories = itemGroupService.GetCategoryFolders(includeEmptyCategory: true, includeAllCategory: false)
+            .Select(i => ResolveCategory(i.Identifier))
+            .Where(i => i != null)
+            .Cast<ItemCategory>();
+
+        Categories.Clear();
+        Categories.AddRange(categories.Select(i => new ItemCategoryViewModel(i).Update()));
     }
     
-    private static ItemCategory ResolveCategory(string groupKey)
+    private static ItemCategory? ResolveCategory(string groupKey)
     {
-        if (!ItemNavigationService.TryParseState(groupKey, out var prefix, out var value)) return new(ItemType.Avatar);
+        if (!ItemNavigationService.TryParseState(groupKey, out var prefix, out var value)) return null;
 
         if (prefix == ItemNavigationService.TypePrefix)
         {
@@ -62,21 +86,28 @@ public class MergeCategoryViewModel : ViewModelBase
                 return new(itemType);
             }
 
-            return new(ItemType.Avatar);
+            return null;
         }
 
         if (prefix == ItemNavigationService.CustomPrefix) return new(value);
 
-        return new(ItemType.Avatar);
+        return null;
     }
 
-    public void OnCancel()
+    public void Cancel()
     {
+        SelectedSourceCategoryIndex = -1;
+        SelectedTargetCategoryIndex = -1;
         IsVisible = false;
     }
 
-    public void OnMerge()
+    public void Merge()
     {
+        if (SelectedSourceCategory == null || SelectedTargetCategory == null) return;
+        Items.MergeCategory(SelectedSourceCategory.Category, SelectedTargetCategory.Category);
+
+        SelectedSourceCategoryIndex = -1;
+        SelectedTargetCategoryIndex = -1;
         IsVisible = false;
     }
 }

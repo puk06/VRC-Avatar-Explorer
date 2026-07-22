@@ -19,13 +19,10 @@ public static class ItemExtensions
         };
     }
 
-    internal static bool IsCategoryMatch(this Item item, string category)
+    internal static bool IsCategoryMatch(this Item item, string identifier)
     {
-        // カテゴリがすべてだった場合、常にマッチとする
-        if (category == ItemType.All.GetLocalizationKey()) return true;
-
-        if (item.Type == ItemType.Custom) return item.CustomCategory == category;
-        else return item.Type.GetLocalizationKey() == category;
+        if (identifier == $"type:{(int)ItemType.All}") return true;
+        return item.Category.Identifier == identifier;
     }
 
     public static IEnumerable<string> EnumerateFiles(this Item item, bool isRecursive = true)

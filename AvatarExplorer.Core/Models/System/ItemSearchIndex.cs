@@ -56,9 +56,9 @@ public record ItemSearchIndex : ISearchIndex
 
     public static ItemSearchIndex Build(Item item, string[] supportedAvatarNames, string[] implementedAvatarNames, string[] notImplementedAvatarNames, string[] commonAvatarNames, string[] fileNames)
     {
-        var category = item.Type == ItemType.Custom
-            ? item.CustomCategory
-            : item.Type.GetLocalizationKey() ?? string.Empty;
+        var category = item.Category.Type == ItemType.Custom
+            ? item.Category.CustomCategory
+            : item.Category.Type.GetLocalizationKey() ?? string.Empty;
 
         var folderNames = item.ItemPaths
             .Select(p => Path.GetFileName(p) ?? string.Empty)

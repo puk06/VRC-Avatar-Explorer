@@ -24,7 +24,7 @@ internal static class DataExporter
     {
         try
         {
-            var avatarTitleMaps = ItemUtils.GetItemTitleMaps(exportContext.Items.Where(i => i.Type == ItemType.Avatar), exportContext.TempAvatars);
+            var avatarTitleMaps = ItemUtils.GetItemTitleMaps(exportContext.Items.Where(i => i.Category.Type == ItemType.Avatar), exportContext.TempAvatars);
 
             var filePath = Path.Combine(exportRequest.FolderPath, $"AvatarExplorer_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
             FileSystemService.PrepareFileDirectory(filePath);
@@ -58,10 +58,10 @@ internal static class DataExporter
                 var imagePath = CsvUtils.EscapeCsv(item.ThumbnailFileName);
 
                 string categoryName;
-                if (item.Type == ItemType.Custom) categoryName = item.CustomCategory;
+                if (item.Category.Type == ItemType.Custom) categoryName = item.Category.CustomCategory;
                 else if (exportContext.ItemTypeLocalizer is { } localizer)
-                    categoryName = await localizer(item.Type) ?? item.Type.ToString();
-                else categoryName = item.Type.ToString();
+                    categoryName = await localizer(item.Category.Type) ?? item.Category.Type.ToString();
+                else categoryName = item.Category.Type.ToString();
 
                 var category = CsvUtils.EscapeCsv(categoryName);
                 var memo = CsvUtils.EscapeCsv(item.ItemMemo);

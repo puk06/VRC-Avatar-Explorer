@@ -13,7 +13,7 @@ public class KonoAssetOtherItem : AbstractKonoAssetItem
     {
         var migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.UpdateItemPath($"<sys>{Id}");
-        migratedItem.UpdateMetadata(migratedItem.Title, migratedItem.Author, migratedItem.AuthorId, migratedItem.BoothId, ItemType.Custom, string.IsNullOrEmpty(Category) ? "Others" : Category, migratedItem.ItemMemo);
+        migratedItem.UpdateCategory(new ItemCategory(string.IsNullOrEmpty(Category) ? "Others" : Category));
 
         return migratedItem;
     }

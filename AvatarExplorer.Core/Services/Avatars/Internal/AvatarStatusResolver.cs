@@ -12,7 +12,7 @@ internal static class AvatarStatusResolver
         if ((!treatEmptySupportedAvatarAsNone && !item.SupportedAvatars.Any()) || item.SupportedAvatars.Contains(avatarId))
             result.IsSupported = true;
 
-        if (item.Type != ItemType.Clothing) return result;
+        if (item.Category.Type != ItemType.Clothing) return result;
 
         // アイテムの対応アバターが共通素体グループで登録されていた時用の処理
         foreach (var id in item.SupportedAvatars)

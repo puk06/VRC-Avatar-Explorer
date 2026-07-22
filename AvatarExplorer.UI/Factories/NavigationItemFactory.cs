@@ -44,6 +44,7 @@ public static class NavigationItemFactory
 
         if (source is Folder folder)
         {
+            var isCategory = folder.Identifier.StartsWith("type:") || folder.Identifier.StartsWith("custom:");
             return new ItemViewModel
             {
                 ImageFileName = SystemIconKey.FolderIcon,
@@ -51,7 +52,7 @@ public static class NavigationItemFactory
                 TitleLocalizable = folder.TitleLocalizable,
                 DescriptionRaw = new(Loc.Button.Description.Item.Count, [folder.ItemCount.ToString()]),
                 Identifier = folder.Identifier,
-                ViewModelType = ViewModelType.Folder,
+                ViewModelType = isCategory ? ViewModelType.ItemCategory : ViewModelType.Folder,
                 ActualValue = folder.Path
             };
         }
@@ -109,7 +110,7 @@ public static class NavigationItemFactory
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]),
                 Identifier = avatar.Identifier,
-                ViewModelType = ViewModelType.Item
+                ViewModelType = ViewModelType.CommonAvatar
             };
         }
         else if (avatar.Type == AvatarType.TempAvatar)
@@ -123,7 +124,7 @@ public static class NavigationItemFactory
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.TempAvatar),
                 Identifier = avatar.Identifier,
-                ViewModelType = ViewModelType.Item
+                ViewModelType = ViewModelType.TempAvatar
             };
         }
 

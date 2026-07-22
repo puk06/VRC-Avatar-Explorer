@@ -96,6 +96,8 @@ public class AvatarExplorerApp
                     return "item:" + i;
                 }
             }));
+
+            i.UpdateCategory(new Models.Items.ItemCategory(i.Type, i.CustomCategory));
         });
 
         var commonAvatars = CommonAvatars.GetAll();

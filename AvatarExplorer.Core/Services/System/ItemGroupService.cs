@@ -44,7 +44,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         {
             QueryType.Avatar => GetAvatars(includeTempAvatar: true),
             QueryType.Author => GetAuthors(),
-            QueryType.Category => GetCategories(includeAllCategory: true),
+            QueryType.Category => GetCategoryFolders(includeAllCategory: true),
             _ => []
         };
     }
@@ -52,11 +52,13 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
     {
         var avatars = new List<INavigationable>();
 
-        if (includeCommonAvatar) avatars.AddRange(_commonAvatars.GetAll().Select(i => new Avatar(i)));
-        avatars.AddRange(_items.GetAll().Where(i => i.Type == ItemType.Avatar).Select(i => new Avatar(i)));
-        if (includeTempAvatar) avatars.AddRange(_tempAvatars.GetAll().Select(i => new Avatar(i)));
+        if (includeCommonAvatar) avatars.AddRange(_commonAvatars.GetAll());
+        avatars.AddRange(_items.GetAll().Where(i => i.Category.Type == ItemType.Avatar));
+        if (includeTempAvatar) avatars.AddRange(_tempAvatars.GetAll());
 
-        return avatars;
+        return avatars
+            .Select(i => new Avatar(i))
+            .ToList<INavigationable>();
     }
     public List<INavigationable> GetAuthors()
     {
@@ -69,7 +71,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
             })
             .ToList<INavigationable>();
     }
-    public List<INavigationable> GetCategories(bool includeEmptyCategory = false, bool includeAllCategory = false)
+    public List<INavigationable> GetCategoryFolders(bool includeEmptyCategory = false, bool includeAllCategory = false)
     {
         var categories = new List<Folder>();
         
@@ -86,16 +88,16 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         }
 
         var itemsByType = items
-            .GroupBy(i => i.Type)
+            .GroupBy(i => i.Category.Type)
             .ToDictionary(g => g.Key, g => g.Count());
 
         var itemsByCustomCategory = items
-            .Where(i => !string.IsNullOrEmpty(i.CustomCategory))
-            .GroupBy(i => i.CustomCategory)
+            .Where(i => i.Category.Type == ItemType.Custom && !string.IsNullOrEmpty(i.Category.CustomCategory))
+            .GroupBy(i => i.Category.CustomCategory)
             .ToDictionary(g => g.Key, g => g.Count());
 
-        var existCategories = items.Select(i => i.Type).Distinct();
-        var existCustomCategories = items.Where(i => i.Type == ItemType.Custom).Select(i => i.CustomCategory).Distinct();
+        var existCategories = items.Select(i => i.Category.Type).Distinct();
+        var existCustomCategories = items.Where(i => i.Category.Type == ItemType.Custom).Select(i => i.Category.CustomCategory).Distinct();
 
         categories.AddRange(
             Enum.GetValues<ItemType>()
@@ -179,7 +181,7 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         var commonAvatar = _commonAvatars.Get(groupIdentifier);
         if (commonAvatar == null) return;
 
-        foreach (var item in _items.GetAll().Where(i => i.Type == ItemType.Clothing))
+        foreach (var item in _items.GetAll().Where(i => i.Category.Type == ItemType.Clothing))
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => commonAvatar.Avatars.Contains(i) ? commonAvatar.Identifier : i).Distinct());
         }

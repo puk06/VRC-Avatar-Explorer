@@ -482,6 +482,7 @@
     "ArchivePasswordDialog.Placeholder": "輸入密碼...",
 
     "MergeCategory.Title": "合併類別",
+    "MergeCategory.SourceCategory": "來源類別",
     "MergeCategory.TargetCategory": "目標類別",
     "MergeCategory.Merge": "合併",
 

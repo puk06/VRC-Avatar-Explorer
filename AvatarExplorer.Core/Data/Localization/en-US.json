@@ -483,6 +483,7 @@
     "ArchivePasswordDialog.Placeholder": "Enter Password...",
 
     "MergeCategory.Title": "Merge Category",
+    "MergeCategory.SourceCategory": "Source Category",
     "MergeCategory.TargetCategory": "Target Category",
     "MergeCategory.Merge": "Merge",
 

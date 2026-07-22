@@ -482,6 +482,7 @@
     "ArchivePasswordDialog.Placeholder": "Introduce la contraseña...",
 
     "MergeCategory.Title": "Fusionar categoría",
+    "MergeCategory.SourceCategory": "Categoría de origen",
     "MergeCategory.TargetCategory": "Categoría de destino",
     "MergeCategory.Merge": "Fusionar",
 

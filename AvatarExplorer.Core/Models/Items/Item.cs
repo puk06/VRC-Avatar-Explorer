@@ -14,8 +14,9 @@ public class Item : AbstractDatabaseItem, INavigationable
     [JsonInclude] public string ItemPath { get; private set; } = string.Empty; // デフォルトの展開先
     [JsonInclude] public ImmutableArray<string> ItemPaths { get; private set; } = []; // フォルダー（フォルダーをそのまま使用する設定の時にここに追加される）
     [JsonInclude] public string ThumbnailFileName { get; private set; } = string.Empty;
-    [JsonInclude] public ItemType Type { get; private set; } = ItemType.None;
-    [JsonInclude] public string CustomCategory { get; private set; } = string.Empty;
+    [JsonInclude][Obsolete("Categoryを使ってください")] internal ItemType Type { get; private set; } = ItemType.None; //TODO: 移行する
+    [JsonInclude][Obsolete("Categoryを使ってください")] internal string CustomCategory { get; private set; } = string.Empty; //TODO: 移行する
+    [JsonInclude] public ItemCategory Category { get; private set; } = new(ItemType.None);
     [JsonInclude] public ImmutableArray<string> SupportedAvatars { get; private set; } = [];
     [JsonInclude] public ImmutableArray<string> ImplementedAvatars { get; private set; } = [];
     [JsonInclude] public ImmutableArray<string> Tags { get; private set; } = [];
@@ -25,14 +26,13 @@ public class Item : AbstractDatabaseItem, INavigationable
 
     [JsonIgnore] public string Identifier => "item:" + Id;
 
-    public void UpdateMetadata(string title, string author, string authorId, int boothId, ItemType type, string customCategory, string itemMemo)
+    public void UpdateMetadata(string title, string author, string authorId, int boothId, ItemCategory category, string itemMemo)
     {
         Title = title;
         Author = author;
         AuthorId = authorId;
         BoothId = boothId;
-        Type = type;
-        CustomCategory = customCategory;
+        Category = new ItemCategory(category);
         ItemMemo = itemMemo;
     }
 
@@ -40,7 +40,7 @@ public class Item : AbstractDatabaseItem, INavigationable
     public void UpdateAuthor(string author) => Author = author;
     public void UpdateAuthorId(string authorId) => AuthorId = authorId;
     public void UpdateBoothId(int boothId) => BoothId = boothId;
-    public void UpdateItemType(ItemType type, string customCategory) { Type = type; CustomCategory = customCategory; }
+    public void UpdateCategory(ItemCategory category) => Category = new ItemCategory(category);
     public void UpdateMemo(string memo) => ItemMemo = memo;
 
     public void UpdateItemPath(string itemPath) => ItemPath = itemPath;

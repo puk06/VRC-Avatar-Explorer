@@ -13,7 +13,7 @@ public static class SearchIndexBuilder
         IEnumerable<TempAvatar> tempAvatars,
         IEnumerable<CommonAvatar> commonAvatars)
     {
-        var avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Type == ItemType.Avatar), tempAvatars);
+        var avatarTitleMaps = ItemUtils.GetItemTitleMaps(items.Where(i => i.Category.Type == ItemType.Avatar), tempAvatars);
         var commonAvatarList = commonAvatars.ToList();
         var result = new Dictionary<string, ItemSearchIndex>();
 

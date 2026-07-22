@@ -201,5 +201,8 @@ public static class ContextMenuHandlerService
     private static void ResolveTempAvatar(string identifier) { }
     private static void RemoveTempAvatar(string identifier) { }
     private static void EditCustomCategoryName(string identifier) { }
-    private static void MergeWithOtherCategory(string identifier) { }
+    private static void MergeWithOtherCategory(string identifier)
+    {
+        MainWindowViewModel.Instance.MergeCategoryVM.Open(identifier);
+    }
 }

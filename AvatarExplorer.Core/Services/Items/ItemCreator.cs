@@ -13,8 +13,7 @@ internal static class ItemCreator
             konoAssetDescription.Creator,
             string.Empty,
             konoAssetDescription.BoothItemId ?? -1,
-            ItemType.None,
-            string.Empty,
+            new ItemCategory(ItemType.None),
             konoAssetDescription.Memo ?? string.Empty
         );
         newItem.UpdateThumbnailFileName(konoAssetDescription.ImageFilename ?? string.Empty);
