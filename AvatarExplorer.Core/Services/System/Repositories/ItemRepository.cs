@@ -197,5 +197,19 @@ public class ItemRepository
         // Save();
     }
 
+    public void ValidateAndAutoFixItemType(bool avatarExist)
+    {
+        var items = GetAll();
+        var unknownCategoryExists = items.Any(i => (int)i.Category.Type >= 11);
+        if (avatarExist || unknownCategoryExists)
+        {
+            int offset = 0;
+            if (avatarExist) offset = (int)items.Min(i => i.Category.Type) - (int)ItemType.Avatar;
+            if (unknownCategoryExists) offset = (int)items.Max(i => i.Category.Type) - (int)ItemType.Custom;
+            foreach (var item in items) item.UpdateCategory(new(item.Category.Type - offset)); // TODO: バカ重いかも
+            // Save();
+        }
+    }
+
     public void Save() => _db.Save();
 }

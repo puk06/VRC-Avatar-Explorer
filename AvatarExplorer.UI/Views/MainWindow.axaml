@@ -83,16 +83,16 @@
             <overlays:ArchivePasswordDialogOverlay/>
         </ContentControl>
 
-        <ContentControl IsVisible="{Binding IsYesNoDialogVisible}">
-            <overlays:YesNoDialogOverlay/>
-        </ContentControl>
-
         <ContentControl IsVisible="{Binding UpdateDialogVM.IsVisible}">
             <overlays:UpdateDialogOverlay/>
         </ContentControl>
 
         <ContentControl IsVisible="{Binding MergeCategoryVM.IsVisible}">
             <overlays:MergeCategoryDialog/>
+        </ContentControl>
+
+        <ContentControl IsVisible="{Binding IsYesNoDialogVisible}">
+            <overlays:YesNoDialogOverlay/>
         </ContentControl>
 
         <ContentControl IsVisible="{Binding InitialSetupVM.IsVisible}">

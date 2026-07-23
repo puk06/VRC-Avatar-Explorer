@@ -59,7 +59,6 @@ public class MainViewModel : ViewModelBase
     private int _currentPage = 0;
     private Vector _currentScrollValue = AvaloniaVectorUtils.MinValue;
 
-
     public MainViewModel()
     {
         Instance = this;

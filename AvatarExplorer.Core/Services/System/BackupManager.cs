@@ -1,5 +1,4 @@
 using System.Globalization;
-using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Utils;
@@ -7,8 +6,14 @@ using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
 
-internal class BackupManager
+public class BackupManager
 {
+    public event Action<string, string>? OnRestoreBackupRequested;
+
+    private readonly HashSet<string> BackupFiles = [];
+    public void AddTargetFile(string path) => BackupFiles.Add(path);
+    public void AddTargetFiles(string[] paths) => BackupFiles.UnionWith(paths);
+
     private int _backupInterval = TimeUtils.MinToMs(5);
     private CancellationTokenSource? _backupCts;
     private Task? _backupTask;
@@ -62,17 +67,8 @@ internal class BackupManager
             await Task.Delay(_backupInterval, token);
         }
     }
-    private static readonly string[] _backupFiles =
-    [
-        SystemPath.ItemDatabasePath,
-        SystemPath.ItemDatabaseMigrationVersionPath,
-        SystemPath.CommonAvatarDatabasePath,
-        SystemPath.RuntimeSettingsFilePath,
-        SystemPath.UserPreferencesFilePath,
-        SystemPath.BulkImportPresetDatabasePath
-    ];
 
-    internal async Task<ErrorOr<Success>> ExecuteBackup(string backupRootFolderPath, CancellationToken token = default)
+    public async Task<ErrorOr<Success>> ExecuteBackup(string backupRootFolderPath, CancellationToken token = default)
     {
         try
         {
@@ -91,7 +87,7 @@ internal class BackupManager
 
             int successCount = 0;
             int failureCount = 0;
-            var filesToBackup = _backupFiles.Where(File.Exists);
+            var filesToBackup = BackupFiles.Where(File.Exists);
 
             foreach (var filePath in filesToBackup)
             {
@@ -143,6 +139,19 @@ internal class BackupManager
         {
             ErrorManager.Instance.PostInternalError("Failed to execute backup.", ex);
             return Error.Failure(description: "Failed to execute backup.");
+        }
+    }
+
+    public void RestoreBackup(string folderPath)
+    {
+        if (!Directory.Exists(folderPath)) return;
+
+        foreach (var file in FileSystemService.EnumerateFiles(folderPath))
+        {
+            var sourcePath = BackupFiles.FirstOrDefault(i => Path.GetFileName(i) == Path.GetFileName(file));
+            if (sourcePath == null) continue;
+
+            OnRestoreBackupRequested?.Invoke(sourcePath, file);
         }
     }
 }

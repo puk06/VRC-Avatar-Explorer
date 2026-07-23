@@ -18,8 +18,6 @@ using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-// TODO: 未完成
-
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class ItemEditorViewModel : ViewModelBase
@@ -178,7 +176,6 @@ public class ItemEditorViewModel : ViewModelBase
         );
         return identifier;
     }
-
     private async Task<string> ConfirmCreate()
     {
         var creationContext = new ItemCreationContext
@@ -300,7 +297,7 @@ public class ItemEditorViewModel : ViewModelBase
             .Cast<ItemCategory>();
 
         Categories.Clear();
-        Categories.AddRange(categories.Select(i => new ItemCategoryViewModel(i).Update()));  // TODO: Localizeする必要がある時はUpdateを実行する);
+        Categories.AddRange(categories.Select(i => new ItemCategoryViewModel(i).Update()));
     }
     private static ItemCategory? ResolveCategory(string groupKey)
     {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using AvatarExplorer.Core.Data.Links;
@@ -86,13 +87,13 @@ public class SettingsViewModel : ViewModelBase
         ImportDataCommand = ReactiveCommand.Create(ImportData);
         ExportDataCommand = ReactiveCommand.Create(ExportData);
         FetchAllThumbnailsCommand = ReactiveCommand.Create(FetchAllThumbnails);
-        RestoreFromBackupCommand = ReactiveCommand.Create(RestoreFromBackup);
-        AutoFixDatabaseCommand = ReactiveCommand.Create(AutoFixDatabase);
+        RestoreFromBackupCommand = ReactiveCommand.CreateFromTask(RestoreFromBackup);
+        AutoFixDatabaseCommand = ReactiveCommand.CreateFromTask(AutoFixDatabase);
         ResetItemDatabaseCommand = ReactiveCommand.CreateFromTask(ResetItemDatabase);
         ResetCommonAvatarDatabaseCommand = ReactiveCommand.CreateFromTask(ResetCommonAvatarDatabase);
         ResetBulkImportPresetDatabaseCommand = ReactiveCommand.CreateFromTask(ResetBulkImportPresetDatabase);
         ShowErrorLogCommand = ReactiveCommand.Create(ShowErrorLog);
-        RegisterSchemeCommand = ReactiveCommand.Create(RegisterScheme);
+        RegisterSchemeCommand = ReactiveCommand.CreateFromTask(RegisterScheme);
         CheckForUpdateNowCommand = ReactiveCommand.Create(CheckForUpdateNow);
         OpenTwitterCommand = ReactiveCommand.CreateFromTask(OpenTwitter);
         OpenGithubCommand = ReactiveCommand.CreateFromTask(OpenGithub);
@@ -172,6 +173,8 @@ public class SettingsViewModel : ViewModelBase
 
     private void OnApply()
     {
+        AvatarExplorerApp.Instance.RuntimeSettings.Update(CreateRuntimeSettings());
+        MainWindowViewModel.Instance.UserPreferences.Update(CreateUserPreferences());
     }
 
     private void OnClose()
@@ -223,12 +226,44 @@ public class SettingsViewModel : ViewModelBase
         MainWindowViewModel.Instance.FetchAllThumbnailsVM.IsVisible = true;
     }
 
-    private void RestoreFromBackup()
+    private async Task RestoreFromBackup()
     {
+        // AvatarExplorerApp.Instance.BackupManager.OnRestoreBackupRequested += (sourcePath, path) =>
+        // {
+        //     // Debug.WriteLine($"BACKUP RESTOREING REQUESTED | Source: {sourcePath} | TargetPath: {path}");
+        // };
+
+        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Items Folder");
+        if (folders == null || folders.Length == 0) return;
+
+        var selectedBackupPath = folders[0];
+        AvatarExplorerApp.Instance.BackupManager.RestoreBackup(selectedBackupPath);
     }
 
-    private void AutoFixDatabase()
+    private async Task AutoFixDatabase()
     {
+        var items = AvatarExplorerApp.Instance.Items.GetAll();
+
+        var avatarExists = items.Any(i => i.Category.Type == ItemType.Avatar);
+        var unknownCategoryExists = items.Any(i => (int)i.Category.Type >= 11);
+        if (!avatarExists)
+        {
+            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance[Loc.Dialog.Confirmation.NoAvatarsAndValidateType]
+            );
+
+            if (result)
+            {
+                // await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+                AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(true);
+            }
+        }
+        else if (unknownCategoryExists)
+        {
+            // await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+            AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(false);
+        }
     }
 
     private async Task ResetItemDatabase()
@@ -272,15 +307,26 @@ public class SettingsViewModel : ViewModelBase
         MainWindowViewModel.Instance.ShowErrorLog();
     }
 
-    private void RegisterScheme()
+    private async Task RegisterScheme()
     {
         if (!SchemeService.IsRunAsAdmin())
         {
-            SchemeService.RestartAsAdmin();
+            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance[Loc.Scheme.RestartAsAdmin]
+            );
+            if (result) SchemeService.RestartAsAdmin();
+
             return;
         }
 
         SchemeService.RegisterScheme();
+
+        MainWindowViewModel.Instance.ShowNotification(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Scheme.RegisterSuccess],
+            Avalonia.Controls.Notifications.NotificationType.Success
+        );
     }
 
     private async void CheckForUpdateNow()

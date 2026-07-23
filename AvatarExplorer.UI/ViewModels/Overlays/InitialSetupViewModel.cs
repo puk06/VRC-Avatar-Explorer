@@ -13,10 +13,10 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 public class InitialSetupViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; }
-    public IEnumerable<string> Languages { get; }
-    [Reactive] public int SelectedLanguage { get; set; }
 
-    [Reactive] public string ItemsFolder { get; set; }
+    [Reactive] public IEnumerable<string> Languages { get; set; } = [];
+    [Reactive] public int SelectedLanguage { get; set; }
+    [Reactive] public string ItemsFolder { get; set; } = string.Empty;
 
     public IReactiveCommand CloseCommand { get; }
 
@@ -24,10 +24,6 @@ public class InitialSetupViewModel : ViewModelBase
 
     public InitialSetupViewModel()
     {
-        Languages = Localizer.Instance.GetLanguageList();
-        SelectedLanguage = Localizer.Instance.CurrentLanguageIndex;
-        ItemsFolder = Settings.Settings.DataRootDirectory;
-        
         CloseCommand = ReactiveCommand.Create(OnClose);
 
         this.WhenAnyValue(x => x.SelectedLanguage)
@@ -46,8 +42,17 @@ public class InitialSetupViewModel : ViewModelBase
         
         if (!AvatarExplorerApp.Instance.Items.GetAll().Any())
         {
-            IsVisible = true;
+            Open();
         }
+    }
+
+    public void Open()
+    {
+        Languages = Localizer.Instance.GetLanguageList();
+        SelectedLanguage = Localizer.Instance.CurrentLanguageIndex;
+        ItemsFolder = Settings.Settings.DataRootDirectory;
+
+        IsVisible = true;
     }
 
     private void OnClose()

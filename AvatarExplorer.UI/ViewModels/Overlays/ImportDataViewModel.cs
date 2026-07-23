@@ -9,6 +9,8 @@ using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
+// TODO: CoreのImporterができていないためできていない。
+
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class ImportDataViewModel : ViewModelBase

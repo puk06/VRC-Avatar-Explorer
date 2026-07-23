@@ -21,6 +21,7 @@ public class ProgressViewModel : ViewModelBase
         IsVisible = false;
     }
 
+    // TODO: Unitypackageのインポート時に使う
     public void Update(string title, int progress)
     {
         Title = title;

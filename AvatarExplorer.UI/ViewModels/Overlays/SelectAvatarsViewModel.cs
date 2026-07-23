@@ -66,7 +66,10 @@ public class SelectAvatarsViewModel : ViewModelBase
         RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
 
         if (avatars == null) return;
-        Avatars.ForEach(i => i.IsSelected = avatars.Contains(i.Identifier));
+
+        var items = Avatars.ToList();
+        items.ForEach(i => i.IsSelected = avatars.Contains(i.Identifier));
+        Avatars = items;
     }
 
     private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)

@@ -35,7 +35,7 @@
                 </Panel>
 
                 <!-- 下のボタン -->
-                <Grid Grid.Row="3" ColumnDefinitions="120,*,200,120" ColumnSpacing="20">
+                <Grid Grid.Row="3" ColumnDefinitions="120,*,200" ColumnSpacing="20">
                     <Button Classes="button" FontWeight="Bold" Grid.Column="0" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding CloseCommand}"/>
                     <Button Classes="button" FontWeight="Bold" Grid.Column="2" Content="{Binding [ErrorLog.OpenLogFolder], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0,7" FontSize="15" Command="{Binding OpenFolderCommand}"/>
                 </Grid>

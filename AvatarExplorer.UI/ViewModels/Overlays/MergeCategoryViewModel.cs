@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
+using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.ViewModels.Component;
 using DynamicData;
 using ReactiveUI;
@@ -29,7 +32,7 @@ public class MergeCategoryViewModel : ViewModelBase
     public MergeCategoryViewModel()
     {
         CancelCommand = ReactiveCommand.Create(Cancel);
-        MergeCommand = ReactiveCommand.Create(Merge);
+        MergeCommand = ReactiveCommand.CreateFromTask(Merge);
     }
 
     public void Open(string state)
@@ -101,9 +104,19 @@ public class MergeCategoryViewModel : ViewModelBase
         IsVisible = false;
     }
 
-    public void Merge()
+    public async Task Merge()
     {
         if (SelectedSourceCategory == null || SelectedTargetCategory == null) return;
+
+        var sourceCategoryName = SelectedSourceCategory.DisplayName;
+        var targetCategoryName = SelectedTargetCategory.DisplayName;
+
+        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.MergeCategory, [sourceCategoryName, targetCategoryName])
+        );
+        if (!result) return;
+
         Items.MergeCategory(SelectedSourceCategory.Category, SelectedTargetCategory.Category);
 
         SelectedSourceCategoryIndex = -1;

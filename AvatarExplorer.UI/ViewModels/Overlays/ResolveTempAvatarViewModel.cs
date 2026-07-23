@@ -11,7 +11,6 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class ResolveTempAvatarViewModel : ViewModelBase
 {
-
     [Reactive] public string SearchText { get; set; } = string.Empty;
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
     private TaskCompletionSource<string?> _tcs = new();

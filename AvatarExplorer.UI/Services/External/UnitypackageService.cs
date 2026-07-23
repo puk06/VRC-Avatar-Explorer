@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Services.IO;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.UI.Services.External;

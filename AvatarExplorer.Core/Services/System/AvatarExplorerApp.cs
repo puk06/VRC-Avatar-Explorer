@@ -1,3 +1,4 @@
+using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Services.IO;
@@ -25,7 +26,7 @@ public class AvatarExplorerApp
 
     public Func<ArchivePasswordRequest, ValueTask<string?>>? ArchivePasswordProvider { get; set; }
 
-    private readonly BackupManager _backupManager = new();
+    public readonly BackupManager BackupManager = new();
 
     private AvatarExplorerApp()
     {
@@ -43,7 +44,18 @@ public class AvatarExplorerApp
         BulkImportPresets.Load();
         RuntimeSettings.Load();
 
-        Migration();
+        Migration(); //TODO: ItemMigrationに移行する
+
+        BackupManager.AddTargetFiles(
+            [
+                SystemPath.ItemDatabasePath,
+                SystemPath.ItemDatabaseMigrationVersionPath,
+                SystemPath.CommonAvatarDatabasePath,
+                SystemPath.TempAvatarsDatabasePath,
+                SystemPath.BulkImportPresetDatabasePath,
+                SystemPath.RuntimeSettingsFilePath,
+            ]
+        );
 
         // StartAutoBackup();
 

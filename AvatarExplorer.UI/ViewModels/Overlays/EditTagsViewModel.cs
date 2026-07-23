@@ -13,7 +13,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 
 public class EditTagsViewModel : ViewModelBase
 {
-    [Reactive] public ObservableCollection<string> Tags { get; set; } = []; // 変更時、もしくはLocalizerの言語変更時にテキストを更新する
+    [Reactive] public ObservableCollection<string> Tags { get; set; } = [];
     private TaskCompletionSource<string[]?> _tcs = new();
 
     [Reactive] public string NewTag { get; set; } = string.Empty;
