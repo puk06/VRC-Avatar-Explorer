@@ -107,10 +107,6 @@
             <overlays:FatalErrorOverlay/>
         </ContentControl>
 
-        <ContentControl IsVisible="False">
-            <overlays:StartupLoadingOverlay/>
-        </ContentControl>
-
         <WindowNotificationManager x:Name="NotificationManager" Position="BottomRight"/>
     </Panel>
 </Window>

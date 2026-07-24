@@ -287,17 +287,18 @@ public static class FileSystemService
     }
     private static string PrepareSaveFolderPath()
     {
-        static string getNextFolder(string basePath)
-        {
-            int i = 1;
-            while (Directory.Exists(Path.Combine(basePath, i.ToString()))) i++;
-            return Path.Combine(basePath, i.ToString());
-        }
-
-        string saveFolderPath = Path.Combine(getNextFolder(SystemPath.TempFolderPath), "Unitypackages Modified by Avatar Explorer");
+        string saveFolderPath = Path.Combine(GetNewTempFolder(), "Unitypackages Modified by Avatar Explorer");
         Directory.CreateDirectory(saveFolderPath);
 
         return saveFolderPath;
+    }
+    public static string GetNewTempFolder()
+    {
+        int i = 1;
+        while (Directory.Exists(Path.Combine(SystemPath.TempFolderPath, i.ToString()))) i++;
+        var resultPath = Path.Combine(SystemPath.TempFolderPath, i.ToString());
+        Directory.CreateDirectory(resultPath);
+        return resultPath;
     }
     private static async Task<int> CountTarEntriesAsync(string tarGzFilePath)
     {

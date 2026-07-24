@@ -278,6 +278,7 @@ The MIT license applies to all non-font and non-icon files.
 
 - Other Icons Licenses
 
+Assets/UnknownFileIcon.png: Unknown icons created by berkahicon - Flaticon (https://www.flaticon.com/free-icon/unknown-mail_4725544)
 Assets/EmptyIcon.png: Empty icons created by Ghozi Muhtarom - Flaticon (https://www.flaticon.com/free-icon/box_14906200)
 Assets/FolderIcon.png: Files and folders icons created by juicy_fish - Flaticon (https://www.flaticon.com/free-icon/folder_11471391)
 Assets/FileIcon.png: Document icons created by Neveraemje - Flaticon (https://www.flaticon.com/free-icon/new-document_3047411)

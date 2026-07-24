@@ -27,6 +27,7 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow();
             TopLevelProvider.Current = TopLevel.GetTopLevel(desktop.MainWindow);
+            if (desktop.MainWindow is MainWindow mw) mw.SendApplicationArgs(desktop.Args);
         }
 
         base.OnFrameworkInitializationCompleted();

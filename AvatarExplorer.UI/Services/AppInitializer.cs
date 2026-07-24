@@ -20,6 +20,8 @@ public static class AppInitializer
         RegisterBackupFiles();
 
         StartThumbnailCacheWampup();
+
+        SingleInstanceService.StartServer();
     }
 
     private static void RegisterBackupFiles()

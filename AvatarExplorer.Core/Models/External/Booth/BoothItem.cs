@@ -20,7 +20,7 @@ public record BoothItem
 
     // これより下はAEの値
     [JsonIgnore]
-    public ItemType EstimatedCategory { get; init; } = ItemType.None;
+    public ItemCategory EstimatedCategory { get; init; } = new(ItemType.None);
 
     [JsonIgnore]
     public string ThumbnailUrl => Thumbnails.Count > 0 ? Thumbnails[0].Original : string.Empty;

@@ -5,12 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.System;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.ViewModels.Component;
@@ -115,11 +117,42 @@ public class ItemEditorViewModel : ViewModelBase
         UpdateCountField();
         IsVisible = true;
     }
+    public async void Open(LaunchInfo launchInfo)
+    {
+        ItemId = null;
+        ItemPaths.Clear();
+
+        RefleshCategories();
+
+        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.BoothId);
+        Title = string.Empty;
+        Author = string.Empty;
+        AuthorId = string.Empty;
+        BoothId = string.Empty;
+        Memo = string.Empty;
+        SupportedAvatars = [];
+        Tags = [];
+        SelectedCategoryIndex = -1;
+        SelectedCategoryIndex = 0;
+
+        UpdateCountField();
+        IsVisible = true;
+
+        AddPaths(launchInfo.AssetPaths);
+        await FetchBoothData();
+    }
 
     public void AddPaths(string[] paths)
     {
         if (!IsVisible) Open();
-        ItemPaths.AddRange(paths.Select(i => new ItemPathViewModel(i, File.Exists(i) ? ItemPathType.File : ItemPathType.Folder)));
+        ItemPaths.AddRange(paths.Select(i =>
+        {
+            var itemPathType = ItemPathType.Unknown;
+            if (File.Exists(i)) itemPathType = ItemPathType.File;
+            else if (Directory.Exists(i)) itemPathType = ItemPathType.Folder;
+
+            return new ItemPathViewModel(i, itemPathType);
+        }));
     }
 
     public void Close()
@@ -238,7 +271,6 @@ public class ItemEditorViewModel : ViewModelBase
         AvatarExplorerApp.Instance.Items.Save();
         Close();
     }
-
     private async Task SelectAndAddFolders()
     {
         var folders = await StorageService.OpenFolderDialog(
@@ -281,6 +313,7 @@ public class ItemEditorViewModel : ViewModelBase
         var boothData = fetchResult.Value;
         Title = boothData.Title;
         Author = boothData.Shop.Name;
+        SelectedCategoryIndex = GetCategoryIndex(boothData.EstimatedCategory);
         AuthorId = boothData.Shop.Id;
         BoothId = boothData.BoothId.ToString();
         ThumbnailUrl = boothData.ThumbnailUrl;

@@ -4,6 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using AvatarExplorer.UI.ViewModels;
 using Avalonia.Platform.Storage;
+using AvatarExplorer.Core.Services.System;
+using Avalonia.Threading;
 
 namespace AvatarExplorer.UI;
 
@@ -13,6 +15,18 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         MainWindowViewModel.Instance.NotificationManager = NotificationManager;
+        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
+    }
+
+    private void OnPipeMessageReceived(string[] args)
+    {
+        Dispatcher.UIThread.Post(async () =>
+        {
+            if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+            Topmost = true;
+            Activate();
+            Topmost = false;
+        });
     }
 
     private void OnDragDropOver(object? sender, DragEventArgs e)
@@ -38,5 +52,13 @@ public partial class MainWindow : Window
         {
             vm.OnFilesDrop(storageItemPaths);
         }
+    }
+
+    public void SendApplicationArgs(string[]? args)
+    {
+        if (args == null) return;
+
+        if (DataContext is MainWindowViewModel vm)
+            vm.SendApplicationArgs(args);
     }
 }

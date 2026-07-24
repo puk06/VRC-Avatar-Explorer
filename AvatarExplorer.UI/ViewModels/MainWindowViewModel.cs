@@ -2,9 +2,11 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Updates;
@@ -23,6 +25,8 @@ namespace AvatarExplorer.UI.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
+    public event Action<string[]>? OnApplicationArgsReceived;
+
     [Reactive] public string WindowTitle { get; set; } = string.Empty;
     [Reactive] public ImageBrush? BackgroundImage { get; set; } = null;
     public static AvatarExplorerApp AvatarExplorerApp => AvatarExplorerApp.Instance;
@@ -95,8 +99,29 @@ public class MainWindowViewModel : ViewModelBase
 
         UserPreferences.Load();
         MainVM.UpdatePageSize(UserPreferences.Settings.ItemsPerPage);
+
+        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
+
         UpdateWindowTitle();
-        _ = CheckForUpdateOnStartup();
+        CheckForUpdateOnStartup();
+    }
+    private void OnPipeMessageReceived(string[] args)
+    {
+        Dispatcher.UIThread.Post(() => SendApplicationArgs(args));
+    }
+
+    public void SendApplicationArgs(string[] args)
+    {
+        OnArgsReceived(args);
+        OnApplicationArgsReceived?.Invoke(args);
+    }
+
+    public void OnArgsReceived(string[] args)
+    {
+        if (args == null || args.Length == 0 || string.IsNullOrEmpty(args[0])) return;
+
+        var launchInfo = LaunchInfoService.GetLaunchInfo(args[0]);
+        if (launchInfo != null) ItemEditorVM.Open(launchInfo);
     }
 
     private void OnPreferenceSettingsUpdated(UserPreferences settings)
@@ -112,7 +137,7 @@ public class MainWindowViewModel : ViewModelBase
         IsUpdateDialogVisible = true;
     }
 
-    private static async Task CheckForUpdateOnStartup()
+    private static async void CheckForUpdateOnStartup()
     {
         var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
         if (!settings.CheckForUpdate) return;

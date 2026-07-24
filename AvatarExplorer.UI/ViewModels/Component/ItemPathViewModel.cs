@@ -8,6 +8,7 @@ namespace AvatarExplorer.UI.ViewModels.Component;
 
 public enum ItemPathType
 {
+    Unknown,
     File,
     Folder
 }
@@ -23,7 +24,8 @@ public class ItemPathViewModel : ViewModelBase
         FileName = Path.GetFileName(path);
         FullPath = path;
 
-        if (type == ItemPathType.File) IconImage = ImageService.Get(SystemIconKey.FileIcon);
+        if (type == ItemPathType.Unknown) IconImage = ImageService.Get(SystemIconKey.UnknownFileIcon);
+        else if (type == ItemPathType.File) IconImage = ImageService.Get(SystemIconKey.FileIcon);
         else if (type == ItemPathType.Folder) IconImage = ImageService.Get(SystemIconKey.FolderIcon);
     }
 }
