@@ -10,7 +10,7 @@
     <Border Classes="overlaybackground">
         <Border Classes="overlay" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" CornerRadius="12">
             <Grid ColumnDefinitions="350,500" Height="550" ColumnSpacing="20">
-                <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="15">
+                <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" RowSpacing="15">
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
                         <Button Classes="accentbutton" FontSize="12" Command="{Binding AddFolderCommand}">
                             <StackPanel Orientation="Horizontal" Spacing="5">
@@ -55,6 +55,15 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
+                    </Border>
+
+                    <Border Grid.Row="2" Classes="panelbackground" Background="{DynamicResource Background.Surface}" Padding="8,4">
+                        <CheckBox IsChecked="{Binding ShouldLinkToOriginal}" VerticalAlignment="Center">
+                            <StackPanel Orientation="Vertical" Spacing="2">
+                                <TextBlock Text="{Binding [ItemEditor.LinkToOriginal.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                <TextBlock Text="{Binding [ItemEditor.LinkToOriginal.Description], Source={x:Static loc:Localizer.Instance}}" FontSize="11" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Text.Secondary}"/>
+                            </StackPanel>
+                        </CheckBox>
                     </Border>
                 </Grid>
 

@@ -402,6 +402,8 @@
     "ItemEditor.ImageUrl": "Image URL",
     "ItemEditor.AuthorImageUrl": "Author Image URL",
     "ItemEditor.ConfirmAndSave": "Confirm and Save",
+    "ItemEditor.LinkToOriginal.Title": "Use Folder As-Is",
+    "ItemEditor.LinkToOriginal.Description": "No copy operation for folders",
     "ItemEditor.RemoveFolder": "Remove",
 
     "SelectAvatars.Title.SupportedAvatars": "Select Supported Avatars",

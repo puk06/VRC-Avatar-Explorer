@@ -401,6 +401,8 @@
     "ItemEditor.ImageUrl": "이미지 URL",
     "ItemEditor.AuthorImageUrl": "작성자 이미지 URL",
     "ItemEditor.ConfirmAndSave": "확정하고 저장",
+    "ItemEditor.LinkToOriginal.Title": "폴더를 그대로 사용",
+    "ItemEditor.LinkToOriginal.Description": "폴더는 복사되지 않습니다",
     "ItemEditor.RemoveFolder": "삭제",
 
     "SelectAvatars.Title.SupportedAvatars": "대응 아바타 선택",

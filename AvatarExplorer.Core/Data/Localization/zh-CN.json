@@ -401,6 +401,8 @@
     "ItemEditor.ImageUrl": "图片 URL",
     "ItemEditor.AuthorImageUrl": "作者图片 URL",
     "ItemEditor.ConfirmAndSave": "确认并保存",
+    "ItemEditor.LinkToOriginal.Title": "直接使用文件夹",
+    "ItemEditor.LinkToOriginal.Description": "文件夹不会被复制",
     "ItemEditor.RemoveFolder": "删除",
 
     "SelectAvatars.Title.SupportedAvatars": "选择支持头像",

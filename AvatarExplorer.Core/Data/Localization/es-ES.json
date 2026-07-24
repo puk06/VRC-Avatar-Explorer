@@ -401,6 +401,8 @@
     "ItemEditor.ImageUrl": "URL de imagen",
     "ItemEditor.AuthorImageUrl": "URL de imagen del autor",
     "ItemEditor.ConfirmAndSave": "Confirmar y guardar",
+    "ItemEditor.LinkToOriginal.Title": "Usar carpeta tal cual",
+    "ItemEditor.LinkToOriginal.Description": "No se copia la carpeta",
     "ItemEditor.RemoveFolder": "Eliminar",
 
     "SelectAvatars.Title.SupportedAvatars": "Seleccionar avatares compatibles",

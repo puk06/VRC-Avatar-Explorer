@@ -665,6 +665,11 @@ public static class Loc
         public const string ImageUrl = "ItemEditor.ImageUrl";
         public const string AuthorImageUrl = "ItemEditor.AuthorImageUrl";
         public const string ConfirmAndSave = "ItemEditor.ConfirmAndSave";
+        public static class LinkToOriginal
+        {
+            public const string Title = "ItemEditor.LinkToOriginal.Title";
+            public const string Description = "ItemEditor.LinkToOriginal.Description";
+        }
         public const string RemoveFolder = "ItemEditor.RemoveFolder";
     }
     public static class SelectAvatars

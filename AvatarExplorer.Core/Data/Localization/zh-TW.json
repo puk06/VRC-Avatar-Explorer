@@ -401,6 +401,8 @@
     "ItemEditor.ImageUrl": "圖片 URL",
     "ItemEditor.AuthorImageUrl": "作者圖片 URL",
     "ItemEditor.ConfirmAndSave": "確認並儲存",
+    "ItemEditor.LinkToOriginal.Title": "直接使用資料夾",
+    "ItemEditor.LinkToOriginal.Description": "資料夾不會被複製",
     "ItemEditor.RemoveFolder": "刪除",
 
     "SelectAvatars.Title.SupportedAvatars": "選擇支援頭像",

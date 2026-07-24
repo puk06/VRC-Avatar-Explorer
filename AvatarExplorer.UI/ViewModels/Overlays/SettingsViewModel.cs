@@ -250,6 +250,7 @@ public class SettingsViewModel : ViewModelBase
     private async Task AutoFixDatabase()
     {
         var items = AvatarExplorerApp.Instance.Items.GetAll();
+        var backupFolder = AvatarExplorerApp.Instance.RuntimeSettings.Settings.AutoBackupRootDirectory;
 
         var avatarExists = items.Any(i => i.Category.Type == ItemType.Avatar);
         var unknownCategoryExists = items.Any(i => (int)i.Category.Type >= 11);
@@ -262,13 +263,13 @@ public class SettingsViewModel : ViewModelBase
 
             if (result)
             {
-                // TODO: await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+                await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup(backupFolder);
                 AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(true);
             }
         }
         else if (unknownCategoryExists)
         {
-            // TODO: await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+            await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup(backupFolder);
             AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(false);
         }
     }

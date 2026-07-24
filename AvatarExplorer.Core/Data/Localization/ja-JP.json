@@ -401,6 +401,8 @@
     "ItemEditor.ImageUrl": "画像 URL",
     "ItemEditor.AuthorImageUrl": "作者画像 URL",
     "ItemEditor.ConfirmAndSave": "確定して保存",
+    "ItemEditor.LinkToOriginal.Title": "フォルダをそのまま使用する",
+    "ItemEditor.LinkToOriginal.Description": "フォルダの場合はコピーが発生しません",
     "ItemEditor.RemoveFolder": "削除",
 
     "SelectAvatars.Title.SupportedAvatars": "対応アバターの選択",
