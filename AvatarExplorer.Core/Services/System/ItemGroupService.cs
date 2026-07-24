@@ -1,12 +1,15 @@
-using System.Collections.Immutable;
+using System.Collections.Concurrent;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Models.Search;
+using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Services.Avatars.Internal;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System.Repositories;
+using AvatarExplorer.Core.Utils;
 using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
@@ -18,25 +21,35 @@ public enum QueryType
     Category
 }
 
-[Flags]
-public enum SearchQueryTypes
+public class ItemGroupService
 {
-    Item,
-    CommonAvatar,
-    TempAvatar
-}
+    private readonly ItemRepository _items;
+    private readonly CommonAvatarRepository _commonAvatars;
+    private readonly TempAvatarRepository _tempAvatars;
+    private readonly RuntimeSettingsRepository _runtimesettings;
 
-public class ItemGroupService(ItemRepository items, CommonAvatarRepository commonAvatars, TempAvatarRepository tempAvatars, RuntimeSettingsRepository settings)
-{
-    private readonly ItemRepository _items = items;
-    private readonly CommonAvatarRepository _commonAvatars = commonAvatars;
-    private readonly TempAvatarRepository _tempAvatars = tempAvatars;
-    private readonly RuntimeSettingsRepository _runtimesettings = settings;
+    private readonly ConcurrentDictionary<string, ItemSearchIndex> _itemSearchIndices = new();
+    private readonly ConcurrentDictionary<string, CommonAvatarSearchIndex> _commonAvatarSearchIndices = new();
+    private readonly ConcurrentDictionary<string, TempAvatarSearchIndex> _tempAvatarSearchIndices = new();
+    private bool _indicesBuilt;
+    private readonly object _indicesLock = new();
 
     public ItemRepository ItemRepository => _items;
     public CommonAvatarRepository CommonAvatarRepository => _commonAvatars;
     public TempAvatarRepository TempAvatarRepository => _tempAvatars;
     public RuntimeSettingsRepository RuntimeSettings => _runtimesettings;
+
+    public ItemGroupService(ItemRepository items, CommonAvatarRepository commonAvatars, TempAvatarRepository tempAvatars, RuntimeSettingsRepository settings)
+    {
+        _items = items;
+        _commonAvatars = commonAvatars;
+        _tempAvatars = tempAvatars;
+        _runtimesettings = settings;
+
+        _items.OnItemUpdated += ItemUpdated;
+        _commonAvatars.OnUpdated += CommonAvatarUpdated;
+        _tempAvatars.OnUpdated += TempAvatarUpdated;
+    }
 
     public List<INavigationable> GetQueryFilters(QueryType type)
     {
@@ -181,17 +194,190 @@ public class ItemGroupService(ItemRepository items, CommonAvatarRepository commo
         var commonAvatar = _commonAvatars.Get(groupIdentifier);
         if (commonAvatar == null) return;
 
+        var updatedIdentifiers = new List<string>();
         foreach (var item in _items.GetAll().Where(i => i.Category.Type == ItemType.Clothing))
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => commonAvatar.Avatars.Contains(i) ? commonAvatar.Identifier : i).Distinct());
+            updatedIdentifiers.Add(item.Identifier);
+        }
+
+        _items.Save();
+        foreach (var identifier in updatedIdentifiers)
+        {
+            ItemUpdated(identifier);
         }
     }
 
-    public List<INavigationable> Search(SearchFilter filter, SearchQueryTypes queryType)
+    #region Search
+
+    /// <summary>
+    /// 検索インデックスを再構築します。
+    /// アプリ起動時やデータベースを一括で読み込んだ後に呼び出してください。
+    /// </summary>
+    public void RebuildIndices()
     {
-        // それぞれのSearchFilterを取得し、Matchを実行する
-        return [];
+        lock (_indicesLock)
+        {
+            _itemSearchIndices.Clear();
+            _commonAvatarSearchIndices.Clear();
+            _tempAvatarSearchIndices.Clear();
+            BuildAllIndices();
+            _indicesBuilt = true;
+        }
     }
+
+    /// <summary>
+    /// 検索を実行し、一致した識別子を返します。
+    /// </summary>
+    /// <param name="searchString">検索文字列。スペース区切りで AND 検索。~ で始まると除外。FieldName="値" でフィールド指定。</param>
+    /// <param name="types">検索対象のグループ。</param>
+    /// <param name="locKeyProvider">カテゴリ検索時に表示名を LocalizationKey に変換する関数。</param>
+    /// <returns>一致したアイテムなどの Identifier 一覧。</returns>
+    public string[] SearchItems(string searchString, SearchResultType types, Func<string, string>? locKeyProvider = null)
+    {
+        EnsureIndicesBuilt();
+
+        var query = SearchQueryParser.Parse(searchString);
+        var result = new List<string>();
+
+        if (types.HasFlag(SearchResultType.Items))
+        {
+            foreach (var item in _items.GetAll())
+            {
+                if (_itemSearchIndices.TryGetValue(item.Identifier, out var index) && MatchesAll(index, query, locKeyProvider))
+                    result.Add(item.Identifier);
+            }
+        }
+
+        if (types.HasFlag(SearchResultType.CommonAvatar))
+        {
+            foreach (var commonAvatar in _commonAvatars.GetAll())
+            {
+                if (_commonAvatarSearchIndices.TryGetValue(commonAvatar.Identifier, out var index) && MatchesAll(index, query, locKeyProvider))
+                    result.Add(commonAvatar.Identifier);
+            }
+        }
+
+        if (types.HasFlag(SearchResultType.TempAvatar))
+        {
+            foreach (var tempAvatar in _tempAvatars.GetAll())
+            {
+                if (_tempAvatarSearchIndices.TryGetValue(tempAvatar.Identifier, out var index) && MatchesAll(index, query, locKeyProvider))
+                    result.Add(tempAvatar.Identifier);
+            }
+        }
+
+        return result.ToArray();
+    }
+
+    private void EnsureIndicesBuilt()
+    {
+        if (_indicesBuilt) return;
+        lock (_indicesLock)
+        {
+            if (_indicesBuilt) return;
+            BuildAllIndices();
+            _indicesBuilt = true;
+        }
+    }
+
+    private void BuildAllIndices()
+    {
+        var avatarTitleMap = ItemUtils.GetItemTitleMaps(_items.GetAll().Where(i => i.Category.Type == ItemType.Avatar), _tempAvatars.GetAll());
+        var commonAvatarList = _commonAvatars.GetAll().ToList();
+
+        foreach (var item in _items.GetAll())
+        {
+            BuildItemIndex(item, avatarTitleMap, commonAvatarList);
+        }
+
+        foreach (var commonAvatar in _commonAvatars.GetAll())
+        {
+            _commonAvatarSearchIndices[commonAvatar.Identifier] = CommonAvatarSearchIndex.Build(commonAvatar);
+        }
+
+        foreach (var tempAvatar in _tempAvatars.GetAll())
+        {
+            _tempAvatarSearchIndices[tempAvatar.Identifier] = TempAvatarSearchIndex.Build(tempAvatar);
+        }
+    }
+
+    private void BuildItemIndex(Item item, Dictionary<string, string> avatarTitleMap, List<CommonAvatar> commonAvatarList)
+    {
+        var supportedAvatarIds = AvatarService.GetAllSupportedAvatarIds(
+            item.SupportedAvatars, commonAvatarList, includeCommonAvatarToSupported: true);
+
+        var supportedAvatarNames = supportedAvatarIds
+            .Select(id => ItemUtils.GetTitleFromDictionary(avatarTitleMap, id))
+            .Where(name => !string.IsNullOrEmpty(name))
+            .ToArray();
+
+        var implementedAvatarNames = item.ImplementedAvatars
+            .Select(id => ItemUtils.GetTitleFromDictionary(avatarTitleMap, id))
+            .Where(name => !string.IsNullOrEmpty(name))
+            .ToArray();
+
+        var notImplementedAvatarNames = avatarTitleMap.Keys
+            .Except(item.ImplementedAvatars)
+            .Select(id => ItemUtils.GetTitleFromDictionary(avatarTitleMap, id))
+            .Where(name => !string.IsNullOrEmpty(name))
+            .ToArray();
+
+        var commonAvatarNames = commonAvatarList
+            .Where(ca => ca.Avatars.Any(a => item.SupportedAvatars.Contains(a)))
+            .Select(ca => ca.GroupName)
+            .ToArray();
+
+        _itemSearchIndices[item.Identifier] = ItemSearchIndex.Build(
+            item,
+            supportedAvatarNames,
+            implementedAvatarNames,
+            notImplementedAvatarNames,
+            commonAvatarNames);
+    }
+
+    private void ItemUpdated(string identifier)
+    {
+        // 初回インデックス構築前は個別の更新を無視し、RebuildIndices() で一括構築する
+        if (!_indicesBuilt) return;
+
+        var item = _items.Get(identifier);
+        if (item == null)
+        {
+            _itemSearchIndices.TryRemove(identifier, out _);
+            return;
+        }
+
+        var avatarTitleMap = ItemUtils.GetItemTitleMaps(_items.GetAll().Where(i => i.Category.Type == ItemType.Avatar), _tempAvatars.GetAll());
+        var commonAvatarList = _commonAvatars.GetAll().ToList();
+        BuildItemIndex(item, avatarTitleMap, commonAvatarList);
+    }
+
+    private void CommonAvatarUpdated(string identifier)
+    {
+        // CommonAvatar の変更は Item の SupportedAvatars/CommonAvatars フィールドにも影響するため、全体を再構築する
+        if (!_indicesBuilt) return;
+        RebuildIndices();
+    }
+
+    private void TempAvatarUpdated(string identifier)
+    {
+        // TempAvatar の変更は Item の SupportedAvatars フィールドにも影響するため、全体を再構築する
+        if (!_indicesBuilt) return;
+        RebuildIndices();
+    }
+
+    private static bool MatchesAll(ISearchIndex index, SearchQuery query, Func<string, string>? locKeyProvider)
+    {
+        foreach (var token in query.Tokens)
+        {
+            if (!index.IsMatch(token, locKeyProvider)) return false;
+        }
+
+        return true;
+    }
+
+    #endregion
 
     public async Task<ErrorOr<Success>> Export(DataExportType exportType, string folderPath, Func<ItemType, ValueTask<string?>>? itemTypeLocalizer, bool includeCommonToSupported)
     {

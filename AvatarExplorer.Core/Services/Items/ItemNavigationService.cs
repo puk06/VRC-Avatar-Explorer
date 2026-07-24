@@ -16,6 +16,7 @@ public class ItemNavigationService
     public const string FolderPrefix = "folder";
     public const string ExtensionPrefix = "extension";
     public const string FilePrefix = "file";
+    public const string SearchPrefix = "search";
 
     private readonly ItemGroupService _items;
     private readonly SelectionState _state = new();
@@ -62,6 +63,27 @@ public class ItemNavigationService
     {
         _state.Clear();
         _pathCache.Clear();
+    }
+
+    public bool IsSearchActive => _state.Current?.Value.StartsWith(GetPrefix(SearchPrefix, string.Empty)) ?? false;
+
+    public void PopAllSearchStates()
+    {
+        while (IsSearchActive)
+        {
+            _state.Pop();
+        }
+    }
+
+    public void PopToState(string targetState)
+    {
+        var nodes = _state.GetCurrentSelectionNodes().ToList();
+        if (nodes.All(n => n.Value != targetState)) return;
+
+        while (_state.Current != null && _state.Current.Value != targetState)
+        {
+            _state.Pop();
+        }
     }
 
     public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _state.GetCurrentSelectionNodes();

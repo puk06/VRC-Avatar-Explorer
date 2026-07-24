@@ -13,6 +13,12 @@ namespace AvatarExplorer.Core.Services.System.Repositories;
 public class ItemRepository
 {
     private readonly DatabaseManager<Item> _db = new(SystemPath.ItemDatabasePath);
+
+    /// <summary>
+    /// アイテムが追加・更新・削除された際に発火します。引数は Item.Identifier です。
+    /// </summary>
+    public event Action<string>? OnItemUpdated;
+
     public void Load(string? path = null) => _db.Load(path);
 
     public IReadOnlyList<Item> GetAll() => _db.Items;
@@ -24,6 +30,7 @@ public class ItemRepository
         if (item == null) return;
 
         _db.Remove(item.Id);
+        OnItemUpdated?.Invoke(identifier);
     }
 
     public Item Create(ItemCreationContext context, bool save = true)
@@ -45,6 +52,7 @@ public class ItemRepository
         _db.Add(item);
 
         if (save) Save();
+        OnItemUpdated?.Invoke(item.Identifier);
 
         return item;
     }
@@ -68,6 +76,7 @@ public class ItemRepository
         item.UpdateTimestamp(now);
 
         if (save) Save();
+        OnItemUpdated?.Invoke(item.Identifier);
 
         return true;
     }
@@ -99,7 +108,8 @@ public class ItemRepository
         
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(result.Value.ItemParentFolder);
         item.UpdateItemPaths(result.Value.FolderPaths);
-        
+        OnItemUpdated?.Invoke(item.Identifier);
+
         return result;
     }
 
@@ -161,6 +171,7 @@ public class ItemRepository
         item.UpdateThumbnailFileName(item.Id);
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
         Save();
+        OnItemUpdated?.Invoke(item.Identifier);
 
         return Result.Success;
     }
@@ -184,15 +195,19 @@ public class ItemRepository
         item.UpdateThumbnailFileName(item.Id);
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
         Save();
+        OnItemUpdated?.Invoke(item.Identifier);
 
         return Result.Success;
     }
 
     public void MergeCategory(ItemCategory sourceCategory, ItemCategory targetCategory)
     {
-        GetAll()
+        var targetItems = GetAll()
             .Where(i => i.Category.Equals(sourceCategory))
-            .ForEach(i => i.UpdateCategory(targetCategory));
+            .ToList();
+
+        targetItems.ForEach(i => i.UpdateCategory(targetCategory));
+        targetItems.ForEach(i => OnItemUpdated?.Invoke(i.Identifier));
 
         // Save();
     }
@@ -206,7 +221,11 @@ public class ItemRepository
             int offset = 0;
             if (avatarExist) offset = (int)items.Min(i => i.Category.Type) - (int)ItemType.Avatar;
             if (unknownCategoryExists) offset = (int)items.Max(i => i.Category.Type) - (int)ItemType.Custom;
-            foreach (var item in items) item.UpdateCategory(new(item.Category.Type - offset)); // TODO: バカ重いかも
+            foreach (var item in items)
+            {
+                item.UpdateCategory(new(item.Category.Type - offset)); // TODO: バカ重いかも
+                OnItemUpdated?.Invoke(item.Identifier);
+            }
             // Save();
         }
     }

@@ -8,6 +8,11 @@ public class TempAvatarRepository
 {
     private readonly DatabaseManager<TempAvatar> _db = new(SystemPath.TempAvatarsDatabasePath);
 
+    /// <summary>
+    /// TempAvatar が追加・更新・削除された際に発火します。引数は TempAvatar.Identifier です。
+    /// </summary>
+    public event Action<string>? OnUpdated;
+
     public void Load(string? path = null) => _db.Load(path);
     public IReadOnlyList<TempAvatar> GetAll() => _db.Items;
 
@@ -15,7 +20,9 @@ public class TempAvatarRepository
 
     public void Create(string avatarName)
     {
-        _db.Add(new(avatarName));
+        var tempAvatar = new TempAvatar(avatarName);
+        _db.Add(tempAvatar);
+        OnUpdated?.Invoke(tempAvatar.Identifier);
     }
 
     public void Save() => _db.Save();
@@ -25,5 +32,6 @@ public class TempAvatarRepository
         if (item == null) return;
 
         _db.Remove(item.Id);
+        OnUpdated?.Invoke(identifier);
     }
 }

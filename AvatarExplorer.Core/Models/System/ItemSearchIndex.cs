@@ -1,69 +1,63 @@
-using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Models.Search;
 
 namespace AvatarExplorer.Core.Models.System;
 
 public record ItemSearchIndex : ISearchIndex
 {
-    public required string FreeWord { get; init; }
-
     public required string Title { get; init; }
     public required string Author { get; init; }
     public required string BoothId { get; init; }
     public required string[] SupportedAvatars { get; init; }
     public required string Category { get; init; }
     public required string Memo { get; init; }
-    public required string[] FolderNames { get; init; }
-    public required string[] FileNames { get; init; }
     public required string[] ImplementedAvatars { get; init; }
     public required string[] NotImplementedAvatars { get; init; }
     public required string[] Tags { get; init; }
     public required string[] CommonAvatars { get; init; }
 
-    public bool IsMatch(SearchToken token)
-    {
-        var targets = GetTargets(token.Type);
-        if (targets.Length == 0)
-            return token.IsNegation;
+    public required string FreeWord { get; init; }
 
-        if (token.IsNegation)
-            return targets.All(t => !t.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase));
-        else
-            return targets.Any(t => t.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase));
+    public bool IsMatch(SearchQueryToken token, Func<string, string>? locKeyProvider = null)
+    {
+        var comparisonValue = token.Field?.ToLowerInvariant() switch
+        {
+            "category" when locKeyProvider != null => locKeyProvider(token.Value) ?? token.Value,
+            _ => token.Value
+        };
+
+        var targets = GetTargets(token.Field);
+        if (targets.Length == 0) return false;
+
+        var comparison = StringComparison.CurrentCultureIgnoreCase;
+        return token.IsNegation
+            ? targets.All(t => !t.Contains(comparisonValue, comparison))
+            : targets.Any(t => t.Contains(comparisonValue, comparison));
     }
 
-    private string[] GetTargets(SearchTokenType type)
+    private string[] GetTargets(string? field)
     {
-        return type switch
+        return field?.ToLowerInvariant() switch
         {
-            SearchTokenType.Title => [Title],
-            SearchTokenType.Author => [Author],
-            SearchTokenType.BoothId => [BoothId],
-            SearchTokenType.SupportedAvatar => SupportedAvatars,
-            SearchTokenType.Category => [Category],
-            SearchTokenType.ItemMemo => [Memo],
-            SearchTokenType.FolderName => FolderNames,
-            SearchTokenType.FileName => FileNames,
-            SearchTokenType.ImplementedAvatar => ImplementedAvatars,
-            SearchTokenType.NotImplementedAvatar => NotImplementedAvatars,
-            SearchTokenType.Tag => Tags,
-            SearchTokenType.CommonAvatar => CommonAvatars,
-            SearchTokenType.FreeWord => [FreeWord],
+            "title" => [Title],
+            "author" => [Author],
+            "boothid" or "booth" => [BoothId],
+            "supportedavatar" => SupportedAvatars,
+            "category" => [Category],
+            "memo" => [Memo],
+            "implementedavatar" => ImplementedAvatars,
+            "notimplementedavatar" => NotImplementedAvatars,
+            "tag" => Tags,
+            "commonavatar" => CommonAvatars,
+            null => [FreeWord],
             _ => []
         };
     }
 
-    public static ItemSearchIndex Build(Item item, string[] supportedAvatarNames, string[] implementedAvatarNames, string[] notImplementedAvatarNames, string[] commonAvatarNames, string[] fileNames)
+    public static ItemSearchIndex Build(Item item, string[] supportedAvatarNames, string[] implementedAvatarNames, string[] notImplementedAvatarNames, string[] commonAvatarNames)
     {
-        var category = item.Category.Type == ItemType.Custom
-            ? item.Category.CustomCategory
-            : item.Category.Type.GetLocalizationKey() ?? string.Empty;
-
-        var folderNames = item.ItemPaths
-            .Select(p => Path.GetFileName(p) ?? string.Empty)
-            .Where(n => !string.IsNullOrEmpty(n))
-            .ToArray();
+        var category = item.Category.ToString();
 
         var freeWord = string.Join("\n",
             item.Title,
@@ -71,7 +65,9 @@ public record ItemSearchIndex : ISearchIndex
             item.ItemMemo,
             item.BoothId.ToString(),
             string.Join(" ", item.Tags),
-            string.Join(" ", supportedAvatarNames.Concat(implementedAvatarNames))
+            string.Join(" ", supportedAvatarNames),
+            string.Join(" ", implementedAvatarNames),
+            string.Join(" ", commonAvatarNames)
         ).ToLowerInvariant();
 
         return new ItemSearchIndex
@@ -82,8 +78,6 @@ public record ItemSearchIndex : ISearchIndex
             SupportedAvatars = supportedAvatarNames,
             Category = category,
             Memo = item.ItemMemo,
-            FolderNames = folderNames,
-            FileNames = fileNames,
             ImplementedAvatars = implementedAvatarNames,
             NotImplementedAvatars = notImplementedAvatarNames,
             Tags = item.Tags.ToArray(),

@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
@@ -28,7 +33,8 @@ public class MainViewModel : ViewModelBase
     public BulkImportViewModel BulkImportVM { get; } = new();
     public BulkImportPresetViewModel BulkImportPresetVM { get; } = new();
 
-    [Reactive] public string Path { get; set; } = string.Empty;
+    [Reactive] public ObservableCollection<PathSegment> PathSegments { get; set; } = [];
+    [Reactive] public bool HasOverflow { get; set; }
     [Reactive] public string SearchText { get; set; } = string.Empty;
 
     [Reactive] public int SelectedCategory { get; set; }
@@ -49,9 +55,12 @@ public class MainViewModel : ViewModelBase
     public IReactiveCommand SidePanelButtonPressedCommand { get; }
     public IReactiveCommand SelectLeftItemCommand { get; }
     public IReactiveCommand SelectRightItemCommand { get; }
+    public ReactiveCommand<string, Unit> NavigateToSegmentCommand { get; }
 
     private readonly ItemGroupService _itemGroupService;
     private readonly ItemNavigationService _itemNavigationService;
+    private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
+    private string? _activeSearchQuery;
 
     private CacheManager<Guid, int> _pageCache = new(0);
     private CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
@@ -79,6 +88,12 @@ public class MainViewModel : ViewModelBase
         SelectLeftItemCommand = ReactiveCommand.Create<ItemViewModel>(OnLeftItemSelected);
         SelectRightItemCommand = ReactiveCommand.Create<ItemViewModel>(OnRightItemSelected);
         OpenSidePanelCommand = ReactiveCommand.Create<string>(OpenSidePanel);
+        NavigateToSegmentCommand = ReactiveCommand.Create<string>(NavigateToSegment);
+
+        this.WhenAnyValue(x => x.SearchText)
+            .Subscribe(_ => RestartSearchTimer());
+        AdvancedSearchVM.SearchPropertyChanged += RestartSearchTimer;
+        _searchTimer.Tick += OnSearchTimerTick;
 
         UpdateColumn();
         OnCategoryChanged((int)QueryType.Avatar);
@@ -90,6 +105,8 @@ public class MainViewModel : ViewModelBase
         if (!Enum.IsDefined(typeof(QueryType), categoryIndex)) return;
 
         SelectedCategory = categoryIndex;
+        _activeSearchQuery = null;
+        SearchText = string.Empty;
         _itemNavigationService.Clear();
 
         UpdateLeftPanelItems((QueryType)categoryIndex);
@@ -104,16 +121,92 @@ public class MainViewModel : ViewModelBase
         UpdateColumn();
     }
 
-    private void Refresh()
+    private void RestartSearchTimer()
     {
-        MainItems = _itemNavigationService.GetCurrentSelectionView()
-            .Select(CreateItemViewModel)
-            .Select(i => i.Update());
-
-        Path = BuildLocalizedPath(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value));
+        _searchTimer.Stop();
+        _searchTimer.Start();
     }
 
-    private string BuildLocalizedPath(IEnumerable<string> states)
+    private void OnSearchTimerTick(object? sender, EventArgs e)
+    {
+        _searchTimer.Stop();
+        ExecuteSearch();
+    }
+
+    private void Refresh()
+    {
+        if (!string.IsNullOrWhiteSpace(_activeSearchQuery))
+        {
+            MainItems = SearchItems(_activeSearchQuery)
+                .Select(CreateItemViewModel)
+                .Select(i => i.Update());
+
+            PathSegments = [new PathSegment { DisplayName = Localizer.Instance.Get(Loc.Main.Path.SearchResult, _activeSearchQuery) }];
+        }
+        else
+        {
+            MainItems = _itemNavigationService.GetCurrentSelectionView()
+                .Select(CreateItemViewModel)
+                .Select(i => i.Update());
+
+            PathSegments = new ObservableCollection<PathSegment>(
+                BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
+        }
+    }
+
+    private void ExecuteSearch()
+    {
+        var query = BuildSearchString(SearchText, AdvancedSearchVM);
+        _activeSearchQuery = string.IsNullOrWhiteSpace(query) ? null : query;
+        Refresh();
+    }
+
+    private IEnumerable<Item> SearchItems(string query)
+    {
+        var identifiers = _itemGroupService.SearchItems(query, SearchResultType.Items, SearchUtils.ParseCategory);
+        return identifiers
+            .Select(_itemGroupService.ItemRepository.Get)
+            .Where(item => item != null)
+            .Select(item => item!);
+    }
+
+    private static string BuildSearchString(string searchText, AdvancedSearchViewModel advancedSearch)
+    {
+        var parts = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(searchText))
+            parts.Add(searchText);
+
+        AddField(parts, "Title", advancedSearch.Title);
+        AddField(parts, "Author", advancedSearch.Author);
+        AddField(parts, "BoothId", advancedSearch.BoothId);
+        AddField(parts, "SupportedAvatar", advancedSearch.SupportedAvatar);
+        AddField(parts, "Category", advancedSearch.Category, value => Localizer.Instance.GetKey(value) ?? value);
+        AddField(parts, "Memo", advancedSearch.Memo);
+        AddField(parts, "ImplementedAvatar", advancedSearch.ImplementedAvatar);
+        AddField(parts, "NotImplementedAvatar", advancedSearch.NotImplementedAvatar);
+        AddField(parts, "Tag", advancedSearch.Tag);
+        AddField(parts, "CommonAvatar", advancedSearch.CommonAvatar);
+
+        return string.Join(" ", parts);
+    }
+
+    private static void AddField(List<string> parts, string fieldName, string value, Func<string, string>? transform = null)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return;
+
+        var transformed = transform?.Invoke(value) ?? value;
+        parts.Add($"{fieldName}=\"{transformed}\"");
+    }
+
+    private void NavigateToSegment(string? state)
+    {
+        if (string.IsNullOrEmpty(state)) return;
+        _itemNavigationService.PopToState(state);
+        Refresh();
+    }
+
+    private List<PathSegment> BuildPathSegments(IEnumerable<string> states)
     {
         string FormatPathNode(string state)
         {
@@ -142,10 +235,25 @@ public class MainViewModel : ViewModelBase
 
             return value;
         }
-        var pathNodes = states.Select(FormatPathNode).Where(i => !string.IsNullOrWhiteSpace(i)).ToArray();
 
-        if (pathNodes.Length == 0) return Localizer.Instance[Loc.Main.Path.Placeholder];
-        return string.Join(" > ", pathNodes);
+        var segments = new List<PathSegment>();
+        var stateList = states.ToList();
+
+        for (int i = 0; i < stateList.Count; i++)
+        {
+            var displayName = FormatPathNode(stateList[i]);
+            if (string.IsNullOrWhiteSpace(displayName)) continue;
+
+            if (i > 0)
+                segments.Add(new PathSegment { DisplayName = " > " });
+
+            segments.Add(new PathSegment { DisplayName = displayName, State = stateList[i] });
+        }
+
+        if (segments.Count == 0)
+            segments.Add(new PathSegment { DisplayName = Localizer.Instance[Loc.Main.Path.Placeholder] });
+
+        return segments;
     }
 
     private static ItemViewModel CreateItemViewModel(INavigationable item)
@@ -167,6 +275,8 @@ public class MainViewModel : ViewModelBase
     {
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
+        _activeSearchQuery = null;
+        SearchText = string.Empty;
         _itemNavigationService.Clear();
         var guid = _itemNavigationService.Select(item.Identifier);
         if (guid != null)
@@ -181,6 +291,9 @@ public class MainViewModel : ViewModelBase
     {
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
+        _activeSearchQuery = null;
+        SearchText = string.Empty;
+        _itemNavigationService.PopAllSearchStates();
         _itemNavigationService.Select(item.Identifier);
         Refresh();
     }
@@ -188,12 +301,16 @@ public class MainViewModel : ViewModelBase
     private void Undo()
     {
         _itemNavigationService.Undo();
+        _activeSearchQuery = null;
+        SearchText = string.Empty;
         Refresh();
     }
 
     private void GoHome()
     {
         _itemNavigationService.Clear();
+        _activeSearchQuery = null;
+        SearchText = string.Empty;
         Refresh();
     }
 

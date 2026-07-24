@@ -1,31 +1,32 @@
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Models.Search;
 
 namespace AvatarExplorer.Core.Models.System;
 
 public record CommonAvatarSearchIndex : ISearchIndex
 {
-    public required string FreeWord { get; init; }
     public required string GroupName { get; init; }
+    public required string FreeWord { get; init; }
 
-    public bool IsMatch(SearchToken token)
+    public bool IsMatch(SearchQueryToken token, Func<string, string>? locKeyProvider = null)
     {
-        var targets = GetTargets(token.Type);
-        if (targets.Length == 0)
-            return token.IsNegation;
+        var targets = GetTargets(token.Field);
+        if (targets.Length == 0) return false;
 
-        if (token.IsNegation)
-            return targets.All(t => !t.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase));
-        else
-            return targets.Any(t => t.Contains(token.Value, StringComparison.CurrentCultureIgnoreCase));
+        var comparison = StringComparison.CurrentCultureIgnoreCase;
+        return token.IsNegation
+            ? targets.All(t => !t.Contains(token.Value, comparison))
+            : targets.Any(t => t.Contains(token.Value, comparison));
     }
 
-    private string[] GetTargets(SearchTokenType type)
+    private string[] GetTargets(string? field)
     {
-        return type switch
+        return field?.ToLowerInvariant() switch
         {
-            SearchTokenType.CommonAvatar => [GroupName],
-            SearchTokenType.FreeWord => [FreeWord],
+            "commonavatar" => [GroupName],
+            "groupname" => [GroupName],
+            null => [FreeWord],
             _ => []
         };
     }

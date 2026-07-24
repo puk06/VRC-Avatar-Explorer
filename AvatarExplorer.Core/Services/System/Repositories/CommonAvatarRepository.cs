@@ -7,6 +7,12 @@ namespace AvatarExplorer.Core.Services.System.Repositories;
 public class CommonAvatarRepository
 {
     private readonly DatabaseManager<CommonAvatar> _db = new(SystemPath.CommonAvatarDatabasePath);
+
+    /// <summary>
+    /// CommonAvatar が追加・更新・削除された際に発火します。引数は CommonAvatar.Identifier です。
+    /// </summary>
+    public event Action<string>? OnUpdated;
+
     public void Load(string? path = null) => _db.Load(path);
 
     public IReadOnlyList<CommonAvatar> GetAll() => _db.Items;
@@ -18,9 +24,15 @@ public class CommonAvatarRepository
         if (group == null) return;
 
         _db.Remove(group.Id);
+        OnUpdated?.Invoke(identifier);
     }
 
-    public void Create(string groupName) => _db.Add(new(groupName));
+    public void Create(string groupName)
+    {
+        var group = new CommonAvatar(groupName);
+        _db.Add(group);
+        OnUpdated?.Invoke(group.Identifier);
+    }
 
     public void UpdateAvatars(string groupId, IEnumerable<string> avatars)
     {
@@ -29,6 +41,7 @@ public class CommonAvatarRepository
 
         group.UpdateAvatars(avatars);
         Save();
+        OnUpdated?.Invoke(groupId);
     }
     
     public void RenameGroup(string groupId, string newName)
@@ -38,6 +51,7 @@ public class CommonAvatarRepository
 
         group.GroupName = newName;
         Save();
+        OnUpdated?.Invoke(groupId);
     }
 
     public void Save() => _db.Save();

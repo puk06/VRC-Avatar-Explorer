@@ -10,6 +10,16 @@
     x:Class="AvatarExplorer.UI.Views.MainView"
     x:DataType="vm:MainViewModel">
 
+    <UserControl.Styles>
+        <Style Selector="Button.PathSegment">
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+    </UserControl.Styles>
+
     <DockPanel Margin="12">
         <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*" ColumnSpacing="12">
             <Border Grid.Column="1" Classes="panelbackground">
@@ -17,7 +27,67 @@
                     <Button Classes="button" Grid.Column="0" Content="{materialIcons:MaterialIconExt Kind=ArrowLeft}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" FontSize="19" CornerRadius="8" Padding="15,0,15,0" Command="{Binding UndoCommand}"/>
                     <Button Classes="button" Grid.Column="1" Content="{materialIcons:MaterialIconExt Kind=HomeOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" FontSize="19" CornerRadius="8" Padding="15,0,15,0" Command="{Binding HomeCommand}"/>
                     
-                    <TextBox Text="{Binding Path}" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Path.Placeholder], Source={x:Static loc:Localizer.Instance}}" IsReadOnly="True" FontSize="14" CornerRadius="8"/>
+                    <Border Grid.Column="2" Classes="panelbackground" CornerRadius="8" Padding="8,0">
+                        <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center">
+                            <Button Grid.Column="0" Classes="button PathSegment"
+                                    IsVisible="{Binding HasOverflow}"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,10,0">
+                                <Button.Flyout>
+                                    <Flyout>
+                                        <ItemsControl ItemsSource="{Binding PathSegments}" MaxWidth="300">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Spacing="2"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="component:PathSegment">
+                                                    <Panel VerticalAlignment="Center" IsVisible="{Binding IsClickable}">
+                                                        <Button Classes="button PathSegment"
+                                                                HorizontalAlignment="Stretch"
+                                                                HorizontalContentAlignment="Left"
+                                                                Command="{Binding $parent[UserControl].DataContext.NavigateToSegmentCommand}"
+                                                                CommandParameter="{Binding State}"
+                                                                IsVisible="{Binding IsClickable}"
+                                                                IsEnabled="{Binding IsClickable}">
+                                                            <TextBlock Text="{Binding DisplayName}" FontSize="13" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="280"/>
+                                                        </Button>
+                                                        <TextBlock Text="{Binding DisplayName}" FontSize="13" VerticalAlignment="Center" IsVisible="{Binding !IsClickable}" Margin="2,2"/>
+                                                    </Panel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Flyout>
+                                </Button.Flyout>
+                                <TextBlock Text="..." FontSize="13" VerticalAlignment="Center"/>
+                            </Button>
+
+                            <ScrollViewer Grid.Column="1" x:Name="PathScrollViewer" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" VerticalAlignment="Center">
+                                <ItemsControl ItemsSource="{Binding PathSegments}" VerticalAlignment="Center">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="2"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="component:PathSegment">
+                                            <Panel VerticalAlignment="Center">
+                                                <Button Classes="button PathSegment"
+                                                        Command="{Binding $parent[UserControl].DataContext.NavigateToSegmentCommand}"
+                                                        CommandParameter="{Binding State}"
+                                                        IsVisible="{Binding IsClickable}"
+                                                        IsEnabled="{Binding IsClickable}">
+                                                    <TextBlock Text="{Binding DisplayName}" FontSize="13" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="200"/>
+                                                </Button>
+                                                <TextBlock Text="{Binding DisplayName}" FontSize="13" VerticalAlignment="Center" IsVisible="{Binding !IsClickable}" Margin="2,2"/>
+                                            </Panel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
                     
                     <materialIcons:MaterialIcon Grid.Column="3" Kind="Magnify" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     <TextBox Text="{Binding SearchText}" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Search.Placeholder], Source={x:Static loc:Localizer.Instance}}" FontSize="14" CornerRadius="8"/>

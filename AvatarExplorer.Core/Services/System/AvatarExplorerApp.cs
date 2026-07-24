@@ -46,6 +46,8 @@ public class AvatarExplorerApp
 
         Migration(); //TODO: ItemMigrationに移行する
 
+        ItemGroupService.RebuildIndices();
+
         BackupManager.AddTargetFiles(
             [
                 SystemPath.ItemDatabasePath,
@@ -58,9 +60,6 @@ public class AvatarExplorerApp
         );
 
         // StartAutoBackup();
-
-        // UpdateSearchIndex();
-        // // EnsureAllItemsDefaultPathExist();
 
         ErrorManager.Instance.OnErrorOccured += ErrorLogWriter.Instance.Write;
         ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;

@@ -1,7 +1,11 @@
+using System;
+using System.ComponentModel;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.ViewModels;
@@ -17,6 +21,59 @@ public partial class MainView : UserControl
 
         RegisterSidePanelEvent();
         RegisterCategoryTabEvent();
+        RegisterPathScrollEvent();
+    }
+
+    private void RegisterPathScrollEvent()
+    {
+        if (DataContext is MainViewModel vm)
+        {
+            vm.PropertyChanged += OnPathSegmentsChanged;
+        }
+
+        PathScrollViewer.ScrollChanged += OnPathScrollViewerScrollChanged;
+        PathScrollViewer.SizeChanged += OnPathScrollViewerSizeChanged;
+    }
+
+    private void OnPathSegmentsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(MainViewModel.PathSegments))
+        {
+            Dispatcher.UIThread.Post(UpdatePathOverflowAndScroll, DispatcherPriority.Render);
+        }
+    }
+
+    private void OnPathScrollViewerScrollChanged(object? sender, ScrollChangedEventArgs e)
+    {
+        if (e.ExtentDelta != default || e.ViewportDelta != default)
+        {
+            UpdatePathOverflow();
+        }
+    }
+
+    private void OnPathScrollViewerSizeChanged(object? sender, SizeChangedEventArgs e)
+    {
+        UpdatePathOverflowAndScroll();
+    }
+
+    private void UpdatePathOverflow()
+    {
+        if (DataContext is MainViewModel vm)
+        {
+            vm.HasOverflow = PathScrollViewer.Extent.Width > PathScrollViewer.Viewport.Width;
+        }
+    }
+
+    private void UpdatePathOverflowAndScroll()
+    {
+        UpdatePathOverflow();
+        ScrollPathToEnd();
+    }
+
+    private void ScrollPathToEnd()
+    {
+        var maxOffset = Math.Max(0, PathScrollViewer.Extent.Width - PathScrollViewer.Viewport.Width);
+        PathScrollViewer.Offset = new Vector(maxOffset, 0);
     }
 
     private void RegisterSidePanelEvent()
