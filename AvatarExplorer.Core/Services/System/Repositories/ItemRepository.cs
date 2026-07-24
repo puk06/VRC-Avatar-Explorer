@@ -223,7 +223,7 @@ public class ItemRepository
             if (unknownCategoryExists) offset = (int)items.Max(i => i.Category.Type) - (int)ItemType.Custom;
             foreach (var item in items)
             {
-                item.UpdateCategory(new(item.Category.Type - offset)); // TODO: バカ重いかも
+                item.UpdateCategory(new(item.Category.Type - offset));
                 OnItemUpdated?.Invoke(item.Identifier);
             }
             // Save();

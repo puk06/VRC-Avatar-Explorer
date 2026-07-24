@@ -188,7 +188,7 @@ public class ItemGroupService
         return AvatarService.GetAllSupportedAvatarIds(avatars, _commonAvatars.GetAll(), includeCommonAvatarToSupported);
     }
 
-    // TODO: 逆も作る
+    // TODO: 逆も作る (共通素体削除時に)
     public void ReplaceSupportedAvatarsToCommonAvatarGroup(string groupIdentifier)
     {
         var commonAvatar = _commonAvatars.Get(groupIdentifier);
