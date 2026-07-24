@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Localization;
@@ -41,15 +40,15 @@ public class SettingsViewModel : ViewModelBase
     [Reactive] public bool TreatEmptySupportedAvatarAsNone { get; set; }
     [Reactive] public double ThumbnailCompressionMaxSize { get; set; }
     [Reactive] public bool UseBackgroundImage { get; set; }
-    [Reactive] public string BackgroundImagePath { get; set; }
+    [Reactive] public string BackgroundImagePath { get; set; } = string.Empty;
     [Reactive] public double BackgroundImageOpacity { get; set; }
-    [Reactive] public string ItemsFolderPath { get; set; }
-    [Reactive] public string AutoBackupFolderPath { get; set; }
+    [Reactive] public string ItemsFolderPath { get; set; } = string.Empty;
+    [Reactive] public string AutoBackupFolderPath { get; set; } = string.Empty;
     [Reactive] public int AutoBackupInterval { get; set; }
     [Reactive] public int MaxDegreeOfParallelism { get; set; }
     [Reactive] public bool CheckForUpdate { get; set; }
     [Reactive] public int SelectedUpdateChannel { get; set; }
-    [Reactive] public Image GithubUserImage { get; set; }
+    [Reactive] public Bitmap? GithubUserImage { get; set; } = null;
 
     public IReactiveCommand OpenBackgroundImageCommand { get; }
     public IReactiveCommand OpenCommonAvatarManagerCommand { get; }
@@ -102,6 +101,13 @@ public class SettingsViewModel : ViewModelBase
         ViewThirdPartyLicensesCommand = ReactiveCommand.CreateFromTask(ViewThirdPartyLicenses);
         CloseCommand = ReactiveCommand.Create(OnClose);
         ApplyCommand = ReactiveCommand.Create(OnApply);
+
+        LoadProfileImage();
+    }
+
+    public async void LoadProfileImage()
+    {
+        GithubUserImage = await GithubService.GetProfileIconAsync();
     }
 
     public void Open()
@@ -228,6 +234,7 @@ public class SettingsViewModel : ViewModelBase
 
     private async Task RestoreFromBackup()
     {
+        // TODO: 復元処理を追加する
         // AvatarExplorerApp.Instance.BackupManager.OnRestoreBackupRequested += (sourcePath, path) =>
         // {
         //     // Debug.WriteLine($"BACKUP RESTOREING REQUESTED | Source: {sourcePath} | TargetPath: {path}");
@@ -255,13 +262,13 @@ public class SettingsViewModel : ViewModelBase
 
             if (result)
             {
-                // await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+                // TODO: await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
                 AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(true);
             }
         }
         else if (unknownCategoryExists)
         {
-            // await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
+            // TODO: await AvatarExplorer.ExecuteBackup(RuntimeSettings.AutoBackupRootDirectory);
             AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(false);
         }
     }
