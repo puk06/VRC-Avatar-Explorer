@@ -65,6 +65,8 @@ public class ItemNavigationService
         _pathCache.Clear();
     }
 
+    public Guid? CurrentStateId => _state.Current?.Id;
+
     public bool IsSearchActive => _state.Current?.Value.StartsWith(GetPrefix(SearchPrefix, string.Empty)) ?? false;
 
     public void PopAllSearchStates()

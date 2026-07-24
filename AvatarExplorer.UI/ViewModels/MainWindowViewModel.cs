@@ -94,6 +94,7 @@ public class MainWindowViewModel : ViewModelBase
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;
 
         UserPreferences.Load();
+        MainVM.UpdatePageSize(UserPreferences.Settings.ItemsPerPage);
         UpdateWindowTitle();
         _ = CheckForUpdateOnStartup();
     }
@@ -102,6 +103,7 @@ public class MainWindowViewModel : ViewModelBase
     {
         SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
         SetTheme(settings.Theme);
+        MainVM.UpdatePageSize(settings.ItemsPerPage);
     }
 
     private void OnUpdateAvailable(VersionRelease release)

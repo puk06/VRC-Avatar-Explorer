@@ -41,6 +41,9 @@ public class MainViewModel : ViewModelBase
     [Reactive] public IEnumerable<ItemViewModel> LeftItems { get; set; } = [];
     [Reactive] public IEnumerable<ItemViewModel> MainItems { get; set; } = [];
 
+    [Reactive] public PanelPageInfo LeftPageInfo { get; set; } = new();
+    [Reactive] public PanelPageInfo RightPageInfo { get; set; } = new();
+
     [Reactive] public bool IsSidePanelVisible { get; set; }
     [Reactive] public int SelectedSidePanelTab { get; set; }
     [Reactive] public double SidePanelMinWidth { get; set; } = 50;
@@ -57,16 +60,26 @@ public class MainViewModel : ViewModelBase
     public IReactiveCommand SelectRightItemCommand { get; }
     public ReactiveCommand<string, Unit> NavigateToSegmentCommand { get; }
 
+    public IReactiveCommand LeftGoFirstCommand { get; }
+    public IReactiveCommand LeftGoPrevCommand { get; }
+    public IReactiveCommand LeftGoNextCommand { get; }
+    public IReactiveCommand LeftGoLastCommand { get; }
+    public IReactiveCommand RightGoFirstCommand { get; }
+    public IReactiveCommand RightGoPrevCommand { get; }
+    public IReactiveCommand RightGoNextCommand { get; }
+    public IReactiveCommand RightGoLastCommand { get; }
+
     private readonly ItemGroupService _itemGroupService;
     private readonly ItemNavigationService _itemNavigationService;
     private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
     private string? _activeSearchQuery;
 
-    private CacheManager<Guid, int> _pageCache = new(0);
-    private CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
+    private readonly CacheManager<Guid, int> _pageCache = new(0);
+    private readonly CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
+    private readonly CacheManager<int, (int, Vector)> _leftStateCache = new((0, AvaloniaVectorUtils.MinValue));
 
-    private int _currentPage = 0;
-    private Vector _currentScrollValue = AvaloniaVectorUtils.MinValue;
+    private List<ItemViewModel> _allLeftItems = [];
+    private List<ItemViewModel> _allMainItems = [];
 
     public MainViewModel()
     {
@@ -90,6 +103,18 @@ public class MainViewModel : ViewModelBase
         OpenSidePanelCommand = ReactiveCommand.Create<string>(OpenSidePanel);
         NavigateToSegmentCommand = ReactiveCommand.Create<string>(NavigateToSegment);
 
+        LeftGoFirstCommand = ReactiveCommand.Create(LeftPageInfo.GoFirst);
+        LeftGoPrevCommand = ReactiveCommand.Create(LeftPageInfo.GoPrev);
+        LeftGoNextCommand = ReactiveCommand.Create(LeftPageInfo.GoNext);
+        LeftGoLastCommand = ReactiveCommand.Create(LeftPageInfo.GoLast);
+        RightGoFirstCommand = ReactiveCommand.Create(RightPageInfo.GoFirst);
+        RightGoPrevCommand = ReactiveCommand.Create(RightPageInfo.GoPrev);
+        RightGoNextCommand = ReactiveCommand.Create(RightPageInfo.GoNext);
+        RightGoLastCommand = ReactiveCommand.Create(RightPageInfo.GoLast);
+
+        LeftPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshLeftItems());
+        RightPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshMainItems());
+
         this.WhenAnyValue(x => x.SearchText)
             .Subscribe(_ => RestartSearchTimer());
         AdvancedSearchVM.SearchPropertyChanged += RestartSearchTimer;
@@ -100,16 +125,27 @@ public class MainViewModel : ViewModelBase
         Refresh();
     }
 
+    public void UpdatePageSize(int pageSize)
+    {
+        LeftPageInfo.PageSize = pageSize;
+        RightPageInfo.PageSize = pageSize;
+        RefreshLeftItems();
+        RefreshMainItems();
+    }
+
     public void OnCategoryChanged(int categoryIndex)
     {
         if (!Enum.IsDefined(typeof(QueryType), categoryIndex)) return;
 
+        SaveLeftState(SelectedCategory);
         SelectedCategory = categoryIndex;
         _activeSearchQuery = null;
         SearchText = string.Empty;
         _itemNavigationService.Clear();
+        RightPageInfo.Reset();
 
         UpdateLeftPanelItems((QueryType)categoryIndex);
+        RestoreLeftState(categoryIndex);
     }
 
     public void OpenSidePanel(string index)
@@ -137,21 +173,40 @@ public class MainViewModel : ViewModelBase
     {
         if (!string.IsNullOrWhiteSpace(_activeSearchQuery))
         {
-            MainItems = SearchItems(_activeSearchQuery)
+            _allMainItems = SearchItems(_activeSearchQuery)
                 .Select(CreateItemViewModel)
-                .Select(i => i.Update());
+                .Select(i => i.Update())
+                .ToList();
+
+            RightPageInfo.TotalItems = _allMainItems.Count;
+            RightPageInfo.Reset();
+            RefreshMainItems();
 
             PathSegments = [new PathSegment { DisplayName = Localizer.Instance.Get(Loc.Main.Path.SearchResult, _activeSearchQuery) }];
         }
         else
         {
-            MainItems = _itemNavigationService.GetCurrentSelectionView()
+            _allMainItems = _itemNavigationService.GetCurrentSelectionView()
                 .Select(CreateItemViewModel)
-                .Select(i => i.Update());
+                .Select(i => i.Update())
+                .ToList();
+
+            RightPageInfo.TotalItems = _allMainItems.Count;
+            RefreshMainItems();
 
             PathSegments = new ObservableCollection<PathSegment>(
                 BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
         }
+    }
+
+    private void RefreshLeftItems()
+    {
+        LeftItems = LeftPageInfo.GetPageItems(_allLeftItems).ToList();
+    }
+
+    private void RefreshMainItems()
+    {
+        MainItems = RightPageInfo.GetPageItems(_allMainItems).ToList();
     }
 
     private void ExecuteSearch()
@@ -202,7 +257,9 @@ public class MainViewModel : ViewModelBase
     private void NavigateToSegment(string? state)
     {
         if (string.IsNullOrEmpty(state)) return;
+        SaveRightState();
         _itemNavigationService.PopToState(state);
+        RestoreRightState();
         Refresh();
     }
 
@@ -266,9 +323,58 @@ public class MainViewModel : ViewModelBase
 
     private void UpdateLeftPanelItems(QueryType type)
     {
-        LeftItems = _itemGroupService.GetQueryFilters(type)
+        _allLeftItems = _itemGroupService.GetQueryFilters(type)
             .Select(CreateItemViewModel)
-            .Select(i => i.Update());
+            .Select(i => i.Update())
+            .ToList();
+
+        LeftPageInfo.TotalItems = _allLeftItems.Count;
+        RefreshLeftItems();
+    }
+
+    private void SaveLeftState(int categoryIndex)
+    {
+        _leftStateCache.Add(categoryIndex, (LeftPageInfo.CurrentPage, LeftPageInfo.ScrollOffset));
+    }
+
+    private void RestoreLeftState(int categoryIndex)
+    {
+        if (_leftStateCache.TryGetValue(categoryIndex, out var state))
+        {
+            LeftPageInfo.CurrentPage = state.Item1;
+            LeftPageInfo.ScrollOffset = state.Item2;
+            LeftPageInfo.RestoreScrollOffset = state.Item2;
+        }
+        else
+        {
+            LeftPageInfo.Reset();
+        }
+    }
+
+    private void SaveRightState()
+    {
+        var currentGuid = _itemNavigationService.CurrentStateId;
+        if (currentGuid != null)
+        {
+            _pageCache.Add(currentGuid.Value, RightPageInfo.CurrentPage);
+            _scrollValueCache.Add(currentGuid.Value, RightPageInfo.ScrollOffset);
+        }
+    }
+
+    private void RestoreRightState()
+    {
+        var currentGuid = _itemNavigationService.CurrentStateId;
+        if (currentGuid != null && _pageCache.TryGetValue(currentGuid.Value, out var page))
+        {
+            RightPageInfo.CurrentPage = page;
+            var scroll = _scrollValueCache.Get(currentGuid.Value);
+            RightPageInfo.ScrollOffset = scroll;
+            RightPageInfo.RestoreScrollOffset = scroll;
+        }
+        else
+        {
+            RightPageInfo.Reset();
+        }
     }
 
     private void OnLeftItemSelected(ItemViewModel? item)
@@ -277,13 +383,10 @@ public class MainViewModel : ViewModelBase
 
         _activeSearchQuery = null;
         SearchText = string.Empty;
+        SaveRightState();
         _itemNavigationService.Clear();
-        var guid = _itemNavigationService.Select(item.Identifier);
-        if (guid != null)
-        {
-            _pageCache.Add((Guid)guid, _currentPage);
-            _scrollValueCache.Add((Guid)guid, _currentScrollValue);
-        }
+        _itemNavigationService.Select(item.Identifier);
+        RightPageInfo.Reset();
         Refresh();
     }
 
@@ -293,24 +396,30 @@ public class MainViewModel : ViewModelBase
 
         _activeSearchQuery = null;
         SearchText = string.Empty;
+        SaveRightState();
         _itemNavigationService.PopAllSearchStates();
         _itemNavigationService.Select(item.Identifier);
+        RightPageInfo.Reset();
         Refresh();
     }
 
     private void Undo()
     {
+        SaveRightState();
         _itemNavigationService.Undo();
         _activeSearchQuery = null;
         SearchText = string.Empty;
+        RestoreRightState();
         Refresh();
     }
 
     private void GoHome()
     {
+        SaveRightState();
         _itemNavigationService.Clear();
         _activeSearchQuery = null;
         SearchText = string.Empty;
+        RightPageInfo.Reset();
         Refresh();
     }
 

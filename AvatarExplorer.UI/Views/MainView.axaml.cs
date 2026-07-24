@@ -22,6 +22,7 @@ public partial class MainView : UserControl
         RegisterSidePanelEvent();
         RegisterCategoryTabEvent();
         RegisterPathScrollEvent();
+        RegisterScrollTracking();
     }
 
     private void RegisterPathScrollEvent()
@@ -74,6 +75,36 @@ public partial class MainView : UserControl
     {
         var maxOffset = Math.Max(0, PathScrollViewer.Extent.Width - PathScrollViewer.Viewport.Width);
         PathScrollViewer.Offset = new Vector(maxOffset, 0);
+    }
+
+    private void RegisterScrollTracking()
+    {
+        Main_LeftPanelScrollViewer.ScrollChanged += (s, e) =>
+        {
+            if (DataContext is MainViewModel vm)
+                vm.LeftPageInfo.ScrollOffset = Main_LeftPanelScrollViewer.Offset;
+        };
+
+        Main_RightPanelScrollViewer.ScrollChanged += (s, e) =>
+        {
+            if (DataContext is MainViewModel vm)
+                vm.RightPageInfo.ScrollOffset = Main_RightPanelScrollViewer.Offset;
+        };
+
+        if (DataContext is MainViewModel mainVm)
+        {
+            mainVm.LeftPageInfo.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(MainViewModel.LeftPageInfo.RestoreScrollOffset))
+                    Main_LeftPanelScrollViewer.Offset = mainVm.LeftPageInfo.RestoreScrollOffset;
+            };
+
+            mainVm.RightPageInfo.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(MainViewModel.RightPageInfo.RestoreScrollOffset))
+                    Main_RightPanelScrollViewer.Offset = mainVm.RightPageInfo.RestoreScrollOffset;
+            };
+        }
     }
 
     private void RegisterSidePanelEvent()

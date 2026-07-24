@@ -11,16 +11,6 @@ internal class SelectionState
 
     public Guid Push(string value)
     {
-        // if (state == ItemTagStates.SearchItem && FirstOrDefault(ItemTagStates.SearchItem) != null)
-        // {
-        //     foreach (string itemTagState in _stack)
-        //     {
-        //         Pop();
-        //         if (itemTagState.StartsWith("searchitem")) break;
-        //     }
-        // }
-        // TODO: 検索結果は複数無いようにする
-
         var newNode = new SelectionNode(Guid.NewGuid(), value);
         _stack.Push(newNode);
         SelectionChanged?.Invoke();
