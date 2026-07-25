@@ -186,9 +186,29 @@ public class MainViewModel : ViewModelBase
         }
         else
         {
+            var avatarId = _itemNavigationService.GetCurrentAvatarId();
+            var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
+
             _allMainItems = _itemNavigationService.GetCurrentSelectionView()
-                .Select(CreateItemViewModel)
-                .Select(i => i.Update())
+                .Select(i =>
+                {
+                    var vm = CreateItemViewModel(i);
+                    if (i is Item item)
+                    {
+                        var status = _itemNavigationService.ResolveAvatarStatusForCurrentAvatar(item, avatarId, commonAvatars);
+                        if (status.IsOnlyCommon)
+                        {
+                            var tags = new List<TagViewModel>(item.Tags.Length + 1)
+                            {
+                                new() { ValueRaw = status.CommonAvatarName, IsCommonAvatar = true }
+                            };
+                            tags.AddRange(vm.Tags);
+                            vm.Tags = new ObservableCollection<TagViewModel>(tags);
+                        }
+                    }
+
+                    return vm.Update();
+                })
                 .ToList();
 
             RightPageInfo.TotalItems = _allMainItems.Count;
@@ -298,10 +318,12 @@ public class MainViewModel : ViewModelBase
 
         for (int i = 0; i < stateList.Count; i++)
         {
+            if (stateList[i].StartsWith(ItemNavigationService.ItemPrefix)) segments.Clear();
+
             var displayName = FormatPathNode(stateList[i]);
             if (string.IsNullOrWhiteSpace(displayName)) continue;
 
-            if (i > 0)
+            if (i > 0 && segments.Count != 0)
                 segments.Add(new PathSegment { DisplayName = " > " });
 
             segments.Add(new PathSegment { DisplayName = displayName, State = stateList[i] });

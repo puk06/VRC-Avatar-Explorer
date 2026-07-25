@@ -1,6 +1,7 @@
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.Avatars.Internal;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 
@@ -57,6 +58,31 @@ public class ItemNavigationService
         return _state.Push(state);
     }
 
+    public AvatarStatus? ResolveAvatarStatusForCurrentAvatar(Item item)
+    {
+        var avatarNode = _state.GetCurrentSelectionNodes().FirstOrDefault(i => i.Value.StartsWith(AvatarPrefix));
+        if (avatarNode == null) return null;
+
+        if (!TryParseState(avatarNode.Value, out var _, out var avatarId)) return null;
+
+        return AvatarStatusResolver.Resolve(item, avatarId, _items.CommonAvatarRepository.GetAll());
+    }
+
+    public string? GetCurrentAvatarId()
+    {
+        var avatarNode = _state.GetCurrentSelectionNodes().FirstOrDefault(i => i.Value.StartsWith(AvatarPrefix));
+        if (avatarNode == null) return null;
+
+        if (!TryParseState(avatarNode.Value, out var _, out var avatarId)) return null;
+
+        return avatarId;
+    }
+
+    public AvatarStatus ResolveAvatarStatusForCurrentAvatar(Item item, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars)
+    {
+        return AvatarStatusResolver.Resolve(item, avatarId, commonAvatars);
+    }
+
     public SelectionNode? Undo() => _state.Pop();
 
     public void Clear()
@@ -67,7 +93,8 @@ public class ItemNavigationService
 
     public Guid? CurrentStateId => _state.Current?.Id;
 
-    public bool IsSearchActive => _state.Current?.Value.StartsWith(GetPrefix(SearchPrefix, string.Empty)) ?? false;
+    // TODO: これ使われてないかも。多重な検索ステートは生みたくないから使いたいね
+    public bool IsSearchActive => _state.GetCurrentSelectionNodes().Any(i => i.Value.StartsWith(GetPrefix(SearchPrefix, string.Empty)));
 
     public void PopAllSearchStates()
     {

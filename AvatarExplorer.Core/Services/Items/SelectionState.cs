@@ -1,4 +1,3 @@
-
 namespace AvatarExplorer.Core.Services.Items;
 
 public record SelectionNode(Guid Id, string Value);
@@ -27,7 +26,6 @@ internal class SelectionState
     }
 
     public SelectionNode? Current => _stack.Count > 0 ? _stack.Peek() : null;
-
     public SelectionNode? Root => _stack.Count > 0 ? _stack.Last() : null;
 
     public void Clear()

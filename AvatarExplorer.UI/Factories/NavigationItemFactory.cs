@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+using System.Linq;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.UI.Data;
@@ -25,7 +27,8 @@ public static class NavigationItemFactory
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = source.Identifier,
-                ViewModelType = ViewModelType.Item
+                ViewModelType = ViewModelType.Item,
+                Tags = new ObservableCollection<TagViewModel>(item.Tags.Select(t => new TagViewModel { ValueRaw = t }))
             };
         }
 
@@ -96,7 +99,8 @@ public static class NavigationItemFactory
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = avatar.Identifier,
-                ViewModelType = ViewModelType.Item
+                ViewModelType = ViewModelType.Item,
+                Tags = new ObservableCollection<TagViewModel>(item.Tags.Select(t => new TagViewModel { ValueRaw = t }))
             };
         }
         else if (avatar.Type == AvatarType.CommonAvatar)

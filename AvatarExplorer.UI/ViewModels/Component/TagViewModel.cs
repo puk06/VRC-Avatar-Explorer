@@ -5,7 +5,7 @@ namespace AvatarExplorer.UI.ViewModels.Component;
 
 public class TagViewModel : ViewModelBase
 {
-    public string Label { get; set; } = string.Empty;
+    public string Label { get; private set; } = string.Empty;
     public bool IsCommonAvatar { get; set; } = false;
 
     public string ValueRaw { get; set; } = string.Empty;

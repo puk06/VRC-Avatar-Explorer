@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
@@ -22,7 +22,7 @@ public class ItemViewModel : ViewModelBase
     [Reactive] public Bitmap? Thumbnail { get; set; } = null;
     [Reactive] public string Title { get; private set; } = string.Empty;
     [Reactive] public string Description { get; private set; } = string.Empty;
-    [Reactive] public IEnumerable<TagViewModel> Tags { get; set; } = [];
+    [Reactive] public ObservableCollection<TagViewModel> Tags { get; set; } = [];
     [Reactive] public ContextMenu? ContextMenu { get; set; } = null;
     [Reactive] public string ToolTip { get; set; } = string.Empty;
 
@@ -50,6 +50,8 @@ public class ItemViewModel : ViewModelBase
         ContextMenu = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
 
         Width = Height = (Thumbnail != null) ? 80 : 0;
+        Tags.ForEach(i => i.Update());
+
         return this;
     }
 
