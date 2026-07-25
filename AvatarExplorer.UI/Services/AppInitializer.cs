@@ -3,6 +3,7 @@ using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.ContextMenu;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 
 namespace AvatarExplorer.UI.Services;
@@ -18,6 +19,7 @@ public static class AppInitializer
 
         ContextMenuHandlerService.Initialize();
         RegisterBackupFiles();
+        UserPreferencesService.Instance.Repository.Load();
 
         StartThumbnailCacheWampup();
 

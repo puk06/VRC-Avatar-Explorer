@@ -51,6 +51,15 @@ public static class Loc
             public const string Removed = "Main.Path.Removed";
             public const string RootFolder = "Main.Path.RootFolder";
         }
+        public static class Sort
+        {
+            public const string Title = "Main.Sort.Title";
+            public const string Author = "Main.Sort.Author";
+            public const string CreatedDate = "Main.Sort.CreatedDate";
+            public const string UpdatedDate = "Main.Sort.UpdatedDate";
+            public const string Ascending = "Main.Sort.Ascending";
+            public const string Descending = "Main.Sort.Descending";
+        }
     }
     public static class ItemCategory
     {
@@ -379,6 +388,16 @@ public static class Loc
                 public const string Author = "Settings.SortOrder.Options.Author";
                 public const string Created = "Settings.SortOrder.Options.Created";
                 public const string Updated = "Settings.SortOrder.Options.Updated";
+            }
+        }
+        public static class SortDirection
+        {
+            public const string Title = "Settings.SortDirection.Title";
+            public const string Description = "Settings.SortDirection.Description";
+            public static class Options
+            {
+                public const string Ascending = "Settings.SortDirection.Options.Ascending";
+                public const string Descending = "Settings.SortDirection.Options.Descending";
             }
         }
         public static class Theme

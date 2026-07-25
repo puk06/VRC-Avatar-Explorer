@@ -14,6 +14,7 @@ using AvatarExplorer.Core.Services.Updates;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Models.Sort;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
@@ -28,6 +29,7 @@ public class SettingsViewModel : ViewModelBase
     [Reactive] public int SelectedLanguage { get; set; }
 
     [Reactive] public int SelectedSortOrder { get; set; }
+    [Reactive] public SortDirection SelectedSortDirection { get; set; }
     [Reactive] public int SelectedTheme { get; set; }
     [Reactive] public bool RemoveBrackets { get; set; }
     [Reactive] public double NormalIconSize { get; set; }
@@ -113,10 +115,9 @@ public class SettingsViewModel : ViewModelBase
     public void Open()
     {
         var runtimeSettings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
-        var preferences = MainWindowViewModel.Instance.UserPreferences.Settings;
+        var preferences = UserPreferencesService.Instance.Repository.Settings;
 
         SelectedLanguage = preferences.Language;
-        SelectedSortOrder = (int)runtimeSettings.ItemSortOrder;
         SelectedTheme = (int)preferences.Theme;
         RemoveBrackets = preferences.RemoveBrackets;
         NormalIconSize = preferences.NormalIconSize;
@@ -137,6 +138,8 @@ public class SettingsViewModel : ViewModelBase
         MaxDegreeOfParallelism = runtimeSettings.MaxDegreeOfParallelism;
         CheckForUpdate = runtimeSettings.CheckForUpdate;
         SelectedUpdateChannel = (int)runtimeSettings.UpdateChannel;
+        SelectedSortOrder = (int)preferences.SortOrder;
+        SelectedSortDirection = preferences.SortDirection;
 
         IsVisible = true;
     }
@@ -147,7 +150,6 @@ public class SettingsViewModel : ViewModelBase
         {
             DataRootDirectory = ItemsFolderPath,
             AutoBackupRootDirectory = AutoBackupFolderPath,
-            ItemSortOrder = (ItemSortOrder)SelectedSortOrder,
             RemoveOriginal = RemoveOriginal,
             ShouldLinkToOriginal = LinkToOriginal,
             AutoBackupInterval = AutoBackupInterval,
@@ -173,14 +175,16 @@ public class SettingsViewModel : ViewModelBase
             ThumbnailCompressionMaxEdge = (int)ThumbnailCompressionMaxSize,
             UseBackgroundImage = UseBackgroundImage,
             BackgroundImage = BackgroundImagePath,
-            BackgroundOpacity = (int)BackgroundImageOpacity
+            BackgroundOpacity = (int)BackgroundImageOpacity,
+            SortOrder = (ItemSortOrder)SelectedSortOrder,
+            SortDirection = SelectedSortDirection
         };
     }
 
     private void OnApply()
     {
         AvatarExplorerApp.Instance.RuntimeSettings.Update(CreateRuntimeSettings());
-        MainWindowViewModel.Instance.UserPreferences.Update(CreateUserPreferences());
+        UserPreferencesService.Instance.Repository.Update(CreateUserPreferences());
     }
 
     private void OnClose()

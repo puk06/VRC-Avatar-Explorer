@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using AvatarExplorer.Core.Extensions;
@@ -10,6 +12,7 @@ using AvatarExplorer.UI.Models.Items;
 using AvatarExplorer.UI.Services.ContextMenu;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
+using AvatarExplorer.UI.Utils;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
@@ -22,7 +25,7 @@ public class ItemViewModel : ViewModelBase
     [Reactive] public Bitmap? Thumbnail { get; set; } = null;
     [Reactive] public string Title { get; private set; } = string.Empty;
     [Reactive] public string Description { get; private set; } = string.Empty;
-    [Reactive] public ObservableCollection<TagViewModel> Tags { get; set; } = [];
+    [Reactive] public TagViewModel[] Tags { get; set; } = [];
     [Reactive] public ContextMenu? ContextMenu { get; set; } = null;
     [Reactive] public string ToolTip { get; set; } = string.Empty;
 
@@ -42,7 +45,7 @@ public class ItemViewModel : ViewModelBase
     public string? ActualValue { get; set; }
     public required ViewModelType ViewModelType { get; set; }
 
-    public ItemViewModel Update(int iconSize = 80)
+    public ItemViewModel Update(int iconSize = 80, bool removeBrackets = false)
     {
         Thumbnail = ImageService.Get(ImageFileName);
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
@@ -51,6 +54,12 @@ public class ItemViewModel : ViewModelBase
 
         Width = Height = (Thumbnail != null) ? iconSize : 0;
         Tags.ForEach(i => i.Update());
+
+        if (removeBrackets && ViewModelType == ViewModelType.Item)
+        {
+            Title = TextBracketsUtils.RemoveBrackets(TitleRaw);
+        }
+
         return this;
     }
 

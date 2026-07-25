@@ -28,7 +28,7 @@ public static class NavigationItemFactory
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = source.Identifier,
                 ViewModelType = ViewModelType.Item,
-                Tags = new ObservableCollection<TagViewModel>(item.Tags.Select(t => new TagViewModel { ValueRaw = t }))
+                Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray()
             };
         }
 
@@ -36,7 +36,7 @@ public static class NavigationItemFactory
         {
             return new ItemViewModel
             {
-                ImageFileName = SystemIconKey.AvatarIcon,
+                ImageFileName = string.Empty,
                 TitleRaw = author.Name,
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.Item.Count, [author.ItemCount.ToString()]),
@@ -100,7 +100,7 @@ public static class NavigationItemFactory
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = avatar.Identifier,
                 ViewModelType = ViewModelType.Item,
-                Tags = new ObservableCollection<TagViewModel>(item.Tags.Select(t => new TagViewModel { ValueRaw = t }))
+                Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray()
             };
         }
         else if (avatar.Type == AvatarType.CommonAvatar)

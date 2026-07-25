@@ -1,4 +1,5 @@
 using AvatarExplorer.UI.Models.Common;
+using AvatarExplorer.UI.Models.Sort;
 
 namespace AvatarExplorer.UI.Models.Settings;
 
@@ -16,4 +17,6 @@ public record UserPreferences
     public int ItemsPerPage { get; init; } = 30;
     public BitmapAntiAliasingMode AntiAliasingMode { get; init; } = BitmapAntiAliasingMode.None;
     public bool RemoveBrackets { get; init; } = false;
+    public ItemSortOrder SortOrder { get; init; } = ItemSortOrder.UpdatedDate;
+    public SortDirection SortDirection { get; init; } = SortDirection.Descending;
 }

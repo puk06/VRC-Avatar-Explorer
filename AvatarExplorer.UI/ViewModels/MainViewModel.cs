@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -17,17 +18,23 @@ using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Models.Sort;
+using AvatarExplorer.UI.Services.Sort;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Component;
 using AvatarExplorer.UI.ViewModels.Panels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using UIItemSortOrder = AvatarExplorer.UI.Models.Sort.ItemSortOrder;
 
 namespace AvatarExplorer.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+    #region Properties
     public static MainViewModel Instance { get; private set; } = null!;
     public AdvancedSearchViewModel AdvancedSearchVM { get; } = new();
     public BulkImportViewModel BulkImportVM { get; } = new();
@@ -55,6 +62,11 @@ public class MainViewModel : ViewModelBase
     [Reactive] public bool IsHoverThumbnailVisible { get; set; }
     [Reactive] public PixelPoint HoverThumbnailPosition { get; set; }
 
+    [Reactive] public int SelectedSortOrder { get; set; } = 3;
+    [Reactive] public int SelectedSortDirection { get; set; } = 1;
+    #endregion
+
+    #region Commands
     public IReactiveCommand UndoCommand { get; }
     public IReactiveCommand HomeCommand { get; }
     public IReactiveCommand OpenSettingsCommand { get; }
@@ -73,7 +85,12 @@ public class MainViewModel : ViewModelBase
     public IReactiveCommand RightGoPrevCommand { get; }
     public IReactiveCommand RightGoNextCommand { get; }
     public IReactiveCommand RightGoLastCommand { get; }
+    public IReactiveCommand ToggleSortDirectionCommand { get; }
 
+    [Reactive] public Material.Icons.MaterialIconKind SortDirectionIcon { get; set; } = Material.Icons.MaterialIconKind.SortDescending;
+    #endregion
+
+    #region Fields
     private readonly ItemGroupService _itemGroupService;
     private readonly ItemNavigationService _itemNavigationService;
     private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
@@ -86,7 +103,10 @@ public class MainViewModel : ViewModelBase
     private List<ItemViewModel> _allLeftItems = [];
     private List<ItemViewModel> _allMainItems = [];
     private int _normalIconSize = 80;
+    private bool _removeBrackets = false;
+    #endregion
 
+    #region Constructor
     public MainViewModel()
     {
         Instance = this;
@@ -117,44 +137,86 @@ public class MainViewModel : ViewModelBase
         RightGoPrevCommand = ReactiveCommand.Create(RightPageInfo.GoPrev);
         RightGoNextCommand = ReactiveCommand.Create(RightPageInfo.GoNext);
         RightGoLastCommand = ReactiveCommand.Create(RightPageInfo.GoLast);
+        ToggleSortDirectionCommand = ReactiveCommand.Create(ToggleSortDirection);
 
         LeftPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshLeftItems());
         RightPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshMainItems());
+
+        this.WhenAnyValue(x => x.SelectedSortOrder, x => x.SelectedSortDirection)
+            .Skip(1) // 絶対一回は設定されるから
+            .Subscribe(tuple =>
+            {
+                SortDirectionIcon = tuple.Item2 == 0
+                    ? Material.Icons.MaterialIconKind.SortAscending
+                    : Material.Icons.MaterialIconKind.SortDescending;
+                Refresh();
+            });
 
         this.WhenAnyValue(x => x.SearchText)
             .Subscribe(_ => RestartSearchTimer());
         AdvancedSearchVM.SearchPropertyChanged += RestartSearchTimer;
         _searchTimer.Tick += OnSearchTimerTick;
 
+        UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferencesBatch;
+        ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
+
         UpdateColumn();
         OnCategoryChanged((int)QueryType.Avatar);
-        Refresh();
     }
+    #endregion
 
-    public void UpdatePageSize(int pageSize)
+    #region Preferences
+    public void ApplyPreferencesBatch(UserPreferences preferences)
     {
-        LeftPageInfo.PageSize = pageSize;
-        RightPageInfo.PageSize = pageSize;
-        RefreshLeftItems();
-        RefreshMainItems();
-    }
+        var needsRefresh = false;
 
-    public void UpdateIconSize(int iconSize)
-    {
-        _normalIconSize = iconSize;
-        foreach (var item in _allMainItems.Concat(_allLeftItems))
+        if (SelectedSortOrder != (int)preferences.SortOrder || SelectedSortDirection != (int)preferences.SortDirection)
         {
-            item.Update(iconSize);
+            SelectedSortOrder = (int)preferences.SortOrder;
+            SelectedSortDirection = (int)preferences.SortDirection;
+            needsRefresh = true;
         }
+
+        var sizeOrBracketsChanged = false;
+        if (_normalIconSize != preferences.NormalIconSize)
+        {
+            _normalIconSize = preferences.NormalIconSize;
+            sizeOrBracketsChanged = true;
+        }
+
+        if (_removeBrackets != preferences.RemoveBrackets)
+        {
+            _removeBrackets = preferences.RemoveBrackets;
+            sizeOrBracketsChanged = true;
+        }
+
+        if (sizeOrBracketsChanged)
+        {
+            foreach (var item in _allMainItems.Concat(_allLeftItems))
+                item.Update(_normalIconSize, _removeBrackets);
+        }
+
+        LeftPageInfo.PageSize = preferences.ItemsPerPage;
+        RightPageInfo.PageSize = preferences.ItemsPerPage;
+
         RefreshLeftItems();
         RefreshMainItems();
+
+        if (needsRefresh) Refresh();
     }
 
+    private void ToggleSortDirection()
+    {
+        SelectedSortDirection = SelectedSortDirection == 0 ? 1 : 0;
+    }
+    #endregion
+
+    #region Hover Thumbnail
     public void ShowHoverThumbnail(ItemViewModel item)
     {
         if (item.ViewModelType != ViewModelType.Item || item.Thumbnail == null) return;
 
-        var preferences = MainWindowViewModel.Instance.UserPreferences.Settings;
+        var preferences = UserPreferencesService.Instance.Repository.Settings;
         if (!preferences.EnableHoverIconSize) return;
 
         HoverThumbnailImage = item.Thumbnail;
@@ -171,7 +233,9 @@ public class MainViewModel : ViewModelBase
     {
         HoverThumbnailPosition = position;
     }
+    #endregion
 
+    #region Navigation
     public void OnCategoryChanged(int categoryIndex)
     {
         if (!Enum.IsDefined(typeof(QueryType), categoryIndex)) return;
@@ -195,7 +259,9 @@ public class MainViewModel : ViewModelBase
         IsSidePanelVisible = true;
         UpdateColumn();
     }
+    #endregion
 
+    #region Search
     private void RestartSearchTimer()
     {
         _searchTimer.Stop();
@@ -206,66 +272,6 @@ public class MainViewModel : ViewModelBase
     {
         _searchTimer.Stop();
         ExecuteSearch();
-    }
-
-    private void Refresh()
-    {
-        if (!string.IsNullOrWhiteSpace(_activeSearchQuery))
-        {
-            _allMainItems = SearchItems(_activeSearchQuery)
-                .Select(CreateItemViewModel)
-                .Select(i => i.Update(_normalIconSize))
-                .ToList();
-
-            RightPageInfo.TotalItems = _allMainItems.Count;
-            RightPageInfo.Reset();
-            RefreshMainItems();
-
-            PathSegments = [new PathSegment { DisplayName = Localizer.Instance.Get(Loc.Main.Path.SearchResult, _activeSearchQuery) }];
-        }
-        else
-        {
-            var avatarId = _itemNavigationService.GetCurrentAvatarId();
-            var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
-
-            _allMainItems = _itemNavigationService.GetCurrentSelectionView()
-                .Select(i =>
-                {
-                    var vm = CreateItemViewModel(i);
-                    if (i is Item item)
-                    {
-                        var status = _itemNavigationService.ResolveAvatarStatusForCurrentAvatar(item, avatarId, commonAvatars);
-                        if (status.IsOnlyCommon)
-                        {
-                            var tags = new List<TagViewModel>(item.Tags.Length + 1)
-                            {
-                                new() { ValueRaw = status.CommonAvatarName, IsCommonAvatar = true }
-                            };
-                            tags.AddRange(vm.Tags);
-                            vm.Tags = new ObservableCollection<TagViewModel>(tags);
-                        }
-                    }
-
-                    return vm.Update(_normalIconSize);
-                })
-                .ToList();
-
-            RightPageInfo.TotalItems = _allMainItems.Count;
-            RefreshMainItems();
-
-            PathSegments = new ObservableCollection<PathSegment>(
-                BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
-        }
-    }
-
-    private void RefreshLeftItems()
-    {
-        LeftItems = LeftPageInfo.GetPageItems(_allLeftItems).ToList();
-    }
-
-    private void RefreshMainItems()
-    {
-        MainItems = RightPageInfo.GetPageItems(_allMainItems).ToList();
     }
 
     private void ExecuteSearch()
@@ -281,7 +287,7 @@ public class MainViewModel : ViewModelBase
         return identifiers
             .Select(_itemGroupService.ItemRepository.Get)
             .Where(item => item != null)
-            .Select(item => item!);
+            .Cast<Item>();
     }
 
     private static string BuildSearchString(string searchText, AdvancedSearchViewModel advancedSearch)
@@ -312,7 +318,81 @@ public class MainViewModel : ViewModelBase
         var transformed = transform?.Invoke(value) ?? value;
         parts.Add($"{fieldName}=\"{transformed}\"");
     }
+    #endregion
 
+    #region Refresh
+    private void Refresh()
+    {
+        var sortOrder = (UIItemSortOrder)SelectedSortOrder;
+        var sortDirection = (SortDirection)SelectedSortDirection;
+
+        if (!string.IsNullOrWhiteSpace(_activeSearchQuery))
+        {
+            _allMainItems = ItemSortService.Sort(SearchItems(_activeSearchQuery), sortOrder, sortDirection, _removeBrackets)
+                .Select(CreateItemViewModel)
+                .Select(i => i.Update(_normalIconSize, _removeBrackets))
+                .ToList();
+
+            RightPageInfo.TotalItems = _allMainItems.Count;
+            RightPageInfo.Reset();
+            RefreshMainItems();
+
+            PathSegments = [new PathSegment { DisplayName = Localizer.Instance.Get(Loc.Main.Path.SearchResult, _activeSearchQuery) }];
+        }
+        else
+        {
+            var avatarId = _itemNavigationService.GetCurrentAvatarId();
+            var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
+
+            var navigationables = _itemNavigationService.GetCurrentSelectionView();
+            var items = navigationables.OfType<Item>().ToList();
+            var nonItems = navigationables.Where(i => i is not Item).ToList();
+
+            var sortedItems = ItemSortService.Sort(items, sortOrder, sortDirection, _removeBrackets);
+            var sortedNavigationables = sortedItems.Cast<INavigationable>().Concat(nonItems);
+
+            _allMainItems = sortedNavigationables
+                .Select(i =>
+                {
+                    var vm = CreateItemViewModel(i);
+                    if (i is Item item)
+                    {
+                        var status = _itemNavigationService.ResolveAvatarStatusForCurrentAvatar(item, avatarId, commonAvatars);
+                        if (status.IsOnlyCommon)
+                        {
+                            var tags = new List<TagViewModel>(item.Tags.Length + 1)
+                            {
+                                new() { ValueRaw = status.CommonAvatarName, IsCommonAvatar = true }
+                            };
+                            tags.AddRange(vm.Tags);
+                            vm.Tags = tags.ToArray();
+                        }
+                    }
+
+                    return vm.Update(_normalIconSize, _removeBrackets);
+                })
+                .ToList();
+
+            RightPageInfo.TotalItems = _allMainItems.Count;
+            RefreshMainItems();
+
+            PathSegments = new ObservableCollection<PathSegment>(
+                BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
+        }
+    }
+
+    private void RefreshLeftItems()
+    {
+        LeftItems = LeftPageInfo.GetPageItems(_allLeftItems).ToList();
+    }
+
+    private void RefreshMainItems()
+    {
+        MainItems = RightPageInfo.GetPageItems(_allMainItems).ToList();
+    }
+    #endregion
+
+    #region Path Segments
     private void NavigateToSegment(string? state)
     {
         if (string.IsNullOrEmpty(state)) return;
@@ -373,7 +453,9 @@ public class MainViewModel : ViewModelBase
 
         return segments;
     }
+    #endregion
 
+    #region Items
     private static ItemViewModel CreateItemViewModel(INavigationable item)
     {
         var navigationItem = NavigationItemFactory.CreateFromNavigationable(item);
@@ -386,13 +468,15 @@ public class MainViewModel : ViewModelBase
     {
         _allLeftItems = _itemGroupService.GetQueryFilters(type)
             .Select(CreateItemViewModel)
-            .Select(i => i.Update(_normalIconSize))
+            .Select(i => i.Update(_normalIconSize, _removeBrackets))
             .ToList();
 
         LeftPageInfo.TotalItems = _allLeftItems.Count;
         RefreshLeftItems();
     }
+    #endregion
 
+    #region State Cache
     private void SaveLeftState(int categoryIndex)
     {
         _leftStateCache.Add(categoryIndex, (LeftPageInfo.CurrentPage, LeftPageInfo.ScrollOffset));
@@ -437,7 +521,9 @@ public class MainViewModel : ViewModelBase
             RightPageInfo.Reset();
         }
     }
+    #endregion
 
+    #region Selection
     private void OnLeftItemSelected(ItemViewModel? item)
     {
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
@@ -483,7 +569,9 @@ public class MainViewModel : ViewModelBase
         RightPageInfo.Reset();
         Refresh();
     }
+    #endregion
 
+    #region Side Panel
     private void UpdateColumn()
     {
         SidePanelMinWidth = IsSidePanelVisible ? 342 : 50;
@@ -502,4 +590,5 @@ public class MainViewModel : ViewModelBase
         IsSidePanelVisible = false;
         UpdateColumn();
     }
+    #endregion
 }

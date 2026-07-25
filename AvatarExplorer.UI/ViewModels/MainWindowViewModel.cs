@@ -33,8 +33,6 @@ public class MainWindowViewModel : ViewModelBase
 
     public static MainWindowViewModel Instance { get; private set; } = null!;
 
-    public UserPreferencesRepository UserPreferences { get; } = new();
-
     public MainViewModel MainVM { get; } = new();
 
     public ItemEditorViewModel ItemEditorVM { get; } = new();
@@ -92,13 +90,13 @@ public class MainWindowViewModel : ViewModelBase
     {
         Instance = this;
 
-        UserPreferences.OnSettingsChanged += OnPreferenceSettingsUpdated;
+        UserPreferencesService.Instance.Repository.OnSettingsChanged += OnPreferenceSettingsUpdated;
         Localizer.Instance.LanguageChanged += UpdateWindowTitle;
         AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;
 
-        UserPreferences.Load();
-        MainVM.UpdatePageSize(UserPreferences.Settings.ItemsPerPage);
+        UserPreferencesService.Instance.Repository.Load();
+        MainVM.ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
 
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
 
@@ -128,8 +126,6 @@ public class MainWindowViewModel : ViewModelBase
     {
         SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
         SetTheme(settings.Theme);
-        MainVM.UpdatePageSize(settings.ItemsPerPage);
-        MainVM.UpdateIconSize(settings.NormalIconSize);
     }
 
     private void OnUpdateAvailable(VersionRelease release)
