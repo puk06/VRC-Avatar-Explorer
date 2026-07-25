@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -16,12 +15,15 @@ using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Models.Sort;
+using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Component;
@@ -114,10 +116,7 @@ public class MainViewModel : ViewModelBase
         _itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
         _itemNavigationService = AvatarExplorerApp.Instance.ItemNavigationService;
 
-        _itemNavigationService.FileOpenRequested+= (file) =>
-        {
-            Process.Start("explorer.exe", "/select," + file);
-        };
+        _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
 
         UndoCommand = ReactiveCommand.Create(Undo);
         HomeCommand = ReactiveCommand.Create(GoHome);
@@ -249,6 +248,54 @@ public class MainViewModel : ViewModelBase
 
         UpdateLeftPanelItems((QueryType)categoryIndex);
         RestoreLeftState(categoryIndex);
+    }
+
+    public async void OnFileOpenRequested(string file)
+    {
+        if (PathUtils.IsUnitypackageFile(file))
+        {
+            var itemId = _itemNavigationService.GetCurrentItemId();
+            if (itemId == null) return;
+
+            var item = _itemGroupService.ItemRepository.Get(itemId);
+            if (item == null) return;
+
+            var category = item.Category;
+            var isLocalizable = category.IsLocalizable;
+            var displayName = isLocalizable ? Localizer.Instance[item.Category.ToString()] : item.Category.ToString();
+
+            MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Unitypackage.Status.Preparing]);
+            var importResult = await UnitypackageService.Import([new() { FilePath = file, CategoryDisplayName = displayName }], onProgress: async (name, percent) =>
+            {
+                MainWindowViewModel.Instance.ProgressVM.Update(Localizer.Instance.Get(name, percent.ToString()), percent);
+            });
+            MainWindowViewModel.Instance.ProgressVM.Close();
+
+            if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
+            {
+                var result = await LauncherService.OpenFile(TopLevelProvider.Current, importResult.ModifiedUnitypackagePath);
+                if (result.IsError)
+                {
+                    MainWindowViewModel.Instance.ShowNotification(
+                        Localizer.Instance[Loc.Error.Default],
+                        Localizer.Instance[Loc.Error.OpenFileFailed],
+                        Avalonia.Controls.Notifications.NotificationType.Error
+                    );
+                }
+            }
+            else
+            {
+                MainWindowViewModel.Instance.ShowNotification(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Error.ImportUnitypackageFailed],
+                    Avalonia.Controls.Notifications.NotificationType.Error
+                );
+            }
+        }
+        else
+        {
+            await LauncherService.OpenFile(TopLevelProvider.Current, file);
+        }
     }
 
     public void OpenSidePanel(string index)

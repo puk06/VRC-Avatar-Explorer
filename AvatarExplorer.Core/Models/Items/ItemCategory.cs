@@ -9,6 +9,7 @@ public record ItemCategory : INavigationable
     public string CustomCategory { get; init; } = string.Empty;
     
     public string Identifier => Type == ItemType.Custom ? $"custom:{CustomCategory}" : $"type:{(int)Type}";
+    public bool IsLocalizable => Type != ItemType.Custom && Type != ItemType.None;
 
     #region Constructor
     public ItemCategory()

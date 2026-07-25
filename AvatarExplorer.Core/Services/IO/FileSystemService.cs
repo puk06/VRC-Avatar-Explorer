@@ -217,7 +217,7 @@ public static class FileSystemService
         return separatorIndex >= 0 ? normalizedEntryName[..separatorIndex] : normalizedEntryName;
     }
 
-    internal static async Task<ModifiedUnitypackagesResult> ModifyUnitypackageFilePathsAsync(Dictionary<string, string> itemPathCategoryDictionary, Func<(string, int), Task>? reportProgress = null)
+    public static async Task<ModifiedUnitypackagesResult> ModifyUnitypackageFilePathsAsync(IReadOnlyList<UnitypackageImportEntry> entries, Func<(string, int), Task>? reportProgress = null)
     {
         ModifiedUnitypackagesResult result = new();
 
@@ -230,30 +230,32 @@ public static class FileSystemService
 
             if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Unitypackage.Status.Extracting, 10));
 
+            var validEntries = new List<UnitypackageImportEntry>();
             int totalEntries = 0;
-            foreach (string itemPath in itemPathCategoryDictionary.Keys)
+            foreach (var entry in entries)
             {
                 try
                 {
-                    totalEntries += await CountTarEntriesAsync(itemPath);
+                    totalEntries += await CountTarEntriesAsync(entry.FilePath);
+                    validEntries.Add(entry);
                 }
                 catch
                 {
-                    itemPathCategoryDictionary.Remove(itemPath); // 事前に処理に失敗する可能性があるものは削除しておく
+                    // 事前に処理に失敗する可能性があるものは削除しておく
                 }
             }
 
             int currentProcessedEntries = 0;
-            foreach (var itemPathCategoryKpv in itemPathCategoryDictionary)
+            foreach (var entry in validEntries)
             {
                 try
                 {
-                    currentProcessedEntries = await ExtractUnitypackageToFolderAsync(itemPathCategoryKpv.Key, saveFolderPath, itemPathCategoryKpv.Value, totalEntries, currentProcessedEntries, reportProgress);
-                    result.Success.Add(itemPathCategoryKpv.Key);
+                    currentProcessedEntries = await ExtractUnitypackageToFolderAsync(entry.FilePath, saveFolderPath, entry.CategoryDisplayName, totalEntries, currentProcessedEntries, reportProgress);
+                    result.Success.Add(entry.FilePath);
                 }
                 catch
                 {
-                    result.Failed.Add(itemPathCategoryKpv.Key);
+                    result.Failed.Add(entry.FilePath);
                 }
             }
 

@@ -60,7 +60,7 @@ public class ItemNavigationService
 
     public AvatarStatus? ResolveAvatarStatusForCurrentAvatar(Item item)
     {
-        var avatarNode = _state.GetCurrentSelectionNodes().FirstOrDefault(i => i.Value.StartsWith(AvatarPrefix));
+        var avatarNode = _state.LastOrDefault(AvatarPrefix);
         if (avatarNode == null) return null;
 
         if (!TryParseState(avatarNode.Value, out var _, out var avatarId)) return null;
@@ -70,12 +70,20 @@ public class ItemNavigationService
 
     public string? GetCurrentAvatarId()
     {
-        var avatarNode = _state.GetCurrentSelectionNodes().FirstOrDefault(i => i.Value.StartsWith(AvatarPrefix));
+        var avatarNode = _state.LastOrDefault(AvatarPrefix);
         if (avatarNode == null) return null;
 
         if (!TryParseState(avatarNode.Value, out var _, out var avatarId)) return null;
 
         return avatarId;
+    }
+
+    public string? GetCurrentItemId()
+    {
+        var itemNode = _state.FirstOrDefault(ItemPrefix);
+        if (itemNode == null) return null;
+
+        return itemNode.Value;
     }
 
     public AvatarStatus ResolveAvatarStatusForCurrentAvatar(Item item, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars)

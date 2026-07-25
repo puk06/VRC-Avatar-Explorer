@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
+using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Utils;
 
@@ -11,7 +12,7 @@ namespace AvatarExplorer.UI.Services.External;
 
 internal static class UnitypackageService
 {
-    internal static async Task<ModifiedUnitypackagesResult> Import(Dictionary<string, string> itemPathCategoryDictionary, Func<string, int, Task>? onProgress = null)
+    internal static async Task<ModifiedUnitypackagesResult> Import(IReadOnlyList<UnitypackageImportEntry> entries, Func<string, int, Task>? onProgress = null)
     {
         async Task progressAction((string localizationKey, int progress) tuple)
         {
@@ -21,9 +22,7 @@ internal static class UnitypackageService
             });
         }
 
-        return await Task.FromResult(new ModifiedUnitypackagesResult());
-
-        // return await AvatarExplorerApp.ModifyUnitypackageFilePaths(itemPathCategoryDictionary, progressAction);
+        return await FileSystemService.ModifyUnitypackageFilePathsAsync(entries, progressAction);
     }
 
     internal static ImmutableArray<string> GetUnitypackagePaths(IEnumerable<string> itemPaths)
