@@ -42,16 +42,15 @@ public class ItemViewModel : ViewModelBase
     public string? ActualValue { get; set; }
     public required ViewModelType ViewModelType { get; set; }
 
-    public ItemViewModel Update()
+    public ItemViewModel Update(int iconSize = 80)
     {
         Thumbnail = ImageService.Get(ImageFileName);
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
         Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
         ContextMenu = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
 
-        Width = Height = (Thumbnail != null) ? 80 : 0;
+        Width = Height = (Thumbnail != null) ? iconSize : 0;
         Tags.ForEach(i => i.Update());
-
         return this;
     }
 

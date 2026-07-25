@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AvatarExplorer.UI.Views.HoverThumbnailWindow"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        WindowDecorations="None"
+        CanResize="False"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent"
+        BorderThickness="0"
+        WindowStartupLocation="Manual"
+        Width="200"
+        Height="200"
+        Topmost="True"
+        IsHitTestVisible="False">
+    <Border CornerRadius="8" ClipToBounds="True" BoxShadow="0 0 10 0 Black" IsHitTestVisible="False">
+        <Image x:Name="HoverImage" Stretch="Uniform" IsHitTestVisible="False" />
+    </Border>
+</Window>

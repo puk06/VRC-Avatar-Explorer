@@ -129,6 +129,7 @@ public class MainWindowViewModel : ViewModelBase
         SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
         SetTheme(settings.Theme);
         MainVM.UpdatePageSize(settings.ItemsPerPage);
+        MainVM.UpdateIconSize(settings.NormalIconSize);
     }
 
     private void OnUpdateAvailable(VersionRelease release)
@@ -141,6 +142,7 @@ public class MainWindowViewModel : ViewModelBase
     {
         var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
         if (!settings.CheckForUpdate) return;
+
         await UpdateChecker.CheckForUpdate(settings.UpdateChannel);
     }
 

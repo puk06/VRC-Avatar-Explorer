@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
@@ -50,6 +50,11 @@ public class MainViewModel : ViewModelBase
     [Reactive] public double SidePanelMaxWidth { get; set; } = 50;
     [Reactive] public GridLength SidePanelWidth { get; set; } = new(50);
 
+    [Reactive] public Bitmap? HoverThumbnailImage { get; set; }
+    [Reactive] public int HoverThumbnailSize { get; set; }
+    [Reactive] public bool IsHoverThumbnailVisible { get; set; }
+    [Reactive] public PixelPoint HoverThumbnailPosition { get; set; }
+
     public IReactiveCommand UndoCommand { get; }
     public IReactiveCommand HomeCommand { get; }
     public IReactiveCommand OpenSettingsCommand { get; }
@@ -80,6 +85,7 @@ public class MainViewModel : ViewModelBase
 
     private List<ItemViewModel> _allLeftItems = [];
     private List<ItemViewModel> _allMainItems = [];
+    private int _normalIconSize = 80;
 
     public MainViewModel()
     {
@@ -133,6 +139,39 @@ public class MainViewModel : ViewModelBase
         RefreshMainItems();
     }
 
+    public void UpdateIconSize(int iconSize)
+    {
+        _normalIconSize = iconSize;
+        foreach (var item in _allMainItems.Concat(_allLeftItems))
+        {
+            item.Update(iconSize);
+        }
+        RefreshLeftItems();
+        RefreshMainItems();
+    }
+
+    public void ShowHoverThumbnail(ItemViewModel item)
+    {
+        if (item.ViewModelType != ViewModelType.Item || item.Thumbnail == null) return;
+
+        var preferences = MainWindowViewModel.Instance.UserPreferences.Settings;
+        if (!preferences.EnableHoverIconSize) return;
+
+        HoverThumbnailImage = item.Thumbnail;
+        HoverThumbnailSize = preferences.HoverIconSize;
+        IsHoverThumbnailVisible = true;
+    }
+
+    public void HideHoverThumbnail()
+    {
+        IsHoverThumbnailVisible = false;
+    }
+
+    public void UpdateHoverThumbnailPosition(PixelPoint position)
+    {
+        HoverThumbnailPosition = position;
+    }
+
     public void OnCategoryChanged(int categoryIndex)
     {
         if (!Enum.IsDefined(typeof(QueryType), categoryIndex)) return;
@@ -175,7 +214,7 @@ public class MainViewModel : ViewModelBase
         {
             _allMainItems = SearchItems(_activeSearchQuery)
                 .Select(CreateItemViewModel)
-                .Select(i => i.Update())
+                .Select(i => i.Update(_normalIconSize))
                 .ToList();
 
             RightPageInfo.TotalItems = _allMainItems.Count;
@@ -207,7 +246,7 @@ public class MainViewModel : ViewModelBase
                         }
                     }
 
-                    return vm.Update();
+                    return vm.Update(_normalIconSize);
                 })
                 .ToList();
 
@@ -347,7 +386,7 @@ public class MainViewModel : ViewModelBase
     {
         _allLeftItems = _itemGroupService.GetQueryFilters(type)
             .Select(CreateItemViewModel)
-            .Select(i => i.Update())
+            .Select(i => i.Update(_normalIconSize))
             .ToList();
 
         LeftPageInfo.TotalItems = _allLeftItems.Count;
