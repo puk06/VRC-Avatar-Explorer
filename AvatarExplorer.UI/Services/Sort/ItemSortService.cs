@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.UI.Models.Sort;
 using AvatarExplorer.UI.Utils;
@@ -21,5 +22,43 @@ public static class ItemSortService
         };
 
         return direction == SortDirection.Descending ? ordered.Reverse() : ordered;
+    }
+
+    public static List<INavigationable> SortAvatars(IEnumerable<INavigationable> avatars, ItemSortOrder order, SortDirection direction, bool removeBrackets)
+    {
+        var commonAvatars = new List<INavigationable>();
+        var items = new List<Item>();
+        var tempAvatars = new List<INavigationable>();
+
+        foreach (var avatar in avatars)
+        {
+            if (avatar is Avatar a)
+            {
+                switch (a.Type)
+                {
+                    case AvatarType.CommonAvatar:
+                        commonAvatars.Add(avatar);
+                        break;
+                    case AvatarType.Item:
+                        items.Add((Item)a.Item);
+                        break;
+                    case AvatarType.TempAvatar:
+                        tempAvatars.Add(avatar);
+                        break;
+                    default:
+                        tempAvatars.Add(avatar);
+                        break;
+                }
+            }
+            else
+            {
+                tempAvatars.Add(avatar);
+            }
+        }
+
+        var sortedItems = Sort(items, order, direction, removeBrackets)
+            .Select(i => (INavigationable)new Avatar(i));
+
+        return commonAvatars.Concat(sortedItems).Concat(tempAvatars).ToList();
     }
 }

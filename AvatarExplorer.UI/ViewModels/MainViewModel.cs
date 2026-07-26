@@ -97,6 +97,7 @@ public class MainViewModel : ViewModelBase
     private readonly ItemNavigationService _itemNavigationService;
     private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
     private string? _activeSearchQuery;
+    private int _lastSelectedLeftCategory;
 
     private readonly CacheManager<Guid, int> _pageCache = new(0);
     private readonly CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
@@ -149,6 +150,7 @@ public class MainViewModel : ViewModelBase
                     ? Material.Icons.MaterialIconKind.SortAscending
                     : Material.Icons.MaterialIconKind.SortDescending;
                 Refresh();
+                if (_lastSelectedLeftCategory == (int)QueryType.Avatar) UpdateLeftPanelItems((QueryType)_lastSelectedLeftCategory);
             });
 
         this.WhenAnyValue(x => x.SearchText)
@@ -248,6 +250,7 @@ public class MainViewModel : ViewModelBase
 
         UpdateLeftPanelItems((QueryType)categoryIndex);
         RestoreLeftState(categoryIndex);
+        _lastSelectedLeftCategory = categoryIndex;
     }
 
     public async void OnFileOpenRequested(string file)
@@ -513,7 +516,15 @@ public class MainViewModel : ViewModelBase
 
     private void UpdateLeftPanelItems(QueryType type)
     {
-        _allLeftItems = _itemGroupService.GetQueryFilters(type)
+        var queryItems = _itemGroupService.GetQueryFilters(type);
+        if (type == QueryType.Avatar)
+        {
+            var sortOrder = (UIItemSortOrder)SelectedSortOrder;
+            var sortDirection = (SortDirection)SelectedSortDirection;
+            queryItems = ItemSortService.SortAvatars(queryItems, sortOrder, sortDirection, _removeBrackets);
+        }
+
+        _allLeftItems = queryItems
             .Select(CreateItemViewModel)
             .Select(i => i.Update(_normalIconSize, _removeBrackets))
             .ToList();

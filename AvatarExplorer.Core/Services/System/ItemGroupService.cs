@@ -82,6 +82,7 @@ public class ItemGroupService
                 Name = i.Key,
                 ItemCount = i.Count()
             })
+            .OrderBy(i => i.Name)
             .ToList<INavigationable>();
     }
     public List<INavigationable> GetCategoryFolders(bool includeEmptyCategory = false, bool includeAllCategory = false)
