@@ -113,7 +113,7 @@ public class ItemRepository
         return result;
     }
 
-    public Dictionary<string, List<string>> CategorizeItems(IEnumerable<Item> items) // TODO: 順番どうにかしろ
+    public static IEnumerable<KeyValuePair<string, List<string>>> CategorizeItems(IEnumerable<Item> items)
     {
         var result = new Dictionary<string, List<string>>();
 
@@ -132,7 +132,10 @@ public class ItemRepository
             list.Add(item.Id);
         }
 
-        return result;
+        return result
+            .OrderBy(kvp => kvp.Key.StartsWith("type:") ? 0 : 1)
+            .ThenBy(kvp => kvp.Key.StartsWith("type:") ? int.Parse(kvp.Key[5..]) : 0)
+            .ThenBy(kvp => kvp.Key);
     }
     public List<ItemFile> EnumerateItemFiles(string id)
     {

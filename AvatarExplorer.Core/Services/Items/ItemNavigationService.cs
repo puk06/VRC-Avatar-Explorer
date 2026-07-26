@@ -3,6 +3,7 @@ using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Avatars.Internal;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.Items;
@@ -149,7 +150,7 @@ public class ItemNavigationService
 
         if (items == null) return [];
 
-        var categolized = _items.ItemRepository.CategorizeItems(items);
+        var categolized = ItemRepository.CategorizeItems(items);
         return categolized.Select(i =>
         {
             var (displayName, isLocalizable) = ResolveCategoryDisplay(i.Key);
