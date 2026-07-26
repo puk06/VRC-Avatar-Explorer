@@ -7,12 +7,10 @@ using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
@@ -25,8 +23,8 @@ using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
-using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Component;
+using AvatarExplorer.UI.ViewModels.Managers;
 using AvatarExplorer.UI.ViewModels.Panels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -95,13 +93,11 @@ public class MainViewModel : ViewModelBase
     #region Fields
     private readonly ItemGroupService _itemGroupService;
     private readonly ItemNavigationService _itemNavigationService;
-    private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
-    private string? _activeSearchQuery;
+    private readonly HoverThumbnailManager _hoverThumbnailManager;
+    private readonly SidePanelManager _sidePanelManager;
+    private readonly StateCacheManager _stateCacheManager;
+    private readonly SearchManager _searchManager;
     private int _lastSelectedLeftCategory;
-
-    private readonly CacheManager<Guid, int> _pageCache = new(0);
-    private readonly CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
-    private readonly CacheManager<int, (int, Vector)> _leftStateCache = new((0, AvaloniaVectorUtils.MinValue));
 
     private List<ItemViewModel> _allLeftItems = [];
     private List<ItemViewModel> _allMainItems = [];
@@ -113,11 +109,6 @@ public class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         Instance = this;
-
-        _itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
-        _itemNavigationService = AvatarExplorerApp.Instance.ItemNavigationService;
-
-        _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
 
         UndoCommand = ReactiveCommand.Create(Undo);
         HomeCommand = ReactiveCommand.Create(GoHome);
@@ -139,11 +130,37 @@ public class MainViewModel : ViewModelBase
         RightGoLastCommand = ReactiveCommand.Create(RightPageInfo.GoLast);
         ToggleSortDirectionCommand = ReactiveCommand.Create(ToggleSortDirection);
 
+        _itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
+        _itemNavigationService = AvatarExplorerApp.Instance.ItemNavigationService;
+
+        _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
+
+        _hoverThumbnailManager = new HoverThumbnailManager(this);
+        _sidePanelManager = new SidePanelManager(this);
+        _stateCacheManager = new StateCacheManager(_itemNavigationService);
+        _searchManager = new SearchManager(
+            _itemGroupService,
+            () => SearchText,
+            () => AdvancedSearchVM,
+            Refresh
+        );
+        
+        InitializeSubscriptions();
+
+        UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferencesBatch;
+        ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
+
+        _sidePanelManager.UpdateLayout();
+        OnCategoryChanged((int)QueryType.Avatar);
+    }
+
+    private void InitializeSubscriptions()
+    {
         LeftPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshLeftItems());
         RightPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshMainItems());
 
         this.WhenAnyValue(x => x.SelectedSortOrder, x => x.SelectedSortDirection)
-            .Skip(1) // 絶対一回は設定されるから
+            .Skip(1)
             .Subscribe(tuple =>
             {
                 SortDirectionIcon = tuple.Item2 == 0
@@ -154,15 +171,8 @@ public class MainViewModel : ViewModelBase
             });
 
         this.WhenAnyValue(x => x.SearchText)
-            .Subscribe(_ => RestartSearchTimer());
-        AdvancedSearchVM.SearchPropertyChanged += RestartSearchTimer;
-        _searchTimer.Tick += OnSearchTimerTick;
-
-        UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferencesBatch;
-        ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
-
-        UpdateColumn();
-        OnCategoryChanged((int)QueryType.Avatar);
+            .Subscribe(_ => _searchManager.RestartTimer());
+        AdvancedSearchVM.SearchPropertyChanged += () => _searchManager.RestartTimer();
     }
     #endregion
 
@@ -213,27 +223,9 @@ public class MainViewModel : ViewModelBase
     #endregion
 
     #region Hover Thumbnail
-    public void ShowHoverThumbnail(ItemViewModel item)
-    {
-        if (item.ViewModelType != ViewModelType.Item || item.Thumbnail == null) return;
-
-        var preferences = UserPreferencesService.Instance.Repository.Settings;
-        if (!preferences.EnableHoverIconSize) return;
-
-        HoverThumbnailImage = item.Thumbnail;
-        HoverThumbnailSize = preferences.HoverIconSize;
-        IsHoverThumbnailVisible = true;
-    }
-
-    public void HideHoverThumbnail()
-    {
-        IsHoverThumbnailVisible = false;
-    }
-
-    public void UpdateHoverThumbnailPosition(PixelPoint position)
-    {
-        HoverThumbnailPosition = position;
-    }
+    public void ShowHoverThumbnail(ItemViewModel item) => _hoverThumbnailManager.Show(item);
+    public void HideHoverThumbnail() => _hoverThumbnailManager.Hide();
+    public void UpdateHoverThumbnailPosition(PixelPoint position) => _hoverThumbnailManager.UpdatePosition(position);
     #endregion
 
     #region Navigation
@@ -241,15 +233,15 @@ public class MainViewModel : ViewModelBase
     {
         if (!Enum.IsDefined(typeof(QueryType), categoryIndex)) return;
 
-        SaveLeftState(SelectedCategory);
+        _stateCacheManager.SaveLeftState(SelectedCategory, LeftPageInfo);
         SelectedCategory = categoryIndex;
-        _activeSearchQuery = null;
+        _searchManager.ClearQuery();
         SearchText = string.Empty;
         _itemNavigationService.Clear();
         RightPageInfo.Reset();
 
         UpdateLeftPanelItems((QueryType)categoryIndex);
-        RestoreLeftState(categoryIndex);
+        _stateCacheManager.RestoreLeftState(categoryIndex, LeftPageInfo);
         _lastSelectedLeftCategory = categoryIndex;
     }
 
@@ -303,70 +295,7 @@ public class MainViewModel : ViewModelBase
 
     public void OpenSidePanel(string index)
     {
-        if (!int.TryParse(index, out var selected)) return;
-
-        SelectedSidePanelTab = selected;
-        IsSidePanelVisible = true;
-        UpdateColumn();
-    }
-    #endregion
-
-    #region Search
-    private void RestartSearchTimer()
-    {
-        _searchTimer.Stop();
-        _searchTimer.Start();
-    }
-
-    private void OnSearchTimerTick(object? sender, EventArgs e)
-    {
-        _searchTimer.Stop();
-        ExecuteSearch();
-    }
-
-    private void ExecuteSearch()
-    {
-        var query = BuildSearchString(SearchText, AdvancedSearchVM);
-        _activeSearchQuery = string.IsNullOrWhiteSpace(query) ? null : query;
-        Refresh();
-    }
-
-    private IEnumerable<Item> SearchItems(string query)
-    {
-        var identifiers = _itemGroupService.SearchItems(query, SearchResultType.Items, SearchUtils.ParseCategory);
-        return identifiers
-            .Select(_itemGroupService.ItemRepository.Get)
-            .Where(item => item != null)
-            .Cast<Item>();
-    }
-
-    private static string BuildSearchString(string searchText, AdvancedSearchViewModel advancedSearch)
-    {
-        var parts = new List<string>();
-
-        if (!string.IsNullOrWhiteSpace(searchText))
-            parts.Add(searchText);
-
-        AddField(parts, "Title", advancedSearch.Title);
-        AddField(parts, "Author", advancedSearch.Author);
-        AddField(parts, "BoothId", advancedSearch.BoothId);
-        AddField(parts, "SupportedAvatar", advancedSearch.SupportedAvatar);
-        AddField(parts, "Category", advancedSearch.Category, value => Localizer.Instance.GetKey(value) ?? value);
-        AddField(parts, "Memo", advancedSearch.Memo);
-        AddField(parts, "ImplementedAvatar", advancedSearch.ImplementedAvatar);
-        AddField(parts, "NotImplementedAvatar", advancedSearch.NotImplementedAvatar);
-        AddField(parts, "Tag", advancedSearch.Tag);
-        AddField(parts, "CommonAvatar", advancedSearch.CommonAvatar);
-
-        return string.Join(" ", parts);
-    }
-
-    private static void AddField(List<string> parts, string fieldName, string value, Func<string, string>? transform = null)
-    {
-        if (string.IsNullOrWhiteSpace(value)) return;
-
-        var transformed = transform?.Invoke(value) ?? value;
-        parts.Add($"{fieldName}=\"{transformed}\"");
+        _sidePanelManager.Open(index);
     }
     #endregion
 
@@ -376,9 +305,9 @@ public class MainViewModel : ViewModelBase
         var sortOrder = (UIItemSortOrder)SelectedSortOrder;
         var sortDirection = (SortDirection)SelectedSortDirection;
 
-        if (!string.IsNullOrWhiteSpace(_activeSearchQuery))
+        if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
         {
-            _allMainItems = ItemSortService.Sort(SearchItems(_activeSearchQuery), sortOrder, sortDirection, _removeBrackets)
+            _allMainItems = ItemSortService.Sort(_searchManager.SearchItems(_searchManager.ActiveSearchQuery), sortOrder, sortDirection, _removeBrackets)
                 .Select(CreateItemViewModel)
                 .Select(i => i.Update(_normalIconSize, _removeBrackets))
                 .ToList();
@@ -387,7 +316,7 @@ public class MainViewModel : ViewModelBase
             RightPageInfo.Reset();
             RefreshMainItems();
 
-            PathSegments = [new PathSegment { DisplayName = Localizer.Instance.Get(Loc.Main.Path.SearchResult, _activeSearchQuery) }];
+            PathSegments = [new PathSegment { DisplayName = Localizer.Instance.Get(Loc.Main.Path.SearchResult, _searchManager.ActiveSearchQuery) }];
         }
         else
         {
@@ -446,9 +375,9 @@ public class MainViewModel : ViewModelBase
     private void NavigateToSegment(string? state)
     {
         if (string.IsNullOrEmpty(state)) return;
-        SaveRightState();
+        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.PopToState(state);
-        RestoreRightState();
+        _stateCacheManager.RestoreRightState(RightPageInfo);
         Refresh();
     }
 
@@ -534,61 +463,14 @@ public class MainViewModel : ViewModelBase
     }
     #endregion
 
-    #region State Cache
-    private void SaveLeftState(int categoryIndex)
-    {
-        _leftStateCache.Add(categoryIndex, (LeftPageInfo.CurrentPage, LeftPageInfo.ScrollOffset));
-    }
-
-    private void RestoreLeftState(int categoryIndex)
-    {
-        if (_leftStateCache.TryGetValue(categoryIndex, out var state))
-        {
-            LeftPageInfo.CurrentPage = state.Item1;
-            LeftPageInfo.ScrollOffset = state.Item2;
-            LeftPageInfo.RestoreScrollOffset = state.Item2;
-        }
-        else
-        {
-            LeftPageInfo.Reset();
-        }
-    }
-
-    private void SaveRightState()
-    {
-        var currentGuid = _itemNavigationService.CurrentStateId;
-        if (currentGuid != null)
-        {
-            _pageCache.Add(currentGuid.Value, RightPageInfo.CurrentPage);
-            _scrollValueCache.Add(currentGuid.Value, RightPageInfo.ScrollOffset);
-        }
-    }
-
-    private void RestoreRightState()
-    {
-        var currentGuid = _itemNavigationService.CurrentStateId;
-        if (currentGuid != null && _pageCache.TryGetValue(currentGuid.Value, out var page))
-        {
-            RightPageInfo.CurrentPage = page;
-            var scroll = _scrollValueCache.Get(currentGuid.Value);
-            RightPageInfo.ScrollOffset = scroll;
-            RightPageInfo.RestoreScrollOffset = scroll;
-        }
-        else
-        {
-            RightPageInfo.Reset();
-        }
-    }
-    #endregion
-
     #region Selection
     private void OnLeftItemSelected(ItemViewModel? item)
     {
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
-        _activeSearchQuery = null;
+        _searchManager.ClearQuery();
         SearchText = string.Empty;
-        SaveRightState();
+        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.Clear();
         _itemNavigationService.Select(item.Identifier);
         RightPageInfo.Reset();
@@ -599,9 +481,9 @@ public class MainViewModel : ViewModelBase
     {
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
-        _activeSearchQuery = null;
+        _searchManager.ClearQuery();
         SearchText = string.Empty;
-        SaveRightState();
+        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.PopAllSearchStates();
         _itemNavigationService.Select(item.Identifier);
         RightPageInfo.Reset();
@@ -610,19 +492,19 @@ public class MainViewModel : ViewModelBase
 
     private void Undo()
     {
-        SaveRightState();
+        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.Undo();
-        _activeSearchQuery = null;
+        _searchManager.ClearQuery();
         SearchText = string.Empty;
-        RestoreRightState();
+        _stateCacheManager.RestoreRightState(RightPageInfo);
         Refresh();
     }
 
     private void GoHome()
     {
-        SaveRightState();
+        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.Clear();
-        _activeSearchQuery = null;
+        _searchManager.ClearQuery();
         SearchText = string.Empty;
         RightPageInfo.Reset();
         Refresh();
@@ -630,23 +512,6 @@ public class MainViewModel : ViewModelBase
     #endregion
 
     #region Side Panel
-    private void UpdateColumn()
-    {
-        SidePanelMinWidth = IsSidePanelVisible ? 342 : 50;
-        if (!IsSidePanelVisible)
-        {
-            SidePanelMaxWidth = 50;
-            SidePanelWidth = new(SidePanelMinWidth);
-            SidePanelMaxWidth = 550;
-        }
-    }
-
-    public void SidePanelButtonPressed(int index)
-    {
-        if (SelectedSidePanelTab != index) return;
-
-        IsSidePanelVisible = false;
-        UpdateColumn();
-    }
+    public void SidePanelButtonPressed(int index) => _sidePanelManager.OnButtonPressed(index);
     #endregion
 }
