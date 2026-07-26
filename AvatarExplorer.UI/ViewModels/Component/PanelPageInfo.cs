@@ -58,10 +58,10 @@ public class PanelPageInfo : ViewModelBase
         if (CurrentPage >= TotalPages && TotalPages > 0)
             CurrentPage = TotalPages - 1;
 
-        PageDisplay = Localizer.Instance.Get(Loc.ItemWindow.CurrentPage, new[] { (CurrentPage + 1).ToString(), TotalPages.ToString() });
+        PageDisplay = Localizer.Instance.Get(Loc.ItemWindow.CurrentPage, [(CurrentPage + 1).ToString(), TotalPages.ToString()]);
         var start = CurrentPage * PageSize + 1;
         var end = Math.Min((CurrentPage + 1) * PageSize, TotalItems);
-        ItemRangeDisplay = Localizer.Instance.Get(Loc.ItemWindow.PageItemCount, new[] { start.ToString(), end.ToString(), TotalItems.ToString() });
+        ItemRangeDisplay = Localizer.Instance.Get(Loc.ItemWindow.PageItemCount, [start.ToString(), end.ToString(), TotalItems.ToString()]);
 
         CanGoFirst = CurrentPage > 0;
         CanGoPrev = CurrentPage > 0;

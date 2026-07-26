@@ -8,7 +8,12 @@ namespace AvatarExplorer.UI.Utils;
 
 internal static class SearchUtils
 {
-    private static readonly string[] CategoryLocalizationKeys = Enum.GetValues<ItemType>().Select(i => i.GetLocalizationKey()).Where(i => i != null).ToArray()!;
+    private static readonly string[] CategoryLocalizationKeys = Enum.GetValues<ItemType>()
+        .Select(i => i.GetLocalizationKey())
+        .Where(i => i != null)
+        .Cast<string>()
+        .ToArray();
+
     internal static string ParseCategory(string token)
     {
         foreach (string key in CategoryLocalizationKeys)
