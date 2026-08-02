@@ -624,7 +624,7 @@ public static class FileSystemService
                 await using Stream outStream = File.Create(fullPath);
 
                 int read;
-                while ((read = await inStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                while ((read = await inStream.ReadAsync(buffer)) > 0)
                 {
                     await outStream.WriteAsync(buffer, 0, read);
                 }

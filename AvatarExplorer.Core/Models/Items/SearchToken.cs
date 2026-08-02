@@ -15,7 +15,7 @@ public enum SearchTokenType
     Tag,
     CommonAvatar,
     FreeWord
-};
+}
 
 public class SearchToken
 {
