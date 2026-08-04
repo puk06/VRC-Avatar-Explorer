@@ -23,7 +23,17 @@ public class PanelPageInfo : ViewModelBase
     [Reactive] public bool CanGoNext { get; private set; }
     [Reactive] public bool CanGoLast { get; private set; }
     [Reactive] public Vector ScrollOffset { get; set; } = AvaloniaVectorUtils.MinValue;
-    [Reactive] public Vector RestoreScrollOffset { get; set; } = AvaloniaVectorUtils.MinValue;
+
+    private Vector _restoreScrollOffset = AvaloniaVectorUtils.MinValue;
+    public Vector RestoreScrollOffset
+    {
+        get => _restoreScrollOffset;
+        set
+        {
+            _restoreScrollOffset = value;
+            this.RaisePropertyChanged(nameof(RestoreScrollOffset));
+        }
+    }
 
     public PanelPageInfo()
     {
@@ -34,7 +44,11 @@ public class PanelPageInfo : ViewModelBase
     public void SetPage(int page)
     {
         var clamped = Math.Clamp(page, 0, Math.Max(0, TotalPages - 1));
-        if (CurrentPage != clamped) CurrentPage = clamped;
+        if (CurrentPage != clamped)
+        {
+            CurrentPage = clamped;
+            RestoreScrollOffset = AvaloniaVectorUtils.MinValue;
+        }
     }
 
     public void GoFirst() => SetPage(0);
@@ -56,7 +70,10 @@ public class PanelPageInfo : ViewModelBase
     {
         TotalPages = Math.Max(1, (int)Math.Ceiling((double)TotalItems / Math.Max(1, PageSize)));
         if (CurrentPage >= TotalPages && TotalPages > 0)
+        {
             CurrentPage = TotalPages - 1;
+            RestoreScrollOffset = AvaloniaVectorUtils.MinValue;
+        }
 
         PageDisplay = Localizer.Instance.Get(Loc.ItemWindow.CurrentPage, [(CurrentPage + 1).ToString(), TotalPages.ToString()]);
         var start = CurrentPage * PageSize + 1;

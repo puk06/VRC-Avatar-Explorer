@@ -18,7 +18,8 @@ internal static class UnitypackageService
         {
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
-                if (onProgress != null) await onProgress(tuple.localizationKey, tuple.progress);
+                if (onProgress != null)
+                    await onProgress(tuple.localizationKey, tuple.progress);
             });
         }
 

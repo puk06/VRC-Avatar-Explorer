@@ -4,9 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Localization;
@@ -15,6 +17,7 @@ using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Models.Sort;
@@ -28,11 +31,10 @@ using AvatarExplorer.UI.ViewModels.Managers;
 using AvatarExplorer.UI.ViewModels.Panels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using UIItemSortOrder = AvatarExplorer.UI.Models.Sort.ItemSortOrder;
 
 namespace AvatarExplorer.UI.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public class MainViewModel : ViewModelBase, IPostInitializable
 {
     #region Properties
     public static MainViewModel Instance { get; private set; } = null!;
@@ -133,8 +135,6 @@ public class MainViewModel : ViewModelBase
         _itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
         _itemNavigationService = AvatarExplorerApp.Instance.ItemNavigationService;
 
-        _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
-
         _hoverThumbnailManager = new HoverThumbnailManager(this);
         _sidePanelManager = new SidePanelManager(this);
         _stateCacheManager = new StateCacheManager(_itemNavigationService);
@@ -144,14 +144,25 @@ public class MainViewModel : ViewModelBase
             () => AdvancedSearchVM,
             Refresh
         );
-        
-        InitializeSubscriptions();
 
-        UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferencesBatch;
-        ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
+        IInitializableRegistry.Register(this);
+    }
 
-        _sidePanelManager.UpdateLayout();
-        OnCategoryChanged((int)QueryType.Avatar);
+    public async Task OnInitialized()
+    {
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            InitializeSubscriptions();
+
+            Localizer.Instance.LanguageChanged += OnLanguageChanged;
+            UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferencesBatch;
+            _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
+
+            ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
+            
+            OnCategoryChanged((int)QueryType.Avatar);
+            Refresh();
+        });
     }
 
     private void InitializeSubscriptions()
@@ -159,20 +170,13 @@ public class MainViewModel : ViewModelBase
         LeftPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshLeftItems());
         RightPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshMainItems());
 
-        this.WhenAnyValue(x => x.SelectedSortOrder, x => x.SelectedSortDirection)
-            .Skip(1)
-            .Subscribe(tuple =>
-            {
-                SortDirectionIcon = tuple.Item2 == 0
-                    ? Material.Icons.MaterialIconKind.SortAscending
-                    : Material.Icons.MaterialIconKind.SortDescending;
-                Refresh();
-                if (_lastSelectedLeftCategory == (int)QueryType.Avatar) UpdateLeftPanelItems((QueryType)_lastSelectedLeftCategory);
-            });
-
         this.WhenAnyValue(x => x.SearchText)
             .Subscribe(_ => _searchManager.RestartTimer());
-        AdvancedSearchVM.SearchPropertyChanged += () => _searchManager.RestartTimer();
+
+        this.WhenAnyValue(x => x.SidePanelWidth)
+            .Subscribe(width => _sidePanelManager.OnWidthChanged(width.Value));
+
+        AdvancedSearchVM.SearchPropertyChanged += _searchManager.RestartTimer;
     }
     #endregion
 
@@ -216,6 +220,12 @@ public class MainViewModel : ViewModelBase
         if (needsRefresh) Refresh();
     }
 
+    private void OnLanguageChanged()
+    {
+        foreach (var item in _allMainItems.Concat(_allLeftItems))
+            item.Update(_normalIconSize, _removeBrackets);
+    }
+
     private void ToggleSortDirection()
     {
         SelectedSortDirection = SelectedSortDirection == 0 ? 1 : 0;
@@ -232,19 +242,9 @@ public class MainViewModel : ViewModelBase
     public void OnCategoryChanged(int categoryIndex)
     {
         if (!Enum.IsDefined(typeof(QueryType), categoryIndex)) return;
-
-        _stateCacheManager.SaveLeftState(SelectedCategory, LeftPageInfo);
         SelectedCategory = categoryIndex;
-        _searchManager.ClearQuery();
-        SearchText = string.Empty;
-        _itemNavigationService.Clear();
-        RightPageInfo.Reset();
-
         UpdateLeftPanelItems((QueryType)categoryIndex);
-        _stateCacheManager.RestoreLeftState(categoryIndex, LeftPageInfo);
-        _lastSelectedLeftCategory = categoryIndex;
     }
-
     public async void OnFileOpenRequested(string file)
     {
         if (PathUtils.IsUnitypackageFile(file))
@@ -260,10 +260,16 @@ public class MainViewModel : ViewModelBase
             var displayName = isLocalizable ? Localizer.Instance[item.Category.ToString()] : item.Category.ToString();
 
             MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Unitypackage.Status.Preparing]);
-            var importResult = await UnitypackageService.Import([new() { FilePath = file, CategoryDisplayName = displayName }], onProgress: async (name, percent) =>
-            {
-                MainWindowViewModel.Instance.ProgressVM.Update(Localizer.Instance.Get(name, percent.ToString()), percent);
-            });
+            var importResult = await UnitypackageService.Import(
+                [ new() { FilePath = file, CategoryDisplayName = displayName } ],
+                onProgress: async (name, percent) =>
+                {
+                    MainWindowViewModel.Instance.ProgressVM.Update(
+                        Localizer.Instance.Get(name, percent.ToString()),
+                        percent
+                    );
+                }
+            );
             MainWindowViewModel.Instance.ProgressVM.Close();
 
             if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
@@ -292,7 +298,6 @@ public class MainViewModel : ViewModelBase
             await LauncherService.OpenFile(TopLevelProvider.Current, file);
         }
     }
-
     public void OpenSidePanel(string index)
     {
         _sidePanelManager.Open(index);
@@ -302,14 +307,13 @@ public class MainViewModel : ViewModelBase
     #region Refresh
     private void Refresh()
     {
-        var sortOrder = (UIItemSortOrder)SelectedSortOrder;
+        var sortOrder = (ItemSortOrder)SelectedSortOrder;
         var sortDirection = (SortDirection)SelectedSortDirection;
 
         if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
         {
             _allMainItems = ItemSortService.Sort(_searchManager.SearchItems(_searchManager.ActiveSearchQuery), sortOrder, sortDirection, _removeBrackets)
                 .Select(CreateItemViewModel)
-                .Select(i => i.Update(_normalIconSize, _removeBrackets))
                 .ToList();
 
             RightPageInfo.TotalItems = _allMainItems.Count;
@@ -348,7 +352,7 @@ public class MainViewModel : ViewModelBase
                         }
                     }
 
-                    return vm.Update(_normalIconSize, _removeBrackets);
+                    return vm;
                 })
                 .ToList();
 
@@ -362,12 +366,15 @@ public class MainViewModel : ViewModelBase
 
     private void RefreshLeftItems()
     {
-        LeftItems = LeftPageInfo.GetPageItems(_allLeftItems).ToList();
+        LeftItems = LeftPageInfo.GetPageItems(_allLeftItems)
+            .Select(i => i.Update(_normalIconSize, _removeBrackets))
+            .ToList();
     }
-
     private void RefreshMainItems()
     {
-        MainItems = RightPageInfo.GetPageItems(_allMainItems).ToList();
+        MainItems = RightPageInfo.GetPageItems(_allMainItems)
+            .Select(i => i.Update(_normalIconSize, _removeBrackets))
+            .ToList();
     }
     #endregion
 
@@ -448,14 +455,13 @@ public class MainViewModel : ViewModelBase
         var queryItems = _itemGroupService.GetQueryFilters(type);
         if (type == QueryType.Avatar)
         {
-            var sortOrder = (UIItemSortOrder)SelectedSortOrder;
+            var sortOrder = (ItemSortOrder)SelectedSortOrder;
             var sortDirection = (SortDirection)SelectedSortDirection;
             queryItems = ItemSortService.SortAvatars(queryItems, sortOrder, sortDirection, _removeBrackets);
         }
 
         _allLeftItems = queryItems
             .Select(CreateItemViewModel)
-            .Select(i => i.Update(_normalIconSize, _removeBrackets))
             .ToList();
 
         LeftPageInfo.TotalItems = _allLeftItems.Count;

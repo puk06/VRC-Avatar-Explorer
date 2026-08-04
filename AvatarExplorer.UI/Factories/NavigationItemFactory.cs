@@ -28,7 +28,10 @@ public static class NavigationItemFactory
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = source.Identifier,
                 ViewModelType = ViewModelType.Item,
-                Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray()
+                Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
+                CreatedDate = item.CreatedDate,
+                UpdatedDate = item.UpdatedDate,
+                ItemMemo = item.ItemMemo
             };
         }
 
@@ -100,7 +103,10 @@ public static class NavigationItemFactory
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = avatar.Identifier,
                 ViewModelType = ViewModelType.Item,
-                Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray()
+                Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
+                CreatedDate = item.CreatedDate,
+                UpdatedDate = item.UpdatedDate,
+                ItemMemo = item.ItemMemo
             };
         }
         else if (avatar.Type == AvatarType.CommonAvatar)

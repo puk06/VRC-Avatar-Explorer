@@ -1,10 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Text;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using AvatarExplorer.Core.Extensions;
+using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
@@ -27,7 +27,7 @@ public class ItemViewModel : ViewModelBase
     [Reactive] public string Description { get; private set; } = string.Empty;
     [Reactive] public TagViewModel[] Tags { get; set; } = [];
     [Reactive] public ContextMenu? ContextMenu { get; set; } = null;
-    [Reactive] public string ToolTip { get; set; } = string.Empty;
+    [Reactive] public string? ToolTip { get; set; } = null;
 
     [Reactive] public double Width { get; set; } = 0;
     [Reactive] public double Height { get; set; } = 0;
@@ -37,6 +37,10 @@ public class ItemViewModel : ViewModelBase
     public bool TitleLocalizable { get; set; } = false;
 
     public LoclizableField DescriptionRaw = new();
+
+    public string CreatedDate { get; set; } = string.Empty;
+    public string UpdatedDate { get; set; } = string.Empty;
+    public string ItemMemo { get; set; } = string.Empty;
 
     public ContextMenuAction[] Actions { get; set; } = [];
     public Action<ContextMenuAction>? onMenuClick = null;
@@ -60,7 +64,61 @@ public class ItemViewModel : ViewModelBase
             Title = TextBracketsUtils.RemoveBrackets(TitleRaw);
         }
 
+        ToolTip = GenerateToolTipText();
+
         return this;
+    }
+
+    private string? GenerateToolTipText()
+    {
+        if (ViewModelType == ViewModelType.Item)
+        {
+            var sb = new StringBuilder();
+            sb.Append(TitleRaw);
+
+            if (!string.IsNullOrEmpty(CreatedDate) || !string.IsNullOrEmpty(UpdatedDate))
+            {
+                sb.AppendLine();
+                sb.AppendLine();
+
+                if (!string.IsNullOrEmpty(CreatedDate))
+                    sb.AppendLine(
+                        Localizer.Instance.Get(
+                            Loc.Button.ToolTip.CreatedDate,
+                            DatetimeUtils.GetDateStringFromUnixTime(CreatedDate)
+                        )
+                    );
+
+                if (!string.IsNullOrEmpty(CreatedDate))
+                    sb.Append(
+                        Localizer.Instance.Get(
+                            Loc.Button.ToolTip.UpdatedDate,
+                            DatetimeUtils.GetDateStringFromUnixTime(UpdatedDate)
+                        )
+                    );
+            }
+
+            if (!string.IsNullOrEmpty(ItemMemo))
+            {
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.Append(ItemMemo);
+            }
+
+            return sb.ToString();
+        }
+
+        if (ViewModelType == ViewModelType.TempAvatar)
+        {
+            return TitleRaw;
+        }
+
+        if (ViewModelType == ViewModelType.File)
+        {
+            return Localizer.Instance.Get(Loc.Button.ToolTip.FilePath, ActualValue ?? string.Empty);
+        }
+
+        return null;
     }
 
     private void HandleMenuClick(ContextMenuAction action)

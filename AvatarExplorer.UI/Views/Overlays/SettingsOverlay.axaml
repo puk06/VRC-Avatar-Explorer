@@ -33,14 +33,14 @@
                                             <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.SortOrder.Description], Source={x:Static loc:Localizer.Instance}}"/>
                                         </Grid>
 
-                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
-                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedSortOrder}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Title], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Author], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Created], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Updated], Source={x:Static loc:Localizer.Instance}}"/>
-                                            </ComboBox>
-                                        </Grid>
+                                    <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
+                                        <ComboBox Name="SortOrderComboBox" Grid.Column="1" SelectedIndex="{Binding SelectedSortOrder}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Author], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Created], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Updated], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </ComboBox>
+                                    </Grid>
                                     </Grid>
 
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
@@ -49,12 +49,12 @@
                                             <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.SortDirection.Description], Source={x:Static loc:Localizer.Instance}}"/>
                                         </Grid>
 
-                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
-                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedSortDirection}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                                                <ComboBoxItem Content="{Binding [Settings.SortDirection.Options.Ascending], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.SortDirection.Options.Descending], Source={x:Static loc:Localizer.Instance}}"/>
-                                            </ComboBox>
-                                        </Grid>
+                                    <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
+                                        <ComboBox Name="SortDirectionComboBox" Grid.Column="1" SelectedIndex="{Binding SelectedSortDirection}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <ComboBoxItem Content="{Binding [Settings.SortDirection.Options.Ascending], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.SortDirection.Options.Descending], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </ComboBox>
+                                    </Grid>
                                     </Grid>
 
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
@@ -63,20 +63,20 @@
                                             <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.Theme.Description], Source={x:Static loc:Localizer.Instance}}"/>
                                         </Grid>
 
-                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
-                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedTheme}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Dark], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Light], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sakura], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mint], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Lavender], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Ocean], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sunset], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Forest], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mocha], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.Theme.Options.Slate], Source={x:Static loc:Localizer.Instance}}"/>
-                                            </ComboBox>
-                                        </Grid>
+                                    <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
+                                        <ComboBox Name="ThemeComboBox" Grid.Column="1" SelectedIndex="{Binding SelectedTheme}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Dark], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Light], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sakura], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mint], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Lavender], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Ocean], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Sunset], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Forest], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Mocha], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.Theme.Options.Slate], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </ComboBox>
+                                    </Grid>
                                     </Grid>
                                 </StackPanel>
                             </ScrollViewer>
@@ -140,7 +140,7 @@
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,2.5*" ColumnSpacing="5">
-                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedAntiAliasing}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <ComboBox Name="AntiAliasingComboBox" Grid.Column="1" SelectedIndex="{Binding SelectedAntiAliasing}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                                 <ComboBoxItem Content="{Binding [Settings.AntiAliasing.Options.None], Source={x:Static loc:Localizer.Instance}}"/>
                                                 <ComboBoxItem Content="{Binding [Settings.AntiAliasing.Options.Low], Source={x:Static loc:Localizer.Instance}}"/>
                                                 <ComboBoxItem Content="{Binding [Settings.AntiAliasing.Options.Medium], Source={x:Static loc:Localizer.Instance}}"/>
@@ -465,7 +465,7 @@
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,2.5*" ColumnSpacing="5">
-                                            <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedUpdateChannel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                            <ComboBox Name="UpdateChannelComboBox" Grid.Column="1" SelectedIndex="{Binding SelectedUpdateChannel}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                                 <ComboBoxItem Content="{Binding [Settings.UpdateChannel.Options.Stable], Source={x:Static loc:Localizer.Instance}}"/>
                                                 <ComboBoxItem Content="{Binding [Settings.UpdateChannel.Options.Beta], Source={x:Static loc:Localizer.Instance}}"/>
                                             </ComboBox>

@@ -1,0 +1,8 @@
+using System.Threading.Tasks;
+
+namespace AvatarExplorer.UI.Interfaces;
+
+public interface IInitializable
+{
+    Task Initialize();
+}

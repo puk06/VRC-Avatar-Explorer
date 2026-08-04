@@ -419,6 +419,11 @@
             <Setter Property="ShowDelay" Value="00:00:00"/>
         </Style>
 
+        <Style Selector="Button">
+            <Setter Property="(ToolTip.ShowDelay)" Value="1500"/>
+            <Setter Property="(ToolTip.BetweenShowDelay)" Value="-1"/>
+        </Style>
+
         <Style Selector="TextBlock.settingslabel">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>

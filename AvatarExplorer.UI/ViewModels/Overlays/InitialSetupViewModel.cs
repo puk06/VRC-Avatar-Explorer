@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -39,11 +40,14 @@ public class InitialSetupViewModel : ViewModelBase
                 if (!IsVisible) return;
                 Settings.Update(Settings.Settings with { DataRootDirectory = path });
             });
-        
+
+        IInitializableRegistry.OnInitialized += OnInitialized;
+    }
+
+    public void OnInitialized()
+    {
         if (!AvatarExplorerApp.Instance.Items.GetAll().Any())
-        {
             Open();
-        }
     }
 
     public void Open()

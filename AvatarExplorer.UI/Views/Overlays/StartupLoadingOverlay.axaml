@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    x:Class="AvatarExplorer.UI.Views.Overlays.StartupLoadingOverlay"
+    x:DataType="vm:StartupLoadingViewModel">
+
+    <Grid Background="#F3EEE6" IsVisible="{Binding IsVisible}">
+        <Grid>
+            <Ellipse Width="360" Height="360" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-110,-110,0,0" Fill="#E8D9C7" Opacity="0.32"/>
+            <Ellipse Width="240" Height="240" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-80,-80" Fill="#D9E5DC" Opacity="0.35"/>
+        </Grid>
+
+        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="460" Padding="32" CornerRadius="28" Background="#FFFDF9" BorderBrush="#E0D4C6" BorderThickness="1">
+            <StackPanel Spacing="16" HorizontalAlignment="Center">
+                <Border Width="72" Height="72" CornerRadius="36" Background="#E9D7C1" HorizontalAlignment="Center">
+                    <TextBlock Text="AE" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5B4B3E"/>
+                </Border>
+
+                <StackPanel Spacing="6" HorizontalAlignment="Center">
+                    <TextBlock Text="VRC Avatar Explorer" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#4B3F35"/>
+                    <TextBlock Text="{Binding StatusText}" FontSize="13" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Foreground="#7B6B5E"/>
+                </StackPanel>
+
+                <ProgressBar Width="320" Height="8" Minimum="0" Maximum="100" Value="{Binding Progress}" IsIndeterminate="False" Foreground="#B98F6F" Background="#E8DDD2"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -10,32 +10,42 @@ namespace AvatarExplorer.UI.Services;
 
 public static class AppInitializer
 {
-    public static void Initialize()
+    public static void InitializeApp()
     {
         AvatarExplorerApp.Instance.Initialize();
+    }
 
+    public static void InitializeLocalization()
+    {
         Localizer.Instance.LoadFromFolder("locales");
         Localizer.Instance.SetLanguage(0);
-
-        ContextMenuHandlerService.Initialize();
-        RegisterBackupFiles();
-        UserPreferencesService.Instance.Repository.Load();
-
-        StartThumbnailCacheWampup();
-
-        SingleInstanceService.StartServer();
     }
 
-    private static void RegisterBackupFiles()
+    public static void InitializeContextMenu()
     {
-        AvatarExplorerApp.Instance.BackupManager.AddTargetFile(SystemPath.UserPreferencesFilePath);
+        ContextMenuHandlerService.Initialize();
     }
 
-    private static void StartThumbnailCacheWampup()
+    public static void InitializeUserPreferences()
+    {
+        UserPreferencesService.Instance.Repository.Load();
+    }
+
+    public static void StartThumbnailCacheWarmup()
     {
         var thumbnailFileNames = AvatarExplorerApp.Instance.Items.GetAll()
             .Select(i => i.ThumbnailFileName)
             .Where(p => !string.IsNullOrEmpty(p));
         ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
+    }
+
+    public static void StartSingleInstanceService()
+    {
+        SingleInstanceService.StartServer();
+    }
+
+    public static void RegisterBackupFiles()
+    {
+        AvatarExplorerApp.Instance.BackupManager.AddTargetFile(SystemPath.UserPreferencesFilePath);
     }
 }

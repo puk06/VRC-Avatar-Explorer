@@ -10,8 +10,8 @@ namespace AvatarExplorer.UI.ViewModels.Managers;
 public class StateCacheManager
 {
     private readonly CacheManager<Guid, int> _pageCache = new(0);
-    private readonly CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MinValue);
-    private readonly CacheManager<int, (int, Vector)> _leftStateCache = new((0, AvaloniaVectorUtils.MinValue));
+    private readonly CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MaxValue);
+    private readonly CacheManager<int, (int, Vector)> _leftStateCache = new((0, AvaloniaVectorUtils.MaxValue));
 
     private readonly ItemNavigationService _navigationService;
 
@@ -31,6 +31,7 @@ public class StateCacheManager
         {
             leftPageInfo.CurrentPage = state.Item1;
             leftPageInfo.ScrollOffset = state.Item2;
+            leftPageInfo.RestoreScrollOffset = AvaloniaVectorUtils.MaxValue;
             leftPageInfo.RestoreScrollOffset = state.Item2;
         }
         else
@@ -57,6 +58,7 @@ public class StateCacheManager
             rightPageInfo.CurrentPage = page;
             var scroll = _scrollValueCache.Get(currentGuid.Value);
             rightPageInfo.ScrollOffset = scroll;
+            rightPageInfo.RestoreScrollOffset = AvaloniaVectorUtils.MaxValue;
             rightPageInfo.RestoreScrollOffset = scroll;
         }
         else

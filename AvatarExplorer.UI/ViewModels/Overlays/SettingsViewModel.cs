@@ -25,7 +25,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 public class SettingsViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; }
-    public IEnumerable<string> Languages { get; }
+    [Reactive] public IEnumerable<string> Languages { get; set; } = [];
     [Reactive] public int SelectedLanguage { get; set; }
 
     [Reactive] public int SelectedSortOrder { get; set; }
@@ -78,9 +78,6 @@ public class SettingsViewModel : ViewModelBase
 
     public SettingsViewModel()
     {
-        Languages = Localizer.Instance.GetLanguageList();
-        SelectedLanguage = Localizer.Instance.CurrentLanguageIndex;
-
         OpenBackgroundImageCommand = ReactiveCommand.CreateFromTask(OpenBackgroundImage);
         OpenCommonAvatarManagerCommand = ReactiveCommand.Create(OpenCommonAvatarManager);
         OpenItemsFolderCommand = ReactiveCommand.CreateFromTask(OpenItemsFolder);
@@ -117,7 +114,11 @@ public class SettingsViewModel : ViewModelBase
         var runtimeSettings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
         var preferences = UserPreferencesService.Instance.Repository.Settings;
 
+        Languages = Localizer.Instance.GetLanguageList();
+
+        SelectedLanguage = -1;
         SelectedLanguage = preferences.Language;
+
         SelectedTheme = (int)preferences.Theme;
         RemoveBrackets = preferences.RemoveBrackets;
         NormalIconSize = preferences.NormalIconSize;

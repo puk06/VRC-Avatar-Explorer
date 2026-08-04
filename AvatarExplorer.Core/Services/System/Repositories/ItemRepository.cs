@@ -85,7 +85,8 @@ public class ItemRepository
     {
         static string GetSafePath(Item item, string dataRootDirectory)
         {
-            string? folderName = ItemUtils.GetSafeTitle(item.Title);
+            var defaultFolderName = item.BoothId != -1 ? $"{item.BoothId} - {item.Title}" : item.Title;
+            var folderName = ItemUtils.GetSafeTitle(defaultFolderName);
             if (string.IsNullOrEmpty(folderName))
             {
                 if (item.BoothId != -1)

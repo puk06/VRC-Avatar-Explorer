@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -14,23 +12,24 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.Updates;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Extensions;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.ViewModels.Overlays;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ViewModelBase, IInitializable
 {
-    public event Action<string[]>? OnApplicationArgsReceived;
-
     [Reactive] public string WindowTitle { get; set; } = string.Empty;
     [Reactive] public ImageBrush? BackgroundImage { get; set; } = null;
-    public static AvatarExplorerApp AvatarExplorerApp => AvatarExplorerApp.Instance;
 
+    public static AvatarExplorerApp AvatarExplorerApp => AvatarExplorerApp.Instance;
     public static MainWindowViewModel Instance { get; private set; } = null!;
 
     public MainViewModel MainVM { get; } = new();
@@ -66,6 +65,8 @@ public class MainWindowViewModel : ViewModelBase
 
     public PdfViewerViewModel PdfViewerVM { get; } = new();
 
+    public StartupLoadingViewModel StartupLoadingVM { get; } = new();
+
     public ProgressViewModel ProgressVM { get; } = new();
 
     public ResolveTempAvatarViewModel ResolveTempAvatarVM { get; } = new();
@@ -95,19 +96,70 @@ public class MainWindowViewModel : ViewModelBase
         AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;
 
-        UserPreferencesService.Instance.Repository.Load();
-        MainVM.ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
-
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
+        ImageService.ThumbnailCacheWarmupStateChanged += OnThumbnailWarmupChanged;
 
-        UpdateWindowTitle();
-        CheckForUpdateOnStartup();
+        IInitializableRegistry.OnInitialized += OnAllInitialized;
+        IInitializableRegistry.Register(this);
     }
-    private void OnPipeMessageReceived(string[] args)
+
+    private bool _thumbnailWarmupStatus;
+    private void OnThumbnailWarmupChanged(bool status)
     {
-        Dispatcher.UIThread.Post(() => SendApplicationArgs(args));
+        Dispatcher.UIThread.Post(() =>
+        {
+            _thumbnailWarmupStatus = status;
+            UpdateWindowTitle();
+        });
     }
 
+    public async Task Initialize()
+    {
+        await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            StartupLoadingVM.StatusText = "Initializing application...";
+            StartupLoadingVM.Progress = 0;
+            AppInitializer.InitializeApp();
+
+            StartupLoadingVM.StatusText = "Loading locales...";
+            StartupLoadingVM.Progress = 15;
+            AppInitializer.InitializeLocalization();
+
+            StartupLoadingVM.StatusText = "Initializing context menu...";
+            StartupLoadingVM.Progress = 30;
+            AppInitializer.InitializeContextMenu();
+
+            StartupLoadingVM.StatusText = "Loading preferences...";
+            StartupLoadingVM.Progress = 45;
+            AppInitializer.InitializeUserPreferences();
+            AppInitializer.RegisterBackupFiles();
+
+            StartupLoadingVM.StatusText = "Warming up thumbnail cache...";
+            StartupLoadingVM.Progress = 70;
+            AppInitializer.StartThumbnailCacheWarmup();
+
+            StartupLoadingVM.StatusText = "Starting services...";
+            StartupLoadingVM.Progress = 90;
+            AppInitializer.StartSingleInstanceService();
+
+            StartupLoadingVM.StatusText = "Finalizing...";
+            StartupLoadingVM.Progress = 95;
+
+            UpdateWindowTitle();
+        });
+    }
+    private async void OnAllInitialized()
+    {
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            StartupLoadingVM.IsVisible = false;
+            CheckForUpdateOnStartup();
+        });
+    }
+
+    private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => SendApplicationArgs(args));
+    
+    public event Action<string[]>? OnApplicationArgsReceived;
     public void SendApplicationArgs(string[] args)
     {
         OnArgsReceived(args);
@@ -124,14 +176,9 @@ public class MainWindowViewModel : ViewModelBase
 
     private void OnPreferenceSettingsUpdated(UserPreferences settings)
     {
+        Localizer.Instance.SetLanguage(settings.Language);
         SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
         SetTheme(settings.Theme);
-    }
-
-    private void OnUpdateAvailable(VersionRelease release)
-    {
-        UpdateDialogVM.Open(AvatarExplorerApp.CurrentVersion, release);
-        IsUpdateDialogVisible = true;
     }
 
     private static async void CheckForUpdateOnStartup()
@@ -141,6 +188,11 @@ public class MainWindowViewModel : ViewModelBase
 
         await UpdateChecker.CheckForUpdate(settings.UpdateChannel);
     }
+    private void OnUpdateAvailable(VersionRelease release)
+    {
+        UpdateDialogVM.Open(AvatarExplorerApp.CurrentVersion, release);
+        IsUpdateDialogVisible = true;
+    }
 
     private void UpdateWindowTitle()
     {
@@ -149,13 +201,14 @@ public class MainWindowViewModel : ViewModelBase
         if (ProcessUtils.IsWindows() && SchemeService.IsRunAsAdmin())
             title += string.Format(" - [{0}]", Localizer.Instance[Loc.Title.AdministratorMode]);
 
+        if (_thumbnailWarmupStatus)
+            title += string.Format(" - {0}", Localizer.Instance[Loc.Title.CacheGeneration]);
+
         WindowTitle = title;
     }
 
-    public void ShowItemEditor(string? itemId = null)
-    {
-        ItemEditorVM.Open(itemId);
-    }
+    public void ShowItemEditor(string? itemId = null) => ItemEditorVM.Open(itemId);
+    public void OnFilesDrop(string[] filePaths) => ItemEditorVM.AddPaths(filePaths);
 
     public async Task<string?> ShowEditMemoDialog(string memo)
     {
@@ -225,11 +278,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public void ShowUnitypackageViewer(string filePath) => UnitypackageViewerVM.Open(filePath);
     public void ShowPdfViewer(string filePath) => PdfViewerVM.Open(filePath);
-
-    public void ShowErrorLog()
-    {
-        ErrorLogVM.IsVisible = true;
-    }
+    public void ShowErrorLog() => ErrorLogVM.IsVisible = true;
 
     private void SetBackgroundImage(string path, int opacity)
     {
@@ -246,7 +295,7 @@ public class MainWindowViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex);
+            ErrorManager.Instance.PostError("Failed to set background image.", ex);
         }
     }
     private static void SetTheme(Theme theme)
@@ -266,10 +315,5 @@ public class MainWindowViewModel : ViewModelBase
             Type = type,
             Expiration = TimeSpan.FromSeconds(5)
         });
-    }
-
-    public void OnFilesDrop(string[] filePaths)
-    {
-        ItemEditorVM.AddPaths(filePaths);
     }
 }
