@@ -61,4 +61,9 @@ public partial class MainWindow : Window
         if (DataContext is MainWindowViewModel vm)
             vm.SendApplicationArgs(args);
     }
+
+    private void OnWindowClosing(object? sender, WindowClosingEventArgs e)
+    {
+        MainWindowViewModel.Instance.OnWindowClosing();
+    }
 }

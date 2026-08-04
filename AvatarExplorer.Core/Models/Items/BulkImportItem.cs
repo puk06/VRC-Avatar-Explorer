@@ -1,8 +1,7 @@
 namespace AvatarExplorer.Core.Models.Items;
 
-public class BulkImportItem(string itemId)
+public class BulkImportItem(string itemId, string filePath)
 {
-    public string Id { get; private set; } = Guid.NewGuid().ToString();
-    public string ItemId { get; init; } = itemId;
-    public string FilePath { get; set; } = string.Empty;
+    public string ItemId { get; set; } = itemId;
+    public string FilePath { get; set; } = filePath;
 }

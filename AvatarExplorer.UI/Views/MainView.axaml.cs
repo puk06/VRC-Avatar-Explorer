@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -8,6 +9,9 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Utils;
+using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services.Utilities;
+using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels;
 using AvatarExplorer.UI.ViewModels.Component;
 
@@ -27,6 +31,12 @@ public partial class MainView : UserControl
         RegisterPathScrollEvent();
         RegisterScrollTracking();
         RegisterHoverThumbnailEvent();
+        RegisterWindowClosingEvent();
+    }
+
+    private void RegisterWindowClosingEvent()
+    {
+        MainWindowViewModel.Instance.WindowClosing += CloseHoverWindow;
     }
 
     private void RegisterPathScrollEvent()
@@ -193,6 +203,12 @@ public partial class MainView : UserControl
         }
     }
 
+    public void CloseHoverWindow()
+    {
+        _hoverWindow?.Close();
+        _hoverWindow = null;
+    }
+
     private void OnMainItemImageLoaded(object? sender, RoutedEventArgs e)
     {
         if (sender is not Image image) return;
@@ -207,6 +223,17 @@ public partial class MainView : UserControl
         image.PointerEntered -= OnMainItemImagePointerEntered;
         image.PointerExited -= OnMainItemImagePointerExited;
         image.PointerMoved -= OnMainItemImagePointerMoved;
+    }
+
+    private void OnMainItemButtonLoaded(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button) return;
+        button.AddHandler(PointerPressedEvent, OnMainItemButtonPointerPressed, RoutingStrategies.Tunnel);
+    }
+    private void OnMainItemButtonUnloaded(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button) return;
+        button.RemoveHandler(PointerPressedEvent, OnMainItemButtonPointerPressed);
     }
 
     private void OnMainItemImagePointerEntered(object? sender, PointerEventArgs e)
@@ -238,5 +265,50 @@ public partial class MainView : UserControl
         if (topLevel is not Window window) return default;
         var position = window.PointToScreen(e.GetPosition(window));
         return new PixelPoint(position.X + HoverOffset, position.Y + HoverOffset);
+    }
+
+    private async void OnMainItemButtonPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is not Button button) return;
+        if (button.DataContext is not ItemViewModel item) return;
+
+        var viewModelType = item.ViewModelType;
+        if (viewModelType != ViewModelType.Item && viewModelType != ViewModelType.File && viewModelType != ViewModelType.Folder) return;
+
+        var transferItem = new DataTransferItem();
+        string? droppedPath = null;
+
+        if (viewModelType == ViewModelType.File && !string.IsNullOrEmpty(item.ActualValue))
+        {
+            var storageFile = await StorageService.GetStorageFileFromPath(TopLevelProvider.Current, item.ActualValue);
+            if (storageFile != null)
+            {
+                transferItem.Set(DataFormat.File, storageFile);
+                droppedPath = item.ActualValue;
+            }
+            else transferItem.Set(DataFormat.Text, item.ActualValue);
+        }
+        else if (viewModelType == ViewModelType.Item && !string.IsNullOrEmpty(item.Identifier))
+        {
+            transferItem.Set(DataFormat.Text, item.Identifier);
+        }
+        else if (viewModelType == ViewModelType.Folder && !string.IsNullOrEmpty(item.ActualValue))
+        {
+            transferItem.Set(DataFormat.Text, item.ActualValue);
+        }
+        else
+        {
+            return;
+        }
+
+        var dragData = new DataTransfer();
+        dragData.Add(transferItem);
+
+        await Task.Delay(300);
+
+        if (!button.IsPressed) return;
+
+        MainWindowViewModel.Instance.LastDragDropPath = droppedPath;
+        await DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Copy);
     }
 }

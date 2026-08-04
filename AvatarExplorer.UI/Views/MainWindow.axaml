@@ -13,7 +13,8 @@
         Width="1280" Height="720"
         DragDrop.AllowDrop="True"
         DragDrop.DragOver="OnDragDropOver"
-        DragDrop.Drop="OnDragDrop">
+        DragDrop.Drop="OnDragDrop"
+        Closing="OnWindowClosing">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>

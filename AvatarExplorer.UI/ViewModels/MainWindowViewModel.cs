@@ -32,6 +32,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
     public static AvatarExplorerApp AvatarExplorerApp => AvatarExplorerApp.Instance;
     public static MainWindowViewModel Instance { get; private set; } = null!;
 
+    public string? LastDragDropPath { get; set; } = null;
+
     public MainViewModel MainVM { get; } = new();
 
     public ItemEditorViewModel ItemEditorVM { get; } = new();
@@ -86,6 +88,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
     [Reactive] public bool IsYesNoDialogVisible { get; set; }
 
     public WindowNotificationManager? NotificationManager { get; set; }
+
+    public event Action? WindowClosing;
 
     public MainWindowViewModel()
     {
@@ -208,7 +212,13 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
     }
 
     public void ShowItemEditor(string? itemId = null) => ItemEditorVM.Open(itemId);
-    public void OnFilesDrop(string[] filePaths) => ItemEditorVM.AddPaths(filePaths);
+    public void OnFilesDrop(string[] filePaths)
+    {
+        // ソフト内からD&Dしたアイテムはスキップするように
+        if (filePaths.Length == 1 && filePaths[0] == LastDragDropPath) return;
+
+        ItemEditorVM.AddPaths(filePaths);
+    }
 
     public async Task<string?> ShowEditMemoDialog(string memo)
     {
@@ -315,5 +325,10 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
             Type = type,
             Expiration = TimeSpan.FromSeconds(5)
         });
+    }
+
+    public void OnWindowClosing()
+    {
+        WindowClosing?.Invoke();
     }
 }

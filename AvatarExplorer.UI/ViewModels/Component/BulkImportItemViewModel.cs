@@ -1,57 +1,70 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Avalonia.Media.Imaging;
+using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.Items;
+using AvatarExplorer.UI.Services.Utilities;
+using AvatarExplorer.UI.Utils;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
 public class BulkImportItemViewModel : ViewModelBase
 {
-    // private readonly UISelectableItem _item;
-
     [Reactive] public Bitmap? Thumbnail { get; set; } = null;
-    [Reactive] public string Title { get; set; } = string.Empty;
-    [Reactive] public string Description { get; set; } = string.Empty;
-
-    [Reactive] public IEnumerable<string> UnitypackageNames { get; set; } = [];
-    public IEnumerable<string> UnitypackageFullPaths { get; set; } = [];
-    [Reactive] public int SelectedUnitypackage { get; set; } = 0;
-
-    [Reactive] public string ToolTip { get; set; } = string.Empty;
+    [Reactive] public string Title { get; private set; } = string.Empty;
+    [Reactive] public string Description { get; private set; } = string.Empty;
 
     [Reactive] public double Width { get; set; } = 0;
     [Reactive] public double Height { get; set; } = 0;
-    [Reactive] public BitmapInterpolationMode BitmapInterpolationMode { get; set; } = BitmapInterpolationMode.None;
 
-    // public BulkImportItemViewModel(UISelectableItem item, string? fileName = null)
-    // {
-    //     _item = item;
+    public string ImageFileName { get; set; } = string.Empty;
+    public string TitleRaw { get; set; } = string.Empty;
+    public bool TitleLocalizable { get; } = false;
 
-    //     Thumbnail = ImageService.Get(_item.ImageFileName, _item.IconType);
-        
-    //     Title = _item.Title;
+    public LoclizableField DescriptionRaw = new();
 
-    //     if (_item.ItemFolderPaths != null)
-    //     {
-    //         UnitypackageFullPaths = UnitypackageService.GetUnitypackagePaths(_item.ItemFolderPaths);
-    //         UnitypackageNames = UnitypackageFullPaths
-    //             .Select(i => Path.GetFileName(i) ?? string.Empty)
-    //             .Where(i => !string.IsNullOrEmpty(i));
+    [Reactive] public IEnumerable<string> UnitypackageNames { get; private set; } = [];
+    [Reactive] public int SelectedUnitypackage { get; set; } = 0;
+    public string SelectedUnitypackagePath => (SelectedUnitypackage >= 0 || SelectedUnitypackage < UnitypackageFullPaths.Length) ? UnitypackageFullPaths[SelectedUnitypackage] : string.Empty;
+    
+    public string[] UnitypackageFullPaths { get; set; } = [];
+    // [Reactive] public BitmapInterpolationMode BitmapInterpolationMode { get; set; } = BitmapInterpolationMode.None;
 
-    //         if (fileName != null)
-    //         {
-    //             int index = UnitypackageFullPaths.IndexOf(fileName);
-    //             if (index != -1) SelectedUnitypackage = index;
-    //         }
-    //     }
+    public string ItemId { get; set; } = string.Empty;
 
-    //     UpdateLocalization();
-    // }
+    public BulkImportItemViewModel Update(int iconSize = 80, bool removeBrackets = false)
+    {
+        Thumbnail = ImageService.Get(ImageFileName);
+        Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
 
-    public BulkImportItemViewModel Copy() => new();
+        Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
 
-    // public void UpdateLocalization()
-    // {
-    //     Description = Localizer.Instance.Get(_item.Description.LocalizationKey, _item.Description.Args);
-    //     ToolTip = _item.GetToolTipText();
-    // }
+        Width = Height = (Thumbnail != null) ? iconSize : 0;
+
+        if (removeBrackets)
+        {
+            Title = TextBracketsUtils.RemoveBrackets(TitleRaw);
+        }
+
+        UnitypackageNames = UnitypackageFullPaths.Select(i => Path.GetFileName(i) ?? i);
+        var previousSelectedPackage = SelectedUnitypackage;
+        SelectedUnitypackage = -1;
+        SelectedUnitypackage = previousSelectedPackage;
+
+        return this;
+    }
+
+    public BulkImportItemViewModel Copy()
+    {
+        return new()
+        {
+            ImageFileName = ImageFileName,
+            TitleRaw = TitleRaw,
+            DescriptionRaw = DescriptionRaw,
+            UnitypackageFullPaths = UnitypackageFullPaths,
+            SelectedUnitypackage = SelectedUnitypackage
+        };
+    }
 }

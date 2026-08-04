@@ -4,7 +4,6 @@ using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Database;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Network;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using ErrorOr;
 

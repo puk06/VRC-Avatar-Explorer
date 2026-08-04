@@ -99,7 +99,6 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     private readonly SidePanelManager _sidePanelManager;
     private readonly StateCacheManager _stateCacheManager;
     private readonly SearchManager _searchManager;
-    private int _lastSelectedLeftCategory;
 
     private List<ItemViewModel> _allLeftItems = [];
     private List<ItemViewModel> _allMainItems = [];

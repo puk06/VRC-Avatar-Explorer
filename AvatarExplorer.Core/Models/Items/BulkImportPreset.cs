@@ -4,9 +4,9 @@ using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class BulkImportPreset : AbstractDatabaseItem, INavigationable
+public class BulkImportPreset(string presetName) : AbstractDatabaseItem, INavigationable
 {
-    public string PresetName { get; set; } = string.Empty;
+    [JsonInclude] public string PresetName { get; private set; } = presetName;
     [JsonInclude] public ImmutableArray<BulkImportItem> Items { get; private set; } = [];
 
     public void UpdateItems(IEnumerable<BulkImportItem> items) => Items = items.ToImmutableArray();

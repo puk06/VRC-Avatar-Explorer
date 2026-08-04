@@ -130,5 +130,14 @@ public class AvatarExplorerApp
                 }
             }));
         });
+
+        var presets = BulkImportPresets.GetAll();
+        presets.ForEach(i =>
+        {
+            i.Items.ForEach(i =>
+            {
+                i.ItemId = "item:" + i.ItemId;
+            });
+        });
     }
 }

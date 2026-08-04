@@ -8,9 +8,31 @@ public class BulkImportPresetRepository
 {
     private readonly DatabaseManager<BulkImportPreset> _db = new(SystemPath.BulkImportPresetDatabasePath);
 
+    /// <summary>
+    /// アイテムが追加・更新・削除された際に発火します。引数は .Identifier です。
+    /// </summary>
+    public event Action<string>? OnUpdated;
+
     public void Load(string? path = null) => _db.Load(path);
+
     public IReadOnlyList<BulkImportPreset> GetAll() => _db.Items;
-    public BulkImportPreset? GetById(string id) => _db.GetById(id);
-    public void Add(BulkImportPreset preset) => _db.Add(preset);
-    public void Remove(string id) => _db.Remove(id);
+    public BulkImportPreset? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);
+
+    public void Remove(string identifier)
+    {
+        var item = Get(identifier);
+        if (item == null) return;
+
+        _db.Remove(item.Id);
+        OnUpdated?.Invoke(identifier);
+    }
+
+    public void Create(string presetName, BulkImportItem[] items)
+    {
+        var group = new BulkImportPreset(presetName);
+        group.UpdateItems(items);
+
+        _db.Add(group);
+        OnUpdated?.Invoke(group.Identifier);
+    }
 }
