@@ -157,8 +157,17 @@ public class MainViewModel : ViewModelBase, IPostInitializable
             UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferencesBatch;
             _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
 
+            Observable
+                .Merge(
+                    Observable.FromEvent(h => _itemGroupService.ItemRepository.OnUpdated += h, h => _itemGroupService.ItemRepository.OnUpdated -= h),
+                    Observable.FromEvent(h => _itemGroupService.CommonAvatarRepository.OnUpdated += h, h => _itemGroupService.CommonAvatarRepository.OnUpdated -= h),
+                    Observable.FromEvent(h => _itemGroupService.TempAvatarRepository.OnUpdated += h, h => _itemGroupService.TempAvatarRepository.OnUpdated -= h)
+                )
+                .Throttle(TimeSpan.FromMilliseconds(100))
+                .Subscribe(_ => Dispatcher.UIThread.InvokeAsync(Refresh));
+
             ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
-            
+
             OnCategoryChanged((int)QueryType.Avatar);
             Refresh();
         });

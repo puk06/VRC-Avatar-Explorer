@@ -58,5 +58,8 @@ public class BulkImportPresetViewModel : ViewModelBase, IPostInitializable
 
         var bulkVm = MainWindowViewModel.Instance.MainVM.BulkImportVM;
         foreach (var item in preset.Items) bulkVm.AddItem(item.ItemId, item.FilePath);
+
+        // 一括インポートの画面
+        MainWindowViewModel.Instance.MainVM.SelectedSidePanelTab = 1;
     }
 }

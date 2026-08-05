@@ -46,7 +46,7 @@ public class ItemGroupService
         _tempAvatars = tempAvatars;
         _runtimesettings = settings;
 
-        _items.OnItemUpdated += ItemUpdated;
+        _items.OnUpdated += ItemUpdated;
         _commonAvatars.OnUpdated += CommonAvatarUpdated;
         _tempAvatars.OnUpdated += TempAvatarUpdated;
     }
@@ -171,7 +171,10 @@ public class ItemGroupService
                         .Distinct()
                 )
             );
+        
+        _items.MarkAsChanged();
         _items.Save();
+        
 
         _commonAvatars.GetAll()
             .ForEach(c => c.UpdateAvatars(
@@ -179,6 +182,7 @@ public class ItemGroupService
                     .Select(i => i == tempAvatarId ? targetItemId : i)
                     .Distinct()
             ));
+        _commonAvatars.MarkAsChanged();
         _commonAvatars.Save();
 
         _tempAvatars.Remove(tempAvatarId);
@@ -207,6 +211,7 @@ public class ItemGroupService
                 if (updatedImplemented.Length != i.ImplementedAvatars.Length)
                     i.UpdateImplementedAvatars(updatedImplemented);
             });
+        _items.Remove(identifier, removeFolder);
         _items.Save();
 
         _commonAvatars.GetAll()
@@ -217,8 +222,7 @@ public class ItemGroupService
                     c.UpdateAvatars(updatedAvatars);
             });
         _commonAvatars.Save();
-
-        _items.Remove(identifier, removeFolder);
+        _commonAvatars.MarkAsChanged();
     }
 
     /// <summary>
@@ -234,6 +238,7 @@ public class ItemGroupService
                     i.UpdateSupportedAvatars(updatedSupported);
             });
         _items.Save();
+        _items.MarkAsChanged();
 
         _commonAvatars.GetAll()
             .ForEach(c =>
@@ -243,6 +248,7 @@ public class ItemGroupService
                     c.UpdateAvatars(updatedAvatars);
             });
         _commonAvatars.Save();
+        _commonAvatars.MarkAsChanged();
 
         _tempAvatars.Remove(identifier);
         _tempAvatars.Save();
@@ -251,22 +257,37 @@ public class ItemGroupService
     /// <summary>
     /// 共通素体を削除し、アイテムの対応アバターからもそのIDを削除します。
     /// </summary>
-    public void RemoveCommonAvatar(string identifier)
+    public void RemoveCommonAvatar(string identifier, bool replaceToAvatars)
     {
+        var group = _commonAvatars.Get(identifier);
+        if (group == null) return;
+
+        var itemsUpdated = false;
+
         _items.GetAll()
             .ForEach(i =>
             {
-                var updatedSupported = i.SupportedAvatars.Where(a => a != identifier).ToArray();
-                if (updatedSupported.Length != i.SupportedAvatars.Length)
-                    i.UpdateSupportedAvatars(updatedSupported);
+                var containsGroup = i.SupportedAvatars.Contains(identifier);
+                if (!containsGroup) return;
+
+                var updatedSupported = i.SupportedAvatars.Where(a => a != identifier).ToList();
+                if (replaceToAvatars) updatedSupported.AddRange(group.Avatars);
+
+                i.UpdateSupportedAvatars(updatedSupported);
+
+                itemsUpdated = true;
             });
-        _items.Save();
+
+        if (itemsUpdated)
+        {
+            _items.Save();
+            _items.MarkAsChanged();
+        }
 
         _commonAvatars.Remove(identifier);
         _commonAvatars.Save();
     }
 
-    // TODO: 逆も作る (共通素体削除時に)
     public void ReplaceSupportedAvatarsToCommonAvatarGroup(string groupIdentifier)
     {
         var commonAvatar = _commonAvatars.Get(groupIdentifier);
@@ -280,10 +301,7 @@ public class ItemGroupService
         }
 
         _items.Save();
-        foreach (var identifier in updatedIdentifiers)
-        {
-            ItemUpdated(identifier);
-        }
+        _items.MarkAsChanged();
     }
 
     #region Search
@@ -414,33 +432,20 @@ public class ItemGroupService
             commonAvatarNames);
     }
 
-    private void ItemUpdated(string identifier)
+    private void ItemUpdated()
     {
-        // 初回インデックス構築前は個別の更新を無視し、RebuildIndices() で一括構築する
-        if (!_indicesBuilt) return;
-
-        var item = _items.Get(identifier);
-        if (item == null)
-        {
-            _itemSearchIndices.TryRemove(identifier, out _);
-            return;
-        }
-
-        var avatarTitleMap = ItemUtils.GetItemTitleMaps(_items.GetAll().Where(i => i.Category.Type == ItemType.Avatar), _tempAvatars.GetAll());
-        var commonAvatarList = _commonAvatars.GetAll().ToList();
-        BuildItemIndex(item, avatarTitleMap, commonAvatarList);
-    }
-
-    private void CommonAvatarUpdated(string identifier)
-    {
-        // CommonAvatar の変更は Item の SupportedAvatars/CommonAvatars フィールドにも影響するため、全体を再構築する
         if (!_indicesBuilt) return;
         RebuildIndices();
     }
 
-    private void TempAvatarUpdated(string identifier)
+    private void CommonAvatarUpdated()
     {
-        // TempAvatar の変更は Item の SupportedAvatars フィールドにも影響するため、全体を再構築する
+        if (!_indicesBuilt) return;
+        RebuildIndices();
+    }
+
+    private void TempAvatarUpdated()
+    {
         if (!_indicesBuilt) return;
         RebuildIndices();
     }

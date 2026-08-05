@@ -4,7 +4,6 @@ public enum ActionKey
 {
     None,
     
-    OpenItemFolder,
     CopyBoothLink,
     OpenBoothLink,
     ShowOtherItemsByAuthor,
@@ -22,9 +21,11 @@ public enum ActionKey
     EditItemTag,
     RemoveItem,
 
+    OpenFolder,
+    ShowInExplorer, // Fileにも使われる
+
     OpenFile,
     AddFileToBulkImportList,
-    OpenFileInExplorer,
     OpenUnitypackageViewer,
     OpenPdfViewer,
 

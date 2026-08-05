@@ -11,7 +11,7 @@ public class BulkImportPresetRepository
     /// <summary>
     /// アイテムが追加・更新・削除された際に発火します。
     /// </summary>
-    public event Action? OnItemsUpdated;
+    public event Action? OnUpdated;
 
     public void Load(string? path = null) => _db.Load(path);
 
@@ -24,7 +24,9 @@ public class BulkImportPresetRepository
         if (item == null) return;
 
         _db.Remove(item.Id);
-        OnItemsUpdated?.Invoke();
+        Save();
+
+        OnUpdated?.Invoke();
     }
 
     public void Create(string presetName, BulkImportItem[] items)
@@ -33,6 +35,12 @@ public class BulkImportPresetRepository
         group.UpdateItems(items);
 
         _db.Add(group);
-        OnItemsUpdated?.Invoke();
+        Save();
+
+        OnUpdated?.Invoke();
     }
+
+    public void Save() => _db.Save();
+
+    public void MarkAsChanged() => OnUpdated?.Invoke();
 }

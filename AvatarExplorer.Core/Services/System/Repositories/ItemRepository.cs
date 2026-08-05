@@ -14,16 +14,16 @@ public class ItemRepository
     private readonly DatabaseManager<Item> _db = new(SystemPath.ItemDatabasePath);
 
     /// <summary>
-    /// アイテムが追加・更新・削除された際に発火します。引数は Item.Identifier です。
+    /// アイテムが追加・更新・削除された際に発火します。
     /// </summary>
-    public event Action<string>? OnItemUpdated;
+    public event Action? OnUpdated;
 
     public void Load(string? path = null) => _db.Load(path);
 
     public IReadOnlyList<Item> GetAll() => _db.Items;
     public Item? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);
 
-    public void Remove(string identifier, bool removeFolder = false, bool save = true)
+    public void Remove(string identifier, bool removeFolder = false)
     {
         var item = Get(identifier);
         if (item == null) return;
@@ -35,11 +35,11 @@ public class ItemRepository
 
         _db.Remove(item.Id);
 
-        if (save) Save();
-        OnItemUpdated?.Invoke(identifier);
+        Save();
+        OnUpdated?.Invoke();
     }
 
-    public Item Create(ItemCreationContext context, bool save = true)
+    public Item Create(ItemCreationContext context)
     {
         var item = new Item();
         item.UpdateMetadata(
@@ -57,12 +57,12 @@ public class ItemRepository
 
         _db.Add(item);
 
-        if (save) Save();
-        OnItemUpdated?.Invoke(item.Identifier);
+        Save();
+        OnUpdated?.Invoke();
 
         return item;
     }
-    public bool Update(string identifier, ItemEditContext context, bool save = true)
+    public bool Update(string identifier, ItemEditContext context)
     {
         var item = Get(identifier);
         if (item == null) return false;
@@ -82,8 +82,8 @@ public class ItemRepository
         var now = DatetimeUtils.GetCurrentUnixTime();
         item.UpdateTimestamp(now);
 
-        if (save) Save();
-        OnItemUpdated?.Invoke(item.Identifier);
+        Save();
+        OnUpdated?.Invoke();
 
         return true;
     }
@@ -116,7 +116,9 @@ public class ItemRepository
         
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(result.Value.ItemParentFolder);
         item.UpdateItemPaths(result.Value.FolderPaths);
-        OnItemUpdated?.Invoke(item.Identifier);
+
+        Save();
+        OnUpdated?.Invoke();
 
         return result;
     }
@@ -181,10 +183,23 @@ public class ItemRepository
 
         item.UpdateThumbnailFileName(item.Id);
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
+
         Save();
-        OnItemUpdated?.Invoke(item.Identifier);
+        OnUpdated?.Invoke();
 
         return Result.Success;
+    }
+
+    public void RenameCustomCategory(string oldname, string newName)
+    {
+        var newCategory = new ItemCategory(newName);
+
+        GetAll()
+            .Where(i => i.Category.Type == ItemType.Custom && i.Category.CustomCategory == oldname)
+            .ForEach(i => i.UpdateCategory(newCategory));
+
+        Save();
+        OnUpdated?.Invoke();
     }
 
     public async Task<ErrorOr<Success>> FetchThumbnailFromBooth(string identifier)
@@ -205,8 +220,9 @@ public class ItemRepository
 
         item.UpdateThumbnailFileName(item.Id);
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
+
         Save();
-        OnItemUpdated?.Invoke(item.Identifier);
+        OnUpdated?.Invoke();
 
         return Result.Success;
     }
@@ -218,9 +234,9 @@ public class ItemRepository
             .ToList();
 
         targetItems.ForEach(i => i.UpdateCategory(targetCategory));
-        targetItems.ForEach(i => OnItemUpdated?.Invoke(i.Identifier));
 
-        // Save();
+        Save();
+        OnUpdated?.Invoke();
     }
 
     public void ValidateAndAutoFixItemType(bool avatarExist)
@@ -235,11 +251,14 @@ public class ItemRepository
             foreach (var item in items)
             {
                 item.UpdateCategory(new(item.Category.Type - offset));
-                OnItemUpdated?.Invoke(item.Identifier);
             }
-            // Save();
+
+            Save();
+            OnUpdated?.Invoke();
         }
     }
 
     public void Save() => _db.Save();
+
+    public void MarkAsChanged() => OnUpdated?.Invoke();
 }

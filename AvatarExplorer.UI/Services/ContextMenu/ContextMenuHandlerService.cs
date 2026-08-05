@@ -44,7 +44,7 @@ public static class ContextMenuHandlerService
 
     public static void Initialize()
     {
-        Register(ActionKey.OpenItemFolder, OpenItemFolder);
+        Register(ActionKey.OpenFolder, OpenFolder);
         Register(ActionKey.CopyBoothLink, CopyBoothLink);
         Register(ActionKey.OpenBoothLink, OpenBoothLink);
         Register(ActionKey.ShowOtherItemsByAuthor, ShowOtherItemsByAuthor);
@@ -63,7 +63,7 @@ public static class ContextMenuHandlerService
         Register(ActionKey.RemoveItem, RemoveItem);
         Register(ActionKey.OpenFile, OpenFile);
         Register(ActionKey.AddFileToBulkImportList, AddFileToBulkImportList);
-        Register(ActionKey.OpenFileInExplorer, OpenFileInExplorer);
+        Register(ActionKey.ShowInExplorer, ShowInExplorer);
         Register(ActionKey.OpenUnitypackageViewer, OpenUnitypackageViewer);
         Register(ActionKey.OpenPdfViewer, OpenPdfViewer);
         Register(ActionKey.RemovePreset, RemovePreset);
@@ -74,11 +74,8 @@ public static class ContextMenuHandlerService
         Register(ActionKey.MergeWithOtherCategory, MergeWithOtherCategory);
     }
 
-    private static async void OpenItemFolder(string identifier)
+    private static async void OpenFolder(string path)
     {
-        var path = Items.Get(identifier)?.ItemPath;
-        if (string.IsNullOrEmpty(path)) return;
-
         await LauncherService.OpenFolder(TopLevelProvider.Current, path);
     }
     private static async void CopyBoothLink(string identifier)
@@ -258,7 +255,7 @@ public static class ContextMenuHandlerService
         var bulkVm = MainWindowViewModel.Instance.MainVM.BulkImportVM;
         bulkVm.AddItem(currentItem, path);
     }
-    private static void OpenFileInExplorer(string path)
+    private static void ShowInExplorer(string path)
     {
         if (!ProcessUtils.IsWindows()) return;
 
@@ -328,9 +325,18 @@ public static class ContextMenuHandlerService
 
         ItemGroupService.RemoveTempAvatar(tempAvatar.Identifier);
     }
-    private static void EditCustomCategoryName(string identifier)
+    private static async void EditCustomCategoryName(string identifier)
     {
-        // TODO: 作る
+        // custom:ABC
+        var oldCategory = identifier[(ItemNavigationService.CustomPrefix.Length + 1)..];
+
+        var newName = await MainWindowViewModel.Instance.ShowTextDialog(
+            Localizer.Instance[Loc.Dialog.Title.NewCustomCategoryName],
+            oldCategory
+        );
+        if (string.IsNullOrEmpty(newName)) return;
+
+        AvatarExplorerApp.Instance.Items.RenameCustomCategory(oldCategory, newName);
     }
     private static void MergeWithOtherCategory(string identifier)
     {

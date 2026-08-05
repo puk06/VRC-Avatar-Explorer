@@ -41,7 +41,6 @@ internal static class ContextMenuCreator
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(Loc.ContextMenu.Item.OpenFolder, ActionKey.OpenItemFolder, ContextMenuIconType.Open, itemId),
             new ContextMenuAction(Loc.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, itemId, addSeparator: true),
 
             new ContextMenuAction(Loc.ContextMenu.Item.Add.BulkImportList, ActionKey.AddToBulkImportList, ContextMenuIconType.Add, itemId),
@@ -81,11 +80,14 @@ internal static class ContextMenuCreator
 
     private static ContextMenuAction[] CreateFromFolder(string path)
     {
+        if (string.IsNullOrEmpty(path)) return [];
         List<ContextMenuAction> contextMenuActions = [];
 
-        if (ProcessUtils.IsWindows() && path.StartsWith(ItemNavigationService.FolderPrefix))
+        contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.OpenFolder, ActionKey.OpenFolder, ContextMenuIconType.Open, path));
+
+        if (ProcessUtils.IsWindows())
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, path));
+            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, path));
         }
 
         return contextMenuActions.ToArray();
@@ -101,7 +103,7 @@ internal static class ContextMenuCreator
 
         if (ProcessUtils.IsWindows())
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFile.OpenFileInExplorer, ActionKey.OpenFileInExplorer, ContextMenuIconType.Open, path));
+            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFile.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, path));
         }
 
         if (PathUtils.IsUnitypackageFile(path))
@@ -151,8 +153,9 @@ internal static class ContextMenuCreator
                 contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
             }
         }
-        else // custom: => CustomCategory
+        else
         {
+            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.EditCustomCategoryName, ActionKey.EditCustomCategoryName, ContextMenuIconType.Edit, category));
             contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
         }
 

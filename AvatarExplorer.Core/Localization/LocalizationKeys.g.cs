@@ -223,7 +223,6 @@ public static class Loc
     {
         public static class Item
         {
-            public const string OpenFolder = "ContextMenu.Item.OpenFolder";
             public const string ShowOtherItemsByAuthor = "ContextMenu.Item.ShowOtherItemsByAuthor";
             public static class Add
             {
@@ -255,13 +254,14 @@ public static class Loc
         }
         public static class ItemFolder
         {
-            public const string OpenFileInExplorer = "ContextMenu.ItemFolder.OpenFileInExplorer";
+            public const string OpenFolder = "ContextMenu.ItemFolder.OpenFolder";
+            public const string ShowInExplorer = "ContextMenu.ItemFolder.ShowInExplorer";
         }
         public static class ItemFile
         {
             public const string OpenFile = "ContextMenu.ItemFile.OpenFile";
             public const string BulkImportList = "ContextMenu.ItemFile.BulkImportList";
-            public const string OpenFileInExplorer = "ContextMenu.ItemFile.OpenFileInExplorer";
+            public const string ShowInExplorer = "ContextMenu.ItemFile.ShowInExplorer";
             public const string OpenUnitypackageViewer = "ContextMenu.ItemFile.OpenUnitypackageViewer";
             public const string OpenPdfViewer = "ContextMenu.ItemFile.OpenPdfViewer";
         }

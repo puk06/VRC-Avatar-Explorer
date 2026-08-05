@@ -1,6 +1,7 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.External;
+using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System.Repositories;
@@ -59,12 +60,19 @@ public class AvatarExplorerApp
             ]
         );
 
-        // TODO: StartAutoBackup();
+        RuntimeSettings.OnSettingsChanged += OnRuntimeSettingsUpdated;
+        BackupManager.StartAutoBackup(RuntimeSettings.Settings.AutoBackupInterval, RuntimeSettings.Settings.AutoBackupRootDirectory);
 
         ErrorManager.Instance.OnErrorOccured += ErrorLogWriter.Instance.Write;
         ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;
 
         _initialized = true;
+    }
+
+    public void OnRuntimeSettingsUpdated(RuntimeSettings runtimeSettings)
+    {
+        BackupManager.SetAutoBackupInterval(runtimeSettings.AutoBackupInterval);
+        BackupManager.SetAutoBackupPath(runtimeSettings.AutoBackupRootDirectory);
     }
 
     private void Migration()
