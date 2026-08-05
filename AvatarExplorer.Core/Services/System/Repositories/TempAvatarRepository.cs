@@ -34,4 +34,14 @@ public class TempAvatarRepository
         _db.Remove(item.Id);
         OnUpdated?.Invoke(identifier);
     }
+
+    public void RenameAvatar(string identifier, string newName)
+    {
+        var avatar = Get(identifier);
+        if (avatar == null) return;
+
+        avatar.UpdateAvatarName(newName);
+        Save();
+        OnUpdated?.Invoke(identifier);
+    }
 }

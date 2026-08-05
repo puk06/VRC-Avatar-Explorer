@@ -59,7 +59,7 @@ public class AvatarExplorerApp
             ]
         );
 
-        // StartAutoBackup();
+        // TODO: StartAutoBackup();
 
         ErrorManager.Instance.OnErrorOccured += ErrorLogWriter.Instance.Write;
         ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;
@@ -138,7 +138,7 @@ public class AvatarExplorerApp
         {
             i.Items.ForEach(i =>
             {
-                i.ItemId = "item:" + i.ItemId;
+                i.UpdateItemId("item:" + i.ItemId);
             });
         });
     }

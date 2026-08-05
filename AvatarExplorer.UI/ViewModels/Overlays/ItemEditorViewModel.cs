@@ -219,10 +219,10 @@ public class ItemEditorViewModel : ViewModelBase
             BoothId = int.TryParse(BoothId, out var boothId) ? boothId : -1,
             ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
             CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory ?? string.Empty : string.Empty,
-            ItemMemo = Memo
+            SupportedAvatars = SupportedAvatars,
+            ItemMemo = Memo,
+            Tags = Tags
         };
-        creationContext.SupportedAvatars.AddRange(SupportedAvatars);
-        creationContext.Tags.AddRange(Tags);
 
         var existingSameBoothIdItem = AvatarExplorerApp.Instance.Items.GetAll().FirstOrDefault(i => i.BoothId == creationContext.BoothId);
         var addToExistingItem = await MainWindowViewModel.Instance.ShowYesNoDialog(

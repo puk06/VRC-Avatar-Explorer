@@ -49,7 +49,7 @@ public class CommonAvatarRepository
         var group = Get(groupId);
         if (group == null) return;
 
-        group.GroupName = newName;
+        group.UpdateGroupName(newName);
         Save();
         OnUpdated?.Invoke(groupId);
     }

@@ -23,12 +23,19 @@ public class ItemRepository
     public IReadOnlyList<Item> GetAll() => _db.Items;
     public Item? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);
 
-    public void Remove(string identifier)
+    public void Remove(string identifier, bool removeFolder = false, bool save = true)
     {
         var item = Get(identifier);
         if (item == null) return;
 
+        if (removeFolder && Directory.Exists(item.ItemPath))
+        {
+            FileSystemService.DeleteDirectory(item.ItemPath);
+        }
+
         _db.Remove(item.Id);
+
+        if (save) Save();
         OnItemUpdated?.Invoke(identifier);
     }
 
@@ -66,6 +73,7 @@ public class ItemRepository
         if (context.BoothId != null) item.UpdateBoothId(context.BoothId.Value);
         if (context.ItemType != null) item.UpdateCategory(new ItemCategory(context.ItemType.Value, context.CustomCategory ?? item.Category.CustomCategory));
         if (context.ItemMemo != null) item.UpdateMemo(context.ItemMemo);
+        if (context.ItemPath != null) item.UpdateItemPath(context.ItemPath);
 
         if (context.SupportedAvatars != null) item.UpdateSupportedAvatars(context.SupportedAvatars);
         if (context.ImplementedAvatars != null) item.UpdateImplementedAvatars(context.ImplementedAvatars);

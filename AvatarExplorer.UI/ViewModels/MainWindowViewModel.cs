@@ -72,7 +72,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
     public ProgressViewModel ProgressVM { get; } = new();
 
     public ResolveTempAvatarViewModel ResolveTempAvatarVM { get; } = new();
-    [Reactive] public bool IsResolveTempAvatarVisible { get; set; }
 
     public SettingsViewModel SettingsVM { get; } = new();
 
@@ -263,6 +262,11 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
         IsYesNoDialogVisible = false;
 
         return result;
+    }
+
+    public void ShowTempAvatarResolver(string tempAvatar)
+    {
+        ResolveTempAvatarVM.Open(tempAvatar);
     }
 
     public async Task<string?> ShowTextDialog(string title, string content = "")

@@ -161,15 +161,17 @@ public class ItemGroupService
             .ToList();
     }
 
+
     public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
     {
         _items.GetAll()
             .ForEach(i =>
-            i.UpdateSupportedAvatars(
-                i.SupportedAvatars
-                    .Select(i => i == tempAvatarId ? targetItemId : i)
-                    .Distinct()
-            ));
+                i.UpdateSupportedAvatars(
+                    i.SupportedAvatars
+                        .Select(i => i == tempAvatarId ? targetItemId : i)
+                        .Distinct()
+                )
+            );
         _items.Save();
 
         _commonAvatars.GetAll()
@@ -187,6 +189,82 @@ public class ItemGroupService
     public string[] GetAllSupportedAvatarsIds(IEnumerable<string> avatars, bool includeCommonAvatarToSupported = false)
     {
         return AvatarService.GetAllSupportedAvatarIds(avatars, _commonAvatars.GetAll(), includeCommonAvatarToSupported);
+    }
+
+    /// <summary>
+    /// アイテムを削除し、他のアイテムの対応アバター・実装アバターからもそのIDを削除します。
+    /// </summary>
+    public void RemoveItem(string identifier, bool removeFolder = false)
+    {
+        _items.GetAll()
+            .Where(i => i.Identifier != identifier)
+            .ForEach(i =>
+            {
+                var updatedSupported = i.SupportedAvatars.Where(a => a != identifier).ToArray();
+                if (updatedSupported.Length != i.SupportedAvatars.Length)
+                    i.UpdateSupportedAvatars(updatedSupported);
+
+                var updatedImplemented = i.ImplementedAvatars.Where(a => a != identifier).ToArray();
+                if (updatedImplemented.Length != i.ImplementedAvatars.Length)
+                    i.UpdateImplementedAvatars(updatedImplemented);
+            });
+        _items.Save();
+
+        _commonAvatars.GetAll()
+            .ForEach(c =>
+            {
+                var updatedAvatars = c.Avatars.Where(a => a != identifier).ToArray();
+                if (updatedAvatars.Length != c.Avatars.Length)
+                    c.UpdateAvatars(updatedAvatars);
+            });
+        _commonAvatars.Save();
+
+        _items.Remove(identifier, removeFolder);
+    }
+
+    /// <summary>
+    /// 仮アバターを削除し、アイテムの対応アバター・共通素体のアバターからもそのIDを削除します。
+    /// </summary>
+    public void RemoveTempAvatar(string identifier)
+    {
+        _items.GetAll()
+            .ForEach(i =>
+            {
+                var updatedSupported = i.SupportedAvatars.Where(a => a != identifier).ToArray();
+                if (updatedSupported.Length != i.SupportedAvatars.Length)
+                    i.UpdateSupportedAvatars(updatedSupported);
+            });
+        _items.Save();
+
+        _commonAvatars.GetAll()
+            .ForEach(c =>
+            {
+                var updatedAvatars = c.Avatars.Where(a => a != identifier).ToArray();
+                if (updatedAvatars.Length != c.Avatars.Length)
+                    c.UpdateAvatars(updatedAvatars);
+            });
+        _commonAvatars.Save();
+
+        _tempAvatars.Remove(identifier);
+        _tempAvatars.Save();
+    }
+
+    /// <summary>
+    /// 共通素体を削除し、アイテムの対応アバターからもそのIDを削除します。
+    /// </summary>
+    public void RemoveCommonAvatar(string identifier)
+    {
+        _items.GetAll()
+            .ForEach(i =>
+            {
+                var updatedSupported = i.SupportedAvatars.Where(a => a != identifier).ToArray();
+                if (updatedSupported.Length != i.SupportedAvatars.Length)
+                    i.UpdateSupportedAvatars(updatedSupported);
+            });
+        _items.Save();
+
+        _commonAvatars.Remove(identifier);
+        _commonAvatars.Save();
     }
 
     // TODO: 逆も作る (共通素体削除時に)

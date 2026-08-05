@@ -8,8 +8,9 @@ public class ItemEditContext
     public int? BoothId { get; set; }
     public ItemType? ItemType { get; set; }
     public string? CustomCategory { get; set; }
-    public List<string>? SupportedAvatars { get; set; }
-    public List<string>? ImplementedAvatars { get; set; }
+    public IEnumerable<string>? SupportedAvatars { get; set; }
+    public IEnumerable<string>? ImplementedAvatars { get; set; }
     public string? ItemMemo { get; set; }
-    public List<string>? Tags { get; set; }
+    public string? ItemPath { get; set; }
+    public IEnumerable<string>? Tags { get; set; }
 }

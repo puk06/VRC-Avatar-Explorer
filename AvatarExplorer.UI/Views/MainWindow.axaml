@@ -36,7 +36,7 @@
             <overlays:SelectAvatarsOverlay/>
         </ContentControl>
 
-        <ContentControl IsVisible="{Binding IsResolveTempAvatarVisible}">
+        <ContentControl IsVisible="{Binding ResolveTempAvatarVM.IsVisible}">
             <overlays:ResolveTempAvatarOverlay/>
         </ContentControl>
 

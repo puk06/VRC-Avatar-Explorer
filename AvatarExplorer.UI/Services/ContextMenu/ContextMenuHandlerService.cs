@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Services.System;
@@ -93,6 +97,11 @@ public static class ContextMenuHandlerService
     }
     private static void ShowOtherItemsByAuthor(string identifier)
     {
+        var author = Items.Get(identifier)?.Author;
+        if (string.IsNullOrEmpty(author)) return;
+
+        var mainVm = MainWindowViewModel.Instance.MainVM;
+        mainVm.SearchText = $"Author=\"{author}\"";
     }
     private static async void ChangeThumbnail(string identifier)
     {
@@ -135,15 +144,16 @@ public static class ContextMenuHandlerService
         var item = Items.Get(identifier);
         if (item == null) return;
 
-        var newMemo = await MainWindowViewModel.Instance.ShowTextDialog(
-            Localizer.Instance[Loc.Dialog.Title.NewItemTitle],
-            item.Title
-        );
+        var newMemo = await MainWindowViewModel.Instance.ShowEditMemoDialog(item.ItemMemo);
         if (newMemo == null) return;
 
         Items.Update(identifier, new() { ItemMemo = newMemo });
     }
-    private static void AddToBulkImportList(string identifier) { } // TODO: 作る
+    private static void AddToBulkImportList(string identifier)
+    {
+        var bulkVm = MainWindowViewModel.Instance.MainVM.BulkImportVM;
+        bulkVm.AddItem(identifier);
+    }
     private static async void AddItemFile(string identifier)
     {
         var files = await StorageService.OpenFileDialog(
@@ -180,14 +190,87 @@ public static class ContextMenuHandlerService
         );
         if (newAvatars == null) return;
 
-        Items.Update(identifier, new() { ImplementedAvatars = newAvatars.ToList() });
+        Items.Update(identifier, new() { ImplementedAvatars = newAvatars });
     }
-    private static void EditItemDefaultPath(string identifier) { }
-    private static void EditItemTag(string identifier) { }
-    private static void RemoveItem(string identifier) { }
-    private static void OpenFile(string identifier) { }
-    private static void AddFileToBulkImportList(string identifier) { }
-    private static void OpenFileInExplorer(string identifier) { }
+    private static async void EditItemDefaultPath(string identifier)
+    {
+        var item = Items.Get(identifier);
+        if (item == null) return;
+
+        var folders = await StorageService.OpenFolderDialog(
+            TopLevelProvider.Current,
+            Localizer.Instance[Loc.Dialog.SelectFolderPath],
+            allowMultiple: false
+        );
+        if (folders == null || folders.Length == 0) return;
+
+        Items.Update(item.Identifier, new() { ItemPath = folders[0] });
+    }
+    private static async void EditItemTag(string identifier)
+    {
+        var item = Items.Get(identifier);
+        if (item == null) return;
+
+        var newTags = await MainWindowViewModel.Instance.ShowEditTagsDialog(item.Tags.ToArray());
+        if (newTags == null) return;
+
+        Items.Update(item.Identifier, new() { Tags = newTags });
+    }
+    private static async void RemoveItem(string identifier)
+    {
+        var item = Items.Get(identifier);
+        if (item == null) return;
+
+        var removeResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveItem, item.Title)
+        );
+        if (!removeResult) return;
+
+        bool removeDirectory = false;
+
+        if (!string.IsNullOrEmpty(item.ItemPath) && Directory.Exists(item.ItemPath))
+        {
+            removeDirectory = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveAssetData, item.ItemPath)
+            );
+        }
+
+        ItemGroupService.RemoveItem(item.Identifier, removeDirectory);
+    }
+    private static async void OpenFile(string path)
+    {
+        var result = await LauncherService.OpenFile(TopLevelProvider.Current, path);
+        if (result.IsError) {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.OpenFileFailed],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
+    }
+    private static void AddFileToBulkImportList(string path)
+    {
+        var currentItem = ItemNavigationService.GetCurrentItemId();
+        if (string.IsNullOrEmpty(currentItem)) return;
+        
+        var bulkVm = MainWindowViewModel.Instance.MainVM.BulkImportVM;
+        bulkVm.AddItem(currentItem, path);
+    }
+    private static void OpenFileInExplorer(string path)
+    {
+        if (!ProcessUtils.IsWindows()) return;
+
+        try
+        {
+            Process.Start("explorer.exe", "/select," + path);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostError(string.Format("Failed to open file in explorer. '{0}'", path), ex);
+        }
+    }
     private static void OpenUnitypackageViewer(string path)
     {
         MainWindowViewModel.Instance.ShowUnitypackageViewer(path);
@@ -196,11 +279,59 @@ public static class ContextMenuHandlerService
     {
         MainWindowViewModel.Instance.ShowPdfViewer(path);
     }
-    private static void RemovePreset(string identifier) { }
-    private static void EditTempAvatarName(string identifier) { }
-    private static void ResolveTempAvatar(string identifier) { }
-    private static void RemoveTempAvatar(string identifier) { }
-    private static void EditCustomCategoryName(string identifier) { }
+    private static async void RemovePreset(string identifier)
+    {
+        var preset = AvatarExplorerApp.Instance.BulkImportPresets.Get(identifier);
+        if (preset == null) return;
+
+        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.RemovePreset, preset.PresetName)
+        );
+        if (!result) return;
+
+        AvatarExplorerApp.Instance.BulkImportPresets.Remove(preset.Identifier);
+
+        MainWindowViewModel.Instance.ShowNotification(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.Remove],
+            Avalonia.Controls.Notifications.NotificationType.Success
+        );
+    }
+    private static async void EditTempAvatarName(string identifier)
+    {
+        var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(identifier);
+        if (tempAvatar == null) return;
+
+        var newName = await MainWindowViewModel.Instance.ShowTextDialog(
+            Localizer.Instance[Loc.Dialog.Title.NewTempAvatarName],
+            tempAvatar.AvatarName
+        );
+        if (string.IsNullOrEmpty(newName)) return;
+
+        AvatarExplorerApp.Instance.TempAvatars.RenameAvatar(tempAvatar.Identifier, newName);
+    }
+    private static void ResolveTempAvatar(string identifier)
+    {
+        MainWindowViewModel.Instance.ShowTempAvatarResolver(identifier);
+    }
+    private static async void RemoveTempAvatar(string identifier)
+    {
+        var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(identifier);
+        if (tempAvatar == null) return;
+
+        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveTempAvatar, tempAvatar.AvatarName)
+        );
+        if (!result) return;
+
+        ItemGroupService.RemoveTempAvatar(tempAvatar.Identifier);
+    }
+    private static void EditCustomCategoryName(string identifier)
+    {
+        // TODO: 作る
+    }
     private static void MergeWithOtherCategory(string identifier)
     {
         MainWindowViewModel.Instance.MergeCategoryVM.Open(identifier);

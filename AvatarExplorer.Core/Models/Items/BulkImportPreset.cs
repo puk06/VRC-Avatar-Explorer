@@ -9,6 +9,7 @@ public class BulkImportPreset(string presetName) : AbstractDatabaseItem, INaviga
     [JsonInclude] public string PresetName { get; private set; } = presetName;
     [JsonInclude] public ImmutableArray<BulkImportItem> Items { get; private set; } = [];
 
+    public void UpdatePresetName(string presetName) => PresetName = presetName;
     public void UpdateItems(IEnumerable<BulkImportItem> items) => Items = items.ToImmutableArray();
 
     public string Identifier => "bulkimportpreset:" + Id;

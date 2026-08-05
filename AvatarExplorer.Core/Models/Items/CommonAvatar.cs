@@ -4,21 +4,13 @@ using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class CommonAvatar : AbstractDatabaseItem, INavigationable
+public class CommonAvatar(string groupName) : AbstractDatabaseItem, INavigationable
 {
-    public string GroupName { get; set; } = string.Empty;
+    [JsonInclude] public string GroupName { get; private set; } = groupName;
     [JsonInclude] public ImmutableArray<string> Avatars { get; private set; } = [];
 
+    public void UpdateGroupName(string newName) => GroupName = newName;
     public void UpdateAvatars(IEnumerable<string> avatars) => Avatars = avatars.ToImmutableArray();
 
     [JsonIgnore] public string Identifier => "commonavatar:" + Id;
-
-    public CommonAvatar()
-    {
-    }
-
-    public CommonAvatar(string groupName)
-    {
-        GroupName = groupName;
-    }
 }
