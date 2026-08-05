@@ -110,10 +110,16 @@ public class EditCommonAvatarsViewModel : ViewModelBase
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Dialog.Confirmation.RemoveCommonAvatarGroup]
         );
-        if (confirmationResult is false) return;
+        if (!confirmationResult) return;
+
+        var replaceToAvatars = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars]
+        );
         
-        CommonAvatarRep.Remove(group.Identifier);
+        AvatarExplorerApp.Instance.ItemGroupService.RemoveCommonAvatar(group.Identifier, replaceToAvatars);
         RefleshGroups();
+
         if (Groups.Count == 0) SelectedGroupIndex = -1;
         else if (SelectedGroupIndex >= Groups.Count) SelectedGroupIndex = Groups.Count - 1;
     }
