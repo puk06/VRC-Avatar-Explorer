@@ -161,7 +161,6 @@ public class ItemGroupService
             .ToList();
     }
 
-
     public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
     {
         _items.GetAll()

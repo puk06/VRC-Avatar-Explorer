@@ -355,7 +355,6 @@ public static class FileSystemService
             
             return true;
         });
-        
 
         return processedEntries;
     }
@@ -412,7 +411,6 @@ public static class FileSystemService
                 parentFolderPath,
                 removeOriginal
             );
-            
 
             if (extractResult.IsError)
             {
@@ -617,7 +615,7 @@ public static class FileSystemService
                 int read;
                 while ((read = await inStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
-                    await outStream.WriteAsync(buffer, 0, read);
+                    await outStream.WriteAsync(buffer.AsMemory(0, read));
                 }
             }
             else if (entry.Key != null)
