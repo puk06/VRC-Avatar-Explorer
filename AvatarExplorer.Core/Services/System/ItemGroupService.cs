@@ -174,7 +174,6 @@ public class ItemGroupService
         
         _items.MarkAsChanged();
         _items.Save();
-        
 
         _commonAvatars.GetAll()
             .ForEach(c => c.UpdateAvatars(
