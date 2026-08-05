@@ -16,6 +16,7 @@ public class AdvancedSearchViewModel : ViewModelBase
     [Reactive] public string NotImplementedAvatar { get; set; } = string.Empty;
     [Reactive] public string Tag { get; set; } = string.Empty;
     [Reactive] public string CommonAvatar { get; set; } = string.Empty;
+    [Reactive] public bool IsOr { get; set; }
 
     public event Action? SearchPropertyChanged;
 

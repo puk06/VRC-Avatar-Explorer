@@ -319,7 +319,7 @@ public class MainViewModel : ViewModelBase, IPostInitializable
             RightPageInfo.Reset();
             RefreshMainItems();
 
-            PathSegments = [new PathSegment { DisplayName = Localizer.Instance.Get(Loc.Main.Path.SearchResult, _searchManager.ActiveSearchQuery) }];
+            PathSegments = [new PathSegment { DisplayName = _searchManager.ActiveSearchQueryDisplayText ?? _searchManager.ActiveSearchQuery ?? "" }];
         }
         else
         {

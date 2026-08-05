@@ -1,13 +1,9 @@
 namespace AvatarExplorer.Core.Models.Search;
 
-public sealed class SearchQuery
+public sealed class SearchQuery(IReadOnlyList<SearchQueryToken> tokens, bool isOr = false)
 {
-    public IReadOnlyList<SearchQueryToken> Tokens { get; }
-
-    public SearchQuery(IReadOnlyList<SearchQueryToken> tokens)
-    {
-        Tokens = tokens;
-    }
+    public IReadOnlyList<SearchQueryToken> Tokens { get; } = tokens;
+    public bool IsOr { get; } = isOr;
 }
 
 public sealed class SearchQueryToken

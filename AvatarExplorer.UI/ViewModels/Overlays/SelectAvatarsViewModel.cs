@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
@@ -19,6 +21,7 @@ public class SelectAvatarsViewModel : ViewModelBase
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
     [Reactive] public string SearchText { get; set; } = string.Empty;
     private TaskCompletionSource<string[]?> _tcs = new();
+    private List<ItemViewModel> _allAvatars = [];
 
     public IReactiveCommand SelectItemCommand { get; }
     public IReactiveCommand SelectVisibleCommand { get; }
@@ -40,6 +43,9 @@ public class SelectAvatarsViewModel : ViewModelBase
 
         CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
         ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Avatars.Select(i => i.Identifier).ToArray()));
+
+        this.WhenAnyValue(i => i.SearchText)
+            .Subscribe(ApplySearchResult);
     }
 
     private void SelectItem(ItemViewModel item)
@@ -49,11 +55,26 @@ public class SelectAvatarsViewModel : ViewModelBase
 
     private void SelectVisible()
     {
-        Avatars.ForEach(i =>
+        Avatars.ForEach(i => i.IsSelected = true);
+    }
+
+    private void ApplySearchResult(string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(searchText))
         {
-            if (!i.IsVisible) return;
-            i.IsSelected = true;
-        });
+            Avatars = _allAvatars;
+            return;
+        }
+
+        var searchQuery = searchText + " OR=true";
+        var result = AvatarExplorerApp.Instance.ItemGroupService.SearchItems(searchQuery, SearchResultType.All);
+        if (result == null)
+        {
+            Avatars = _allAvatars;
+            return;
+        }
+
+        Avatars = _allAvatars.Where(i => result.Contains(i.Identifier)).ToList();
     }
 
     public void Open(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
@@ -67,18 +88,20 @@ public class SelectAvatarsViewModel : ViewModelBase
 
         if (avatars == null) return;
 
-        var items = Avatars.ToList();
-        items.ForEach(i => i.IsSelected = avatars.Contains(i.Identifier));
-        Avatars = items;
+        _allAvatars.ForEach(i => i.IsSelected = avatars.Contains(i.Identifier));
+        ApplySearchResult(SearchText);
     }
 
     private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)
     {
         var avatars = ItemService.GetAvatars(includeCommonAvatar, includeTempAvatar, rawIdentifier: true);
 
-        Avatars = avatars
+        _allAvatars = avatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
-            .Select(i => i.Update());
+            .Select(i => i.Update())
+            .ToList();
+
+        Avatars = _allAvatars;
     }
 
     private async Task AddTempAvatar()
@@ -88,6 +111,7 @@ public class SelectAvatarsViewModel : ViewModelBase
 
         AvatarExplorerApp.Instance.TempAvatars.Create(newTempAvatarName);
         RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
+        ApplySearchResult(SearchText);
     }
 
     public Task<string[]?> WaitForResult()

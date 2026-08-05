@@ -17,7 +17,6 @@
     "Main.Filter.Category": "類別",
 
     "Main.Path.Placeholder": "目前路徑會顯示在這裡",
-    "Main.Path.SearchResult": "搜尋結果: {0}",
     "Main.Path.Root.Avatar": "頭像: {0}",
     "Main.Path.Root.Author": "作者: {0}",
     "Main.Path.Root.Category": "類別: {0}",
@@ -170,6 +169,7 @@
     "SearchFilter.IsOrSearch": "全域 OR 搜尋",
     "SearchFilter.IsCategoryOrSearch": "類別 OR 搜尋",
     "SearchFilter.EmptySupportedAvatarAsNone": "未設定支援=不支援",
+    "SearchFilter.NegationPrefix": "(排除)",
 
     "Success.Default": "成功",
     "Success.Import": "資料匯入成功",
@@ -367,7 +367,6 @@
     "SidePanel.AdvancedSearch": "進階搜尋",
     "SidePanel.BulkImport": "批次匯入",
     "SidePanel.BulkImportPreset": "批次匯入預設",
-    "SidePanel.ItemDetails": "項目詳細資訊",
 
     "AdvancedSearch.OrSearch": "全域 OR 搜尋",
     "AdvancedSearch.CategoryOrSearch": "類別 OR 搜尋",

@@ -17,7 +17,6 @@
     "Main.Filter.Category": "类别",
 
     "Main.Path.Placeholder": "当前路径会显示在这里",
-    "Main.Path.SearchResult": "搜索结果: {0}",
     "Main.Path.Root.Avatar": "头像: {0}",
     "Main.Path.Root.Author": "作者: {0}",
     "Main.Path.Root.Category": "类别: {0}",
@@ -170,6 +169,7 @@
     "SearchFilter.IsOrSearch": "全局 OR 搜索",
     "SearchFilter.IsCategoryOrSearch": "类别 OR 搜索",
     "SearchFilter.EmptySupportedAvatarAsNone": "未设置支持=不支持",
+    "SearchFilter.NegationPrefix": "(排除)",
 
     "Success.Default": "成功",
     "Success.Import": "数据导入成功",
@@ -367,7 +367,6 @@
     "SidePanel.AdvancedSearch": "高级搜索",
     "SidePanel.BulkImport": "批量导入",
     "SidePanel.BulkImportPreset": "批量导入预设",
-    "SidePanel.ItemDetails": "项目详情",
 
     "AdvancedSearch.OrSearch": "全局 OR 搜索",
     "AdvancedSearch.CategoryOrSearch": "类别 OR 搜索",

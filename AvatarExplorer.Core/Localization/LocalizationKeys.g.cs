@@ -39,7 +39,6 @@ public static class Loc
         public static class Path
         {
             public const string Placeholder = "Main.Path.Placeholder";
-            public const string SearchResult = "Main.Path.SearchResult";
             public static class Root
             {
                 public const string Avatar = "Main.Path.Root.Avatar";
@@ -301,6 +300,7 @@ public static class Loc
         public const string IsOrSearch = "SearchFilter.IsOrSearch";
         public const string IsCategoryOrSearch = "SearchFilter.IsCategoryOrSearch";
         public const string EmptySupportedAvatarAsNone = "SearchFilter.EmptySupportedAvatarAsNone";
+        public const string NegationPrefix = "SearchFilter.NegationPrefix";
     }
     public static class Success
     {
@@ -633,7 +633,6 @@ public static class Loc
         public const string AdvancedSearch = "SidePanel.AdvancedSearch";
         public const string BulkImport = "SidePanel.BulkImport";
         public const string BulkImportPreset = "SidePanel.BulkImportPreset";
-        public const string ItemDetails = "SidePanel.ItemDetails";
     }
     public static class AdvancedSearch
     {

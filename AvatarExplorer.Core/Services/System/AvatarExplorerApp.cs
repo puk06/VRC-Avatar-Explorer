@@ -108,7 +108,9 @@ public class AvatarExplorerApp
                 }
             }));
 
+#pragma warning disable CS0618 // 型またはメンバーが旧型式です
             i.UpdateCategory(new Models.Items.ItemCategory(i.Type, i.CustomCategory));
+#pragma warning restore CS0618 // 型またはメンバーが旧型式です
         });
 
         var commonAvatars = CommonAvatars.GetAll();

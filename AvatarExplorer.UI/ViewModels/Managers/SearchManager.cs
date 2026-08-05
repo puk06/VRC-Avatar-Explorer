@@ -5,9 +5,11 @@ using Avalonia.Threading;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Panels;
+using AvatarExplorer.Core.Localization;
 
 namespace AvatarExplorer.UI.ViewModels.Managers;
 
@@ -20,6 +22,15 @@ public class SearchManager
     private readonly Action _onSearchExecuted;
 
     public string? ActiveSearchQuery { get; private set; }
+
+    public string? ActiveSearchQueryDisplayText
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(ActiveSearchQuery)) return null;
+            return FormatSearchQuery(ActiveSearchQuery);
+        }
+    }
 
     public SearchManager(
         ItemGroupService itemGroupService,
@@ -64,7 +75,8 @@ public class SearchManager
     private void ExecuteSearch()
     {
         var query = BuildSearchString(_getSearchText(), _getAdvancedSearchVM());
-        ActiveSearchQuery = string.IsNullOrWhiteSpace(query) ? null : query;
+        var parsed = SearchQueryParser.Parse(query);
+        ActiveSearchQuery = parsed.Tokens.Count == 0 ? null : query;
         _onSearchExecuted();
     }
 
@@ -86,6 +98,9 @@ public class SearchManager
         AddField(parts, "Tag", advancedSearch.Tag);
         AddField(parts, "CommonAvatar", advancedSearch.CommonAvatar);
 
+        if (advancedSearch.IsOr)
+            parts.Add("OR=true");
+
         return string.Join(" ", parts);
     }
 
@@ -93,7 +108,62 @@ public class SearchManager
     {
         if (string.IsNullOrWhiteSpace(value)) return;
 
-        var transformed = transform?.Invoke(value) ?? value;
-        parts.Add($"{fieldName}=\"{transformed}\"");
+        var tokens = TextParser.Parse(value);
+        foreach (var token in tokens)
+        {
+            var isNegation = token.StartsWith('~');
+            var actualValue = isNegation ? token[1..] : token;
+            var transformed = transform?.Invoke(actualValue) ?? actualValue;
+            var prefix = isNegation ? "~" : "";
+            parts.Add($"{prefix}{fieldName}=\"{transformed}\"");
+        }
+    }
+
+    private static string FormatSearchQuery(string query)
+    {
+        var parsed = SearchQueryParser.Parse(query);
+        if (parsed.Tokens.Count == 0) return query;
+
+        const string connector = " / ";
+        const string valueSeparator = ", ";
+        var negationPrefix = Localizer.Instance.Get(Loc.SearchFilter.NegationPrefix);
+
+        var grouped = parsed.Tokens
+            .GroupBy(t => new { Field = t.Field?.ToLowerInvariant(), t.IsNegation })
+            .Select(g =>
+            {
+                var field = g.Key.Field;
+                var isNegation = g.Key.IsNegation;
+                var values = g.Select(t => t.Value);
+                var valuesStr = string.Join(valueSeparator, values);
+
+                var locKey = field switch
+                {
+                    "title" => Loc.SearchFilter.Title,
+                    "author" => Loc.SearchFilter.Author,
+                    "boothid" or "booth" => Loc.SearchFilter.Booth,
+                    "supportedavatar" => Loc.SearchFilter.SupportedAvatar,
+                    "category" => Loc.SearchFilter.Category,
+                    "memo" => Loc.SearchFilter.ItemMemo,
+                    "implementedavatar" => Loc.SearchFilter.ImplementedAvatar,
+                    "notimplementedavatar" => Loc.SearchFilter.NotImplementedAvatar,
+                    "tag" => Loc.SearchFilter.Tag,
+                    "commonavatar" => Loc.SearchFilter.CommonAvatar,
+                    _ => (string?)null
+                };
+
+                var formatted = locKey != null
+                    ? Localizer.Instance.Get(locKey, valuesStr)
+                    : Localizer.Instance.Get(Loc.SearchFilter.SearchWord, valuesStr);
+
+                return isNegation ? negationPrefix + formatted : formatted;
+            });
+
+        var result = string.Join(connector, grouped);
+
+        if (parsed.IsOr)
+            result = $"({Localizer.Instance.Get(Loc.SearchFilter.IsOrSearch)}) {result}";
+
+        return result;
     }
 }

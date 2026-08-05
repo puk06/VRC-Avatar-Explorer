@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.Factories;
@@ -24,6 +26,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase
 
     [Reactive] public string SearchText { get; set; } = string.Empty;
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
+    private List<ItemViewModel> _allAvatars = [];
 
     public IReactiveCommand SelectItemCommand { get; }
 
@@ -49,6 +52,9 @@ public class EditCommonAvatarsViewModel : ViewModelBase
 
         this.WhenAnyValue(i => i.SelectedGroupIndex)
             .Subscribe(_ => UpdateSelectedGroupAvatars());
+
+        this.WhenAnyValue(i => i.SearchText)
+            .Subscribe(ApplySearchResult);
     }
 
     public void Open()
@@ -114,13 +120,27 @@ public class EditCommonAvatarsViewModel : ViewModelBase
 
     private void SelectVisible()
     {
-        var items = Avatars.ToList();
-        items.ForEach(i =>
+        Avatars.ForEach(i => i.IsSelected = true);
+        UpdateGroupAvatars();
+    }
+
+    private void ApplySearchResult(string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(searchText))
         {
-            if (!i.IsVisible) return;
-            i.IsSelected = true;
-        });
-        Avatars = items;
+            Avatars = _allAvatars;
+            return;
+        }
+
+        var searchQuery = searchText + " OR=true";
+        var result = AvatarExplorerApp.Instance.ItemGroupService.SearchItems(searchQuery, SearchResultType.All);
+        if (result == null)
+        {
+            Avatars = _allAvatars;
+            return;
+        }
+
+        Avatars = _allAvatars.Where(i => result.Contains(i.Identifier)).ToList();
     }
 
     private async Task ReplaceAvatarsToGroup()
@@ -141,9 +161,12 @@ public class EditCommonAvatarsViewModel : ViewModelBase
     {
         var avatars = ItemService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
 
-        Avatars = avatars
+        _allAvatars = avatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
-            .Select(i => i.Update());
+            .Select(i => i.Update())
+            .ToList();
+
+        Avatars = _allAvatars;
     }
 
     private void RefleshGroups()
@@ -167,9 +190,8 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         var commonAvatar = CommonAvatarRep.Get(group.Identifier);
         if (commonAvatar == null) return;
 
-        var items = Avatars.ToList();
-        items.ForEach(i => i.IsSelected = commonAvatar.Avatars.Contains(i.Identifier));
-        Avatars = items;
+        _allAvatars.ForEach(i => i.IsSelected = commonAvatar.Avatars.Contains(i.Identifier));
+        ApplySearchResult(SearchText);
     }
 
     private void UpdateGroupAvatars()
@@ -177,6 +199,6 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         var group = SelectedGroup;
         if (group == null) return;
 
-        CommonAvatarRep.UpdateAvatars(group.Identifier, Avatars.Where(i => i.IsSelected).Select(i => i.Identifier));
+        CommonAvatarRep.UpdateAvatars(group.Identifier, _allAvatars.Where(i => i.IsSelected).Select(i => i.Identifier));
     }
 }

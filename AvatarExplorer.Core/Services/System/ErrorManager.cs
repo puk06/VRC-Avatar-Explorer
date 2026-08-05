@@ -22,7 +22,7 @@ public class ErrorManager
         OnInternalErrorOccured?.Invoke(message, exception, tag);
     }
 
-    // AvaloniaなどのUIやLauncherのエラー
+    // その他のエラー
     public void PostError(string message, Exception? exception = null, string tag = "")
     {
         ErrorContexts.Add(new(false, message, exception, tag));

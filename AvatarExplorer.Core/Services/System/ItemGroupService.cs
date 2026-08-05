@@ -32,7 +32,7 @@ public class ItemGroupService
     private readonly ConcurrentDictionary<string, CommonAvatarSearchIndex> _commonAvatarSearchIndices = new();
     private readonly ConcurrentDictionary<string, TempAvatarSearchIndex> _tempAvatarSearchIndices = new();
     private bool _indicesBuilt;
-    private readonly object _indicesLock = new();
+    private readonly Lock _indicesLock = new();
 
     public ItemRepository ItemRepository => _items;
     public CommonAvatarRepository CommonAvatarRepository => _commonAvatars;
@@ -245,7 +245,7 @@ public class ItemGroupService
         {
             foreach (var item in _items.GetAll())
             {
-                if (_itemSearchIndices.TryGetValue(item.Identifier, out var index) && MatchesAll(index, query, locKeyProvider))
+                if (_itemSearchIndices.TryGetValue(item.Identifier, out var index) && MatchesQuery(index, query, locKeyProvider))
                     result.Add(item.Identifier);
             }
         }
@@ -254,7 +254,7 @@ public class ItemGroupService
         {
             foreach (var commonAvatar in _commonAvatars.GetAll())
             {
-                if (_commonAvatarSearchIndices.TryGetValue(commonAvatar.Identifier, out var index) && MatchesAll(index, query, locKeyProvider))
+                if (_commonAvatarSearchIndices.TryGetValue(commonAvatar.Identifier, out var index) && MatchesQuery(index, query, locKeyProvider))
                     result.Add(commonAvatar.Identifier);
             }
         }
@@ -263,7 +263,7 @@ public class ItemGroupService
         {
             foreach (var tempAvatar in _tempAvatars.GetAll())
             {
-                if (_tempAvatarSearchIndices.TryGetValue(tempAvatar.Identifier, out var index) && MatchesAll(index, query, locKeyProvider))
+                if (_tempAvatarSearchIndices.TryGetValue(tempAvatar.Identifier, out var index) && MatchesQuery(index, query, locKeyProvider))
                     result.Add(tempAvatar.Identifier);
             }
         }
@@ -368,6 +368,11 @@ public class ItemGroupService
         RebuildIndices();
     }
 
+    private static bool MatchesQuery(ISearchIndex index, SearchQuery query, Func<string, string>? locKeyProvider)
+    {
+        return query.IsOr ? MatchesAny(index, query, locKeyProvider) : MatchesAll(index, query, locKeyProvider);
+    }
+
     private static bool MatchesAll(ISearchIndex index, SearchQuery query, Func<string, string>? locKeyProvider)
     {
         foreach (var token in query.Tokens)
@@ -376,6 +381,16 @@ public class ItemGroupService
         }
 
         return true;
+    }
+
+    private static bool MatchesAny(ISearchIndex index, SearchQuery query, Func<string, string>? locKeyProvider)
+    {
+        foreach (var token in query.Tokens)
+        {
+            if (index.IsMatch(token, locKeyProvider)) return true;
+        }
+
+        return false;
     }
 
     #endregion

@@ -23,6 +23,7 @@
 
                 <ProgressBar Width="320" Height="8" Minimum="0" Maximum="100" Value="{Binding Progress}" IsIndeterminate="False" Foreground="#B98F6F" Background="#E8DDD2"/>
 
+                <TextBlock Text="Please wait a moment." FontSize="12" HorizontalAlignment="Center" Foreground="#8B7A6A"/>
             </StackPanel>
         </Border>
     </Grid>

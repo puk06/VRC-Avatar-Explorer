@@ -17,7 +17,6 @@
     "Main.Filter.Category": "Catégorie",
 
     "Main.Path.Placeholder": "Le chemin actuel s'affiche ici",
-    "Main.Path.SearchResult": "Résultats de recherche : {0}",
     "Main.Path.Root.Avatar": "Avatar : {0}",
     "Main.Path.Root.Author": "Auteur : {0}",
     "Main.Path.Root.Category": "Catégorie : {0}",
@@ -170,6 +169,7 @@
     "SearchFilter.IsOrSearch": "Recherche OR globale",
     "SearchFilter.IsCategoryOrSearch": "Recherche OR par catégorie",
     "SearchFilter.EmptySupportedAvatarAsNone": "Pris en charge non défini = aucun",
+    "SearchFilter.NegationPrefix": "(Exclure)",
 
     "Success.Default": "Succès",
     "Success.Import": "Importation des données réussie",
@@ -367,7 +367,6 @@
     "SidePanel.AdvancedSearch": "Recherche avancée",
     "SidePanel.BulkImport": "Importation en masse",
     "SidePanel.BulkImportPreset": "Préréglage d'importation en masse",
-    "SidePanel.ItemDetails": "Détails de l'élément",
 
     "AdvancedSearch.OrSearch": "Recherche OR globale",
     "AdvancedSearch.CategoryOrSearch": "Recherche OR par catégorie",

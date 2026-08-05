@@ -9,9 +9,9 @@ public class BulkImportPresetRepository
     private readonly DatabaseManager<BulkImportPreset> _db = new(SystemPath.BulkImportPresetDatabasePath);
 
     /// <summary>
-    /// アイテムが追加・更新・削除された際に発火します。引数は .Identifier です。
+    /// アイテムが追加・更新・削除された際に発火します。
     /// </summary>
-    public event Action<string>? OnUpdated;
+    public event Action? OnItemsUpdated;
 
     public void Load(string? path = null) => _db.Load(path);
 
@@ -24,7 +24,7 @@ public class BulkImportPresetRepository
         if (item == null) return;
 
         _db.Remove(item.Id);
-        OnUpdated?.Invoke(identifier);
+        OnItemsUpdated?.Invoke();
     }
 
     public void Create(string presetName, BulkImportItem[] items)
@@ -33,6 +33,6 @@ public class BulkImportPresetRepository
         group.UpdateItems(items);
 
         _db.Add(group);
-        OnUpdated?.Invoke(group.Identifier);
+        OnItemsUpdated?.Invoke();
     }
 }

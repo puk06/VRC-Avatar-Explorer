@@ -17,7 +17,6 @@
     "Main.Filter.Category": "カテゴリ",
 
     "Main.Path.Placeholder": "ここには現在のパスが表示されます",
-    "Main.Path.SearchResult": "検索結果: {0}",
     "Main.Path.Root.Avatar": "アバター: {0}",
     "Main.Path.Root.Author": "作者: {0}",
     "Main.Path.Root.Category": "カテゴリ: {0}",
@@ -170,6 +169,7 @@
     "SearchFilter.IsOrSearch": "全体OR検索",
     "SearchFilter.IsCategoryOrSearch": "カテゴリOR検索",
     "SearchFilter.EmptySupportedAvatarAsNone": "対応未設定=未対応",
+    "SearchFilter.NegationPrefix": "(除外)",
 
     "Success.Default": "成功",
     "Success.Import": "データのインポートに成功しました",
@@ -367,7 +367,6 @@
     "SidePanel.AdvancedSearch": "詳細検索",
     "SidePanel.BulkImport": "一括インポート",
     "SidePanel.BulkImportPreset": "一括インポートプリセット",
-    "SidePanel.ItemDetails": "アイテム詳細",
 
     "AdvancedSearch.OrSearch": "全体OR検索",
     "AdvancedSearch.CategoryOrSearch": "カテゴリOR検索",

@@ -24,8 +24,7 @@ public record TempAvatarSearchIndex : ISearchIndex
     {
         return field?.ToLowerInvariant() switch
         {
-            "supportedavatar" => [AvatarName],
-            "avatarname" => [AvatarName],
+            "title" => [AvatarName],
             null => [FreeWord],
             _ => []
         };

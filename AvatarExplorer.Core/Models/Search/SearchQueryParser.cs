@@ -11,13 +11,21 @@ public static class SearchQueryParser
 
         var rawTokens = TextParser.Parse(searchText);
         var tokens = new List<SearchQueryToken>(rawTokens.Length);
+        var isOr = false;
 
         foreach (var rawToken in rawTokens)
         {
             if (string.IsNullOrWhiteSpace(rawToken)) continue;
+
+            if (rawToken.Equals("OR=true", StringComparison.OrdinalIgnoreCase))
+            {
+                isOr = true;
+                continue;
+            }
+
             tokens.Add(SearchQueryToken.Parse(rawToken));
         }
 
-        return new SearchQuery(tokens);
+        return new SearchQuery(tokens, isOr);
     }
 }

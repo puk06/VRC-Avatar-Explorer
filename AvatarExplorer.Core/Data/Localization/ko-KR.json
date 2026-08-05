@@ -17,7 +17,6 @@
     "Main.Filter.Category": "카테고리",
 
     "Main.Path.Placeholder": "현재 경로가 여기에 표시됩니다",
-    "Main.Path.SearchResult": "검색 결과: {0}",
     "Main.Path.Root.Avatar": "아바타: {0}",
     "Main.Path.Root.Author": "작성자: {0}",
     "Main.Path.Root.Category": "카테고리: {0}",
@@ -170,6 +169,7 @@
     "SearchFilter.IsOrSearch": "전체 OR 검색",
     "SearchFilter.IsCategoryOrSearch": "카테고리 OR 검색",
     "SearchFilter.EmptySupportedAvatarAsNone": "대응 미설정=미대응",
+    "SearchFilter.NegationPrefix": "(제외)",
 
     "Success.Default": "성공",
     "Success.Import": "데이터 가져오기에 성공했습니다",
@@ -367,7 +367,6 @@
     "SidePanel.AdvancedSearch": "상세 검색",
     "SidePanel.BulkImport": "일괄 가져오기",
     "SidePanel.BulkImportPreset": "일괄 가져오기 프리셋",
-    "SidePanel.ItemDetails": "아이템 상세",
 
     "AdvancedSearch.OrSearch": "전체 OR 검색",
     "AdvancedSearch.CategoryOrSearch": "카테고리 OR 검색",

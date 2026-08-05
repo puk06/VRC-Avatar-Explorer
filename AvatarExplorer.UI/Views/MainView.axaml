@@ -284,7 +284,6 @@
                             <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=TextSearch}" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" FontSize="17" Command="{Binding OpenSidePanelCommand}" CommandParameter="0"/>
                             <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=DownloadMultiple}" ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" FontSize="17" Tag="1" Command="{Binding OpenSidePanelCommand}" CommandParameter="1"/>
                             <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}" FontSize="17" Tag="2" Command="{Binding OpenSidePanelCommand}" CommandParameter="2"/>
-                            <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=InformationOutline}" ToolTip.Tip="{Binding [SidePanel.ItemDetails], Source={x:Static loc:Localizer.Instance}}" FontSize="17" Tag="3" Command="{Binding OpenSidePanelCommand}" CommandParameter="3"/>
                         </StackPanel>
                     </Border>
 
@@ -312,21 +311,6 @@
                                         </TabItem.Header>
                                         <panels:BulkImportPreset/>
                                     </TabItem>
-
-                                    <!-- <TabItem x:Name="SidePanel_ItemDetailsTab" ToolTip.Tip="{Binding [SidePanel.ItemDetails], Source={x:Static loc:Localizer.Instance}}" Tag="3">
-                                        <TabItem.Header>
-                                            <materialIcons:MaterialIcon Kind="InformationOutline" Width="16" Height="16"/>
-                                        </TabItem.Header>
-                                        <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
-                                            <TextBlock Text="{Binding [SidePanel.ItemDetails], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
-                                            
-                                            <Separator Classes="separator" Grid.Row="1"/>
-
-                                            <ScrollViewer Grid.Row="2" VerticalAlignment="Stretch">
-                                                <Grid x:Name="SidePanel_ItemDetailsContent" RowSpacing="12"/>
-                                            </ScrollViewer>
-                                        </Grid>
-                                    </TabItem> -->
                                 </TabControl>
                             </Grid>
                         </Grid>
