@@ -345,7 +345,15 @@ public class SettingsViewModel : ViewModelBase
     private async void CheckForUpdateNow()
     {
         // 現在選択されているチャンネルでチェックする
-        await UpdateChecker.CheckForUpdate((UpdateChannel)SelectedUpdateChannel);
+        var result = await UpdateChecker.CheckForUpdate((UpdateChannel)SelectedUpdateChannel);
+        if (!result)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.UpdateDialog.NoUpdateAvailableTitle],
+                Localizer.Instance.Get(Loc.UpdateDialog.NoUpdateAvailable, AvatarExplorerApp.CurrentVersion),
+                Avalonia.Controls.Notifications.NotificationType.Information
+            );
+        }
     }
 
     private async Task OpenTwitter()

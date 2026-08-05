@@ -10,14 +10,6 @@ public static partial class ItemUtils
         return itemTitleMaps.TryGetValue(itemId, out string? avatarName) ? avatarName : string.Empty;
     }
 
-    [Obsolete("v2.7.0からデータベースのパスがフルパスに移行するため、そのままItem.ItemPathをご利用ください。")]
-    public static string GetItemPath(string parentFolder, string itemPath)
-    {
-        // <sys>で始まっていたら相対パスと認識して親フォルダに置き換える
-        // 始まっていないものはフルパスと認識してそのまま変えす
-        return itemPath.StartsWith("<sys>") ? Path.Join(parentFolder, itemPath.Replace("<sys>", string.Empty)) : itemPath;
-    }
-
     public static string? GetSafeTitle(string itemTitle)
     {
         // パスに使用しても大丈夫な文字だけ残す

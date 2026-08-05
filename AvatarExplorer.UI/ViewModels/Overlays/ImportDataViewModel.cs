@@ -3,13 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
+using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-
-// TODO: CoreのImporterができていないためできていない。
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
@@ -18,10 +17,10 @@ public class ImportDataViewModel : ViewModelBase
     [Reactive] public bool IsVisible { get; set; }
     [Reactive] public int SelectedImportSourceIndex { get; set; }
     [Reactive] public string FolderPath { get; set; } = string.Empty;
-    
+
     [Reactive] public bool ImportItems { get; set; } = true;
     [Reactive] public bool ImportThumbnails { get; set; } = true;
-    
+
     private List<(string Name, DataImportType Type)> ImportSourceOptions { get; } =
     [
         ("Avatar Explorer V1.x.x", DataImportType.V1),
@@ -39,7 +38,7 @@ public class ImportDataViewModel : ViewModelBase
     public ImportDataViewModel()
     {
         BrowseFolderCommand = ReactiveCommand.CreateFromTask(BrowseFolder);
-        ImportCommand = ReactiveCommand.Create(Import);
+        ImportCommand = ReactiveCommand.CreateFromTask(Import);
         CancelCommand = ReactiveCommand.Create(() => IsVisible = false);
     }
 
@@ -62,8 +61,39 @@ public class ImportDataViewModel : ViewModelBase
         FolderPath = folders[0];
     }
 
-    private void Import()
+    private async Task Import()
     {
-        // TODO: インポート処理を実装
+        if (string.IsNullOrEmpty(FolderPath)) return;
+
+        var type = SelectedImportSource;
+        if (ImportItems) type |= DataImportType.Items;
+        if (ImportThumbnails) type |= DataImportType.Thumbnails;
+
+        var request = new ImportRequest
+        {
+            ImportType = type,
+            DataFolderPath = FolderPath,
+            CopyAssetData = true
+        };
+
+        var result = await AvatarExplorerApp.Instance.ItemGroupService.Import(request);
+
+        if (result.IsError)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.ImportFailed],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return;
+        }
+
+        MainWindowViewModel.Instance.ShowNotification(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.Import],
+            Avalonia.Controls.Notifications.NotificationType.Success
+        );
+
+        IsVisible = false;
     }
 }

@@ -496,4 +496,10 @@ public class ItemGroupService
 
         return await DataExporter.Export(exportContext, exportRequest);
     }
+
+    public async Task<ErrorOr<Success>> Import(ImportRequest importRequest)
+    {
+        var importer = new DataImporter(_items, _commonAvatars, _tempAvatars);
+        return await importer.Import(importRequest);
+    }
 }

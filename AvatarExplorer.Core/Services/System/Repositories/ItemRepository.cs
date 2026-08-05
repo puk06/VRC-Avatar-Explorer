@@ -258,6 +258,8 @@ public class ItemRepository
         }
     }
 
+    internal void Add(Item item) => _db.Add(item);
+
     public void Save() => _db.Save();
 
     public void MarkAsChanged() => OnUpdated?.Invoke();

@@ -12,12 +12,13 @@ public static class UpdateChecker
 {
     public static event Action<VersionRelease>? UpdateAvailable;
 
-    public static async Task CheckForUpdate(UpdateChannel updateChannel)
+    public static async Task<bool> CheckForUpdate(UpdateChannel updateChannel)
     {
         var latestRelease = await GetLatestUpdateReleaseInfo(updateChannel);
-        if (latestRelease == null) return;
+        if (latestRelease == null) return false;
 
         UpdateAvailable?.Invoke(latestRelease);
+        return true;
     }
 
     public async static Task<UpdateManifest?> GetUpdateManifest()

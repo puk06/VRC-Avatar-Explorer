@@ -26,6 +26,8 @@ public class TempAvatarRepository
         OnUpdated?.Invoke();
     }
 
+    internal void Add(TempAvatar avatar) => _db.Add(avatar);
+
     public void Save() => _db.Save();
     public void Remove(string identifier)
     {
