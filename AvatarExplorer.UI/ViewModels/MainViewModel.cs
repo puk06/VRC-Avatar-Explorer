@@ -230,7 +230,11 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         RefreshLeftItems();
         RefreshMainItems();
 
-        if (needsRefresh) Refresh();
+        if (needsRefresh)
+        {
+            UpdateLeftPanelItems((QueryType)SelectedCategory);
+            Refresh();
+        }
     }
 
     private void OnLanguageChanged()
