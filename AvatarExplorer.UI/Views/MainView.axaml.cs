@@ -174,7 +174,12 @@ public partial class MainView : UserControl
 
     private void OnHoverThumbnailVisibilityChanged(bool isVisible)
     {
-        if (isVisible) _hoverWindow.Show();
+        if (isVisible)
+        {
+            _hoverWindow.Show();
+            _hoverWindow.Topmost = false;
+            _hoverWindow.Topmost = true;
+        }
         else _hoverWindow.Hide();
     }
 
@@ -220,6 +225,12 @@ public partial class MainView : UserControl
 
         vm.UpdateHoverThumbnailPosition(GetScreenPosition(e));
         vm.ShowHoverThumbnail(item);
+    }
+
+    private void OnToolTipOpening(object? sender, CancelRoutedEventArgs e)
+    {
+        if (DataContext is not MainViewModel vm) return;
+        if (vm.IsHoverThumbnailVisible) e.Cancel = true;
     }
 
     private void OnItemImagePointerExited(object? sender, PointerEventArgs e)
