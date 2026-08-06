@@ -134,25 +134,32 @@ public class BulkImportViewModel : ViewModelBase
 
         var unitypackagePaths = UnitypackageService.GetUnitypackagePaths(item.GetFolderPaths());
 
-        if (unitypackagePaths.Length > 0)
+        if (unitypackagePaths.Length == 0)
         {
-            var bulkVm = new BulkImportItemViewModel()
-            {
-                ImageFileName = item.ThumbnailFileName,
-                TitleRaw = item.Title,
-                DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
-                UnitypackageFullPaths = unitypackagePaths.ToArray(),
-                ItemId = itemid,
-                SelectedUnitypackage = 0
-            };
-
-            if (!string.IsNullOrEmpty(filePath))
-            {
-                var index = unitypackagePaths.IndexOf(filePath);
-                if (index != -1) bulkVm.SelectedUnitypackage = index;
-            }
-
-            Items.Add(bulkVm.Update());
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.UnitypackageNotFound],
+                Avalonia.Controls.Notifications.NotificationType.Warning
+            );
+            return;
         }
+
+        var bulkVm = new BulkImportItemViewModel()
+        {
+            ImageFileName = item.ThumbnailFileName,
+            TitleRaw = item.Title,
+            DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
+            UnitypackageFullPaths = unitypackagePaths.ToArray(),
+            ItemId = itemid,
+            SelectedUnitypackage = 0
+        };
+
+        if (!string.IsNullOrEmpty(filePath))
+        {
+            var index = unitypackagePaths.IndexOf(filePath);
+            if (index != -1) bulkVm.SelectedUnitypackage = index;
+        }
+
+        Items.Add(bulkVm.Update());
     }
 }

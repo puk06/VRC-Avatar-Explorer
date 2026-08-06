@@ -369,6 +369,7 @@ public static class Loc
         public const string InvalidCategory = "Error.InvalidCategory";
         public const string InitializationFailed = "Error.InitializationFailed";
         public const string FetchAllItemThumbnailsFailed = "Error.FetchAllItemThumbnailsFailed";
+        public const string UnitypackageNotFound = "Error.UnitypackageNotFound";
     }
     public static class Settings
     {

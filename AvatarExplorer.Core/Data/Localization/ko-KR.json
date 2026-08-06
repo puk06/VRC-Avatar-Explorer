@@ -229,6 +229,7 @@
     "Error.InvalidCategory": "유효하지 않은 카테고리입니다",
     "Error.InitializationFailed": "소프트웨어 초기화에 실패했습니다. 오류 로그를 확인해 주세요.",
     "Error.FetchAllItemThumbnailsFailed": "썸네일 일괄 가져오기가 완료되었습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개\n자세한 내용은 오류 로그를 확인해 주세요.",
+    "Error.UnitypackageNotFound": "Unitypackage를 찾을 수 없습니다",
 
     "Settings.Basic": "기본",
     "Settings.Language.Title": "언어",

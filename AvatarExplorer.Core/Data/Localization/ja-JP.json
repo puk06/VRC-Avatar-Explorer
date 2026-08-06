@@ -229,6 +229,7 @@
     "Error.InvalidCategory": "無効なカテゴリです",
     "Error.InitializationFailed": "ソフトウェアの初期化に失敗しました。エラーログを確認してください。",
     "Error.FetchAllItemThumbnailsFailed": "サムネイル一括取得が完了しました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件\n詳細はエラーログを確認してください。",
+    "Error.UnitypackageNotFound": "Unitypackageが見つかりませんでした",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "言語",

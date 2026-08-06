@@ -229,6 +229,7 @@
     "Error.InvalidCategory": "Categoría inválida",
     "Error.InitializationFailed": "No se pudo inicializar el software. Consulta el registro de errores.",
     "Error.FetchAllItemThumbnailsFailed": "La obtención masiva de miniaturas se completó. Correctos: {0} / Fallidos: {1} / Total: {2}\nConsulta el registro de errores para más detalles.",
+    "Error.UnitypackageNotFound": "No se encontró ningún Unitypackage",
 
     "Settings.Basic": "Básico",
     "Settings.Language.Title": "Idioma",
