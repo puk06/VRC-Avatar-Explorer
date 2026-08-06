@@ -34,7 +34,7 @@
 
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="vmcomponent:ItemPathViewModel">
-                                        <Border Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7">
+                                        <Border Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" ToolTip.Tip="{Binding FileName}">
                                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
                                                 <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
                                                     <Image Source="{Binding IconImage}" Width="40" Height="40" Stretch="Fill" VerticalAlignment="Top"/>
