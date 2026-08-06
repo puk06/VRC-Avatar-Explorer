@@ -18,7 +18,11 @@ public class ItemRepository
     /// </summary>
     public event Action? OnUpdated;
 
-    public void Load(string? path = null) => _db.Load(path);
+    public void Load(string? path = null)
+    {
+        _db.Load(path);
+        OnUpdated?.Invoke();
+    }
 
     public IReadOnlyList<Item> GetAll() => _db.Items;
     public Item? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);

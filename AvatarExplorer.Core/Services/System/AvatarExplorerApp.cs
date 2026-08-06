@@ -59,6 +59,7 @@ public class AvatarExplorerApp
                 SystemPath.RuntimeSettingsFilePath,
             ]
         );
+        BackupManager.OnBackupRestored += OnBackupRestored;
 
         RuntimeSettings.OnSettingsChanged += OnRuntimeSettingsUpdated;
         BackupManager.StartAutoBackup(RuntimeSettings.Settings.AutoBackupInterval, RuntimeSettings.Settings.AutoBackupRootDirectory);
@@ -67,6 +68,18 @@ public class AvatarExplorerApp
         ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;
 
         _initialized = true;
+    }
+
+    public void OnBackupRestored()
+    {
+        Items.Load();
+        CommonAvatars.Load();
+        TempAvatars.Load();
+        BulkImportPresets.Load();
+        RuntimeSettings.Load();
+
+        Migration(); //TODO: ItemMigrationに移行する
+        ItemGroupService.RebuildIndices();
     }
 
     public void OnRuntimeSettingsUpdated(RuntimeSettings runtimeSettings)

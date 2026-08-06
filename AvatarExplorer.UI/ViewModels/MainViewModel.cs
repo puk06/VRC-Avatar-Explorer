@@ -46,7 +46,7 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     [Reactive] public bool HasOverflow { get; set; }
     [Reactive] public string SearchText { get; set; } = string.Empty;
 
-    [Reactive] public int SelectedCategory { get; set; }
+    [Reactive] public int SelectedCategory { get; set; } = 0;
     [Reactive] public IEnumerable<ItemViewModel> LeftItems { get; set; } = [];
     [Reactive] public IEnumerable<ItemViewModel> MainItems { get; set; } = [];
 
@@ -88,8 +88,6 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     public IReactiveCommand RightGoNextCommand { get; }
     public IReactiveCommand RightGoLastCommand { get; }
     public IReactiveCommand ToggleSortDirectionCommand { get; }
-
-    [Reactive] public Material.Icons.MaterialIconKind SortDirectionIcon { get; set; } = Material.Icons.MaterialIconKind.SortDescending;
     #endregion
 
     #region Fields
@@ -104,6 +102,7 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     private List<ItemViewModel> _allMainItems = [];
     private int _normalIconSize = 80;
     private bool _removeBrackets = false;
+    private int _lastSelectedLeftPanelCategory = 0;
     #endregion
 
     #region Constructor
@@ -164,11 +163,15 @@ public class MainViewModel : ViewModelBase, IPostInitializable
                     Observable.FromEvent(h => _itemGroupService.TempAvatarRepository.OnUpdated += h, h => _itemGroupService.TempAvatarRepository.OnUpdated -= h)
                 )
                 .Throttle(TimeSpan.FromMilliseconds(100))
-                .Subscribe(_ => Dispatcher.UIThread.InvokeAsync(Refresh));
+                .Subscribe(_ =>Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    Refresh();
+                    UpdateLeftPanelItems((QueryType)SelectedCategory);
+                }));
 
             ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
 
-            OnCategoryChanged((int)QueryType.Avatar);
+            UpdateLeftPanelItems((QueryType)SelectedCategory);
             Refresh();
         });
     }
@@ -177,6 +180,9 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     {
         LeftPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshLeftItems());
         RightPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshMainItems());
+
+        this.WhenAnyValue(i => i.SelectedCategory)
+            .Subscribe(i => UpdateLeftPanelItems((QueryType)i));
 
         this.WhenAnyValue(x => x.SearchText)
             .Subscribe(_ => _searchManager.RestartTimer());
@@ -247,11 +253,9 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     #endregion
 
     #region Navigation
-    public void OnCategoryChanged(int categoryIndex)
+    public void OnCategoryChanged()
     {
-        if (!Enum.IsDefined(typeof(QueryType), categoryIndex)) return;
-        SelectedCategory = categoryIndex;
-        UpdateLeftPanelItems((QueryType)categoryIndex);
+        
     }
     public async void OnFileOpenRequested(string file)
     {

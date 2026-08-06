@@ -29,25 +29,29 @@ public class BulkImportPresetViewModel : ViewModelBase, IPostInitializable
     public async Task OnInitialized()
     {
         Localizer.Instance.LanguageChanged += Reload;
-        await Dispatcher.UIThread.InvokeAsync(Reload);
+        AvatarExplorerApp.Instance.BulkImportPresets.OnUpdated += Reload;
+        Reload();
     }
 
     public async void Reload()
     {
-        Items = AvatarExplorerApp.Instance.BulkImportPresets.GetAll()
-            .Select(i => {
-                var vm = new ItemViewModel()
-                {
-                    ImageFileName = SystemIconKey.FolderIcon,
-                    TitleRaw = i.PresetName,
-                    TitleLocalizable = false,
-                    DescriptionRaw = new(Loc.Button.Description.Item.Count, [i.Items.Length.ToString()]),
-                    Identifier = i.Identifier,
-                    ViewModelType = ViewModelType.BulkImportPreset,
-                };
-                vm.Actions = ContextMenuCreator.Create(vm.ViewModelType, vm);
-                return vm.Update();
-            });
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            Items = AvatarExplorerApp.Instance.BulkImportPresets.GetAll()
+                .Select(i => {
+                    var vm = new ItemViewModel()
+                    {
+                        ImageFileName = SystemIconKey.FolderIcon,
+                        TitleRaw = i.PresetName,
+                        TitleLocalizable = false,
+                        DescriptionRaw = new(Loc.Button.Description.Item.Count, [i.Items.Length.ToString()]),
+                        Identifier = i.Identifier,
+                        ViewModelType = ViewModelType.BulkImportPreset,
+                    };
+                    vm.Actions = ContextMenuCreator.Create(vm.ViewModelType, vm);
+                    return vm.Update();
+                });
+        });
     }
 
     public void Select(ItemViewModel presetVm)

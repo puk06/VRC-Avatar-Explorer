@@ -239,17 +239,11 @@ public class SettingsViewModel : ViewModelBase
 
     private async Task RestoreFromBackup()
     {
-        // TODO: 復元処理を追加する
-        // AvatarExplorerApp.Instance.BackupManager.OnRestoreBackupRequested += (sourcePath, path) =>
-        // {
-        //     // Debug.WriteLine($"BACKUP RESTOREING REQUESTED | Source: {sourcePath} | TargetPath: {path}");
-        // };
-
         var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Items Folder");
         if (folders == null || folders.Length == 0) return;
 
         var selectedBackupPath = folders[0];
-        AvatarExplorerApp.Instance.BackupManager.RestoreBackup(selectedBackupPath);
+        await AvatarExplorerApp.Instance.BackupManager.RestoreBackup(selectedBackupPath);
     }
 
     private async Task AutoFixDatabase()

@@ -13,7 +13,11 @@ public class BulkImportPresetRepository
     /// </summary>
     public event Action? OnUpdated;
 
-    public void Load(string? path = null) => _db.Load(path);
+    public void Load(string? path = null)
+    {
+        _db.Load(path);
+        OnUpdated?.Invoke();
+    }
 
     public IReadOnlyList<BulkImportPreset> GetAll() => _db.Items;
     public BulkImportPreset? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);

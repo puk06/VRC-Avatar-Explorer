@@ -30,7 +30,6 @@ public partial class MainView : UserControl
         DataContext = MainWindowViewModel.Instance.MainVM;
 
         RegisterSidePanelEvent();
-        RegisterCategoryTabEvent();
         RegisterPathScrollEvent();
         RegisterScrollTracking();
         RegisterHoverThumbnailEvent();
@@ -133,19 +132,6 @@ public partial class MainView : UserControl
                 SidePanelButton_OnPointerPressed,
                 RoutingStrategies.Tunnel
             ));
-    }
-
-    private void RegisterCategoryTabEvent()
-    {
-        CategoryTabControl.SelectionChanged += OnCategorySelectionChanged;
-    }
-
-    private void OnCategorySelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (DataContext is MainViewModel vm && sender is TabControl tab)
-        {
-            vm.OnCategoryChanged(tab.SelectedIndex);
-        }
     }
 
     private void SidePanelButton_OnPointerPressed(object? sender, PointerPressedEventArgs e)

@@ -13,7 +13,11 @@ public class TempAvatarRepository
     /// </summary>
     public event Action? OnUpdated;
 
-    public void Load(string? path = null) => _db.Load(path);
+    public void Load(string? path = null)
+    {
+        _db.Load(path);
+        OnUpdated?.Invoke();
+    }
     public IReadOnlyList<TempAvatar> GetAll() => _db.Items;
 
     public TempAvatar? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);

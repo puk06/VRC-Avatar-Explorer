@@ -8,7 +8,7 @@ namespace AvatarExplorer.Core.Services.System;
 
 public class BackupManager
 {
-    public event Action<string, string>? OnRestoreBackupRequested;
+    public event Action? OnBackupRestored;
 
     private readonly HashSet<string> BackupFiles = [];
     public void AddTargetFile(string path) => BackupFiles.Add(path);
@@ -142,16 +142,20 @@ public class BackupManager
         }
     }
 
-    public void RestoreBackup(string folderPath)
+    public async Task RestoreBackup(string folderPath)
     {
         if (!Directory.Exists(folderPath)) return;
+
+        await ExecuteBackup(_backupRootFolderPath);
 
         foreach (var file in FileSystemService.EnumerateFiles(folderPath))
         {
             var sourcePath = BackupFiles.FirstOrDefault(i => Path.GetFileName(i) == Path.GetFileName(file));
             if (sourcePath == null) continue;
 
-            OnRestoreBackupRequested?.Invoke(sourcePath, file);
+            await FileSystemService.CopyFileAsync(file, sourcePath);
         }
+        
+        OnBackupRestored?.Invoke();
     }
 }

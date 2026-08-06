@@ -102,6 +102,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
 
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
         ImageService.ThumbnailCacheWarmupStateChanged += OnThumbnailWarmupChanged;
+        AvatarExplorerApp.BackupManager.OnBackupRestored += OnBackupRestored;
 
         IInitializableRegistry.OnInitialized += OnAllInitialized;
         IInitializableRegistry.Register(this);
@@ -115,6 +116,11 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
             _thumbnailWarmupStatus = status;
             UpdateWindowTitle();
         });
+    }
+
+    private void OnBackupRestored()
+    {
+        AppInitializer.InitializeUserPreferences();
     }
 
     public async Task Initialize()
