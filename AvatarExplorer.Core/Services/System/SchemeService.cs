@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Security.Principal;
 using AvatarExplorer.Core.Data.Paths;
-using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Utils;
 using Microsoft.Win32;
 
@@ -10,29 +9,67 @@ namespace AvatarExplorer.Core.Services.System;
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
 public static class SchemeService
 {
-    private static readonly string REG_PROTCOL = "VRCAE";
-    private static readonly string SKIPPED_TEXT = "<sys>SKIPPED";
+    public const string ProtocolVRCAE = "VRCAE";
+    public const string ProtocolBLM = "booth-library-manager";
 
-    public static string? GetInternalSchemePath()
+    public static string? GetRegisteredCommand(string protocol)
     {
         try
         {
-            if (ProcessUtils.GetCurrentProcessPath() == null) return null;
+            if (!ProcessUtils.IsWindows()) return null;
 
-            if (!File.Exists(SystemPath.SchemeFilePath)) return null;
-            else return File.ReadAllText(SystemPath.SchemeFilePath);
+            using var key = Registry.ClassesRoot.OpenSubKey($@"{protocol}\shell\open\command");
+            return key?.GetValue(string.Empty) as string;
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to read scheme file at '{SystemPath.SchemeFilePath}'.", ex);
+            ErrorManager.Instance.PostInternalError($"Failed to read registered command for URL scheme '{protocol}'.", ex);
             return null;
         }
     }
 
-    public static bool IsSkipped(string text) => text == SKIPPED_TEXT;
-    public static bool IsSchemeRegistered() => IsSchemeRegistered(REG_PROTCOL);
+    public static bool IsOwnSchemeRegistered(string protocol)
+    {
+        var registered = GetRegisteredCommand(protocol);
+        if (string.IsNullOrEmpty(registered)) return false;
 
-    public static void RegisterScheme()
+        var processPath = ProcessUtils.GetCurrentProcessPath();
+        if (string.IsNullOrEmpty(processPath)) return false;
+
+        return registered.Contains(processPath, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool IsAnySchemeRegistered(string protocol)
+    {
+        try
+        {
+            if (!ProcessUtils.IsWindows()) return false;
+
+            using var key = Registry.ClassesRoot.OpenSubKey($@"{protocol}\shell\open\command");
+            return key != null;
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to determine whether URL scheme '{protocol}' is registered.", ex);
+            return false;
+        }
+    }
+
+    public static bool HasBackup(string protocol)
+    {
+        try
+        {
+            var backupPath = GetBackupPath(protocol);
+            return File.Exists(backupPath);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to check backup for URL scheme '{protocol}'.", ex);
+            return false;
+        }
+    }
+
+    public static void RegisterScheme(string protocol)
     {
         try
         {
@@ -41,26 +78,45 @@ public static class SchemeService
             var processPath = ProcessUtils.GetCurrentProcessPath();
             if (string.IsNullOrEmpty(processPath)) return;
 
-            RegisterCustomScheme(REG_PROTCOL, processPath);
+            var currentCommand = GetRegisteredCommand(protocol);
+            if (!string.IsNullOrEmpty(currentCommand) && !currentCommand.Contains(processPath, StringComparison.OrdinalIgnoreCase))
+            {
+                SaveBackup(protocol, currentCommand);
+            }
 
-            FileSystemService.PrepareFileDirectory(SystemPath.SchemeFilePath);
-            File.WriteAllText(SystemPath.SchemeFilePath, processPath);
+            RegisterCustomScheme(protocol, processPath);
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to register URL scheme '{REG_PROTCOL}' or write scheme file at '{SystemPath.SchemeFilePath}'.", ex);
+            ErrorManager.Instance.PostInternalError($"Failed to register URL scheme '{protocol}'.", ex);
         }
     }
-    public static void MarkSchemeSkipped()
+
+    public static void UnregisterScheme(string protocol)
     {
         try
         {
-            FileSystemService.PrepareFileDirectory(SystemPath.SchemeFilePath);
-            File.WriteAllText(SystemPath.SchemeFilePath, SKIPPED_TEXT);
+            if (!IsRunAsAdmin()) return;
+
+            var backupPath = GetBackupPath(protocol);
+            if (File.Exists(backupPath))
+            {
+                var originalCommand = File.ReadAllText(backupPath).Trim();
+                if (!string.IsNullOrEmpty(originalCommand))
+                {
+                    RestoreCustomScheme(protocol, originalCommand);
+                    File.Delete(backupPath);
+                    return;
+                }
+            }
+
+            using var key = Registry.ClassesRoot.OpenSubKey(protocol, true);
+            key?.DeleteSubKeyTree("shell", false);
+            Registry.ClassesRoot.DeleteSubKeyTree(protocol, false);
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to write scheme file at '{SystemPath.SchemeFilePath}' when marking scheme as skipped.", ex);
+            ErrorManager.Instance.PostInternalError($"Failed to unregister URL scheme '{protocol}'.", ex);
         }
     }
 
@@ -96,6 +152,21 @@ public static class SchemeService
         }
     }
 
+    private static string GetBackupPath(string protocol) => Path.Join(SystemPath.SchemeBackupFolderPath, $"{protocol}.backup");
+
+    private static void SaveBackup(string protocol, string command)
+    {
+        try
+        {
+            Directory.CreateDirectory(SystemPath.SchemeBackupFolderPath);
+            File.WriteAllText(GetBackupPath(protocol), command);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to save backup for URL scheme '{protocol}'.", ex);
+        }
+    }
+
     private static void RegisterCustomScheme(string protocol, string processPath)
     {
         try
@@ -119,19 +190,20 @@ public static class SchemeService
             ErrorManager.Instance.PostInternalError($"Failed to register URL scheme '{protocol}' with command '{processPath}'.", ex);
         }
     }
-    private static bool IsSchemeRegistered(string protocol)
+
+    private static void RestoreCustomScheme(string protocol, string command)
     {
         try
         {
-            if (!ProcessUtils.IsWindows()) return false;
+            if (!ProcessUtils.IsWindows()) return;
 
-            using var key = Registry.ClassesRoot.OpenSubKey(protocol);
-            return key != null;
+            var commandKey = $@"{protocol}\shell\open\command";
+            using var key = Registry.ClassesRoot.CreateSubKey(commandKey);
+            key.SetValue(string.Empty, command);
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to determine whether URL scheme '{protocol}' is registered.", ex);
-            return false;
+            ErrorManager.Instance.PostInternalError($"Failed to restore URL scheme '{protocol}' with command '{command}'.", ex);
         }
     }
 }

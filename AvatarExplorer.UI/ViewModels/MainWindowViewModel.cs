@@ -180,8 +180,17 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
     {
         if (args == null || args.Length == 0 || string.IsNullOrEmpty(args[0])) return;
 
-        var launchInfo = LaunchInfoService.GetLaunchInfo(args[0]);
-        if (launchInfo != null) ItemEditorVM.Open(launchInfo);
+        var uri = args[0];
+        if (uri.StartsWith(SchemeService.ProtocolBLM + "://"))
+        {
+            var blmImportItemInfo = BLMImportItemService.GetBLMImportItemInfo(uri);
+            if (blmImportItemInfo != null) ItemEditorVM.Open(blmImportItemInfo);
+        }
+        else if (uri.StartsWith(SchemeService.ProtocolVRCAE + "://"))
+        {
+            var launchInfo = LaunchInfoService.GetLaunchInfo(uri);
+            if (launchInfo != null) ItemEditorVM.Open(launchInfo);
+        }
     }
 
     private void OnPreferenceSettingsUpdated(UserPreferences settings)
@@ -220,6 +229,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
     public void ShowItemEditor(string? itemId = null) => ItemEditorVM.Open(itemId);
     public void OnFilesDrop(string[] filePaths)
     {
+        // TODO: URLのD&Dに対応してもいいかも
+
         // ソフト内からD&Dしたアイテムはスキップするように
         if (filePaths.Length == 1 && filePaths[0] == LastDragDropPath) return;
 

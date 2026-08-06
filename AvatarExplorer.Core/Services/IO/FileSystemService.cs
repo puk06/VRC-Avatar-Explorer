@@ -6,6 +6,7 @@ using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
+using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Services.System;
 using ErrorOr;
 using SharpCompress.Archives;
@@ -41,6 +42,13 @@ public class ModifiedUnitypackagesResult
     public string? ModifiedUnitypackagePath { get; set; } = null;
     public List<string> Success { get; } = new();
     public List<string> Failed { get; } = new();
+}
+
+public class ItemPathEntry
+{
+    public string FileName { get; set; } = string.Empty;
+    public string Path { get; set; } = string.Empty;
+    public bool IsUrl { get; set; } = false;
 }
 
 public static class FileSystemService
@@ -400,45 +408,61 @@ public static class FileSystemService
     #endregion
 
     #region Extract Item Folders
-    internal static async Task<ErrorOr<ExtractResult>> ExtractItemPaths(string parentFolderPath, IEnumerable<string> itemPaths, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false)
+    internal static async Task<ErrorOr<ExtractResult>> ExtractItemPaths(string parentFolderPath, IEnumerable<ItemPathEntry> itemPaths, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false)
     {
         var result = new ExtractResult();
 
         foreach (var itemPath in itemPaths)
         {
+            var targetPath = itemPath.Path;
+
+            if (itemPath.IsUrl)
+            {
+                var downloadedPath = Path.Combine(GetNewTempFolder(), Path.GetFileName(itemPath.FileName));
+
+                var downloadResult = await Downloader.Fetch(targetPath, downloadedPath);
+                if (!downloadResult)
+                {
+                    ErrorManager.Instance.PostInternalError($"An error occurred while downloading item '{targetPath}'.");
+                    result.ProcessingFailedPaths.Add(downloadedPath);
+                    continue;
+                }
+                targetPath = downloadedPath;
+            }
+
             var extractResult = await ExtractItemInternalAsync(
-                itemPath,
+                targetPath,
                 parentFolderPath,
                 removeOriginal
             );
 
             if (extractResult.IsError)
             {
-                ErrorManager.Instance.PostInternalError($"An error occurred while processing folder '{itemPath}'.", tag: extractResult.Errors.ToErrorString());
-                result.ProcessingFailedPaths.Add(itemPath);
+                ErrorManager.Instance.PostInternalError($"An error occurred while processing folder '{targetPath}'.", tag: extractResult.Errors.ToErrorString());
+                result.ProcessingFailedPaths.Add(targetPath);
             }
 
             if (!string.IsNullOrEmpty(extractResult.Value.ExtractedFolderPath))
             {
                 // 展開されたら、使用されたということ
-                if (!string.IsNullOrEmpty(result.ItemParentFolder))
+                if (string.IsNullOrEmpty(result.ItemParentFolder))
                     result.ItemParentFolder = parentFolderPath;
             }
             else if (extractResult.Value.IsDirectory)
             {
                 if (shouldLinkToOriginal)
                 {
-                    result.FolderPaths.Add(itemPath);
+                    result.FolderPaths.Add(targetPath);
                     continue;
                 }
                 else
                 {
-                    var copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileName(itemPath), true);
-                    var copyResult = await CopyDirectoryAsync(itemPath, copiedFolderPath, maxDegreeOfParallelism);
+                    var copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileName(targetPath), true);
+                    var copyResult = await CopyDirectoryAsync(targetPath, copiedFolderPath, maxDegreeOfParallelism);
                     if (copyResult.IsError)
                     {
-                        ErrorManager.Instance.PostInternalError($"Failed to copy directory: {itemPath}");
-                        result.ProcessingFailedPaths.Add(itemPath);
+                        ErrorManager.Instance.PostInternalError($"Failed to copy directory: {targetPath}");
+                        result.ProcessingFailedPaths.Add(targetPath);
                         continue;
                     }
 

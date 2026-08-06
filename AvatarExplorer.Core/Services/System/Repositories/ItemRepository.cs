@@ -108,7 +108,7 @@ public class ItemRepository
         return true;
     }
 
-    public async Task<ErrorOr<ExtractResult>> AddPaths(string identifier, IEnumerable<string> paths, bool shouldLinkToOriginal)
+    public async Task<ErrorOr<ExtractResult>> AddPaths(string identifier, IEnumerable<ItemPathEntry> paths, bool shouldLinkToOriginal)
     {
         static string GetSafePath(Item item, string dataRootDirectory)
         {

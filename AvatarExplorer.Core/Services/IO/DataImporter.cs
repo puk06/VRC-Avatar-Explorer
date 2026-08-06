@@ -91,7 +91,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 if (!string.IsNullOrEmpty(v1Item.MaterialPath))
                     sourcePaths.Add(GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateV1Path(v1Item.MaterialPath)));
 
-                await _items.AddPaths(item.Identifier, sourcePaths, !shouldCopyAsset);
+                await _items.AddPaths(item.Identifier, sourcePaths.Select(p => new ItemPathEntry { FileName = Path.GetFileName(p), Path = p }), !shouldCopyAsset);
 
                 var sourceThumbnailPath = GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateV1Path(v1Item.ImagePath));
                 var destThumbnailPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
@@ -218,7 +218,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 _items.Add(item);
 
                 var sourcePath = Path.Combine(KonoAssetPath.DataPath(dataFolderPath), konoAssetItem.Id);
-                await _items.AddPaths(item.Identifier, [sourcePath], !shouldCopyAsset);
+                await _items.AddPaths(item.Identifier, [new ItemPathEntry { FileName = Path.GetFileName(sourcePath), Path = sourcePath }], !shouldCopyAsset);
 
                 if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename))
                 {

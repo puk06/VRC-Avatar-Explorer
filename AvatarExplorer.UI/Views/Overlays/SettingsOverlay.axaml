@@ -427,13 +427,28 @@
                                     </Grid>
 
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
-                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RegisterScheme.Title], Source={x:Static loc:Localizer.Instance}}"/>
-                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RegisterScheme.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RegisterScheme.VRCAE.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RegisterScheme.VRCAE.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="2" Text="{Binding VRCAESchemeStatusText}" Foreground="{DynamicResource Text.Secondary}"/>
                                         </Grid>
 
-                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
-                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.RegisterScheme.Register], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding RegisterSchemeCommand}"/>
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*,Auto" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.RegisterScheme.Register], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding RegisterVRCAESchemeCommand}"/>
+                                            <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [Settings.RegisterScheme.Unregister], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding UnregisterVRCAESchemeCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RegisterScheme.BLM.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RegisterScheme.BLM.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="2" Text="{Binding BLMSchemeStatusText}" Foreground="{DynamicResource Text.Secondary}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*,Auto" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.RegisterScheme.Register], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding RegisterBLMSchemeCommand}"/>
+                                            <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [Settings.RegisterScheme.Unregister], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding UnregisterBLMSchemeCommand}"/>
                                         </Grid>
                                     </Grid>
 

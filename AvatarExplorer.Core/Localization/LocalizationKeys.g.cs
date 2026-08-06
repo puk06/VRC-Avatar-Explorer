@@ -157,6 +157,7 @@ public static class Loc
             public const string NewBulkImportPresetName = "Dialog.Title.NewBulkImportPresetName";
             public const string NewTempAvatarName = "Dialog.Title.NewTempAvatarName";
             public const string NewCustomCategoryName = "Dialog.Title.NewCustomCategoryName";
+            public const string AddUrl = "Dialog.Title.AddUrl";
         }
         public const string SelectSaveFilePath = "Dialog.SelectSaveFilePath";
         public const string SelectFolderPath = "Dialog.SelectFolderPath";
@@ -572,9 +573,27 @@ public static class Loc
         }
         public static class RegisterScheme
         {
-            public const string Title = "Settings.RegisterScheme.Title";
-            public const string Description = "Settings.RegisterScheme.Description";
+            public static class VRCAE
+            {
+                public const string Title = "Settings.RegisterScheme.VRCAE.Title";
+                public const string Description = "Settings.RegisterScheme.VRCAE.Description";
+            }
+            public static class BLM
+            {
+                public const string Title = "Settings.RegisterScheme.BLM.Title";
+                public const string Description = "Settings.RegisterScheme.BLM.Description";
+            }
             public const string Register = "Settings.RegisterScheme.Register";
+            public const string Unregister = "Settings.RegisterScheme.Unregister";
+            public static class Status
+            {
+                public const string Own = "Settings.RegisterScheme.Status.Own";
+                public const string Other = "Settings.RegisterScheme.Status.Other";
+                public const string None = "Settings.RegisterScheme.Status.None";
+            }
+            public const string OverwriteConfirm = "Settings.RegisterScheme.OverwriteConfirm";
+            public const string UnregisterConfirm = "Settings.RegisterScheme.UnregisterConfirm";
+            public const string UnregisterSuccess = "Settings.RegisterScheme.UnregisterSuccess";
         }
         public static class MaxDegreeOfParallelism
         {
@@ -666,6 +685,7 @@ public static class Loc
         public const string BoothItemInfo = "ItemEditor.BoothItemInfo";
         public const string AddFolder = "ItemEditor.AddFolder";
         public const string AddFile = "ItemEditor.AddFile";
+        public const string AddUrl = "ItemEditor.AddUrl";
         public const string BoothUrl = "ItemEditor.BoothUrl";
         public const string BoothUrlPlaceholder = "ItemEditor.BoothUrlPlaceholder";
         public const string FetchInfo = "ItemEditor.FetchInfo";
@@ -683,6 +703,7 @@ public static class Loc
         public const string AuthorId = "ItemEditor.AuthorId";
         public const string BoothId = "ItemEditor.BoothId";
         public const string ImageUrl = "ItemEditor.ImageUrl";
+        public const string DownloadURL = "ItemEditor.DownloadURL";
         public const string AuthorImageUrl = "ItemEditor.AuthorImageUrl";
         public const string ConfirmAndSave = "ItemEditor.ConfirmAndSave";
         public static class LinkToOriginal

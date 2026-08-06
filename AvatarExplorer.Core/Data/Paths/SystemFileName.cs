@@ -20,8 +20,6 @@ public static class SystemFileName
         public const string RuntimeDatabaseMigrationVersion = "runtimeSettings.json.migration.version";
     }
 
-    public const string Scheme = "VRCAESCHEME";
-
     public const string Lisence = "LISENCE.txt";
     public const string ThirdPartyLisences = "THIRD_PARTY_LICENSES.txt";
 }

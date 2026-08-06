@@ -58,7 +58,7 @@ public class AvatarExplorerApp
                 SystemPath.BulkImportPresetDatabasePath,
                 SystemPath.BulkImportPresetDatabaseMigrationVersionPath,
                 SystemPath.RuntimeSettingsFilePath,
-                SystemPath.RuntimeSettingsMigrationVersionPath,
+                SystemPath.RuntimeSettingsMigrationVersionPath
             ]
         );
         BackupManager.OnBackupRestored += OnBackupRestored;

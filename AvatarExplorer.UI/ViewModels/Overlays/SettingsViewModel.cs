@@ -11,6 +11,7 @@ using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.Updates;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
@@ -51,6 +52,8 @@ public class SettingsViewModel : ViewModelBase
     [Reactive] public bool CheckForUpdate { get; set; }
     [Reactive] public int SelectedUpdateChannel { get; set; }
     [Reactive] public Bitmap? GithubUserImage { get; set; } = null;
+    [Reactive] public string VRCAESchemeStatusText { get; set; } = string.Empty;
+    [Reactive] public string BLMSchemeStatusText { get; set; } = string.Empty;
 
     public IReactiveCommand OpenBackgroundImageCommand { get; }
     public IReactiveCommand OpenCommonAvatarManagerCommand { get; }
@@ -65,7 +68,10 @@ public class SettingsViewModel : ViewModelBase
     public IReactiveCommand ResetCommonAvatarDatabaseCommand { get; }
     public IReactiveCommand ResetBulkImportPresetDatabaseCommand { get; }
     public IReactiveCommand ShowErrorLogCommand { get; }
-    public IReactiveCommand RegisterSchemeCommand { get; }
+    public IReactiveCommand RegisterVRCAESchemeCommand { get; }
+    public IReactiveCommand UnregisterVRCAESchemeCommand { get; }
+    public IReactiveCommand RegisterBLMSchemeCommand { get; }
+    public IReactiveCommand UnregisterBLMSchemeCommand { get; }
     public IReactiveCommand CheckForUpdateNowCommand { get; }
     public IReactiveCommand OpenTwitterCommand { get; }
     public IReactiveCommand OpenGithubCommand { get; }
@@ -91,7 +97,10 @@ public class SettingsViewModel : ViewModelBase
         ResetCommonAvatarDatabaseCommand = ReactiveCommand.CreateFromTask(ResetCommonAvatarDatabase);
         ResetBulkImportPresetDatabaseCommand = ReactiveCommand.CreateFromTask(ResetBulkImportPresetDatabase);
         ShowErrorLogCommand = ReactiveCommand.Create(ShowErrorLog);
-        RegisterSchemeCommand = ReactiveCommand.CreateFromTask(RegisterScheme);
+        RegisterVRCAESchemeCommand = ReactiveCommand.CreateFromTask(() => RegisterScheme(SchemeService.ProtocolVRCAE));
+        UnregisterVRCAESchemeCommand = ReactiveCommand.CreateFromTask(() => UnregisterScheme(SchemeService.ProtocolVRCAE));
+        RegisterBLMSchemeCommand = ReactiveCommand.CreateFromTask(() => RegisterScheme(SchemeService.ProtocolBLM));
+        UnregisterBLMSchemeCommand = ReactiveCommand.CreateFromTask(() => UnregisterScheme(SchemeService.ProtocolBLM));
         CheckForUpdateNowCommand = ReactiveCommand.Create(CheckForUpdateNow);
         OpenTwitterCommand = ReactiveCommand.CreateFromTask(OpenTwitter);
         OpenGithubCommand = ReactiveCommand.CreateFromTask(OpenGithub);
@@ -141,6 +150,8 @@ public class SettingsViewModel : ViewModelBase
         SelectedUpdateChannel = (int)runtimeSettings.UpdateChannel;
         SelectedSortOrder = (int)preferences.SortOrder;
         SelectedSortDirection = preferences.SortDirection;
+
+        UpdateSchemeStatus();
 
         IsVisible = true;
     }
@@ -314,7 +325,34 @@ public class SettingsViewModel : ViewModelBase
         MainWindowViewModel.Instance.ShowErrorLog();
     }
 
-    private async Task RegisterScheme()
+    private void UpdateSchemeStatus()
+    {
+        if (!ProcessUtils.IsWindows())
+        {
+            VRCAESchemeStatusText = string.Empty;
+            BLMSchemeStatusText = string.Empty;
+            return;
+        }
+
+        VRCAESchemeStatusText = GetSchemeStatusText(SchemeService.ProtocolVRCAE);
+        BLMSchemeStatusText = GetSchemeStatusText(SchemeService.ProtocolBLM);
+    }
+
+    private static string GetSchemeStatusText(string protocol)
+    {
+        if (SchemeService.IsOwnSchemeRegistered(protocol))
+            return Localizer.Instance[Loc.Settings.RegisterScheme.Status.Own];
+
+        if (SchemeService.IsAnySchemeRegistered(protocol))
+        {
+            var command = SchemeService.GetRegisteredCommand(protocol) ?? "";
+            return Localizer.Instance.Get(Loc.Settings.RegisterScheme.Status.Other, command);
+        }
+
+        return Localizer.Instance[Loc.Settings.RegisterScheme.Status.None];
+    }
+
+    private async Task RegisterScheme(string protocol)
     {
         if (!SchemeService.IsRunAsAdmin())
         {
@@ -327,11 +365,53 @@ public class SettingsViewModel : ViewModelBase
             return;
         }
 
-        SchemeService.RegisterScheme();
+        if (SchemeService.IsAnySchemeRegistered(protocol) && !SchemeService.IsOwnSchemeRegistered(protocol))
+        {
+            var command = SchemeService.GetRegisteredCommand(protocol) ?? "";
+            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance.Get(Loc.Settings.RegisterScheme.OverwriteConfirm, command)
+            );
+            if (!result) return;
+        }
+
+        SchemeService.RegisterScheme(protocol);
+        UpdateSchemeStatus();
 
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Scheme.RegisterSuccess],
+            Avalonia.Controls.Notifications.NotificationType.Success
+        );
+    }
+
+    private async Task UnregisterScheme(string protocol)
+    {
+        if (!SchemeService.IsRunAsAdmin())
+        {
+            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance[Loc.Scheme.RestartAsAdmin]
+            );
+            if (result) SchemeService.RestartAsAdmin();
+
+            return;
+        }
+
+        if (!SchemeService.IsAnySchemeRegistered(protocol)) return;
+
+        var confirm = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Settings.RegisterScheme.UnregisterConfirm]
+        );
+        if (!confirm) return;
+
+        SchemeService.UnregisterScheme(protocol);
+        UpdateSchemeStatus();
+
+        MainWindowViewModel.Instance.ShowNotification(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Settings.RegisterScheme.UnregisterSuccess],
             Avalonia.Controls.Notifications.NotificationType.Success
         );
     }

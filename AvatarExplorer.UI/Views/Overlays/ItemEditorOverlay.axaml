@@ -11,18 +11,15 @@
         <Border Classes="overlay" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" CornerRadius="12">
             <Grid ColumnDefinitions="350,500" Height="550" ColumnSpacing="20">
                 <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" RowSpacing="15">
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                        <Button Classes="accentbutton" FontSize="12" Command="{Binding AddFolderCommand}">
-                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                <materialIcons:MaterialIcon Kind="FolderPlus" Width="20" Height="20"/>
-                                <TextBlock Text="{Binding [ItemEditor.AddFolder], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center"/>
-                            </StackPanel>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddFolderCommand}" ToolTip.Tip="{Binding [ItemEditor.AddFolder], Source={x:Static loc:Localizer.Instance}}">
+                            <materialIcons:MaterialIcon Kind="FolderPlus" Width="20" Height="20"/>
                         </Button>
-                        <Button Classes="accentbutton" FontSize="12" Command="{Binding AddFileCommand}">
-                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                <materialIcons:MaterialIcon Kind="FilePlus" Width="20" Height="20"/>
-                                <TextBlock Text="{Binding [ItemEditor.AddFile], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center"/>
-                            </StackPanel>
+                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddFileCommand}" ToolTip.Tip="{Binding [ItemEditor.AddFile], Source={x:Static loc:Localizer.Instance}}">
+                            <materialIcons:MaterialIcon Kind="FilePlus" Width="20" Height="20"/>
+                        </Button>
+                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddUrlCommand}" ToolTip.Tip="{Binding [ItemEditor.AddUrl], Source={x:Static loc:Localizer.Instance}}">
+                            <materialIcons:MaterialIcon Kind="LinkPlus" Width="20" Height="20"/>
                         </Button>
                     </StackPanel>
 
@@ -45,7 +42,8 @@
 
                                                 <Grid Grid.Column="1" RowDefinitions="Auto,Auto">
                                                     <TextBlock Text="{Binding FileName}" FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
-                                                    <TextBlock Grid.Row="1" Text="{Binding FullPath}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock IsVisible="{Binding !IsUrl}" Grid.Row="1" Text="{Binding FullPath}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock IsVisible="{Binding IsUrl}" Grid.Row="1" Text="{Binding [ItemEditor.DownloadURL], Source={x:Static loc:Localizer.Instance}}" FontSize="13" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Text.Secondary}"/>
                                                 </Grid>
 
                                                 <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [ItemEditor.RemoveFolder], Source={x:Static loc:Localizer.Instance}}" FontSize="14" BorderThickness="1" Padding="10,4" Command="{Binding $parent[UserControl].DataContext.RemovePathCommand}" CommandParameter="{Binding}"/>

@@ -1,5 +1,3 @@
-using System;
-
 namespace AvatarExplorer.UI.Models.System;
 
 public class LaunchInfo

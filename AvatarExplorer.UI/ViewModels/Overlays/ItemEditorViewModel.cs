@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
@@ -50,6 +51,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     public IReactiveCommand AddFolderCommand { get; }
     public IReactiveCommand AddFileCommand { get; }
+    public IReactiveCommand AddUrlCommand { get; }
     public IReactiveCommand RemovePathCommand { get; }
     public IReactiveCommand FetchBoothDataCommand { get; }
     public IReactiveCommand AddCustomCategoryCommand { get; }
@@ -64,6 +66,7 @@ public class ItemEditorViewModel : ViewModelBase
     {
         AddFolderCommand = ReactiveCommand.CreateFromTask(SelectAndAddFolders);
         AddFileCommand = ReactiveCommand.CreateFromTask(SelectAndAddFiles);
+        AddUrlCommand = ReactiveCommand.CreateFromTask(AddUrl);
         RemovePathCommand = ReactiveCommand.Create<ItemPathViewModel>(RemovePath);
         FetchBoothDataCommand = ReactiveCommand.CreateFromTask(FetchBoothData);
         AddCustomCategoryCommand = ReactiveCommand.CreateFromTask(AddCustomCategory);
@@ -119,6 +122,12 @@ public class ItemEditorViewModel : ViewModelBase
     }
     public async void Open(LaunchInfo launchInfo)
     {
+        if (IsVisible && BoothId == launchInfo.BoothId)
+        {
+            AddPaths(launchInfo.AssetPaths);
+            return;
+        }
+
         Identifier = null;
         ItemPaths.Clear();
 
@@ -142,16 +151,52 @@ public class ItemEditorViewModel : ViewModelBase
         await FetchBoothData();
     }
 
+    public async void Open(BLMImportItemInfo launchInfo)
+    {
+        if (IsVisible && BoothId == launchInfo.ItemID)
+        {
+            ItemPaths.Add(new ItemPathViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
+            return;
+        }
+
+        Identifier = null;
+        ItemPaths.Clear();
+
+        RefleshCategories();
+
+        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.ItemID);
+        Title = string.Empty;
+        Author = string.Empty;
+        AuthorId = string.Empty;
+        BoothId = string.Empty;
+        Memo = string.Empty;
+        SupportedAvatars = [];
+        Tags = [];
+        SelectedCategoryIndex = -1;
+        SelectedCategoryIndex = 0;
+
+        UpdateCountField();
+        IsVisible = true;
+
+        ItemPaths.Add(new ItemPathViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
+        await FetchBoothData();
+    }
+
     public void AddPaths(string[] paths)
     {
         if (!IsVisible) Open();
         ItemPaths.AddRange(paths.Select(i =>
         {
             var itemPathType = ItemPathType.Unknown;
-            if (File.Exists(i)) itemPathType = ItemPathType.File;
+            if (i.StartsWith("http")) itemPathType = ItemPathType.URL;
+            else if (File.Exists(i)) itemPathType = ItemPathType.File;
             else if (Directory.Exists(i)) itemPathType = ItemPathType.Folder;
 
-            return new ItemPathViewModel(i, itemPathType);
+            var fileName = itemPathType == ItemPathType.URL
+                ? Path.GetFileName(new Uri(i).GetLeftPart(UriPartial.Path))
+                : Path.GetFileName(i);
+
+            return new ItemPathViewModel(fileName, i, itemPathType);
         }));
     }
 
@@ -249,7 +294,17 @@ public class ItemEditorViewModel : ViewModelBase
     {
         MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Default]);
         MainWindowViewModel.Instance.ProgressVM.Update(0);
-        var result = await AvatarExplorerApp.Instance.Items.AddPaths(identifier, ItemPaths.Select(i => i.FullPath), ShouldLinkToOriginal);
+        var result = await AvatarExplorerApp.Instance.Items.AddPaths(
+            identifier,
+            ItemPaths
+                .Select(i => new ItemPathEntry()
+                {
+                    FileName = i.FileName,
+                    Path = i.FullPath,
+                    IsUrl = i.IsUrl
+                }),
+            ShouldLinkToOriginal
+        );
         MainWindowViewModel.Instance.ProgressVM.Close();
         
         if (result.IsError)
@@ -281,7 +336,7 @@ public class ItemEditorViewModel : ViewModelBase
         );
         if (folders == null || folders.Length == 0) return;
 
-        ItemPaths.AddRange(folders.Select(i => new ItemPathViewModel(i, ItemPathType.Folder)));
+        ItemPaths.AddRange(folders.Select(i => new ItemPathViewModel(Path.GetFileName(i), i, ItemPathType.Folder)));
     }
     private async Task SelectAndAddFiles()
     {
@@ -292,7 +347,15 @@ public class ItemEditorViewModel : ViewModelBase
         );
         if (files == null || files.Length == 0) return;
 
-        ItemPaths.AddRange(files.Select(i => new ItemPathViewModel(i, ItemPathType.File)));
+        ItemPaths.AddRange(files.Select(i => new ItemPathViewModel(Path.GetFileName(i), i, ItemPathType.File)));
+    }
+    private async Task AddUrl()
+    {
+        var url = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddUrl]);
+        if (string.IsNullOrEmpty(url)) return;
+
+        var fileName = Path.GetFileName(new Uri(url).GetLeftPart(UriPartial.Path));
+        ItemPaths.Add(new ItemPathViewModel(fileName, url, ItemPathType.URL));
     }
     private async Task FetchBoothData()
     {

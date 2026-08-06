@@ -27,5 +27,5 @@ public static class SystemPath
     public static readonly string RuntimeSettingsFilePath = Path.Join(SettingsFolderPath, SystemFileName.Settings.Runtime);
     public static readonly string RuntimeSettingsMigrationVersionPath = Path.Join(SettingsFolderPath, SystemFileName.Settings.RuntimeDatabaseMigrationVersion);
 
-    public static readonly string SchemeFilePath = Path.Join(SettingsFolderPath, SystemFileName.Scheme);
+    public static readonly string SchemeBackupFolderPath = Path.Join(SettingsFolderPath, "SchemeBackups");
 }

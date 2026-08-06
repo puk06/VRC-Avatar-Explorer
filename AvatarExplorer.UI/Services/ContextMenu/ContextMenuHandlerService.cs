@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
@@ -160,7 +159,16 @@ public static class ContextMenuHandlerService
         );
         if (files == null || files.Length == 0) return;
 
-        await Items.AddPaths(identifier, files, RuntimeSettings.ShouldLinkToOriginal);
+        await Items.AddPaths(
+            identifier,
+            files
+                .Select(i => new ItemPathEntry()
+                {
+                    FileName = Path.GetFileName(i),
+                    Path = i
+                }),
+            RuntimeSettings.ShouldLinkToOriginal
+        );
     }
     private static async void AddItemFolder(string identifier)
     {
@@ -171,7 +179,16 @@ public static class ContextMenuHandlerService
         );
         if (folders == null || folders.Length == 0) return;
 
-        await Items.AddPaths(identifier, folders, RuntimeSettings.ShouldLinkToOriginal);
+        await Items.AddPaths(
+            identifier,
+            folders
+                .Select(i => new ItemPathEntry()
+                {
+                    FileName = Path.GetFileName(i),
+                    Path = i
+                }),
+            RuntimeSettings.ShouldLinkToOriginal
+        );
     }
     private static async void EditImplementedAvatar(string identifier)
     {

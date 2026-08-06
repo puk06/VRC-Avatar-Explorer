@@ -39,7 +39,8 @@ internal static class ImageService
         { SystemIconKey.FileIcon, Load(GetAssetUri("FileIcon.png")) },
         { SystemIconKey.UnknownFileIcon, Load(GetAssetUri("UnknownFileIcon.png")) },
         { SystemIconKey.GroupIcon, Load(GetAssetUri("GroupIcon.png")) },
-        { SystemIconKey.AvatarIcon, Load(GetAssetUri("AvatarIcon.png")) }
+        { SystemIconKey.AvatarIcon, Load(GetAssetUri("AvatarIcon.png")) },
+        { SystemIconKey.LinkIcon, Load(GetAssetUri("LinkIcon.png")) },
     };
 
     internal static bool IsSystemIcon(string fileName) => SystemIconsDictionary.ContainsKey(fileName);
