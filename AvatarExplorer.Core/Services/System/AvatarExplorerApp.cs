@@ -1,5 +1,4 @@
 using AvatarExplorer.Core.Data.Paths;
-using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
@@ -39,13 +38,12 @@ public class AvatarExplorerApp
     {
         if (_initialized) return;
 
+        RuntimeSettings.Load();
+
         Items.Load();
         CommonAvatars.Load();
         TempAvatars.Load();
         BulkImportPresets.Load();
-        RuntimeSettings.Load();
-
-        Migration(); //TODO: ItemMigrationに移行する
 
         ItemGroupService.RebuildIndices();
 
@@ -54,9 +52,13 @@ public class AvatarExplorerApp
                 SystemPath.ItemDatabasePath,
                 SystemPath.ItemDatabaseMigrationVersionPath,
                 SystemPath.CommonAvatarDatabasePath,
+                SystemPath.CommonAvatarDatabaseMigrationVersionPath,
                 SystemPath.TempAvatarsDatabasePath,
+                SystemPath.TempAvatarsDatabaseMigrationVersionPath,
                 SystemPath.BulkImportPresetDatabasePath,
+                SystemPath.BulkImportPresetDatabaseMigrationVersionPath,
                 SystemPath.RuntimeSettingsFilePath,
+                SystemPath.RuntimeSettingsMigrationVersionPath,
             ]
         );
         BackupManager.OnBackupRestored += OnBackupRestored;
@@ -72,13 +74,13 @@ public class AvatarExplorerApp
 
     public void OnBackupRestored()
     {
+        RuntimeSettings.Load();
+
         Items.Load();
         CommonAvatars.Load();
         TempAvatars.Load();
         BulkImportPresets.Load();
-        RuntimeSettings.Load();
 
-        Migration(); //TODO: ItemMigrationに移行する
         ItemGroupService.RebuildIndices();
     }
 
@@ -86,81 +88,5 @@ public class AvatarExplorerApp
     {
         BackupManager.SetAutoBackupInterval(runtimeSettings.AutoBackupInterval);
         BackupManager.SetAutoBackupPath(runtimeSettings.AutoBackupRootDirectory);
-    }
-
-    private void Migration()
-    {
-        // Item
-        var items = Items.GetAll();
-        items.ForEach(i =>
-        {
-            var migratedPath = i.ItemPath.StartsWith("<sys>") ? Path.Join(RuntimeSettings.Settings.DataRootDirectory, i.ItemPath.Replace("<sys>", string.Empty)) : i.ItemPath;
-            i.UpdateItemPath(migratedPath);
-
-            i.UpdateSupportedAvatars(i.SupportedAvatars.Select(i =>
-            {
-                if (i.StartsWith("<sys:temp>"))
-                {
-                    return i.Replace("<sys:temp>", "tempavatar:");
-                }
-                else if (i.StartsWith("<sys:commonavatar>"))
-                {
-                    return i.Replace("<sys:commonavatar>", "commonavatar:");
-                }
-                else
-                {
-                    return "item:" + i;
-                }
-            }));
-
-            i.UpdateImplementedAvatars(i.ImplementedAvatars.Select(i =>
-            {
-                if (i.StartsWith("<sys:temp>"))
-                {
-                    return i.Replace("<sys:temp>", "tempavatar:");
-                }
-                else if (i.StartsWith("<sys:commonavatar>"))
-                {
-                    return i.Replace("<sys:commonavatar>", "commonavatar:");
-                }
-                else
-                {
-                    return "item:" + i;
-                }
-            }));
-
-#pragma warning disable CS0618 // 型またはメンバーが旧型式です
-            i.UpdateCategory(new Models.Items.ItemCategory(i.Type, i.CustomCategory));
-#pragma warning restore CS0618 // 型またはメンバーが旧型式です
-        });
-
-        var commonAvatars = CommonAvatars.GetAll();
-        commonAvatars.ForEach(i =>
-        {
-            i.UpdateAvatars(i.Avatars.Select(i =>
-            {
-                if (i.StartsWith("<sys:temp>"))
-                {
-                    return i.Replace("<sys:temp>", "tempavatar:");
-                }
-                else if (i.StartsWith("<sys:commonavatar>"))
-                {
-                    return i.Replace("<sys:commonavatar>", "commonavatar:");
-                }
-                else
-                {
-                    return "item:" + i;
-                }
-            }));
-        });
-
-        var presets = BulkImportPresets.GetAll();
-        presets.ForEach(i =>
-        {
-            i.Items.ForEach(i =>
-            {
-                i.UpdateItemId("item:" + i.ItemId);
-            });
-        });
     }
 }

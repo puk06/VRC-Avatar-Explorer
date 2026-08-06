@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 
@@ -8,8 +9,8 @@ public record ItemCategory : INavigationable
     public ItemType Type { get; init; } = ItemType.None;
     public string CustomCategory { get; init; } = string.Empty;
     
-    public string Identifier => Type == ItemType.Custom ? $"custom:{CustomCategory}" : $"type:{(int)Type}";
-    public bool IsLocalizable => Type != ItemType.Custom && Type != ItemType.None;
+    [JsonIgnore] public string Identifier => Type == ItemType.Custom ? $"custom:{CustomCategory}" : $"type:{(int)Type}";
+    [JsonIgnore] public bool IsLocalizable => Type != ItemType.Custom && Type != ItemType.None;
 
     #region Constructor
     public ItemCategory()

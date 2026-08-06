@@ -18,9 +18,14 @@ public class ItemRepository
     /// </summary>
     public event Action? OnUpdated;
 
-    public void Load(string? path = null)
+    public void Load()
     {
-        _db.Load(path);
+        DatabaseMigrationService.Migrate(
+            _db.DatabaseFilePath,
+            DatabaseMigrations.ItemVersion,
+            (root, version) => DatabaseMigrations.ApplyItemMigration(root, version, AvatarExplorerApp.Instance.RuntimeSettings.Settings.DataRootDirectory));
+
+        _db.Load();
         OnUpdated?.Invoke();
     }
 

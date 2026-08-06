@@ -14,8 +14,6 @@ public class Item : AbstractDatabaseItem, INavigationable
     [JsonInclude] public string ItemPath { get; private set; } = string.Empty; // デフォルトの展開先
     [JsonInclude] public ImmutableArray<string> ItemPaths { get; private set; } = []; // フォルダー（フォルダーをそのまま使用する設定の時にここに追加される）
     [JsonInclude] public string ThumbnailFileName { get; private set; } = string.Empty;
-    [JsonInclude][Obsolete("Categoryを使ってください")] internal ItemType Type { get; private set; } = ItemType.None; //TODO: 移行する
-    [JsonInclude][Obsolete("Categoryを使ってください")] internal string CustomCategory { get; private set; } = string.Empty; //TODO: 移行する
     [JsonInclude] public ItemCategory Category { get; private set; } = new(ItemType.None);
     [JsonInclude] public ImmutableArray<string> SupportedAvatars { get; private set; } = [];
     [JsonInclude] public ImmutableArray<string> ImplementedAvatars { get; private set; } = [];

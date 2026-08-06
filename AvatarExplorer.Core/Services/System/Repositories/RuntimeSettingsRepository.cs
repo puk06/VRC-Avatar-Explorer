@@ -1,5 +1,6 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.System;
+using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.System.Repositories;
 
@@ -15,6 +16,13 @@ public class RuntimeSettingsRepository
         _manager.SettingsChanged += (settings) => OnSettingsChanged?.Invoke(settings);
     }
 
-    public void Load(string? path = null) => _manager.Load(path);
+    public void Load()
+    {
+        DatabaseMigrationService.Migrate(
+            _manager.FilePath,
+            DatabaseMigrations.RuntimeSettingsVersion,
+            (root, version) => DatabaseMigrations.ApplyRuntimeSettingsMigration(root, version, SystemPath.UserPreferencesFilePath));
+        _manager.Load();
+    }
     public void Update(RuntimeSettings settings) => _manager.Update(settings);
 }

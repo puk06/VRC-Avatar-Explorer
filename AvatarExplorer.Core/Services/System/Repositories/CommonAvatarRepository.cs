@@ -1,6 +1,7 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Database;
+using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.System.Repositories;
 
@@ -13,9 +14,14 @@ public class CommonAvatarRepository
     /// </summary>
     public event Action? OnUpdated;
 
-    public void Load(string? path = null)
+    public void Load()
     {
-        _db.Load(path);
+        DatabaseMigrationService.Migrate(
+            _db.DatabaseFilePath,
+            DatabaseMigrations.CommonAvatarVersion,
+            DatabaseMigrations.ApplyCommonAvatarMigration);
+
+        _db.Load();
         OnUpdated?.Invoke();
     }
 

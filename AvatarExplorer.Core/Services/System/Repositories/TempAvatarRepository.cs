@@ -13,9 +13,9 @@ public class TempAvatarRepository
     /// </summary>
     public event Action? OnUpdated;
 
-    public void Load(string? path = null)
+    public void Load()
     {
-        _db.Load(path);
+        _db.Load();
         OnUpdated?.Invoke();
     }
     public IReadOnlyList<TempAvatar> GetAll() => _db.Items;
