@@ -6,9 +6,12 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Utils;
+using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
@@ -212,6 +215,12 @@ public partial class MainView : UserControl
     private void OnMainItemImageLoaded(object? sender, RoutedEventArgs e)
     {
         if (sender is not Image image) return;
+
+        var userPreferences = UserPreferencesService.Instance.Repository.Settings;
+        var bitmapInterpolationMode = userPreferences.AntiAliasingMode.GetInterpolationMode();
+        if (bitmapInterpolationMode != BitmapInterpolationMode.None && bitmapInterpolationMode != BitmapInterpolationMode.Unspecified)
+            RenderOptions.SetBitmapInterpolationMode(image, bitmapInterpolationMode);
+
         image.PointerEntered += OnMainItemImagePointerEntered;
         image.PointerExited += OnMainItemImagePointerExited;
         image.PointerMoved += OnMainItemImagePointerMoved;
