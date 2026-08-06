@@ -22,7 +22,7 @@ namespace AvatarExplorer.UI.Views;
 
 public partial class MainView : UserControl
 {
-    private HoverThumbnailWindow? _hoverWindow;
+    private readonly HoverThumbnailWindow _hoverWindow = new();
 
     public MainView()
     {
@@ -161,42 +161,24 @@ public partial class MainView : UserControl
                 OnHoverThumbnailVisibilityChanged(vm.IsHoverThumbnailVisible);
                 break;
             case nameof(MainViewModel.HoverThumbnailImage):
-                _hoverWindow?.SetImage(vm.HoverThumbnailImage);
+                _hoverWindow.SetImage(vm.HoverThumbnailImage);
                 break;
             case nameof(MainViewModel.HoverThumbnailSize):
-                _hoverWindow?.SetSize(vm.HoverThumbnailSize);
+                _hoverWindow.SetSize(vm.HoverThumbnailSize);
                 break;
             case nameof(MainViewModel.HoverThumbnailPosition):
-                _hoverWindow?.Position = vm.HoverThumbnailPosition;
+                _hoverWindow.Position = vm.HoverThumbnailPosition;
                 break;
         }
     }
 
     private void OnHoverThumbnailVisibilityChanged(bool isVisible)
     {
-        if (isVisible)
-        {
-            if (_hoverWindow == null)
-            {
-                _hoverWindow = new HoverThumbnailWindow();
-                _hoverWindow.Show();
-            }
-            else
-            {
-                _hoverWindow.Show();
-            }
-        }
-        else
-        {
-            _hoverWindow?.Hide();
-        }
+        if (isVisible) _hoverWindow.Show();
+        else _hoverWindow.Hide();
     }
 
-    public void CloseHoverWindow()
-    {
-        _hoverWindow?.Close();
-        _hoverWindow = null;
-    }
+    public void CloseHoverWindow() => _hoverWindow.Close();
 
     private void OnMainItemImageLoaded(object? sender, RoutedEventArgs e)
     {

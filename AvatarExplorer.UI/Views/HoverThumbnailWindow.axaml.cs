@@ -10,7 +10,6 @@ public partial class HoverThumbnailWindow : Window
         InitializeComponent();
     }
 
-    // TODO: なんか初めのイベントが発火しない
     public void SetImage(Bitmap? image)
     {
         HoverImage.Source = image;

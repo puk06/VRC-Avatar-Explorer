@@ -5,14 +5,9 @@ using AvatarExplorer.UI.ViewModels.Component;
 
 namespace AvatarExplorer.UI.ViewModels.Managers;
 
-public class HoverThumbnailManager
+public class HoverThumbnailManager(MainViewModel vm)
 {
-    private readonly MainViewModel _vm;
-
-    public HoverThumbnailManager(MainViewModel vm)
-    {
-        _vm = vm;
-    }
+    private readonly MainViewModel _vm = vm;
 
     public void Show(ItemViewModel item)
     {
