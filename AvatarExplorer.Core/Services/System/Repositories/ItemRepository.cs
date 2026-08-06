@@ -75,7 +75,7 @@ public class ItemRepository
 
         return item;
     }
-    public bool Update(string identifier, ItemEditContext context)
+    public async Task<bool> Update(string identifier, ItemEditContext context)
     {
         var item = Get(identifier);
         if (item == null) return false;
@@ -91,6 +91,13 @@ public class ItemRepository
         if (context.SupportedAvatars != null) item.UpdateSupportedAvatars(context.SupportedAvatars);
         if (context.ImplementedAvatars != null) item.UpdateImplementedAvatars(context.ImplementedAvatars);
         if (context.Tags != null) item.UpdateTags(context.Tags);
+
+        if (context.ThumbnailUrl != null)
+        {
+            var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
+            var downloaded = await context.FetchThumbnailAsync(destPath, overwrite: true);
+            if (downloaded) item.UpdateThumbnailFileName(item.Id);
+        }
 
         var now = DatetimeUtils.GetCurrentUnixTime();
         item.UpdateTimestamp(now);

@@ -134,7 +134,7 @@ public static class ContextMenuHandlerService
         );
         if (newTitle == null) return;
 
-        Items.Update(identifier, new() { Title = newTitle });
+        await Items.Update(identifier, new() { Title = newTitle });
     }
     private static async void EditItemMemo(string identifier)
     {
@@ -144,7 +144,7 @@ public static class ContextMenuHandlerService
         var newMemo = await MainWindowViewModel.Instance.ShowEditMemoDialog(item.ItemMemo);
         if (newMemo == null) return;
 
-        Items.Update(identifier, new() { ItemMemo = newMemo });
+        await Items.Update(identifier, new() { ItemMemo = newMemo });
     }
     private static void AddToBulkImportList(string identifier)
     {
@@ -187,7 +187,7 @@ public static class ContextMenuHandlerService
         );
         if (newAvatars == null) return;
 
-        Items.Update(identifier, new() { ImplementedAvatars = newAvatars });
+        await Items.Update(identifier, new() { ImplementedAvatars = newAvatars });
     }
     private static async void EditItemDefaultPath(string identifier)
     {
@@ -201,7 +201,7 @@ public static class ContextMenuHandlerService
         );
         if (folders == null || folders.Length == 0) return;
 
-        Items.Update(item.Identifier, new() { ItemPath = folders[0] });
+        await Items.Update(item.Identifier, new() { ItemPath = folders[0] });
     }
     private static async void EditItemTag(string identifier)
     {
@@ -211,7 +211,7 @@ public static class ContextMenuHandlerService
         var newTags = await MainWindowViewModel.Instance.ShowEditTagsDialog(item.Tags.ToArray());
         if (newTags == null) return;
 
-        Items.Update(item.Identifier, new() { Tags = newTags });
+        await Items.Update(item.Identifier, new() { Tags = newTags });
     }
     private static async void RemoveItem(string identifier)
     {

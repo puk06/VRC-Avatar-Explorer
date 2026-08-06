@@ -195,12 +195,13 @@ public class ItemEditorViewModel : ViewModelBase
             BoothId = ValueParser.Int(BoothId, -1),
             ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
             CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory : string.Empty,
+            ThumbnailUrl = ThumbnailUrl,
             SupportedAvatars = SupportedAvatars.ToList(),
             ItemMemo = Memo,
             Tags = Tags.ToList()
         };
 
-        bool updateResult = AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
+        bool updateResult = await AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[updateResult ? Loc.Success.Default : Loc.Error.Default],
             Localizer.Instance[updateResult ? Loc.Success.ItemEdit : Loc.Error.ItemEditFailed],
