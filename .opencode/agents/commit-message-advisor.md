@@ -1,7 +1,6 @@
 ---
 description: Analyzes current Git changes and suggests Conventional Commits messages, branch names, and localization/version flags for AvatarExplorer.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.2
 tools:
   bash: true

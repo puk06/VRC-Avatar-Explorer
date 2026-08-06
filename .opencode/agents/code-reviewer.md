@@ -1,7 +1,6 @@
 ---
 description: Reviews AI-generated code against AvatarExplorer quality standards, checking logic, edge cases, conventions, performance, security, and localization.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.1
 tools:
   read: true

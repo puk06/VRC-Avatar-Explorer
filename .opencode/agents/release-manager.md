@@ -1,7 +1,6 @@
 ---
 description: Guides version management, semantic versioning decisions, release tags (-beta.X / -stable), and release notes for AvatarExplorer.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.1
 tools:
   read: true

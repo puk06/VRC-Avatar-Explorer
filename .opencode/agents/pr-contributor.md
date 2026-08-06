@@ -1,7 +1,6 @@
 ---
 description: Guides creating high-quality pull requests for AvatarExplorer, ensuring Conventional Commits titles and pre-submission checklist compliance.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.2
 tools:
   read: true
