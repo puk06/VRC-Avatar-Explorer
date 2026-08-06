@@ -113,7 +113,8 @@ public class ItemRepository
         // Zipを展開する必要がある時はこれが使われる
         var defaultExtractPath = string.IsNullOrEmpty(item.ItemPath) ? GetSafePath(item, settings.DataRootDirectory) : item.ItemPath;
         var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, settings.RemoveOriginal);
-        
+        if (result.IsError) return Error.Failure(description: "Failed to extract item paths.");
+
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(result.Value.ItemParentFolder);
         item.UpdateItemPaths(result.Value.FolderPaths);
 

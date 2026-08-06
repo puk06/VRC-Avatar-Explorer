@@ -421,7 +421,7 @@ public static class FileSystemService
             if (!string.IsNullOrEmpty(extractResult.Value.ExtractedFolderPath))
             {
                 // 展開されたら、使用されたということ
-                if (string.IsNullOrEmpty(result.ItemParentFolder))
+                if (!string.IsNullOrEmpty(result.ItemParentFolder))
                     result.ItemParentFolder = parentFolderPath;
             }
             else if (extractResult.Value.IsDirectory)
@@ -436,6 +436,8 @@ public static class FileSystemService
                     var copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileName(itemPath), true);
                     var copyResult = await CopyDirectoryAsync(itemPath, copiedFolderPath, maxDegreeOfParallelism);
                     if (copyResult.IsError) return Error.Failure(description: "Failed to copy directory.");
+
+                    result.ItemParentFolder = parentFolderPath;
 
                     if (copyResult.Value.Failures.Count > 0)
                     {
@@ -756,7 +758,11 @@ public static class FileSystemService
 
     public static IEnumerable<string> EnumerateFiles(string rootDirectory, bool isRecursive = true)
     {
-        if (!Directory.Exists(rootDirectory)) throw new DirectoryNotFoundException($"Directory not found: {rootDirectory}.");
+        if (!Directory.Exists(rootDirectory))
+        {
+            ErrorManager.Instance.PostInternalError($"Directory not found: {rootDirectory}.");
+            yield break;
+        }
 
         var directories = new Stack<string>();
         directories.Push(rootDirectory);

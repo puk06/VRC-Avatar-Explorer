@@ -12,18 +12,6 @@ public static class ItemExtensions
         return item.Category.Identifier == identifier;
     }
 
-    public static IEnumerable<string> EnumerateFiles(this Item item, bool isRecursive = true)
-    {
-        List<string> fileList = new();
-
-        foreach (string itemPath in item.GetFolderPaths())
-        {
-            fileList.AddRange(FileSystemService.EnumerateFiles(itemPath, isRecursive));
-        }
-
-        return fileList.SortByFileName();
-    }
-
     public static IEnumerable<string> GetFolderPaths(this Item item, bool includeRootFolder = true)
     {
         List<string> folderList = new();

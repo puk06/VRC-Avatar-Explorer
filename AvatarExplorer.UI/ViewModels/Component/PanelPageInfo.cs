@@ -37,6 +37,8 @@ public class PanelPageInfo : ViewModelBase
 
     public PanelPageInfo()
     {
+        Localizer.Instance.LanguageChanged += UpdateDerivedProperties;
+
         this.WhenAnyValue(x => x.CurrentPage, x => x.TotalItems, x => x.PageSize)
             .Subscribe(_ => UpdateDerivedProperties());
     }

@@ -53,6 +53,7 @@ public class InitialSetupViewModel : ViewModelBase
     public void Open()
     {
         Languages = Localizer.Instance.GetLanguageList();
+        SelectedLanguage = -1;
         SelectedLanguage = Localizer.Instance.CurrentLanguageIndex;
         ItemsFolder = Settings.Settings.DataRootDirectory;
 

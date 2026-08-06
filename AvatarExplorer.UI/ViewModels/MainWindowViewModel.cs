@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.Notifications;
@@ -298,6 +299,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
     {
         try
         {
+            if (string.IsNullOrEmpty(path) || !File.Exists(path)) return;
+
             var image = new ImageBrush()
             {
                 Source = new Bitmap(path),

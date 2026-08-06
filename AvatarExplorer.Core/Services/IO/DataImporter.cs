@@ -85,15 +85,15 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
 
                 var sourcePaths = new List<string>
                 {
-                    Path.Combine(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateV1Path(v1Item.ItemPath))
+                    GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateV1Path(v1Item.ItemPath))
                 };
 
                 if (!string.IsNullOrEmpty(v1Item.MaterialPath))
-                    sourcePaths.Add(Path.Combine(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateV1Path(v1Item.MaterialPath)));
+                    sourcePaths.Add(GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateV1Path(v1Item.MaterialPath)));
 
                 await _items.AddPaths(item.Identifier, sourcePaths, !shouldCopyAsset);
 
-                var sourceThumbnailPath = Path.Combine(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateV1Path(v1Item.ImagePath));
+                var sourceThumbnailPath = GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateV1Path(v1Item.ImagePath));
                 var destThumbnailPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
                 var thumbnailResult = await FileSystemService.CopyFileAsync(sourceThumbnailPath, destThumbnailPath);
                 item.UpdateThumbnailFileName(thumbnailResult.IsError ? string.Empty : item.Id);
@@ -275,7 +275,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 if (sourceItem.BoothId == -1 || string.IsNullOrWhiteSpace(sourceItem.ImagePath)) continue;
                 if (sourceThumbnailMap.ContainsKey(sourceItem.BoothId)) continue;
 
-                var thumbnailPath = Path.Combine(
+                var thumbnailPath = GetItemPath(
                     SystemPathV1.ItemThumbnailsPath(dataFolderPath),
                     MigrateV1Path(sourceItem.ImagePath));
 
@@ -368,5 +368,12 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, percent));
             }
         }
+    }
+
+    private static string GetItemPath(string parentFolder, string itemPath)
+    {
+        // <sys>で始まっていたら相対パスと認識して親フォルダに置き換える
+        // 始まっていないものはフルパスと認識してそのまま変えす
+        return itemPath.StartsWith("<sys>") ? Path.Join(parentFolder, itemPath.Replace("<sys>", string.Empty)) : itemPath;
     }
 }
