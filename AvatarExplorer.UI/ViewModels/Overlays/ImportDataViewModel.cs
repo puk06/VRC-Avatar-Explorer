@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Services.System;
@@ -69,14 +69,33 @@ public class ImportDataViewModel : ViewModelBase
         if (ImportItems) type |= DataImportType.Items;
         if (ImportThumbnails) type |= DataImportType.Thumbnails;
 
+        var copyAssetData = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.CopyAssetData]
+        );
+
+        async Task ProgressAction((string localizationKey, int progress) tuple)
+        {
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                MainWindowViewModel.Instance.ProgressVM.Update(
+                    Localizer.Instance.Get(tuple.localizationKey, tuple.progress.ToString()),
+                    tuple.progress
+                );
+            });
+        }
+
         var request = new ImportRequest
         {
             ImportType = type,
             DataFolderPath = FolderPath,
-            CopyAssetData = true
+            CopyAssetData = copyAssetData,
+            ReportProgress = ProgressAction
         };
 
+        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Import.Copying]);
         var result = await AvatarExplorerApp.Instance.ItemGroupService.Import(request);
+        MainWindowViewModel.Instance.ProgressVM.Close();
 
         if (result.IsError)
         {
