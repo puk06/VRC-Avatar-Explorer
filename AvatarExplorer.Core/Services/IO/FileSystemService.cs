@@ -435,14 +435,19 @@ public static class FileSystemService
                 {
                     var copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileName(itemPath), true);
                     var copyResult = await CopyDirectoryAsync(itemPath, copiedFolderPath, maxDegreeOfParallelism);
-                    if (copyResult.IsError) return Error.Failure(description: "Failed to copy directory.");
-
-                    result.ItemParentFolder = parentFolderPath;
+                    if (copyResult.IsError)
+                    {
+                        ErrorManager.Instance.PostInternalError($"Failed to copy directory: {itemPath}");
+                        result.ProcessingFailedPaths.Add(itemPath);
+                        continue;
+                    }
 
                     if (copyResult.Value.Failures.Count > 0)
                     {
                         copyResult.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError($"Failed to copy: {i.SourcePath}", tag: i.ErrorMessage));
                     }
+                    
+                    result.ItemParentFolder = copiedFolderPath;
                 }
             }
         }
@@ -637,6 +642,16 @@ public static class FileSystemService
         if (!Directory.Exists(sourceDirectory))
             return Error.NotFound("Directory.Copy", $"Source directory not found: {sourceDirectory}");
 
+        try
+        {
+            Directory.CreateDirectory(destinationDirectory);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to create destination directory.", ex);
+            return Error.Failure("Directory.Create", "Failed to create destination directory.");
+        }
+
         IEnumerable<string> allFiles;
 
         try
@@ -653,16 +668,6 @@ public static class FileSystemService
         int totalFiles = fileList.Count;
 
         if (totalFiles == 0) return new CopyResult { SuccessCount = 0, TotalCount = 0 };
-        
-        try
-        {
-            Directory.CreateDirectory(destinationDirectory);
-        }
-        catch (Exception ex)
-        {
-            ErrorManager.Instance.PostInternalError("Failed to create destination directory.", ex);
-            return Error.Failure("Directory.Create", "Failed to create destination directory.");
-        }
 
         int copiedFiles = 0;
         int lastReportedPercent = -1;

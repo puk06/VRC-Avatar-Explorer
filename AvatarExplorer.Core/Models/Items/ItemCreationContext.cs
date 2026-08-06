@@ -1,3 +1,5 @@
+using AvatarExplorer.Core.Services.Network;
+
 namespace AvatarExplorer.Core.Models.Items;
 
 public class ItemCreationContext
@@ -12,4 +14,10 @@ public class ItemCreationContext
     public IEnumerable<string> SupportedAvatars { get; set; } = [];
     public string ItemMemo { get; set; } = string.Empty;
     public IEnumerable<string> Tags { get; set; } = [];
+
+    public async Task<bool> FetchThumbnailAsync(string destPath, bool overwrite = false)
+    {
+        if (string.IsNullOrEmpty(ThumbnailUrl)) return false;
+        return await ImageDownloader.Fetch(ThumbnailUrl, destPath, overwrite);
+    }
 }

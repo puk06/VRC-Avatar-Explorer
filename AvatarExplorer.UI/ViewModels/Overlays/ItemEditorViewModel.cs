@@ -25,7 +25,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 public class ItemEditorViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; } = false;
-    public string? ItemId { get; set; } = null;
+    public string? Identifier { get; set; } = null;
     public ObservableCollection<ItemPathViewModel> ItemPaths { get; set; } = [];
     [Reactive] public bool ShouldLinkToOriginal { get; set; } = false;
 
@@ -76,7 +76,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     public void Open(string? itemId = null)
     {
-        ItemId = itemId;
+        Identifier = itemId;
         ItemPaths.Clear();
 
         RefleshCategories();
@@ -119,7 +119,7 @@ public class ItemEditorViewModel : ViewModelBase
     }
     public async void Open(LaunchInfo launchInfo)
     {
-        ItemId = null;
+        Identifier = null;
         ItemPaths.Clear();
 
         RefleshCategories();
@@ -181,11 +181,11 @@ public class ItemEditorViewModel : ViewModelBase
 
     private async Task Confirm()
     {
-        var identifier = ItemId != null ? await ConfirmEdit() : await ConfirmCreate();
+        var identifier = Identifier != null ? await ConfirmEdit(Identifier) : await ConfirmCreate();
         await AddPathsAsync(identifier);
     }
 
-    private async Task<string> ConfirmEdit()
+    private async Task<string> ConfirmEdit(string identifier)
     {
         var editContext = new ItemEditContext
         {
@@ -200,7 +200,6 @@ public class ItemEditorViewModel : ViewModelBase
             Tags = Tags.ToList()
         };
 
-        var identifier = $"item:{ItemId}";
         bool updateResult = AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[updateResult ? Loc.Success.Default : Loc.Error.Default],
@@ -219,23 +218,24 @@ public class ItemEditorViewModel : ViewModelBase
             BoothId = int.TryParse(BoothId, out var boothId) ? boothId : -1,
             ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
             CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory ?? string.Empty : string.Empty,
+            ThumbnailUrl = ThumbnailUrl,
             SupportedAvatars = SupportedAvatars,
             ItemMemo = Memo,
             Tags = Tags
         };
 
         var existingSameBoothIdItem = AvatarExplorerApp.Instance.Items.GetAll().FirstOrDefault(i => i.BoothId == creationContext.BoothId);
-        var addToExistingItem = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Dialog.Confirmation.Default],
-            Localizer.Instance[Loc.Dialog.Confirmation.AddToExistingItem]
-        );
 
-        if (existingSameBoothIdItem != null && addToExistingItem)
+        if (existingSameBoothIdItem != null)
         {
-            return existingSameBoothIdItem.Identifier;
+            var addToExistingItem = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance[Loc.Dialog.Confirmation.AddToExistingItem]
+            );
+            if (addToExistingItem) return existingSameBoothIdItem.Identifier;
         }
 
-        var item = AvatarExplorerApp.Instance.Items.Create(creationContext);
+        var item = await AvatarExplorerApp.Instance.Items.Create(creationContext);
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.ItemAdd],

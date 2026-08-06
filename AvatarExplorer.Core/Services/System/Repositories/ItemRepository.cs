@@ -48,7 +48,7 @@ public class ItemRepository
         OnUpdated?.Invoke();
     }
 
-    public Item Create(ItemCreationContext context)
+    public async Task<Item> Create(ItemCreationContext context)
     {
         var item = new Item();
         item.UpdateMetadata(
@@ -65,6 +65,10 @@ public class ItemRepository
         item.UpdateTags(context.Tags);
 
         _db.Add(item);
+
+        var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
+        var downloaded = await context.FetchThumbnailAsync(destPath, overwrite: true);
+        if (downloaded) item.UpdateThumbnailFileName(item.Id);
 
         Save();
         OnUpdated?.Invoke();
@@ -170,9 +174,12 @@ public class ItemRepository
         foreach (var rootFile in FileSystemService.EnumerateFiles(root, isRecursive: false))
             files.Add(new(root, rootFile));
 
-        foreach (var rootFolder in Directory.GetDirectories(root))
-            foreach (var rootFolderFile in FileSystemService.EnumerateFiles(rootFolder, isRecursive: true))
-                files.Add(new(rootFolder, rootFolderFile));
+        if (Directory.Exists(root))
+        {
+            foreach (var rootFolder in Directory.GetDirectories(root))
+                foreach (var rootFolderFile in FileSystemService.EnumerateFiles(rootFolder, isRecursive: true))
+                    files.Add(new(rootFolder, rootFolderFile));
+        }
 
         // Other Folders
         foreach (var otherFolder in item.ItemPaths)
