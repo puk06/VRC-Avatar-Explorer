@@ -255,7 +255,6 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     #region Navigation
     public void OnCategoryChanged()
     {
-        
     }
     public async void OnFileOpenRequested(string file)
     {
