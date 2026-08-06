@@ -20,6 +20,6 @@ public class ItemEditContext
     public async Task<bool> FetchThumbnailAsync(string destPath, bool overwrite = false)
     {
         if (string.IsNullOrEmpty(ThumbnailUrl)) return false;
-        return await ImageDownloader.Fetch(ThumbnailUrl, destPath, overwrite);
+        return await Downloader.Fetch(ThumbnailUrl, destPath, overwrite);
     }
 }

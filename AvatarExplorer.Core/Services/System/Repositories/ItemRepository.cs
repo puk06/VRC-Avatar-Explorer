@@ -239,7 +239,7 @@ public class ItemRepository
         if (string.IsNullOrEmpty(thumbnailUrl)) return Error.Failure(description: "No thumbnail found on Booth.");
 
         var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
-        var downloaded = await ImageDownloader.Fetch(thumbnailUrl, destPath, overwrite: true);
+        var downloaded = await Downloader.Fetch(thumbnailUrl, destPath, overwrite: true);
         if (!downloaded) return Error.Failure(description: "Failed to download thumbnail.");
 
         item.UpdateThumbnailFileName(item.Id);
