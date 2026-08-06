@@ -181,36 +181,30 @@ public static class FileSystemService
         var extractedDirectory = Path.GetDirectoryName(extractedFilePath);
         if (!string.IsNullOrWhiteSpace(extractedDirectory)) Directory.CreateDirectory(extractedDirectory);
 
+        var extracted = false;
+
         try
         {
-            await using var fileStream = File.OpenRead(unitypackagePath);
-            await using var gzipStream = new GZipStream (fileStream, CompressionMode.Decompress);
-            await using var tarReader = new TarReader (gzipStream);
-
-            while (await tarReader.GetNextEntryAsync() is { } entry)
+            await TarGzReader(unitypackagePath, async entry =>
             {
-                if (entry.DataStream == null)
-                    continue;
-
-                if (!string.Equals(GetUnitypackageTopLevelFolder(entry.Name), targetGroupFolder, StringComparison.OrdinalIgnoreCase))
-                    continue;
-
-                if (!string.Equals(Path.GetFileName(entry.Name), "asset", StringComparison.OrdinalIgnoreCase))
-                    continue;
+                if (entry.DataStream == null) return true;
+                if (!string.Equals(GetUnitypackageTopLevelFolder(entry.Name), targetGroupFolder, StringComparison.OrdinalIgnoreCase)) return true;
+                if (!string.Equals(Path.GetFileName(entry.Name), "asset", StringComparison.OrdinalIgnoreCase)) return true;
 
                 await using var outputStream = File.Create(extractedFilePath);
                 await entry.DataStream.CopyToAsync(outputStream);
 
-                return extractedFilePath;
-            }
-
-            return Error.NotFound(description: $"Asset entry not found for pathname: '{pathname}'.");
+                extracted = true;
+                return false;
+            });
         }
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError($"Failed to export asset from unitypackage: '{unitypackagePath}'.", ex);
             return Error.Failure(description: "Failed to export asset from unitypackage.");
         }
+
+        return extracted ? extractedFilePath : Error.NotFound(description: $"Asset entry not found for pathname: '{pathname}'.");
     }
 
     private static string NormalizeUnitypackagePath(string path) => path.Trim().Replace('\\', '/');
