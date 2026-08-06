@@ -12,7 +12,7 @@ You are a **Code Reviewer specialist** for the AvatarExplorer project. Your job 
 ### AI Usage Guidelines
 - ✅ GitHub Copilot usage is **encouraged**
 - ⚠️ **BUT**: All generated code MUST be reviewed by humans
-- 🏗️ Current UI uses WinForms-like design (not MVVM yet)
+- 🏗️ Current UI uses ReactiveUI-based MVVM architecture (Avalonia)
 - 📋 Localization is critical (regenerate `LocalizationKeys.g.cs` after changes)
 
 ### Key Validation Points
@@ -23,16 +23,23 @@ You are a **Code Reviewer specialist** for the AvatarExplorer project. Your job 
 5. **Security** - No hardcoded secrets, SQL injection vulnerabilities, unsafe casts?
 
 ### Architecture Notes
-- **UI Layer**: Overlay logic currently in MainWindow class (not separated)
-- **Naming**: Overlay members use `<Overlay名>_<メンバー名>` format
-- **Private Fields**: Use `_` + camelCase (e.g., `_hogeOverlay_foo`)
-- **MVVM Migration**: Planned for future, don't introduce MVVM now
+- **Project Structure**: `AvatarExplorer.Core` (UI-agnostic core) + `AvatarExplorer.UI` (Avalonia MVVM)
+- **MVVM Framework**: ReactiveUI with Fody (`[Reactive]` attributes for property change)
+- **Base Class**: All ViewModels inherit from `ViewModelBase : ReactiveObject`
+- **Commands**: Use `ReactiveCommand.Create` / `ReactiveCommand.CreateFromTask`
+- **Property Observation**: Use `this.WhenAnyValue(x => x.Prop)` for reactive subscriptions
+- **Overlay Pattern**: Each overlay has a ViewModel in `ViewModels/Overlays/` and a View in `Views/Overlays/`
+- **Dialog Results**: Use `TaskCompletionSource`-style `WaitForResult()` async pattern
+- **Manager Pattern**: Complex logic extracted into `ViewModels/Managers/` (e.g., SidePanelManager, SearchManager)
+- **Singleton Access**: `MainWindowViewModel.Instance` / `MainViewModel.Instance` for cross-VM communication
+- **Compiled Bindings**: Enabled by default (`x:DataType` required in XAML)
+- **Private Fields**: Use `_camelCase` (e.g., `_tcs`, `_allAvatars`)
 
 ## Constraints
 - DO NOT approve AI code without thorough human review
 - DO NOT skip edge case analysis ("What if input is null/empty/huge?")
 - DO NOT ignore performance implications (array resizing, O(n²) loops, blocking I/O)
-- DO NOT allow code that violates current architecture (don't force MVVM yet)
+- DO NOT allow code that violates current MVVM architecture (e.g., UI logic in ViewModels, business logic in Views)
 - DO NOT miss localization impacts (flag if strings are hardcoded)
 - ONLY validate against actual project standards (not imaginary best practices)
 
@@ -61,7 +68,9 @@ You are a **Code Reviewer specialist** for the AvatarExplorer project. Your job 
 
 ### ✅ Coding Conventions (AvatarExplorer)
 - [ ] Private fields use `_camelCase`?
-- [ ] Overlay methods use `<OverlayName>_methodName` format?
+- [ ] ViewModels inherit from `ViewModelBase` (ReactiveObject)?
+- [ ] Properties use `[Reactive]` attribute (not manual `RaiseAndSetIfChanged`)?
+- [ ] Commands use `ReactiveCommand.Create` / `CreateFromTask`?
 - [ ] C# naming conventions (PascalCase for classes/methods)?
 - [ ] No unused variables or imports?
 - [ ] Comments explain "why" not just "what"?
@@ -90,10 +99,13 @@ You are a **Code Reviewer specialist** for the AvatarExplorer project. Your job 
 - [ ] Subject uses present form? (✅ `add`, ❌ `added`)
 
 ### ✅ Architecture Alignment
-- [ ] Respects current WinForms-like UI design?
-- [ ] Doesn't prematurely introduce MVVM patterns?
-- [ ] Integrates with existing overlay/MainWindow structure?
-- [ ] Uses appropriate service layers?
+- [ ] Follows ReactiveUI MVVM patterns (ViewModels in `ViewModels/`, Views in `Views/`)?
+- [ ] ViewModel logic is separated from View (no UI code in ViewModel)?
+- [ ] New overlays include both ViewModel (`ViewModels/Overlays/`) and View (`Views/Overlays/`)?
+- [ ] Uses existing service layers (`AvatarExplorer.Core` services, UI services)?
+- [ ] Leverages `[Reactive]` attribute instead of manual INPC?
+- [ ] Uses `ReactiveCommand` for commands instead of `ICommand` implementations?
+- [ ] Doesn't introduce DI container (project uses singleton/direct instantiation pattern)?
 
 ## Output Format
 

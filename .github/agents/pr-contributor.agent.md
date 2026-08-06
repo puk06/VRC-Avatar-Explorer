@@ -20,6 +20,8 @@ You are a **PR Contributor specialist** for the AvatarExplorer project. Your job
 2. ✅ Run `Tools/LocalizationKeyGenerator` (even if no changes)
 3. ✅ Regenerate `AvatarExplorer.Core/Localization/LocalizationKeys.g.cs`
 4. ✅ Verify PR description includes: purpose, background, related issues, implementation notes
+5. ✅ New ViewModels inherit from `ViewModelBase` and use `[Reactive]` attributes
+6. ✅ New Views use compiled bindings (`x:DataType` declared)
 
 ### Merge Strategy
 - **Only Squash merge** allowed on main
@@ -52,7 +54,7 @@ Provide:
 feat(avatars): add avatar filtering by hair color
 fix(database): prevent null reference in avatar cache
 docs(readme): update installation instructions for Windows
-refactor(ui): simplify overlay initialization logic
+refactor(ui): simplify overlay ViewModel initialization logic
 perf(items): optimize item collection loading performance
 test(utils): add edge case tests for FileNameUtils
 chore(deps): update Avalonia to latest stable
