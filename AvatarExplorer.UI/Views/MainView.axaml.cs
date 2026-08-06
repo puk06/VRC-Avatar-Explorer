@@ -180,7 +180,7 @@ public partial class MainView : UserControl
 
     public void CloseHoverWindow() => _hoverWindow.Close();
 
-    private void OnMainItemImageLoaded(object? sender, RoutedEventArgs e)
+    private void OnItemImageLoaded(object? sender, RoutedEventArgs e)
     {
         if (sender is not Image image) return;
 
@@ -189,17 +189,17 @@ public partial class MainView : UserControl
         if (bitmapInterpolationMode != BitmapInterpolationMode.None && bitmapInterpolationMode != BitmapInterpolationMode.Unspecified)
             RenderOptions.SetBitmapInterpolationMode(image, bitmapInterpolationMode);
 
-        image.PointerEntered += OnMainItemImagePointerEntered;
-        image.PointerExited += OnMainItemImagePointerExited;
-        image.PointerMoved += OnMainItemImagePointerMoved;
+        image.PointerEntered += OnItemImagePointerEntered;
+        image.PointerExited += OnItemImagePointerExited;
+        image.PointerMoved += OnItemImagePointerMoved;
     }
 
-    private void OnMainItemImageUnloaded(object? sender, RoutedEventArgs e)
+    private void OnItemImageUnloaded(object? sender, RoutedEventArgs e)
     {
         if (sender is not Image image) return;
-        image.PointerEntered -= OnMainItemImagePointerEntered;
-        image.PointerExited -= OnMainItemImagePointerExited;
-        image.PointerMoved -= OnMainItemImagePointerMoved;
+        image.PointerEntered -= OnItemImagePointerEntered;
+        image.PointerExited -= OnItemImagePointerExited;
+        image.PointerMoved -= OnItemImagePointerMoved;
     }
 
     private void OnMainItemButtonLoaded(object? sender, RoutedEventArgs e)
@@ -213,7 +213,7 @@ public partial class MainView : UserControl
         button.RemoveHandler(PointerPressedEvent, OnMainItemButtonPointerPressed);
     }
 
-    private void OnMainItemImagePointerEntered(object? sender, PointerEventArgs e)
+    private void OnItemImagePointerEntered(object? sender, PointerEventArgs e)
     {
         if (sender is not Image image || DataContext is not MainViewModel vm) return;
         if (image.DataContext is not ItemViewModel item) return;
@@ -222,13 +222,13 @@ public partial class MainView : UserControl
         vm.ShowHoverThumbnail(item);
     }
 
-    private void OnMainItemImagePointerExited(object? sender, PointerEventArgs e)
+    private void OnItemImagePointerExited(object? sender, PointerEventArgs e)
     {
         if (DataContext is not MainViewModel vm) return;
         vm.HideHoverThumbnail();
     }
 
-    private void OnMainItemImagePointerMoved(object? sender, PointerEventArgs e)
+    private void OnItemImagePointerMoved(object? sender, PointerEventArgs e)
     {
         if (DataContext is not MainViewModel vm) return;
         vm.UpdateHoverThumbnailPosition(GetScreenPosition(e));

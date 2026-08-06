@@ -141,7 +141,7 @@
                                                     <Button Classes="button" Classes.accentbutton="{Binding IsSelected}" ContextMenu="{Binding ContextMenu}" ToolTip.Tip="{Binding ToolTip}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" Command="{Binding $parent[UserControl].DataContext.SelectLeftItemCommand}" CommandParameter="{Binding}">
                                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top"/>
+                                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>
                                                             </Border>
 
                                                             <Grid Grid.Column="1" RowDefinitions="Auto,Auto,5,*">
@@ -221,7 +221,7 @@
                                                     <Button Classes="button" ContextMenu="{Binding ContextMenu}" ToolTip.Tip="{Binding ToolTip}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" Command="{Binding $parent[UserControl].DataContext.SelectRightItemCommand}" CommandParameter="{Binding}" Loaded="OnMainItemButtonLoaded" Unloaded="OnMainItemButtonUnloaded">
                                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top" Loaded="OnMainItemImageLoaded" Unloaded="OnMainItemImageUnloaded"/>
+                                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>
                                                             </Border>
 
                                                             <Grid Grid.Column="1" RowDefinitions="Auto,Auto,5,*">
