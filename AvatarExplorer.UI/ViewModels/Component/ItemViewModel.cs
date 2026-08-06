@@ -21,6 +21,8 @@ public class ItemViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; } = true;
     [Reactive] public bool IsSelected { get; set; } = false;
+    [Reactive] public bool IsImplemented { get; set; } = false;
+    [Reactive] public bool IsNotImplemented { get; set; } = false;
 
     [Reactive] public Bitmap? Thumbnail { get; set; } = null;
     [Reactive] public string Title { get; private set; } = string.Empty;

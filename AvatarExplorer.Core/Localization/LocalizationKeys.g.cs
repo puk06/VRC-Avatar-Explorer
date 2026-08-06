@@ -389,6 +389,7 @@ public static class Loc
                 public const string Author = "Settings.SortOrder.Options.Author";
                 public const string Created = "Settings.SortOrder.Options.Created";
                 public const string Updated = "Settings.SortOrder.Options.Updated";
+                public const string Implemented = "Settings.SortOrder.Options.Implemented";
             }
         }
         public static class SortDirection

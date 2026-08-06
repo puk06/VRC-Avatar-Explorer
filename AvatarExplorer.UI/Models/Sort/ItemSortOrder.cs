@@ -5,7 +5,8 @@ public enum ItemSortOrder
     Title,
     Author,
     CreatedDate,
-    UpdatedDate
+    UpdatedDate,
+    Implemented
 }
 
 public enum SortDirection

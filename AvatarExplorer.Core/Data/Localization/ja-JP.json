@@ -240,6 +240,7 @@
     "Settings.SortOrder.Options.Author": "作者",
     "Settings.SortOrder.Options.Created": "作成日時",
     "Settings.SortOrder.Options.Updated": "更新日時",
+    "Settings.SortOrder.Options.Implemented": "実装済み",
     "Settings.SortDirection.Title": "並び替え方向",
     "Settings.SortDirection.Description": "昇順または降順",
     "Settings.SortDirection.Options.Ascending": "昇順",

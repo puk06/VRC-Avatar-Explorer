@@ -240,6 +240,7 @@
     "Settings.SortOrder.Options.Author": "작성자",
     "Settings.SortOrder.Options.Created": "작성일시",
     "Settings.SortOrder.Options.Updated": "수정일시",
+    "Settings.SortOrder.Options.Implemented": "구현됨",
     "Settings.SortDirection.Title": "정렬 방향",
     "Settings.SortDirection.Description": "오름차순 또는 내림차순",
     "Settings.SortDirection.Options.Ascending": "오름차순",

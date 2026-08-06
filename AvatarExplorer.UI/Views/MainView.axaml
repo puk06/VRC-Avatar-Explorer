@@ -137,8 +137,7 @@
 
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="component:ItemViewModel">
-                                                <!-- TODO: Implemented用のクラスも作るべきかも -->
-                                                    <Button Classes="button" Classes.accentbutton="{Binding IsSelected}" ContextMenu="{Binding ContextMenu}" ToolTip.Tip="{Binding ToolTip}" ToolTip.ToolTipOpening="OnToolTipOpening" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" Command="{Binding $parent[UserControl].DataContext.SelectLeftItemCommand}" CommandParameter="{Binding}">
+                                                    <Button Classes="button" Classes.accentbutton="{Binding IsSelected}" Classes.implemented="{Binding IsImplemented}" Classes.notimplemented="{Binding IsNotImplemented}" ContextMenu="{Binding ContextMenu}" ToolTip.Tip="{Binding ToolTip}" ToolTip.ToolTipOpening="OnToolTipOpening" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" Command="{Binding $parent[UserControl].DataContext.SelectLeftItemCommand}" CommandParameter="{Binding}">
                                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
                                                                 <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>
@@ -218,7 +217,7 @@
 
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="component:ItemViewModel">
-                                                    <Button Classes="button" ContextMenu="{Binding ContextMenu}" ToolTip.Tip="{Binding ToolTip}" ToolTip.ToolTipOpening="OnToolTipOpening" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" Command="{Binding $parent[UserControl].DataContext.SelectRightItemCommand}" CommandParameter="{Binding}" Loaded="OnMainItemButtonLoaded" Unloaded="OnMainItemButtonUnloaded">
+                                                    <Button Classes="button" Classes.implemented="{Binding IsImplemented}" Classes.notimplemented="{Binding IsNotImplemented}" ContextMenu="{Binding ContextMenu}" ToolTip.Tip="{Binding ToolTip}" ToolTip.ToolTipOpening="OnToolTipOpening" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" Command="{Binding $parent[UserControl].DataContext.SelectRightItemCommand}" CommandParameter="{Binding}" Loaded="OnMainItemButtonLoaded" Unloaded="OnMainItemButtonUnloaded">
                                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
                                                                 <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>

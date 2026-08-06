@@ -338,7 +338,26 @@ public class MainViewModel : ViewModelBase, IPostInitializable
             var items = navigationables.OfType<Item>().ToList();
             var nonItems = navigationables.Where(i => i is not Item).ToList();
 
-            var sortedItems = ItemSortService.Sort(items, sortOrder, sortDirection, _removeBrackets);
+            IEnumerable<Item> sortedItems;
+            if (sortOrder == ItemSortOrder.Implemented && avatarId != null)
+            {
+                var itemsWithStatus = items.Select(i =>
+                {
+                    var isImplemented = i.ImplementedAvatars.Contains(avatarId);
+                    return (Item: i, IsImplemented: isImplemented);
+                }).ToList();
+
+                var ordered = itemsWithStatus
+                    .OrderByDescending(x => x.IsImplemented)
+                    .ThenBy(x => _removeBrackets ? Utils.TextBracketsUtils.RemoveBrackets(x.Item.Title) : x.Item.Title, StringComparer.OrdinalIgnoreCase);
+
+                sortedItems = (sortDirection == SortDirection.Descending ? ordered.Reverse() : ordered).Select(x => x.Item);
+            }
+            else
+            {
+                sortedItems = ItemSortService.Sort(items, sortOrder, sortDirection, _removeBrackets);
+            }
+
             var sortedNavigationables = sortedItems.Cast<INavigationable>().Concat(nonItems);
 
             _allMainItems = sortedNavigationables
@@ -348,6 +367,9 @@ public class MainViewModel : ViewModelBase, IPostInitializable
                     if (i is Item item)
                     {
                         var status = _itemNavigationService.ResolveAvatarStatusForCurrentAvatar(item, avatarId, commonAvatars);
+                        vm.IsImplemented = avatarId != null && item.ImplementedAvatars.Contains(avatarId);
+                        vm.IsNotImplemented = avatarId != null && !item.ImplementedAvatars.Contains(avatarId);
+
                         if (status.IsOnlyCommon)
                         {
                             var tags = new List<TagViewModel>(item.Tags.Length + 1)

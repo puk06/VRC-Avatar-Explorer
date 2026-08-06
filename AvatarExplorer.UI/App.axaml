@@ -56,6 +56,15 @@
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(43,120,191,1.0)"/>
                     <!-- タグの文字色 -->
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+
+                    <!-- 実装済みボタンの背景 -->
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,169,0,0.2)"/>
+                    <!-- 実装済みボタンのホバー背景 -->
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,169,0,0.3)"/>
+                    <!-- 未実装ボタンの背景 -->
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,0,0,0.2)"/>
+                    <!-- 未実装ボタンのホバー背景 -->
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,0,0,0.3)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="Dark">
@@ -83,6 +92,11 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(43,120,191,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,200,0,0.2)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,200,0,0.3)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,0,0,0.2)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,0,0,0.3)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Sakura}">
@@ -110,6 +124,11 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(209,127,168,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,247,250,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,160,80,0.18)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,160,80,0.28)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,40,60,0.18)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,40,60,0.28)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Mint}">
@@ -137,6 +156,11 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(99,184,146,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(247,255,252,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,160,80,0.18)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,160,80,0.28)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,40,60,0.18)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,40,60,0.28)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Lavender}">
@@ -164,6 +188,11 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(143,118,221,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(251,249,255,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(60,170,80,0.18)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(60,170,80,0.28)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,40,60,0.18)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,40,60,0.28)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Ocean}">
@@ -191,6 +220,11 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(79,168,204,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,180,120,0.2)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,180,120,0.3)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,40,60,0.2)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,40,60,0.3)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Sunset}">
@@ -218,6 +252,11 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(217,144,79,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,251,248,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(80,160,60,0.18)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(80,160,60,0.28)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,40,60,0.18)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,40,60,0.28)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Forest}">
@@ -245,6 +284,11 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(77,148,104,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(248,255,249,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,160,60,0.18)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,160,60,0.28)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,40,60,0.18)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,40,60,0.28)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Mocha}">
@@ -272,6 +316,11 @@
                     
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(178,125,98,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(80,140,60,0.18)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(80,140,60,0.28)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,40,60,0.18)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,40,60,0.28)"/>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="{x:Static ui:AppThemeVariants.Slate}">
@@ -299,6 +348,11 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(124,146,173,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+
+                    <SolidColorBrush x:Key="Implemented.Background" Color="rgba(60,160,100,0.2)"/>
+                    <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(60,160,100,0.3)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background" Color="rgba(200,40,60,0.2)"/>
+                    <SolidColorBrush x:Key="NotImplemented.Background.PointerOver" Color="rgba(200,40,60,0.3)"/>
                 </ResourceDictionary>
 
             </ResourceDictionary.ThemeDictionaries>
@@ -386,6 +440,38 @@
         <Style Selector="Button.accentbutton:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource Button.AccentBackground.PointerOver}"/>
             <Setter Property="Foreground" Value="{DynamicResource Text.Accent}"/>
+        </Style>
+
+        <Style Selector="Button.implemented">
+            <Setter Property="Background" Value="{DynamicResource Implemented.Background}"/>
+        </Style>
+
+        <Style Selector="Button.implemented:pointerover">
+            <Setter Property="Background" Value="{DynamicResource Implemented.Background.PointerOver}"/>
+        </Style>
+
+        <Style Selector="Button.implemented /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Implemented.Background}"/>
+        </Style>
+
+        <Style Selector="Button.implemented:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Implemented.Background.PointerOver}"/>
+        </Style>
+
+        <Style Selector="Button.notimplemented">
+            <Setter Property="Background" Value="{DynamicResource NotImplemented.Background}"/>
+        </Style>
+
+        <Style Selector="Button.notimplemented:pointerover">
+            <Setter Property="Background" Value="{DynamicResource NotImplemented.Background.PointerOver}"/>
+        </Style>
+
+        <Style Selector="Button.notimplemented /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource NotImplemented.Background}"/>
+        </Style>
+
+        <Style Selector="Button.notimplemented:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource NotImplemented.Background.PointerOver}"/>
         </Style>
 
         <Style Selector="Button.pagebutton">
