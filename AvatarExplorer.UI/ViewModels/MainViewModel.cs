@@ -102,7 +102,6 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     private List<ItemViewModel> _allMainItems = [];
     private int _normalIconSize = 80;
     private bool _removeBrackets = false;
-    private int _lastSelectedLeftPanelCategory = 0;
     #endregion
 
     #region Constructor
@@ -253,9 +252,6 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     #endregion
 
     #region Navigation
-    public void OnCategoryChanged()
-    {
-    }
     public async void OnFileOpenRequested(string file)
     {
         if (PathUtils.IsUnitypackageFile(file))
