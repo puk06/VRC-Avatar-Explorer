@@ -7,7 +7,7 @@ public class ItemV1
     public string ItemMemo { get; set; } = string.Empty;
     public string AuthorId { get; set; } = string.Empty;
     public int BoothId { get; set; } = -1;
-    public string ItemPath { get; set; } = string.Empty; // TODO: Import時はここらへん色々気をつける
+    public string ItemPath { get; set; } = string.Empty;
     public string MaterialPath { get; set; } = string.Empty;
     public string ThumbnailUrl { get; set; } = string.Empty;
     public string ImagePath { get; set; } = string.Empty;

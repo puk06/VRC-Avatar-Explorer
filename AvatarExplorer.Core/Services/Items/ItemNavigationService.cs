@@ -102,7 +102,6 @@ public class ItemNavigationService
 
     public Guid? CurrentStateId => _state.Current?.Id;
 
-    // TODO: これ使われてないかも。多重な検索ステートは生みたくないから使いたいね
     public bool IsSearchActive => _state.GetCurrentSelectionNodes().Any(i => i.Value.StartsWith(GetPrefix(SearchPrefix, string.Empty)));
 
     public void PopAllSearchStates()
