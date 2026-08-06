@@ -314,83 +314,95 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     #region Refresh
     private void Refresh()
     {
+        if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
+            RefreshSearchResults(_searchManager.ActiveSearchQuery);
+        else
+            RefreshNavigationView();
+    }
+
+    private void RefreshSearchResults(string searchQuery)
+    {
         var sortOrder = (ItemSortOrder)SelectedSortOrder;
         var sortDirection = (SortDirection)SelectedSortDirection;
 
-        if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
+        _allMainItems = ItemSortService.Sort(
+                _searchManager.SearchItems(searchQuery),
+                sortOrder, sortDirection, _removeBrackets)
+            .Select(CreateItemViewModel)
+            .ToList();
+
+        RightPageInfo.TotalItems = _allMainItems.Count;
+        RightPageInfo.Reset();
+        RefreshMainItems();
+
+        PathSegments = [new PathSegment
         {
-            _allMainItems = ItemSortService.Sort(_searchManager.SearchItems(_searchManager.ActiveSearchQuery), sortOrder, sortDirection, _removeBrackets)
-                .Select(CreateItemViewModel)
-                .ToList();
+            DisplayName = _searchManager.ActiveSearchQueryDisplayText ?? _searchManager.ActiveSearchQuery ?? ""
+        }];
+    }
 
-            RightPageInfo.TotalItems = _allMainItems.Count;
-            RightPageInfo.Reset();
-            RefreshMainItems();
+    private void RefreshNavigationView()
+    {
+        var avatarId = _itemNavigationService.GetCurrentAvatarId();
+        var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
+        var sortOrder = (ItemSortOrder)SelectedSortOrder;
+        var sortDirection = (SortDirection)SelectedSortDirection;
 
-            PathSegments = [new PathSegment { DisplayName = _searchManager.ActiveSearchQueryDisplayText ?? _searchManager.ActiveSearchQuery ?? "" }];
-        }
-        else
+        var navigationables = _itemNavigationService.GetCurrentSelectionView();
+        var items = navigationables.OfType<Item>().ToList();
+        var nonItems = navigationables.Where(i => i is not Item).ToList();
+
+        var sortedItems = SortNavigationItems(items, sortOrder, sortDirection, avatarId);
+        var sortedNavigationables = sortedItems.Cast<INavigationable>().Concat(nonItems);
+
+        _allMainItems = sortedNavigationables
+            .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars))
+            .ToList();
+
+        RightPageInfo.TotalItems = _allMainItems.Count;
+        RefreshMainItems();
+
+        PathSegments = new ObservableCollection<PathSegment>(
+            BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
+    }
+
+    private IEnumerable<Item> SortNavigationItems(List<Item> items, ItemSortOrder sortOrder, SortDirection sortDirection, string? avatarId)
+    {
+        if (sortOrder == ItemSortOrder.Implemented && avatarId != null)
         {
-            var avatarId = _itemNavigationService.GetCurrentAvatarId();
-            var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
+            var ordered = items
+                .Select(i => (Item: i, IsImplemented: i.ImplementedAvatars.Contains(avatarId)))
+                .OrderByDescending(x => x.IsImplemented)
+                .ThenBy(x => _removeBrackets ? Utils.TextBracketsUtils.RemoveBrackets(x.Item.Title) : x.Item.Title, StringComparer.OrdinalIgnoreCase);
 
-            var navigationables = _itemNavigationService.GetCurrentSelectionView();
-            var items = navigationables.OfType<Item>().ToList();
-            var nonItems = navigationables.Where(i => i is not Item).ToList();
-
-            IEnumerable<Item> sortedItems;
-            if (sortOrder == ItemSortOrder.Implemented && avatarId != null)
-            {
-                var itemsWithStatus = items.Select(i =>
-                {
-                    var isImplemented = i.ImplementedAvatars.Contains(avatarId);
-                    return (Item: i, IsImplemented: isImplemented);
-                }).ToList();
-
-                var ordered = itemsWithStatus
-                    .OrderByDescending(x => x.IsImplemented)
-                    .ThenBy(x => _removeBrackets ? Utils.TextBracketsUtils.RemoveBrackets(x.Item.Title) : x.Item.Title, StringComparer.OrdinalIgnoreCase);
-
-                sortedItems = (sortDirection == SortDirection.Descending ? ordered.Reverse() : ordered).Select(x => x.Item);
-            }
-            else
-            {
-                sortedItems = ItemSortService.Sort(items, sortOrder, sortDirection, _removeBrackets);
-            }
-
-            var sortedNavigationables = sortedItems.Cast<INavigationable>().Concat(nonItems);
-
-            _allMainItems = sortedNavigationables
-                .Select(i =>
-                {
-                    var vm = CreateItemViewModel(i);
-                    if (i is Item item)
-                    {
-                        var status = _itemNavigationService.ResolveAvatarStatusForCurrentAvatar(item, avatarId, commonAvatars);
-                        vm.IsImplemented = avatarId != null && item.ImplementedAvatars.Contains(avatarId);
-                        vm.IsNotImplemented = avatarId != null && !item.ImplementedAvatars.Contains(avatarId);
-
-                        if (status.IsOnlyCommon)
-                        {
-                            var tags = new List<TagViewModel>(item.Tags.Length + 1)
-                            {
-                                new() { ValueRaw = status.CommonAvatarName, IsCommonAvatar = true }
-                            };
-                            tags.AddRange(vm.Tags);
-                            vm.Tags = tags.ToArray();
-                        }
-                    }
-
-                    return vm;
-                })
-                .ToList();
-
-            RightPageInfo.TotalItems = _allMainItems.Count;
-            RefreshMainItems();
-
-            PathSegments = new ObservableCollection<PathSegment>(
-                BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
+            return (sortDirection == SortDirection.Descending ? ordered.Reverse() : ordered).Select(x => x.Item);
         }
+
+        return ItemSortService.Sort(items, sortOrder, sortDirection, _removeBrackets);
+    }
+
+    private ItemViewModel CreateItemViewModelWithStatus(INavigationable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars)
+    {
+        var vm = CreateItemViewModel(nav);
+
+        if (nav is not Item item) return vm;
+
+        var isImplemented = avatarId != null && item.ImplementedAvatars.Contains(avatarId);
+        vm.IsImplemented = isImplemented;
+        vm.IsNotImplemented = avatarId != null && !isImplemented;
+
+        var status = _itemNavigationService.ResolveAvatarStatusForCurrentAvatar(item, avatarId, commonAvatars);
+        if (status.IsOnlyCommon)
+        {
+            var tags = new List<TagViewModel>(item.Tags.Length + 1)
+            {
+                new() { ValueRaw = status.CommonAvatarName, IsCommonAvatar = true }
+            };
+            tags.AddRange(vm.Tags);
+            vm.Tags = tags.ToArray();
+        }
+
+        return vm;
     }
 
     private void RefreshLeftItems()
