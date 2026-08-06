@@ -18,8 +18,6 @@ public static class SystemFileName
     {
         public const string Runtime = "runtimeSettings.json";
         public const string RuntimeDatabaseMigrationVersion = "runtimeSettings.json.migration.version";
-        public const string Preferences = "preferenceSettings.json";
-        public const string PreferencesDatabaseMigrationVersion = "preferenceSettings.json.migration.version";
     }
 
     public const string Scheme = "VRCAESCHEME";

@@ -1,6 +1,6 @@
 using System.Linq;
-using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.UI.Data.Paths;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.ContextMenu;
 using AvatarExplorer.UI.Services.System;
@@ -46,6 +46,11 @@ public static class AppInitializer
 
     public static void RegisterBackupFiles()
     {
-        AvatarExplorerApp.Instance.BackupManager.AddTargetFile(SystemPath.UserPreferencesFilePath);
+        AvatarExplorerApp.Instance.BackupManager.AddTargetFiles(
+            [
+                UISystemPath.UserPreferencesFilePath,
+                UISystemPath.UserPreferencesMigrationVersionPath
+            ]
+        );
     }
 }

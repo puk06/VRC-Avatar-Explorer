@@ -8,7 +8,6 @@ public static class DatabaseMigrations
     public const int CommonAvatarVersion = 1;
     public const int BulkImportPresetVersion = 1;
     public const int RuntimeSettingsVersion = 1;
-    public const int UserPreferencesVersion = 1;
 
     private const string LegacyThumbnailKey = "ThumbnmailFileName";
     private const string ThumbnailKey = "ThumbnailFileName";
@@ -50,114 +49,15 @@ public static class DatabaseMigrations
         };
     }
 
-    public static bool ApplyRuntimeSettingsMigration(JsonNode root, int targetVersion, string? userPreferencesFilePath = null)
+    public static bool ApplyRuntimeSettingsMigration(JsonNode root, int targetVersion)
     {
         if (root is not JsonObject settings) return false;
 
         return targetVersion switch
         {
-            1 => MigrateRuntimeSettingsV1ToPreferences(settings, userPreferencesFilePath),
+            1 => false, // Obsolete fields remain for UI-side UserPreferences migration
             _ => false
         };
-    }
-
-    public static bool ApplyUserPreferencesMigration(JsonNode root, int targetVersion, string? runtimeSettingsFilePath = null)
-    {
-        if (root is not JsonObject preferences) return false;
-
-        return targetVersion switch
-        {
-            1 => MigrateUserPreferencesV1FromRuntime(preferences, runtimeSettingsFilePath),
-            _ => false
-        };
-    }
-
-    private static bool MigrateRuntimeSettingsV1ToPreferences(JsonObject settings, string? userPreferencesFilePath)
-    {
-        if (string.IsNullOrEmpty(userPreferencesFilePath)) return false;
-
-        var hasItemSortOrder = settings.ContainsKey("ItemSortOrder");
-        var hasRemoveBrackets = settings.ContainsKey("RemoveBrackets");
-        if (!hasItemSortOrder && !hasRemoveBrackets) return false;
-
-        var sortOrder = 3; // UpdatedDate
-        var removeBrackets = false;
-
-        if (hasItemSortOrder)
-        {
-            var sortNode = settings["ItemSortOrder"];
-            if (sortNode is JsonValue sortValue && sortValue.TryGetValue(out int s))
-                sortOrder = s;
-        }
-
-        if (hasRemoveBrackets)
-        {
-            var bracketNode = settings["RemoveBrackets"];
-            if (bracketNode is JsonValue bracketValue && bracketValue.TryGetValue(out bool b))
-                removeBrackets = b;
-        }
-
-        // Apply to preferences
-        var preferences = File.Exists(userPreferencesFilePath)
-            ? (JsonNode.Parse(File.ReadAllText(userPreferencesFilePath)) as JsonObject) ?? []
-            : [];
-
-        preferences["SortOrder"] = sortOrder;
-        preferences["RemoveBrackets"] = removeBrackets;
-
-        // Backup and save preferences
-        var prefsAppliedVersion = DatabaseMigrationService.ReadAppliedMigrationVersion(userPreferencesFilePath);
-        if (File.Exists(userPreferencesFilePath))
-        {
-            var prefsBackup = BuildMigrationBackupPath(userPreferencesFilePath, prefsAppliedVersion, UserPreferencesVersion);
-            File.Copy(userPreferencesFilePath, prefsBackup, overwrite: true);
-        }
-        File.WriteAllText(userPreferencesFilePath, preferences.ToJsonString(JsonManager.JsonSerializerOptions));
-        DatabaseMigrationService.WriteAppliedMigrationVersion(userPreferencesFilePath, UserPreferencesVersion);
-
-        // Remove obsolete fields from runtime settings
-        if (hasItemSortOrder) settings.Remove("ItemSortOrder");
-        if (hasRemoveBrackets) settings.Remove("RemoveBrackets");
-
-        return true;
-    }
-
-    private static bool MigrateUserPreferencesV1FromRuntime(JsonObject preferences, string? runtimeSettingsFilePath)
-    {
-        if (string.IsNullOrEmpty(runtimeSettingsFilePath) || !File.Exists(runtimeSettingsFilePath))
-            return false;
-
-        var runtimeJson = File.ReadAllText(runtimeSettingsFilePath);
-        var runtime = JsonNode.Parse(runtimeJson) as JsonObject;
-        if (runtime is null) return false;
-
-        var hasItemSortOrder = runtime.ContainsKey("ItemSortOrder");
-        var hasRemoveBrackets = runtime.ContainsKey("RemoveBrackets");
-        if (!hasItemSortOrder && !hasRemoveBrackets) return false;
-
-        if (hasItemSortOrder)
-        {
-            var sortNode = runtime["ItemSortOrder"];
-            if (sortNode is JsonValue sortValue && sortValue.TryGetValue(out int s))
-                preferences["SortOrder"] = s;
-        }
-
-        if (hasRemoveBrackets)
-        {
-            var bracketNode = runtime["RemoveBrackets"];
-            if (bracketNode is JsonValue bracketValue && bracketValue.TryGetValue(out bool b))
-                preferences["RemoveBrackets"] = b;
-        }
-
-        return true;
-    }
-
-    private static string BuildMigrationBackupPath(string filePath, int fromVersion, int toVersion)
-    {
-        var directory = Path.GetDirectoryName(filePath) ?? string.Empty;
-        var name = Path.GetFileNameWithoutExtension(filePath);
-        var extension = Path.GetExtension(filePath);
-        return Path.Combine(directory, $"{name}.migration-v{fromVersion}-to-v{toVersion}.bak{extension}");
     }
 
     private static bool MigrateV1RenameThumbnailKey(JsonArray items)

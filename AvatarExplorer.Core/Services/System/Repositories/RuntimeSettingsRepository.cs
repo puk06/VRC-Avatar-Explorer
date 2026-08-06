@@ -21,7 +21,7 @@ public class RuntimeSettingsRepository
         DatabaseMigrationService.Migrate(
             _manager.FilePath,
             DatabaseMigrations.RuntimeSettingsVersion,
-            (root, version) => DatabaseMigrations.ApplyRuntimeSettingsMigration(root, version, SystemPath.UserPreferencesFilePath));
+            DatabaseMigrations.ApplyRuntimeSettingsMigration);
         _manager.Load();
     }
     public void Update(RuntimeSettings settings) => _manager.Update(settings);
