@@ -22,8 +22,11 @@ static class Program
         // 多くの場合はカスタムスキーム登録時に実行される
         if (!ProcessUtils.IsWindows() || !SchemeService.IsRunAsAdmin())
         {
+            // Linux では Windows とは違い、"Global\" とつけないとグローバルに Mutex が出来ない。
+            var mutexName = ProcessUtils.IsLinux() ?  "Global\\" + MutexName : MutexName;
+
             // Single Instance Check
-            Mutex _ = new(true, MutexName, out bool isNew);
+            Mutex _ = new(true, mutexName, out bool isNew);
 
             if (!isNew)
             {
