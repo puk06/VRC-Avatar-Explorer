@@ -440,7 +440,7 @@ public class ItemEditorViewModel : ViewModelBase
     private int GetSupportedAvatarsCount()
     {
         var itemGroup = AvatarExplorerApp.Instance.ItemGroupService;
-        return itemGroup.GetAllSupportedAvatarsIds(SupportedAvatars, true).Length;
+        return itemGroup.GetAllSupportedAvatarsIds(SupportedAvatars, false).Length;
     }
 
     private async Task EditItemMemo()

@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using AvatarExplorer.Core.Models.Items;
 
 namespace AvatarExplorer.Core.Services.Avatars;

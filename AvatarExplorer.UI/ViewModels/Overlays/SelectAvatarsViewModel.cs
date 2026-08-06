@@ -42,7 +42,7 @@ public class SelectAvatarsViewModel : ViewModelBase
         SelectVisibleCommand = ReactiveCommand.Create(SelectVisible);
 
         CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
-        ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Avatars.Select(i => i.Identifier).ToArray()));
+        ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Avatars.Where(i => i.IsSelected).Select(i => i.Identifier).ToArray()));
 
         this.WhenAnyValue(i => i.SearchText)
             .Subscribe(ApplySearchResult);
