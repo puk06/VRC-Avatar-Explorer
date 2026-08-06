@@ -347,6 +347,7 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
         var sortOrder = (ItemSortOrder)SelectedSortOrder;
         var sortDirection = (SortDirection)SelectedSortDirection;
+        var implementedEnabled = sortOrder == ItemSortOrder.Implemented;
 
         var navigationables = _itemNavigationService.GetCurrentSelectionView();
         var items = navigationables.OfType<Item>().ToList();
@@ -356,7 +357,7 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         var sortedNavigationables = sortedItems.Cast<INavigationable>().Concat(nonItems);
 
         _allMainItems = sortedNavigationables
-            .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars))
+            .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars, implementedEnabled))
             .ToList();
 
         RightPageInfo.TotalItems = _allMainItems.Count;
@@ -381,15 +382,23 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         return ItemSortService.Sort(items, sortOrder, sortDirection, _removeBrackets);
     }
 
-    private ItemViewModel CreateItemViewModelWithStatus(INavigationable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars)
+    private ItemViewModel CreateItemViewModelWithStatus(INavigationable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled)
     {
         var vm = CreateItemViewModel(nav);
 
         if (nav is not Item item) return vm;
 
-        var isImplemented = avatarId != null && item.ImplementedAvatars.Contains(avatarId);
-        vm.IsImplemented = isImplemented;
-        vm.IsNotImplemented = avatarId != null && !isImplemented;
+        if (!implementedEnabled)
+        {
+            vm.IsImplemented = false;
+            vm.IsNotImplemented = false;
+        }
+        else
+        {
+            var isImplemented = avatarId != null && item.ImplementedAvatars.Contains(avatarId);
+            vm.IsImplemented = isImplemented;
+            vm.IsNotImplemented = !isImplemented;
+        }
 
         var status = _itemNavigationService.ResolveAvatarStatusForCurrentAvatar(item, avatarId, commonAvatars);
         if (status.IsOnlyCommon)
