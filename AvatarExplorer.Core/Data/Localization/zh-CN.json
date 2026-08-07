@@ -231,6 +231,7 @@
     "Error.InitializationFailed": "软件初始化失败。请查看错误日志。",
     "Error.FetchAllItemThumbnailsFailed": "批量获取缩略图完成。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个\n请查看错误日志了解详情。",
     "Error.UnitypackageNotFound": "未找到Unitypackage",
+    "Error.InvalidUrl": "无效的URL",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "语言",

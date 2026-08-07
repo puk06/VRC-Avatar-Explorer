@@ -371,6 +371,7 @@ public static class Loc
         public const string InitializationFailed = "Error.InitializationFailed";
         public const string FetchAllItemThumbnailsFailed = "Error.FetchAllItemThumbnailsFailed";
         public const string UnitypackageNotFound = "Error.UnitypackageNotFound";
+        public const string InvalidUrl = "Error.InvalidUrl";
     }
     public static class Settings
     {

@@ -1,5 +1,5 @@
-using System;
 using System.Web;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Models.System;
 
 namespace AvatarExplorer.UI.Services.System;
@@ -8,7 +8,7 @@ public static class BLMImportItemService
 {
     public static BLMImportItemInfo? GetBLMImportItemInfo(string uriString)
     {
-        var uri = new Uri(uriString);
+        if (!UriUtils.TryParse(uriString, out var uri)) return null;
 
         var query = HttpUtility.ParseQueryString(uri.Query);
 

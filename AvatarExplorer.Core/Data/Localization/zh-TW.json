@@ -231,6 +231,7 @@
     "Error.InitializationFailed": "軟體初始化失敗。請檢查錯誤日誌。",
     "Error.FetchAllItemThumbnailsFailed": "批次取得縮圖完成。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個\n請查看錯誤日誌以取得詳細資訊。",
     "Error.UnitypackageNotFound": "未找到Unitypackage",
+    "Error.InvalidUrl": "無效的URL",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "語言",

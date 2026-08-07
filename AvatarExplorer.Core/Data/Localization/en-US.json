@@ -232,6 +232,7 @@
     "Error.InitializationFailed": "Failed to initialize the software. Please check the error log.",
     "Error.FetchAllItemThumbnailsFailed": "Bulk thumbnail fetch completed. Success: {0} / Failed: {1} / Total: {2}\nCheck the error log for details.",
     "Error.UnitypackageNotFound": "No Unitypackage found",
+    "Error.InvalidUrl": "Invalid URL",
 
     "Settings.Basic": "Basic",
     "Settings.Language.Title": "Language",

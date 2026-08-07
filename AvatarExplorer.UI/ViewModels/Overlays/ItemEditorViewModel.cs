@@ -192,8 +192,8 @@ public class ItemEditorViewModel : ViewModelBase
             else if (File.Exists(i)) itemPathType = ItemPathType.File;
             else if (Directory.Exists(i)) itemPathType = ItemPathType.Folder;
 
-            var fileName = itemPathType == ItemPathType.URL
-                ? Path.GetFileName(new Uri(i).GetLeftPart(UriPartial.Path))
+            var fileName = itemPathType == ItemPathType.URL && UriUtils.TryParse(i, out var uri)
+                ? Path.GetFileName(uri.GetLeftPart(UriPartial.Path))
                 : Path.GetFileName(i);
 
             return new ItemPathViewModel(fileName, i, itemPathType);
@@ -354,7 +354,17 @@ public class ItemEditorViewModel : ViewModelBase
         var url = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddUrl]);
         if (string.IsNullOrEmpty(url)) return;
 
-        var fileName = Path.GetFileName(new Uri(url).GetLeftPart(UriPartial.Path));
+        if (!UriUtils.TryParse(url, out var uri))
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.InvalidUrl],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return;
+        }
+
+        var fileName = Path.GetFileName(uri.GetLeftPart(UriPartial.Path));
         ItemPaths.Add(new ItemPathViewModel(fileName, url, ItemPathType.URL));
     }
     private async Task FetchBoothData()

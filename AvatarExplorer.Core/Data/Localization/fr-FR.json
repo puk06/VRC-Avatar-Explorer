@@ -231,6 +231,7 @@
     "Error.InitializationFailed": "Échec de l'initialisation du logiciel. Veuillez consulter le journal d'erreurs.",
     "Error.FetchAllItemThumbnailsFailed": "La récupération groupée des vignettes est terminée. Réussies : {0} / Échouées : {1} / Total : {2}\nConsultez le journal d'erreurs pour plus de détails.",
     "Error.UnitypackageNotFound": "Aucun Unitypackage trouvé",
+    "Error.InvalidUrl": "URL invalide",
 
     "Settings.Basic": "Général",
     "Settings.Language.Title": "Langue",
