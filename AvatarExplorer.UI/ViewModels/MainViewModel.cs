@@ -145,13 +145,18 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         InitializeSubscriptions();
 
         Localizer.Instance.LanguageChanged += RefreshAllItems;
-        UserPreferencesService.Instance.Repository.OnSettingsChanged += _ => Refresh();
+        UserPreferencesService.Instance.Repository.OnSettingsChanged += _ =>
+        {
+            UpdateItemsPerPage();
+            Refresh();
+        };
         _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
         AdvancedSearchVM.SearchPropertyChanged += _searchManager.RestartTimer;
     }
 
     public async Task OnInitialized()
     {
+        UpdateItemsPerPage();
         Refresh();
     }
 
@@ -247,9 +252,15 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     #endregion
 
     #region Refresh
-    private void Refresh(bool refleshLeftPanelItems = true)
+    private void UpdateItemsPerPage()
     {
-        if (refleshLeftPanelItems) UpdateLeftPanelItems();
+        var itemsPerPage = UserPreferences.ItemsPerPage;
+        LeftPageInfo.PageSize = RightPageInfo.PageSize = itemsPerPage;
+    }
+
+    private void Refresh(bool refreshLeftPanelItems = true)
+    {
+        if (refreshLeftPanelItems) UpdateLeftPanelItems();
 
         if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
             RefreshSearchResults(_searchManager.ActiveSearchQuery);
