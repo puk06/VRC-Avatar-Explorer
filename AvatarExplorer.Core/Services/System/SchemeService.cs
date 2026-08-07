@@ -9,7 +9,7 @@ namespace AvatarExplorer.Core.Services.System;
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
 public static class SchemeService
 {
-    public const string ProtocolVRCAE = "VRCAE";
+    public const string ProtocolVRCAE = "vrcae";
     public const string ProtocolBLM = "booth-library-manager";
 
     public static string? GetRegisteredCommand(string protocol)
