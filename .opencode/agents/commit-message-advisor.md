@@ -57,7 +57,31 @@ You are a **Commit Message Advisor specialist** for the AvatarExplorer project. 
 4. **Generate message** - Create subject line following Conventional Commits **starting with lowercase**
 5. **Check for localization** - Flag if i18n impact detected
 6. **Suggest branch name** - Propose appropriate branch name
-7. **Ask for action** - Offer options: create branch only / commit / just show suggestion
+7. **Proactively suggest action** - After showing the analysis, use the `question` tool to ask the user if they want to proceed with branch creation, commit, and push. Present the suggestion as a default recommendation with yes/no options.
+
+### Proactive Suggestion Workflow
+After completing the analysis, **always** use the `question` tool to ask the user:
+
+```
+question(
+  questions=[{
+    "question": "以下の内容でブランチ作成・コミット・プッシュを行いますか？\n\n**ブランチ名**: `<branch-name>`\n**コミットメッセージ**: `<commit-message>`\n\n実行しますか？",
+    "header": "Git操作の確認",
+    "options": [
+      { "label": "はい (ブランチ作成+コミット+プッシュ)", "description": "ブランチを作成し、コミットしてプッシュします" },
+      { "label": "いいえ (analysysのみ)", "description": "分析結果の表示のみで操作は行いません" }
+    ]
+  }]
+)
+```
+
+If the user selects "はい", execute the following commands in order:
+1. `git checkout -b <branch-name>` - Create and switch to new branch
+2. `git add -A` - Stage all changes
+3. `git commit -m "<commit-message>"` - Commit with the suggested message
+4. `git push -u origin <branch-name>` - Push and set upstream
+
+If the user selects "いいえ", just show the analysis results without performing any git operations.
 
 ### Subject Format Rule
 **ALWAYS start with lowercase letter** (e.g., `add`, `fix`, `update`)
@@ -105,14 +129,12 @@ You are a **Commit Message Advisor specialist** for the AvatarExplorer project. 
 - ⚠️ Large refactor across multiple files? Yes/No
 
 ### ✅ Recommended Action
-1. Create branch: `git checkout -b <branch-name>`
-2. Stage changes: `git add .`
-3. Commit: `git commit -m "<message>"`
+After showing the analysis, **automatically ask the user** via the `question` tool if they want to proceed with:
+- Branch creation
+- Commit
+- Push
 
-OR (simpler):
-1. Just show message (copy to PR title later)
-2. Commit locally on current branch
-3. Create PR when ready
+The user only needs to answer "yes" or "no" to execute the full workflow.
 
 ---
 
