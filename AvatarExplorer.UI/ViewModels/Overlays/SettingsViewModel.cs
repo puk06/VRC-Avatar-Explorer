@@ -217,7 +217,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task OpenBackgroundImage()
     {
-        var files = await StorageService.OpenFileDialog(TopLevelProvider.Current, "Select Background Image");
+        var files = await StorageService.OpenFileDialog(TopLevelProvider.Current, Localizer.Instance[Loc.Dialog.SelectFilePath]);
         if (files == null || files.Length == 0) return;
 
         BackgroundImagePath = files[0];
@@ -225,7 +225,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task OpenItemsFolder()
     {
-        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Items Folder");
+        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, Localizer.Instance[Loc.Dialog.SelectFolderPath]);
         if (folders == null || folders.Length == 0) return;
 
         ItemsFolderPath = folders[0];
@@ -233,7 +233,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task OpenAutoBackupFolder()
     {
-        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Auto Backup Folder");
+        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, Localizer.Instance[Loc.Dialog.SelectFolderPath]);
         if (folders == null || folders.Length == 0) return;
 
         AutoBackupFolderPath = folders[0];
@@ -293,37 +293,35 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     private async Task ResetItemDatabase()
     {
         var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Settings.ResetItemDatabase.Title],
-            Localizer.Instance[Loc.Settings.ResetItemDatabase.Description]
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.ResetItemDatabase]
         );
         if (!result) return;
 
-        var dbPath = SystemPath.ItemDatabasePath;
-        if (File.Exists(dbPath)) File.Delete(dbPath);
+        AvatarExplorerApp.Instance.Items.Clear();
+        AvatarExplorerApp.Instance.TempAvatars.Clear();
     }
 
     private async Task ResetCommonAvatarDatabase()
     {
         var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Settings.ResetCommonAvatarDatabase.Title],
-            Localizer.Instance[Loc.Settings.ResetCommonAvatarDatabase.Description]
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.ResetCommonAvatarDatabase]
         );
         if (!result) return;
 
-        var dbPath = SystemPath.CommonAvatarDatabasePath;
-        if (File.Exists(dbPath)) File.Delete(dbPath);
+        AvatarExplorerApp.Instance.CommonAvatars.Clear();
     }
 
     private async Task ResetBulkImportPresetDatabase()
     {
         var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Settings.ResetBulkImportPresetDatabase.Title],
-            Localizer.Instance[Loc.Settings.ResetBulkImportPresetDatabase.Description]
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.ResetBulkImportPresetDatabase]
         );
         if (!result) return;
 
-        var dbPath = SystemPath.BulkImportPresetDatabasePath;
-        if (File.Exists(dbPath)) File.Delete(dbPath);
+        AvatarExplorerApp.Instance.BulkImportPresets.Clear();
     }
 
     private void ShowErrorLog()

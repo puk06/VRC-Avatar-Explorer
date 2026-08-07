@@ -284,6 +284,14 @@ public class ItemRepository
 
     internal void Add(Item item) => _db.Add(item);
 
+    public void Clear()
+    {
+        _db.Clear();
+
+        Save();
+        OnUpdated?.Invoke();
+    }
+
     public void Save() => _db.Save();
 
     public void MarkAsChanged() => OnUpdated?.Invoke();

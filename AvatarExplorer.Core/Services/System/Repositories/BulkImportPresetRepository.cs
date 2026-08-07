@@ -50,6 +50,14 @@ public class BulkImportPresetRepository
         OnUpdated?.Invoke();
     }
 
+    public void Clear()
+    {
+        _db.Clear();
+
+        Save();
+        OnUpdated?.Invoke();
+    }
+
     public void Save() => _db.Save();
 
     public void MarkAsChanged() => OnUpdated?.Invoke();

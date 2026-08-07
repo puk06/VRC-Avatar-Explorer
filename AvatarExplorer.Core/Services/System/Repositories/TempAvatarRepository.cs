@@ -55,5 +55,13 @@ public class TempAvatarRepository
         OnUpdated?.Invoke();
     }
 
+    public void Clear()
+    {
+        _db.Clear();
+
+        Save();
+        OnUpdated?.Invoke();
+    }
+
     public void MarkAsChanged() => OnUpdated?.Invoke();
 }

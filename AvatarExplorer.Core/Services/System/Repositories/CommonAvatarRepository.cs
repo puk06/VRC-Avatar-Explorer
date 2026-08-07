@@ -71,6 +71,14 @@ public class CommonAvatarRepository
 
     internal void Add(CommonAvatar avatar) => _db.Add(avatar);
 
+    public void Clear()
+    {
+        _db.Clear();
+
+        Save();
+        OnUpdated?.Invoke();
+    }
+
     public void Save() => _db.Save();
 
     public void MarkAsChanged() => OnUpdated?.Invoke();
