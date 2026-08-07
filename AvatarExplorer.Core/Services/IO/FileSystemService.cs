@@ -614,21 +614,97 @@ public static class FileSystemService
         using var archive = SharpCompress.Archives.Tar.TarArchive.OpenArchive(filePath);
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
-    static ArchiveEncoding archiveEncoding
+    static ArchiveEncoding ArchiveEncoding
     {
         get
         {
             if (field is not null) return field;
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            field = new ArchiveEncoding() { Default = Encoding.GetEncoding("Shift_JIS") };
+            field = new ArchiveEncoding() { Default = new FallbackEncoding("Shift_JIS") };
             return field;
+        }
+    }
+    private sealed class FallbackEncoding(string fallbackEncodingName) : Encoding
+    {
+        private readonly Encoding _utf8Strict = new UTF8Encoding(false, true);
+        private readonly Encoding _fallback = GetEncoding(fallbackEncodingName);
+
+        public override int GetByteCount(char[] chars, int index, int count) => _fallback.GetByteCount(chars, index, count);
+        public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex) => _fallback.GetBytes(chars, charIndex, charCount, bytes, byteIndex);
+        public override int GetCharCount(byte[] bytes, int index, int count)
+        {
+            try
+            {
+                return _utf8Strict.GetCharCount(bytes, index, count);
+            }
+            catch (DecoderFallbackException)
+            {
+                return _fallback.GetCharCount(bytes, index, count);
+            }
+        }
+        public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
+        {
+            try
+            {
+                return _utf8Strict.GetChars(bytes, byteIndex, byteCount, chars, charIndex);
+            }
+            catch (DecoderFallbackException)
+            {
+                return _fallback.GetChars(bytes, byteIndex, byteCount, chars, charIndex);
+            }
+        }
+        public override int GetMaxByteCount(int charCount) => _fallback.GetMaxByteCount(charCount);
+        public override int GetMaxCharCount(int byteCount) => _fallback.GetMaxCharCount(byteCount);
+        public override Decoder GetDecoder() => new FallbackDecoder(_utf8Strict, _fallback);
+        public override Encoder GetEncoder() => _fallback.GetEncoder();
+        private sealed class FallbackDecoder(Encoding utf8Strict, Encoding fallback) : Decoder
+        {
+            private readonly Encoding _utf8Strict = utf8Strict;
+            private readonly Encoding _fallback = fallback;
+            private Decoder? _active = utf8Strict.GetDecoder();
+            private bool _failed;
+
+            public override int GetCharCount(byte[] bytes, int index, int count)
+            {
+                if (!_failed)
+                {
+                    try
+                    {
+                        return _utf8Strict.GetDecoder().GetCharCount(bytes, index, count);
+                    }
+                    catch (DecoderFallbackException)
+                    {
+                        _failed = true;
+                        _active = _fallback.GetDecoder();
+                        return _fallback.GetDecoder().GetCharCount(bytes, index, count);
+                    }
+                }
+                return _active!.GetCharCount(bytes, index, count);
+            }
+            public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
+            {
+                if (!_failed)
+                {
+                    try
+                    {
+                        return _utf8Strict.GetDecoder().GetChars(bytes, byteIndex, byteCount, chars, charIndex);
+                    }
+                    catch (DecoderFallbackException)
+                    {
+                        _failed = true;
+                        _active = _fallback.GetDecoder();
+                        return _fallback.GetDecoder().GetChars(bytes, byteIndex, byteCount, chars, charIndex);
+                    }
+                }
+                return _active!.GetChars(bytes, byteIndex, byteCount, chars, charIndex);
+            }
         }
     }
     private static SharpCompress.Readers.ReaderOptions CreateReaderOptions(string? password)
     {
         return new()
         {
-            ArchiveEncoding = archiveEncoding,
+            ArchiveEncoding = ArchiveEncoding,
             Password = string.IsNullOrEmpty(password) ? null : password,
             LeaveStreamOpen = false
         };
