@@ -8,12 +8,12 @@ public class RuntimeSettingsRepository : SettingsRepositoryBase<RuntimeSettings>
 {
     public RuntimeSettingsRepository() : base(SystemPath.RuntimeSettingsFilePath) { }
 
-    public override void Load(string? path = null)
+    public override void Load()
     {
         DatabaseMigrationService.Migrate(
             Manager.FilePath,
             DatabaseMigrations.RuntimeSettingsVersion,
             DatabaseMigrations.ApplyRuntimeSettingsMigration);
-        Manager.Load(path);
+        Manager.Load();
     }
 }

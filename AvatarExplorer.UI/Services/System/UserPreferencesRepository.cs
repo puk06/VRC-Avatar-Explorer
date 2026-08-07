@@ -11,12 +11,12 @@ public class UserPreferencesRepository : SettingsRepositoryBase<UserPreferences>
 {
     public UserPreferencesRepository() : base(UISystemPath.UserPreferencesFilePath) { }
 
-    public override void Load(string? path = null)
+    public override void Load()
     {
         DatabaseMigrationService.Migrate(
             Manager.FilePath,
             UIMigrations.UserPreferencesVersion,
             (root, version) => UIMigrations.ApplyUserPreferencesMigration(root, version, SystemPath.RuntimeSettingsFilePath));
-        Manager.Load(path);
+        Manager.Load();
     }
 }

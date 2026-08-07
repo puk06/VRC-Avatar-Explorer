@@ -11,7 +11,7 @@ public class DatabaseManager<T>(string databaseFilePath)
     private List<T> _items = [];
     public IReadOnlyList<T> Items => _items;
 
-    public void Load(string? path = null) => ReplaceAll(JsonFileManager<IEnumerable<T>>.Load(path ?? DatabaseFilePath) ?? []);
+    public void Load() => ReplaceAll(JsonFileManager<IEnumerable<T>>.Load(DatabaseFilePath) ?? []);
 
     public void Save() => JsonFileManager<IEnumerable<T>>.Save(_items, DatabaseFilePath);
 

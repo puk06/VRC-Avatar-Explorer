@@ -14,7 +14,7 @@ public abstract class SettingsRepositoryBase<T> : ISettingsRepository<T> where T
         Manager.SettingsChanged += settings => OnSettingsChanged?.Invoke(settings);
     }
 
-    public abstract void Load(string? path = null);
+    public abstract void Load();
 
     public void Update(T settings)
     {
