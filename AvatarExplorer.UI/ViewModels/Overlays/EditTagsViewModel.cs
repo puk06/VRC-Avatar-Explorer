@@ -74,6 +74,9 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
             NewTag = string.Empty;
         }
     }
+
+    public void OnTagClick(string tag) => Tags.Remove(tag);
+
     public Task<string[]?> WaitForResult()
     {
         _tcs = new TaskCompletionSource<string[]?>();
