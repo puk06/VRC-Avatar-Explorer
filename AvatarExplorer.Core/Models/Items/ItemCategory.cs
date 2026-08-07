@@ -4,7 +4,7 @@ using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public record ItemCategory : INavigationable
+public record ItemCategory : IIdentifiable
 {
     public ItemType Type { get; init; } = ItemType.None;
     public string CustomCategory { get; init; } = string.Empty;

@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using System.Linq;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
@@ -11,7 +10,7 @@ namespace AvatarExplorer.UI.Factories;
 
 public static class NavigationItemFactory
 {
-    public static ItemViewModel CreateFromNavigationable(INavigationable source)
+    public static ItemViewModel CreateFromNavigationable(IIdentifiable source)
     {
         if (source is Avatar avatar)
         {

@@ -10,13 +10,13 @@ public enum AvatarType
     TempAvatar
 }
 
-public class Avatar : INavigationable
+public class Avatar : IIdentifiable
 {
     public AvatarType Type { get; private set; } = AvatarType.None;
-    public INavigationable Item { get; }
+    public IIdentifiable Item { get; }
     public bool RawIdentifier { get; } // avatar:を付けるかどうかです
 
-    public Avatar(INavigationable navigationable, bool rawIdentifier = false)
+    public Avatar(IIdentifiable navigationable, bool rawIdentifier = false)
     {
         Item = navigationable;
         RawIdentifier = rawIdentifier;

@@ -5,7 +5,7 @@ using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class Item : AbstractDatabaseItem, INavigationable
+public class Item : AbstractDatabaseItem, IIdentifiable
 {
     [JsonInclude] public string Title { get; private set; } = string.Empty;
     [JsonInclude] public string Author { get; private set; } = string.Empty;

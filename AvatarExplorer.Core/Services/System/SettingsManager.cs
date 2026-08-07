@@ -12,18 +12,17 @@ public class SettingsManager<T>(string filePath) where T : class, new()
     public T Settings => _settings;
     public string FilePath => _filePath;
 
-    public void Update(T newSettings, bool save = true)
+    public void Update(T newSettings)
     {
         _settings = newSettings;
         SettingsChanged?.Invoke(newSettings);
-        if (save) Save();
     }
 
     public void Load(string? path = null)
     {
         var loadedSettings = JsonFileManager<T>.Load(path ?? _filePath);
-        if (loadedSettings != null) Update(loadedSettings, false);
-        else Update(new T(), false);
+        if (loadedSettings != null) Update(loadedSettings);
+        else Update(new T());
     }
 
     public void Save() => JsonFileManager<T>.Save(_settings, _filePath);

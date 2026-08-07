@@ -2,7 +2,7 @@
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class Author : INavigationable
+public class Author : IIdentifiable
 {
     public string Name { get; set; } = string.Empty;
     public int ItemCount { get; set; } = 0;

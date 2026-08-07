@@ -25,11 +25,11 @@ public static class ItemSortService
         return direction == SortDirection.Descending ? ordered.Reverse() : ordered;
     }
 
-    public static List<INavigationable> SortAvatars(IEnumerable<INavigationable> avatars, ItemSortOrder order, SortDirection direction, bool removeBrackets)
+    public static List<IIdentifiable> SortAvatars(IEnumerable<IIdentifiable> avatars, ItemSortOrder order, SortDirection direction, bool removeBrackets)
     {
-        var commonAvatars = new List<INavigationable>();
+        var commonAvatars = new List<IIdentifiable>();
         var items = new List<Item>();
-        var tempAvatars = new List<INavigationable>();
+        var tempAvatars = new List<IIdentifiable>();
 
         foreach (var avatar in avatars)
         {
@@ -58,7 +58,7 @@ public static class ItemSortService
         }
 
         var sortedItems = Sort(items, order, direction, removeBrackets)
-            .Select(i => (INavigationable)new Avatar(i));
+            .Select(i => (IIdentifiable)new Avatar(i));
 
         return commonAvatars.Concat(sortedItems).Concat(tempAvatars).ToList();
     }

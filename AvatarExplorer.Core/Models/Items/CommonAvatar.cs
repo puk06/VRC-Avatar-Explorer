@@ -4,7 +4,7 @@ using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class CommonAvatar(string groupName) : AbstractDatabaseItem, INavigationable
+public class CommonAvatar(string groupName) : AbstractDatabaseItem, IIdentifiable
 {
     [JsonInclude] public string GroupName { get; private set; } = groupName;
     [JsonInclude] public ImmutableArray<string> Avatars { get; private set; } = [];

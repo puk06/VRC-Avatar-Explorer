@@ -24,7 +24,7 @@ public class ItemNavigationService
     private readonly SelectionState _state = new();
     private readonly Dictionary<string, string> _pathCache = new();
 
-    private readonly Dictionary<string, Func<string, INavigationable[]>> _handlers;
+    private readonly Dictionary<string, Func<string, IIdentifiable[]>> _handlers;
 
     public event Action<string>? FileOpenRequested = null;
 
@@ -128,15 +128,15 @@ public class ItemNavigationService
     public string? ResolveFolderPath(string state) => TryParseState(state, out _, out var hash) ? ResolvePath(hash) : null;
     public string? ResolveFilePath(string state) => TryParseState(state, out _, out var hash) ? ResolvePath(hash) : null;
 
-    public INavigationable[] GetCurrentSelectionView()
+    public IIdentifiable[] GetCurrentSelectionView()
     {
         var state = _state.Current?.Value;
-        if (state == null) return _items.ItemRepository.GetAll().ToArray<INavigationable>();
+        if (state == null) return _items.ItemRepository.GetAll().ToArray<IIdentifiable>();
         if (!TryParseState(state, out var key, out _)) return [];
         return _handlers.TryGetValue(key, out var func) ? func(state) : [];
     }
 
-    private INavigationable[] HandleRoot(string state)
+    private IIdentifiable[] HandleRoot(string state)
     {
         if (!TryParseState(state, out var prefix, out var value)) return [];
 
@@ -159,10 +159,10 @@ public class ItemNavigationService
                 TitleLocalizable = isLocalizable,
                 ItemCount = i.Value.Count
             };
-        }).ToArray<INavigationable>();
+        }).ToArray<IIdentifiable>();
     }
 
-    private INavigationable[] HandleCategory(string state)
+    private IIdentifiable[] HandleCategory(string state)
     {
         if (!TryParseState(state, out var prefix, out var value)) return [];
 
@@ -180,7 +180,7 @@ public class ItemNavigationService
         return items.Where(i => i.IsCategoryMatch(state)).ToArray();
     }
 
-    private INavigationable[] HandleItem(string state)
+    private IIdentifiable[] HandleItem(string state)
     {
         var itemFiles = PopulatePathCache(state);
 
@@ -193,10 +193,10 @@ public class ItemNavigationService
                 TitleLocalizable = false,
                 ItemCount = i.Count()
             };
-        }).ToArray<INavigationable>();
+        }).ToArray<IIdentifiable>();
     }
 
-    private INavigationable[] HandleFolder(string state)
+    private IIdentifiable[] HandleFolder(string state)
     {
         if (!TryParseState(state, out _, out var hash)) return [];
 
@@ -219,10 +219,10 @@ public class ItemNavigationService
                 TitleLocalizable = localizationKey != null,
                 ItemCount = i.Value.Count
             };
-        }).ToArray<INavigationable>();
+        }).ToArray<IIdentifiable>();
     }
 
-    private INavigationable[] HandleExtension(string state)
+    private IIdentifiable[] HandleExtension(string state)
     {
         if (!TryParseState(state, out _, out var categoryRaw)) return [];
 

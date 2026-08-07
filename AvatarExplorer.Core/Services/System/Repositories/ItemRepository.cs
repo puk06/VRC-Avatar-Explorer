@@ -1,7 +1,6 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.Database;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Utils;
@@ -9,30 +8,24 @@ using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System.Repositories;
 
-public class ItemRepository
+public class ItemRepository : RepositoryBase<Item>
 {
-    private readonly DatabaseManager<Item> _db = new(SystemPath.ItemDatabasePath);
+    public ItemRepository() : base(SystemPath.ItemDatabasePath) { }
 
-    /// <summary>
-    /// アイテムが追加・更新・削除された際に発火します。
-    /// </summary>
-    public event Action? OnUpdated;
-
-    public void Load()
+    public override void Load()
     {
         DatabaseMigrationService.Migrate(
-            _db.DatabaseFilePath,
+            Db.DatabaseFilePath,
             DatabaseMigrations.ItemVersion,
             (root, version) => DatabaseMigrations.ApplyItemMigration(root, version, AvatarExplorerApp.Instance.RuntimeSettings.Settings.DataRootDirectory));
 
-        _db.Load();
-        OnUpdated?.Invoke();
+        Db.Load();
+        InvokeUpdated();
     }
 
-    public IReadOnlyList<Item> GetAll() => _db.Items;
-    public Item? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);
+    public override void Remove(string identifier) => Remove(identifier, removeFolder: false);
 
-    public void Remove(string identifier, bool removeFolder = false)
+    public void Remove(string identifier, bool removeFolder)
     {
         var item = Get(identifier);
         if (item == null) return;
@@ -42,10 +35,9 @@ public class ItemRepository
             FileSystemService.DeleteDirectory(item.ItemPath);
         }
 
-        _db.Remove(item.Id);
-
-        Save();
-        OnUpdated?.Invoke();
+        Db.Remove(item.Id);
+        Db.Save();
+        InvokeUpdated();
     }
 
     public async Task<Item> Create(ItemCreationContext context)
@@ -64,17 +56,15 @@ public class ItemRepository
         item.UpdateSupportedAvatars(context.SupportedAvatars);
         item.UpdateTags(context.Tags);
 
-        _db.Add(item);
-
         var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
         var downloaded = await context.FetchThumbnailAsync(destPath, overwrite: true);
         if (downloaded) item.UpdateThumbnailFileName(item.Id);
 
-        Save();
-        OnUpdated?.Invoke();
+        Add(item);
 
         return item;
     }
+
     public async Task<bool> Update(string identifier, ItemEditContext context)
     {
         var item = Get(identifier);
@@ -103,7 +93,7 @@ public class ItemRepository
         item.UpdateTimestamp(now);
 
         Save();
-        OnUpdated?.Invoke();
+        InvokeUpdated();
 
         return true;
     }
@@ -119,18 +109,17 @@ public class ItemRepository
                 if (item.BoothId != -1)
                     folderName = item.BoothId.ToString();
                 else
-                    folderName = item.Id; // 最後の手段
+                    folderName = item.Id;
             }
 
             return FileSystemService.GetUniquePath(dataRootDirectory, folderName, true);
         }
-        
+
         var item = Get(identifier);
         if (item == null) return Error.NotFound(description: "Item not found.");
 
         var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
 
-        // Zipを展開する必要がある時はこれが使われる
         var defaultExtractPath = string.IsNullOrEmpty(item.ItemPath) ? GetSafePath(item, settings.DataRootDirectory) : item.ItemPath;
         var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, settings.RemoveOriginal);
         if (result.IsError) return Error.Failure(description: "Failed to extract item paths.");
@@ -139,7 +128,7 @@ public class ItemRepository
         item.UpdateItemPaths(result.Value.FolderPaths);
 
         Save();
-        OnUpdated?.Invoke();
+        InvokeUpdated();
 
         return result;
     }
@@ -168,15 +157,14 @@ public class ItemRepository
             .ThenBy(kvp => kvp.Key.StartsWith("type:") ? int.Parse(kvp.Key[5..]) : 0)
             .ThenBy(kvp => kvp.Key);
     }
+
     public List<ItemFile> EnumerateItemFiles(string id)
     {
-        // Root
         var item = Get(id);
         if (item == null) return [];
 
         var files = new List<ItemFile>();
 
-        // Root
         var root = item.ItemPath;
         foreach (var rootFile in FileSystemService.EnumerateFiles(root, isRecursive: false))
             files.Add(new(root, rootFile));
@@ -188,7 +176,6 @@ public class ItemRepository
                     files.Add(new(rootFolder, rootFolderFile));
         }
 
-        // Other Folders
         foreach (var otherFolder in item.ItemPaths)
             foreach (var otherFile in FileSystemService.EnumerateFiles(otherFolder, isRecursive: true))
                 files.Add(new(otherFolder, otherFile));
@@ -209,7 +196,7 @@ public class ItemRepository
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
 
         Save();
-        OnUpdated?.Invoke();
+        InvokeUpdated();
 
         return Result.Success;
     }
@@ -223,7 +210,7 @@ public class ItemRepository
             .ForEach(i => i.UpdateCategory(newCategory));
 
         Save();
-        OnUpdated?.Invoke();
+        InvokeUpdated();
     }
 
     public async Task<ErrorOr<Success>> FetchThumbnailFromBooth(string identifier)
@@ -246,7 +233,7 @@ public class ItemRepository
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
 
         Save();
-        OnUpdated?.Invoke();
+        InvokeUpdated();
 
         return Result.Success;
     }
@@ -260,7 +247,7 @@ public class ItemRepository
         targetItems.ForEach(i => i.UpdateCategory(targetCategory));
 
         Save();
-        OnUpdated?.Invoke();
+        InvokeUpdated();
     }
 
     public void ValidateAndAutoFixItemType(bool avatarExist)
@@ -278,21 +265,7 @@ public class ItemRepository
             }
 
             Save();
-            OnUpdated?.Invoke();
+            InvokeUpdated();
         }
     }
-
-    internal void Add(Item item) => _db.Add(item);
-
-    public void Clear()
-    {
-        _db.Clear();
-
-        Save();
-        OnUpdated?.Invoke();
-    }
-
-    public void Save() => _db.Save();
-
-    public void MarkAsChanged() => OnUpdated?.Invoke();
 }

@@ -1,50 +1,27 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.Database;
 using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.System.Repositories;
 
-public class CommonAvatarRepository
+public class CommonAvatarRepository : RepositoryBase<CommonAvatar>
 {
-    private readonly DatabaseManager<CommonAvatar> _db = new(SystemPath.CommonAvatarDatabasePath);
+    public CommonAvatarRepository() : base(SystemPath.CommonAvatarDatabasePath) { }
 
-    /// <summary>
-    /// CommonAvatar が追加・更新・削除された際に発火します。
-    /// </summary>
-    public event Action? OnUpdated;
-
-    public void Load()
+    public override void Load()
     {
         DatabaseMigrationService.Migrate(
-            _db.DatabaseFilePath,
+            Db.DatabaseFilePath,
             DatabaseMigrations.CommonAvatarVersion,
             DatabaseMigrations.ApplyCommonAvatarMigration);
 
-        _db.Load();
-        OnUpdated?.Invoke();
-    }
-
-    public IReadOnlyList<CommonAvatar> GetAll() => _db.Items;
-    public CommonAvatar? Get(string identifier) => _db.Items.FirstOrDefault(i => i.Identifier == identifier);
-
-    public void Remove(string identifier)
-    {
-        var group = Get(identifier);
-        if (group == null) return;
-
-        _db.Remove(group.Id);
-        Save();
-
-        OnUpdated?.Invoke();
+        Db.Load();
+        InvokeUpdated();
     }
 
     public void Create(string groupName)
     {
-        _db.Add(new(groupName));
-        Save();
-
-        OnUpdated?.Invoke();
+        Add(new(groupName));
     }
 
     public void UpdateAvatars(string groupId, IEnumerable<string> avatars)
@@ -54,10 +31,9 @@ public class CommonAvatarRepository
 
         group.UpdateAvatars(avatars);
         Save();
-
-        OnUpdated?.Invoke();
+        InvokeUpdated();
     }
-    
+
     public void RenameGroup(string groupId, string newName)
     {
         var group = Get(groupId);
@@ -65,21 +41,6 @@ public class CommonAvatarRepository
 
         group.UpdateGroupName(newName);
         Save();
-
-        OnUpdated?.Invoke();
+        InvokeUpdated();
     }
-
-    internal void Add(CommonAvatar avatar) => _db.Add(avatar);
-
-    public void Clear()
-    {
-        _db.Clear();
-
-        Save();
-        OnUpdated?.Invoke();
-    }
-
-    public void Save() => _db.Save();
-
-    public void MarkAsChanged() => OnUpdated?.Invoke();
 }

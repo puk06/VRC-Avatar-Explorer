@@ -51,7 +51,7 @@ public class ItemGroupService
         _tempAvatars.OnUpdated += TempAvatarUpdated;
     }
 
-    public List<INavigationable> GetQueryFilters(QueryType type)
+    public List<IIdentifiable> GetQueryFilters(QueryType type)
     {
         return type switch
         {
@@ -61,9 +61,9 @@ public class ItemGroupService
             _ => []
         };
     }
-    public List<INavigationable> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false, bool rawIdentifier = false)
+    public List<IIdentifiable> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false, bool rawIdentifier = false)
     {
-        var avatars = new List<INavigationable>();
+        var avatars = new List<IIdentifiable>();
 
         if (includeCommonAvatar) avatars.AddRange(_commonAvatars.GetAll());
         avatars.AddRange(_items.GetAll().Where(i => i.Category.Type == ItemType.Avatar));
@@ -71,9 +71,9 @@ public class ItemGroupService
 
         return avatars
             .Select(i => new Avatar(i, rawIdentifier))
-            .ToList<INavigationable>();
+            .ToList<IIdentifiable>();
     }
-    public List<INavigationable> GetAuthors()
+    public List<IIdentifiable> GetAuthors()
     {
         return _items.GetAll()
             .GroupBy(i => i.Author)
@@ -83,9 +83,9 @@ public class ItemGroupService
                 ItemCount = i.Count()
             })
             .OrderBy(i => i.Name)
-            .ToList<INavigationable>();
+            .ToList<IIdentifiable>();
     }
-    public List<INavigationable> GetCategoryFolders(bool includeEmptyCategory = false, bool includeAllCategory = false)
+    public List<IIdentifiable> GetCategoryFolders(bool includeEmptyCategory = false, bool includeAllCategory = false)
     {
         var categories = new List<Folder>();
         
@@ -138,7 +138,7 @@ public class ItemGroupService
             };
         }));
 
-        return categories.ToList<INavigationable>();
+        return categories.ToList<IIdentifiable>();
     }
     public List<Item> GetItemsFromAvatar(string id)
     {

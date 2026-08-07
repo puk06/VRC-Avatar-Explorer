@@ -3,7 +3,7 @@ using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class TempAvatar(string avatarName) : AbstractDatabaseItem, INavigationable
+public class TempAvatar(string avatarName) : AbstractDatabaseItem, IIdentifiable
 {
     [JsonInclude]  public string AvatarName { get; private set; } = avatarName;
 

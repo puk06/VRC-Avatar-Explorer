@@ -302,7 +302,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         var nonItems = navigationables.Where(i => i is not Item).ToList();
 
         var sortedItems = SortNavigationItems(items, sortOrder, sortDirection, avatarId);
-        var sortedNavigationables = sortedItems.Cast<INavigationable>().Concat(nonItems);
+        var sortedNavigationables = sortedItems.Cast<IIdentifiable>().Concat(nonItems);
 
         _allMainItems = sortedNavigationables
             .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars, implementedEnabled))
@@ -330,7 +330,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         return ItemSortService.Sort(items, sortOrder, sortDirection, UserPreferences.RemoveBrackets);
     }
 
-    private ItemViewModel CreateItemViewModelWithStatus(INavigationable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled)
+    private ItemViewModel CreateItemViewModelWithStatus(IIdentifiable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled)
     {
         var vm = CreateItemViewModel(nav);
 
@@ -445,7 +445,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     #endregion
 
     #region Items
-    private static ItemViewModel CreateItemViewModel(INavigationable item)
+    private static ItemViewModel CreateItemViewModel(IIdentifiable item)
     {
         var navigationItem = NavigationItemFactory.CreateFromNavigationable(item);
         navigationItem.Actions = ContextMenuCreator.Create(navigationItem.ViewModelType, navigationItem);

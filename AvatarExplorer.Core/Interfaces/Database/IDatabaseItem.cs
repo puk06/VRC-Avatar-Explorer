@@ -1,6 +1,6 @@
 namespace AvatarExplorer.Core.Interfaces.Database;
 
-internal interface IDatabaseItem
+public interface IDatabaseItem
 {
     string Id { get; }
 }

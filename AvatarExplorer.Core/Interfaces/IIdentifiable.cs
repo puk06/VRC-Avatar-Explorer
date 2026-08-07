@@ -1,6 +1,6 @@
 namespace AvatarExplorer.Core.Interfaces;
 
-public interface INavigationable
+public interface IIdentifiable
 {
      string Identifier { get; }
 }

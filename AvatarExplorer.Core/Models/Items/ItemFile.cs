@@ -3,7 +3,7 @@ using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class ItemFile(string folderPath, string filePath) : INavigationable
+public class ItemFile(string folderPath, string filePath) : IIdentifiable
 {
     public string ParentFolderPath { get; } = folderPath;
     public string ParentFolderName { get; } = Path.GetFileName(folderPath) ?? string.Empty;

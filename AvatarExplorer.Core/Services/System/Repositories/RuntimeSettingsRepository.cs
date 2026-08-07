@@ -4,25 +4,16 @@ using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.System.Repositories;
 
-public class RuntimeSettingsRepository
+public class RuntimeSettingsRepository : SettingsRepositoryBase<RuntimeSettings>
 {
-    private readonly SettingsManager<RuntimeSettings> _manager = new(SystemPath.RuntimeSettingsFilePath);
-    public RuntimeSettings Settings => _manager.Settings;
+    public RuntimeSettingsRepository() : base(SystemPath.RuntimeSettingsFilePath) { }
 
-    public event Action<RuntimeSettings>? OnSettingsChanged;
-
-    public RuntimeSettingsRepository()
-    {
-        _manager.SettingsChanged += (settings) => OnSettingsChanged?.Invoke(settings);
-    }
-
-    public void Load()
+    public override void Load(string? path = null)
     {
         DatabaseMigrationService.Migrate(
-            _manager.FilePath,
+            Manager.FilePath,
             DatabaseMigrations.RuntimeSettingsVersion,
             DatabaseMigrations.ApplyRuntimeSettingsMigration);
-        _manager.Load();
+        Manager.Load(path);
     }
-    public void Update(RuntimeSettings settings) => _manager.Update(settings);
 }

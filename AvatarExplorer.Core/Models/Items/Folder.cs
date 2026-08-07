@@ -2,7 +2,7 @@ using AvatarExplorer.Core.Interfaces;
 
 namespace AvatarExplorer.Core.Models.Items;
 
-public class Folder(string identifier, string? path = null) : INavigationable
+public class Folder(string identifier, string? path = null) : IIdentifiable
 {
     public string Title { get; set; } = string.Empty;
     public bool TitleLocalizable { get; set; } = false;
