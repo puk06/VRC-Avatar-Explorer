@@ -23,7 +23,7 @@ static class Program
         if (!ProcessUtils.IsWindows() || !SchemeService.IsRunAsAdmin())
         {
             // Linux では Windows とは違い、"Global\" とつけないとグローバルに Mutex が出来ない。
-            var mutexName = ProcessUtils.IsLinux() ?  "Global\\" + MutexName : MutexName;
+            var mutexName = ProcessUtils.IsLinux() ? "Global\\" + MutexName : MutexName;
 
             // Single Instance Check
             Mutex _ = new(true, mutexName, out bool isNew);
@@ -34,10 +34,6 @@ static class Program
                 return;
             }
         }
-
-        // Set Current Directory
-        string? currentProcessPath = Path.GetDirectoryName(ProcessUtils.GetCurrentProcessPath());
-        if (currentProcessPath != null) Directory.SetCurrentDirectory(currentProcessPath);
 
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
