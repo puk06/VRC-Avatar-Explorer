@@ -301,14 +301,14 @@
                                         <TabItem.Header>
                                             <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="16" Height="16"/>
                                         </TabItem.Header>
-                                        <panels:BulkImport/>
+                                        <panels:BulkImport Margin="-10,0,-10,0"/>
                                     </TabItem>
 
                                     <TabItem ToolTip.Tip="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}" Tag="2">
                                         <TabItem.Header>
                                             <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="16" Height="16"/>
                                         </TabItem.Header>
-                                        <panels:BulkImportPreset/>
+                                        <panels:BulkImportPreset Margin="-10,0,-10,0"/>
                                     </TabItem>
                                 </TabControl>
                             </Grid>
