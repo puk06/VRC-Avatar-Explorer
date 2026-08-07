@@ -614,10 +614,21 @@ public static class FileSystemService
         using var archive = SharpCompress.Archives.Tar.TarArchive.OpenArchive(filePath);
         await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
     }
+    static ArchiveEncoding archiveEncoding
+    {
+        get
+        {
+            if (field is not null) return field;
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            field = new ArchiveEncoding() { Default = Encoding.GetEncoding("Shift_JIS") };
+            return field;
+        }
+    }
     private static SharpCompress.Readers.ReaderOptions CreateReaderOptions(string? password)
     {
         return new()
         {
+            ArchiveEncoding = archiveEncoding,
             Password = string.IsNullOrEmpty(password) ? null : password,
             LeaveStreamOpen = false
         };
