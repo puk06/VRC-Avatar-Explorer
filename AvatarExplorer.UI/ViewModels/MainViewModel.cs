@@ -147,6 +147,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         Localizer.Instance.LanguageChanged += RefreshAllItems;
         UserPreferencesService.Instance.Repository.OnSettingsChanged += _ => Refresh();
         _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
+        AdvancedSearchVM.SearchPropertyChanged += _searchManager.RestartTimer;
     }
 
     public async Task OnInitialized()
