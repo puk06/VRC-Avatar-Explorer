@@ -173,20 +173,20 @@
 
                             <Border Grid.Row="1" Classes="panelbackground" CornerRadius="8" Padding="8,4">
                                 <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto" ColumnSpacing="4">
-                                    <Button Classes="button pagebutton" Grid.Column="0" Width="30" Height="30" Padding="0" Command="{Binding LeftGoFirstCommand}" IsEnabled="{Binding LeftPageInfo.CanGoFirst}">
+                                    <Button Classes="button pagebutton" Grid.Column="0" Width="30" Height="30" Padding="0" Command="{Binding LeftGoFirstCommand}" IsVisible="{Binding LeftPageInfo.CanGoFirst}">
                                         <materialIcons:MaterialIcon Kind="FirstPage" Width="20" Height="20"/>
                                     </Button>
-                                    <Button Classes="button pagebutton" Grid.Column="1" Width="30" Height="30" Padding="0" Command="{Binding LeftGoPrevCommand}" IsEnabled="{Binding LeftPageInfo.CanGoPrev}">
+                                    <Button Classes="button pagebutton" Grid.Column="1" Width="30" Height="30" Padding="0" Command="{Binding LeftGoPrevCommand}" IsVisible="{Binding LeftPageInfo.CanGoPrev}">
                                         <materialIcons:MaterialIcon Kind="ChevronLeft" Width="20" Height="20"/>
                                     </Button>
                                     <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="0">
                                         <TextBlock Text="{Binding LeftPageInfo.PageDisplay}" FontSize="12" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                         <TextBlock Text="{Binding LeftPageInfo.ItemRangeDisplay}" FontSize="11" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Text.Secondary}"/>
                                     </StackPanel>
-                                    <Button Classes="button pagebutton" Grid.Column="3" Width="30" Height="30" Padding="0" Command="{Binding LeftGoNextCommand}" IsEnabled="{Binding LeftPageInfo.CanGoNext}">
+                                    <Button Classes="button pagebutton" Grid.Column="3" Width="30" Height="30" Padding="0" Command="{Binding LeftGoNextCommand}" IsVisible="{Binding LeftPageInfo.CanGoNext}">
                                         <materialIcons:MaterialIcon Kind="ChevronRight" Width="20" Height="20"/>
                                     </Button>
-                                    <Button Classes="button pagebutton" Grid.Column="4" Width="30" Height="30" Padding="0" Command="{Binding LeftGoLastCommand}" IsEnabled="{Binding LeftPageInfo.CanGoLast}">
+                                    <Button Classes="button pagebutton" Grid.Column="4" Width="30" Height="30" Padding="0" Command="{Binding LeftGoLastCommand}" IsVisible="{Binding LeftPageInfo.CanGoLast}">
                                         <materialIcons:MaterialIcon Kind="LastPage" Width="20" Height="20"/>
                                     </Button>
                                 </Grid>
@@ -253,20 +253,20 @@
 
                             <Border Grid.Row="1" Classes="panelbackground" CornerRadius="8" Padding="10,6">
                                 <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto" ColumnSpacing="8">
-                                    <Button Classes="button pagebutton" Grid.Column="0" Width="35" Height="35" Padding="0" Command="{Binding RightGoFirstCommand}" IsEnabled="{Binding RightPageInfo.CanGoFirst}">
+                                    <Button Classes="button pagebutton" Grid.Column="0" Width="35" Height="35" Padding="0" Command="{Binding RightGoFirstCommand}" IsVisible="{Binding RightPageInfo.CanGoFirst}">
                                         <materialIcons:MaterialIcon Kind="FirstPage" Width="22" Height="22"/>
                                     </Button>
-                                    <Button Classes="button pagebutton" Grid.Column="1" Width="35" Height="35" Padding="0" Command="{Binding RightGoPrevCommand}" IsEnabled="{Binding RightPageInfo.CanGoPrev}">
+                                    <Button Classes="button pagebutton" Grid.Column="1" Width="35" Height="35" Padding="0" Command="{Binding RightGoPrevCommand}" IsVisible="{Binding RightPageInfo.CanGoPrev}">
                                         <materialIcons:MaterialIcon Kind="ChevronLeft" Width="22" Height="22"/>
                                     </Button>
                                     <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="0">
                                         <TextBlock Text="{Binding RightPageInfo.PageDisplay}" FontSize="14" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                         <TextBlock Text="{Binding RightPageInfo.ItemRangeDisplay}" FontSize="12" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Text.Secondary}"/>
                                     </StackPanel>
-                                    <Button Classes="button pagebutton" Grid.Column="3" Width="35" Height="35" Padding="0" Command="{Binding RightGoNextCommand}" IsEnabled="{Binding RightPageInfo.CanGoNext}">
+                                    <Button Classes="button pagebutton" Grid.Column="3" Width="35" Height="35" Padding="0" Command="{Binding RightGoNextCommand}" IsVisible="{Binding RightPageInfo.CanGoNext}">
                                         <materialIcons:MaterialIcon Kind="ChevronRight" Width="22" Height="22"/>
                                     </Button>
-                                    <Button Classes="button pagebutton" Grid.Column="4" Width="35" Height="35" Padding="0" Command="{Binding RightGoLastCommand}" IsEnabled="{Binding RightPageInfo.CanGoLast}">
+                                    <Button Classes="button pagebutton" Grid.Column="4" Width="35" Height="35" Padding="0" Command="{Binding RightGoLastCommand}" IsVisible="{Binding RightPageInfo.CanGoLast}">
                                         <materialIcons:MaterialIcon Kind="LastPage" Width="22" Height="22"/>
                                     </Button>
                                 </Grid>
