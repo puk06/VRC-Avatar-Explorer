@@ -163,9 +163,6 @@ public partial class MainView : UserControl
             case nameof(MainViewModel.HoverThumbnailImage):
                 _hoverWindow.SetImage(vm.HoverThumbnailImage);
                 break;
-            case nameof(MainViewModel.HoverThumbnailSize):
-                _hoverWindow.SetSize(vm.HoverThumbnailSize);
-                break;
             case nameof(MainViewModel.HoverThumbnailPosition):
                 _hoverWindow.Position = vm.HoverThumbnailPosition;
                 break;
@@ -177,6 +174,7 @@ public partial class MainView : UserControl
         if (isVisible)
         {
             _hoverWindow.Show();
+            _hoverWindow.SetSize(UserPreferencesService.Instance.Repository.Settings.HoverIconSize);
             _hoverWindow.Topmost = false;
             _hoverWindow.Topmost = true;
         }

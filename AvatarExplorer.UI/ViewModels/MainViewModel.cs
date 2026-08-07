@@ -60,7 +60,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     [Reactive] public GridLength SidePanelWidth { get; set; } = new(50);
 
     [Reactive] public Bitmap? HoverThumbnailImage { get; set; }
-    [Reactive] public int HoverThumbnailSize { get; set; }
     [Reactive] public bool IsHoverThumbnailVisible { get; set; }
     [Reactive] public PixelPoint HoverThumbnailPosition { get; set; }
     #endregion

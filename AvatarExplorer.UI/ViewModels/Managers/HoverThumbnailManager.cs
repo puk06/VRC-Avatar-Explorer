@@ -17,7 +17,6 @@ public class HoverThumbnailManager(MainViewModel vm)
         if (!preferences.EnableHoverIconSize) return;
 
         _vm.HoverThumbnailImage = item.Thumbnail;
-        _vm.HoverThumbnailSize = preferences.HoverIconSize;
         _vm.IsHoverThumbnailVisible = true;
     }
 
