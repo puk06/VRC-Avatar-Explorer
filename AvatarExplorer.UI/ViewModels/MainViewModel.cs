@@ -34,7 +34,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels;
 
-public class MainViewModel : ViewModelBase, IPostInitializable
+public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
     #region Properties
     public static MainViewModel Instance { get; private set; } = null!;
@@ -63,9 +63,6 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     [Reactive] public int HoverThumbnailSize { get; set; }
     [Reactive] public bool IsHoverThumbnailVisible { get; set; }
     [Reactive] public PixelPoint HoverThumbnailPosition { get; set; }
-
-    [Reactive] public int SelectedSortOrder { get; set; } = 3;
-    [Reactive] public int SelectedSortDirection { get; set; } = 1;
     #endregion
 
     #region Commands
@@ -87,7 +84,6 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     public IReactiveCommand RightGoPrevCommand { get; }
     public IReactiveCommand RightGoNextCommand { get; }
     public IReactiveCommand RightGoLastCommand { get; }
-    public IReactiveCommand ToggleSortDirectionCommand { get; }
     #endregion
 
     #region Fields
@@ -100,8 +96,8 @@ public class MainViewModel : ViewModelBase, IPostInitializable
 
     private List<ItemViewModel> _allLeftItems = [];
     private List<ItemViewModel> _allMainItems = [];
-    private int _normalIconSize = 80;
-    private bool _removeBrackets = false;
+
+    private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
     #endregion
 
     #region Constructor
@@ -127,7 +123,6 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         RightGoPrevCommand = ReactiveCommand.Create(RightPageInfo.GoPrev);
         RightGoNextCommand = ReactiveCommand.Create(RightPageInfo.GoNext);
         RightGoLastCommand = ReactiveCommand.Create(RightPageInfo.GoLast);
-        ToggleSortDirectionCommand = ReactiveCommand.Create(ToggleSortDirection);
 
         _itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
         _itemNavigationService = AvatarExplorerApp.Instance.ItemNavigationService;
@@ -142,37 +137,22 @@ public class MainViewModel : ViewModelBase, IPostInitializable
             Refresh
         );
 
-        IInitializableRegistry.Register(this);
+        IInitializableRegistry.Register(0, (IInitializable)this);
+        IInitializableRegistry.Register(0, (IPostInitializable)this);
+    }
+
+    public async Task Initialize()
+    {
+        InitializeSubscriptions();
+
+        Localizer.Instance.LanguageChanged += RefreshAllItems;
+        UserPreferencesService.Instance.Repository.OnSettingsChanged += _ => Refresh();
+        _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
     }
 
     public async Task OnInitialized()
     {
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            InitializeSubscriptions();
-
-            Localizer.Instance.LanguageChanged += OnLanguageChanged;
-            UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferencesBatch;
-            _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
-
-            Observable
-                .Merge(
-                    Observable.FromEvent(h => _itemGroupService.ItemRepository.OnUpdated += h, h => _itemGroupService.ItemRepository.OnUpdated -= h),
-                    Observable.FromEvent(h => _itemGroupService.CommonAvatarRepository.OnUpdated += h, h => _itemGroupService.CommonAvatarRepository.OnUpdated -= h),
-                    Observable.FromEvent(h => _itemGroupService.TempAvatarRepository.OnUpdated += h, h => _itemGroupService.TempAvatarRepository.OnUpdated -= h)
-                )
-                .Throttle(TimeSpan.FromMilliseconds(100))
-                .Subscribe(_ =>Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    Refresh();
-                    UpdateLeftPanelItems((QueryType)SelectedCategory);
-                }));
-
-            ApplyPreferencesBatch(UserPreferencesService.Instance.Repository.Settings);
-
-            UpdateLeftPanelItems((QueryType)SelectedCategory);
-            Refresh();
-        });
+        Refresh();
     }
 
     private void InitializeSubscriptions()
@@ -181,7 +161,7 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         RightPageInfo.WhenAnyValue(x => x.CurrentPage).Subscribe(_ => RefreshMainItems());
 
         this.WhenAnyValue(i => i.SelectedCategory)
-            .Subscribe(i => UpdateLeftPanelItems((QueryType)i));
+            .Subscribe(_ => UpdateLeftPanelItems());
 
         this.WhenAnyValue(x => x.SearchText)
             .Subscribe(_ => _searchManager.RestartTimer());
@@ -189,63 +169,18 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         this.WhenAnyValue(x => x.SidePanelWidth)
             .Subscribe(width => _sidePanelManager.OnWidthChanged(width.Value));
 
-        AdvancedSearchVM.SearchPropertyChanged += _searchManager.RestartTimer;
-    }
-    #endregion
-
-    #region Preferences
-    public void ApplyPreferencesBatch(UserPreferences preferences)
-    {
-        var needsRefresh = false;
-
-        if (SelectedSortOrder != (int)preferences.SortOrder || SelectedSortDirection != (int)preferences.SortDirection)
-        {
-            SelectedSortOrder = (int)preferences.SortOrder;
-            SelectedSortDirection = (int)preferences.SortDirection;
-            needsRefresh = true;
-        }
-
-        var sizeOrBracketsChanged = false;
-        if (_normalIconSize != preferences.NormalIconSize)
-        {
-            _normalIconSize = preferences.NormalIconSize;
-            sizeOrBracketsChanged = true;
-        }
-
-        if (_removeBrackets != preferences.RemoveBrackets)
-        {
-            _removeBrackets = preferences.RemoveBrackets;
-            sizeOrBracketsChanged = true;
-        }
-
-        if (sizeOrBracketsChanged)
-        {
-            foreach (var item in _allMainItems.Concat(_allLeftItems))
-                item.Update(_normalIconSize, _removeBrackets);
-        }
-
-        LeftPageInfo.PageSize = preferences.ItemsPerPage;
-        RightPageInfo.PageSize = preferences.ItemsPerPage;
-
-        RefreshLeftItems();
-        RefreshMainItems();
-
-        if (needsRefresh)
-        {
-            UpdateLeftPanelItems((QueryType)SelectedCategory);
-            Refresh();
-        }
-    }
-
-    private void OnLanguageChanged()
-    {
-        foreach (var item in _allMainItems.Concat(_allLeftItems))
-            item.Update(_normalIconSize, _removeBrackets);
-    }
-
-    private void ToggleSortDirection()
-    {
-        SelectedSortDirection = SelectedSortDirection == 0 ? 1 : 0;
+        Observable
+            .Merge(
+                Observable.FromEvent(h => _itemGroupService.ItemRepository.OnUpdated += h, h => _itemGroupService.ItemRepository.OnUpdated -= h),
+                Observable.FromEvent(h => _itemGroupService.CommonAvatarRepository.OnUpdated += h, h => _itemGroupService.CommonAvatarRepository.OnUpdated -= h),
+                Observable.FromEvent(h => _itemGroupService.TempAvatarRepository.OnUpdated += h, h => _itemGroupService.TempAvatarRepository.OnUpdated -= h)
+            )
+            .Throttle(TimeSpan.FromMilliseconds(100))
+            .Subscribe(_ => Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                UpdateLeftPanelItems();
+                Refresh();
+            }));
     }
     #endregion
 
@@ -318,6 +253,8 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     #region Refresh
     private void Refresh()
     {
+        UpdateLeftPanelItems();
+
         if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
             RefreshSearchResults(_searchManager.ActiveSearchQuery);
         else
@@ -326,12 +263,12 @@ public class MainViewModel : ViewModelBase, IPostInitializable
 
     private void RefreshSearchResults(string searchQuery)
     {
-        var sortOrder = (ItemSortOrder)SelectedSortOrder;
-        var sortDirection = (SortDirection)SelectedSortDirection;
+        var sortOrder = UserPreferences.SortOrder;
+        var sortDirection = UserPreferences.SortDirection;
 
         _allMainItems = ItemSortService.Sort(
                 _searchManager.SearchItems(searchQuery),
-                sortOrder, sortDirection, _removeBrackets)
+                sortOrder, sortDirection, UserPreferences.RemoveBrackets)
             .Select(CreateItemViewModel)
             .ToList();
 
@@ -349,8 +286,8 @@ public class MainViewModel : ViewModelBase, IPostInitializable
     {
         var avatarId = _itemNavigationService.GetCurrentAvatarId();
         var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
-        var sortOrder = (ItemSortOrder)SelectedSortOrder;
-        var sortDirection = (SortDirection)SelectedSortDirection;
+        var sortOrder = UserPreferences.SortOrder;
+        var sortDirection = UserPreferences.SortDirection;
         var implementedEnabled = sortOrder == ItemSortOrder.Implemented;
 
         var navigationables = _itemNavigationService.GetCurrentSelectionView();
@@ -378,12 +315,12 @@ public class MainViewModel : ViewModelBase, IPostInitializable
             var ordered = items
                 .Select(i => (Item: i, IsImplemented: i.ImplementedAvatars.Contains(avatarId)))
                 .OrderByDescending(x => x.IsImplemented)
-                .ThenBy(x => _removeBrackets ? Utils.TextBracketsUtils.RemoveBrackets(x.Item.Title) : x.Item.Title, StringComparer.OrdinalIgnoreCase);
+                .ThenBy(x => UserPreferences.RemoveBrackets ? Utils.TextBracketsUtils.RemoveBrackets(x.Item.Title) : x.Item.Title, StringComparer.OrdinalIgnoreCase);
 
             return (sortDirection == SortDirection.Descending ? ordered.Reverse() : ordered).Select(x => x.Item);
         }
 
-        return ItemSortService.Sort(items, sortOrder, sortDirection, _removeBrackets);
+        return ItemSortService.Sort(items, sortOrder, sortDirection, UserPreferences.RemoveBrackets);
     }
 
     private ItemViewModel CreateItemViewModelWithStatus(INavigationable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled)
@@ -418,16 +355,21 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         return vm;
     }
 
+    private void RefreshAllItems()
+    {
+        RefreshLeftItems();
+        RefreshMainItems();
+    }
     private void RefreshLeftItems()
     {
         LeftItems = LeftPageInfo.GetPageItems(_allLeftItems)
-            .Select(i => i.Update(_normalIconSize, _removeBrackets))
+            .Select(i => i.Update(UserPreferences.NormalIconSize, UserPreferences.RemoveBrackets))
             .ToList();
     }
     private void RefreshMainItems()
     {
         MainItems = RightPageInfo.GetPageItems(_allMainItems)
-            .Select(i => i.Update(_normalIconSize, _removeBrackets))
+            .Select(i => i.Update(UserPreferences.NormalIconSize, UserPreferences.RemoveBrackets))
             .ToList();
     }
     #endregion
@@ -504,14 +446,16 @@ public class MainViewModel : ViewModelBase, IPostInitializable
         return navigationItem;
     }
 
-    private void UpdateLeftPanelItems(QueryType type)
+    private void UpdateLeftPanelItems()
     {
+        var type = (QueryType)SelectedCategory;
         var queryItems = _itemGroupService.GetQueryFilters(type);
         if (type == QueryType.Avatar)
         {
-            var sortOrder = (ItemSortOrder)SelectedSortOrder;
-            var sortDirection = (SortDirection)SelectedSortDirection;
-            queryItems = ItemSortService.SortAvatars(queryItems, sortOrder, sortDirection, _removeBrackets);
+            var sortOrder = UserPreferences.SortOrder;
+            var sortDirection = UserPreferences.SortDirection;
+            var removeBrackets = UserPreferences.RemoveBrackets;
+            queryItems = ItemSortService.SortAvatars(queryItems, sortOrder, sortDirection, removeBrackets);
         }
 
         _allLeftItems = queryItems

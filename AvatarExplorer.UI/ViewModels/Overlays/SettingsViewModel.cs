@@ -12,6 +12,7 @@ using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.Updates;
 using AvatarExplorer.Core.Utils;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
@@ -23,7 +24,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class SettingsViewModel : ViewModelBase
+public class SettingsViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public bool IsVisible { get; set; }
     [Reactive] public IEnumerable<string> Languages { get; set; } = [];
@@ -110,6 +111,11 @@ public class SettingsViewModel : ViewModelBase
         CloseCommand = ReactiveCommand.Create(OnClose);
         ApplyCommand = ReactiveCommand.Create(OnApply);
 
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
         LoadProfileImage();
     }
 

@@ -1,10 +1,12 @@
 using System;
+using System.Threading.Tasks;
+using AvatarExplorer.UI.Interfaces;
 using DynamicData.Binding;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Panels;
 
-public class AdvancedSearchViewModel : ViewModelBase
+public class AdvancedSearchViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public string Title { get; set; } = string.Empty;
     [Reactive] public string Author { get; set; } = string.Empty;
@@ -21,6 +23,11 @@ public class AdvancedSearchViewModel : ViewModelBase
     public event Action? SearchPropertyChanged;
 
     public AdvancedSearchViewModel()
+    {
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
     {
         this.WhenAnyPropertyChanged()
             .Subscribe(_ => SearchPropertyChanged?.Invoke());

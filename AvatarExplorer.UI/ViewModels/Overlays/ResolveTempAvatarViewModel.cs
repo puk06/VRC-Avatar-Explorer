@@ -6,6 +6,7 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
@@ -13,7 +14,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ResolveTempAvatarViewModel : ViewModelBase
+public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public bool IsVisible { get; set; }
     [Reactive] public string SearchText { get; set; } = string.Empty;
@@ -32,6 +33,11 @@ public class ResolveTempAvatarViewModel : ViewModelBase
         CancelCommand = ReactiveCommand.Create(() => IsVisible = false);
         SelectItemCommand = ReactiveCommand.CreateFromTask<ItemViewModel>(SelectItem);
 
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
         this.WhenAnyValue(i => i.SearchText)
             .Subscribe(ApplySearchResult);
     }

@@ -1,25 +1,23 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AvatarExplorer.UI.Interfaces;
 
 public static class IInitializableRegistry
 {
-    private static readonly List<IInitializable> _instances = [];
-    private static readonly List<IPostInitializable> _postInstances = [];
+    private static readonly List<(int, IInitializable)> _instances = [];
+    private static readonly List<(int, IPostInitializable)> _postInstances = [];
     private static bool _completed;
 
-    public static event Action? OnInitialized;
-
-    public static void Register(IInitializable instance)
+    public static void Register(int priority, IInitializable instance)
     {
-        _instances.Add(instance);
+        _instances.Add((priority, instance));
     }
 
-    public static void Register(IPostInitializable instance)
+    public static void Register(int priority, IPostInitializable instance)
     {
-        _postInstances.Add(instance);
+        _postInstances.Add((priority, instance));
     }
 
     public static async Task Complete()
@@ -27,16 +25,14 @@ public static class IInitializableRegistry
         if (_completed) return;
         _completed = true;
 
-        foreach (var instance in _instances)
+        foreach (var instance in _instances.OrderBy(i => i.Item1))
         {
-            await instance.Initialize();
+            await instance.Item2.Initialize();
         }
 
-        foreach (var instance in _postInstances)
+        foreach (var instance in _postInstances.OrderBy(i => i.Item1))
         {
-            await instance.OnInitialized();
+            await instance.Item2.OnInitialized();
         }
-
-        OnInitialized?.Invoke();
     }
 }

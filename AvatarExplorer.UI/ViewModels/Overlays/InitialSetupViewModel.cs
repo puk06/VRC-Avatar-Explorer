@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.Interfaces;
@@ -11,7 +12,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class InitialSetupViewModel : ViewModelBase
+public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
     [Reactive] public bool IsVisible { get; set; }
 
@@ -25,8 +26,14 @@ public class InitialSetupViewModel : ViewModelBase
 
     public InitialSetupViewModel()
     {
-        CloseCommand = ReactiveCommand.Create(OnClose);
+        CloseCommand = ReactiveCommand.Create(Close);
 
+        IInitializableRegistry.Register(0, (IInitializable)this);
+        IInitializableRegistry.Register(int.MaxValue, (IPostInitializable)this);
+    }
+
+    public async Task Initialize()
+    {
         this.WhenAnyValue(x => x.SelectedLanguage)
             .Subscribe(i =>
             {
@@ -40,11 +47,9 @@ public class InitialSetupViewModel : ViewModelBase
                 if (!IsVisible) return;
                 Settings.Update(Settings.Settings with { DataRootDirectory = path });
             });
-
-        IInitializableRegistry.OnInitialized += OnInitialized;
     }
 
-    public void OnInitialized()
+    public async Task OnInitialized()
     {
         if (!AvatarExplorerApp.Instance.Items.GetAll().Any())
             Open();
@@ -60,7 +65,7 @@ public class InitialSetupViewModel : ViewModelBase
         IsVisible = true;
     }
 
-    private void OnClose()
+    private void Close()
     {
         IsVisible = false;
     }

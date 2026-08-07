@@ -25,7 +25,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase, IInitializable
+public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
     [Reactive] public string WindowTitle { get; set; } = string.Empty;
     [Reactive] public ImageBrush? BackgroundImage { get; set; } = null;
@@ -68,8 +68,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
 
     public PdfViewerViewModel PdfViewerVM { get; } = new();
 
-    public StartupLoadingViewModel StartupLoadingVM { get; } = new();
-
     public ProgressViewModel ProgressVM { get; } = new();
 
     public ResolveTempAvatarViewModel ResolveTempAvatarVM { get; } = new();
@@ -95,17 +93,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
     {
         Instance = this;
 
-        UserPreferencesService.Instance.Repository.OnSettingsChanged += OnPreferenceSettingsUpdated;
-        Localizer.Instance.LanguageChanged += UpdateWindowTitle;
-        AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
-        UpdateChecker.UpdateAvailable += OnUpdateAvailable;
-
-        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
-        ImageService.ThumbnailCacheWarmupStateChanged += OnThumbnailWarmupChanged;
-        AvatarExplorerApp.BackupManager.OnBackupRestored += OnBackupRestored;
-
-        IInitializableRegistry.OnInitialized += OnAllInitialized;
-        IInitializableRegistry.Register(this);
+        IInitializableRegistry.Register(-1, (IInitializable)this);
+        IInitializableRegistry.Register(9999, (IPostInitializable)this);
     }
 
     private bool _thumbnailWarmupStatus;
@@ -125,46 +114,27 @@ public class MainWindowViewModel : ViewModelBase, IInitializable
 
     public async Task Initialize()
     {
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            StartupLoadingVM.StatusText = "Initializing application...";
-            StartupLoadingVM.Progress = 0;
-            AppInitializer.InitializeApp();
+        UserPreferencesService.Instance.Repository.OnSettingsChanged += OnPreferenceSettingsUpdated;
+        Localizer.Instance.LanguageChanged += UpdateWindowTitle;
+        AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
+        UpdateChecker.UpdateAvailable += OnUpdateAvailable;
+        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
+        ImageService.ThumbnailCacheWarmupStateChanged += OnThumbnailWarmupChanged;
+        AvatarExplorerApp.BackupManager.OnBackupRestored += OnBackupRestored;
 
-            StartupLoadingVM.StatusText = "Loading locales...";
-            StartupLoadingVM.Progress = 15;
-            AppInitializer.InitializeLocalization();
+        AppInitializer.InitializeApp();
+        AppInitializer.InitializeLocalization();
+        AppInitializer.InitializeContextMenu();
+        AppInitializer.InitializeUserPreferences();
+        AppInitializer.RegisterBackupFiles();
+        AppInitializer.StartThumbnailCacheWarmup();
+        AppInitializer.StartSingleInstanceService();
 
-            StartupLoadingVM.StatusText = "Initializing context menu...";
-            StartupLoadingVM.Progress = 30;
-            AppInitializer.InitializeContextMenu();
-
-            StartupLoadingVM.StatusText = "Loading preferences...";
-            StartupLoadingVM.Progress = 45;
-            AppInitializer.InitializeUserPreferences();
-            AppInitializer.RegisterBackupFiles();
-
-            StartupLoadingVM.StatusText = "Warming up thumbnail cache...";
-            StartupLoadingVM.Progress = 70;
-            AppInitializer.StartThumbnailCacheWarmup();
-
-            StartupLoadingVM.StatusText = "Starting services...";
-            StartupLoadingVM.Progress = 90;
-            AppInitializer.StartSingleInstanceService();
-
-            StartupLoadingVM.StatusText = "Finalizing...";
-            StartupLoadingVM.Progress = 95;
-
-            UpdateWindowTitle();
-        });
+        UpdateWindowTitle();
     }
-    private async void OnAllInitialized()
+    public async Task OnInitialized()
     {
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            StartupLoadingVM.IsVisible = false;
-            CheckForUpdateOnStartup();
-        });
+        CheckForUpdateOnStartup();
     }
 
     private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => SendApplicationArgs(args));

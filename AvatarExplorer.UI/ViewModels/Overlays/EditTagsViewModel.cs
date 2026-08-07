@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.UI.Interfaces;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class EditTagsViewModel : ViewModelBase
+public class EditTagsViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public ObservableCollection<string> Tags { get; set; } = [];
     private TaskCompletionSource<string[]?> _tcs = new();
@@ -31,23 +31,14 @@ public class EditTagsViewModel : ViewModelBase
         ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Tags.ToArray()));
         CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
 
-        CreateTagCommand = ReactiveCommand.Create(() =>
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(NewTag) && !Tags.Contains(NewTag))
-                {
-                    Tags.Add(NewTag);
-                    NewTag = string.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-        });
+        CreateTagCommand = ReactiveCommand.Create(CreateTag);
         ClearNewTagCommand = ReactiveCommand.Create(() => NewTag = string.Empty);
 
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
         this.WhenAnyValue(i => i.SelectedIndex)
             .Subscribe(i =>
             {
@@ -74,7 +65,15 @@ public class EditTagsViewModel : ViewModelBase
             .SelectMany(i => i.Tags)
             .Distinct();
     }
-
+    
+    public void CreateTag()
+    {
+        if (!string.IsNullOrEmpty(NewTag) && !Tags.Contains(NewTag))
+        {
+            Tags.Add(NewTag);
+            NewTag = string.Empty;
+        }
+    }
     public Task<string[]?> WaitForResult()
     {
         _tcs = new TaskCompletionSource<string[]?>();

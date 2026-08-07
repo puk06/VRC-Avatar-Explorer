@@ -7,6 +7,7 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
@@ -14,7 +15,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class SelectAvatarsViewModel : ViewModelBase
+public class SelectAvatarsViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public string Title { get; set; } = string.Empty;
     [Reactive] public bool AllowTempAvatarCreation { get; set; } = false;
@@ -44,6 +45,11 @@ public class SelectAvatarsViewModel : ViewModelBase
         CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
         ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Avatars.Where(i => i.IsSelected).Select(i => i.Identifier).ToArray()));
 
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
         this.WhenAnyValue(i => i.SearchText)
             .Subscribe(ApplySearchResult);
     }

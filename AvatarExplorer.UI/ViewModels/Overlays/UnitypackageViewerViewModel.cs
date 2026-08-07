@@ -7,6 +7,7 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
@@ -16,7 +17,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class UnitypackageViewerViewModel : ViewModelBase
+public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public bool IsVisible { get; set; }
 
@@ -38,6 +39,11 @@ public class UnitypackageViewerViewModel : ViewModelBase
         ExportCommand = ReactiveCommand.CreateFromTask(Export);
         CloseCommand = ReactiveCommand.Create(OnClose);
 
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
         this.WhenAnyValue(i => i.SelectedNode)
             .Subscribe(UpdateNodeStatus);
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
@@ -9,6 +10,7 @@ using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.Factories;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
@@ -16,7 +18,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class EditCommonAvatarsViewModel : ViewModelBase
+public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public bool IsVisible { get; set; }
 
@@ -50,6 +52,11 @@ public class EditCommonAvatarsViewModel : ViewModelBase
         ReplaceAvatarsToGroupCommand = ReactiveCommand.CreateFromTask(ReplaceAvatarsToGroup);
         CloseCommand = ReactiveCommand.Create(Close);
 
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
         this.WhenAnyValue(i => i.SelectedGroupIndex)
             .Subscribe(_ => UpdateSelectedGroupAvatars());
 

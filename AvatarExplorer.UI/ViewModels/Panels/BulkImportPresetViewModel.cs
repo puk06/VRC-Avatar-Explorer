@@ -14,7 +14,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Panels;
 
-public class BulkImportPresetViewModel : ViewModelBase, IPostInitializable
+public class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
     [Reactive] public IEnumerable<ItemViewModel> Items { get; set; } = [];
 
@@ -23,13 +23,18 @@ public class BulkImportPresetViewModel : ViewModelBase, IPostInitializable
     public BulkImportPresetViewModel()
     {
         SelectItemCommand = ReactiveCommand.Create<ItemViewModel>(Select);
-        IInitializableRegistry.Register(this);
+        IInitializableRegistry.Register(0, (IInitializable)this);
+        IInitializableRegistry.Register(0, (IPostInitializable)this);
+    }
+
+    public async Task Initialize()
+    {
+        Localizer.Instance.LanguageChanged += Reload;
+        AvatarExplorerApp.Instance.BulkImportPresets.OnUpdated += Reload;
     }
 
     public async Task OnInitialized()
     {
-        Localizer.Instance.LanguageChanged += Reload;
-        AvatarExplorerApp.Instance.BulkImportPresets.OnUpdated += Reload;
         Reload();
     }
 
