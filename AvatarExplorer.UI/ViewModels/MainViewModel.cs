@@ -134,7 +134,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             _itemGroupService,
             () => SearchText,
             () => AdvancedSearchVM,
-            Refresh
+            () => Refresh(false)
         );
 
         IInitializableRegistry.Register(0, (IInitializable)this);
@@ -176,7 +176,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 Observable.FromEvent(h => _itemGroupService.TempAvatarRepository.OnUpdated += h, h => _itemGroupService.TempAvatarRepository.OnUpdated -= h)
             )
             .Throttle(TimeSpan.FromMilliseconds(100))
-            .Subscribe(_ => Dispatcher.UIThread.InvokeAsync(Refresh));
+            .Subscribe(_ => Dispatcher.UIThread.InvokeAsync(() => Refresh()));
     }
     #endregion
 
@@ -247,9 +247,9 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     #endregion
 
     #region Refresh
-    private void Refresh()
+    private void Refresh(bool refleshLeftPanelItems = true)
     {
-        UpdateLeftPanelItems();
+        if (refleshLeftPanelItems) UpdateLeftPanelItems();
 
         if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
             RefreshSearchResults(_searchManager.ActiveSearchQuery);
@@ -377,7 +377,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.PopToState(state);
         _stateCacheManager.RestoreRightState(RightPageInfo);
-        Refresh();
+        Refresh(false);
     }
 
     private List<PathSegment> BuildPathSegments(IEnumerable<string> states)
@@ -474,7 +474,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         _itemNavigationService.Clear();
         _itemNavigationService.Select(item.Identifier);
         RightPageInfo.Reset();
-        Refresh();
+        Refresh(false);
     }
 
     private void OnRightItemSelected(ItemViewModel? item)
@@ -487,7 +487,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         _itemNavigationService.PopAllSearchStates();
         _itemNavigationService.Select(item.Identifier);
         RightPageInfo.Reset();
-        Refresh();
+        Refresh(false);
     }
 
     private void Undo()
@@ -497,7 +497,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         _searchManager.ClearQuery();
         SearchText = string.Empty;
         _stateCacheManager.RestoreRightState(RightPageInfo);
-        Refresh();
+        Refresh(false);
     }
 
     private void GoHome()
@@ -507,7 +507,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         _searchManager.ClearQuery();
         SearchText = string.Empty;
         RightPageInfo.Reset();
-        Refresh();
+        Refresh(false);
     }
     #endregion
 
