@@ -114,14 +114,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public async Task Initialize()
     {
-        UserPreferencesService.Instance.Repository.OnSettingsChanged += OnPreferenceSettingsUpdated;
-        Localizer.Instance.LanguageChanged += UpdateWindowTitle;
-        AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
-        UpdateChecker.UpdateAvailable += OnUpdateAvailable;
-        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
-        ImageService.ThumbnailCacheWarmupStateChanged += OnThumbnailWarmupChanged;
-        AvatarExplorerApp.BackupManager.OnBackupRestored += OnBackupRestored;
-
         AppInitializer.InitializeApp();
         AppInitializer.InitializeLocalization();
         AppInitializer.InitializeContextMenu();
@@ -130,10 +122,19 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         AppInitializer.StartThumbnailCacheWarmup();
         AppInitializer.StartSingleInstanceService();
 
-        UpdateWindowTitle();
+        UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferenceSettings;
+        Localizer.Instance.LanguageChanged += UpdateWindowTitle;
+        AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
+        UpdateChecker.UpdateAvailable += OnUpdateAvailable;
+        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
+        ImageService.ThumbnailCacheWarmupStateChanged += OnThumbnailWarmupChanged;
+        AvatarExplorerApp.BackupManager.OnBackupRestored += OnBackupRestored;
     }
     public async Task OnInitialized()
     {
+        ApplyPreferenceSettings(UserPreferencesService.Instance.Repository.Settings);
+
+        UpdateWindowTitle();
         CheckForUpdateOnStartup();
     }
 
@@ -163,10 +164,11 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         }
     }
 
-    private void OnPreferenceSettingsUpdated(UserPreferences settings)
+    private void ApplyPreferenceSettings(UserPreferences settings)
     {
-        Localizer.Instance.SetLanguage(settings.Language);
-        SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
+        if (settings.UseBackgroundImage) SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
+        else BackgroundImage = null;
+
         SetTheme(settings.Theme);
     }
 
