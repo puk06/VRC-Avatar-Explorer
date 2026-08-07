@@ -172,7 +172,7 @@
                             </Panel>
 
                             <Border Grid.Row="1" Classes="panelbackground" CornerRadius="8" Padding="8,4">
-                                <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto" ColumnSpacing="4">
+                                <Grid ColumnDefinitions="30,30,*,30,30" ColumnSpacing="4">
                                     <Button Classes="button pagebutton" Grid.Column="0" Width="30" Height="30" Padding="0" Command="{Binding LeftGoFirstCommand}" IsVisible="{Binding LeftPageInfo.CanGoFirst}">
                                         <materialIcons:MaterialIcon Kind="FirstPage" Width="20" Height="20"/>
                                     </Button>
@@ -252,7 +252,7 @@
                             </Panel>
 
                             <Border Grid.Row="1" Classes="panelbackground" CornerRadius="8" Padding="10,6">
-                                <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto" ColumnSpacing="8">
+                                <Grid ColumnDefinitions="35,35,*,35,35" ColumnSpacing="8">
                                     <Button Classes="button pagebutton" Grid.Column="0" Width="35" Height="35" Padding="0" Command="{Binding RightGoFirstCommand}" IsVisible="{Binding RightPageInfo.CanGoFirst}">
                                         <materialIcons:MaterialIcon Kind="FirstPage" Width="22" Height="22"/>
                                     </Button>
