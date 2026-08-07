@@ -325,14 +325,14 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         if (nav is not Item item) return vm;
 
-        if (!implementedEnabled)
+        if (!implementedEnabled || avatarId == null)
         {
             vm.IsImplemented = false;
             vm.IsNotImplemented = false;
         }
         else
         {
-            var isImplemented = avatarId != null && item.ImplementedAvatars.Contains(avatarId);
+            var isImplemented = item.ImplementedAvatars.Contains(avatarId);
             vm.IsImplemented = isImplemented;
             vm.IsNotImplemented = !isImplemented;
         }
