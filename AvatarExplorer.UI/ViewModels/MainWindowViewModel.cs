@@ -129,12 +129,12 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
         ImageService.ThumbnailCacheWarmupStateChanged += OnThumbnailWarmupChanged;
         AvatarExplorerApp.BackupManager.OnBackupRestored += OnBackupRestored;
+
+        ApplyPreferenceSettings(UserPreferencesService.Instance.Repository.Settings);
+        UpdateWindowTitle();
     }
     public async Task OnInitialized()
     {
-        ApplyPreferenceSettings(UserPreferencesService.Instance.Repository.Settings);
-
-        UpdateWindowTitle();
         CheckForUpdateOnStartup();
     }
 
@@ -166,6 +166,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     private void ApplyPreferenceSettings(UserPreferences settings)
     {
+        Localizer.Instance.SetLanguage(settings.Language);
+
         if (settings.UseBackgroundImage) SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
         else BackgroundImage = null;
 

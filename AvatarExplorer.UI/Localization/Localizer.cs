@@ -25,9 +25,12 @@ public class Localizer : INotifyPropertyChanged
         get => _selectedLanguageIndex;
         private set
         {
-            _selectedLanguageIndex = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
-            LanguageChanged?.Invoke();
+            if (_selectedLanguageIndex != value)
+            {
+                _selectedLanguageIndex = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+                LanguageChanged?.Invoke();
+            }
         }
     }
 

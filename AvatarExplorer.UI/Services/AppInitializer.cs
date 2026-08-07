@@ -18,7 +18,6 @@ public static class AppInitializer
     public static void InitializeLocalization()
     {
         Localizer.Instance.LoadFromFolder("locales");
-        Localizer.Instance.SetLanguage(0);
     }
 
     public static void InitializeContextMenu()
