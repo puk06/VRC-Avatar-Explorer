@@ -57,6 +57,8 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
     {
         RefleshTags();
         if (tags != null) Tags = new ObservableCollection<string>(tags);
+
+        NewTag = string.Empty;
     }
 
     public void RefleshTags()

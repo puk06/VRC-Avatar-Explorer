@@ -89,13 +89,13 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
         IncludeCommonAvatar = includeCommonAvatar;
         IncludeTempAvatar = includeTempAvatar;
         AllowTempAvatarCreation = allowCreateTempAvatar;
+        SearchText = string.Empty;
 
         RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
 
         if (avatars == null) return;
 
         _allAvatars.ForEach(i => i.IsSelected = avatars.Contains(i.Identifier));
-        ApplySearchResult(SearchText);
     }
 
     private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)
