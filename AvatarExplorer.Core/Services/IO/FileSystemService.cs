@@ -500,7 +500,7 @@ public static class FileSystemService
                     copyResult.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError($"Failed to copy: {i.SourcePath}", tag: i.ErrorMessage));
                 }
 
-                result.ItemParentFolder = copiedFolderPath;
+                lock (result.ItemParentFolder) result.ItemParentFolder = parentFolderPath;
             }
         }
     }
