@@ -77,11 +77,26 @@ public class ItemEditorViewModel : ViewModelBase
         ConfirmCommand = ReactiveCommand.CreateFromTask(Confirm);
     }
 
+    private void ResetFields()
+    {
+        Identifier = null;
+        ItemPaths.Clear();
+        BoothUrl = string.Empty;
+        Title = string.Empty;
+        Author = string.Empty;
+        SelectedCategoryIndex = -1;
+        AuthorId = string.Empty;
+        BoothId = string.Empty;
+        ThumbnailUrl = string.Empty;
+        Memo = string.Empty;
+        SupportedAvatars = [];
+        Tags = [];
+    }
+
     public void Open(string? itemId = null)
     {
+        ResetFields();
         Identifier = itemId;
-        ItemPaths.Clear();
-
         RefleshCategories();
 
         if (itemId != null)
@@ -95,8 +110,8 @@ public class ItemEditorViewModel : ViewModelBase
                 AuthorId = item.AuthorId;
                 BoothId = item.BoothId.ToString();
                 Memo = item.ItemMemo;
-                SupportedAvatars = item.SupportedAvatars.ToList();
-                Tags = item.Tags.ToList();
+                SupportedAvatars = item.SupportedAvatars;
+                Tags = item.Tags;
 
                 var categoryIndex = GetCategoryIndex(item.Category);
                 SelectedCategoryIndex = categoryIndex >= 0 ? categoryIndex : 0;
@@ -104,14 +119,6 @@ public class ItemEditorViewModel : ViewModelBase
         }
         else
         {
-            Title = string.Empty;
-            Author = string.Empty;
-            AuthorId = string.Empty;
-            BoothId = string.Empty;
-            Memo = string.Empty;
-            SupportedAvatars = [];
-            Tags = [];
-            SelectedCategoryIndex = -1;
             SelectedCategoryIndex = 0;
         }
 
@@ -128,22 +135,12 @@ public class ItemEditorViewModel : ViewModelBase
             return;
         }
 
-        Identifier = null;
-        ItemPaths.Clear();
+        ResetFields();
+        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.BoothId);
+        BoothId = launchInfo.BoothId;
 
         RefleshCategories();
-
-        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.BoothId);
-        Title = string.Empty;
-        Author = string.Empty;
-        AuthorId = string.Empty;
-        BoothId = launchInfo.BoothId;
-        Memo = string.Empty;
-        SupportedAvatars = [];
-        Tags = [];
-        SelectedCategoryIndex = -1;
         SelectedCategoryIndex = 0;
-
         UpdateCountField();
         IsVisible = true;
 
@@ -159,22 +156,12 @@ public class ItemEditorViewModel : ViewModelBase
             return;
         }
 
-        Identifier = null;
-        ItemPaths.Clear();
+        ResetFields();
+        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.ItemID);
+        BoothId = launchInfo.ItemID;
 
         RefleshCategories();
-
-        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.ItemID);
-        Title = string.Empty;
-        Author = string.Empty;
-        AuthorId = string.Empty;
-        BoothId = launchInfo.ItemID;
-        Memo = string.Empty;
-        SupportedAvatars = [];
-        Tags = [];
-        SelectedCategoryIndex = -1;
         SelectedCategoryIndex = 0;
-
         UpdateCountField();
         IsVisible = true;
 
@@ -202,7 +189,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     public void Close()
     {
-        SelectedCategoryIndex = -1;
+        ResetFields();
         IsVisible = false;
     }
 
@@ -241,9 +228,9 @@ public class ItemEditorViewModel : ViewModelBase
             ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
             CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory : string.Empty,
             ThumbnailUrl = ThumbnailUrl,
-            SupportedAvatars = SupportedAvatars.ToList(),
+            SupportedAvatars = SupportedAvatars,
             ItemMemo = Memo,
-            Tags = Tags.ToList()
+            Tags = Tags
         };
 
         bool updateResult = await AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
