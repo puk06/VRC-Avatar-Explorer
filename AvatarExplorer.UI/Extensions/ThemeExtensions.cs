@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using Avalonia.Styling;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.UI.Attributes;
@@ -7,23 +8,25 @@ namespace AvatarExplorer.UI.Extensions;
 
 public static class ThemeExtensions
 {
-    public static ThemeVariant GetThemeVariant(this Theme theme)
+    public static (ThemeVariant Theme, Color BackgroundColor) GetThemeVariant(this Theme theme)
     {
-        var variantName = theme.GetAttribute<ThemeVariantAttribute>()?.VariantName;
-        
+        var variant = theme.GetAttribute<ThemeVariantAttribute>();
+        var variantName = variant?.VariantName;
+        var backgroundColor = variant?.BackgroundColor ?? Colors.Transparent;
+
         return variantName switch
         {
-            "Dark" => ThemeVariant.Dark,
-            "Light" => ThemeVariant.Light,
-            "Sakura" => AppThemeVariants.Sakura,
-            "Mint" => AppThemeVariants.Mint,
-            "Lavender" => AppThemeVariants.Lavender,
-            "Ocean" => AppThemeVariants.Ocean,
-            "Sunset" => AppThemeVariants.Sunset,
-            "Forest" => AppThemeVariants.Forest,
-            "Mocha" => AppThemeVariants.Mocha,
-            "Slate" => AppThemeVariants.Slate,
-            _ => ThemeVariant.Default
+            "Dark" => (AppThemeVariants.Dark, backgroundColor),
+            "Light" => (AppThemeVariants.Light, backgroundColor),
+            "Sakura" => (AppThemeVariants.Sakura, backgroundColor),
+            "Mint" => (AppThemeVariants.Mint, backgroundColor),
+            "Lavender" => (AppThemeVariants.Lavender, backgroundColor),
+            "Ocean" => (AppThemeVariants.Ocean, backgroundColor),
+            "Sunset" => (AppThemeVariants.Sunset, backgroundColor),
+            "Forest" => (AppThemeVariants.Forest, backgroundColor),
+            "Mocha" => (AppThemeVariants.Mocha, backgroundColor),
+            "Slate" => (AppThemeVariants.Slate, backgroundColor),
+            _ => (ThemeVariant.Default, Colors.Transparent)
         };
     }
 }

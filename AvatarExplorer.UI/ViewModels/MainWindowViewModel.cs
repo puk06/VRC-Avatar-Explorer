@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls.Notifications;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
@@ -15,7 +16,6 @@ using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
-using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
@@ -29,6 +29,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 {
     [Reactive] public string WindowTitle { get; set; } = string.Empty;
     [Reactive] public ImageBrush? BackgroundImage { get; set; } = null;
+    [Reactive] public IBrush? Background { get; set; } = null;
 
     public static AvatarExplorerApp AvatarExplorerApp => AvatarExplorerApp.Instance;
     public static MainWindowViewModel Instance { get; private set; } = null!;
@@ -171,7 +172,9 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         if (settings.UseBackgroundImage) SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
         else BackgroundImage = null;
 
-        SetTheme(settings.Theme);
+        var (themeVariant, backgroundColor) = settings.Theme.GetThemeVariant();
+        SetBackgroundColor(backgroundColor);
+        SetTheme(themeVariant);
     }
 
     private static async void CheckForUpdateOnStartup()
@@ -294,12 +297,16 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
             ErrorManager.Instance.PostError("Failed to set background image.", ex);
         }
     }
-    private static void SetTheme(Theme theme)
+    private void SetBackgroundColor(Color color)
+    {
+        Background = new SolidColorBrush(color);
+    }
+    private static void SetTheme(ThemeVariant theme)
     {
         var application = Application.Current;
         if (application == null) return;
 
-        application.RequestedThemeVariant = theme.GetThemeVariant();
+        application.RequestedThemeVariant = theme;
     }
 
     public void ShowNotification(string title, string content, NotificationType type)

@@ -11,6 +11,7 @@
         Title="{Binding WindowTitle}"
         MinWidth="1280" MinHeight="720"
         Width="1280" Height="720"
+        Background="{Binding Background}"
         DragDrop.AllowDrop="True"
         DragDrop.DragOver="OnDragDropOver"
         DragDrop.Drop="OnDragDrop"
