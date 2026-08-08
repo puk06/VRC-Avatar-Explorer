@@ -257,15 +257,18 @@ public class ItemEditorViewModel : ViewModelBase
             Tags = Tags
         };
 
-        var existingSameBoothIdItem = AvatarExplorerApp.Instance.Items.GetAll().FirstOrDefault(i => i.BoothId == creationContext.BoothId);
-
-        if (existingSameBoothIdItem != null)
+        if (creationContext.BoothId != -1)
         {
-            var addToExistingItem = await MainWindowViewModel.Instance.ShowYesNoDialog(
-                Localizer.Instance[Loc.Dialog.Confirmation.Default],
-                Localizer.Instance[Loc.Dialog.Confirmation.AddToExistingItem]
-            );
-            if (addToExistingItem) return existingSameBoothIdItem.Identifier;
+            var existingSameBoothIdItem = AvatarExplorerApp.Instance.Items.GetAll().FirstOrDefault(i => i.BoothId == creationContext.BoothId);
+
+            if (existingSameBoothIdItem != null)
+            {
+                var addToExistingItem = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                    Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                    Localizer.Instance[Loc.Dialog.Confirmation.AddToExistingItem]
+                );
+                if (addToExistingItem) return existingSameBoothIdItem.Identifier;
+            }
         }
 
         var item = await AvatarExplorerApp.Instance.Items.Create(creationContext);
