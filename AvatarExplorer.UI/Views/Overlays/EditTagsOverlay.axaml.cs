@@ -21,4 +21,10 @@ public partial class EditTagsOverlay : UserControl
                 vm.OnTagClick(tag);
         }
     }
+
+    private void OnExistTagSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is EditTagsViewModel vm)
+            vm.OnExistTagSelectionChanged();
+    }
 }

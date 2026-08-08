@@ -11,7 +11,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class EditTagsViewModel : ViewModelBase, IInitializable
+public class EditTagsViewModel : ViewModelBase
 {
     [Reactive] public ObservableCollection<string> Tags { get; set; } = [];
     private TaskCompletionSource<string[]?> _tcs = new();
@@ -33,25 +33,8 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
 
         CreateTagCommand = ReactiveCommand.Create(CreateTag);
         ClearNewTagCommand = ReactiveCommand.Create(() => NewTag = string.Empty);
-
-        IInitializableRegistry.Register(0, this);
     }
 
-    public async Task Initialize()
-    {
-        this.WhenAnyValue(i => i.SelectedIndex)
-            .Subscribe(i =>
-            {
-                if (i >= 0 && i < ExistTags.Count())
-                {
-                    var selectedTag = ExistTags.ElementAt(i);
-                    if (!Tags.Contains(selectedTag))
-                        Tags.Add(selectedTag);
-
-                    SelectedIndex = -1;
-                }
-            });
-    }
     public void RefleshTags()
     {
         ExistTags = AvatarExplorerApp.Instance.Items.GetAll()
@@ -69,6 +52,18 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
     }
 
     public void OnTagClick(string tag) => Tags.Remove(tag);
+
+    public void OnExistTagSelectionChanged()
+    {
+        if (SelectedIndex >= 0 && SelectedIndex < ExistTags.Count())
+        {
+            var selectedTag = ExistTags.ElementAt(SelectedIndex);
+            if (!Tags.Contains(selectedTag))
+                Tags.Add(selectedTag);
+        }
+
+        SelectedIndex = -1;
+    }
 
     public Task<string[]?> ShowAsync(IEnumerable<string>? tags = null)
     {
