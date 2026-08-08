@@ -467,7 +467,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task ViewLicense()
     {
-        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.Lisence);
+        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.License);
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
         else
         {
@@ -481,7 +481,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task ViewThirdPartyLicenses()
     {
-        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.ThirdPartyLisences);
+        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.ThirdPartyLicenses);
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
         else
         {
