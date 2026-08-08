@@ -15,9 +15,9 @@ public static class AppInitializer
         AvatarExplorerApp.Instance.Initialize();
     }
 
-    public static void InitializeLocalization()
+    public static void InitializeLocalization(string localizationFolderPath)
     {
-        Localizer.Instance.LoadFromFolder("locales");
+        Localizer.Instance.LoadFromFolder(localizationFolderPath);
     }
 
     public static void InitializeContextMenu()

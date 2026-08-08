@@ -115,7 +115,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async Task Initialize()
     {
         AppInitializer.InitializeApp();
-        AppInitializer.InitializeLocalization();
+        AppInitializer.InitializeLocalization(Path.Combine(AppContext.BaseDirectory, "locales"));
         AppInitializer.InitializeContextMenu();
         AppInitializer.InitializeUserPreferences();
         AppInitializer.RegisterBackupFiles();
