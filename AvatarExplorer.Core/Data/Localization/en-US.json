@@ -76,7 +76,6 @@
     "Dialog.Confirmation.CopyAssetData": "Copy asset data?\n\nIf not, the original asset folder will be used as-is. When importing from Avatar Explorer, only the material folder will always be copied within the folder.",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "We have restored the data from the backup, but no avatar data was found. If you added avatars using this data, the database is broken. You can fix it by pressing 'Yes'.",
 
-
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Replace the supported avatars of items containing avatars in the common avatar group with the common avatar group?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Replace the supported avatars of items that have the common avatar group set as supported avatars with individual avatars?",
 
