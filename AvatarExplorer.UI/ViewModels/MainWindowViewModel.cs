@@ -163,7 +163,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         if (args == null || args.Length == 0 || string.IsNullOrEmpty(args[0])) return;
 
         var uri = args[0];
-        if (uri.StartsWith(SchemeService.ProtocolBLM + "://"))
+        if (uri.StartsWith(SchemeService.ProtocolBLM + "://") ||
+            uri.StartsWith(SchemeService.ProtocolVRCAE + "://item-import")) // VRCAE://item-importはBLMと互換 (AssetConnect)
         {
             var blmImportItemInfo = BLMImportItemService.GetBLMImportItemInfo(uri);
             if (blmImportItemInfo != null) ItemEditorVM.Open(blmImportItemInfo);
