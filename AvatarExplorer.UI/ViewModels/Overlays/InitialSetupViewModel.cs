@@ -54,9 +54,10 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
     public async Task OnInitialized()
     {
         if (!AvatarExplorerApp.Instance.Items.GetAll().Any())
+        {
             Open();
-
-        ShowSchemeRegistrationDialog();
+            ShowSchemeRegistrationDialog();
+        }
     }
 
     public void Open()
