@@ -159,6 +159,8 @@ public static class Loc
     }
     public static class Processing
     {
+        public const string Default = "Processing.Default";
+        public const string AddContent = "Processing.AddContent";
         public static class Unitypackage
         {
             public static class Status
@@ -274,6 +276,7 @@ public static class Loc
         public const string Import = "Success.Import";
         public const string Export = "Success.Export";
         public const string ItemAdd = "Success.ItemAdd";
+        public const string ContentAdd = "Success.ContentAdd";
         public const string ItemEdit = "Success.ItemEdit";
         public const string ItemThumbnailEdit = "Success.ItemThumbnailEdit";
         public const string Remove = "Success.Remove";
@@ -312,6 +315,7 @@ public static class Loc
         public const string FetchItemThumbnailFailed = "Error.FetchItemThumbnailFailed";
         public const string FoundProcessingFailedPath = "Error.FoundProcessingFailedPath";
         public const string AddItemFileFailed = "Error.AddItemFileFailed";
+        public const string AddContentFailed = "Error.AddContentFailed";
         public const string AddItemFolderFailed = "Error.AddItemFolderFailed";
         public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
         public const string LicenseFileNotFound = "Error.LicenseFileNotFound";
