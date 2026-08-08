@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Media;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
+using AvatarExplorer.UI.Utils;
 using Material.Icons;
 using Material.Icons.Avalonia;
 
@@ -18,7 +18,7 @@ internal static class ContextMenuFactory
     {
         if (contextMenuActions.Length == 0) return null;
 
-        var fontFamily = new FontFamily($"avares://AvatarExplorer/Assets/Fonts#{Localizer.Instance[Loc.FontFamily]}");
+        var fontFamily = FontUtils.GetFontFamily(Localizer.Instance[Loc.FontFamily]);
         var contextMenu = new ContextMenu()
         {
             FontFamily = fontFamily

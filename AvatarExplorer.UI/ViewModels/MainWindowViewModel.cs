@@ -20,6 +20,7 @@ using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
+using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Overlays;
 using ReactiveUI.Fody.Helpers;
 
@@ -30,6 +31,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     [Reactive] public string WindowTitle { get; set; } = string.Empty;
     [Reactive] public ImageBrush? BackgroundImage { get; set; } = null;
     [Reactive] public IBrush? Background { get; set; } = null;
+    [Reactive] public FontFamily FontFamily { get; set; } = FontUtils.GetFontFamily(null);
 
     public static AvatarExplorerApp AvatarExplorerApp => AvatarExplorerApp.Instance;
     public static MainWindowViewModel Instance { get; private set; } = null!;
@@ -126,7 +128,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         AppInitializer.StartSingleInstanceService();
 
         UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferenceSettings;
-        Localizer.Instance.LanguageChanged += UpdateWindowTitle;
+        Localizer.Instance.LanguageChanged += OnLanguageUpdated;
         AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
@@ -134,12 +136,19 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         AvatarExplorerApp.BackupManager.OnBackupRestored += OnBackupRestored;
 
         ApplyPreferenceSettings(UserPreferencesService.Instance.Repository.Settings);
+        UpdateFontFamily();
         UpdateWindowTitle();
     }
     public async Task OnInitialized()
     {
         CheckForUpdateOnStartup();
         CheckIfRunningAsAdmin();
+    }
+
+    public void OnLanguageUpdated()
+    {
+        UpdateFontFamily();
+        UpdateWindowTitle();
     }
 
     private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => OnArgsReceived(args));
@@ -216,6 +225,10 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
             title += string.Format(" - {0}", Localizer.Instance[Loc.Title.CacheGeneration]);
 
         WindowTitle = title;
+    }
+    private void UpdateFontFamily()
+    {
+        FontFamily = FontUtils.GetFontFamily(Localizer.Instance[Loc.FontFamily]);
     }
 
     public void ShowItemEditor(string? itemId = null) => ItemEditorVM.Open(itemId);

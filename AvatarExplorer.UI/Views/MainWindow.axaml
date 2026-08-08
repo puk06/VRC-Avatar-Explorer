@@ -7,7 +7,7 @@
         xmlns:vm="using:AvatarExplorer.UI.ViewModels"
         Icon="avares://AvatarExplorer/Assets/Internal/SoftwareIcon.png"
         WindowStartupLocation="CenterScreen"
-        FontFamily="avares://AvatarExplorer/Assets/Fonts#Noto Sans JP"
+        FontFamily="{Binding FontFamily}"
         Title="{Binding WindowTitle}"
         MinWidth="1280" MinHeight="720"
         Width="1280" Height="720"
