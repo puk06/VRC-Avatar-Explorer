@@ -283,20 +283,41 @@ public static class SchemeService
         try
         {
             var appsDir = GetLinuxApplicationsDirectory();
-            var psi = new ProcessStartInfo("update-desktop-database", appsDir)
-            {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-            using var process = Process.Start(psi);
-            process?.WaitForExit(5000);
+            RunProcess("update-desktop-database", appsDir);
         }
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError("Failed to run update-desktop-database.", ex);
         }
+    }
+
+    private static void SetLinuxMimeDefault(string protocol)
+    {
+        try
+        {
+            var desktopFile = $"{AppNameShort}-{protocol}.desktop";
+            RunProcess("xdg-mime", "default", desktopFile, $"x-scheme-handler/{protocol}");
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to set default MIME handler for URL scheme '{protocol}'.", ex);
+        }
+    }
+
+    private static void RunProcess(string fileName, params string[] arguments)
+    {
+        var psi = new ProcessStartInfo(fileName)
+        {
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+        foreach (var arg in arguments)
+            psi.ArgumentList.Add(arg);
+
+        using var process = Process.Start(psi);
+        process?.WaitForExit(5000);
     }
 
     private static void RegisterWindowsScheme(string protocol, string processPath)
@@ -338,13 +359,15 @@ public static class SchemeService
                 Type=Application
                 Name={AppName} ({protocol})
                 Comment={AppName} URI Handler
-                Exec={processPath} %u
+                Exec="{processPath}" %u
                 Terminal=false
+                NoDisplay=true
                 MimeType=x-scheme-handler/{protocol};
                 """;
 
             File.WriteAllText(desktopPath, content);
             RunUpdateDesktopDatabase();
+            SetLinuxMimeDefault(protocol);
         }
         catch (Exception ex)
         {
