@@ -6,20 +6,39 @@ using Microsoft.Win32;
 
 namespace AvatarExplorer.Core.Services.System;
 
-#pragma warning disable CA1416 // プラットフォームの互換性を検証
+#pragma warning disable CA1416
 public static class SchemeService
 {
     public const string ProtocolVRCAE = "vrcae";
     public const string ProtocolBLM = "booth-library-manager";
 
+    private const string AppName = "VRC Avatar Explorer";
+    private const string AppNameShort = "vrc-avatar-explorer";
+
     public static string? GetRegisteredCommand(string protocol)
     {
         try
         {
-            if (!ProcessUtils.IsWindows()) return null;
+            if (ProcessUtils.IsWindows())
+            {
+                using var key = Registry.ClassesRoot.OpenSubKey($@"{protocol}\shell\open\command");
+                return key?.GetValue(string.Empty) as string;
+            }
 
-            using var key = Registry.ClassesRoot.OpenSubKey($@"{protocol}\shell\open\command");
-            return key?.GetValue(string.Empty) as string;
+            if (ProcessUtils.IsLinux())
+            {
+                var desktopPath = GetLinuxDesktopFilePath(protocol);
+                if (!File.Exists(desktopPath)) return null;
+
+                foreach (var line in File.ReadAllLines(desktopPath))
+                {
+                    if (line.StartsWith("Exec=", StringComparison.Ordinal))
+                        return line[5..].Trim();
+                }
+                return null;
+            }
+
+            return null;
         }
         catch (Exception ex)
         {
@@ -43,10 +62,44 @@ public static class SchemeService
     {
         try
         {
-            if (!ProcessUtils.IsWindows()) return false;
+            if (ProcessUtils.IsWindows())
+            {
+                using var key = Registry.ClassesRoot.OpenSubKey($@"{protocol}\shell\open\command");
+                return key != null;
+            }
 
-            using var key = Registry.ClassesRoot.OpenSubKey($@"{protocol}\shell\open\command");
-            return key != null;
+            if (ProcessUtils.IsLinux())
+            {
+                var desktopPath = GetLinuxDesktopFilePath(protocol);
+                if (File.Exists(desktopPath)) return true;
+
+                var localDir = GetLinuxApplicationsDirectory();
+                if (Directory.Exists(localDir))
+                {
+                    foreach (var file in Directory.GetFiles(localDir, "*.desktop"))
+                    {
+                        if (ContainsMimeType(file, protocol)) return true;
+                    }
+                }
+
+                var systemDirs = new[]
+                {
+                    "/usr/share/applications",
+                    "/usr/local/share/applications"
+                };
+                foreach (var dir in systemDirs)
+                {
+                    if (!Directory.Exists(dir)) continue;
+                    foreach (var file in Directory.GetFiles(dir, "*.desktop"))
+                    {
+                        if (ContainsMimeType(file, protocol)) return true;
+                    }
+                }
+
+                return false;
+            }
+
+            return false;
         }
         catch (Exception ex)
         {
@@ -73,18 +126,35 @@ public static class SchemeService
     {
         try
         {
-            if (!IsRunAsAdmin()) return;
-
             var processPath = ProcessUtils.GetCurrentProcessPath();
             if (string.IsNullOrEmpty(processPath)) return;
 
-            var currentCommand = GetRegisteredCommand(protocol);
-            if (!string.IsNullOrEmpty(currentCommand) && !currentCommand.Contains(processPath, StringComparison.OrdinalIgnoreCase))
+            if (ProcessUtils.IsWindows())
             {
-                SaveBackup(protocol, currentCommand);
-            }
+                if (!IsRunAsAdmin()) return;
 
-            RegisterCustomScheme(protocol, processPath);
+                var currentCommand = GetRegisteredCommand(protocol);
+                if (!string.IsNullOrEmpty(currentCommand) && !currentCommand.Contains(processPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    SaveBackup(protocol, currentCommand);
+                }
+
+                RegisterWindowsScheme(protocol, processPath);
+            }
+            else if (ProcessUtils.IsLinux())
+            {
+                var desktopPath = GetLinuxDesktopFilePath(protocol);
+                if (File.Exists(desktopPath))
+                {
+                    var existingCommand = GetRegisteredCommand(protocol);
+                    if (!string.IsNullOrEmpty(existingCommand) && !existingCommand.Contains(processPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        SaveBackup(protocol, existingCommand);
+                    }
+                }
+
+                RegisterLinuxScheme(protocol, processPath);
+            }
         }
         catch (Exception ex)
         {
@@ -96,23 +166,34 @@ public static class SchemeService
     {
         try
         {
-            if (!IsRunAsAdmin()) return;
-
-            var backupPath = GetBackupPath(protocol);
-            if (File.Exists(backupPath))
+            if (ProcessUtils.IsWindows())
             {
-                var originalCommand = File.ReadAllText(backupPath).Trim();
-                if (!string.IsNullOrEmpty(originalCommand))
-                {
-                    RestoreCustomScheme(protocol, originalCommand);
-                    File.Delete(backupPath);
-                    return;
-                }
-            }
+                if (!IsRunAsAdmin()) return;
 
-            using var key = Registry.ClassesRoot.OpenSubKey(protocol, true);
-            key?.DeleteSubKeyTree("shell", false);
-            Registry.ClassesRoot.DeleteSubKeyTree(protocol, false);
+                var backupPath = GetBackupPath(protocol);
+                if (File.Exists(backupPath))
+                {
+                    var originalCommand = File.ReadAllText(backupPath).Trim();
+                    if (!string.IsNullOrEmpty(originalCommand))
+                    {
+                        RestoreCustomScheme(protocol, originalCommand);
+                        File.Delete(backupPath);
+                        return;
+                    }
+                }
+
+                using var key = Registry.ClassesRoot.OpenSubKey(protocol, true);
+                key?.DeleteSubKeyTree("shell", false);
+                Registry.ClassesRoot.DeleteSubKeyTree(protocol, false);
+            }
+            else if (ProcessUtils.IsLinux())
+            {
+                var desktopPath = GetLinuxDesktopFilePath(protocol);
+                if (File.Exists(desktopPath))
+                    File.Delete(desktopPath);
+
+                RunUpdateDesktopDatabase();
+            }
         }
         catch (Exception ex)
         {
@@ -167,7 +248,58 @@ public static class SchemeService
         }
     }
 
-    private static void RegisterCustomScheme(string protocol, string processPath)
+    private static string GetLinuxApplicationsDirectory()
+    {
+        var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        return Path.Join(home, ".local", "share", "applications");
+    }
+
+    private static string GetLinuxDesktopFilePath(string protocol)
+    {
+        return Path.Join(GetLinuxApplicationsDirectory(), $"{AppNameShort}-{protocol}.desktop");
+    }
+
+    private static bool ContainsMimeType(string desktopFilePath, string protocol)
+    {
+        try
+        {
+            var mimeType = $"x-scheme-handler/{protocol}";
+            foreach (var line in File.ReadAllLines(desktopFilePath))
+            {
+                if (line.StartsWith("MimeType=", StringComparison.Ordinal) &&
+                    line.Contains(mimeType, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static void RunUpdateDesktopDatabase()
+    {
+        try
+        {
+            var appsDir = GetLinuxApplicationsDirectory();
+            var psi = new ProcessStartInfo("update-desktop-database", appsDir)
+            {
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            using var process = Process.Start(psi);
+            process?.WaitForExit(5000);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to run update-desktop-database.", ex);
+        }
+    }
+
+    private static void RegisterWindowsScheme(string protocol, string processPath)
     {
         try
         {
@@ -191,6 +323,35 @@ public static class SchemeService
         }
     }
 
+    private static void RegisterLinuxScheme(string protocol, string processPath)
+    {
+        try
+        {
+            if (!ProcessUtils.IsLinux()) return;
+
+            var appsDir = GetLinuxApplicationsDirectory();
+            Directory.CreateDirectory(appsDir);
+
+            var desktopPath = GetLinuxDesktopFilePath(protocol);
+            var content = $"""
+                [Desktop Entry]
+                Type=Application
+                Name={AppName} ({protocol})
+                Comment={AppName} URI Handler
+                Exec={processPath} %u
+                Terminal=false
+                MimeType=x-scheme-handler/{protocol};
+                """;
+
+            File.WriteAllText(desktopPath, content);
+            RunUpdateDesktopDatabase();
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to register URL scheme '{protocol}' on Linux.", ex);
+        }
+    }
+
     private static void RestoreCustomScheme(string protocol, string command)
     {
         try
@@ -207,4 +368,4 @@ public static class SchemeService
         }
     }
 }
-#pragma warning restore CA1416 // プラットフォームの互換性を検証
+#pragma warning restore CA1416

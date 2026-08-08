@@ -188,7 +188,7 @@
     "Error.TempAvatarNotFound": "Avatar temporal no encontrado",
     "Error.LicenseFileNotFound": "Archivo de licencia no encontrado",
     "Error.ThirdPartyLicenseFileNotFound": "Archivo de licencia de terceros no encontrado",
-    "Error.NonWindowsUnsupported": "Esta función solo está disponible en Windows",
+    "Error.UnsupportedPlatform": "Esta función solo está disponible en Windows y Linux",
     "Error.InvalidCategory": "Categoría inválida",
     "Error.FetchAllItemThumbnailsFailed": "La obtención masiva de miniaturas se completó. Correctos: {0} / Fallidos: {1} / Total: {2}\nConsulta el registro de errores para más detalles.",
     "Error.UnitypackageNotFound": "No se encontró ningún Unitypackage",

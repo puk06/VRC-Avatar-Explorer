@@ -188,7 +188,7 @@
     "Error.TempAvatarNotFound": "找不到暫時頭像",
     "Error.LicenseFileNotFound": "找不到授權檔案",
     "Error.ThirdPartyLicenseFileNotFound": "找不到第三方授權檔案",
-    "Error.NonWindowsUnsupported": "此功能僅可在 Windows 上使用",
+    "Error.UnsupportedPlatform": "此功能僅可在 Windows 和 Linux 上使用",
     "Error.InvalidCategory": "無效的類別",
     "Error.FetchAllItemThumbnailsFailed": "批次取得縮圖完成。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個\n請查看錯誤日誌以取得詳細資訊。",
     "Error.UnitypackageNotFound": "未找到Unitypackage",

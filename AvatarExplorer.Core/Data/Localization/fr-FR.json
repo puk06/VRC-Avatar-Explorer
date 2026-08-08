@@ -188,7 +188,7 @@
     "Error.TempAvatarNotFound": "Avatar temporaire introuvable",
     "Error.LicenseFileNotFound": "Fichier de licence introuvable",
     "Error.ThirdPartyLicenseFileNotFound": "Fichier de licence tiers introuvable",
-    "Error.NonWindowsUnsupported": "Cette fonctionnalité n'est disponible que sous Windows",
+    "Error.UnsupportedPlatform": "Cette fonctionnalité n'est disponible que sous Windows et Linux",
     "Error.InvalidCategory": "Catégorie invalide",
     "Error.FetchAllItemThumbnailsFailed": "La récupération groupée des vignettes est terminée. Réussies : {0} / Échouées : {1} / Total : {2}\nConsultez le journal d'erreurs pour plus de détails.",
     "Error.UnitypackageNotFound": "Aucun Unitypackage trouvé",

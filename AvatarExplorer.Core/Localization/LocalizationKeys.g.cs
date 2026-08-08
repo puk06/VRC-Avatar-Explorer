@@ -316,7 +316,7 @@ public static class Loc
         public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
         public const string LicenseFileNotFound = "Error.LicenseFileNotFound";
         public const string ThirdPartyLicenseFileNotFound = "Error.ThirdPartyLicenseFileNotFound";
-        public const string NonWindowsUnsupported = "Error.NonWindowsUnsupported";
+        public const string UnsupportedPlatform = "Error.UnsupportedPlatform";
         public const string InvalidCategory = "Error.InvalidCategory";
         public const string FetchAllItemThumbnailsFailed = "Error.FetchAllItemThumbnailsFailed";
         public const string UnitypackageNotFound = "Error.UnitypackageNotFound";

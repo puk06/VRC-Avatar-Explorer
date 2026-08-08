@@ -188,7 +188,7 @@
     "Error.TempAvatarNotFound": "임시 아바타를 찾을 수 없습니다",
     "Error.LicenseFileNotFound": "라이선스 파일을 찾을 수 없습니다",
     "Error.ThirdPartyLicenseFileNotFound": "서드파티 라이선스 파일을 찾을 수 없습니다",
-    "Error.NonWindowsUnsupported": "이 기능은 Windows에서만 사용할 수 있습니다",
+    "Error.UnsupportedPlatform": "이 기능은 Windows 및 Linux에서만 사용할 수 있습니다",
     "Error.InvalidCategory": "유효하지 않은 카테고리입니다",
     "Error.FetchAllItemThumbnailsFailed": "썸네일 일괄 가져오기가 완료되었습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개\n자세한 내용은 오류 로그를 확인해 주세요.",
     "Error.UnitypackageNotFound": "Unitypackage를 찾을 수 없습니다",

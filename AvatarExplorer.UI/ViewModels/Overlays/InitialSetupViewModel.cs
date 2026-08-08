@@ -86,7 +86,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
 
         if (result)
         {
-            if (!SchemeService.IsRunAsAdmin())
+            if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
             {
                 var restartAsAdmin = await MainWindowViewModel.Instance.ShowYesNoDialog(
                     Localizer.Instance[Loc.Dialog.Confirmation.Default],

@@ -188,7 +188,7 @@
     "Error.TempAvatarNotFound": "Temp Avatar not found",
     "Error.LicenseFileNotFound": "License file not found",
     "Error.ThirdPartyLicenseFileNotFound": "Third-party license file not found",
-    "Error.NonWindowsUnsupported": "This feature is only available on Windows.",
+    "Error.UnsupportedPlatform": "This feature is only available on Windows and Linux.",
     "Error.InvalidCategory": "Invalid category",
     "Error.FetchAllItemThumbnailsFailed": "Bulk thumbnail fetch completed. Success: {0} / Failed: {1} / Total: {2}\nCheck the error log for details.",
     "Error.UnitypackageNotFound": "No Unitypackage found",

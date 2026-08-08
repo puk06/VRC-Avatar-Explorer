@@ -188,7 +188,7 @@
     "Error.TempAvatarNotFound": "仮アバターが見つかりませんでした",
     "Error.LicenseFileNotFound": "ライセンスファイルが見つかりませんでした",
     "Error.ThirdPartyLicenseFileNotFound": "サードパーティーライセンスファイルが見つかりませんでした",
-    "Error.NonWindowsUnsupported": "この機能はWindowsでのみ利用可能です",
+    "Error.UnsupportedPlatform": "この機能はWindowsとLinuxでのみ利用可能です",
     "Error.InvalidCategory": "無効なカテゴリです",
     "Error.FetchAllItemThumbnailsFailed": "サムネイル一括取得が完了しました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件\n詳細はエラーログを確認してください。",
     "Error.UnitypackageNotFound": "Unitypackageが見つかりませんでした",

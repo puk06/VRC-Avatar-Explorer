@@ -337,7 +337,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private void UpdateSchemeStatus()
     {
-        if (!ProcessUtils.IsWindows())
+        if (!ProcessUtils.IsWindows() && !ProcessUtils.IsLinux())
         {
             VRCAESchemeStatusText = string.Empty;
             BLMSchemeStatusText = string.Empty;
@@ -364,17 +364,17 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task RegisterScheme(string protocol)
     {
-        if (!ProcessUtils.IsWindows())
+        if (!ProcessUtils.IsWindows() && !ProcessUtils.IsLinux())
         {
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.NonWindowsUnsupported],
+                Localizer.Instance[Loc.Error.UnsupportedPlatform],
                 Avalonia.Controls.Notifications.NotificationType.Error
             );
             return;
         }
 
-        if (!SchemeService.IsRunAsAdmin())
+        if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
         {
             var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
@@ -407,7 +407,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task UnregisterScheme(string protocol)
     {
-        if (!SchemeService.IsRunAsAdmin())
+        if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
         {
             var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
