@@ -128,7 +128,7 @@
                         <Grid RowDefinitions="*,Auto" Grid.Row="1" RowSpacing="5">
                             <Panel Grid.Row="0">
                                 <Border CornerRadius="8" ClipToBounds="True">
-                                    <ScrollViewer x:Name="Main_LeftPanelScrollViewer">
+                                    <ScrollViewer x:Name="LeftPanelScrollViewer">
                                         <ItemsControl ItemsSource="{Binding LeftItems}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -200,7 +200,7 @@
 
                 <Border Grid.Column="2" Classes="panelbackground">
                     <Panel>
-                        <StackPanel x:Name="Main_RightPanelParent" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10" IsVisible="False">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10" IsVisible="False">
                             <Image Source="avares://AvatarExplorer/Assets/Internal/EmptyIcon.png" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <TextBlock Text="{Binding [Error.Nothing], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="25" Foreground="{DynamicResource Text.Primary}"/>
                         </StackPanel>
@@ -208,7 +208,7 @@
                         <Grid RowDefinitions="*,Auto" RowSpacing="5">
                             <Panel>
                                 <Border CornerRadius="8" ClipToBounds="True">
-                                    <ScrollViewer x:Name="Main_RightPanelScrollViewer">
+                                    <ScrollViewer x:Name="RightPanelScrollViewer">
                                         <ItemsControl ItemsSource="{Binding MainItems}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>

@@ -95,16 +95,16 @@ public partial class MainView : UserControl
 
     private void RegisterScrollTracking()
     {
-        Main_LeftPanelScrollViewer.ScrollChanged += (s, e) =>
+        LeftPanelScrollViewer.ScrollChanged += (s, e) =>
         {
             if (DataContext is MainViewModel vm)
-                vm.LeftPageInfo.ScrollOffset = Main_LeftPanelScrollViewer.Offset;
+                vm.LeftPageInfo.ScrollOffset = LeftPanelScrollViewer.Offset;
         };
 
-        Main_RightPanelScrollViewer.ScrollChanged += (s, e) =>
+        RightPanelScrollViewer.ScrollChanged += (s, e) =>
         {
             if (DataContext is MainViewModel vm)
-                vm.RightPageInfo.ScrollOffset = Main_RightPanelScrollViewer.Offset;
+                vm.RightPageInfo.ScrollOffset = RightPanelScrollViewer.Offset;
         };
 
         if (DataContext is MainViewModel mainVm)
@@ -112,13 +112,13 @@ public partial class MainView : UserControl
             mainVm.LeftPageInfo.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(MainViewModel.LeftPageInfo.RestoreScrollOffset))
-                    Main_LeftPanelScrollViewer.Offset = mainVm.LeftPageInfo.RestoreScrollOffset;
+                    LeftPanelScrollViewer.Offset = mainVm.LeftPageInfo.RestoreScrollOffset;
             };
 
             mainVm.RightPageInfo.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(MainViewModel.RightPageInfo.RestoreScrollOffset))
-                    Main_RightPanelScrollViewer.Offset = mainVm.RightPageInfo.RestoreScrollOffset;
+                    RightPanelScrollViewer.Offset = mainVm.RightPageInfo.RestoreScrollOffset;
             };
         }
     }

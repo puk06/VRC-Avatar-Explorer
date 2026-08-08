@@ -20,12 +20,12 @@
                         <ItemsControl ItemsSource="{Binding Pages}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Spacing="16" Margin="0,0,12,0"/>
+                                    <VirtualizingStackPanel Margin="0,0,12,0"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="vmcomponent:PdfPageViewModel">
-                                    <Border Classes="panelbackground" Background="{DynamicResource Background.Surface}" Padding="12">
+                                    <Border Classes="panelbackground" Background="{DynamicResource Background.Surface}" Padding="12" Margin="0,0,0,16">
                                         <StackPanel Spacing="8">
                                             <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                                             <Image Source="{Binding Image}" Stretch="Uniform" HorizontalAlignment="Center"/>
