@@ -8,7 +8,8 @@
     xmlns:i="clr-namespace:Availability.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
     xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
     x:Class="AvatarExplorer.UI.Views.MainView"
-    x:DataType="vm:MainViewModel">
+    x:DataType="vm:MainViewModel"
+    PointerPressed="OnMainPointerPressed">
 
     <UserControl.Styles>
         <Style Selector="Button.PathSegment">

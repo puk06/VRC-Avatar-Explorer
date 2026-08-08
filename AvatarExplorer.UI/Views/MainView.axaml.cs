@@ -297,4 +297,14 @@ public partial class MainView : UserControl
         MainWindowViewModel.Instance.LastDragDropPath = droppedPath;
         await DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Copy);
     }
+    private async void OnMainPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var pointerProperties = e.GetCurrentPoint(this).Properties;
+        var sideButtonPressed = pointerProperties.IsXButton1Pressed;
+
+        if (sideButtonPressed && DataContext is MainViewModel vm)
+        {
+            vm.Undo();
+        }
+    }
 }

@@ -499,7 +499,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         Refresh(false);
     }
 
-    private void Undo()
+    internal void Undo()
     {
         _itemNavigationService.Undo();
         _searchManager.ClearQuery();
