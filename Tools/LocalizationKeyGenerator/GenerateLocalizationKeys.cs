@@ -1,23 +1,23 @@
 ﻿using System.Text;
 using System.Text.Json;
 
-string repositoryRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
-string jsonPath = Path.Combine(repositoryRoot, "AvatarExplorer.Core", "Data", "Localization", "ja-JP.json");
-string outputPath = Path.Combine(repositoryRoot, "AvatarExplorer.Core", "Localization", "LocalizationKeys.g.cs");
+var repositoryRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
+var jsonPath = Path.Combine(repositoryRoot, "AvatarExplorer.Core", "Data", "Localization", "ja-JP.json");
+var outputPath = Path.Combine(repositoryRoot, "AvatarExplorer.Core", "Localization", "LocalizationKeys.g.cs");
 
-string json = File.ReadAllText(jsonPath);
-Dictionary<string, string> dict = JsonSerializer.Deserialize<Dictionary<string, string>>(json)!;
+var json = File.ReadAllText(jsonPath);
+var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(json)!;
 
-Dictionary<string, object> tree = new();
+var tree = new Dictionary<string, object>();
 
 foreach (var key in dict.Keys)
 {
-    string[] parts = key.Split('.');
-    Dictionary<string, object> current = tree;
+    var parts = key.Split('.');
+    var current = tree;
 
     for (int i = 0; i < parts.Length; i++)
     {
-        string part = Sanitize(parts[i]);
+        var part = Sanitize(parts[i]);
 
         if (i == parts.Length - 1)
         {
@@ -35,7 +35,7 @@ foreach (var key in dict.Keys)
     }
 }
 
-StringBuilder sb = new();
+var sb = new StringBuilder();
 
 sb.AppendLine("/// ****************************************************************************************************");
 sb.AppendLine("///");
@@ -65,7 +65,7 @@ Console.WriteLine("Localization keys generated!");
 
 static void WriteClass(Dictionary<string, object> dict, StringBuilder sb, int indent)
 {
-    string indentStr = new string(' ', indent * 4);
+    var indentStr = new string(' ', indent * 4);
 
     foreach (var kvp in dict)
     {
@@ -85,10 +85,10 @@ static void WriteClass(Dictionary<string, object> dict, StringBuilder sb, int in
 
 static string Sanitize(string input)
 {
-    StringBuilder sb = new();
+    var sb = new StringBuilder();
     if (!char.IsLetter(input[0])) sb.Append('_');
 
-    foreach (char c in input)
+    foreach (var c in input)
     {
         sb.Append(char.IsLetterOrDigit(c) ? c : '_');
     }
