@@ -323,6 +323,12 @@ public static class ContextMenuHandlerService
         }
 
         ItemGroupService.RemoveItem(item.Identifier, removeDirectory);
+
+        MainWindowViewModel.Instance.ShowNotification(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.Remove],
+            Avalonia.Controls.Notifications.NotificationType.Success
+        );
     }
     private static async void OpenFile(string path)
     {
@@ -420,6 +426,12 @@ public static class ContextMenuHandlerService
         if (!result) return;
 
         ItemGroupService.RemoveTempAvatar(tempAvatar.Identifier);
+
+        MainWindowViewModel.Instance.ShowNotification(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.Remove],
+            Avalonia.Controls.Notifications.NotificationType.Success
+        );
     }
     private static async void EditCustomCategoryName(string identifier)
     {
