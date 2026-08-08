@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using ReactiveUI;
@@ -53,6 +55,8 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
     {
         if (!AvatarExplorerApp.Instance.Items.GetAll().Any())
             Open();
+
+        ShowSchemeRegistrationDialog();
     }
 
     public void Open()
@@ -68,5 +72,44 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
     private void Close()
     {
         IsVisible = false;
+    }
+
+    private static async void ShowSchemeRegistrationDialog()
+    {
+        if (SchemeService.IsOwnSchemeRegistered(SchemeService.ProtocolVRCAE)) return;
+
+        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Scheme.Register]
+        );
+
+        if (result)
+        {
+            if (!SchemeService.IsRunAsAdmin())
+            {
+                var restartAsAdmin = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                    Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                    Localizer.Instance[Loc.Scheme.RestartAsAdmin]
+                );
+                if (restartAsAdmin) SchemeService.RestartAsAdmin();
+
+                return;
+            }
+
+            SchemeService.RegisterScheme(SchemeService.ProtocolVRCAE);
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Success.Default],
+                Localizer.Instance[Loc.Scheme.RegisterSuccess],
+                Avalonia.Controls.Notifications.NotificationType.Success
+            );
+        }
+        else
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance[Loc.Scheme.RegisterSkipped],
+                Avalonia.Controls.Notifications.NotificationType.Information
+            );
+        }
     }
 }

@@ -1,6 +1,8 @@
 using System.IO;
 using System.Threading.Tasks;
+using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
+using AvatarExplorer.UI.Localization;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -31,6 +33,9 @@ public class ArchivePasswordDialogViewModel : ViewModelBase
         FileName = Path.GetFileName(request.ArchivePath);
         CurrentAttempt = request.Attempt;
         MaxAttempt = request.MaxAttempts;
+
+        FileNameText = $"{Localizer.Instance[Loc.ArchivePasswordDialog.FileName]}: {FileName}";
+        AttemptInfoText = $"{Localizer.Instance[Loc.ArchivePasswordDialog.Attempts]}: {CurrentAttempt}/{MaxAttempt}";
 
         _tcs = new();
         return _tcs.Task;

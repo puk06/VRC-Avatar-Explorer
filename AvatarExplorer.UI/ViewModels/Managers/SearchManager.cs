@@ -164,6 +164,6 @@ public class SearchManager
         if (parsed.IsOr)
             result = $"({Localizer.Instance.Get(Loc.SearchFilter.IsOrSearch)}) {result}";
 
-        return result;
+        return Localizer.Instance.Get(Loc.SearchFilter.Default, result);
     }
 }

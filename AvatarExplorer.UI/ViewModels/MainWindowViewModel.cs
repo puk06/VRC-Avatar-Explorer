@@ -139,6 +139,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async Task OnInitialized()
     {
         CheckForUpdateOnStartup();
+        CheckIfRunningAsAdmin();
     }
 
     private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => OnArgsReceived(args));
@@ -188,6 +189,20 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     {
         UpdateDialogVM.Open(AvatarExplorerApp.CurrentVersion, release);
         IsUpdateDialogVisible = true;
+    }
+
+    private void CheckIfRunningAsAdmin()
+    {
+        if (!ProcessUtils.IsWindows()) return;
+
+        if (SchemeService.IsRunAsAdmin())
+        {
+            ShowNotification(
+                Localizer.Instance[Loc.Warning.Default],
+                Localizer.Instance[Loc.Warning.RunningInAdministratorMode],
+                NotificationType.Warning
+            );
+        }
     }
 
     private void UpdateWindowTitle()

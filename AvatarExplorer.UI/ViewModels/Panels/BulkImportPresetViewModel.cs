@@ -47,7 +47,7 @@ public class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostIni
                     ImageFileName = SystemIconKey.FolderIcon,
                     TitleRaw = i.PresetName,
                     TitleLocalizable = false,
-                    DescriptionRaw = new(Loc.Button.Description.Item.Count, [i.Items.Length.ToString()]),
+                    DescriptionRaw = new(Loc.Button.Description.BulkImportPreset.Count, [i.Items.Length.ToString()]),
                     Identifier = i.Identifier,
                     ViewModelType = ViewModelType.BulkImportPreset,
                 };

@@ -213,6 +213,9 @@ public class ItemEditorViewModel : ViewModelBase
 
     private async Task Confirm()
     {
+        var validationResult = ValidateFields();
+        if (!validationResult) return;
+
         var identifier = Identifier != null ? await ConfirmEdit(Identifier) : await ConfirmCreate();
         await AddPathsAsync(identifier);
     }
@@ -282,7 +285,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     private async Task AddPathsAsync(string identifier)
     {
-        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Default]);
+        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.ItemAdd.Copying]);
         MainWindowViewModel.Instance.ProgressVM.Update(0);
         var result = await AvatarExplorerApp.Instance.Items.AddPaths(
             identifier,
@@ -311,6 +314,14 @@ public class ItemEditorViewModel : ViewModelBase
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()),
                 Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
+        else
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Success.Default],
+                Localizer.Instance[Loc.Success.ItemAdd],
+                Avalonia.Controls.Notifications.NotificationType.Success
             );
         }
 
@@ -416,7 +427,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     private async Task AddCustomCategory()
     {
-        var newCategory = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewCustomCategoryName]);
+        var newCategory = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCustomCategory]);
         if (string.IsNullOrEmpty(newCategory)) return;
 
         Categories.Add(new ItemCategoryViewModel(new ItemCategory(newCategory)).Update());
@@ -462,5 +473,54 @@ public class ItemEditorViewModel : ViewModelBase
     {
         TagsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedTagsCount, Tags.Count().ToString());
         SupportedAvatarsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedAvatarsCount, GetSupportedAvatarsCount().ToString());
+    }
+
+    private bool ValidateFields()
+    {
+        // Title
+        if (string.IsNullOrWhiteSpace(Title))
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.Validation.EmptyTitle],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return false;
+        }
+        
+        // Author
+        if (string.IsNullOrWhiteSpace(Author))
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.Validation.EmptyAuthor],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return false;
+        }
+
+        // Category
+        if (SelectedCategory == null)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.InvalidCategory],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return false;
+        }
+
+        // Supported Avatars
+        if (SelectedCategory.Category.Type != ItemType.Clothing && SupportedAvatars.Any(i => i.StartsWith("commonavatar")))
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.Validation.NotClothingWithCommonAvatar],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return false;
+        }
+
+        return true;
     }
 }

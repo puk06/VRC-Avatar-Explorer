@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
@@ -73,27 +75,42 @@ public static class ContextMenuHandlerService
         Register(ActionKey.MergeWithOtherCategory, MergeWithOtherCategory);
     }
 
+    private static Item? GetByIdentifier(string identifier)
+    {
+        var item = Items.Get(identifier);
+        if (item == null)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.ItemNotFound],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
+
+        return item;
+    }
+
     private static async void OpenFolder(string path)
     {
         await LauncherService.OpenFolder(TopLevelProvider.Current, path);
     }
     private static async void CopyBoothLink(string identifier)
     {
-        var link = Items.Get(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
+        var link = GetByIdentifier(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
         if (string.IsNullOrEmpty(link)) return;
 
         await ClipboardService.SetText(link);
     }
     private static async void OpenBoothLink(string identifier)
     {
-        var link = Items.Get(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
+        var link = GetByIdentifier(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
         if (string.IsNullOrEmpty(link)) return;
 
         await LauncherService.OpenUri(TopLevelProvider.Current, link);
     }
     private static void ShowOtherItemsByAuthor(string identifier)
     {
-        var author = Items.Get(identifier)?.Author;
+        var author = GetByIdentifier(identifier)?.Author;
         if (string.IsNullOrEmpty(author)) return;
 
         var mainVm = MainWindowViewModel.Instance.MainVM;
@@ -104,15 +121,48 @@ public static class ContextMenuHandlerService
         var files = await StorageService.OpenFileDialog(TopLevelProvider.Current, "Select Thumbnail Image");
         if (files == null || files.Length == 0) return;
 
-        await Items.UpdateThumbnail(identifier, files[0]);
+        var result = await Items.UpdateThumbnail(identifier, files[0]);
+
+        if (result.IsError)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.ItemThumbnailEditFailed],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
+        else
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Success.Default],
+                Localizer.Instance[Loc.Success.ItemThumbnailEdit],
+                Avalonia.Controls.Notifications.NotificationType.Success
+            );
+        }
     }
     private static async void FetchThumbnail(string identifier)
     {
-        await Items.FetchThumbnailFromBooth(identifier);
+        var result = await Items.FetchThumbnailFromBooth(identifier);
+        if (result.IsError)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.FetchItemThumbnailFailed],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
+        else
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Success.Default],
+                Localizer.Instance[Loc.Success.FetchItemThumbnail],
+                Avalonia.Controls.Notifications.NotificationType.Success
+            );
+        }
     }
     private static async void CopyItemInfo(string identifier)
     {
-        var item = Items.Get(identifier);
+        var item = GetByIdentifier(identifier);
         if (item == null) return;
 
         string itemInfo = string.Format("{0} - {1}\n{2}", item.Title, item.Author, item.BoothId != -1 ? item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]) : "(No Booth Link)");
@@ -124,7 +174,7 @@ public static class ContextMenuHandlerService
     }
     private static async void EditItemTitle(string identifier)
     {
-        var item = Items.Get(identifier);
+        var item = GetByIdentifier(identifier);
         if (item == null) return;
 
         var newTitle = await MainWindowViewModel.Instance.ShowTextDialog(
@@ -137,7 +187,7 @@ public static class ContextMenuHandlerService
     }
     private static async void EditItemMemo(string identifier)
     {
-        var item = Items.Get(identifier);
+        var item = GetByIdentifier(identifier);
         if (item == null) return;
 
         var newMemo = await MainWindowViewModel.Instance.ShowEditMemoDialog(item.ItemMemo);
@@ -159,15 +209,10 @@ public static class ContextMenuHandlerService
         );
         if (files == null || files.Length == 0) return;
 
-        await Items.AddPaths(
+        await AddPathsInternal(
             identifier,
-            files
-                .Select(i => new ItemPathEntry()
-                {
-                    FileName = Path.GetFileName(i),
-                    Path = i
-                }),
-            RuntimeSettings.ShouldLinkToOriginal
+            files.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i }),
+            isFile: true
         );
     }
     private static async void AddItemFolder(string identifier)
@@ -179,20 +224,46 @@ public static class ContextMenuHandlerService
         );
         if (folders == null || folders.Length == 0) return;
 
-        await Items.AddPaths(
+        await AddPathsInternal(
             identifier,
-            folders
-                .Select(i => new ItemPathEntry()
-                {
-                    FileName = Path.GetFileName(i),
-                    Path = i
-                }),
-            RuntimeSettings.ShouldLinkToOriginal
+            folders.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i })
         );
+    }
+    private static async Task AddPathsInternal(string identifier, IEnumerable<ItemPathEntry> paths, bool isFile = true)
+    {
+        var extractResult = await Items.AddPaths(identifier, paths, RuntimeSettings.ShouldLinkToOriginal);
+
+        if (extractResult.IsError)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                isFile ? Localizer.Instance[Loc.Error.AddItemFileFailed] : Localizer.Instance[Loc.Error.AddItemFolderFailed],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
+        else if (extractResult.Value.ProcessingFailedPaths.Count > 0)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Warning.Default],
+                Localizer.Instance.Get(
+                    Loc.Error.FoundProcessingFailedPath,
+                    extractResult.Value.ProcessingFailedPaths.Count.ToString()
+                ),
+                Avalonia.Controls.Notifications.NotificationType.Warning
+            );
+        }
+        else
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Success.Default],
+                isFile ? Localizer.Instance[Loc.Success.ItemFileAdd] : Localizer.Instance[Loc.Success.ItemFolderAdd],
+                Avalonia.Controls.Notifications.NotificationType.Success
+            );
+        }
     }
     private static async void EditImplementedAvatar(string identifier)
     {
-        var item = Items.Get(identifier);
+        var item = GetByIdentifier(identifier);
         if (item == null) return;
 
         var newAvatars = await MainWindowViewModel.Instance.ShowSelectAvatars(
@@ -208,7 +279,7 @@ public static class ContextMenuHandlerService
     }
     private static async void EditItemDefaultPath(string identifier)
     {
-        var item = Items.Get(identifier);
+        var item = GetByIdentifier(identifier);
         if (item == null) return;
 
         var folders = await StorageService.OpenFolderDialog(
@@ -222,7 +293,7 @@ public static class ContextMenuHandlerService
     }
     private static async void EditItemTag(string identifier)
     {
-        var item = Items.Get(identifier);
+        var item = GetByIdentifier(identifier);
         if (item == null) return;
 
         var newTags = await MainWindowViewModel.Instance.ShowEditTagsDialog(item.Tags.ToArray());
@@ -232,7 +303,7 @@ public static class ContextMenuHandlerService
     }
     private static async void RemoveItem(string identifier)
     {
-        var item = Items.Get(identifier);
+        var item = GetByIdentifier(identifier);
         if (item == null) return;
 
         var removeResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
@@ -296,7 +367,15 @@ public static class ContextMenuHandlerService
     private static async void RemovePreset(string identifier)
     {
         var preset = AvatarExplorerApp.Instance.BulkImportPresets.Get(identifier);
-        if (preset == null) return;
+        if (preset == null)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.PresetNotFound],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return;
+        }
 
         var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
@@ -352,6 +431,18 @@ public static class ContextMenuHandlerService
             oldCategory
         );
         if (string.IsNullOrEmpty(newName)) return;
+
+        var isDuplicate = AvatarExplorerApp.Instance.Items.GetAll()
+            .Any(i => i.Category.CustomCategory == newName);
+
+        if (isDuplicate)
+        {
+            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance[Loc.Dialog.Confirmation.DuplicateCustomCategoryName]
+            );
+            if (!result) return;
+        }
 
         AvatarExplorerApp.Instance.Items.RenameCustomCategory(oldCategory, newName);
     }

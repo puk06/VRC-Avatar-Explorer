@@ -259,6 +259,12 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Items Folder");
         if (folders == null || folders.Length == 0) return;
 
+        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.ContinueRestoreFromBackup]
+        );
+        if (!result) return;
+
         var selectedBackupPath = folders[0];
         await AvatarExplorerApp.Instance.BackupManager.RestoreBackup(selectedBackupPath);
     }
@@ -358,6 +364,16 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task RegisterScheme(string protocol)
     {
+        if (!ProcessUtils.IsWindows())
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.NonWindowsUnsupported],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return;
+        }
+
         if (!SchemeService.IsRunAsAdmin())
         {
             var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
@@ -453,11 +469,27 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     {
         var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.Lisence);
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
+        else
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.LicenseFileNotFound],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
     }
 
     private async Task ViewThirdPartyLicenses()
     {
         var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.ThirdPartyLisences);
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
+        else
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.ThirdPartyLicenseFileNotFound],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+        }
     }
 }

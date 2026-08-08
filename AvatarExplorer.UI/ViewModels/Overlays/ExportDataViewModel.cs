@@ -49,7 +49,7 @@ public class ExportDataViewModel : ViewModelBase
 
     private async Task BrowseFolder()
     {
-        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Export Folder");
+        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, Localizer.Instance[Loc.Dialog.SelectSaveFolderPath]);
         if (folders == null || folders.Length == 0) return;
 
         FolderPath = folders[0];

@@ -50,10 +50,10 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
     private void ResetUi()
     {
         Progress = 0;
-        Status = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.Status.Ready];
-        Count = Localizer.Instance.Get(Loc.FetchAllThumbnailsOverlay.Progress, ["0", "0", "0", "0"]);
-        CurrentItem = Localizer.Instance.Get(Loc.FetchAllThumbnailsOverlay.CurrentItem, "-");
-        Eta = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.EtaUnknown];
+        Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Ready];
+        Count = Localizer.Instance.Get(Loc.FetchAllThumbnails.Progress, ["0", "0", "0", "0"]);
+        CurrentItem = Localizer.Instance.Get(Loc.FetchAllThumbnails.CurrentItem, "-");
+        Eta = Localizer.Instance[Loc.FetchAllThumbnails.EtaUnknown];
 
         IsStartable = !_isRunning;
         IsCancelable = _isRunning;
@@ -64,7 +64,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
         int clamped = Math.Max(0, totalSeconds);
         int minutes = clamped / 60;
         int seconds = clamped % 60;
-        return Localizer.Instance.Get(Loc.FetchAllThumbnailsOverlay.Eta, [minutes.ToString(), seconds.ToString()]);
+        return Localizer.Instance.Get(Loc.FetchAllThumbnails.Eta, [minutes.ToString(), seconds.ToString()]);
     }
 
     private async Task StartInternal()
@@ -88,7 +88,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
         IsStartable = false;
         IsCancelable = true;
-        Status = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.Status.Running];
+        Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Running];
 
         int successCount = 0;
         int failureCount = 0;
@@ -107,8 +107,8 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
                 var item = allItems[index];
 
-                Status = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.Status.Running];
-                CurrentItem = Localizer.Instance.Get(Loc.FetchAllThumbnailsOverlay.CurrentItem, item.Title);
+                Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Running];
+                CurrentItem = Localizer.Instance.Get(Loc.FetchAllThumbnails.CurrentItem, item.Title);
 
                 var result = await AvatarExplorerApp.Instance.Items.FetchThumbnailFromBooth(item.Identifier);
                 if (result.IsError)
@@ -125,7 +125,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
                 int progress = (int)Math.Clamp(processedCount * 100.0 / allItems.Count, 0, 100);
                 Progress = progress;
                 Count = Localizer.Instance.Get(
-                    Loc.FetchAllThumbnailsOverlay.Progress,
+                    Loc.FetchAllThumbnails.Progress,
                     [processedCount.ToString(), allItems.Count.ToString(), successCount.ToString(), failureCount.ToString()]
                 );
 
@@ -142,7 +142,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
                 }
                 else
                 {
-                    Eta = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.EtaUnknown];
+                    Eta = Localizer.Instance[Loc.FetchAllThumbnails.EtaUnknown];
                 }
             }
         }
@@ -162,7 +162,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
         if (isCancelled)
         {
-            Status = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.Status.Cancelled];
+            Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Cancelled];
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(Loc.Warning.FetchAllItemThumbnailsCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Count.ToString()]),
@@ -171,7 +171,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
             return;
         }
 
-        Status = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.Status.Completed];
+        Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Completed];
 
         if (failureCount == 0)
         {
@@ -197,6 +197,6 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
         _cancellationTokenSource?.Cancel();
         IsCancelable = false;
-        Status = Localizer.Instance[Loc.FetchAllThumbnailsOverlay.Status.Cancelling];
+        Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Cancelling];
     }
 }

@@ -99,9 +99,17 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
     private async Task RenameGroup()
     {
         var group = SelectedGroup;
-        if (group == null) return;
+        if (group == null)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.CommonAvatarNotFound],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return;
+        }
         
-        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCommonAvatarGroup]);
+        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewCommonAvatarGroupName]);
         if (string.IsNullOrEmpty(newGroupName)) return;
 
         CommonAvatarRep.RenameGroup(group.Identifier, newGroupName);
@@ -111,7 +119,15 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
     private async Task RemoveGroup()
     {
         var group = SelectedGroup;
-        if (group == null) return;
+        if (group == null)
+        {
+            MainWindowViewModel.Instance.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.CommonAvatarNotFound],
+                Avalonia.Controls.Notifications.NotificationType.Error
+            );
+            return;
+        }
 
         var confirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],

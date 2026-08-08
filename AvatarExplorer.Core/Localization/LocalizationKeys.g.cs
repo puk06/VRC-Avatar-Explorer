@@ -39,25 +39,6 @@ public static class Loc
         public static class Path
         {
             public const string Placeholder = "Main.Path.Placeholder";
-            public static class Root
-            {
-                public const string Avatar = "Main.Path.Root.Avatar";
-                public const string Author = "Main.Path.Root.Author";
-                public const string Category = "Main.Path.Root.Category";
-                public const string Item = "Main.Path.Root.Item";
-            }
-            public const string Search = "Main.Path.Search";
-            public const string Removed = "Main.Path.Removed";
-            public const string RootFolder = "Main.Path.RootFolder";
-        }
-        public static class Sort
-        {
-            public const string Title = "Main.Sort.Title";
-            public const string Author = "Main.Sort.Author";
-            public const string CreatedDate = "Main.Sort.CreatedDate";
-            public const string UpdatedDate = "Main.Sort.UpdatedDate";
-            public const string Ascending = "Main.Sort.Ascending";
-            public const string Descending = "Main.Sort.Descending";
         }
     }
     public static class ItemCategory
@@ -140,11 +121,6 @@ public static class Loc
                 public const string ReplaceAvatarsToGroup = "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup";
                 public const string ReplaceGroupToAvatars = "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars";
             }
-            public static class StoragePathChange
-            {
-                public const string CopyData = "Dialog.Confirmation.StoragePathChange.CopyData";
-                public const string ConvertRelativePath = "Dialog.Confirmation.StoragePathChange.ConvertRelativePath";
-            }
             public const string DuplicateCustomCategoryName = "Dialog.Confirmation.DuplicateCustomCategoryName";
             public const string MergeCategory = "Dialog.Confirmation.MergeCategory";
         }
@@ -159,14 +135,12 @@ public static class Loc
             public const string NewCustomCategoryName = "Dialog.Title.NewCustomCategoryName";
             public const string AddUrl = "Dialog.Title.AddUrl";
         }
-        public const string SelectSaveFilePath = "Dialog.SelectSaveFilePath";
+        public const string SelectSaveFolderPath = "Dialog.SelectSaveFolderPath";
         public const string SelectFolderPath = "Dialog.SelectFolderPath";
         public const string SelectFilePath = "Dialog.SelectFilePath";
     }
     public static class Scheme
     {
-        public const string PathChanged = "Scheme.PathChanged";
-        public const string RegisterAgain = "Scheme.RegisterAgain";
         public const string Register = "Scheme.Register";
         public const string RestartAsAdmin = "Scheme.RestartAsAdmin";
         public const string RegisterSuccess = "Scheme.RegisterSuccess";
@@ -185,7 +159,6 @@ public static class Loc
     }
     public static class Processing
     {
-        public const string Default = "Processing.Default";
         public static class Unitypackage
         {
             public static class Status
@@ -214,10 +187,6 @@ public static class Loc
         public static class ItemAdd
         {
             public const string Copying = "Processing.ItemAdd.Copying";
-        }
-        public static class ThumbnailBulkFetch
-        {
-            public const string Fetching = "Processing.ThumbnailBulkFetch.Fetching";
         }
     }
     public static class ContextMenu
@@ -291,16 +260,12 @@ public static class Loc
         public const string SupportedAvatar = "SearchFilter.SupportedAvatar";
         public const string Category = "SearchFilter.Category";
         public const string ItemMemo = "SearchFilter.ItemMemo";
-        public const string FolderName = "SearchFilter.FolderName";
-        public const string FileName = "SearchFilter.FileName";
         public const string ImplementedAvatar = "SearchFilter.ImplementedAvatar";
         public const string NotImplementedAvatar = "SearchFilter.NotImplementedAvatar";
         public const string Tag = "SearchFilter.Tag";
         public const string CommonAvatar = "SearchFilter.CommonAvatar";
         public const string SearchWord = "SearchFilter.SearchWord";
         public const string IsOrSearch = "SearchFilter.IsOrSearch";
-        public const string IsCategoryOrSearch = "SearchFilter.IsCategoryOrSearch";
-        public const string EmptySupportedAvatarAsNone = "SearchFilter.EmptySupportedAvatarAsNone";
         public const string NegationPrefix = "SearchFilter.NegationPrefix";
     }
     public static class Success
@@ -311,12 +276,10 @@ public static class Loc
         public const string ItemAdd = "Success.ItemAdd";
         public const string ItemEdit = "Success.ItemEdit";
         public const string ItemThumbnailEdit = "Success.ItemThumbnailEdit";
-        public const string AuthorThumbnailEdit = "Success.AuthorThumbnailEdit";
         public const string Remove = "Success.Remove";
         public const string FetchItemThumbnail = "Success.FetchItemThumbnail";
         public const string ItemFileAdd = "Success.ItemFileAdd";
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
-        public const string CopyDirectory = "Success.CopyDirectory";
         public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
     }
     public static class Warning
@@ -328,10 +291,7 @@ public static class Loc
     public static class Error
     {
         public const string Default = "Error.Default";
-        public const string NotImplemented = "Error.NotImplemented";
         public const string Nothing = "Error.Nothing";
-        public const string BoothItemNotFound = "Error.BoothItemNotFound";
-        public const string BoothApiCooldown = "Error.BoothApiCooldown";
         public const string ItemNotFound = "Error.ItemNotFound";
         public const string CommonAvatarNotFound = "Error.CommonAvatarNotFound";
         public const string PresetNotFound = "Error.PresetNotFound";
@@ -343,32 +303,21 @@ public static class Loc
         }
         public const string ImportFailed = "Error.ImportFailed";
         public const string ExportFailed = "Error.ExportFailed";
-        public const string ItemAddFailed = "Error.ItemAddFailed";
         public const string ItemEditFailed = "Error.ItemEditFailed";
         public const string ItemThumbnailEditFailed = "Error.ItemThumbnailEditFailed";
-        public const string AuthorThumbnailEditFailed = "Error.AuthorThumbnailEditFailed";
-        public const string CopyDirectoryFailed = "Error.CopyDirectoryFailed";
-        public const string OpenDialogFailed = "Error.OpenDialogFailed";
-        public const string CheckSchemeFailed = "Error.CheckSchemeFailed";
         public const string BulkImportFailed = "Error.BulkImportFailed";
         public const string OpenFileFailed = "Error.OpenFileFailed";
-        public const string OpenFolderFailed = "Error.OpenFolderFailed";
-        public const string OpenUriFailed = "Error.OpenUriFailed";
         public const string ImportUnitypackageFailed = "Error.ImportUnitypackageFailed";
-        public const string RegisterSchemeFailed = "Error.RegisterSchemeFailed";
         public const string RetrieveBoothItemFailed = "Error.RetrieveBoothItemFailed";
         public const string FetchItemThumbnailFailed = "Error.FetchItemThumbnailFailed";
-        public const string ClipboardFailed = "Error.ClipboardFailed";
         public const string FoundProcessingFailedPath = "Error.FoundProcessingFailedPath";
         public const string AddItemFileFailed = "Error.AddItemFileFailed";
         public const string AddItemFolderFailed = "Error.AddItemFolderFailed";
-        public const string RemoveFailed = "Error.RemoveFailed";
         public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
         public const string LicenseFileNotFound = "Error.LicenseFileNotFound";
         public const string ThirdPartyLicenseFileNotFound = "Error.ThirdPartyLicenseFileNotFound";
         public const string NonWindowsUnsupported = "Error.NonWindowsUnsupported";
         public const string InvalidCategory = "Error.InvalidCategory";
-        public const string InitializationFailed = "Error.InitializationFailed";
         public const string FetchAllItemThumbnailsFailed = "Error.FetchAllItemThumbnailsFailed";
         public const string UnitypackageNotFound = "Error.UnitypackageNotFound";
         public const string InvalidUrl = "Error.InvalidUrl";
@@ -628,7 +577,6 @@ public static class Loc
         {
             public const string Title = "Settings.AboutInfo.Title";
             public const string Subtitle = "Settings.AboutInfo.Subtitle";
-            public const string Version = "Settings.AboutInfo.Version";
         }
         public static class AboutDeveloper
         {
@@ -659,17 +607,13 @@ public static class Loc
     public static class AdvancedSearch
     {
         public const string OrSearch = "AdvancedSearch.OrSearch";
-        public const string CategoryOrSearch = "AdvancedSearch.CategoryOrSearch";
         public const string NegationHint = "AdvancedSearch.NegationHint";
         public const string Title = "AdvancedSearch.Title";
         public const string Author = "AdvancedSearch.Author";
         public const string BoothId = "AdvancedSearch.BoothId";
         public const string SupportedAvatar = "AdvancedSearch.SupportedAvatar";
-        public const string EmptySupportedAvatarAsNone = "AdvancedSearch.EmptySupportedAvatarAsNone";
         public const string Category = "AdvancedSearch.Category";
         public const string Memo = "AdvancedSearch.Memo";
-        public const string Folder = "AdvancedSearch.Folder";
-        public const string File = "AdvancedSearch.File";
         public const string ImplementedAvatar = "AdvancedSearch.ImplementedAvatar";
         public const string NotImplementedAvatar = "AdvancedSearch.NotImplementedAvatar";
         public const string Tag = "AdvancedSearch.Tag";
@@ -705,7 +649,6 @@ public static class Loc
         public const string BoothId = "ItemEditor.BoothId";
         public const string ImageUrl = "ItemEditor.ImageUrl";
         public const string DownloadURL = "ItemEditor.DownloadURL";
-        public const string AuthorImageUrl = "ItemEditor.AuthorImageUrl";
         public const string ConfirmAndSave = "ItemEditor.ConfirmAndSave";
         public static class LinkToOriginal
         {
@@ -742,7 +685,6 @@ public static class Loc
     public static class ErrorLog
     {
         public const string Title = "ErrorLog.Title";
-        public const string Reflesh = "ErrorLog.Reflesh";
         public const string OpenLogFolder = "ErrorLog.OpenLogFolder";
     }
     public static class InitialSetup
@@ -789,28 +731,24 @@ public static class Loc
         public const string IncludeCommonToSupported = "ExportData.IncludeCommonToSupported";
         public const string Export = "ExportData.Export";
     }
-    public static class FetchAllThumbnailsOverlay
+    public static class FetchAllThumbnails
     {
-        public const string Title = "FetchAllThumbnailsOverlay.Title";
-        public const string Description = "FetchAllThumbnailsOverlay.Description";
-        public const string Start = "FetchAllThumbnailsOverlay.Start";
-        public const string CancelRunning = "FetchAllThumbnailsOverlay.CancelRunning";
-        public const string CurrentItem = "FetchAllThumbnailsOverlay.CurrentItem";
-        public const string Progress = "FetchAllThumbnailsOverlay.Progress";
-        public const string Eta = "FetchAllThumbnailsOverlay.Eta";
-        public const string EtaUnknown = "FetchAllThumbnailsOverlay.EtaUnknown";
+        public const string Title = "FetchAllThumbnails.Title";
+        public const string Description = "FetchAllThumbnails.Description";
+        public const string Start = "FetchAllThumbnails.Start";
+        public const string CancelRunning = "FetchAllThumbnails.CancelRunning";
+        public const string CurrentItem = "FetchAllThumbnails.CurrentItem";
+        public const string Progress = "FetchAllThumbnails.Progress";
+        public const string Eta = "FetchAllThumbnails.Eta";
+        public const string EtaUnknown = "FetchAllThumbnails.EtaUnknown";
         public static class Status
         {
-            public const string Ready = "FetchAllThumbnailsOverlay.Status.Ready";
-            public const string Running = "FetchAllThumbnailsOverlay.Status.Running";
-            public const string Cancelling = "FetchAllThumbnailsOverlay.Status.Cancelling";
-            public const string Cancelled = "FetchAllThumbnailsOverlay.Status.Cancelled";
-            public const string Completed = "FetchAllThumbnailsOverlay.Status.Completed";
+            public const string Ready = "FetchAllThumbnails.Status.Ready";
+            public const string Running = "FetchAllThumbnails.Status.Running";
+            public const string Cancelling = "FetchAllThumbnails.Status.Cancelling";
+            public const string Cancelled = "FetchAllThumbnails.Status.Cancelled";
+            public const string Completed = "FetchAllThumbnails.Status.Completed";
         }
-    }
-    public static class Progress
-    {
-        public const string Loading = "Progress.Loading";
     }
     public static class UpdateDialog
     {
