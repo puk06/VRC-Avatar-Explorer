@@ -503,7 +503,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         if (_searchManager.ActiveSearchQuery != null)
         {
             _searchManager.ClearQuery();
-            return;
         }
         else
         {
