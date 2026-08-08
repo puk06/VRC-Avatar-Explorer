@@ -48,6 +48,8 @@ public class ItemViewModel : ViewModelBase
     public Action<ContextMenuAction>? onMenuClick = null;
 
     public string Identifier { get; set; } = string.Empty;
+
+    // AvatarならItemのIdentifier、CommonAvatarならCommonAvatarのIdentifier、TempAvatarならTempAvatarのIdentifier、FolderならFolderのPath、FileならFileのPath
     public string? ActualValue { get; set; }
     public required ViewModelType ViewModelType { get; set; }
 

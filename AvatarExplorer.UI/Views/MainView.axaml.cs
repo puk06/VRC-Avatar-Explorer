@@ -205,15 +205,15 @@ public partial class MainView : UserControl
         image.PointerMoved -= OnItemImagePointerMoved;
     }
 
-    private void OnMainItemButtonLoaded(object? sender, RoutedEventArgs e)
+    private void OnItemButtonLoaded(object? sender, RoutedEventArgs e)
     {
         if (sender is not Button button) return;
-        button.AddHandler(PointerPressedEvent, OnMainItemButtonPointerPressed, RoutingStrategies.Tunnel);
+        button.AddHandler(PointerPressedEvent, OnItemButtonPointerPressed, RoutingStrategies.Tunnel);
     }
-    private void OnMainItemButtonUnloaded(object? sender, RoutedEventArgs e)
+    private void OnItemButtonUnloaded(object? sender, RoutedEventArgs e)
     {
         if (sender is not Button button) return;
-        button.RemoveHandler(PointerPressedEvent, OnMainItemButtonPointerPressed);
+        button.RemoveHandler(PointerPressedEvent, OnItemButtonPointerPressed);
     }
 
     private void OnItemImagePointerEntered(object? sender, PointerEventArgs e)
@@ -253,13 +253,17 @@ public partial class MainView : UserControl
         return new PixelPoint(position.X + HoverOffset, position.Y + HoverOffset);
     }
 
-    private async void OnMainItemButtonPointerPressed(object? sender, PointerPressedEventArgs e)
+    private async void OnItemButtonPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (sender is not Button button) return;
         if (button.DataContext is not ItemViewModel item) return;
 
         var viewModelType = item.ViewModelType;
-        if (viewModelType != ViewModelType.Item && viewModelType != ViewModelType.File && viewModelType != ViewModelType.Folder) return;
+        
+        if (viewModelType != ViewModelType.Item &&
+            viewModelType != ViewModelType.Avatar &&
+            viewModelType != ViewModelType.File &&
+            viewModelType != ViewModelType.Folder) return;
 
         var transferItem = new DataTransferItem();
         string? droppedPath = null;
@@ -277,6 +281,10 @@ public partial class MainView : UserControl
         else if (viewModelType == ViewModelType.Item && !string.IsNullOrEmpty(item.Identifier))
         {
             transferItem.Set(DataFormat.Text, item.Identifier);
+        }
+        else if (viewModelType == ViewModelType.Avatar && !string.IsNullOrEmpty(item.ActualValue))
+        {
+            transferItem.Set(DataFormat.Text, item.ActualValue);
         }
         else if (viewModelType == ViewModelType.Folder && !string.IsNullOrEmpty(item.ActualValue))
         {

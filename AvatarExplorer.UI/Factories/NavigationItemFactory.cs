@@ -101,7 +101,8 @@ public static class NavigationItemFactory
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
                 Identifier = avatar.Identifier,
-                ViewModelType = ViewModelType.Item,
+                ActualValue = item.Identifier,
+                ViewModelType = ViewModelType.Avatar,
                 Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
                 CreatedDate = item.CreatedDate,
                 UpdatedDate = item.UpdatedDate,
@@ -119,6 +120,7 @@ public static class NavigationItemFactory
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]),
                 Identifier = avatar.Identifier,
+                ActualValue = commonAvatar.Identifier,
                 ViewModelType = ViewModelType.CommonAvatar
             };
         }
@@ -133,6 +135,7 @@ public static class NavigationItemFactory
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.TempAvatar),
                 Identifier = avatar.Identifier,
+                ActualValue = tempAvatar.Identifier,
                 ViewModelType = ViewModelType.TempAvatar
             };
         }

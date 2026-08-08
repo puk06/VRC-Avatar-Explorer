@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.ViewModels.Component;
@@ -11,6 +10,7 @@ namespace AvatarExplorer.UI.Services.ViewControl;
 public enum ViewModelType
 {
     None,
+    Avatar,
     Item,
     CommonAvatar,
     Author,
@@ -27,6 +27,7 @@ internal static class ContextMenuCreator
     {
         return type switch
         {
+            ViewModelType.Avatar => CreateFromItem(viewModel.ActualValue ?? string.Empty),
             ViewModelType.Item => CreateFromItem(viewModel.Identifier),
             ViewModelType.Folder => CreateFromFolder(viewModel.ActualValue ?? string.Empty),
             ViewModelType.File => CreateFromItemFile(viewModel.ActualValue ?? string.Empty),
