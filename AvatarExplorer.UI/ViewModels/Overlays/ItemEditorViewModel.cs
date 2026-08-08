@@ -168,7 +168,7 @@ public class ItemEditorViewModel : ViewModelBase
         Title = string.Empty;
         Author = string.Empty;
         AuthorId = string.Empty;
-        BoothId = string.Empty;
+        BoothId = launchInfo.ItemID;
         Memo = string.Empty;
         SupportedAvatars = [];
         Tags = [];
@@ -324,7 +324,6 @@ public class ItemEditorViewModel : ViewModelBase
             );
         }
 
-        AvatarExplorerApp.Instance.Items.Save();
         Close();
     }
     private async Task SelectAndAddFolders()
