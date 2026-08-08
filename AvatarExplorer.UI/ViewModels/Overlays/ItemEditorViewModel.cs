@@ -137,7 +137,7 @@ public class ItemEditorViewModel : ViewModelBase
         Title = string.Empty;
         Author = string.Empty;
         AuthorId = string.Empty;
-        BoothId = string.Empty;
+        BoothId = launchInfo.BoothId;
         Memo = string.Empty;
         SupportedAvatars = [];
         Tags = [];
