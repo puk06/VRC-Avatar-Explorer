@@ -273,9 +273,11 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         var sortOrder = UserPreferences.SortOrder;
         var sortDirection = UserPreferences.SortDirection;
 
-        _allMainItems = ItemSortService.Sort(
+        _allMainItems = ItemSortService
+            .Sort(
                 _searchManager.SearchItems(searchQuery),
-                sortOrder, sortDirection, UserPreferences.RemoveBrackets)
+                sortOrder, sortDirection, UserPreferences.RemoveBrackets
+            )
             .Select(CreateItemViewModel)
             .ToList();
 
@@ -385,7 +387,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private void NavigateToSegment(string? state)
     {
         if (string.IsNullOrEmpty(state)) return;
-        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.PopToState(state);
         _stateCacheManager.RestoreRightState(RightPageInfo);
         Refresh(false);
@@ -480,8 +481,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
         _searchManager.ClearQuery();
-        SearchText = string.Empty;
-        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.Clear();
         _itemNavigationService.Select(item.Identifier);
         RightPageInfo.Reset();
@@ -493,7 +492,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
         _searchManager.ClearQuery();
-        SearchText = string.Empty;
         _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.PopAllSearchStates();
         _itemNavigationService.Select(item.Identifier);
@@ -503,20 +501,16 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
     private void Undo()
     {
-        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.Undo();
         _searchManager.ClearQuery();
-        SearchText = string.Empty;
         _stateCacheManager.RestoreRightState(RightPageInfo);
         Refresh(false);
     }
 
     private void GoHome()
     {
-        _stateCacheManager.SaveRightState(RightPageInfo);
         _itemNavigationService.Clear();
         _searchManager.ClearQuery();
-        SearchText = string.Empty;
         RightPageInfo.Reset();
         Refresh(false);
     }
