@@ -42,21 +42,19 @@ public class StateCacheManager
 
     public void SaveRightState(PanelPageInfo rightPageInfo)
     {
-        var currentGuid = _navigationService.CurrentStateId;
-        if (currentGuid != null)
-        {
-            _pageCache.Add(currentGuid.Value, rightPageInfo.CurrentPage);
-            _scrollValueCache.Add(currentGuid.Value, rightPageInfo.ScrollOffset);
-        }
+        var currentGuid = _navigationService.CurrentStateId ?? Guid.Empty;
+
+        _pageCache.Add(currentGuid, rightPageInfo.CurrentPage);
+        _scrollValueCache.Add(currentGuid, rightPageInfo.ScrollOffset);
     }
 
     public void RestoreRightState(PanelPageInfo rightPageInfo)
     {
-        var currentGuid = _navigationService.CurrentStateId;
-        if (currentGuid != null && _pageCache.TryGetValue(currentGuid.Value, out var page))
+        var currentGuid = _navigationService.CurrentStateId ?? Guid.Empty;
+        if (_pageCache.TryGetValue(currentGuid, out var page))
         {
             rightPageInfo.CurrentPage = page;
-            var scroll = _scrollValueCache.Get(currentGuid.Value);
+            var scroll = _scrollValueCache.Get(currentGuid);
             rightPageInfo.ScrollOffset = scroll;
             rightPageInfo.RestoreScrollOffset = AvaloniaVectorUtils.MaxValue;
             rightPageInfo.RestoreScrollOffset = scroll;
