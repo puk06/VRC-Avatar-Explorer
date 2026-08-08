@@ -428,8 +428,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         for (int i = 0; i < stateList.Count; i++)
         {
-            if (stateList[i].StartsWith(ItemNavigationService.ItemPrefix)) segments.Clear();
-
             var displayName = FormatPathNode(stateList[i]);
             if (string.IsNullOrWhiteSpace(displayName)) continue;
 
