@@ -230,7 +230,9 @@ public class ItemRepository : RepositoryBase<Item>
         if (!downloaded) return Error.Failure(description: "Failed to download thumbnail.");
 
         item.UpdateThumbnailFileName(item.Id);
-        item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
+
+        // サムネイル取得は更新日時に影響を与えないようにする
+        // item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
 
         Save();
         InvokeUpdated();
