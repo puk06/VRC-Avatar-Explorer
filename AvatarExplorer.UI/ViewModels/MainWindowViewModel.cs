@@ -141,7 +141,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         CheckForUpdateOnStartup();
     }
 
-    private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => OnArgsReceived(ApplicationArgs));
+    private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => OnArgsReceived(args));
     public void SetApplicationArgs(string[] args)
     {
         ApplicationArgs = args;
