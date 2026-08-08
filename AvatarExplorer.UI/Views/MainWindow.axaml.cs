@@ -20,7 +20,7 @@ public partial class MainWindow : Window
 
     private void OnPipeMessageReceived(string[] args)
     {
-        Dispatcher.UIThread.Post(async () =>
+        Dispatcher.UIThread.Post(() =>
         {
             if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
             Topmost = true;
@@ -49,9 +49,7 @@ public partial class MainWindow : Window
             .ToArray();
 
         if (DataContext is MainWindowViewModel vm)
-        {
             vm.OnFilesDrop(storageItemPaths);
-        }
     }
 
     public void SetApplicationArgs(string[]? args)
@@ -64,6 +62,7 @@ public partial class MainWindow : Window
 
     private void OnWindowClosing(object? sender, WindowClosingEventArgs e)
     {
-        MainWindowViewModel.Instance.OnWindowClosing();
+        if (DataContext is MainWindowViewModel vm)
+            vm.OnWindowClosing();
     }
 }
