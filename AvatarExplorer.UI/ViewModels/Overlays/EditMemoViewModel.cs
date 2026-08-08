@@ -18,9 +18,12 @@ public class EditMemoViewModel : ViewModelBase
         CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
     }
 
-    public Task<string?> WaitForResult()
+    public Task<string?> Show(string content)
     {
-        _tcs = new TaskCompletionSource<string?>();
+        Memo = content;
+
+        _tcs = new();
+
         return _tcs.Task;
     }
 }

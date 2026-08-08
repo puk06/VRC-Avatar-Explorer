@@ -83,21 +83,6 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
         Avatars = _allAvatars.Where(i => result.Contains(i.Identifier)).ToList();
     }
 
-    public void Open(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
-    {
-        Title = title;
-        IncludeCommonAvatar = includeCommonAvatar;
-        IncludeTempAvatar = includeTempAvatar;
-        AllowTempAvatarCreation = allowCreateTempAvatar;
-        SearchText = string.Empty;
-
-        RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
-
-        if (avatars == null) return;
-
-        _allAvatars.ForEach(i => i.IsSelected = avatars.Contains(i.Identifier));
-    }
-
     private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)
     {
         var avatars = ItemService.GetAvatars(includeCommonAvatar, includeTempAvatar, rawIdentifier: true);
@@ -120,9 +105,23 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
         ApplySearchResult(SearchText);
     }
 
-    public Task<string[]?> WaitForResult()
+    public Task<string[]?> Show(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
     {
+        Title = title;
+        IncludeCommonAvatar = includeCommonAvatar;
+        IncludeTempAvatar = includeTempAvatar;
+        AllowTempAvatarCreation = allowCreateTempAvatar;
+        SearchText = string.Empty;
+
+        RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
+
+        if (avatars != null)
+        {
+            _allAvatars.ForEach(i => i.IsSelected = avatars.Contains(i.Identifier));
+        }
+
         _tcs = new();
+
         return _tcs.Task;
     }
 }

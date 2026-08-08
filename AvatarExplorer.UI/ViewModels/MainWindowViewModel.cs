@@ -213,10 +213,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public async Task<string?> ShowEditMemoDialog(string memo)
     {
-        EditMemoVM.Memo = memo;
-        
         IsEditMemoVisible = true;
-        var result = await EditMemoVM.WaitForResult();
+        var result = await EditMemoVM.Show(memo);
         IsEditMemoVisible = false;
 
         return result;
@@ -224,10 +222,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public async Task<string[]?> ShowSelectAvatars(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
     {
-        SelectAvatarsVM.Open(title, avatars, includeCommonAvatar, includeTempAvatar, allowCreateTempAvatar);
-
         SelectAvatarsVisible = true;
-        var result = await SelectAvatarsVM.WaitForResult();
+        var result = await SelectAvatarsVM.Show(title, avatars, includeCommonAvatar, includeTempAvatar, allowCreateTempAvatar);
         SelectAvatarsVisible = false;
 
         return result;
@@ -235,10 +231,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public async Task<string[]?> ShowEditTagsDialog(string[]? tags = null)
     {
-        EditTagsVM.Open(tags);
-        
         IsEditTagsVisible = true;
-        var result = await EditTagsVM.WaitForResult();
+        var result = await EditTagsVM.Show(tags);
         IsEditTagsVisible = false;
 
         return result;
@@ -246,11 +240,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public async Task<bool> ShowYesNoDialog(string title, string content)
     {
-        YesNoDialogVM.Title = title;
-        YesNoDialogVM.Content = content;
-        
         IsYesNoDialogVisible = true;
-        var result = await YesNoDialogVM.WaitForResult();
+        var result = await YesNoDialogVM.Show(title, content);
         IsYesNoDialogVisible = false;
 
         return result;
@@ -263,11 +254,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public async Task<string?> ShowTextDialog(string title, string content = "")
     {
-        TextDialogVM.Title = title;
-        TextDialogVM.Content = content;
-        
         IsTextDialogVisible = true;
-        var result = await TextDialogVM.WaitForResult();
+        var result = await TextDialogVM.Show(title, content);
         IsTextDialogVisible = false;
 
         return result;
@@ -276,7 +264,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async ValueTask<string?> GetArchivePassword(ArchivePasswordRequest request)
     {
         IsArchivePasswordDialogVisible = true;
-        var password = await ArchivePasswordDialogVM.WaitForResult(request);
+        var password = await ArchivePasswordDialogVM.Show(request);
         IsArchivePasswordDialogVisible = false;
 
         return password;

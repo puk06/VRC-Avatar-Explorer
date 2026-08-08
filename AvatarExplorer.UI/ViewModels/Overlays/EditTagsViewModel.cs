@@ -52,15 +52,6 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
                 }
             });
     }
-
-    public void Open(IEnumerable<string>? tags = null)
-    {
-        RefleshTags();
-        Tags = new ObservableCollection<string>(tags ?? []);
-
-        NewTag = string.Empty;
-    }
-
     public void RefleshTags()
     {
         ExistTags = AvatarExplorerApp.Instance.Items.GetAll()
@@ -79,9 +70,15 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
 
     public void OnTagClick(string tag) => Tags.Remove(tag);
 
-    public Task<string[]?> WaitForResult()
+    public Task<string[]?> Show(IEnumerable<string>? tags = null)
     {
-        _tcs = new TaskCompletionSource<string[]?>();
+        RefleshTags();
+
+        Tags = new ObservableCollection<string>(tags ?? []);
+        NewTag = string.Empty;
+
+        _tcs = new();
+
         return _tcs.Task;
     }
 }

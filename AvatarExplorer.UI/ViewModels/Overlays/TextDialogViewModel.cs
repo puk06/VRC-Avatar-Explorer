@@ -19,9 +19,13 @@ public class TextDialogViewModel : ViewModelBase
         CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
     }
 
-    public Task<string?> WaitForResult()
+    public Task<string?> Show(string title, string content = "")
     {
-        _tcs = new TaskCompletionSource<string?>();
+        Title = title;
+        Content = content;
+
+        _tcs = new();
+
         return _tcs.Task;
     }
 }

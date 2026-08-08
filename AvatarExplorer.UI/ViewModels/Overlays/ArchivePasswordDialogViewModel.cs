@@ -26,13 +26,13 @@ public class ArchivePasswordDialogViewModel : ViewModelBase
         ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Password));
     }
 
-    public Task<string?> WaitForResult(ArchivePasswordRequest request)
+    public Task<string?> Show(ArchivePasswordRequest request)
     {
         FileName = Path.GetFileName(request.ArchivePath);
         CurrentAttempt = request.Attempt;
         MaxAttempt = request.MaxAttempts;
 
-        _tcs = new TaskCompletionSource<string?>();
+        _tcs = new();
         return _tcs.Task;
     }
 }
