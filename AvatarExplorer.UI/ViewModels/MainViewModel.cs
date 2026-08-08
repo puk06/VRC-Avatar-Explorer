@@ -152,6 +152,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         };
         _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
         AdvancedSearchVM.SearchPropertyChanged += _searchManager.RestartTimer;
+        BulkImportVM.OnItemsChanged += () => OpenSidePanel("1");
     }
 
     public async Task OnInitialized()

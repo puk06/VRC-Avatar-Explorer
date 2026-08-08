@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,19 +8,20 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Panels;
 
-public class BulkImportViewModel : ViewModelBase
+public class BulkImportViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public ObservableCollection<BulkImportItemViewModel> Items { get; set; } = [];
+    public event Action? OnItemsChanged;
+    public ObservableCollection<BulkImportItemViewModel> Items { get; } = [];
 
     public IReactiveCommand CopyCommand { get; }
     public IReactiveCommand RemoveCommand { get; }
@@ -34,6 +36,13 @@ public class BulkImportViewModel : ViewModelBase
         ImportCommand = ReactiveCommand.CreateFromTask(Import);
         ResetCommand = ReactiveCommand.Create(Reset);
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
+
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
+        Items.CollectionChanged += (s, e) => OnItemsChanged?.Invoke();
     }
 
     private async Task Import()
