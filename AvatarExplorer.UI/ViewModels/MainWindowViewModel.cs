@@ -235,8 +235,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public void ShowItemEditor(string? itemId = null) => ItemEditorVM.Open(itemId);
     public void OnFilesDrop(string[] filePaths)
     {
-        // TODO: URLのD&Dに対応してもいいかも
-
         // ソフト内からD&Dしたアイテムはスキップするように
         if (filePaths.Length == 1 && filePaths[0] == LastDragDropPath) return;
 
