@@ -56,7 +56,7 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
     public void Open(IEnumerable<string>? tags = null)
     {
         RefleshTags();
-        if (tags != null) Tags = new ObservableCollection<string>(tags);
+        Tags = new ObservableCollection<string>(tags ?? []);
 
         NewTag = string.Empty;
     }
