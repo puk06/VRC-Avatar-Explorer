@@ -86,7 +86,7 @@ public class ItemViewModel : ViewModelBase
                 sb.AppendLine();
                 
                 if (!string.IsNullOrEmpty(UpdatedDate))
-                    sb.Append(
+                    sb.AppendLine(
                         Localizer.Instance.Get(
                             Loc.Button.ToolTip.UpdatedDate,
                             DatetimeUtils.GetDateStringFromUnixTime(UpdatedDate)
@@ -94,7 +94,7 @@ public class ItemViewModel : ViewModelBase
                     );
 
                 if (!string.IsNullOrEmpty(CreatedDate))
-                    sb.AppendLine(
+                    sb.Append(
                         Localizer.Instance.Get(
                             Loc.Button.ToolTip.CreatedDate,
                             DatetimeUtils.GetDateStringFromUnixTime(CreatedDate)
