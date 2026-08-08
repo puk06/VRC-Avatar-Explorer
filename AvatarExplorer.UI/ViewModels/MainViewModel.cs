@@ -500,9 +500,17 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
     internal void Undo()
     {
-        var isPopped = _itemNavigationService.Undo() != null;
-        _searchManager.ClearQuery();
-        if (isPopped) _stateCacheManager.RestoreRightState(RightPageInfo);
+        if (_searchManager.ActiveSearchQuery != null)
+        {
+            _searchManager.ClearQuery();
+            return;
+        }
+        else
+        {
+            var isPopped = _itemNavigationService.Undo() != null;
+            if (isPopped) _stateCacheManager.RestoreRightState(RightPageInfo);
+        }
+
         Refresh(false);
     }
 

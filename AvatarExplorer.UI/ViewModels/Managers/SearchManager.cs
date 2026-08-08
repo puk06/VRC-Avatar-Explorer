@@ -149,7 +149,7 @@ public class SearchManager
                     "notimplementedavatar" => Loc.SearchFilter.NotImplementedAvatar,
                     "tag" => Loc.SearchFilter.Tag,
                     "commonavatar" => Loc.SearchFilter.CommonAvatar,
-                    _ => (string?)null
+                    _ => null
                 };
 
                 var formatted = locKey != null
