@@ -98,7 +98,7 @@ public class ItemRepository : RepositoryBase<Item>
         return true;
     }
 
-    public async Task<ErrorOr<ExtractResult>> AddPaths(string identifier, IEnumerable<ItemPathEntry> paths, bool shouldLinkToOriginal)
+    public async Task<ErrorOr<ExtractResult>> AddPaths(string identifier, IEnumerable<ItemPathEntry> paths, bool shouldLinkToOriginal, bool? removeOriginal = null)
     {
         static string GetSafePath(Item item, string dataRootDirectory)
         {
@@ -121,7 +121,7 @@ public class ItemRepository : RepositoryBase<Item>
         var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
 
         var defaultExtractPath = string.IsNullOrEmpty(item.ItemPath) ? GetSafePath(item, settings.DataRootDirectory) : item.ItemPath;
-        var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, settings.RemoveOriginal);
+        var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal);
         if (result.IsError) return Error.Failure(description: "Failed to extract item paths.");
 
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(result.Value.ItemParentFolder);
