@@ -89,6 +89,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public event Action? WindowClosing;
 
+    public string[] ApplicationArgs { get; private set; } = [];
+
     public MainWindowViewModel()
     {
         Instance = this;
@@ -138,13 +140,11 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         CheckForUpdateOnStartup();
     }
 
-    private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => SendApplicationArgs(args));
-    
-    public event Action<string[]>? OnApplicationArgsReceived;
-    public void SendApplicationArgs(string[] args)
+    private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => OnArgsReceived(ApplicationArgs));
+    public void SetApplicationArgs(string[] args)
     {
+        ApplicationArgs = args;
         OnArgsReceived(args);
-        OnApplicationArgsReceived?.Invoke(args);
     }
 
     public void OnArgsReceived(string[] args)

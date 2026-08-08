@@ -54,12 +54,12 @@ public partial class MainWindow : Window
         }
     }
 
-    public void SendApplicationArgs(string[]? args)
+    public void SetApplicationArgs(string[]? args)
     {
         if (args == null) return;
 
         if (DataContext is MainWindowViewModel vm)
-            vm.SendApplicationArgs(args);
+            vm.SetApplicationArgs(args);
     }
 
     private void OnWindowClosing(object? sender, WindowClosingEventArgs e)

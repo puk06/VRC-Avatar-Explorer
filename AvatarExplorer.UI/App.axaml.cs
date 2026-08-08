@@ -28,7 +28,8 @@ public partial class App : Application
 
             await IInitializableRegistry.Complete();
 
-            if (desktop.MainWindow is MainWindow mw) mw.SendApplicationArgs(desktop.Args);
+            if (desktop.MainWindow is MainWindow mw)
+                mw.SetApplicationArgs(desktop.Args);
         }
 
         base.OnFrameworkInitializationCompleted();
