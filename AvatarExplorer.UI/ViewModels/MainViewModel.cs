@@ -182,7 +182,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 Observable.FromEvent(h => _itemGroupService.TempAvatarRepository.OnUpdated += h, h => _itemGroupService.TempAvatarRepository.OnUpdated -= h)
             )
             .Throttle(TimeSpan.FromMilliseconds(100))
-            .Subscribe(_ => Dispatcher.UIThread.InvokeAsync(() => Refresh()));
+            .Subscribe(async _ => await Dispatcher.UIThread.InvokeAsync(() => Refresh()));
     }
     #endregion
 
