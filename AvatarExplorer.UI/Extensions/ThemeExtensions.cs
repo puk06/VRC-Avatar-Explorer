@@ -11,21 +11,23 @@ public static class ThemeExtensions
     public static (ThemeVariant Theme, Color BackgroundColor) GetThemeVariant(this Theme theme)
     {
         var variant = theme.GetAttribute<ThemeVariantAttribute>();
-        var variantName = variant?.VariantName;
-        var backgroundColor = variant?.BackgroundColor ?? Colors.Transparent;
+        if (variant == null) return (ThemeVariant.Default, Colors.Transparent);
+
+        var variantName = variant.VariantName;
+        var backgroundColor = variant.BackgroundColor;
 
         return variantName switch
         {
-            "Dark" => (AppThemeVariants.Dark, backgroundColor),
-            "Light" => (AppThemeVariants.Light, backgroundColor),
-            "Sakura" => (AppThemeVariants.Sakura, backgroundColor),
-            "Mint" => (AppThemeVariants.Mint, backgroundColor),
-            "Lavender" => (AppThemeVariants.Lavender, backgroundColor),
-            "Ocean" => (AppThemeVariants.Ocean, backgroundColor),
-            "Sunset" => (AppThemeVariants.Sunset, backgroundColor),
-            "Forest" => (AppThemeVariants.Forest, backgroundColor),
-            "Mocha" => (AppThemeVariants.Mocha, backgroundColor),
-            "Slate" => (AppThemeVariants.Slate, backgroundColor),
+            nameof(AppThemeVariants.Dark) => (AppThemeVariants.Dark, backgroundColor),
+            nameof(AppThemeVariants.Light) => (AppThemeVariants.Light, backgroundColor),
+            nameof(AppThemeVariants.Sakura) => (AppThemeVariants.Sakura, backgroundColor),
+            nameof(AppThemeVariants.Mint) => (AppThemeVariants.Mint, backgroundColor),
+            nameof(AppThemeVariants.Lavender) => (AppThemeVariants.Lavender, backgroundColor),
+            nameof(AppThemeVariants.Ocean) => (AppThemeVariants.Ocean, backgroundColor),
+            nameof(AppThemeVariants.Sunset) => (AppThemeVariants.Sunset, backgroundColor),
+            nameof(AppThemeVariants.Forest) => (AppThemeVariants.Forest, backgroundColor),
+            nameof(AppThemeVariants.Mocha) => (AppThemeVariants.Mocha, backgroundColor),
+            nameof(AppThemeVariants.Slate) => (AppThemeVariants.Slate, backgroundColor),
             _ => (ThemeVariant.Default, Colors.Transparent)
         };
     }

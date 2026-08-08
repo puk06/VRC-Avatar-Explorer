@@ -6,12 +6,12 @@ public static class AppThemeVariants
 {
     public static readonly ThemeVariant Dark = ThemeVariant.Dark;
     public static readonly ThemeVariant Light = ThemeVariant.Light;
-    public static readonly ThemeVariant Sakura = new("Sakura", ThemeVariant.Light);
-    public static readonly ThemeVariant Mint = new("Mint", ThemeVariant.Light);
-    public static readonly ThemeVariant Lavender = new("Lavender", ThemeVariant.Light);
-    public static readonly ThemeVariant Ocean = new("Ocean", ThemeVariant.Dark);
-    public static readonly ThemeVariant Sunset = new("Sunset", ThemeVariant.Light);
-    public static readonly ThemeVariant Forest = new("Forest", ThemeVariant.Light);
-    public static readonly ThemeVariant Mocha = new("Mocha", ThemeVariant.Dark);
-    public static readonly ThemeVariant Slate = new("Slate", ThemeVariant.Dark);
+    public static readonly ThemeVariant Sakura = new(nameof(Sakura), ThemeVariant.Light);
+    public static readonly ThemeVariant Mint = new(nameof(Mint), ThemeVariant.Light);
+    public static readonly ThemeVariant Lavender = new(nameof(Lavender), ThemeVariant.Light);
+    public static readonly ThemeVariant Ocean = new(nameof(Ocean), ThemeVariant.Dark);
+    public static readonly ThemeVariant Sunset = new(nameof(Sunset), ThemeVariant.Light);
+    public static readonly ThemeVariant Forest = new(nameof(Forest), ThemeVariant.Light);
+    public static readonly ThemeVariant Mocha = new(nameof(Mocha), ThemeVariant.Dark);
+    public static readonly ThemeVariant Slate = new(nameof(Slate), ThemeVariant.Dark);
 }
