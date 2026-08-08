@@ -42,7 +42,17 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
     public async Task Initialize()
     {
+        AvatarExplorerApp.Instance.Items.OnUpdated += CheckItemExistsAndRemoveInvalid;
         Items.CollectionChanged += (s, e) => OnItemsChanged?.Invoke();
+    }
+
+    private void CheckItemExistsAndRemoveInvalid()
+    {
+        var invalidItems = Items.Where(i => AvatarExplorerApp.Instance.Items.Get(i.ItemId) == null).ToList();
+        foreach (var invalidItem in invalidItems)
+        {
+            Items.Remove(invalidItem);
+        }
     }
 
     private async Task Import()
