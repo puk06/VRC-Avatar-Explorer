@@ -70,7 +70,7 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
 
     public void OnTagClick(string tag) => Tags.Remove(tag);
 
-    public Task<string[]?> Show(IEnumerable<string>? tags = null)
+    public Task<string[]?> ShowAsync(IEnumerable<string>? tags = null)
     {
         RefleshTags();
 

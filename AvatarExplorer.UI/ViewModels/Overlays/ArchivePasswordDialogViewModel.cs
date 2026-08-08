@@ -26,7 +26,7 @@ public class ArchivePasswordDialogViewModel : ViewModelBase
         ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Password));
     }
 
-    public Task<string?> Show(ArchivePasswordRequest request)
+    public Task<string?> ShowAsync(ArchivePasswordRequest request)
     {
         FileName = Path.GetFileName(request.ArchivePath);
         CurrentAttempt = request.Attempt;

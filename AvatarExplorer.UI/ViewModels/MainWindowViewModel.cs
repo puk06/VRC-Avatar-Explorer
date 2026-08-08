@@ -214,7 +214,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async Task<string?> ShowEditMemoDialog(string memo)
     {
         IsEditMemoVisible = true;
-        var result = await EditMemoVM.Show(memo);
+        var result = await EditMemoVM.ShowAsync(memo);
         IsEditMemoVisible = false;
 
         return result;
@@ -223,7 +223,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async Task<string[]?> ShowSelectAvatars(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
     {
         SelectAvatarsVisible = true;
-        var result = await SelectAvatarsVM.Show(title, avatars, includeCommonAvatar, includeTempAvatar, allowCreateTempAvatar);
+        var result = await SelectAvatarsVM.ShowAsync(title, avatars, includeCommonAvatar, includeTempAvatar, allowCreateTempAvatar);
         SelectAvatarsVisible = false;
 
         return result;
@@ -232,7 +232,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async Task<string[]?> ShowEditTagsDialog(string[]? tags = null)
     {
         IsEditTagsVisible = true;
-        var result = await EditTagsVM.Show(tags);
+        var result = await EditTagsVM.ShowAsync(tags);
         IsEditTagsVisible = false;
 
         return result;
@@ -241,7 +241,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async Task<bool> ShowYesNoDialog(string title, string content)
     {
         IsYesNoDialogVisible = true;
-        var result = await YesNoDialogVM.Show(title, content);
+        var result = await YesNoDialogVM.ShowAsync(title, content);
         IsYesNoDialogVisible = false;
 
         return result;
@@ -255,7 +255,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async Task<string?> ShowTextDialog(string title, string content = "")
     {
         IsTextDialogVisible = true;
-        var result = await TextDialogVM.Show(title, content);
+        var result = await TextDialogVM.ShowAsync(title, content);
         IsTextDialogVisible = false;
 
         return result;
@@ -264,7 +264,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public async ValueTask<string?> GetArchivePassword(ArchivePasswordRequest request)
     {
         IsArchivePasswordDialogVisible = true;
-        var password = await ArchivePasswordDialogVM.Show(request);
+        var password = await ArchivePasswordDialogVM.ShowAsync(request);
         IsArchivePasswordDialogVisible = false;
 
         return password;

@@ -19,7 +19,7 @@ public class YesNoDialogViewModel : ViewModelBase
         NoCommand = ReactiveCommand.Create(() => _tcs.SetResult(false));
     }
 
-    public Task<bool> Show(string title, string content)
+    public Task<bool> ShowAsync(string title, string content)
     {
         Title = title;
         Content = content;

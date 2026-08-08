@@ -105,7 +105,7 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
         ApplySearchResult(SearchText);
     }
 
-    public Task<string[]?> Show(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
+    public Task<string[]?> ShowAsync(string title, string[]? avatars = null, bool includeCommonAvatar = false, bool includeTempAvatar = true, bool allowCreateTempAvatar = false)
     {
         Title = title;
         IncludeCommonAvatar = includeCommonAvatar;
