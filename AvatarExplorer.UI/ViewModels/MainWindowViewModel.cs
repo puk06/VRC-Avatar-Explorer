@@ -352,5 +352,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public void OnWindowClosing()
     {
         WindowClosing?.Invoke();
+        AvatarExplorerApp.ClearTemp();
     }
 }
