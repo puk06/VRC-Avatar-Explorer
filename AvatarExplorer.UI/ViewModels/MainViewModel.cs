@@ -481,7 +481,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private int _lastSelectedCategory = -1;
     private void UpdateLeftPanelItems()
     {
-        _stateCacheManager.SaveLeftState(_lastSelectedCategory, LeftPageInfo);
+        if (_lastSelectedCategory != -1) _stateCacheManager.SaveLeftState(_lastSelectedCategory, LeftPageInfo);
 
         var type = (QueryType)SelectedCategory;
         var queryItems = _itemGroupService.GetQueryFilters(type);
