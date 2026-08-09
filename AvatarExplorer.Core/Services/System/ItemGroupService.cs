@@ -388,7 +388,9 @@ public class ItemGroupService
 
         foreach (var commonAvatar in _commonAvatars.GetAll())
         {
-            _commonAvatarSearchIndices[commonAvatar.Identifier] = CommonAvatarSearchIndex.Build(commonAvatar, avatarTitleMap);
+            var targetItemIndices = commonAvatar.Avatars
+                .Select(a => _itemSearchIndices.TryGetValue(a, out var index) ? index : null);
+            _commonAvatarSearchIndices[commonAvatar.Identifier] = CommonAvatarSearchIndex.Build(commonAvatar, targetItemIndices);
         }
 
         foreach (var tempAvatar in _tempAvatars.GetAll())
