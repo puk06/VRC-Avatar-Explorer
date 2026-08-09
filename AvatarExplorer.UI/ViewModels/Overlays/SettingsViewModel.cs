@@ -369,7 +369,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         {
             MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.NonWindowsUnsupported],
+                Localizer.Instance[Loc.Error.UnsupportedPlatform],
                 NotificationType.Error
             );
             return;
