@@ -20,10 +20,10 @@ public class BackupManager
     private DateTime _lastBackupDate = DateTime.MinValue;
     private string _backupRootFolderPath = string.Empty;
 
-    internal void StartAutoBackup(int interval, string backupRootFolderPath)
+    internal void StartAutoBackup(int intervalMinutes, string backupRootFolderPath)
     {
         SetAutoBackupPath(backupRootFolderPath);
-        SetAutoBackupInterval(TimeUtils.MinToMs(interval));
+        SetAutoBackupInterval(intervalMinutes);
 
         if (_backupTask != null) return;
 
@@ -46,10 +46,10 @@ public class BackupManager
 
     internal DateTime LastBackupTime => _lastBackupDate;
 
-    internal void SetAutoBackupInterval(int interval)
+    internal void SetAutoBackupInterval(int intervalMinutes)
     {
-        if (interval < 0) return;
-        _backupInterval = TimeUtils.MinToMs(interval);
+        if (intervalMinutes < 0) return;
+        _backupInterval = TimeUtils.MinToMs(intervalMinutes);
     }
 
     internal void SetAutoBackupPath(string path)
