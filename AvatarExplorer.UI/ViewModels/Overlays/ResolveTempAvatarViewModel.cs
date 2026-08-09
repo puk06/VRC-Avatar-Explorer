@@ -86,7 +86,7 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
     {
         if (SelectedAvatar == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.TempAvatarNotFound],
                 NotificationType.Error
@@ -97,7 +97,7 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(SelectedAvatar);
         if (tempAvatar == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.TempAvatarNotFound],
                 NotificationType.Error

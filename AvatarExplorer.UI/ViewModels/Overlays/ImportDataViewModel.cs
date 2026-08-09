@@ -100,7 +100,7 @@ public class ImportDataViewModel : ViewModelBase
 
         if (result.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ImportFailed],
                 NotificationType.Error
@@ -108,7 +108,7 @@ public class ImportDataViewModel : ViewModelBase
             return;
         }
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.Import],
             NotificationType.Success

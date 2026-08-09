@@ -201,7 +201,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var itemId = _itemNavigationService.GetCurrentItemId();
             if (itemId == null)
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.FailedToGetCurrentItem],
                     NotificationType.Error
@@ -212,7 +212,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var item = _itemGroupService.ItemRepository.Get(itemId);
             if (item == null)
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.ItemNotFound],
                     NotificationType.Error
@@ -242,7 +242,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 var result = await LauncherService.OpenFile(TopLevelProvider.Current, importResult.ModifiedUnitypackagePath);
                 if (result.IsError)
                 {
-                    MainWindowViewModel.Instance.ShowNotification(
+                    MainWindowViewModel.ShowNotification(
                         Localizer.Instance[Loc.Error.Default],
                         Localizer.Instance[Loc.Error.OpenFileFailed],
                         NotificationType.Error
@@ -251,7 +251,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             }
             else
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.ImportUnitypackageFailed],
                     NotificationType.Error
@@ -263,7 +263,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var result = await LauncherService.OpenFile(TopLevelProvider.Current, file);
             if (result.IsError)
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.OpenFileFailed],
                     NotificationType.Error

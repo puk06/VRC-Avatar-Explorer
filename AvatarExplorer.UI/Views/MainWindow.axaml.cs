@@ -14,7 +14,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        MainWindowViewModel.Instance.NotificationManager = NotificationManager;
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
     }
 

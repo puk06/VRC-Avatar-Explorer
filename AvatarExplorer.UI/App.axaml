@@ -2,12 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="clr-namespace:AvatarExplorer.UI"
         xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
         x:Class="AvatarExplorer.UI.App"
         RequestedThemeVariant="Dark">
         <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
         <FluentTheme />
+        <msg:Theme />
     </Application.Styles>
 
     <Application.Resources>

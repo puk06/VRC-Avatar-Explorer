@@ -81,7 +81,7 @@ public static class ContextMenuHandlerService
         var item = Items.Get(identifier);
         if (item == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ItemNotFound],
                 NotificationType.Error
@@ -93,7 +93,7 @@ public static class ContextMenuHandlerService
     private static async Task EditItemInternal(string identifier, ItemEditContext context)
     {
         var result = await Items.Update(identifier, context);
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             result ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             result ? Localizer.Instance[Loc.Success.ItemEdit] : Localizer.Instance[Loc.Error.ItemEditFailed],
             result ? NotificationType.Success : NotificationType.Error
@@ -105,7 +105,7 @@ public static class ContextMenuHandlerService
         var result = await LauncherService.OpenFolder(TopLevelProvider.Current, path);
         if (result.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.OpenFolderFailed],
                 NotificationType.Error
@@ -120,7 +120,7 @@ public static class ContextMenuHandlerService
         var result = await ClipboardService.SetText(link);
         if (result.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ClipboardSetFailed],
                 NotificationType.Error
@@ -135,7 +135,7 @@ public static class ContextMenuHandlerService
         var result = await LauncherService.OpenUri(TopLevelProvider.Current, link);
         if (result.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.OpenUriFailed],
                 NotificationType.Error
@@ -156,7 +156,7 @@ public static class ContextMenuHandlerService
         if (files == null || files.Length == 0) return;
 
         var result = await Items.UpdateThumbnail(identifier, files[0]);
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             !result.IsError ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             !result.IsError ? Localizer.Instance[Loc.Success.ItemThumbnailEdit] : Localizer.Instance[Loc.Error.ItemThumbnailEditFailed],
             !result.IsError ? NotificationType.Success : NotificationType.Error
@@ -165,7 +165,7 @@ public static class ContextMenuHandlerService
     private static async void FetchThumbnail(string identifier)
     {
         var result = await Items.FetchThumbnailFromBooth(identifier);
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             !result.IsError ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             !result.IsError ? Localizer.Instance[Loc.Success.FetchItemThumbnail] : Localizer.Instance[Loc.Error.FetchItemThumbnailFailed],
             !result.IsError ? NotificationType.Success : NotificationType.Error
@@ -180,7 +180,7 @@ public static class ContextMenuHandlerService
         var result = await ClipboardService.SetText(itemInfo);
         if (result.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ClipboardSetFailed],
                 NotificationType.Error
@@ -254,7 +254,7 @@ public static class ContextMenuHandlerService
 
         if (extractResult.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 isFile ? Localizer.Instance[Loc.Error.AddItemFileFailed] : Localizer.Instance[Loc.Error.AddItemFolderFailed],
                 NotificationType.Error
@@ -262,7 +262,7 @@ public static class ContextMenuHandlerService
         }
         else if (extractResult.Value.ProcessingFailedPaths.Count > 0)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(
                     Loc.Error.FoundProcessingFailedPath,
@@ -273,7 +273,7 @@ public static class ContextMenuHandlerService
         }
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Success.Default],
                 isFile ? Localizer.Instance[Loc.Success.ItemFileAdd] : Localizer.Instance[Loc.Success.ItemFolderAdd],
                 NotificationType.Success
@@ -309,7 +309,7 @@ public static class ContextMenuHandlerService
         if (folders == null || folders.Length == 0) return;
 
         var result = await Items.Update(item.Identifier, new() { ItemPath = folders[0] });
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             result ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             result ? Localizer.Instance[Loc.Success.ItemEdit] : Localizer.Instance[Loc.Error.ItemEditFailed],
             result ? NotificationType.Success : NotificationType.Error
@@ -348,7 +348,7 @@ public static class ContextMenuHandlerService
 
         ItemGroupService.RemoveItem(item.Identifier, removeDirectory);
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.Remove],
             NotificationType.Success
@@ -359,7 +359,7 @@ public static class ContextMenuHandlerService
         var result = await LauncherService.OpenFile(TopLevelProvider.Current, path);
         if (result.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.OpenFileFailed],
                 NotificationType.Error
@@ -384,7 +384,7 @@ public static class ContextMenuHandlerService
         }
         catch (Exception ex)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.OpenFileFailed],
                 NotificationType.Error
@@ -405,7 +405,7 @@ public static class ContextMenuHandlerService
         var preset = AvatarExplorerApp.Instance.BulkImportPresets.Get(identifier);
         if (preset == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.PresetNotFound],
                 NotificationType.Error
@@ -421,7 +421,7 @@ public static class ContextMenuHandlerService
 
         AvatarExplorerApp.Instance.BulkImportPresets.Remove(preset.Identifier);
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.Remove],
             NotificationType.Success
@@ -432,7 +432,7 @@ public static class ContextMenuHandlerService
         var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(identifier);
         if (tempAvatar == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.TempAvatarNotFound],
                 NotificationType.Error
@@ -448,7 +448,7 @@ public static class ContextMenuHandlerService
 
         AvatarExplorerApp.Instance.TempAvatars.RenameAvatar(tempAvatar.Identifier, newName);
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.ItemEdit],
             NotificationType.Success
@@ -463,7 +463,7 @@ public static class ContextMenuHandlerService
         var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(identifier);
         if (tempAvatar == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.TempAvatarNotFound],
                 NotificationType.Error
@@ -479,7 +479,7 @@ public static class ContextMenuHandlerService
 
         ItemGroupService.RemoveTempAvatar(tempAvatar.Identifier);
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.Remove],
             NotificationType.Success
@@ -510,7 +510,7 @@ public static class ContextMenuHandlerService
 
         AvatarExplorerApp.Instance.Items.RenameCustomCategory(oldCategory, newName);
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.RenameCustomCategory],
             NotificationType.Success

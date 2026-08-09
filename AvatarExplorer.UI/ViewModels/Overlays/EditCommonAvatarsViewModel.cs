@@ -102,7 +102,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         var group = SelectedGroup;
         if (group == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.CommonAvatarNotFound],
                 NotificationType.Error
@@ -122,7 +122,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         var group = SelectedGroup;
         if (group == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.CommonAvatarNotFound],
                 NotificationType.Error

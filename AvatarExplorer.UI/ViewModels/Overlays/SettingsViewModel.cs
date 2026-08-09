@@ -367,7 +367,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     {
         if (!ProcessUtils.IsWindows())
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.NonWindowsUnsupported],
                 NotificationType.Error
@@ -399,7 +399,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SchemeService.RegisterScheme(protocol);
         UpdateSchemeStatus();
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Scheme.RegisterSuccess],
             NotificationType.Success
@@ -430,7 +430,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SchemeService.UnregisterScheme(protocol);
         UpdateSchemeStatus();
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Settings.RegisterScheme.UnregisterSuccess],
             NotificationType.Success
@@ -443,7 +443,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         var result = await UpdateChecker.CheckForUpdate((UpdateChannel)SelectedUpdateChannel);
         if (!result)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.UpdateDialog.NoUpdateAvailableTitle],
                 Localizer.Instance.Get(Loc.UpdateDialog.NoUpdateAvailable, AvatarExplorerApp.CurrentVersion),
                 NotificationType.Information
@@ -472,7 +472,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.LicenseFileNotFound],
                 NotificationType.Error
@@ -486,7 +486,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ThirdPartyLicenseFileNotFound],
                 NotificationType.Error

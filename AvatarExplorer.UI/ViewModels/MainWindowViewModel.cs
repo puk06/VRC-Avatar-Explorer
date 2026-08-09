@@ -22,6 +22,8 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Overlays;
+using Message.Avalonia;
+using Message.Avalonia.Models;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels;
@@ -336,15 +338,48 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         application.RequestedThemeVariant = theme;
     }
 
-    public void ShowNotification(string title, string content, NotificationType type)
+    public static void ShowNotification(string title, string content, NotificationType type)
     {
-        NotificationManager?.Show(new Notification()
+        var manager = MessageManager.Default;
+        switch (type)
         {
-            Title = title,
-            Message = content,
-            Type = type,
-            Expiration = TimeSpan.FromSeconds(5)
-        });
+            case NotificationType.Information:
+                manager.ShowInformationMessage(
+                    content,
+                    new MessageOptions{
+                        Title = title,
+                        Duration = TimeSpan.FromSeconds(3.5)
+                    }
+                );
+                break;
+            case NotificationType.Success:
+                manager.ShowSuccessMessage(
+                    content,
+                    new MessageOptions{
+                        Title = title,
+                        Duration = TimeSpan.FromSeconds(3.5)
+                    }
+                );
+                break;
+            case NotificationType.Warning:
+                manager.ShowWarningMessage(
+                    content,
+                    new MessageOptions{
+                        Title = title,
+                        Duration = TimeSpan.FromSeconds(3.5)
+                    }
+                );
+                break;
+            case NotificationType.Error:
+                manager.ShowErrorMessage(
+                    content,
+                    new MessageOptions{
+                        Title = title,
+                        Duration = TimeSpan.FromSeconds(3.5)
+                    }
+                );
+                break;
+        }
     }
 
     public void OnWindowClosing()

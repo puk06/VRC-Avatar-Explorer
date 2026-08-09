@@ -97,7 +97,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             var result = await LauncherService.OpenFile(TopLevelProvider.Current, importResult.ModifiedUnitypackagePath);
             if (result.IsError)
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.OpenFileFailed],
                     NotificationType.Error
@@ -106,7 +106,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
         }
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.BulkImportFailed],
                 NotificationType.Error
@@ -156,7 +156,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
         if (unitypackagePaths.Length == 0)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.UnitypackageNotFound],
                 NotificationType.Warning

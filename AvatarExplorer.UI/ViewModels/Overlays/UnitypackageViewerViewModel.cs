@@ -154,7 +154,7 @@ public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to export unitypackage asset.", tag: result.Errors.ToErrorString());
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ExportFailed],
                 NotificationType.Error

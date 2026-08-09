@@ -75,7 +75,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
         var allItems = AvatarExplorerApp.Instance.Items.GetAll();
         if (allItems.Count == 0)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Nothing],
                 NotificationType.Error
@@ -164,7 +164,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
         if (isCancelled)
         {
             Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Cancelled];
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(Loc.Warning.FetchAllItemThumbnailsCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Count.ToString()]),
                 NotificationType.Warning
@@ -176,7 +176,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
         if (failureCount == 0)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance.Get(Loc.Success.FetchAllItemThumbnails, successCount.ToString()),
                 NotificationType.Success
@@ -184,7 +184,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
         }
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance.Get(Loc.Error.FetchAllItemThumbnailsFailed, [successCount.ToString(), failureCount.ToString(), allItems.Count.ToString()]),
                 NotificationType.Error

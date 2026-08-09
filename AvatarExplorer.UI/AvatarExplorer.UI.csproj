@@ -25,6 +25,7 @@
     <PackageReference Include="PDFtoImage" Version="5.2.1" />
     <PackageReference Include="ReactiveUI.Avalonia" Version="12.0.3" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+    <PackageReference Include="Message.Avalonia" Version="2.0.0" />
 		<ProjectReference Include="..\AvatarExplorer.Core/AvatarExplorer.Core.csproj" />
 
     <Content Include="..\AvatarExplorer.Core\Data\Localization\**\*.json">

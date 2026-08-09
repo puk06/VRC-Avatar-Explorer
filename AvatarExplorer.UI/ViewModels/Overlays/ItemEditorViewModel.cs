@@ -249,7 +249,7 @@ public class ItemEditorViewModel : ViewModelBase
         };
 
         bool updateResult = await AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[updateResult ? Loc.Success.Default : Loc.Error.Default],
             Localizer.Instance[updateResult ? Loc.Success.ItemEdit : Loc.Error.ItemEditFailed],
             updateResult ? NotificationType.Success : NotificationType.Error
@@ -287,7 +287,7 @@ public class ItemEditorViewModel : ViewModelBase
         }
 
         var item = await AvatarExplorerApp.Instance.Items.Create(creationContext);
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.ItemAdd],
             NotificationType.Success
@@ -297,7 +297,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     private async Task AddPathsInBackground(string identifier, List<ItemPathEntry> itemPaths, bool shouldLinkToOriginal)
     {
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Processing.Default],
             Localizer.Instance[Loc.Processing.AddContent],
             NotificationType.Information
@@ -309,7 +309,7 @@ public class ItemEditorViewModel : ViewModelBase
 
             if (result.IsError)
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.AddContentFailed],
                     NotificationType.Error
@@ -317,7 +317,7 @@ public class ItemEditorViewModel : ViewModelBase
             }
             else if (result.Value.ProcessingFailedPaths.Count > 0)
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()),
                     NotificationType.Error
@@ -325,7 +325,7 @@ public class ItemEditorViewModel : ViewModelBase
             }
             else
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Success.Default],
                     Localizer.Instance[Loc.Success.ContentAdd],
                     NotificationType.Success
@@ -366,7 +366,7 @@ public class ItemEditorViewModel : ViewModelBase
 
         if (!UriUtils.TryParse(url, out var uri))
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.InvalidUrl],
                 NotificationType.Error
@@ -386,7 +386,7 @@ public class ItemEditorViewModel : ViewModelBase
 
         if (fetchResult.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.RetrieveBoothItemFailed],
                 NotificationType.Error
@@ -490,7 +490,7 @@ public class ItemEditorViewModel : ViewModelBase
         // Title
         if (string.IsNullOrWhiteSpace(Title))
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.EmptyTitle],
                 NotificationType.Error
@@ -501,7 +501,7 @@ public class ItemEditorViewModel : ViewModelBase
         // Author
         if (string.IsNullOrWhiteSpace(Author))
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.EmptyAuthor],
                 NotificationType.Error
@@ -512,7 +512,7 @@ public class ItemEditorViewModel : ViewModelBase
         // Category
         if (SelectedCategory == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.InvalidCategory],
                 NotificationType.Error
@@ -523,7 +523,7 @@ public class ItemEditorViewModel : ViewModelBase
         // Supported Avatars
         if (SelectedCategory.Category.Type != ItemType.Clothing && SupportedAvatars.Any(i => i.StartsWith("commonavatar")))
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.NotClothingWithCommonAvatar],
                 NotificationType.Error

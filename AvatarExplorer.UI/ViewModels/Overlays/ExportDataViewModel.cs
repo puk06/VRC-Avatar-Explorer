@@ -64,7 +64,7 @@ public class ExportDataViewModel : ViewModelBase
 
         if (result.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ExportFailed],
                 NotificationType.Error
@@ -72,7 +72,7 @@ public class ExportDataViewModel : ViewModelBase
         }
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance[Loc.Success.Export],
                 NotificationType.Success
