@@ -11,7 +11,7 @@ public class HoverThumbnailManager(MainViewModel vm)
 
     public void Show(ItemViewModel item)
     {
-        if (item.ViewModelType != ViewModelType.Item || item.Thumbnail == null) return;
+        if (!(item.ViewModelType == ViewModelType.Item || item.ViewModelType == ViewModelType.Avatar) || item.Thumbnail == null) return;
 
         var preferences = UserPreferencesService.Instance.Repository.Settings;
         if (!preferences.EnableHoverIconSize) return;
