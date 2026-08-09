@@ -277,7 +277,6 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     private async Task AutoFixDatabase()
     {
         var items = AvatarExplorerApp.Instance.Items.GetAll();
-        var backupFolder = AvatarExplorerApp.Instance.RuntimeSettings.Settings.AutoBackupRootDirectory;
 
         var avatarExists = items.Any(i => i.Category.Type == ItemType.Avatar);
         var unknownCategoryExists = items.Any(i => (int)i.Category.Type >= 11);
@@ -290,13 +289,13 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
             if (result)
             {
-                await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup(backupFolder);
+                await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
                 AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(true);
             }
         }
         else if (unknownCategoryExists)
         {
-            await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup(backupFolder);
+            await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
             AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(false);
         }
     }
@@ -308,6 +307,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             Localizer.Instance[Loc.Dialog.Confirmation.ResetItemDatabase]
         );
         if (!result) return;
+
+        await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
 
         AvatarExplorerApp.Instance.Items.Clear();
         AvatarExplorerApp.Instance.TempAvatars.Clear();
@@ -321,6 +322,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         );
         if (!result) return;
 
+        await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
+
         AvatarExplorerApp.Instance.CommonAvatars.Clear();
     }
 
@@ -331,6 +334,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             Localizer.Instance[Loc.Dialog.Confirmation.ResetBulkImportPresetDatabase]
         );
         if (!result) return;
+
+        await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
 
         AvatarExplorerApp.Instance.BulkImportPresets.Clear();
     }

@@ -63,17 +63,17 @@ public class BackupManager
 
         while (!token.IsCancellationRequested)
         {
-            await ExecuteBackup(_backupRootFolderPath, token);
+            await ExecuteBackup(token);
             await Task.Delay(_backupInterval, token);
         }
     }
 
-    public async Task<ErrorOr<Success>> ExecuteBackup(string backupRootFolderPath, CancellationToken token = default)
+    public async Task<ErrorOr<Success>> ExecuteBackup(CancellationToken token = default)
     {
         try
         {
             var now = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
-            var backupFolderPath = Path.Combine(backupRootFolderPath, now);
+            var backupFolderPath = Path.Combine(_backupRootFolderPath, now);
             
             try
             {
@@ -146,7 +146,7 @@ public class BackupManager
     {
         if (!Directory.Exists(folderPath)) return;
 
-        await ExecuteBackup(_backupRootFolderPath);
+        await ExecuteBackup();
 
         foreach (var file in FileSystemService.EnumerateFiles(folderPath))
         {
