@@ -497,7 +497,7 @@ public static class ContextMenuHandlerService
         if (string.IsNullOrEmpty(newName)) return;
 
         var isDuplicate = AvatarExplorerApp.Instance.Items.GetAll()
-            .Any(i => i.Category.CustomCategory == newName);
+            .Any(i => i.Category.Type == ItemType.Custom && i.Category.CustomCategory == newName);
 
         if (isDuplicate)
         {
