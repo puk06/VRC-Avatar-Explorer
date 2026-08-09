@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.System;
@@ -85,10 +86,10 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
     {
         if (SelectedAvatar == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.TempAvatarNotFound],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }
@@ -96,10 +97,10 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(SelectedAvatar);
         if (tempAvatar == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.TempAvatarNotFound],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }

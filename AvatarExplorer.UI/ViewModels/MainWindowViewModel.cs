@@ -22,6 +22,8 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Overlays;
+using Message.Avalonia;
+using Message.Avalonia.Models;
 using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels;
@@ -235,8 +237,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public void ShowItemEditor(string? itemId = null) => ItemEditorVM.Open(itemId);
     public void OnFilesDrop(string[] filePaths)
     {
-        // TODO: URLのD&Dに対応してもいいかも
-
         // ソフト内からD&Dしたアイテムはスキップするように
         if (filePaths.Length == 1 && filePaths[0] == LastDragDropPath) return;
 
@@ -338,19 +338,35 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         application.RequestedThemeVariant = theme;
     }
 
-    public void ShowNotification(string title, string content, NotificationType type)
+    public static void ShowNotification(string title, string content, NotificationType type)
     {
-        NotificationManager?.Show(new Notification()
+        var manager = MessageManager.Default;
+        var messageOptions = new MessageOptions
         {
             Title = title,
-            Message = content,
-            Type = type,
-            Expiration = TimeSpan.FromSeconds(5)
-        });
+            Duration = TimeSpan.FromSeconds(3.5)
+        };
+
+        switch (type)
+        {
+            case NotificationType.Information:
+                manager.ShowInformationMessage(content, messageOptions);
+                break;
+            case NotificationType.Success:
+                manager.ShowSuccessMessage(content, messageOptions);
+                break;
+            case NotificationType.Warning:
+                manager.ShowWarningMessage(content, messageOptions);
+                break;
+            case NotificationType.Error:
+                manager.ShowErrorMessage(content, messageOptions);
+                break;
+        }
     }
 
     public void OnWindowClosing()
     {
         WindowClosing?.Invoke();
+        AvatarExplorerApp.ClearTemp();
     }
 }

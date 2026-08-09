@@ -20,6 +20,6 @@ public static class SystemFileName
         public const string RuntimeDatabaseMigrationVersion = "runtimeSettings.json.migration.version";
     }
 
-    public const string Lisence = "LISENCE.txt";
-    public const string ThirdPartyLisences = "THIRD_PARTY_LICENSES.txt";
+    public const string License = "LICENSE.txt";
+    public const string ThirdPartyLicenses = "THIRD_PARTY_LICENSES.txt";
 }

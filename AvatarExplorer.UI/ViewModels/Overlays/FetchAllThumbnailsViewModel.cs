@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.System;
@@ -74,10 +75,10 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
         var allItems = AvatarExplorerApp.Instance.Items.GetAll();
         if (allItems.Count == 0)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Nothing],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }
@@ -163,10 +164,10 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
         if (isCancelled)
         {
             Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Cancelled];
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(Loc.Warning.FetchAllItemThumbnailsCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Count.ToString()]),
-                Avalonia.Controls.Notifications.NotificationType.Warning
+                NotificationType.Warning
             );
             return;
         }
@@ -175,18 +176,18 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
         if (failureCount == 0)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance.Get(Loc.Success.FetchAllItemThumbnails, successCount.ToString()),
-                Avalonia.Controls.Notifications.NotificationType.Success
+                NotificationType.Success
             );
         }
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance.Get(Loc.Error.FetchAllItemThumbnailsFailed, [successCount.ToString(), failureCount.ToString(), allItems.Count.ToString()]),
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
         }
     }

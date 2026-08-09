@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Data.Paths;
@@ -366,10 +367,10 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     {
         if (!ProcessUtils.IsWindows() && !ProcessUtils.IsLinux())
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.UnsupportedPlatform],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                Localizer.Instance[Loc.Error.NonWindowsUnsupported],
+                NotificationType.Error
             );
             return;
         }
@@ -398,10 +399,10 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SchemeService.RegisterScheme(protocol);
         UpdateSchemeStatus();
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Scheme.RegisterSuccess],
-            Avalonia.Controls.Notifications.NotificationType.Success
+            NotificationType.Success
         );
     }
 
@@ -429,10 +430,10 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SchemeService.UnregisterScheme(protocol);
         UpdateSchemeStatus();
 
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Settings.RegisterScheme.UnregisterSuccess],
-            Avalonia.Controls.Notifications.NotificationType.Success
+            NotificationType.Success
         );
     }
 
@@ -442,10 +443,10 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         var result = await UpdateChecker.CheckForUpdate((UpdateChannel)SelectedUpdateChannel);
         if (!result)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.UpdateDialog.NoUpdateAvailableTitle],
                 Localizer.Instance.Get(Loc.UpdateDialog.NoUpdateAvailable, AvatarExplorerApp.CurrentVersion),
-                Avalonia.Controls.Notifications.NotificationType.Information
+                NotificationType.Information
             );
         }
     }
@@ -467,28 +468,28 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task ViewLicense()
     {
-        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.Lisence);
+        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.License);
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.LicenseFileNotFound],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
         }
     }
 
     private async Task ViewThirdPartyLicenses()
     {
-        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.ThirdPartyLisences);
+        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.ThirdPartyLicenses);
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ThirdPartyLicenseFileNotFound],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
         }
     }

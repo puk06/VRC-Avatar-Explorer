@@ -84,20 +84,20 @@ public class ItemViewModel : ViewModelBase
             {
                 sb.AppendLine();
                 sb.AppendLine();
-
-                if (!string.IsNullOrEmpty(CreatedDate))
+                
+                if (!string.IsNullOrEmpty(UpdatedDate))
                     sb.AppendLine(
                         Localizer.Instance.Get(
-                            Loc.Button.ToolTip.CreatedDate,
-                            DatetimeUtils.GetDateStringFromUnixTime(CreatedDate)
+                            Loc.Button.ToolTip.UpdatedDate,
+                            DatetimeUtils.GetDateStringFromUnixTime(UpdatedDate)
                         )
                     );
 
                 if (!string.IsNullOrEmpty(CreatedDate))
                     sb.Append(
                         Localizer.Instance.Get(
-                            Loc.Button.ToolTip.UpdatedDate,
-                            DatetimeUtils.GetDateStringFromUnixTime(UpdatedDate)
+                            Loc.Button.ToolTip.CreatedDate,
+                            DatetimeUtils.GetDateStringFromUnixTime(CreatedDate)
                         )
                     );
             }

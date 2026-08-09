@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
@@ -96,19 +97,19 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             var result = await LauncherService.OpenFile(TopLevelProvider.Current, importResult.ModifiedUnitypackagePath);
             if (result.IsError)
             {
-                MainWindowViewModel.Instance.ShowNotification(
+                MainWindowViewModel.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.OpenFileFailed],
-                    Avalonia.Controls.Notifications.NotificationType.Error
+                    NotificationType.Error
                 );
             }
         }
         else
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.BulkImportFailed],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
         }
     }
@@ -155,10 +156,10 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
         if (unitypackagePaths.Length == 0)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.UnitypackageNotFound],
-                Avalonia.Controls.Notifications.NotificationType.Warning
+                NotificationType.Warning
             );
             return;
         }

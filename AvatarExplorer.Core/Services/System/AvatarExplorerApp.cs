@@ -89,4 +89,6 @@ public class AvatarExplorerApp
         BackupManager.SetAutoBackupInterval(runtimeSettings.AutoBackupInterval);
         BackupManager.SetAutoBackupPath(runtimeSettings.AutoBackupRootDirectory);
     }
+
+    public static void ClearTemp() => FileSystemService.DeleteDirectory(SystemPath.TempFolderPath);
 }

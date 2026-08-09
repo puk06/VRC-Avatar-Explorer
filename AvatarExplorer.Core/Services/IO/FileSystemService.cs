@@ -402,75 +402,107 @@ public static class FileSystemService
     #endregion
 
     #region Extract Item Folders
+    private static DateTime _lastUrlFetchTime;
+    private static readonly TimeSpan UrlCooldown = TimeSpan.FromSeconds(2);
+    private static async Task WaitForUrlCooldownAsync(CancellationToken ct = default)
+    {
+        var delay = _lastUrlFetchTime + UrlCooldown - DateTime.Now;
+        if (delay > TimeSpan.Zero) await Task.Delay(delay, ct);
+    }
+
     internal static async Task<ErrorOr<ExtractResult>> ExtractItemPaths(string parentFolderPath, IEnumerable<ItemPathEntry> itemPaths, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false)
     {
         var result = new ExtractResult();
 
-        foreach (var itemPath in itemPaths)
+        var urlEntries = new List<ItemPathEntry>();
+        var fileEntries = new List<ItemPathEntry>();
+        foreach (var entry in itemPaths)
         {
-            var targetPath = itemPath.Path;
-
-            if (itemPath.IsUrl)
-            {
-                var downloadedPath = Path.Combine(GetNewTempFolder(), Path.GetFileName(itemPath.FileName));
-
-                var downloadResult = await Downloader.Fetch(targetPath, downloadedPath);
-                if (!downloadResult)
-                {
-                    ErrorManager.Instance.PostInternalError($"An error occurred while downloading item '{targetPath}'.");
-                    result.ProcessingFailedPaths.Add(downloadedPath);
-                    continue;
-                }
-                targetPath = downloadedPath;
-            }
-
-            var extractResult = await ExtractItemInternalAsync(
-                targetPath,
-                parentFolderPath,
-                removeOriginal
-            );
-
-            if (extractResult.IsError)
-            {
-                ErrorManager.Instance.PostInternalError($"An error occurred while processing folder '{targetPath}'.", tag: extractResult.Errors.ToErrorString());
-                result.ProcessingFailedPaths.Add(targetPath);
-            }
-
-            if (!string.IsNullOrEmpty(extractResult.Value.ExtractedFolderPath))
-            {
-                // 展開されたら、使用されたということ
-                if (string.IsNullOrEmpty(result.ItemParentFolder))
-                    result.ItemParentFolder = parentFolderPath;
-            }
-            else if (extractResult.Value.IsDirectory)
-            {
-                if (shouldLinkToOriginal)
-                {
-                    result.FolderPaths.Add(targetPath);
-                    continue;
-                }
-                else
-                {
-                    var copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileName(targetPath), true);
-                    var copyResult = await CopyDirectoryAsync(targetPath, copiedFolderPath, maxDegreeOfParallelism);
-                    if (copyResult.IsError)
-                    {
-                        ErrorManager.Instance.PostInternalError($"Failed to copy directory: {targetPath}");
-                        result.ProcessingFailedPaths.Add(targetPath);
-                        continue;
-                    }
-
-                    if (copyResult.Value.Failures.Count > 0)
-                    {
-                        copyResult.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError($"Failed to copy: {i.SourcePath}", tag: i.ErrorMessage));
-                    }
-                    
-                    result.ItemParentFolder = copiedFolderPath;
-                }
-            }
+            if (entry.IsUrl) urlEntries.Add(entry);
+            else fileEntries.Add(entry);
         }
 
+        var urlTask = ProcessUrlEntriesAsync(result, urlEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+        var fileTask = ProcessFileEntriesAsync(result, fileEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+
+        await Task.WhenAll(urlTask, fileTask);
+
         return result;
+    }
+
+    private static async Task ProcessUrlEntriesAsync(ExtractResult result, List<ItemPathEntry> urlEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism)
+    {
+        foreach (var entry in urlEntries)
+        {
+            await WaitForUrlCooldownAsync();
+
+            var url = entry.Path;
+            var downloadedPath = Path.Combine(GetNewTempFolder(), Path.GetFileName(entry.FileName));
+
+            _lastUrlFetchTime = DateTime.Now;
+            var downloadResult = await Downloader.Fetch(url, downloadedPath);
+            if (!downloadResult)
+            {
+                ErrorManager.Instance.PostInternalError($"An error occurred while downloading item '{url}'.");
+                lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(downloadedPath);
+                continue;
+            }
+
+            await ProcessExtractedPath(result, downloadedPath, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+        }
+    }
+
+    private static async Task ProcessFileEntriesAsync(ExtractResult result, List<ItemPathEntry> fileEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism)
+    {
+        foreach (var entry in fileEntries)
+        {
+            await ProcessExtractedPath(result, entry.Path, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+        }
+    }
+
+    private static async Task ProcessExtractedPath(ExtractResult result, string targetPath, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism = 4)
+    {
+        var extractResult = await ExtractItemInternalAsync(targetPath, parentFolderPath, removeOriginal);
+
+        if (extractResult.IsError)
+        {
+            ErrorManager.Instance.PostInternalError($"An error occurred while processing folder '{targetPath}'.", tag: extractResult.Errors.ToErrorString());
+            lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(targetPath);
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(extractResult.Value.ExtractedFolderPath))
+        {
+            // 展開されたら、使用されたということ
+            if (string.IsNullOrEmpty(result.ItemParentFolder))
+                result.ItemParentFolder = parentFolderPath;
+        }
+        else if (extractResult.Value.IsDirectory)
+        {
+            if (shouldLinkToOriginal)
+            {
+                lock (result.FolderPaths) result.FolderPaths.Add(targetPath);
+                return;
+            }
+            else
+            {
+                var copiedFolderPath = GetUniquePath(parentFolderPath, Path.GetFileName(targetPath), true);
+                var copyResult = await CopyDirectoryAsync(targetPath, copiedFolderPath, maxDegreeOfParallelism);
+                if (copyResult.IsError)
+                {
+                    ErrorManager.Instance.PostInternalError($"Failed to copy directory: {targetPath}");
+                    lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(targetPath);
+                    return;
+                }
+
+                if (copyResult.Value.Failures.Count > 0)
+                {
+                    copyResult.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError($"Failed to copy: {i.SourcePath}", tag: i.ErrorMessage));
+                }
+
+                lock (result.ItemParentFolder) result.ItemParentFolder = parentFolderPath;
+            }
+        }
     }
     private static async Task<ErrorOr<FileExtractResultInternal>> ExtractItemInternalAsync(string filePath, string destinationFolderPath, bool removeOriginal)
     {

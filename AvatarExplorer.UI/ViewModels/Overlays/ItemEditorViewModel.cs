@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
@@ -217,7 +218,18 @@ public class ItemEditorViewModel : ViewModelBase
         if (!validationResult) return;
 
         var identifier = Identifier != null ? await ConfirmEdit(Identifier) : await ConfirmCreate();
-        await AddPathsAsync(identifier);
+
+        var itemPaths = ItemPaths.Select(i => new ItemPathEntry
+        {
+            FileName = i.FileName,
+            Path = i.FullPath,
+            IsUrl = i.IsUrl
+        }).ToList();
+        var shouldLinkToOriginal = ShouldLinkToOriginal;
+
+        Close();
+
+        _ = AddPathsInBackground(identifier, itemPaths, shouldLinkToOriginal);
     }
 
     private async Task<string> ConfirmEdit(string identifier)
@@ -237,10 +249,10 @@ public class ItemEditorViewModel : ViewModelBase
         };
 
         bool updateResult = await AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[updateResult ? Loc.Success.Default : Loc.Error.Default],
             Localizer.Instance[updateResult ? Loc.Success.ItemEdit : Loc.Error.ItemEditFailed],
-            updateResult ? Avalonia.Controls.Notifications.NotificationType.Success : Avalonia.Controls.Notifications.NotificationType.Error
+            updateResult ? NotificationType.Success : NotificationType.Error
         );
         return identifier;
     }
@@ -275,57 +287,55 @@ public class ItemEditorViewModel : ViewModelBase
         }
 
         var item = await AvatarExplorerApp.Instance.Items.Create(creationContext);
-        MainWindowViewModel.Instance.ShowNotification(
+        MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.ItemAdd],
-            Avalonia.Controls.Notifications.NotificationType.Success
+            NotificationType.Success
         );
         return item.Identifier;
     }
 
-    private async Task AddPathsAsync(string identifier)
+    private async Task AddPathsInBackground(string identifier, List<ItemPathEntry> itemPaths, bool shouldLinkToOriginal)
     {
-        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.ItemAdd.Copying]);
-        MainWindowViewModel.Instance.ProgressVM.Update(0);
-        var result = await AvatarExplorerApp.Instance.Items.AddPaths(
-            identifier,
-            ItemPaths
-                .Select(i => new ItemPathEntry()
-                {
-                    FileName = i.FileName,
-                    Path = i.FullPath,
-                    IsUrl = i.IsUrl
-                }),
-            ShouldLinkToOriginal
+        MainWindowViewModel.ShowNotification(
+            Localizer.Instance[Loc.Processing.Default],
+            Localizer.Instance[Loc.Processing.AddContent],
+            NotificationType.Information
         );
-        MainWindowViewModel.Instance.ProgressVM.Close();
-        
-        if (result.IsError)
-        {
-            MainWindowViewModel.Instance.ShowNotification(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.AddItemFileFailed],
-                Avalonia.Controls.Notifications.NotificationType.Error
-            );
-        }
-        else if (result.Value.ProcessingFailedPaths.Count > 0)
-        {
-            MainWindowViewModel.Instance.ShowNotification(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()),
-                Avalonia.Controls.Notifications.NotificationType.Error
-            );
-        }
-        else
-        {
-            MainWindowViewModel.Instance.ShowNotification(
-                Localizer.Instance[Loc.Success.Default],
-                Localizer.Instance[Loc.Success.ItemAdd],
-                Avalonia.Controls.Notifications.NotificationType.Success
-            );
-        }
 
-        Close();
+        try
+        {
+            var result = await AvatarExplorerApp.Instance.Items.AddPaths(identifier, itemPaths, shouldLinkToOriginal);
+
+            if (result.IsError)
+            {
+                MainWindowViewModel.ShowNotification(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Error.AddContentFailed],
+                    NotificationType.Error
+                );
+            }
+            else if (result.Value.ProcessingFailedPaths.Count > 0)
+            {
+                MainWindowViewModel.ShowNotification(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()),
+                    NotificationType.Error
+                );
+            }
+            else
+            {
+                MainWindowViewModel.ShowNotification(
+                    Localizer.Instance[Loc.Success.Default],
+                    Localizer.Instance[Loc.Success.ContentAdd],
+                    NotificationType.Success
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to add item paths in background.", ex);
+        }
     }
     private async Task SelectAndAddFolders()
     {
@@ -356,10 +366,10 @@ public class ItemEditorViewModel : ViewModelBase
 
         if (!UriUtils.TryParse(url, out var uri))
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.InvalidUrl],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }
@@ -376,10 +386,10 @@ public class ItemEditorViewModel : ViewModelBase
 
         if (fetchResult.IsError)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.RetrieveBoothItemFailed],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }
@@ -480,10 +490,10 @@ public class ItemEditorViewModel : ViewModelBase
         // Title
         if (string.IsNullOrWhiteSpace(Title))
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.EmptyTitle],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return false;
         }
@@ -491,10 +501,10 @@ public class ItemEditorViewModel : ViewModelBase
         // Author
         if (string.IsNullOrWhiteSpace(Author))
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.EmptyAuthor],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return false;
         }
@@ -502,10 +512,10 @@ public class ItemEditorViewModel : ViewModelBase
         // Category
         if (SelectedCategory == null)
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.InvalidCategory],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return false;
         }
@@ -513,10 +523,10 @@ public class ItemEditorViewModel : ViewModelBase
         // Supported Avatars
         if (SelectedCategory.Category.Type != ItemType.Clothing && SupportedAvatars.Any(i => i.StartsWith("commonavatar")))
         {
-            MainWindowViewModel.Instance.ShowNotification(
+            MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.NotClothingWithCommonAvatar],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return false;
         }

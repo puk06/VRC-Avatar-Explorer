@@ -13,7 +13,7 @@ public class KonoAssetWorldItem : AbstractKonoAssetItem
     {
         var migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.UpdateItemPath($"<sys>{Id}");
-        migratedItem.UpdateCategory(new ItemCategory(string.IsNullOrEmpty(Category) ? "Worlds" : Category));
+        migratedItem.UpdateCategory(new ItemCategory(string.IsNullOrEmpty(Category) ? "Worlds (KonoAsset)" : $"{Category} (KonoAsset)"));
 
         return migratedItem;
     }
