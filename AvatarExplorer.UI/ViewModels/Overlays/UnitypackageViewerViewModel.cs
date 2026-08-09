@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.IO;
@@ -156,7 +157,7 @@ public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ExportFailed],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }

@@ -280,6 +280,7 @@ public static class Loc
         public const string ItemEdit = "Success.ItemEdit";
         public const string ItemThumbnailEdit = "Success.ItemThumbnailEdit";
         public const string Remove = "Success.Remove";
+        public const string RenameCustomCategory = "Success.RenameCustomCategory";
         public const string FetchItemThumbnail = "Success.FetchItemThumbnail";
         public const string ItemFileAdd = "Success.ItemFileAdd";
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
@@ -310,6 +311,10 @@ public static class Loc
         public const string ItemThumbnailEditFailed = "Error.ItemThumbnailEditFailed";
         public const string BulkImportFailed = "Error.BulkImportFailed";
         public const string OpenFileFailed = "Error.OpenFileFailed";
+        public const string OpenFolderFailed = "Error.OpenFolderFailed";
+        public const string ClipboardSetFailed = "Error.ClipboardSetFailed";
+        public const string OpenUriFailed = "Error.OpenUriFailed";
+        public const string FailedToGetCurrentItem = "Error.FailedToGetCurrentItem";
         public const string ImportUnitypackageFailed = "Error.ImportUnitypackageFailed";
         public const string RetrieveBoothItemFailed = "Error.RetrieveBoothItemFailed";
         public const string FetchItemThumbnailFailed = "Error.FetchItemThumbnailFailed";

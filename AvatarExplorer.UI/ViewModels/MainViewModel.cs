@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
@@ -198,10 +199,26 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         if (PathUtils.IsUnitypackageFile(file))
         {
             var itemId = _itemNavigationService.GetCurrentItemId();
-            if (itemId == null) return;
+            if (itemId == null)
+            {
+                MainWindowViewModel.Instance.ShowNotification(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Error.FailedToGetCurrentItem],
+                    NotificationType.Error
+                );
+                return;
+            }
 
             var item = _itemGroupService.ItemRepository.Get(itemId);
-            if (item == null) return;
+            if (item == null)
+            {
+                MainWindowViewModel.Instance.ShowNotification(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Error.ItemNotFound],
+                    NotificationType.Error
+                );
+                return;
+            }
 
             var category = item.Category;
             var isLocalizable = category.IsLocalizable;
@@ -228,7 +245,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                     MainWindowViewModel.Instance.ShowNotification(
                         Localizer.Instance[Loc.Error.Default],
                         Localizer.Instance[Loc.Error.OpenFileFailed],
-                        Avalonia.Controls.Notifications.NotificationType.Error
+                        NotificationType.Error
                     );
                 }
             }
@@ -237,13 +254,21 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 MainWindowViewModel.Instance.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.ImportUnitypackageFailed],
-                    Avalonia.Controls.Notifications.NotificationType.Error
+                    NotificationType.Error
                 );
             }
         }
         else
         {
-            await LauncherService.OpenFile(TopLevelProvider.Current, file);
+            var result = await LauncherService.OpenFile(TopLevelProvider.Current, file);
+            if (result.IsError)
+            {
+                MainWindowViewModel.Instance.ShowNotification(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Error.OpenFileFailed],
+                    NotificationType.Error
+                );
+            }
         }
     }
     public void OpenSidePanel(string index)
@@ -318,7 +343,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
     }
 
-    private IEnumerable<Item> SortNavigationItems(List<Item> items, ItemSortOrder sortOrder, SortDirection sortDirection, string? avatarId)
+    private static IEnumerable<Item> SortNavigationItems(List<Item> items, ItemSortOrder sortOrder, SortDirection sortDirection, string? avatarId)
     {
         if (sortOrder == ItemSortOrder.Implemented && avatarId != null)
         {

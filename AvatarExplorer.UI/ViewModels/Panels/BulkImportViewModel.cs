@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
@@ -99,7 +100,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
                 MainWindowViewModel.Instance.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.OpenFileFailed],
-                    Avalonia.Controls.Notifications.NotificationType.Error
+                    NotificationType.Error
                 );
             }
         }
@@ -108,7 +109,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.BulkImportFailed],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
         }
     }
@@ -158,7 +159,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.UnitypackageNotFound],
-                Avalonia.Controls.Notifications.NotificationType.Warning
+                NotificationType.Warning
             );
             return;
         }

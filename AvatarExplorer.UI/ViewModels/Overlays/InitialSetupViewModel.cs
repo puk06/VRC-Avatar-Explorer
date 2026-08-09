@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
@@ -101,7 +102,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance[Loc.Scheme.RegisterSuccess],
-                Avalonia.Controls.Notifications.NotificationType.Success
+                NotificationType.Success
             );
         }
         else
@@ -109,7 +110,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance[Loc.Scheme.RegisterSkipped],
-                Avalonia.Controls.Notifications.NotificationType.Information
+                NotificationType.Information
             );
         }
     }

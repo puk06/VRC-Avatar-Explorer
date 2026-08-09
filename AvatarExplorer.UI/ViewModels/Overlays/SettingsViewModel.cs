@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Data.Paths;
@@ -369,7 +370,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.NonWindowsUnsupported],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }
@@ -401,7 +402,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Scheme.RegisterSuccess],
-            Avalonia.Controls.Notifications.NotificationType.Success
+            NotificationType.Success
         );
     }
 
@@ -432,7 +433,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Settings.RegisterScheme.UnregisterSuccess],
-            Avalonia.Controls.Notifications.NotificationType.Success
+            NotificationType.Success
         );
     }
 
@@ -445,7 +446,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.UpdateDialog.NoUpdateAvailableTitle],
                 Localizer.Instance.Get(Loc.UpdateDialog.NoUpdateAvailable, AvatarExplorerApp.CurrentVersion),
-                Avalonia.Controls.Notifications.NotificationType.Information
+                NotificationType.Information
             );
         }
     }
@@ -474,7 +475,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.LicenseFileNotFound],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
         }
     }
@@ -488,7 +489,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ThirdPartyLicenseFileNotFound],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
         }
     }

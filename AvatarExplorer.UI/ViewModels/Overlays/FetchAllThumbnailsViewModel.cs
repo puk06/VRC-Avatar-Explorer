@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.System;
@@ -77,7 +78,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Nothing],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }
@@ -166,7 +167,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(Loc.Warning.FetchAllItemThumbnailsCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Count.ToString()]),
-                Avalonia.Controls.Notifications.NotificationType.Warning
+                NotificationType.Warning
             );
             return;
         }
@@ -178,7 +179,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance.Get(Loc.Success.FetchAllItemThumbnails, successCount.ToString()),
-                Avalonia.Controls.Notifications.NotificationType.Success
+                NotificationType.Success
             );
         }
         else
@@ -186,7 +187,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance.Get(Loc.Error.FetchAllItemThumbnailsFailed, [successCount.ToString(), failureCount.ToString(), allItems.Count.ToString()]),
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
         }
     }

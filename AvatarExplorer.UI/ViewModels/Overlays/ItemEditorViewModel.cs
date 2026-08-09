@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
@@ -251,7 +252,7 @@ public class ItemEditorViewModel : ViewModelBase
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[updateResult ? Loc.Success.Default : Loc.Error.Default],
             Localizer.Instance[updateResult ? Loc.Success.ItemEdit : Loc.Error.ItemEditFailed],
-            updateResult ? Avalonia.Controls.Notifications.NotificationType.Success : Avalonia.Controls.Notifications.NotificationType.Error
+            updateResult ? NotificationType.Success : NotificationType.Error
         );
         return identifier;
     }
@@ -289,7 +290,7 @@ public class ItemEditorViewModel : ViewModelBase
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.ItemAdd],
-            Avalonia.Controls.Notifications.NotificationType.Success
+            NotificationType.Success
         );
         return item.Identifier;
     }
@@ -299,7 +300,7 @@ public class ItemEditorViewModel : ViewModelBase
         MainWindowViewModel.Instance.ShowNotification(
             Localizer.Instance[Loc.Processing.Default],
             Localizer.Instance[Loc.Processing.AddContent],
-            Avalonia.Controls.Notifications.NotificationType.Information
+            NotificationType.Information
         );
 
         try
@@ -311,7 +312,7 @@ public class ItemEditorViewModel : ViewModelBase
                 MainWindowViewModel.Instance.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.AddContentFailed],
-                    Avalonia.Controls.Notifications.NotificationType.Error
+                    NotificationType.Error
                 );
             }
             else if (result.Value.ProcessingFailedPaths.Count > 0)
@@ -319,7 +320,7 @@ public class ItemEditorViewModel : ViewModelBase
                 MainWindowViewModel.Instance.ShowNotification(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()),
-                    Avalonia.Controls.Notifications.NotificationType.Error
+                    NotificationType.Error
                 );
             }
             else
@@ -327,7 +328,7 @@ public class ItemEditorViewModel : ViewModelBase
                 MainWindowViewModel.Instance.ShowNotification(
                     Localizer.Instance[Loc.Success.Default],
                     Localizer.Instance[Loc.Success.ContentAdd],
-                    Avalonia.Controls.Notifications.NotificationType.Success
+                    NotificationType.Success
                 );
             }
         }
@@ -368,7 +369,7 @@ public class ItemEditorViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.InvalidUrl],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }
@@ -388,7 +389,7 @@ public class ItemEditorViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.RetrieveBoothItemFailed],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return;
         }
@@ -492,7 +493,7 @@ public class ItemEditorViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.EmptyTitle],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return false;
         }
@@ -503,7 +504,7 @@ public class ItemEditorViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.EmptyAuthor],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return false;
         }
@@ -514,7 +515,7 @@ public class ItemEditorViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.InvalidCategory],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return false;
         }
@@ -525,7 +526,7 @@ public class ItemEditorViewModel : ViewModelBase
             MainWindowViewModel.Instance.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.NotClothingWithCommonAvatar],
-                Avalonia.Controls.Notifications.NotificationType.Error
+                NotificationType.Error
             );
             return false;
         }
