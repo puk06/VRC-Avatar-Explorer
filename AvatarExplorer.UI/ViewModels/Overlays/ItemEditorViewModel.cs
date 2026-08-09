@@ -441,6 +441,7 @@ public class ItemEditorViewModel : ViewModelBase
         if (string.IsNullOrEmpty(newCategory)) return;
 
         Categories.Add(new ItemCategoryViewModel(new ItemCategory(newCategory)).Update());
+        SelectedCategoryIndex = Categories.Count - 1;
     }
 
     private async Task SelectSupportedAvatars()
