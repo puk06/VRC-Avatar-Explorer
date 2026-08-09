@@ -478,8 +478,11 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         return navigationItem;
     }
 
+    private int _lastSelectedCategory = -1;
     private void UpdateLeftPanelItems()
     {
+        _stateCacheManager.SaveLeftState(_lastSelectedCategory, LeftPageInfo);
+
         var type = (QueryType)SelectedCategory;
         var queryItems = _itemGroupService.GetQueryFilters(type);
         if (type == QueryType.Avatar)
@@ -496,6 +499,9 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         LeftPageInfo.TotalItems = _allLeftItems.Count;
         RefreshLeftItems();
+
+        _stateCacheManager.RestoreLeftState(SelectedCategory, LeftPageInfo);
+        _lastSelectedCategory = SelectedCategory;
     }
     #endregion
 
