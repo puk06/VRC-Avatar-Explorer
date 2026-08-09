@@ -341,43 +341,25 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public static void ShowNotification(string title, string content, NotificationType type)
     {
         var manager = MessageManager.Default;
+        var messageOptions = new MessageOptions
+        {
+            Title = title,
+            Duration = TimeSpan.FromSeconds(3.5)
+        };
+
         switch (type)
         {
             case NotificationType.Information:
-                manager.ShowInformationMessage(
-                    content,
-                    new MessageOptions{
-                        Title = title,
-                        Duration = TimeSpan.FromSeconds(3.5)
-                    }
-                );
+                manager.ShowInformationMessage(content, messageOptions);
                 break;
             case NotificationType.Success:
-                manager.ShowSuccessMessage(
-                    content,
-                    new MessageOptions{
-                        Title = title,
-                        Duration = TimeSpan.FromSeconds(3.5)
-                    }
-                );
+                manager.ShowSuccessMessage(content, messageOptions);
                 break;
             case NotificationType.Warning:
-                manager.ShowWarningMessage(
-                    content,
-                    new MessageOptions{
-                        Title = title,
-                        Duration = TimeSpan.FromSeconds(3.5)
-                    }
-                );
+                manager.ShowWarningMessage(content, messageOptions);
                 break;
             case NotificationType.Error:
-                manager.ShowErrorMessage(
-                    content,
-                    new MessageOptions{
-                        Title = title,
-                        Duration = TimeSpan.FromSeconds(3.5)
-                    }
-                );
+                manager.ShowErrorMessage(content, messageOptions);
                 break;
         }
     }
