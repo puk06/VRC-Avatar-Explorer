@@ -64,10 +64,10 @@ public record ItemSearchIndex : ISearchIndex
             item.Author,
             item.ItemMemo,
             item.BoothId.ToString(),
-            string.Join(" ", item.Tags),
-            string.Join(" ", supportedAvatarNames),
-            string.Join(" ", implementedAvatarNames),
-            string.Join(" ", commonAvatarNames)
+            string.Join("\n", item.Tags),
+            string.Join("\n", supportedAvatarNames),
+            string.Join("\n", implementedAvatarNames),
+            string.Join("\n", commonAvatarNames)
         ).ToLowerInvariant();
 
         return new ItemSearchIndex

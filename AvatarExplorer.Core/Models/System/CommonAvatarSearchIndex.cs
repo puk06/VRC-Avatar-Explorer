@@ -1,6 +1,7 @@
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
+using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Models.System;
 
@@ -24,19 +25,20 @@ public record CommonAvatarSearchIndex : ISearchIndex
     {
         return field?.ToLowerInvariant() switch
         {
-            "commonavatar" => [GroupName],
-            "groupname" => [GroupName],
             null => [FreeWord],
             _ => []
         };
     }
 
-    public static CommonAvatarSearchIndex Build(CommonAvatar commonAvatar)
+    public static CommonAvatarSearchIndex Build(CommonAvatar commonAvatar, Dictionary<string, string> avatarTitleMaps)
     {
         return new CommonAvatarSearchIndex
         {
             GroupName = commonAvatar.GroupName,
-            FreeWord = commonAvatar.GroupName.ToLowerInvariant()
+            FreeWord = string.Join("\n",
+                commonAvatar.GroupName,
+                string.Join("\n", commonAvatar.Avatars.Select(a => ItemUtils.GetTitleFromDictionary(avatarTitleMaps, a)))
+            ).ToLowerInvariant()
         };
     }
 }
