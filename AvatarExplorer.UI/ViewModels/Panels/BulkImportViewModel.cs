@@ -16,13 +16,14 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Panels;
 
 public class BulkImportViewModel : ViewModelBase, IInitializable
 {
     public event Action? OnItemsChanged;
-    public ObservableCollection<BulkImportItemViewModel> Items { get; } = [];
+    [Reactive] public ObservableCollection<BulkImportItemViewModel> Items { get; set; } = [];
 
     public IReactiveCommand CopyCommand { get; }
     public IReactiveCommand RemoveCommand { get; }
@@ -43,16 +44,17 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
     public async Task Initialize()
     {
-        AvatarExplorerApp.Instance.Items.OnUpdated += CheckItemExistsAndRemoveInvalid;
+        AvatarExplorerApp.Instance.Items.OnUpdated += RefreshItems;
+        UserPreferencesService.Instance.Repository.OnSettingsChanged += _ => OnUserPreferencesChanged();
         Items.CollectionChanged += (s, e) => OnItemsChanged?.Invoke();
     }
 
-    private void CheckItemExistsAndRemoveInvalid()
+    private void OnUserPreferencesChanged()
     {
-        var invalidItems = Items.Where(i => AvatarExplorerApp.Instance.Items.Get(i.ItemId) == null).ToList();
-        foreach (var invalidItem in invalidItems)
+        var settings = UserPreferencesService.Instance.Repository.Settings;
+        foreach (var item in Items)
         {
-            Items.Remove(invalidItem);
+            item.Update(settings.NormalIconSize, settings.RemoveBrackets);
         }
     }
 
@@ -63,10 +65,26 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
         foreach (var bulkImportItem in Items)
         {
             var item = AvatarExplorerApp.Instance.Items.Get(bulkImportItem.ItemId);
-            if (item == null) continue;
+            if (item == null)
+            {
+                MainWindowViewModel.ShowNotification(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Error.ItemNotFound],
+                    NotificationType.Warning
+                );
+                continue;
+            }
 
             var selectedPath = bulkImportItem.SelectedUnitypackagePath;
-            if (string.IsNullOrEmpty(selectedPath)) continue;
+            if (string.IsNullOrEmpty(selectedPath))
+            {
+                MainWindowViewModel.ShowNotification(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Error.UnitypackageNotFound],
+                    NotificationType.Warning
+                );
+                continue;
+            }
 
             if (!itemPathCategoryEntries.Any(i => i.FilePath == selectedPath))
             {
@@ -150,7 +168,15 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
     public void AddItem(string itemid, string? filePath = null)
     {
         var item = AvatarExplorerApp.Instance.Items.Get(itemid);
-        if (item == null) return;
+        if (item == null)
+        {
+            MainWindowViewModel.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.ItemNotFound],
+                NotificationType.Warning
+            );
+            return;
+        }
 
         var unitypackagePaths = UnitypackageService.GetUnitypackagePaths(item.GetFolderPaths());
 
@@ -180,6 +206,27 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             if (index != -1) bulkVm.SelectedUnitypackage = index;
         }
 
-        Items.Add(bulkVm.Update());
+        var settings = UserPreferencesService.Instance.Repository.Settings;
+        Items.Add(bulkVm.Update(settings.NormalIconSize, settings.RemoveBrackets));
+    }
+
+    private void RefreshItems()
+    {
+        var newItems = new List<BulkImportItemViewModel>();
+
+        var settings = UserPreferencesService.Instance.Repository.Settings;
+        foreach (var itemVm in Items)
+        {
+            var item = AvatarExplorerApp.Instance.Items.Get(itemVm.ItemId);
+            if (item == null) continue;
+
+            itemVm.ImageFileName = item.ThumbnailFileName;
+            itemVm.TitleRaw = item.Title;
+            itemVm.DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]);
+
+            newItems.Add(itemVm.Update(settings.NormalIconSize, settings.RemoveBrackets));
+        }
+
+        Items = new ObservableCollection<BulkImportItemViewModel>(newItems);
     }
 }
