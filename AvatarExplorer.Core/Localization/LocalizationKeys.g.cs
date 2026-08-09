@@ -21,7 +21,6 @@ public static class Loc
     public static class Title
     {
         public const string AdministratorMode = "Title.AdministratorMode";
-        public const string CacheGeneration = "Title.CacheGeneration";
     }
     public static class Main
     {

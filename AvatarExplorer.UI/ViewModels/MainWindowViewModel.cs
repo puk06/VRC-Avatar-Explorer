@@ -104,16 +104,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         IInitializableRegistry.Register(9999, (IPostInitializable)this);
     }
 
-    private bool _thumbnailWarmupStatus;
-    private void OnThumbnailWarmupChanged(bool status)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            _thumbnailWarmupStatus = status;
-            UpdateWindowTitle();
-        });
-    }
-
     private void OnBackupRestored()
     {
         AppInitializer.InitializeUserPreferences();
@@ -134,7 +124,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         AvatarExplorerApp.ArchivePasswordProvider = GetArchivePassword;
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
-        ImageService.ThumbnailCacheWarmupStateChanged += OnThumbnailWarmupChanged;
         AvatarExplorerApp.BackupManager.OnBackupRestored += OnBackupRestored;
 
         ApplyPreferenceSettings(UserPreferencesService.Instance.Repository.Settings);
@@ -223,9 +212,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
         if (ProcessUtils.IsWindows() && SchemeService.IsRunAsAdmin())
             title += string.Format(" - [{0}]", Localizer.Instance[Loc.Title.AdministratorMode]);
-
-        if (_thumbnailWarmupStatus)
-            title += string.Format(" - {0}", Localizer.Instance[Loc.Title.CacheGeneration]);
 
         WindowTitle = title;
     }
