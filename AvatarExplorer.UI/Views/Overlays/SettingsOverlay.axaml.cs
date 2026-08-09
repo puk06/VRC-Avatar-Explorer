@@ -19,6 +19,7 @@ public partial class SettingsOverlay : UserControl
         Dispatcher.UIThread.Post(() =>
         {
             RefreshComboBox(SortOrderComboBox);
+            RefreshComboBox(ImplementedSortComboBox);
             RefreshComboBox(SortDirectionComboBox);
             RefreshComboBox(ThemeComboBox);
             RefreshComboBox(AntiAliasingComboBox);

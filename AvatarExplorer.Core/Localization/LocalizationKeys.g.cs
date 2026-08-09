@@ -363,6 +363,17 @@ public static class Loc
                 public const string Descending = "Settings.SortDirection.Options.Descending";
             }
         }
+        public static class ImplementedSort
+        {
+            public const string Title = "Settings.ImplementedSort.Title";
+            public const string Description = "Settings.ImplementedSort.Description";
+            public static class Options
+            {
+                public const string None = "Settings.ImplementedSort.Options.None";
+                public const string Implemented = "Settings.ImplementedSort.Options.Implemented";
+                public const string NotImplemented = "Settings.ImplementedSort.Options.NotImplemented";
+            }
+        }
         public static class Theme
         {
             public const string Title = "Settings.Theme.Title";

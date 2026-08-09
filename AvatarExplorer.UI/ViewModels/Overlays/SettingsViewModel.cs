@@ -33,6 +33,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     [Reactive] public int SelectedSortOrder { get; set; }
     [Reactive] public SortDirection SelectedSortDirection { get; set; }
+    [Reactive] public int SelectedImplementedSort { get; set; }
     [Reactive] public int SelectedTheme { get; set; }
     [Reactive] public bool RemoveBrackets { get; set; }
     [Reactive] public double NormalIconSize { get; set; }
@@ -157,6 +158,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SelectedUpdateChannel = (int)runtimeSettings.UpdateChannel;
         SelectedSortOrder = (int)preferences.SortOrder;
         SelectedSortDirection = preferences.SortDirection;
+        SelectedImplementedSort = (int)preferences.ImplementedSort;
 
         UpdateSchemeStatus();
 
@@ -196,7 +198,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             BackgroundImage = BackgroundImagePath,
             BackgroundOpacity = (int)BackgroundImageOpacity,
             SortOrder = (ItemSortOrder)SelectedSortOrder,
-            SortDirection = SelectedSortDirection
+            SortDirection = SelectedSortDirection,
+            ImplementedSort = (ImplementedSort)SelectedImplementedSort
         };
     }
 

@@ -18,7 +18,6 @@ public static class ItemSortService
             ItemSortOrder.Author => items.OrderBy(i => i.Author, StringComparer.OrdinalIgnoreCase),
             ItemSortOrder.CreatedDate => items.OrderBy(i => i.CreatedDate),
             ItemSortOrder.UpdatedDate => items.OrderBy(i => i.UpdatedDate),
-            ItemSortOrder.Implemented => items.OrderBy(i => removeBrackets ? TextBracketsUtils.RemoveBrackets(i.Title) : i.Title, StringComparer.OrdinalIgnoreCase),
             _ => items.OrderBy(i => i.Title, StringComparer.OrdinalIgnoreCase)
         };
 

@@ -323,13 +323,14 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
         var sortOrder = UserPreferences.SortOrder;
         var sortDirection = UserPreferences.SortDirection;
-        var implementedEnabled = sortOrder == ItemSortOrder.Implemented;
+        var implementedSort = UserPreferences.ImplementedSort;
+        var implementedEnabled = implementedSort != ImplementedSort.None;
 
         var navigationables = _itemNavigationService.GetCurrentSelectionView();
         var items = navigationables.OfType<Item>().ToList();
         var nonItems = navigationables.Where(i => i is not Item).ToList();
 
-        var sortedItems = SortNavigationItems(items, sortOrder, sortDirection, avatarId);
+        var sortedItems = SortNavigationItems(items, sortOrder, sortDirection, implementedSort, avatarId);
         var sortedNavigationables = sortedItems.Cast<IIdentifiable>().Concat(nonItems);
 
         _allMainItems = sortedNavigationables
@@ -343,19 +344,15 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
     }
 
-    private static IEnumerable<Item> SortNavigationItems(List<Item> items, ItemSortOrder sortOrder, SortDirection sortDirection, string? avatarId)
+    private static IEnumerable<Item> SortNavigationItems(List<Item> items, ItemSortOrder sortOrder, SortDirection sortDirection, ImplementedSort implementedSort, string? avatarId)
     {
-        if (sortOrder == ItemSortOrder.Implemented && avatarId != null)
-        {
-            var ordered = items
-                .Select(i => (Item: i, IsImplemented: i.ImplementedAvatars.Contains(avatarId)))
-                .OrderByDescending(x => x.IsImplemented)
-                .ThenBy(x => UserPreferences.RemoveBrackets ? Utils.TextBracketsUtils.RemoveBrackets(x.Item.Title) : x.Item.Title, StringComparer.OrdinalIgnoreCase);
+        var sorted = ItemSortService.Sort(items, sortOrder, sortDirection, UserPreferences.RemoveBrackets);
 
-            return (sortDirection == SortDirection.Descending ? ordered.Reverse() : ordered).Select(x => x.Item);
-        }
+        if (implementedSort == ImplementedSort.None || avatarId == null)
+            return sorted;
 
-        return ItemSortService.Sort(items, sortOrder, sortDirection, UserPreferences.RemoveBrackets);
+        var priority = implementedSort == ImplementedSort.Implemented;
+        return sorted.OrderByDescending(i => i.ImplementedAvatars.Contains(avatarId) == priority);
     }
 
     private ItemViewModel CreateItemViewModelWithStatus(IIdentifiable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled)
