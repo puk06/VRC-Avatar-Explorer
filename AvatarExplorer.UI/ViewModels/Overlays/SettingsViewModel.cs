@@ -118,6 +118,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     public async Task Initialize()
     {
+        Localizer.Instance.LanguageChanged += UpdateSchemeStatus;
         LoadProfileImage();
     }
 
