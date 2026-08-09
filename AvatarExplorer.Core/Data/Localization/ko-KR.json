@@ -160,6 +160,7 @@
     "Success.ItemThumbnailEdit": "아이템 썸네일 편집에 성공했습니다",
     "Success.Remove": "아이템 삭제에 성공했습니다",
     "Success.RenameCustomCategory": "사용자 정의 카테고리 이름을 변경했습니다",
+    "Success.ClipboardSet": "클립보드에 복사했습니다",
     "Success.FetchItemThumbnail": "아이템 썸네일 업데이트가 완료되었습니다",
     "Success.ItemFileAdd": "아이템 파일 추가가 완료되었습니다",
     "Success.ItemFolderAdd": "아이템 폴더 추가가 완료되었습니다",

@@ -118,14 +118,11 @@ public static class ContextMenuHandlerService
         if (string.IsNullOrEmpty(link)) return;
 
         var result = await ClipboardService.SetText(link);
-        if (result.IsError)
-        {
-            MainWindowViewModel.ShowNotification(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.ClipboardSetFailed],
-                NotificationType.Error
-            );
-        }
+        MainWindowViewModel.ShowNotification(
+            !result.IsError ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
+            !result.IsError ? Localizer.Instance[Loc.Success.ClipboardSet] : Localizer.Instance[Loc.Error.ClipboardSetFailed],
+            !result.IsError ? NotificationType.Success : NotificationType.Error
+        );
     }
     private static async void OpenBoothLink(string identifier)
     {
@@ -178,14 +175,11 @@ public static class ContextMenuHandlerService
 
         string itemInfo = string.Format("{0} - {1}\n{2}", item.Title, item.Author, item.BoothId != -1 ? item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]) : "(No Booth Link)");
         var result = await ClipboardService.SetText(itemInfo);
-        if (result.IsError)
-        {
-            MainWindowViewModel.ShowNotification(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.ClipboardSetFailed],
-                NotificationType.Error
-            );
-        }
+        MainWindowViewModel.ShowNotification(
+            !result.IsError ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
+            !result.IsError ? Localizer.Instance[Loc.Success.ClipboardSet] : Localizer.Instance[Loc.Error.ClipboardSetFailed],
+            !result.IsError ? NotificationType.Success : NotificationType.Error
+        );
     }
     private static void EditItem(string identifier)
     {

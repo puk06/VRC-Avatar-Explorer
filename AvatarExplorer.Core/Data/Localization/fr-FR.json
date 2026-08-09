@@ -160,6 +160,7 @@
     "Success.ItemThumbnailEdit": "Modification de la vignette de l'élément réussie",
     "Success.Remove": "Suppression de l'élément réussie",
     "Success.RenameCustomCategory": "Catégorie personnalisée renommée avec succès",
+    "Success.ClipboardSet": "Copié dans le presse-papiers",
     "Success.FetchItemThumbnail": "Mise à jour de la vignette de l'élément terminée",
     "Success.ItemFileAdd": "Ajout du fichier d'élément terminé",
     "Success.ItemFolderAdd": "Ajout du dossier d'élément terminé",

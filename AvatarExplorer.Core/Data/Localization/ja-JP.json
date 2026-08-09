@@ -160,6 +160,7 @@
     "Success.ItemThumbnailEdit": "アイテムサムネイルの編集に成功しました",
     "Success.Remove": "アイテムの削除に成功しました",
     "Success.RenameCustomCategory": "カスタムカテゴリの名前を変更しました",
+    "Success.ClipboardSet": "クリップボードにコピーしました",
     "Success.FetchItemThumbnail": "アイテムサムネイルの更新が完了しました",
     "Success.ItemFileAdd": "アイテムファイルの追加が完了しました",
     "Success.ItemFolderAdd": "アイテムフォルダーの追加が完了しました",

@@ -160,6 +160,7 @@
     "Success.ItemThumbnailEdit": "項目縮圖編輯成功",
     "Success.Remove": "項目刪除成功",
     "Success.RenameCustomCategory": "自訂分類重新命名成功",
+    "Success.ClipboardSet": "已複製到剪貼簿",
     "Success.FetchItemThumbnail": "項目縮圖更新完成",
     "Success.ItemFileAdd": "項目檔案新增完成",
     "Success.ItemFolderAdd": "項目資料夾新增完成",

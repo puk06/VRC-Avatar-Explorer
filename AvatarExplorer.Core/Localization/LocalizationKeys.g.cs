@@ -281,6 +281,7 @@ public static class Loc
         public const string ItemThumbnailEdit = "Success.ItemThumbnailEdit";
         public const string Remove = "Success.Remove";
         public const string RenameCustomCategory = "Success.RenameCustomCategory";
+        public const string ClipboardSet = "Success.ClipboardSet";
         public const string FetchItemThumbnail = "Success.FetchItemThumbnail";
         public const string ItemFileAdd = "Success.ItemFileAdd";
         public const string ItemFolderAdd = "Success.ItemFolderAdd";

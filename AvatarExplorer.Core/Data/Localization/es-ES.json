@@ -160,6 +160,7 @@
     "Success.ItemThumbnailEdit": "Miniatura del elemento editada con éxito",
     "Success.Remove": "Elemento eliminado con éxito",
     "Success.RenameCustomCategory": "Categoría personalizada renombrada con éxito",
+    "Success.ClipboardSet": "Copiado al portapapeles",
     "Success.FetchItemThumbnail": "Actualización de miniatura del elemento completada",
     "Success.ItemFileAdd": "Agregado de archivo de elemento completado",
     "Success.ItemFolderAdd": "Agregado de carpeta de elemento completado",

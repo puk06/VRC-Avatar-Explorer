@@ -160,6 +160,7 @@
     "Success.ItemThumbnailEdit": "Item thumbnail edit successful",
     "Success.Remove": "Item removal successful",
     "Success.RenameCustomCategory": "Custom category renamed successfully",
+    "Success.ClipboardSet": "Copied to clipboard",
     "Success.FetchItemThumbnail": "Item thumbnail update completed",
     "Success.ItemFileAdd": "Item file addition completed",
     "Success.ItemFolderAdd": "Item folder addition completed",
