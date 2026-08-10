@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -366,7 +367,14 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         if (SchemeService.IsAnySchemeRegistered(protocol))
         {
             var command = SchemeService.GetRegisteredCommand(protocol) ?? "";
-            return Localizer.Instance.Get(Loc.Settings.RegisterScheme.Status.Other, command);
+            var applicationName = command.Split(" ").FirstOrDefault() ?? "";
+            
+            // ユーザー名を*****にする
+            var userName = Environment.UserName;
+            var maskedUserName = new string('*', userName.Length);
+            applicationName = applicationName.Replace(userName, maskedUserName);
+
+            return Localizer.Instance.Get(Loc.Settings.RegisterScheme.Status.Other, applicationName);
         }
 
         return Localizer.Instance[Loc.Settings.RegisterScheme.Status.None];
