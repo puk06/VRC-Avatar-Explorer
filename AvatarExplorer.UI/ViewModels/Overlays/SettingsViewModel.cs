@@ -41,7 +41,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public bool EnableHoverIconSize { get; set; }
     [Reactive] public double HoverIconSize { get; set; }
     [Reactive] public int SelectedAntiAliasing { get; set; }
-    [Reactive] public int ItemsPerPage { get; set; }
+    [Reactive] public string ItemsPerPage { get; set; } = string.Empty;
     [Reactive] public bool RemoveOriginal { get; set; }
     [Reactive] public bool LinkToOriginal { get; set; }
     [Reactive] public bool TreatEmptySupportedAvatarAsNone { get; set; }
@@ -51,8 +51,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public double BackgroundImageOpacity { get; set; }
     [Reactive] public string ItemsFolderPath { get; set; } = string.Empty;
     [Reactive] public string AutoBackupFolderPath { get; set; } = string.Empty;
-    [Reactive] public int AutoBackupInterval { get; set; }
-    [Reactive] public int MaxDegreeOfParallelism { get; set; }
+    [Reactive] public string AutoBackupInterval { get; set; } = string.Empty;
+    [Reactive] public string MaxDegreeOfParallelism { get; set; } = string.Empty;
     [Reactive] public bool CheckForUpdate { get; set; }
     [Reactive] public int SelectedUpdateChannel { get; set; }
     [Reactive] public Bitmap? GithubUserImage { get; set; } = null;
@@ -140,7 +140,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         EnableHoverIconSize = preferences.EnableHoverIconSize;
         HoverIconSize = preferences.HoverIconSize;
         SelectedAntiAliasing = (int)preferences.AntiAliasingMode;
-        ItemsPerPage = preferences.ItemsPerPage;
+        ItemsPerPage = preferences.ItemsPerPage.ToString();
         RemoveOriginal = runtimeSettings.RemoveOriginal;
         LinkToOriginal = runtimeSettings.ShouldLinkToOriginal;
         TreatEmptySupportedAvatarAsNone = runtimeSettings.TreatEmptySupportedAvatarAsNone;
@@ -150,8 +150,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         BackgroundImageOpacity = preferences.BackgroundOpacity;
         ItemsFolderPath = runtimeSettings.DataRootDirectory;
         AutoBackupFolderPath = runtimeSettings.AutoBackupRootDirectory;
-        AutoBackupInterval = runtimeSettings.AutoBackupInterval;
-        MaxDegreeOfParallelism = runtimeSettings.MaxDegreeOfParallelism;
+        AutoBackupInterval = runtimeSettings.AutoBackupInterval.ToString();
+        MaxDegreeOfParallelism = runtimeSettings.MaxDegreeOfParallelism.ToString();
         CheckForUpdate = runtimeSettings.CheckForUpdate;
         SelectedUpdateChannel = (int)runtimeSettings.UpdateChannel;
         SelectedSortOrder = (int)preferences.SortOrder;
@@ -171,9 +171,9 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             AutoBackupRootDirectory = AutoBackupFolderPath,
             RemoveOriginal = RemoveOriginal,
             ShouldLinkToOriginal = LinkToOriginal,
-            AutoBackupInterval = AutoBackupInterval,
+            AutoBackupInterval = ValueParser.Int(AutoBackupInterval, 5),
             TreatEmptySupportedAvatarAsNone = TreatEmptySupportedAvatarAsNone,
-            MaxDegreeOfParallelism = MaxDegreeOfParallelism,
+            MaxDegreeOfParallelism = ValueParser.Int(MaxDegreeOfParallelism, 4),
             CheckForUpdate = CheckForUpdate,
             UpdateChannel = (UpdateChannel)SelectedUpdateChannel
         };
@@ -190,7 +190,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             EnableHoverIconSize = EnableHoverIconSize,
             HoverIconSize = (int)HoverIconSize,
             AntiAliasingMode = (BitmapAntiAliasingMode)SelectedAntiAliasing,
-            ItemsPerPage = ItemsPerPage,
+            ItemsPerPage = ValueParser.Int(ItemsPerPage, 30),
             ThumbnailCompressionMaxEdge = (int)ThumbnailCompressionMaxSize,
             UseBackgroundImage = UseBackgroundImage,
             BackgroundImage = BackgroundImagePath,
