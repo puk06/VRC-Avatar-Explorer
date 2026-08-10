@@ -250,6 +250,8 @@
     "Settings.AntiAliasing.Options.High": "高品質",
     "Settings.ItemsPerPage.Title": "ページあたりのアイテム表示数",
     "Settings.ItemsPerPage.Description": "1ページに表示する最大アイテム数です",
+    "Settings.ThumbnailCompressionMaxSize.Title": "サムネイル最大圧縮サイズ",
+    "Settings.ThumbnailCompressionMaxSize.Description": "新しく生成する画像に適用される、最大辺の圧縮サイズ(px)です",
 
     "Settings.Item": "アイテム",
     "Settings.RemoveOriginal.Title": "インポート時に元ファイルを削除する",
@@ -258,8 +260,6 @@
     "Settings.LinkToOriginal.Description": "アイテム追加時に渡された最初のパスがフォルダの場合、そのフォルダをコピーせずにそのまま使用します",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "対応アバター未設定を未対応として扱う",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "アイテムの対応アバターが一つも設定されていない場合、全てのアバターに対応しているのではなく、どのアバターにも対応していないとみなすようになります。",
-    "Settings.ThumbnailCompressionMaxSize.Title": "サムネイル最大圧縮サイズ",
-    "Settings.ThumbnailCompressionMaxSize.Description": "新しく生成する画像に適用される、最大辺の圧縮サイズ(px)です",
 
     "Settings.Background": "背景",
     "Settings.UseCustomBackground.Title": "カスタム背景を使用する",
@@ -275,7 +275,7 @@
     "Settings.CommonAvatarManagement.Description": "共通素体の管理画面を開きます",
     "Settings.CommonAvatarManagement.OpenManagement": "管理画面を開く",
 
-    "Settings.Data": "データ",
+    "Settings.DataManagement": "データ管理",
     "Settings.ItemsFolder.Title": "データ保存先フォルダ",
     "Settings.ItemsFolder.Description": "アセットファイル / フォルダのコピー先です",
     "Settings.ItemsFolder.Browse": "参照",

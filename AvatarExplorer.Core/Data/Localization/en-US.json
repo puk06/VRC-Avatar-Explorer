@@ -250,6 +250,8 @@
     "Settings.AntiAliasing.Options.High": "High Quality",
     "Settings.ItemsPerPage.Title": "Items Per Page",
     "Settings.ItemsPerPage.Description": "Maximum number of items displayed per page",
+    "Settings.ThumbnailCompressionMaxSize.Title": "Thumbnail Max Compression Size",
+    "Settings.ThumbnailCompressionMaxSize.Description": "Maximum edge size (px) for compression, applied to newly generated images",
 
     "Settings.Item": "Item",
     "Settings.RemoveOriginal.Title": "Delete Original File on Import",
@@ -258,8 +260,6 @@
     "Settings.LinkToOriginal.Description": "When the first path provided while adding an item is a folder, use that folder directly without copying it",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Treat Empty Supported Avatars as None",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "When no supported avatars are configured for an item, treat it as unsupported rather than supported by all avatars.",
-    "Settings.ThumbnailCompressionMaxSize.Title": "Thumbnail Max Compression Size",
-    "Settings.ThumbnailCompressionMaxSize.Description": "Maximum edge size (px) for compression, applied to newly generated images",
 
     "Settings.Background": "Background",
     "Settings.UseCustomBackground.Title": "Use Custom Background",
@@ -275,7 +275,7 @@
     "Settings.CommonAvatarManagement.Description": "Open the common avatar management screen",
     "Settings.CommonAvatarManagement.OpenManagement": "Open Management",
 
-    "Settings.Data": "Data",
+    "Settings.DataManagement": "Data Management",
     "Settings.ItemsFolder.Title": "Data Storage Folder",
     "Settings.ItemsFolder.Description": "Destination for copying asset files/folders",
     "Settings.ItemsFolder.Browse": "Browse",

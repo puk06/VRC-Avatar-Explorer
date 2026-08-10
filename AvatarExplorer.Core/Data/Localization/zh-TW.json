@@ -250,6 +250,8 @@
     "Settings.AntiAliasing.Options.High": "高品質",
     "Settings.ItemsPerPage.Title": "每頁顯示項目數",
     "Settings.ItemsPerPage.Description": "每頁最多顯示的項目數量",
+    "Settings.ThumbnailCompressionMaxSize.Title": "縮圖最大壓縮尺寸",
+    "Settings.ThumbnailCompressionMaxSize.Description": "套用於新產生圖片的最大邊長壓縮尺寸(px)",
 
     "Settings.Item": "項目",
     "Settings.RemoveOriginal.Title": "匯入時刪除原始檔案",
@@ -258,8 +260,6 @@
     "Settings.LinkToOriginal.Description": "當新增項目時傳入的第一個路徑是資料夾時，不複製而直接使用該資料夾",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "將未設定支援頭像視為不支援",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "當項目沒有設定任何支援頭像時，不將其視為支援所有頭像，而是視為不支援任何頭像。",
-    "Settings.ThumbnailCompressionMaxSize.Title": "縮圖最大壓縮尺寸",
-    "Settings.ThumbnailCompressionMaxSize.Description": "套用於新產生圖片的最大邊長壓縮尺寸(px)",
 
     "Settings.Background": "背景",
     "Settings.UseCustomBackground.Title": "使用自訂背景",
@@ -275,7 +275,7 @@
     "Settings.CommonAvatarManagement.Description": "開啟共通素體管理畫面",
     "Settings.CommonAvatarManagement.OpenManagement": "開啟管理畫面",
 
-    "Settings.Data": "資料",
+    "Settings.DataManagement": "資料管理",
     "Settings.ItemsFolder.Title": "資料儲存資料夾",
     "Settings.ItemsFolder.Description": "資產檔案 / 資料夾的複製目標",
     "Settings.ItemsFolder.Browse": "瀏覽",

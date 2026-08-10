@@ -250,6 +250,8 @@
     "Settings.AntiAliasing.Options.High": "Haute qualité",
     "Settings.ItemsPerPage.Title": "Éléments par page",
     "Settings.ItemsPerPage.Description": "Nombre maximal d'éléments affichés par page",
+    "Settings.ThumbnailCompressionMaxSize.Title": "Taille maximale de compression des vignettes",
+    "Settings.ThumbnailCompressionMaxSize.Description": "Taille maximale de bord (px) pour la compression, appliquée aux images nouvellement générées",
 
     "Settings.Item": "Élément",
     "Settings.RemoveOriginal.Title": "Supprimer le fichier d'origine à l'importation",
@@ -258,8 +260,6 @@
     "Settings.LinkToOriginal.Description": "Lorsque le premier chemin fourni lors de l'ajout d'un élément est un dossier, utiliser ce dossier directement sans le copier",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Traiter les avatars pris en charge vides comme aucun",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "Lorsqu'aucun avatar pris en charge n'est configuré pour un élément, le traiter comme non pris en charge plutôt que comme pris en charge par tous les avatars.",
-    "Settings.ThumbnailCompressionMaxSize.Title": "Taille maximale de compression des vignettes",
-    "Settings.ThumbnailCompressionMaxSize.Description": "Taille maximale de bord (px) pour la compression, appliquée aux images nouvellement générées",
 
     "Settings.Background": "Arrière-plan",
     "Settings.UseCustomBackground.Title": "Utiliser un arrière-plan personnalisé",
@@ -275,7 +275,7 @@
     "Settings.CommonAvatarManagement.Description": "Ouvre l'écran de gestion des avatars communs",
     "Settings.CommonAvatarManagement.OpenManagement": "Ouvrir la gestion",
 
-    "Settings.Data": "Données",
+    "Settings.DataManagement": "Gestion des données",
     "Settings.ItemsFolder.Title": "Dossier de stockage des données",
     "Settings.ItemsFolder.Description": "Destination de copie des fichiers/dossiers de ressources",
     "Settings.ItemsFolder.Browse": "Parcourir",

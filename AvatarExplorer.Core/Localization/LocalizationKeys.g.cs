@@ -472,7 +472,7 @@ public static class Loc
             public const string Description = "Settings.CommonAvatarManagement.Description";
             public const string OpenManagement = "Settings.CommonAvatarManagement.OpenManagement";
         }
-        public const string Data = "Settings.Data";
+        public const string DataManagement = "Settings.DataManagement";
         public static class ItemsFolder
         {
             public const string Title = "Settings.ItemsFolder.Title";

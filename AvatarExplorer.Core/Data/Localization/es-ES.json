@@ -250,6 +250,8 @@
     "Settings.AntiAliasing.Options.High": "Alta calidad",
     "Settings.ItemsPerPage.Title": "Elementos por página",
     "Settings.ItemsPerPage.Description": "Número máximo de elementos mostrados por página",
+    "Settings.ThumbnailCompressionMaxSize.Title": "Tamaño máximo de compresión de miniatura",
+    "Settings.ThumbnailCompressionMaxSize.Description": "Tamaño máximo de borde (px) para compresión, aplicado a las imágenes recién generadas",
 
     "Settings.Item": "Elemento",
     "Settings.RemoveOriginal.Title": "Eliminar archivo original al importar",
@@ -258,8 +260,6 @@
     "Settings.LinkToOriginal.Description": "Cuando la primera ruta proporcionada al agregar un elemento es una carpeta, usar esa carpeta directamente sin copiarla",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Tratar avatares compatibles vacíos como ninguno",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "Cuando un elemento no tiene avatares compatibles configurados, tratarlo como no compatible en lugar de compatible con todos los avatares.",
-    "Settings.ThumbnailCompressionMaxSize.Title": "Tamaño máximo de compresión de miniatura",
-    "Settings.ThumbnailCompressionMaxSize.Description": "Tamaño máximo de borde (px) para compresión, aplicado a las imágenes recién generadas",
 
     "Settings.Background": "Fondo",
     "Settings.UseCustomBackground.Title": "Usar fondo personalizado",
@@ -275,7 +275,7 @@
     "Settings.CommonAvatarManagement.Description": "Abrir la pantalla de gestión de avatares comunes",
     "Settings.CommonAvatarManagement.OpenManagement": "Abrir gestión",
 
-    "Settings.Data": "Datos",
+    "Settings.DataManagement": "Gestión de datos",
     "Settings.ItemsFolder.Title": "Carpeta de almacenamiento de datos",
     "Settings.ItemsFolder.Description": "Destino para copiar archivos/carpetas de recursos",
     "Settings.ItemsFolder.Browse": "Examinar",

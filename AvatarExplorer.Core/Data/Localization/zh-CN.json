@@ -250,6 +250,8 @@
     "Settings.AntiAliasing.Options.High": "高质量",
     "Settings.ItemsPerPage.Title": "每页项目显示数",
     "Settings.ItemsPerPage.Description": "每页最多显示的项目数量",
+    "Settings.ThumbnailCompressionMaxSize.Title": "缩略图最大压缩尺寸",
+    "Settings.ThumbnailCompressionMaxSize.Description": "应用于新生成图像的最大边长压缩尺寸(px)",
 
     "Settings.Item": "项目",
     "Settings.RemoveOriginal.Title": "导入时删除原始文件",
@@ -258,8 +260,6 @@
     "Settings.LinkToOriginal.Description": "当添加项目时传入的第一个路径是文件夹时，不复制而直接使用该文件夹",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "将未设置支持头像视为不支持",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "当项目没有设置任何支持头像时，不将其视为支持所有头像，而是视为不支持任何头像。",
-    "Settings.ThumbnailCompressionMaxSize.Title": "缩略图最大压缩尺寸",
-    "Settings.ThumbnailCompressionMaxSize.Description": "应用于新生成图像的最大边长压缩尺寸(px)",
 
     "Settings.Background": "背景",
     "Settings.UseCustomBackground.Title": "使用自定义背景",
@@ -275,7 +275,7 @@
     "Settings.CommonAvatarManagement.Description": "打开共通素体管理界面",
     "Settings.CommonAvatarManagement.OpenManagement": "打开管理界面",
 
-    "Settings.Data": "数据",
+    "Settings.DataManagement": "数据管理",
     "Settings.ItemsFolder.Title": "数据存储文件夹",
     "Settings.ItemsFolder.Description": "资产文件 / 文件夹的复制目标",
     "Settings.ItemsFolder.Browse": "浏览",
