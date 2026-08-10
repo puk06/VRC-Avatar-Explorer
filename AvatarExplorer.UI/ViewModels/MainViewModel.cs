@@ -74,7 +74,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     public IReactiveCommand SidePanelButtonPressedCommand { get; }
     public IReactiveCommand SelectLeftItemCommand { get; }
     public IReactiveCommand SelectRightItemCommand { get; }
-    public ReactiveCommand<string, Unit> NavigateToSegmentCommand { get; }
+    public IReactiveCommand NavigateToSegmentCommand { get; }
 
     public IReactiveCommand LeftGoFirstCommand { get; }
     public IReactiveCommand LeftGoPrevCommand { get; }
