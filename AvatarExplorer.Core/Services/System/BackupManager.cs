@@ -150,12 +150,25 @@ public class BackupManager
 
         foreach (var file in FileSystemService.EnumerateFiles(folderPath))
         {
-            var sourcePath = BackupFiles.FirstOrDefault(i => Path.GetFileName(i) == Path.GetFileName(file));
+            var fileName = Path.GetFileName(file);
+            var sourcePath = BackupFiles.FirstOrDefault(i => Path.GetFileName(i) == fileName);
+
+            // Handle special case for migration version files
+            if (sourcePath == null && fileName.EndsWith(".migration.version"))
+            {
+                var baseFileName = fileName[..^".migration.version".Length];
+                var baseSourcePath = BackupFiles.FirstOrDefault(i => Path.GetFileName(i) == baseFileName);
+                if (baseSourcePath != null)
+                {
+                    sourcePath = baseSourcePath + ".migration.version";
+                }
+            }
+
             if (sourcePath == null) continue;
 
             await FileSystemService.CopyFileAsync(file, sourcePath);
         }
-        
+
         OnBackupRestored?.Invoke();
     }
 }
