@@ -106,7 +106,6 @@ public static class Loc
             public const string ResetDatabase = "Dialog.Confirmation.ResetDatabase";
             public const string RemoveCommonAvatarGroup = "Dialog.Confirmation.RemoveCommonAvatarGroup";
             public const string RemoveTempAvatar = "Dialog.Confirmation.RemoveTempAvatar";
-            public const string ContinueRestoreFromBackup = "Dialog.Confirmation.ContinueRestoreFromBackup";
             public const string RemovePreset = "Dialog.Confirmation.RemovePreset";
             public const string AddToExistingItem = "Dialog.Confirmation.AddToExistingItem";
             public const string ResolveTempAvatar = "Dialog.Confirmation.ResolveTempAvatar";

@@ -51,7 +51,6 @@
     "Dialog.Confirmation.ResetDatabase": "確定要重設選中的資料庫嗎？\n※ 資產資料不會被刪除，可以從自動備份還原。",
     "Dialog.Confirmation.RemoveCommonAvatarGroup": "要刪除共通素體群組嗎？\n共通素體群組名稱: {0}",
     "Dialog.Confirmation.RemoveTempAvatar": "暫時頭像名稱: {0}\n\n確定要刪除此頭像嗎？",
-    "Dialog.Confirmation.ContinueRestoreFromBackup": "目前設定的備份失敗了，但仍要繼續從備份還原嗎？",
     "Dialog.Confirmation.RemovePreset": "預設名稱: {0}\n\n確定要刪除此預設嗎？",
     "Dialog.Confirmation.AddToExistingItem": "已新增具有相同 Booth ID 的項目。要向該項目新增檔案或資料夾嗎？",
     "Dialog.Confirmation.ResolveTempAvatar": "要將暫時頭像「{0}」\n確定為正式項目「{1}」嗎？",

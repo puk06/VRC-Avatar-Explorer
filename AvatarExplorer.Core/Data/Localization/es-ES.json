@@ -51,7 +51,6 @@
     "Dialog.Confirmation.ResetDatabase": "¿Seguro que quieres reiniciar las bases de datos seleccionadas?\n※ Los datos de los recursos no se eliminarán. Se pueden restaurar desde la copia de seguridad automática.",
     "Dialog.Confirmation.RemoveCommonAvatarGroup": "¿Eliminar el grupo de avatares comunes?\nNombre del grupo de avatares comunes: {0}",
     "Dialog.Confirmation.RemoveTempAvatar": "Nombre del avatar temporal: {0}\n\n¿Seguro que quieres eliminar este avatar?",
-    "Dialog.Confirmation.ContinueRestoreFromBackup": "Falló la copia de seguridad de la configuración actual, ¿quieres continuar restaurando desde la copia de seguridad?",
     "Dialog.Confirmation.RemovePreset": "Nombre del ajuste preestablecido: {0}\n\n¿Seguro que quieres eliminar este ajuste?",
     "Dialog.Confirmation.AddToExistingItem": "Ya se agregó un elemento con el mismo Booth ID. ¿Quieres agregar archivos o carpetas a ese elemento?",
     "Dialog.Confirmation.ResolveTempAvatar": "¿Confirmar la vinculación del avatar temporal \"{0}\" con el elemento permanente \"{1}\"?",

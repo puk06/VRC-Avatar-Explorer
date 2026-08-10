@@ -51,7 +51,6 @@
     "Dialog.Confirmation.ResetDatabase": "确定要重置选中的数据库吗？\n※ 资产数据不会被删除，可从自动备份中恢复。",
     "Dialog.Confirmation.RemoveCommonAvatarGroup": "要删除共通素体组吗？\n共通素体组名称: {0}",
     "Dialog.Confirmation.RemoveTempAvatar": "临时头像名称: {0}\n\n确定要删除这个头像吗？",
-    "Dialog.Confirmation.ContinueRestoreFromBackup": "当前设置的备份失败了，但仍要继续从备份恢复吗？",
     "Dialog.Confirmation.RemovePreset": "预设名称: {0}\n\n确定要删除这个预设吗？",
     "Dialog.Confirmation.AddToExistingItem": "已添加具有相同 Booth ID 的项目。要向该项目添加文件或文件夹吗？",
     "Dialog.Confirmation.ResolveTempAvatar": "要将临时头像“{0}”\n确定为正式项目“{1}”吗？",

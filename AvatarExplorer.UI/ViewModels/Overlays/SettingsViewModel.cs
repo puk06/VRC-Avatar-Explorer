@@ -261,12 +261,6 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Items Folder");
         if (folders == null || folders.Length == 0) return;
 
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Dialog.Confirmation.Default],
-            Localizer.Instance[Loc.Dialog.Confirmation.ContinueRestoreFromBackup]
-        );
-        if (!result) return;
-
         var selectedBackupPath = folders[0];
         await AvatarExplorerApp.Instance.BackupManager.RestoreBackup(selectedBackupPath);
     }

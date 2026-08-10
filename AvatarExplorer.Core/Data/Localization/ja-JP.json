@@ -51,7 +51,6 @@
     "Dialog.Confirmation.ResetDatabase": "選択したデータベースをリセットしますか？\n※アセットデータは削除されません。自動バックアップから復元可能です。",
     "Dialog.Confirmation.RemoveCommonAvatarGroup": "共通素体グループを削除しますか？\n共通素体グループ名: {0}",
     "Dialog.Confirmation.RemoveTempAvatar": "仮アバター名: {0}\n\n本当にこのアバターを削除しますか？",
-    "Dialog.Confirmation.ContinueRestoreFromBackup": "現在の設定のバックアップに失敗しましたが、バックアップからの復元処理を続行しますか？",
     "Dialog.Confirmation.RemovePreset": "プリセット名: {0}\n\n本当にこのプリセットを削除しますか？",
     "Dialog.Confirmation.AddToExistingItem": "同じBoothIdのアイテムが既に追加されています。そのアイテムにファイルやフォルダを追加しますか？",
     "Dialog.Confirmation.ResolveTempAvatar": "仮アバター「{0}」を\n正式アイテム「{1}」として確定しますか？",
