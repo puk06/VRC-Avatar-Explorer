@@ -172,15 +172,19 @@ public class ItemNavigationService
     private IIdentifiable[] HandleItem(string state)
     {
         var itemFiles = PopulatePathCache(state);
+        var allFolders = _items.ItemRepository.EnumerateItemFolders(GetItemId()!);
 
-        return itemFiles.GroupBy(i => i.ParentFolderPath).Select(i =>
+        foreach (var folder in allFolders)
+            _pathCache[PathUtils.ComputeHash(folder)] = folder;
+
+        return allFolders.Select(folder =>
         {
-            var hash = PathUtils.ComputeHash(i.Key);
-            return new Folder(GetPrefix(FolderPrefix, hash), i.Key)
+            var hash = PathUtils.ComputeHash(folder);
+            return new Folder(GetPrefix(FolderPrefix, hash), folder)
             {
-                Title = Path.GetFileName(i.Key),
+                Title = Path.GetFileName(folder),
                 TitleLocalizable = false,
-                ItemCount = i.Count()
+                ItemCount = itemFiles.Count(f => f.ParentFolderPath == folder)
             };
         }).ToArray<IIdentifiable>();
     }
@@ -258,9 +262,6 @@ public class ItemNavigationService
 
         foreach (var file in itemFiles)
             _pathCache[PathUtils.ComputeHash(file.FilePath)] = file.FilePath;
-
-        foreach (var group in itemFiles.GroupBy(i => i.ParentFolderPath))
-            _pathCache[PathUtils.ComputeHash(group.Key)] = group.Key;
 
         return itemFiles;
     }

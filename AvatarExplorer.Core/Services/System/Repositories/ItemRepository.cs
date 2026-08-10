@@ -186,6 +186,24 @@ public class ItemRepository : RepositoryBase<Item>
             .ThenBy(kvp => kvp.Key);
     }
 
+    public List<string> EnumerateItemFolders(string id)
+    {
+        var item = Get(id);
+        if (item == null) return [];
+
+        var folders = new List<string>();
+        var root = item.ItemPath;
+
+        if (Directory.Exists(root))
+            foreach (var dir in Directory.GetDirectories(root))
+                folders.Add(dir);
+
+        foreach (var path in item.ItemPaths)
+            folders.Add(path);
+
+        return folders;
+    }
+
     public List<ItemFile> EnumerateItemFiles(string id)
     {
         var item = Get(id);
