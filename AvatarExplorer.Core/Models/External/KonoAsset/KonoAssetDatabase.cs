@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
 using AvatarExplorer.Core.Models.External.KonoAsset.Items;
 
-namespace AvatarExplorer.Core.Models.External.KonoAsset.Databases;
+namespace AvatarExplorer.Core.Models.External.KonoAsset;
 
-public abstract class AbstractKonoAssetDatabase<T>
+public class KonoAssetDatabase<T>
     where T : AbstractKonoAssetItem
 {
     [JsonPropertyName("version")]

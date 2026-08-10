@@ -3,7 +3,7 @@ using AvatarExplorer.Core.Data.Paths.External.KonoAsset;
 using AvatarExplorer.Core.Data.Paths.External.V1;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
-using AvatarExplorer.Core.Models.External.KonoAsset.Databases;
+using AvatarExplorer.Core.Models.External.KonoAsset;
 using AvatarExplorer.Core.Models.External.KonoAsset.Items;
 using AvatarExplorer.Core.Models.External.V1;
 using AvatarExplorer.Core.Models.Items;
@@ -193,10 +193,10 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
 
             List<AbstractKonoAssetItem> konoAssetItems =
             [
-                .. (FileSystemService.DeserializeClass<KonoAssetAvatarDatabase>(KonoAssetPath.AvatarsDatabasePath(dataFolderPath)).Value ?? new()).Data,
-                .. (FileSystemService.DeserializeClass<KonoAssetWearableDatabase>(KonoAssetPath.AvatarWearablesDatabasePath(dataFolderPath)).Value ?? new()).Data,
-                .. (FileSystemService.DeserializeClass<KonoAssetWorldDatabase>(KonoAssetPath.WorldObjectsDatabasePath(dataFolderPath)).Value ?? new()).Data,
-                .. (FileSystemService.DeserializeClass<KonoAssetOtherDatabase>(KonoAssetPath.OtherAssetsDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetDatabase<KonoAssetAvatarItem>>(KonoAssetPath.AvatarsDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetDatabase<KonoAssetWearableItem>>(KonoAssetPath.AvatarWearablesDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetDatabase<KonoAssetWorldItem>>(KonoAssetPath.WorldObjectsDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetDatabase<KonoAssetOtherItem>>(KonoAssetPath.OtherAssetsDatabasePath(dataFolderPath)).Value ?? new()).Data,
             ];
 
             var avatarNameMap = new Dictionary<string, string>();
@@ -318,10 +318,10 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
 
             List<AbstractKonoAssetItem> konoAssetItems =
             [
-                .. (FileSystemService.DeserializeClass<KonoAssetAvatarDatabase>(KonoAssetPath.AvatarsDatabasePath(dataFolderPath)).Value ?? new()).Data,
-                .. (FileSystemService.DeserializeClass<KonoAssetWearableDatabase>(KonoAssetPath.AvatarWearablesDatabasePath(dataFolderPath)).Value ?? new()).Data,
-                .. (FileSystemService.DeserializeClass<KonoAssetWorldDatabase>(KonoAssetPath.WorldObjectsDatabasePath(dataFolderPath)).Value ?? new()).Data,
-                .. (FileSystemService.DeserializeClass<KonoAssetOtherDatabase>(KonoAssetPath.OtherAssetsDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetDatabase<KonoAssetAvatarItem>>(KonoAssetPath.AvatarsDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetDatabase<KonoAssetWearableItem>>(KonoAssetPath.AvatarWearablesDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetDatabase<KonoAssetWorldItem>>(KonoAssetPath.WorldObjectsDatabasePath(dataFolderPath)).Value ?? new()).Data,
+                .. (FileSystemService.DeserializeClass<KonoAssetDatabase<KonoAssetOtherItem>>(KonoAssetPath.OtherAssetsDatabasePath(dataFolderPath)).Value ?? new()).Data,
             ];
 
             var sourceThumbnailMap = new Dictionary<int, string>();
