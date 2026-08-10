@@ -58,6 +58,10 @@
             <overlays:ImportDataOverlay/>
         </ContentControl>
 
+        <ContentControl IsVisible="{Binding ResetDatabaseVM.IsVisible}">
+            <overlays:ResetDatabaseOverlay/>
+        </ContentControl>
+
         <ContentControl IsVisible="{Binding ExportDataVM.IsVisible}">
             <overlays:ExportDataOverlay/>
         </ContentControl>

@@ -103,9 +103,7 @@ public static class Loc
         {
             public const string Default = "Dialog.Confirmation.Default";
             public const string RemoveItem = "Dialog.Confirmation.RemoveItem";
-            public const string ResetItemDatabase = "Dialog.Confirmation.ResetItemDatabase";
-            public const string ResetCommonAvatarDatabase = "Dialog.Confirmation.ResetCommonAvatarDatabase";
-            public const string ResetBulkImportPresetDatabase = "Dialog.Confirmation.ResetBulkImportPresetDatabase";
+            public const string ResetDatabase = "Dialog.Confirmation.ResetDatabase";
             public const string RemoveCommonAvatarGroup = "Dialog.Confirmation.RemoveCommonAvatarGroup";
             public const string RemoveTempAvatar = "Dialog.Confirmation.RemoveTempAvatar";
             public const string ContinueRestoreFromBackup = "Dialog.Confirmation.ContinueRestoreFromBackup";
@@ -516,23 +514,11 @@ public static class Loc
             public const string Description = "Settings.AutoFixDatabase.Description";
             public const string Fix = "Settings.AutoFixDatabase.Fix";
         }
-        public static class ResetItemDatabase
+        public static class ResetDatabase
         {
-            public const string Title = "Settings.ResetItemDatabase.Title";
-            public const string Description = "Settings.ResetItemDatabase.Description";
-            public const string Reset = "Settings.ResetItemDatabase.Reset";
-        }
-        public static class ResetCommonAvatarDatabase
-        {
-            public const string Title = "Settings.ResetCommonAvatarDatabase.Title";
-            public const string Description = "Settings.ResetCommonAvatarDatabase.Description";
-            public const string Reset = "Settings.ResetCommonAvatarDatabase.Reset";
-        }
-        public static class ResetBulkImportPresetDatabase
-        {
-            public const string Title = "Settings.ResetBulkImportPresetDatabase.Title";
-            public const string Description = "Settings.ResetBulkImportPresetDatabase.Description";
-            public const string Reset = "Settings.ResetBulkImportPresetDatabase.Reset";
+            public const string Title = "Settings.ResetDatabase.Title";
+            public const string Description = "Settings.ResetDatabase.Description";
+            public const string Open = "Settings.ResetDatabase.Open";
         }
         public const string System = "Settings.System";
         public static class ErrorLog
@@ -750,6 +736,17 @@ public static class Loc
         }
         public const string IncludeCommonToSupported = "ExportData.IncludeCommonToSupported";
         public const string Export = "ExportData.Export";
+    }
+    public static class ResetDatabase
+    {
+        public const string Title = "ResetDatabase.Title";
+        public const string Description = "ResetDatabase.Description";
+        public const string SelectDatabases = "ResetDatabase.SelectDatabases";
+        public const string ItemDatabase = "ResetDatabase.ItemDatabase";
+        public const string TempAvatarDatabase = "ResetDatabase.TempAvatarDatabase";
+        public const string CommonAvatarDatabase = "ResetDatabase.CommonAvatarDatabase";
+        public const string BulkImportPresetDatabase = "ResetDatabase.BulkImportPresetDatabase";
+        public const string Reset = "ResetDatabase.Reset";
     }
     public static class FetchAllThumbnails
     {

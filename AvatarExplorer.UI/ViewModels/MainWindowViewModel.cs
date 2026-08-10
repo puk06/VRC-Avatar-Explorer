@@ -66,6 +66,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public ImportDataViewModel ImportDataVM { get; } = new();
     public ExportDataViewModel ExportDataVM { get; } = new();
+    public ResetDatabaseViewModel ResetDatabaseVM { get; } = new();
 
     public InitialSetupViewModel InitialSetupVM { get; } = new();
 

@@ -68,9 +68,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     public IReactiveCommand FetchAllThumbnailsCommand { get; }
     public IReactiveCommand RestoreFromBackupCommand { get; }
     public IReactiveCommand AutoFixDatabaseCommand { get; }
-    public IReactiveCommand ResetItemDatabaseCommand { get; }
-    public IReactiveCommand ResetCommonAvatarDatabaseCommand { get; }
-    public IReactiveCommand ResetBulkImportPresetDatabaseCommand { get; }
+    public IReactiveCommand ResetDatabaseCommand { get; }
     public IReactiveCommand ShowErrorLogCommand { get; }
     public IReactiveCommand RegisterVRCAESchemeCommand { get; }
     public IReactiveCommand UnregisterVRCAESchemeCommand { get; }
@@ -97,9 +95,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         FetchAllThumbnailsCommand = ReactiveCommand.Create(FetchAllThumbnails);
         RestoreFromBackupCommand = ReactiveCommand.CreateFromTask(RestoreFromBackup);
         AutoFixDatabaseCommand = ReactiveCommand.CreateFromTask(AutoFixDatabase);
-        ResetItemDatabaseCommand = ReactiveCommand.CreateFromTask(ResetItemDatabase);
-        ResetCommonAvatarDatabaseCommand = ReactiveCommand.CreateFromTask(ResetCommonAvatarDatabase);
-        ResetBulkImportPresetDatabaseCommand = ReactiveCommand.CreateFromTask(ResetBulkImportPresetDatabase);
+        ResetDatabaseCommand = ReactiveCommand.Create(ResetDatabase);
         ShowErrorLogCommand = ReactiveCommand.Create(ShowErrorLog);
         RegisterVRCAESchemeCommand = ReactiveCommand.CreateFromTask(() => RegisterScheme(SchemeService.ProtocolVRCAE));
         UnregisterVRCAESchemeCommand = ReactiveCommand.CreateFromTask(() => UnregisterScheme(SchemeService.ProtocolVRCAE));
@@ -301,44 +297,9 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         }
     }
 
-    private async Task ResetItemDatabase()
+    private void ResetDatabase()
     {
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Dialog.Confirmation.Default],
-            Localizer.Instance[Loc.Dialog.Confirmation.ResetItemDatabase]
-        );
-        if (!result) return;
-
-        await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
-
-        AvatarExplorerApp.Instance.Items.Clear();
-        AvatarExplorerApp.Instance.TempAvatars.Clear();
-    }
-
-    private async Task ResetCommonAvatarDatabase()
-    {
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Dialog.Confirmation.Default],
-            Localizer.Instance[Loc.Dialog.Confirmation.ResetCommonAvatarDatabase]
-        );
-        if (!result) return;
-
-        await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
-
-        AvatarExplorerApp.Instance.CommonAvatars.Clear();
-    }
-
-    private async Task ResetBulkImportPresetDatabase()
-    {
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Dialog.Confirmation.Default],
-            Localizer.Instance[Loc.Dialog.Confirmation.ResetBulkImportPresetDatabase]
-        );
-        if (!result) return;
-
-        await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
-
-        AvatarExplorerApp.Instance.BulkImportPresets.Clear();
+        MainWindowViewModel.Instance.ResetDatabaseVM.Open();
     }
 
     private void ShowErrorLog()

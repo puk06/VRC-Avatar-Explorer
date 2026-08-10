@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Overlays.ResetDatabaseOverlay"
+    x:DataType="vm:ResetDatabaseViewModel">
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="500" Padding="24">
+            <StackPanel Spacing="20">
+
+                <StackPanel Spacing="5">
+                    <TextBlock Text="{Binding [ResetDatabase.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Text="{Binding [ResetDatabase.Description], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Foreground="{DynamicResource Text.Secondary}" TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <Separator Classes="separator"/>
+
+                <StackPanel Spacing="10">
+                    <TextBlock Text="{Binding [ResetDatabase.SelectDatabases], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
+                    <StackPanel Spacing="8">
+                        <CheckBox IsChecked="{Binding ResetItems}" Content="{Binding [ResetDatabase.ItemDatabase], Source={x:Static loc:Localizer.Instance}}"/>
+                        <CheckBox IsChecked="{Binding ResetTempAvatars}" Content="{Binding [ResetDatabase.TempAvatarDatabase], Source={x:Static loc:Localizer.Instance}}"/>
+                        <CheckBox IsChecked="{Binding ResetCommonAvatars}" Content="{Binding [ResetDatabase.CommonAvatarDatabase], Source={x:Static loc:Localizer.Instance}}"/>
+                        <CheckBox IsChecked="{Binding ResetBulkImportPresets}" Content="{Binding [ResetDatabase.BulkImportPresetDatabase], Source={x:Static loc:Localizer.Instance}}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Classes="button" Grid.Column="0" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" Padding="0,7" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CancelCommand}"/>
+                    <Button Classes="accentbutton" Grid.Column="1" Content="{Binding [ResetDatabase.Reset], Source={x:Static loc:Localizer.Instance}}" Padding="0,7" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding ResetCommand}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>
