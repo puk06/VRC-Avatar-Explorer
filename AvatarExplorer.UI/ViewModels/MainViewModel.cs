@@ -534,7 +534,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         _searchManager.ClearQuery();
         _stateCacheManager.SaveRightState(RightPageInfo);
-        _itemNavigationService.PopAllSearchStates();
         _itemNavigationService.Select(item.Identifier);
         RightPageInfo.Reset();
         Refresh(false);

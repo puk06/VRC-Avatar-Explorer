@@ -18,7 +18,6 @@ public class ItemNavigationService
     public const string FolderPrefix = "folder";
     public const string ExtensionPrefix = "extension";
     public const string FilePrefix = "file";
-    public const string SearchPrefix = "search";
 
     private readonly ItemGroupService _items;
     private readonly SelectionState _state = new();
@@ -101,16 +100,6 @@ public class ItemNavigationService
     }
 
     public Guid? CurrentStateId => _state.Current?.Id;
-
-    public bool IsSearchActive => _state.GetCurrentSelectionNodes().Any(i => i.Value.StartsWith(GetPrefix(SearchPrefix, string.Empty)));
-
-    public void PopAllSearchStates()
-    {
-        while (IsSearchActive)
-        {
-            _state.Pop();
-        }
-    }
 
     public void PopToState(string targetState)
     {
