@@ -9,18 +9,12 @@ public static class DatabaseMigrationService
     {
         try
         {
-            if (!File.Exists(filePath)) return;
-
-            var json = File.ReadAllText(filePath);
-            if (string.IsNullOrWhiteSpace(json)) return;
-
-            var root = JsonNode.Parse(json);
-            if (root is null) return;
+            if (!TryReadJson(filePath, out var root)) return;
 
             JsonObject container;
             JsonArray items;
             int appliedVersion;
-            bool wasOldFormat = false;
+            bool wasOldFormat;
 
             if (root is JsonArray oldArray)
             {
@@ -33,33 +27,17 @@ public static class DatabaseMigrationService
             }
             else if (root is JsonObject obj && obj.TryGetPropertyValue("Items", out var itemsNode) && itemsNode is JsonArray arr)
             {
+                wasOldFormat = false;
                 container = obj;
                 items = arr;
                 appliedVersion = obj["Version"]?.GetValue<int>() ?? 0;
             }
-            else
-            {
-                return;
-            }
+            else return;
 
-            var changed = false;
-            if (appliedVersion < currentVersion)
-            {
-                for (int targetVersion = appliedVersion + 1; targetVersion <= currentVersion; targetVersion++)
-                {
-                    changed |= applyMigration(items, targetVersion);
-                }
-            }
+            var changed = RunMigrations(items, appliedVersion, currentVersion, applyMigration);
 
             if (wasOldFormat || changed)
-            {
-                var backupPath = BuildBackupPath(filePath, appliedVersion, currentVersion);
-                File.Copy(filePath, backupPath, overwrite: true);
-
-                container["Version"] = currentVersion;
-                var migratedJson = container.ToJsonString(JsonManager.JsonSerializerOptions);
-                File.WriteAllText(filePath, migratedJson);
-            }
+                WriteWithVersion(filePath, container, appliedVersion, currentVersion);
 
             DeleteLegacyVersionFile(filePath);
         }
@@ -73,16 +51,10 @@ public static class DatabaseMigrationService
     {
         try
         {
-            if (!File.Exists(filePath)) return;
-
-            var json = File.ReadAllText(filePath);
-            if (string.IsNullOrWhiteSpace(json)) return;
-
-            var root = JsonNode.Parse(json);
-            if (root is not JsonObject settings) return;
+            if (!TryReadJson(filePath, out var root) || root is not JsonObject settings) return;
 
             int appliedVersion;
-            bool hadVersionField = false;
+            bool hadVersionField;
 
             if (settings.TryGetPropertyValue("Version", out var versionNode) &&
                 versionNode is JsonValue v && v.TryGetValue(out int ver))
@@ -93,26 +65,13 @@ public static class DatabaseMigrationService
             else
             {
                 appliedVersion = ReadLegacyVersionFile(filePath);
+                hadVersionField = false;
             }
 
-            var changed = false;
-            if (appliedVersion < currentVersion)
-            {
-                for (int targetVersion = appliedVersion + 1; targetVersion <= currentVersion; targetVersion++)
-                {
-                    changed |= applyMigration(settings, targetVersion);
-                }
-            }
+            var changed = RunMigrations(settings, appliedVersion, currentVersion, applyMigration);
 
             if (!hadVersionField || changed)
-            {
-                var backupPath = BuildBackupPath(filePath, appliedVersion, currentVersion);
-                File.Copy(filePath, backupPath, overwrite: true);
-
-                settings["Version"] = currentVersion;
-                var migratedJson = settings.ToJsonString(JsonManager.JsonSerializerOptions);
-                File.WriteAllText(filePath, migratedJson);
-            }
+                WriteWithVersion(filePath, settings, appliedVersion, currentVersion);
 
             DeleteLegacyVersionFile(filePath);
         }
@@ -120,6 +79,37 @@ public static class DatabaseMigrationService
         {
             ErrorManager.Instance.PostInternalError($"Failed to migrate settings: '{filePath}'.", ex);
         }
+    }
+
+    private static bool TryReadJson(string filePath, out JsonNode? root)
+    {
+        root = null;
+        if (!File.Exists(filePath)) return false;
+
+        var json = File.ReadAllText(filePath);
+        if (string.IsNullOrWhiteSpace(json)) return false;
+
+        root = JsonNode.Parse(json);
+        return root != null;
+    }
+
+    private static bool RunMigrations<T>(T target, int fromVersion, int toVersion, Func<T, int, bool> applyMigration)
+    {
+        var changed = false;
+        if (fromVersion < toVersion)
+        {
+            for (int v = fromVersion + 1; v <= toVersion; v++)
+                changed |= applyMigration(target, v);
+        }
+        return changed;
+    }
+
+    private static void WriteWithVersion(string filePath, JsonObject node, int fromVersion, int toVersion)
+    {
+        var backupPath = BuildBackupPath(filePath, fromVersion, toVersion);
+        File.Copy(filePath, backupPath, overwrite: true);
+        node["Version"] = toVersion;
+        File.WriteAllText(filePath, node.ToJsonString(JsonManager.JsonSerializerOptions));
     }
 
     private static string BuildBackupPath(string filePath, int fromVersion, int toVersion)
