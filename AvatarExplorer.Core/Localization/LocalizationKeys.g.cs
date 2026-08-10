@@ -38,6 +38,7 @@ public static class Loc
         public static class Path
         {
             public const string Placeholder = "Main.Path.Placeholder";
+            public const string SearchResult = "Main.Path.SearchResult";
         }
     }
     public static class ItemCategory

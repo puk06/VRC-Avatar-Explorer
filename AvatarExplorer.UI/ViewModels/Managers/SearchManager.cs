@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
@@ -8,6 +9,7 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Utils;
+using AvatarExplorer.UI.ViewModels.Component;
 using AvatarExplorer.UI.ViewModels.Panels;
 using AvatarExplorer.Core.Localization;
 
@@ -21,7 +23,13 @@ public class SearchManager
     private readonly Func<AdvancedSearchViewModel> _getAdvancedSearchVM;
     private readonly Action _onSearchExecuted;
 
+    private string? _suspendedSearchQuery;
+    private int _suspendedPage;
+    private Vector _suspendedScrollOffset;
+
     public string? ActiveSearchQuery { get; private set; }
+    public bool IsRestored { get; private set; }
+    public bool HasSuspendedQuery => _suspendedSearchQuery != null;
 
     public string? ActiveSearchQueryDisplayText
     {
@@ -57,6 +65,37 @@ public class SearchManager
         ActiveSearchQuery = null;
     }
 
+    public void SuspendQuery(PanelPageInfo rightPageInfo)
+    {
+        if (ActiveSearchQuery == null) return;
+        _suspendedSearchQuery = ActiveSearchQuery;
+        _suspendedPage = rightPageInfo.CurrentPage;
+        _suspendedScrollOffset = rightPageInfo.ScrollOffset;
+        ActiveSearchQuery = null;
+    }
+
+    public bool TryRestoreQuery(PanelPageInfo rightPageInfo)
+    {
+        if (_suspendedSearchQuery == null) return false;
+
+        ActiveSearchQuery = _suspendedSearchQuery;
+        _suspendedSearchQuery = null;
+        IsRestored = true;
+        rightPageInfo.CurrentPage = _suspendedPage;
+        rightPageInfo.RestoreScrollOffset = _suspendedScrollOffset;
+        return true;
+    }
+
+    public void ClearSuspendedQuery()
+    {
+        _suspendedSearchQuery = null;
+    }
+
+    public void ClearRestoredFlag()
+    {
+        IsRestored = false;
+    }
+
     public IEnumerable<Item> SearchItems(string query)
     {
         var identifiers = _itemGroupService.SearchItems(query, SearchResultType.Items, SearchUtils.ParseCategory);
@@ -77,6 +116,7 @@ public class SearchManager
         var query = BuildSearchString(_getSearchText(), _getAdvancedSearchVM());
         var parsed = SearchQueryParser.Parse(query);
         ActiveSearchQuery = parsed.Tokens.Count == 0 ? null : query;
+        _suspendedSearchQuery = null;
         _onSearchExecuted();
     }
 

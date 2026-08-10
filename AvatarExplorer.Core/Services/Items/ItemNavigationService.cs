@@ -100,6 +100,7 @@ public class ItemNavigationService
     }
 
     public Guid? CurrentStateId => _state.Current?.Id;
+    public string? CurrentStateValue => _state.Current?.Value;
 
     public void PopToState(string targetState)
     {

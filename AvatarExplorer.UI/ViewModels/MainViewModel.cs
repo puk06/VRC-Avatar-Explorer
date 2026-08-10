@@ -97,6 +97,9 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private List<ItemViewModel> _allLeftItems = [];
     private List<ItemViewModel> _allMainItems = [];
 
+    private string? _searchItemBaseState;
+    private bool _hasSearchItem;
+
     private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
     #endregion
 
@@ -308,7 +311,18 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             .ToList();
 
         RightPageInfo.TotalItems = _allMainItems.Count;
-        RightPageInfo.Reset();
+
+        if (_searchManager.IsRestored)
+        {
+            _searchManager.ClearRestoredFlag();
+            var clampedPage = Math.Min(RightPageInfo.CurrentPage, Math.Max(0, RightPageInfo.TotalPages - 1));
+            RightPageInfo.SetPage(clampedPage);
+        }
+        else
+        {
+            RightPageInfo.Reset();
+        }
+
         RefreshMainItems();
 
         PathSegments = [new PathSegment
@@ -461,9 +475,17 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         var segments = new List<PathSegment>();
         var stateList = states.ToList();
+        var currentItemState = _itemNavigationService.GetCurrentItemId();
 
         for (int i = 0; i < stateList.Count; i++)
         {
+            // 検索状況は前の状況に依存しないため、パスセグメントは検索アイテムのところでリセットする
+            if (_hasSearchItem && stateList[i] == currentItemState)
+            {
+                segments.Clear();
+                segments.Add(new PathSegment { DisplayName = Localizer.Instance[Loc.Main.Path.SearchResult] });
+            }
+            
             var displayName = FormatPathNode(stateList[i]);
             if (string.IsNullOrWhiteSpace(displayName)) continue;
 
@@ -522,6 +544,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
         _searchManager.ClearQuery();
+        _searchManager.ClearSuspendedQuery();
+        _hasSearchItem = false;
         _itemNavigationService.Clear();
         _itemNavigationService.Select(item.Identifier);
         RightPageInfo.Reset();
@@ -532,9 +556,30 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     {
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
-        _searchManager.ClearQuery();
-        _stateCacheManager.SaveRightState(RightPageInfo);
-        _itemNavigationService.Select(item.Identifier);
+        if (_searchManager.ActiveSearchQuery != null)
+        {
+            // 検索からアイテム選択: 検索アイテムは1つのみ（上書き）
+            if (_hasSearchItem && _searchItemBaseState != null)
+            {
+                // 前の検索アイテムまでpop
+                _itemNavigationService.PopToState(_searchItemBaseState);
+            }
+            else
+            {
+                _stateCacheManager.SaveRightState(RightPageInfo);
+            }
+
+            _searchItemBaseState = _itemNavigationService.CurrentStateValue;
+            _searchManager.SuspendQuery(RightPageInfo);
+            _itemNavigationService.Select(item.Identifier);
+            _hasSearchItem = true;
+        }
+        else
+        {
+            _stateCacheManager.SaveRightState(RightPageInfo);
+            _itemNavigationService.Select(item.Identifier);
+        }
+
         RightPageInfo.Reset();
         Refresh(false);
     }
@@ -544,11 +589,26 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         if (_searchManager.ActiveSearchQuery != null)
         {
             _searchManager.ClearQuery();
+            _searchManager.ClearSuspendedQuery();
+            _hasSearchItem = false;
         }
         else
         {
-            var isPopped = _itemNavigationService.Undo() != null;
-            if (isPopped) _stateCacheManager.RestoreRightState(RightPageInfo);
+            var popped = _itemNavigationService.Undo();
+            if (popped != null)
+            {
+                var currentState = _itemNavigationService.CurrentStateValue;
+                if (_hasSearchItem && currentState == _searchItemBaseState)
+                {
+                    // 検索アイテムがpopされた → 検索状態を復元
+                    _searchManager.TryRestoreQuery(RightPageInfo);
+                    _hasSearchItem = false;
+                }
+                else
+                {
+                    _stateCacheManager.RestoreRightState(RightPageInfo);
+                }
+            }
         }
 
         Refresh(false);
@@ -558,6 +618,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     {
         _itemNavigationService.Clear();
         _searchManager.ClearQuery();
+        _searchManager.ClearSuspendedQuery();
+        _hasSearchItem = false;
         RightPageInfo.Reset();
         Refresh(false);
     }
