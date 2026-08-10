@@ -110,7 +110,10 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
             return;
         }
         
-        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewCommonAvatarGroupName]);
+        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(
+            Localizer.Instance[Loc.Dialog.Title.NewCommonAvatarGroupName],
+            group.DisplayName
+        );
         if (string.IsNullOrEmpty(newGroupName)) return;
 
         CommonAvatarRep.RenameGroup(group.Identifier, newGroupName);
@@ -132,7 +135,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
 
         var confirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
-            Localizer.Instance[Loc.Dialog.Confirmation.RemoveCommonAvatarGroup]
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveCommonAvatarGroup, group.DisplayName)
         );
         if (!confirmationResult) return;
 
@@ -163,7 +166,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         }
 
         var searchQuery = searchText + " OR=true";
-        var result = AvatarExplorerApp.Instance.ItemGroupService.SearchItems(searchQuery, SearchResultType.All);
+        var result = AvatarExplorerApp.Instance.ItemGroupService.SearchItems(searchQuery, SearchResultType.Items | SearchResultType.TempAvatar);
         if (result == null)
         {
             Avatars = _allAvatars;
@@ -201,6 +204,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
 
     private void RefleshGroups()
     {
+        var lastSelectedGroupIndex = SelectedGroupIndex;
         var groups = CommonAvatarRep.GetAll();
 
         Groups = new ObservableCollection<CommonAvatarViewModel>(
@@ -210,6 +214,12 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
                 Identifier = i.Identifier
             })
         );
+
+        SelectedGroupIndex = -1;
+
+        if (Groups.Count == 0) SelectedGroupIndex = -1;
+        else if (lastSelectedGroupIndex >= 0 && lastSelectedGroupIndex < Groups.Count) SelectedGroupIndex = lastSelectedGroupIndex;
+        else SelectedGroupIndex = 0;
     }
 
     private void UpdateSelectedGroupAvatars()
