@@ -16,7 +16,6 @@ public class UnitypackageViewModel : ViewModelBase
     [Reactive] public string ToolTipText { get; set; } = string.Empty;
 
     public string ParentDirectory { get; set; } = string.Empty;
-    public string FullPath { get; set; } = string.Empty;
 
     public UnitypackageViewModel(string path)
     {
@@ -24,7 +23,6 @@ public class UnitypackageViewModel : ViewModelBase
         ParentDirectory = Directory.GetParent(path)?.Name ?? string.Empty;
 
         ToolTipText = ParentDirectory + " > " + Name;
-        FullPath = path;
     }
 }
 
