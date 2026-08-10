@@ -90,8 +90,7 @@ public class ItemRepository : RepositoryBase<Item>
             if (downloaded) item.UpdateThumbnailFileName(item.Id);
         }
 
-        var now = DatetimeUtils.GetCurrentUnixTime();
-        item.UpdateTimestamp(now);
+        item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
 
         Save();
         InvokeUpdated();
@@ -127,6 +126,8 @@ public class ItemRepository : RepositoryBase<Item>
 
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(result.Value.ItemParentFolder);
         item.UpdateItemPaths(result.Value.FolderPaths);
+
+        item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
 
         Save();
         InvokeUpdated();
