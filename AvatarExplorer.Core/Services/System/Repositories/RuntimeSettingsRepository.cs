@@ -10,10 +10,11 @@ public class RuntimeSettingsRepository : SettingsRepositoryBase<RuntimeSettings>
 
     public override void Load()
     {
-        DatabaseMigrationService.Migrate(
+        DatabaseMigrationService.MigrateSettings(
             Manager.FilePath,
             DatabaseMigrations.RuntimeSettingsVersion,
             DatabaseMigrations.ApplyRuntimeSettingsMigration);
         Manager.Load();
+        Manager.MigrationVersion = DatabaseMigrations.RuntimeSettingsVersion;
     }
 }

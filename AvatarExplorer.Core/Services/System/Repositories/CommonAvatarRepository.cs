@@ -10,12 +10,13 @@ public class CommonAvatarRepository : RepositoryBase<CommonAvatar>
 
     public override void Load()
     {
-        DatabaseMigrationService.Migrate(
+        DatabaseMigrationService.MigrateDatabase(
             Db.DatabaseFilePath,
             DatabaseMigrations.CommonAvatarVersion,
             DatabaseMigrations.ApplyCommonAvatarMigration);
 
         Db.Load();
+        Db.MigrationVersion = DatabaseMigrations.CommonAvatarVersion;
         InvokeUpdated();
     }
 

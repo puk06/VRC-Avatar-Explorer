@@ -16,16 +16,11 @@ public static class SystemPath
     public static readonly string TempFolderPath = PathUtils.GetRootPath(Path.GetTempPath()); // {TempFolder}/Avatar Explorer V2
 
     public static readonly string ItemDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.Items);
-    public static readonly string ItemDatabaseMigrationVersionPath = Path.Join(DatabaseFolderPath, SystemFileName.Database.ItemsDatabaseMigrationVersion);
-    public static readonly string CommonAvatarDatabaseMigrationVersionPath = Path.Join(DatabaseFolderPath, SystemFileName.Database.CommonAvatarsDatabaseMigrationVersion);
-    public static readonly string BulkImportPresetDatabaseMigrationVersionPath = Path.Join(DatabaseFolderPath, SystemFileName.Database.BulkImportPresetsDatabaseMigrationVersion);
-    public static readonly string TempAvatarsDatabaseMigrationVersionPath = Path.Join(DatabaseFolderPath, SystemFileName.Database.TempAvatarsDatabaseMigrationVersion);
     public static readonly string CommonAvatarDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.CommonAvatars);
     public static readonly string BulkImportPresetDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.BulkImportPresets);
     public static readonly string TempAvatarsDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.TempAvatars);
 
     public static readonly string RuntimeSettingsFilePath = Path.Join(SettingsFolderPath, SystemFileName.Settings.Runtime);
-    public static readonly string RuntimeSettingsMigrationVersionPath = Path.Join(SettingsFolderPath, SystemFileName.Settings.RuntimeDatabaseMigrationVersion);
 
     public static readonly string SchemeBackupFolderPath = Path.Join(SettingsFolderPath, "SchemeBackups");
 }

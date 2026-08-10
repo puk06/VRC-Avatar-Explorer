@@ -50,15 +50,10 @@ public class AvatarExplorerApp
         BackupManager.AddTargetFiles(
             [
                 SystemPath.ItemDatabasePath,
-                SystemPath.ItemDatabaseMigrationVersionPath,
                 SystemPath.CommonAvatarDatabasePath,
-                SystemPath.CommonAvatarDatabaseMigrationVersionPath,
                 SystemPath.TempAvatarsDatabasePath,
-                SystemPath.TempAvatarsDatabaseMigrationVersionPath,
                 SystemPath.BulkImportPresetDatabasePath,
-                SystemPath.BulkImportPresetDatabaseMigrationVersionPath,
-                SystemPath.RuntimeSettingsFilePath,
-                SystemPath.RuntimeSettingsMigrationVersionPath
+                SystemPath.RuntimeSettingsFilePath
             ]
         );
         BackupManager.OnBackupRestored += OnBackupRestored;

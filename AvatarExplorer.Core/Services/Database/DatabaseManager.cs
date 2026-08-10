@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using AvatarExplorer.Core.Interfaces.Database;
 using AvatarExplorer.Core.Services.IO;
 
@@ -11,9 +12,50 @@ public class DatabaseManager<T>(string databaseFilePath)
     private List<T> _items = [];
     public IReadOnlyList<T> Items => _items;
 
-    public void Load() => ReplaceAll(JsonFileManager<IEnumerable<T>>.Load(DatabaseFilePath) ?? []);
+    public int MigrationVersion { get; set; }
 
-    public void Save() => JsonFileManager<IEnumerable<T>>.Save(_items, DatabaseFilePath);
+    public void Load()
+    {
+        if (!File.Exists(DatabaseFilePath))
+        {
+            _items = [];
+            return;
+        }
+
+        var json = File.ReadAllText(DatabaseFilePath);
+        var root = JsonNode.Parse(json);
+
+        if (root is JsonArray)
+        {
+            var items = JsonManager.Deserialize<IEnumerable<T>>(json);
+            _items = (items ?? []).ToList();
+            MigrationVersion = 0;
+        }
+        else
+        {
+            var container = JsonManager.Deserialize<DatabaseContainer<T>>(json);
+            if (container != null)
+            {
+                _items = container.Items;
+                MigrationVersion = container.Version;
+            }
+            else
+            {
+                _items = [];
+                MigrationVersion = 0;
+            }
+        }
+    }
+
+    public void Save()
+    {
+        var container = new DatabaseContainer<T>
+        {
+            Version = MigrationVersion,
+            Items = _items
+        };
+        JsonFileManager<DatabaseContainer<T>>.Save(container, DatabaseFilePath);
+    }
 
     public T? GetById(string? id) => id == null ? null : _items.FirstOrDefault(i => i.Id == id);
 

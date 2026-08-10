@@ -10,12 +10,13 @@ public class BulkImportPresetRepository : RepositoryBase<BulkImportPreset>
 
     public override void Load()
     {
-        DatabaseMigrationService.Migrate(
+        DatabaseMigrationService.MigrateDatabase(
             Db.DatabaseFilePath,
             DatabaseMigrations.BulkImportPresetVersion,
             DatabaseMigrations.ApplyBulkImportPresetMigration);
 
         Db.Load();
+        Db.MigrationVersion = DatabaseMigrations.BulkImportPresetVersion;
         InvokeUpdated();
     }
 

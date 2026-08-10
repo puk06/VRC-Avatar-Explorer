@@ -1,5 +1,6 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.System.Repositories;
 
@@ -9,6 +10,11 @@ public class TempAvatarRepository : RepositoryBase<TempAvatar>
 
     public override void Load()
     {
+        DatabaseMigrationService.MigrateDatabase(
+            Db.DatabaseFilePath,
+            0,
+            (_, _) => false);
+
         Db.Load();
         InvokeUpdated();
     }

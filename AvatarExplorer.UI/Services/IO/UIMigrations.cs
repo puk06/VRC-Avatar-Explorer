@@ -7,10 +7,8 @@ public static class UIMigrations
 {
     public const int UserPreferencesVersion = 1;
 
-    public static bool ApplyUserPreferencesMigration(JsonNode root, int targetVersion, string? runtimeSettingsFilePath = null)
+    public static bool ApplyUserPreferencesMigration(JsonObject preferences, int targetVersion, string? runtimeSettingsFilePath = null)
     {
-        if (root is not JsonObject preferences) return false;
-
         return targetVersion switch
         {
             1 => MigrateUserPreferencesV1FromRuntime(preferences, runtimeSettingsFilePath),

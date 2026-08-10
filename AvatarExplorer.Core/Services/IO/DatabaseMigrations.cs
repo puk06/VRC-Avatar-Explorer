@@ -14,10 +14,8 @@ public static class DatabaseMigrations
 
     private const int ItemTypeOffset = 1;
 
-    public static bool ApplyItemMigration(JsonNode root, int targetVersion, string? dataRootDirectory = null)
+    public static bool ApplyItemMigration(JsonArray items, int targetVersion, string? dataRootDirectory = null)
     {
-        if (root is not JsonArray items) return false;
-
         return targetVersion switch
         {
             1 => MigrateV1RenameThumbnailKey(items),
@@ -27,10 +25,8 @@ public static class DatabaseMigrations
         };
     }
 
-    public static bool ApplyCommonAvatarMigration(JsonNode root, int targetVersion)
+    public static bool ApplyCommonAvatarMigration(JsonArray items, int targetVersion)
     {
-        if (root is not JsonArray items) return false;
-
         return targetVersion switch
         {
             1 => MigrateV1AvatarReferences(items, "Avatars"),
@@ -38,10 +34,8 @@ public static class DatabaseMigrations
         };
     }
 
-    public static bool ApplyBulkImportPresetMigration(JsonNode root, int targetVersion)
+    public static bool ApplyBulkImportPresetMigration(JsonArray items, int targetVersion)
     {
-        if (root is not JsonArray items) return false;
-
         return targetVersion switch
         {
             1 => MigrateV1BulkImportItemIds(items),
@@ -49,10 +43,8 @@ public static class DatabaseMigrations
         };
     }
 
-    public static bool ApplyRuntimeSettingsMigration(JsonNode root, int targetVersion)
+    public static bool ApplyRuntimeSettingsMigration(JsonObject settings, int targetVersion)
     {
-        if (root is not JsonObject settings) return false;
-
         return targetVersion switch
         {
             1 => false, // Obsolete fields remain for UI-side UserPreferences migration

@@ -1,4 +1,6 @@
+using System.Text.Json.Nodes;
 using AvatarExplorer.Core.Services.IO;
+using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.Core.Services.System;
 
@@ -11,6 +13,7 @@ public class SettingsManager<T>(string filePath) where T : class, new()
 
     public T Settings => _settings;
     public string FilePath => _filePath;
+    public int MigrationVersion { get; set; }
 
     public void Update(T newSettings)
     {
@@ -20,10 +23,48 @@ public class SettingsManager<T>(string filePath) where T : class, new()
 
     public void Load()
     {
-        var loadedSettings = JsonFileManager<T>.Load(_filePath);
-        if (loadedSettings != null) Update(loadedSettings);
-        else Update(new T());
+        if (!File.Exists(_filePath))
+        {
+            Update(new T());
+            return;
+        }
+
+        try
+        {
+            var json = File.ReadAllText(_filePath);
+            var root = JsonNode.Parse(json);
+
+            if (root is JsonObject obj)
+                MigrationVersion = obj["Version"]?.GetValue<int>() ?? 0;
+
+            var loaded = JsonManager.Deserialize<T>(json);
+            if (loaded != null) Update(loaded);
+            else Update(new T());
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to load settings: '{_filePath}'.", ex);
+            Update(new T());
+        }
     }
 
-    public void Save() => JsonFileManager<T>.Save(_settings, _filePath);
+    public void Save()
+    {
+        try
+        {
+            FileSystemService.PrepareFileDirectory(_filePath);
+            var json = JsonManager.Serialize(_settings);
+            var root = JsonNode.Parse(json);
+            if (root is JsonObject obj)
+            {
+                obj["Version"] = MigrationVersion;
+                json = obj.ToJsonString(JsonManager.JsonSerializerOptions);
+            }
+            File.WriteAllText(_filePath, json);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to save settings: '{_filePath}'.", ex);
+        }
+    }
 }

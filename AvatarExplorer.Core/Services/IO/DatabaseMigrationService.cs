@@ -5,14 +5,11 @@ namespace AvatarExplorer.Core.Services.IO;
 
 public static class DatabaseMigrationService
 {
-    public static void Migrate(string filePath, int currentVersion, Func<JsonNode, int, bool> applyMigration)
+    public static void MigrateDatabase(string filePath, int currentVersion, Func<JsonArray, int, bool> applyMigration)
     {
         try
         {
             if (!File.Exists(filePath)) return;
-
-            int appliedVersion = ReadAppliedMigrationVersion(filePath);
-            if (appliedVersion >= currentVersion) return;
 
             var json = File.ReadAllText(filePath);
             if (string.IsNullOrWhiteSpace(json)) return;
@@ -20,22 +17,51 @@ public static class DatabaseMigrationService
             var root = JsonNode.Parse(json);
             if (root is null) return;
 
-            var changed = false;
-            for (int targetVersion = appliedVersion + 1; targetVersion <= currentVersion; targetVersion++)
+            JsonObject container;
+            JsonArray items;
+            int appliedVersion;
+            bool wasOldFormat = false;
+
+            if (root is JsonArray oldArray)
             {
-                changed |= applyMigration(root, targetVersion);
+                wasOldFormat = true;
+                appliedVersion = ReadLegacyVersionFile(filePath);
+                items = oldArray;
+                container = [];
+                container["Items"] = oldArray;
+                container["Version"] = appliedVersion;
+            }
+            else if (root is JsonObject obj && obj.TryGetPropertyValue("Items", out var itemsNode) && itemsNode is JsonArray arr)
+            {
+                container = obj;
+                items = arr;
+                appliedVersion = obj["Version"]?.GetValue<int>() ?? 0;
+            }
+            else
+            {
+                return;
             }
 
-            if (changed)
+            var changed = false;
+            if (appliedVersion < currentVersion)
+            {
+                for (int targetVersion = appliedVersion + 1; targetVersion <= currentVersion; targetVersion++)
+                {
+                    changed |= applyMigration(items, targetVersion);
+                }
+            }
+
+            if (wasOldFormat || changed)
             {
                 var backupPath = BuildBackupPath(filePath, appliedVersion, currentVersion);
                 File.Copy(filePath, backupPath, overwrite: true);
 
-                var migratedJson = root.ToJsonString(JsonManager.JsonSerializerOptions);
+                container["Version"] = currentVersion;
+                var migratedJson = container.ToJsonString(JsonManager.JsonSerializerOptions);
                 File.WriteAllText(filePath, migratedJson);
             }
 
-            WriteAppliedMigrationVersion(filePath, currentVersion);
+            DeleteLegacyVersionFile(filePath);
         }
         catch (Exception ex)
         {
@@ -43,16 +69,56 @@ public static class DatabaseMigrationService
         }
     }
 
-    internal static void MarkCurrentVersion(string filePath, int version)
+    public static void MigrateSettings(string filePath, int currentVersion, Func<JsonObject, int, bool> applyMigration)
     {
         try
         {
             if (!File.Exists(filePath)) return;
-            WriteAppliedMigrationVersion(filePath, version);
+
+            var json = File.ReadAllText(filePath);
+            if (string.IsNullOrWhiteSpace(json)) return;
+
+            var root = JsonNode.Parse(json);
+            if (root is not JsonObject settings) return;
+
+            int appliedVersion;
+            bool hadVersionField = false;
+
+            if (settings.TryGetPropertyValue("Version", out var versionNode) &&
+                versionNode is JsonValue v && v.TryGetValue(out int ver))
+            {
+                appliedVersion = ver;
+                hadVersionField = true;
+            }
+            else
+            {
+                appliedVersion = ReadLegacyVersionFile(filePath);
+            }
+
+            var changed = false;
+            if (appliedVersion < currentVersion)
+            {
+                for (int targetVersion = appliedVersion + 1; targetVersion <= currentVersion; targetVersion++)
+                {
+                    changed |= applyMigration(settings, targetVersion);
+                }
+            }
+
+            if (!hadVersionField || changed)
+            {
+                var backupPath = BuildBackupPath(filePath, appliedVersion, currentVersion);
+                File.Copy(filePath, backupPath, overwrite: true);
+
+                settings["Version"] = currentVersion;
+                var migratedJson = settings.ToJsonString(JsonManager.JsonSerializerOptions);
+                File.WriteAllText(filePath, migratedJson);
+            }
+
+            DeleteLegacyVersionFile(filePath);
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to mark migration version: '{filePath}'.", ex);
+            ErrorManager.Instance.PostInternalError($"Failed to migrate settings: '{filePath}'.", ex);
         }
     }
 
@@ -61,26 +127,30 @@ public static class DatabaseMigrationService
         var directory = Path.GetDirectoryName(filePath) ?? string.Empty;
         var name = Path.GetFileNameWithoutExtension(filePath);
         var extension = Path.GetExtension(filePath);
-        return Path.Combine(directory, $"{name}.migration-v{fromVersion}-to-v{toVersion}.bak{extension}");
+        return Path.Combine(directory, $"{name}.migration-v{fromVersion}-to-{toVersion}.bak{extension}");
     }
 
-    internal static int ReadAppliedMigrationVersion(string filePath)
+    private static int ReadLegacyVersionFile(string filePath)
     {
-        var versionFilePath = BuildVersionFilePath(filePath);
+        var versionFilePath = filePath + ".migration.version";
         if (!File.Exists(versionFilePath)) return 0;
 
         var text = File.ReadAllText(versionFilePath).Trim();
         return int.TryParse(text, out int version) ? version : 0;
     }
 
-    internal static void WriteAppliedMigrationVersion(string filePath, int version)
+    private static void DeleteLegacyVersionFile(string filePath)
     {
-        var versionFilePath = BuildVersionFilePath(filePath);
-        File.WriteAllText(versionFilePath, version.ToString());
-    }
+        var versionFilePath = filePath + ".migration.version";
+        if (!File.Exists(versionFilePath)) return;
 
-    private static string BuildVersionFilePath(string filePath)
-    {
-        return filePath + ".migration.version";
+        try
+        {
+            File.Delete(versionFilePath);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to delete legacy migration version file: '{versionFilePath}'.", ex);
+        }
     }
 }

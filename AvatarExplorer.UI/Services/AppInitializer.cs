@@ -47,8 +47,7 @@ public static class AppInitializer
     {
         AvatarExplorerApp.Instance.BackupManager.AddTargetFiles(
             [
-                UISystemPath.UserPreferencesFilePath,
-                UISystemPath.UserPreferencesMigrationVersionPath
+                UISystemPath.UserPreferencesFilePath
             ]
         );
     }

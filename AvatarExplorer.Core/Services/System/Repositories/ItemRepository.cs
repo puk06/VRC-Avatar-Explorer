@@ -14,12 +14,13 @@ public class ItemRepository : RepositoryBase<Item>
 
     public override void Load()
     {
-        DatabaseMigrationService.Migrate(
+        DatabaseMigrationService.MigrateDatabase(
             Db.DatabaseFilePath,
             DatabaseMigrations.ItemVersion,
-            (root, version) => DatabaseMigrations.ApplyItemMigration(root, version, AvatarExplorerApp.Instance.RuntimeSettings.Settings.DataRootDirectory));
+            (items, version) => DatabaseMigrations.ApplyItemMigration(items, version, AvatarExplorerApp.Instance.RuntimeSettings.Settings.DataRootDirectory));
 
         Db.Load();
+        Db.MigrationVersion = DatabaseMigrations.ItemVersion;
         InvokeUpdated();
     }
 
