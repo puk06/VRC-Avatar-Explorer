@@ -57,6 +57,9 @@
     "Dialog.Confirmation.RemoveAssetData": "アイテムのアセットデータも一緒に削除しますか？デフォルトパスのアセットのみ削除されます。\n\nアセットパス: {0}",
     "Dialog.Confirmation.CopyAssetData": "アセットデータをコピーしますか？\n\nしない場合は、元のアセットフォルダがそのまま使用されます。",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "バックアップデータから復元しましたが、アバターデータが見つかりませんでした。アバターを追加していたなら、データベースが壊れています。「はい」を押すことで修正できます。",
+    "Dialog.Confirmation.RemoveFolderFromDatabase": "フォルダパス: {0}\n\nこのフォルダをデータベースから削除しますか？\n※フォルダ自体の削除は次の画面で確認できます。",
+    "Dialog.Confirmation.RemoveFolder": "フォルダパス: {0}\n\nこのフォルダを削除しますか？\n※削除すると、フォルダ内の全てのファイルが削除されます。",
+    "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "フォルダパス: {0}\n\nこのフォルダはアプリケーションが管理するフォルダに含まれています。削除するには、フォルダ自体を削除する必要があります。続行しますか？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "共通素体グループ内のアバターが含まれているアイテムの対応アバターを共通素体グループに置き換えますか？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "共通素体グループが対応アバターとして設定されているアイテムの対応アバターを、個別のアバターに置き換えますか？",
@@ -120,6 +123,7 @@
     "ContextMenu.Item.Remove": "アイテムを削除する",
     "ContextMenu.ItemFolder.OpenFolder": "フォルダを開く",
     "ContextMenu.ItemFolder.ShowInExplorer": "エクスプローラーで表示する",
+    "ContextMenu.ItemFolder.RemoveFolder": "フォルダを削除する",
     "ContextMenu.ItemFile.OpenFile": "ファイルを開く",
     "ContextMenu.ItemFile.BulkImportList": "一括インポートに追加する",
     "ContextMenu.ItemFile.ShowInExplorer": "エクスプローラーで表示する",
@@ -161,6 +165,7 @@
     "Success.ItemFileAdd": "アイテムファイルの追加が完了しました",
     "Success.ItemFolderAdd": "アイテムフォルダーの追加が完了しました",
     "Success.FetchAllItemThumbnails": "サムネイル一括取得が完了しました ({0}件成功)",
+    "Success.RemoveFolder": "フォルダの削除に成功しました",
 
     "Warning.Default": "注意",
     "Warning.RunningInAdministratorMode": "管理者モードでは、ドラッグ＆ドロップなど一部の操作が利用できなくなります。",
@@ -199,6 +204,7 @@
     "Error.FetchAllItemThumbnailsFailed": "サムネイル一括取得が完了しました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件\n詳細はエラーログを確認してください。",
     "Error.UnitypackageNotFound": "Unitypackageが見つかりませんでした",
     "Error.InvalidUrl": "無効なURLです",
+    "Error.ItemPathNotFound": "アイテムパスが見つかりませんでした",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "言語",

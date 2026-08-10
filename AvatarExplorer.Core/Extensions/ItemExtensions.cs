@@ -1,6 +1,4 @@
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Models.System;
-using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Extensions;
 
@@ -14,11 +12,11 @@ public static class ItemExtensions
 
     public static IEnumerable<string> GetFolderPaths(this Item item, bool includeRootFolder = true)
     {
-        List<string> folderList = new();
+        var folderList = new List<string>();
 
         if (includeRootFolder && Directory.Exists(item.ItemPath)) folderList.Add(item.ItemPath);
 
-        foreach (string itemPath in item.ItemPaths)
+        foreach (var itemPath in item.ItemPaths)
         {
             if (Directory.Exists(itemPath)) folderList.Add(itemPath);
         }

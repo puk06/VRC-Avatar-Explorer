@@ -57,6 +57,9 @@
     "Dialog.Confirmation.RemoveAssetData": "¿Desea eliminar también los datos de asset de este elemento? Solo se eliminarán los assets en la ruta predeterminada.\n\nRuta del asset: {0}",
     "Dialog.Confirmation.CopyAssetData": "¿Copiar los datos de recursos?\n\nSi no, se usará tal cual la carpeta de recursos original.",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "Hemos restaurado los datos desde la copia de seguridad, pero no se encontró ningún dato de avatar. Si había añadido avatares con estos datos, la base de datos está rota. Puede arreglarlo pulsando 'Sí'.",
+    "Dialog.Confirmation.RemoveFolderFromDatabase": "Ruta de la carpeta: {0}\n\n¿Eliminar esta carpeta de la base de datos?\n※Si se elimina la carpeta se confirmará en la siguiente pantalla.",
+    "Dialog.Confirmation.RemoveFolder": "Ruta de la carpeta: {0}\n\n¿Eliminar esta carpeta?\n※Al eliminar, se eliminarán todos los archivos dentro de la carpeta.",
+    "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "Ruta de la carpeta: {0}\n\nEsta carpeta está incluida en una carpeta gestionada por la aplicación. Para eliminarla, necesitas eliminar la carpeta en sí. ¿Deseas continuar?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "¿Reemplazar los avatares compatibles de los elementos que contienen avatares en el grupo de avatares comunes por el grupo de avatares comunes?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "¿Reemplazar los avatares compatibles de los elementos que tienen el grupo de avatares comunes configurado como avatares compatibles por avatares individuales?",
@@ -120,6 +123,7 @@
     "ContextMenu.Item.Remove": "Eliminar elemento",
     "ContextMenu.ItemFolder.OpenFolder": "Abrir carpeta",
     "ContextMenu.ItemFolder.ShowInExplorer": "Mostrar en el Explorador",
+    "ContextMenu.ItemFolder.RemoveFolder": "Eliminar carpeta",
     "ContextMenu.ItemFile.OpenFile": "Abrir archivo",
     "ContextMenu.ItemFile.BulkImportList": "Agregar a importación masiva",
     "ContextMenu.ItemFile.ShowInExplorer": "Mostrar en el Explorador",
@@ -155,6 +159,7 @@
     "Success.ItemEdit": "Elemento editado con éxito",
     "Success.ItemThumbnailEdit": "Miniatura del elemento editada con éxito",
     "Success.Remove": "Elemento eliminado con éxito",
+    "Success.RemoveFolder": "Carpeta eliminada correctamente",
     "Success.RenameCustomCategory": "Categoría personalizada renombrada con éxito",
     "Success.ClipboardSet": "Copiado al portapapeles",
     "Success.FetchItemThumbnail": "Actualización de miniatura del elemento completada",
@@ -199,6 +204,7 @@
     "Error.FetchAllItemThumbnailsFailed": "La obtención masiva de miniaturas se completó. Correctos: {0} / Fallidos: {1} / Total: {2}\nConsulta el registro de errores para más detalles.",
     "Error.UnitypackageNotFound": "No se encontró ningún Unitypackage",
     "Error.InvalidUrl": "URL inválida",
+    "Error.ItemPathNotFound": "Ruta del elemento no encontrada",
 
     "Settings.Basic": "Básico",
     "Settings.Language.Title": "Idioma",

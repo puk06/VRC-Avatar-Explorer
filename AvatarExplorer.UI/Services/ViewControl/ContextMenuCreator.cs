@@ -84,12 +84,16 @@ internal static class ContextMenuCreator
         if (string.IsNullOrEmpty(path)) return [];
         List<ContextMenuAction> contextMenuActions = [];
 
-        contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.OpenFolder, ActionKey.OpenFolder, ContextMenuIconType.Open, path));
+        var isWindows = ProcessUtils.IsWindows();
 
-        if (ProcessUtils.IsWindows())
+        contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.OpenFolder, ActionKey.OpenFolder, ContextMenuIconType.Open, path, addSeparator: !isWindows));
+
+        if (isWindows)
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, path));
+            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, path, addSeparator: true));
         }
+
+        contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.RemoveFolder, ActionKey.RemoveFolder, ContextMenuIconType.Delete, path));
 
         return contextMenuActions.ToArray();
     }

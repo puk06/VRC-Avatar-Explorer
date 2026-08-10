@@ -135,6 +135,32 @@ public class ItemRepository : RepositoryBase<Item>
         return result;
     }
 
+    /// <summary>
+    /// アイテムのパスを削除します。ItemPathsに含まれている場合は追跡からも削除されます。
+    /// </summary>
+    /// <param name="identifier"></param>
+    /// <param name="path"></param>
+    /// <param name="deleteFolder"></param>
+    /// <returns></returns>
+    public async Task RemovePath(string identifier, string path, bool deleteFolder)
+    {
+        var item = Get(identifier);
+        if (item == null) return;
+
+        if (item.ItemPaths.Contains(path))
+        {
+            item.UpdateItemPaths(item.ItemPaths.Where(p => p != path));
+        }
+
+        if (deleteFolder && Directory.Exists(path))
+        {
+            FileSystemService.DeleteDirectory(path);
+        }
+
+        Save();
+        InvokeUpdated();
+    }
+
     public static IEnumerable<KeyValuePair<string, List<string>>> CategorizeItems(IEnumerable<Item> items)
     {
         var result = new Dictionary<string, List<string>>();

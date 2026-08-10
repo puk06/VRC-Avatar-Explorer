@@ -23,6 +23,7 @@ public enum ActionKey
 
     OpenFolder,
     ShowInExplorer, // Fileにも使われる
+    RemoveFolder,
 
     OpenFile,
     AddFileToBulkImportList,

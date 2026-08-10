@@ -57,6 +57,9 @@
     "Dialog.Confirmation.RemoveAssetData": "是否同时删除该物品的资产数据？仅删除默认路径下的资产。\n\n资产路径：{0}",
     "Dialog.Confirmation.CopyAssetData": "要复制资产数据吗？\n\n如果不复制，将直接使用原始资产文件夹。",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "我们已从备份数据恢复，但未找到头像数据。如果您曾使用这些数据添加过头像，数据库已经损坏。按‘是’可以进行修复。",
+    "Dialog.Confirmation.RemoveFolderFromDatabase": "文件夹路径：{0}\n\n要从数据库中删除此文件夹吗？\n※文件夹本身的删除可在下一个界面确认。",
+    "Dialog.Confirmation.RemoveFolder": "文件夹路径：{0}\n\n要删除此文件夹吗？\n※删除后，文件夹中的所有文件都将被删除。",
+    "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "文件夹路径: {0}\n\n此文件夹包含在应用程序管理的文件夹中。要移除它，您需要删除文件夹本身。要继续吗？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要将包含共通素体组头像的项目的支持头像替换为共通素体组吗？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要将将共通素体组设置为支持头像的项目的支持头像替换为单独头像吗？",
@@ -120,6 +123,7 @@
     "ContextMenu.Item.Remove": "删除项目",
     "ContextMenu.ItemFolder.OpenFolder": "打开文件夹",
     "ContextMenu.ItemFolder.ShowInExplorer": "在资源管理器中显示",
+    "ContextMenu.ItemFolder.RemoveFolder": "删除文件夹",
     "ContextMenu.ItemFile.OpenFile": "打开文件",
     "ContextMenu.ItemFile.BulkImportList": "添加到批量导入",
     "ContextMenu.ItemFile.ShowInExplorer": "在资源管理器中显示",
@@ -155,6 +159,7 @@
     "Success.ItemEdit": "项目编辑成功",
     "Success.ItemThumbnailEdit": "项目缩略图编辑成功",
     "Success.Remove": "项目删除成功",
+    "Success.RemoveFolder": "文件夹删除成功",
     "Success.RenameCustomCategory": "自定义分类重命名成功",
     "Success.ClipboardSet": "已复制到剪贴板",
     "Success.FetchItemThumbnail": "项目缩略图更新完成",
@@ -199,6 +204,7 @@
     "Error.FetchAllItemThumbnailsFailed": "批量获取缩略图完成。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个\n请查看错误日志了解详情。",
     "Error.UnitypackageNotFound": "未找到Unitypackage",
     "Error.InvalidUrl": "无效的URL",
+    "Error.ItemPathNotFound": "找不到项目路径",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "语言",

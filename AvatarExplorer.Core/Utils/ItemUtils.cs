@@ -28,4 +28,13 @@ public static partial class ItemUtils
 
         return itemTitleMaps;
     }
+
+    public static bool IsAppManagedPath(string itemPath, string path)
+    {
+        if (string.IsNullOrEmpty(itemPath) || !Directory.Exists(itemPath))
+            return false;
+
+        return Directory.GetDirectories(itemPath, "*", SearchOption.TopDirectoryOnly)
+            .Contains(path);
+    }
 }

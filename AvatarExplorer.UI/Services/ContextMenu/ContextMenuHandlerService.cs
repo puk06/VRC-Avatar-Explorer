@@ -47,6 +47,7 @@ public static class ContextMenuHandlerService
     public static void Initialize()
     {
         Register(ActionKey.OpenFolder, OpenFolder);
+        Register(ActionKey.RemoveFolder, RemoveFolder);
         Register(ActionKey.CopyBoothLink, CopyBoothLink);
         Register(ActionKey.OpenBoothLink, OpenBoothLink);
         Register(ActionKey.ShowOtherItemsByAuthor, ShowOtherItemsByAuthor);
@@ -111,6 +112,54 @@ public static class ContextMenuHandlerService
                 NotificationType.Error
             );
         }
+    }
+    private static async void RemoveFolder(string path)
+    {
+        var currentItem = ItemNavigationService.GetCurrentItemId();
+        var item = GetByIdentifier(currentItem ?? string.Empty);
+        if (item == null) return;
+
+        var isAppManaged = ItemUtils.IsAppManagedPath(item.ItemPath, path);
+        if (isAppManaged)
+        {
+            var removeFromDatabase = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance.Get(Localizer.Instance[Loc.Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder], path)
+            );
+            if (!removeFromDatabase) return;
+            
+            await Items.RemovePath(item.Identifier, path, true);
+        }
+        else if (item.ItemPaths.Contains(path))
+        {
+            var removeFromDatabase = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveFolderFromDatabase, path)
+            );
+            if (!removeFromDatabase) return;
+
+            var removeFolder = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveFolder, path)
+            );
+
+            await Items.RemovePath(item.Identifier, path, removeFolder);
+        }
+        else
+        {
+            MainWindowViewModel.ShowNotification(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.ItemPathNotFound],
+                NotificationType.Error
+            );
+            return;
+        }
+        
+        MainWindowViewModel.ShowNotification(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.RemoveFolder],
+            NotificationType.Success
+        );
     }
     private static async void CopyBoothLink(string identifier)
     {

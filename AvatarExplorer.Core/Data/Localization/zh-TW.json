@@ -57,6 +57,9 @@
     "Dialog.Confirmation.RemoveAssetData": "是否同時刪除該物品的資產資料？僅刪除預設路徑下的資產。\n\n資產路徑：{0}",
     "Dialog.Confirmation.CopyAssetData": "要複製資產資料嗎？\n\n如果不複製，將直接使用原始資產資料夾。",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "我們從備份數據恢復了資料，但找不到頭像數據。如果您曾用這些數據新增過頭像，資料庫已經損壞。按『是』可以進行修復。",
+    "Dialog.Confirmation.RemoveFolderFromDatabase": "資料夾路徑: {0}\n\n要從資料庫中刪除此資料夾嗎?\n※是否刪除資料夾將在下一個畫面確認。",
+    "Dialog.Confirmation.RemoveFolder": "資料夾路徑: {0}\n\n要刪除此資料夾嗎?\n※刪除後,資料夾內的所有檔案都將被刪除。",
+    "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "資料夾路徑: {0}\n\n此資料夾包含在應用程式管理的資料夾中。要移除它，您需要刪除資料夾本身。要繼續嗎？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要將包含共通素體群組頭像的項目的支援頭像替換為共通素體群組嗎？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要將將共通素體群組設定為支援頭像的項目的支援頭像替換為個別頭像嗎？",
@@ -120,6 +123,7 @@
     "ContextMenu.Item.Remove": "刪除項目",
     "ContextMenu.ItemFolder.OpenFolder": "開啟資料夾",
     "ContextMenu.ItemFolder.ShowInExplorer": "在檔案總管中顯示",
+    "ContextMenu.ItemFolder.RemoveFolder": "刪除資料夾",
     "ContextMenu.ItemFile.OpenFile": "開啟檔案",
     "ContextMenu.ItemFile.BulkImportList": "加入批次匯入",
     "ContextMenu.ItemFile.ShowInExplorer": "在檔案總管中顯示",
@@ -155,6 +159,7 @@
     "Success.ItemEdit": "項目編輯成功",
     "Success.ItemThumbnailEdit": "項目縮圖編輯成功",
     "Success.Remove": "項目刪除成功",
+    "Success.RemoveFolder": "資料夾刪除成功",
     "Success.RenameCustomCategory": "自訂分類重新命名成功",
     "Success.ClipboardSet": "已複製到剪貼簿",
     "Success.FetchItemThumbnail": "項目縮圖更新完成",
@@ -199,6 +204,7 @@
     "Error.FetchAllItemThumbnailsFailed": "批次取得縮圖完成。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個\n請查看錯誤日誌以取得詳細資訊。",
     "Error.UnitypackageNotFound": "未找到Unitypackage",
     "Error.InvalidUrl": "無效的URL",
+    "Error.ItemPathNotFound": "找不到項目路徑",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "語言",

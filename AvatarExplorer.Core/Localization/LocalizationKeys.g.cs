@@ -112,6 +112,9 @@ public static class Loc
             public const string RemoveAssetData = "Dialog.Confirmation.RemoveAssetData";
             public const string CopyAssetData = "Dialog.Confirmation.CopyAssetData";
             public const string NoAvatarsAndValidateType = "Dialog.Confirmation.NoAvatarsAndValidateType";
+            public const string RemoveFolderFromDatabase = "Dialog.Confirmation.RemoveFolderFromDatabase";
+            public const string RemoveFolder = "Dialog.Confirmation.RemoveFolder";
+            public const string RemoveFolderFromApplicationManagedFolder = "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder";
             public static class EditCommonAvatars
             {
                 public const string ReplaceAvatarsToGroup = "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup";
@@ -224,6 +227,7 @@ public static class Loc
         {
             public const string OpenFolder = "ContextMenu.ItemFolder.OpenFolder";
             public const string ShowInExplorer = "ContextMenu.ItemFolder.ShowInExplorer";
+            public const string RemoveFolder = "ContextMenu.ItemFolder.RemoveFolder";
         }
         public static class ItemFile
         {
@@ -282,6 +286,7 @@ public static class Loc
         public const string ItemFileAdd = "Success.ItemFileAdd";
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
         public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
+        public const string RemoveFolder = "Success.RemoveFolder";
     }
     public static class Warning
     {
@@ -327,6 +332,7 @@ public static class Loc
         public const string FetchAllItemThumbnailsFailed = "Error.FetchAllItemThumbnailsFailed";
         public const string UnitypackageNotFound = "Error.UnitypackageNotFound";
         public const string InvalidUrl = "Error.InvalidUrl";
+        public const string ItemPathNotFound = "Error.ItemPathNotFound";
     }
     public static class Settings
     {

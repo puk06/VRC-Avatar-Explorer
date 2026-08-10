@@ -57,6 +57,9 @@
     "Dialog.Confirmation.RemoveAssetData": "Voulez-vous également supprimer les données d'asset de cet élément ? Seuls les assets du chemin par défaut seront supprimés.\n\nChemin de l'asset : {0}",
     "Dialog.Confirmation.CopyAssetData": "Copier les données de ressources ?\n\nSinon, le dossier de ressources d'origine sera utilisé tel quel.",
     "Dialog.Confirmation.NoAvatarsAndValidateType": "Nous avons restauré les données depuis la sauvegarde, mais aucune donnée d'avatar n'a été trouvée. Si vous avez ajouté des avatars avec ces données, la base de données est corrompue. Vous pouvez le réparer en appuyant sur 'Oui'.",
+    "Dialog.Confirmation.RemoveFolderFromDatabase": "Chemin du dossier : {0}\n\nSupprimer ce dossier de la base de données ?\n※La suppression du dossier sera confirmée sur l'écran suivant.",
+    "Dialog.Confirmation.RemoveFolder": "Chemin du dossier : {0}\n\nSupprimer ce dossier ?\n※La suppression entraînera la suppression de tous les fichiers du dossier.",
+    "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "Chemin du dossier : {0}\n\nCe dossier est inclus dans un dossier géré par l'application. Pour le supprimer, vous devez supprimer le dossier lui-même. Voulez-vous continuer ?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Remplacer les avatars pris en charge des éléments contenant des avatars du groupe d'avatars communs par le groupe d'avatars communs ?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Remplacer les avatars pris en charge des éléments dont les avatars pris en charge sont définis sur le groupe d'avatars communs par des avatars individuels ?",
@@ -120,6 +123,7 @@
     "ContextMenu.Item.Remove": "Supprimer l'élément",
     "ContextMenu.ItemFolder.OpenFolder": "Ouvrir le dossier",
     "ContextMenu.ItemFolder.ShowInExplorer": "Afficher dans l'Explorateur",
+    "ContextMenu.ItemFolder.RemoveFolder": "Supprimer le dossier",
     "ContextMenu.ItemFile.OpenFile": "Ouvrir le fichier",
     "ContextMenu.ItemFile.BulkImportList": "Ajouter à l'importation en masse",
     "ContextMenu.ItemFile.ShowInExplorer": "Afficher dans l'Explorateur",
@@ -155,6 +159,7 @@
     "Success.ItemEdit": "Modification de l'élément réussie",
     "Success.ItemThumbnailEdit": "Modification de la vignette de l'élément réussie",
     "Success.Remove": "Suppression de l'élément réussie",
+    "Success.RemoveFolder": "Dossier supprimé avec succès",
     "Success.RenameCustomCategory": "Catégorie personnalisée renommée avec succès",
     "Success.ClipboardSet": "Copié dans le presse-papiers",
     "Success.FetchItemThumbnail": "Mise à jour de la vignette de l'élément terminée",
@@ -199,6 +204,7 @@
     "Error.FetchAllItemThumbnailsFailed": "La récupération groupée des vignettes est terminée. Réussies : {0} / Échouées : {1} / Total : {2}\nConsultez le journal d'erreurs pour plus de détails.",
     "Error.UnitypackageNotFound": "Aucun Unitypackage trouvé",
     "Error.InvalidUrl": "URL invalide",
+    "Error.ItemPathNotFound": "Chemin de l'élément introuvable",
 
     "Settings.Basic": "Général",
     "Settings.Language.Title": "Langue",
