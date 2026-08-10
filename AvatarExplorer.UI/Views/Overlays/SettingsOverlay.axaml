@@ -39,7 +39,6 @@
                                                 <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Author], Source={x:Static loc:Localizer.Instance}}"/>
                                                 <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Created], Source={x:Static loc:Localizer.Instance}}"/>
                                                 <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Updated], Source={x:Static loc:Localizer.Instance}}"/>
-                                                <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Implemented], Source={x:Static loc:Localizer.Instance}}"/>
                                             </ComboBox>
                                         </Grid>
                                     </Grid>

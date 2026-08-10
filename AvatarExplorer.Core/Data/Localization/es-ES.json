@@ -209,7 +209,6 @@
     "Settings.SortOrder.Options.Author": "Autor",
     "Settings.SortOrder.Options.Created": "Fecha de creación",
     "Settings.SortOrder.Options.Updated": "Fecha de actualización",
-    "Settings.SortOrder.Options.Implemented": "Implementado",
     "Settings.SortDirection.Title": "Dirección de clasificación",
     "Settings.SortDirection.Description": "Orden ascendente o descendente",
     "Settings.SortDirection.Options.Ascending": "Ascendente",
