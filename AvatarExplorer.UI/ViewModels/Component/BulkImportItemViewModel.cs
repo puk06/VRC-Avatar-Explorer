@@ -10,6 +10,24 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
+public class UnitypackageViewModel : ViewModelBase
+{
+    [Reactive] public string Name { get; set; } = string.Empty;
+    [Reactive] public string ToolTipText { get; set; } = string.Empty;
+
+    public string ParentDirectory { get; set; } = string.Empty;
+    public string FullPath { get; set; } = string.Empty;
+
+    public UnitypackageViewModel(string path)
+    {
+        Name = Path.GetFileName(path) ?? path;
+        ParentDirectory = Directory.GetParent(path)?.Name ?? string.Empty;
+
+        ToolTipText = ParentDirectory + " > " + Name;
+        FullPath = path;
+    }
+}
+
 public class BulkImportItemViewModel : ViewModelBase
 {
     [Reactive] public Bitmap? Thumbnail { get; set; } = null;
@@ -25,12 +43,11 @@ public class BulkImportItemViewModel : ViewModelBase
 
     public LoclizableField DescriptionRaw = new();
 
-    [Reactive] public IEnumerable<string> UnitypackageNames { get; private set; } = [];
+    [Reactive] public IEnumerable<UnitypackageViewModel> UnitypackageViewModels { get; private set; } = [];
     [Reactive] public int SelectedUnitypackage { get; set; } = 0;
     public string SelectedUnitypackagePath => (SelectedUnitypackage >= 0 || SelectedUnitypackage < UnitypackageFullPaths.Length) ? UnitypackageFullPaths[SelectedUnitypackage] : string.Empty;
     
     public string[] UnitypackageFullPaths { get; set; } = [];
-    // [Reactive] public BitmapInterpolationMode BitmapInterpolationMode { get; set; } = BitmapInterpolationMode.None;
 
     public string ItemId { get; set; } = string.Empty;
 
@@ -48,7 +65,7 @@ public class BulkImportItemViewModel : ViewModelBase
             Title = TextBracketsUtils.RemoveBrackets(TitleRaw);
         }
 
-        UnitypackageNames = UnitypackageFullPaths.Select(i => Path.GetFileName(i) ?? i);
+        UnitypackageViewModels = UnitypackageFullPaths.Select(path => new UnitypackageViewModel(path));
         var previousSelectedPackage = SelectedUnitypackage;
         SelectedUnitypackage = -1;
         SelectedUnitypackage = previousSelectedPackage;

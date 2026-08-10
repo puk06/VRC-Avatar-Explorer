@@ -46,9 +46,13 @@
                                         </Grid>
                                     </Grid>
 
-                                    <Panel>
-                                        <ComboBox ItemsSource="{Binding UnitypackageNames}" SelectedIndex="{Binding SelectedUnitypackage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" FontSize="14"/>
-                                    </Panel>
+                                    <ComboBox ItemsSource="{Binding UnitypackageViewModels}" SelectedIndex="{Binding SelectedUnitypackage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" FontSize="14">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding ToolTipText}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </StackPanel>
                             </Button>
                         </DataTemplate>
