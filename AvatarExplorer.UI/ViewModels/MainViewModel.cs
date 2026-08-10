@@ -431,7 +431,21 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 return value;
 
             if (prefix == ItemNavigationService.AvatarPrefix)
-                return AvatarExplorerApp.Instance.Items.Get(value)?.Title ?? value;
+            {
+                // Item
+                if (value.StartsWith("item"))
+                    return AvatarExplorerApp.Instance.Items.Get(value)?.Title ?? value;
+
+                // Temp Avatar
+                if (value.StartsWith("tempavatar"))
+                    return AvatarExplorerApp.Instance.TempAvatars.Get(value)?.AvatarName ?? value;
+
+                // Common Avatar (現在は未実装)
+                if (value.StartsWith("commonavatar"))
+                    return AvatarExplorerApp.Instance.CommonAvatars.Get(value)?.GroupName ?? value;
+
+                return value;
+            }
 
             if (prefix == ItemNavigationService.ItemPrefix)
                 return AvatarExplorerApp.Instance.Items.Get(state)?.Title ?? value;
