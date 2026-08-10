@@ -201,7 +201,8 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
             avatars,
             UserPreferences.SortOrder,
             UserPreferences.SortDirection,
-            UserPreferences.RemoveBrackets
+            UserPreferences.RemoveBrackets,
+            rawIdentifier: true
         );
 
         _allAvatars = sortedAvatars

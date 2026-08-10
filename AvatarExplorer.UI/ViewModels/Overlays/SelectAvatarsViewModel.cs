@@ -94,7 +94,8 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
             avatars,
             UserPreferences.SortOrder,
             UserPreferences.SortDirection,
-            UserPreferences.RemoveBrackets
+            UserPreferences.RemoveBrackets,
+            rawIdentifier: true
         );
 
         _allAvatars = sortedAvatars

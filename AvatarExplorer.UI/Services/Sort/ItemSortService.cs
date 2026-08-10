@@ -24,7 +24,7 @@ public static class ItemSortService
         return direction == SortDirection.Descending ? ordered.Reverse() : ordered;
     }
 
-    public static List<IIdentifiable> SortAvatars(IEnumerable<IIdentifiable> avatars, ItemSortOrder order, SortDirection direction, bool removeBrackets)
+    public static List<IIdentifiable> SortAvatars(IEnumerable<IIdentifiable> avatars, ItemSortOrder order, SortDirection direction, bool removeBrackets, bool rawIdentifier = false)
     {
         var commonAvatars = new List<IIdentifiable>();
         var items = new List<Item>();
@@ -57,7 +57,7 @@ public static class ItemSortService
         }
 
         var sortedItems = Sort(items, order, direction, removeBrackets)
-            .Select(i => (IIdentifiable)new Avatar(i));
+            .Select(i => (IIdentifiable)new Avatar(i, rawIdentifier: rawIdentifier));
 
         return commonAvatars.Concat(sortedItems).Concat(tempAvatars).ToList();
     }
