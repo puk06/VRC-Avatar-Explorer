@@ -13,6 +13,9 @@ using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Services.Sort;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -29,7 +32,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
 
     [Reactive] public string SearchText { get; set; } = string.Empty;
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
-    private List<ItemViewModel> _allAvatars = [];
+    private IEnumerable<ItemViewModel> _allAvatars = [];
 
     public IReactiveCommand SelectItemCommand { get; }
 
@@ -42,6 +45,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
 
     private static ItemGroupService ItemService => AvatarExplorerApp.Instance.ItemGroupService;
     private static CommonAvatarRepository CommonAvatarRep => ItemService.CommonAvatarRepository;
+    private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
 
     public EditCommonAvatarsViewModel()
     {
@@ -193,8 +197,14 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
     private void RefleshAvatars()
     {
         var avatars = ItemService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
+        var sortedAvatars = ItemSortService.SortAvatars(
+            avatars,
+            UserPreferences.SortOrder,
+            UserPreferences.SortDirection,
+            UserPreferences.RemoveBrackets
+        );
 
-        _allAvatars = avatars
+        _allAvatars = sortedAvatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
             .Select(i => i.Update())
             .ToList();

@@ -9,6 +9,9 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Services.Sort;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -28,6 +31,7 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
     private string? SelectedAvatar { get; set; } = null;
 
     private static ItemGroupService ItemService => AvatarExplorerApp.Instance.ItemGroupService;
+    private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
 
     public ResolveTempAvatarViewModel()
     {
@@ -54,8 +58,14 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
     private void RefreshAvatars()
     {
         var avatars = ItemService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
-
-        _allAvatars = avatars
+        var sortedAvatars = ItemSortService.SortAvatars(
+            avatars,
+            UserPreferences.SortOrder,
+            UserPreferences.SortDirection,
+            UserPreferences.RemoveBrackets
+        );
+        
+        _allAvatars = sortedAvatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
             .Select(i => i.Update())
             .ToList();

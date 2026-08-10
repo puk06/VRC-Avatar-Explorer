@@ -9,6 +9,9 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Services.Sort;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -32,6 +35,7 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
     public IReactiveCommand ConfirmCommand { get; }
 
     private static ItemGroupService ItemService => AvatarExplorerApp.Instance.ItemGroupService;
+    private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
 
     private bool IncludeCommonAvatar = false;
     private bool IncludeTempAvatar = true;
@@ -86,8 +90,14 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
     private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)
     {
         var avatars = ItemService.GetAvatars(includeCommonAvatar, includeTempAvatar, rawIdentifier: true);
+        var sortedAvatars = ItemSortService.SortAvatars(
+            avatars,
+            UserPreferences.SortOrder,
+            UserPreferences.SortDirection,
+            UserPreferences.RemoveBrackets
+        );
 
-        _allAvatars = avatars
+        _allAvatars = sortedAvatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
             .Select(i => i.Update())
             .ToList();
