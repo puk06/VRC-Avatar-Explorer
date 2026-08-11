@@ -59,6 +59,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public string VRCAESchemeStatusText { get; set; } = string.Empty;
     [Reactive] public string BLMSchemeStatusText { get; set; } = string.Empty;
 
+    public IReactiveCommand OpenTagEditorCommand { get; }
     public IReactiveCommand OpenBackgroundImageCommand { get; }
     public IReactiveCommand OpenCommonAvatarManagerCommand { get; }
     public IReactiveCommand OpenItemsFolderCommand { get; }
@@ -87,6 +88,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     public SettingsViewModel()
     {
+        OpenTagEditorCommand = ReactiveCommand.Create(OpenTagEditor);
         OpenBackgroundImageCommand = ReactiveCommand.CreateFromTask(OpenBackgroundImage);
         OpenCommonAvatarManagerCommand = ReactiveCommand.Create(OpenCommonAvatarManager);
         OpenItemsFolderCommand = ReactiveCommand.CreateFromTask(OpenItemsFolder);
@@ -212,6 +214,11 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     private void OnClose()
     {
         IsVisible = false;
+    }
+
+    private void OpenTagEditor()
+    {
+        MainWindowViewModel.Instance.ShowTagEditor();
     }
 
     private void OpenCommonAvatarManager()

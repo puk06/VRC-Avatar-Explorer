@@ -62,6 +62,9 @@
     "Dialog.Confirmation.RemoveFolderFromDatabase": "文件夹路径：{0}\n\n要从数据库中删除此文件夹吗？\n※文件夹本身的删除可在下一个界面确认。",
     "Dialog.Confirmation.RemoveFolder": "文件夹路径：{0}\n\n要删除此文件夹吗？\n※删除后，文件夹中的所有文件都将被删除。",
     "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "文件夹路径: {0}\n\n此文件夹包含在应用程序管理的文件夹中。要移除它，您需要删除文件夹本身。要继续吗？",
+    "Dialog.Confirmation.RenameTag": "要将标签「{0}」更改为「{1}」吗？",
+    "Dialog.Confirmation.RemoveTag": "要删除标签「{0}」吗？\n※删除后，该标签将从所有项目中移除。",
+    "Dialog.Confirmation.RenameTagAlreadyExist": "标签「{0}」已存在。继续的话，将被识别为同一标签。要继续吗？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要将包含共通素体组头像的项目的支持头像替换为共通素体组吗？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要将将共通素体组设置为支持头像的项目的支持头像替换为单独头像吗？",
@@ -277,6 +280,9 @@
     "Settings.LinkToOriginal.Description": "当添加项目时传入的第一个路径是文件夹时，不复制而直接使用该文件夹",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "将未设置支持头像视为不支持",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "当项目没有设置任何支持头像时，不将其视为支持所有头像，而是视为不支持任何头像。",
+    "Settings.TagEditor.Title": "标签编辑",
+    "Settings.TagEditor.Description": "可以编辑现有标签",
+    "Settings.TagEditor.Open": "打开",
 
     "Settings.Background": "背景",
     "Settings.UseCustomBackground.Title": "使用自定义背景",
@@ -513,6 +519,12 @@
     "MergeCategory.SourceCategory": "源类别",
     "MergeCategory.TargetCategory": "目标类别",
     "MergeCategory.Merge": "合并",
+
+    "TagEditor.Title": "标签编辑",
+    "TagEditor.OldTag": "现有标签",
+    "TagEditor.NewTagName": "新标签名称",
+    "TagEditor.Rename": "重命名",
+    "TagEditor.Remove": "删除",
 
     "UnitypackageViewer.Export": "导出",
     "UnitypackageViewer.Title": "Unitypackage Viewer",

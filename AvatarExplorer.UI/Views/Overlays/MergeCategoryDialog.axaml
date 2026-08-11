@@ -21,7 +21,7 @@
                         <ComboBox ItemsSource="{Binding Categories}" DisplayMemberBinding="{Binding DisplayName}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedSourceCategoryIndex}"/>
                     </StackPanel>
 
-                    <materialIcons:MaterialIcon Kind="ArrowDown" Width="25" Height="25" VerticalAlignment="Center"/>
+                    <materialIcons:MaterialIcon Kind="ArrowDown" Width="25" Height="25" VerticalAlignment="Center" Margin="0,5,0,0"/>
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding [MergeCategory.TargetCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>

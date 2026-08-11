@@ -62,6 +62,9 @@
     "Dialog.Confirmation.RemoveFolderFromDatabase": "Folder path: {0}\n\nRemove this folder from the database?\n※Whether to delete the folder itself will be confirmed on the next screen.",
     "Dialog.Confirmation.RemoveFolder": "Folder path: {0}\n\nDelete this folder?\n※Deleting will remove all files within the folder.",
     "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "Folder path: {0}\n\nThis folder is included in an application-managed folder. To remove it, you need to delete the folder itself. Do you want to continue?",
+    "Dialog.Confirmation.RenameTag": "Rename tag \"{0}\" to \"{1}\"?",
+    "Dialog.Confirmation.RemoveTag": "Remove tag \"{0}\"?\n※Removing will delete this tag from all items.",
+    "Dialog.Confirmation.RenameTagAlreadyExist": "Tag \"{0}\" already exists. If you continue, it will be recognized as the same tag. Do you want to continue?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Replace the supported avatars of items containing avatars in the common avatar group with the common avatar group?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Replace the supported avatars of items that have the common avatar group set as supported avatars with individual avatars?",
@@ -277,6 +280,9 @@
     "Settings.LinkToOriginal.Description": "When the first path provided while adding an item is a folder, use that folder directly without copying it",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Treat Empty Supported Avatars as None",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "When no supported avatars are configured for an item, treat it as unsupported rather than supported by all avatars.",
+    "Settings.TagEditor.Title": "Edit Tags",
+    "Settings.TagEditor.Description": "Edit existing tags",
+    "Settings.TagEditor.Open": "Open",
 
     "Settings.Background": "Background",
     "Settings.UseCustomBackground.Title": "Use Custom Background",
@@ -513,6 +519,12 @@
     "MergeCategory.SourceCategory": "Source Category",
     "MergeCategory.TargetCategory": "Target Category",
     "MergeCategory.Merge": "Merge",
+
+    "TagEditor.Title": "Edit Tags",
+    "TagEditor.OldTag": "Existing Tag",
+    "TagEditor.NewTagName": "New Tag Name",
+    "TagEditor.Rename": "Rename",
+    "TagEditor.Remove": "Remove",
 
     "UnitypackageViewer.Export": "Export",
     "UnitypackageViewer.Title": "Unitypackage Viewer",

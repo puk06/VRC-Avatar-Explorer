@@ -62,6 +62,9 @@
     "Dialog.Confirmation.RemoveFolderFromDatabase": "Chemin du dossier : {0}\n\nSupprimer ce dossier de la base de données ?\n※La suppression du dossier sera confirmée sur l'écran suivant.",
     "Dialog.Confirmation.RemoveFolder": "Chemin du dossier : {0}\n\nSupprimer ce dossier ?\n※La suppression entraînera la suppression de tous les fichiers du dossier.",
     "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "Chemin du dossier : {0}\n\nCe dossier est inclus dans un dossier géré par l'application. Pour le supprimer, vous devez supprimer le dossier lui-même. Voulez-vous continuer ?",
+    "Dialog.Confirmation.RenameTag": "Renommer le tag « {0} » en « {1} » ?",
+    "Dialog.Confirmation.Remove": "Supprimer le tag « {0} » ?\n※La suppression entraînera la suppression de ce tag de tous les éléments.",
+    "Dialog.Confirmation.RemoveTag": "Supprimer le tag « {0} » ?\n※La suppression entraînera la suppression de ce tag de tous les éléments.",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Remplacer les avatars pris en charge des éléments contenant des avatars du groupe d'avatars communs par le groupe d'avatars communs ?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Remplacer les avatars pris en charge des éléments dont les avatars pris en charge sont définis sur le groupe d'avatars communs par des avatars individuels ?",
@@ -277,6 +280,9 @@
     "Settings.LinkToOriginal.Description": "Lorsque le premier chemin fourni lors de l'ajout d'un élément est un dossier, utiliser ce dossier directement sans le copier",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Traiter les avatars pris en charge vides comme aucun",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "Lorsqu'aucun avatar pris en charge n'est configuré pour un élément, le traiter comme non pris en charge plutôt que comme pris en charge par tous les avatars.",
+    "Settings.TagEditor.Title": "Éditer les tags",
+    "Settings.TagEditor.Description": "Modifier les tags existants",
+    "Settings.TagEditor.Open": "Ouvrir",
 
     "Settings.Background": "Arrière-plan",
     "Settings.UseCustomBackground.Title": "Utiliser un arrière-plan personnalisé",
@@ -513,6 +519,12 @@
     "MergeCategory.SourceCategory": "Catégorie source",
     "MergeCategory.TargetCategory": "Catégorie cible",
     "MergeCategory.Merge": "Fusionner",
+
+    "TagEditor.Title": "Éditer les tags",
+    "TagEditor.OldTag": "Tag existant",
+    "TagEditor.NewTagName": "Nouveau nom du tag",
+    "TagEditor.Rename": "Renommer",
+    "TagEditor.Remove": "Supprimer",
 
     "UnitypackageViewer.Export": "Exporter",
     "UnitypackageViewer.Title": "Visionneuse Unitypackage",

@@ -102,6 +102,10 @@
             <overlays:MergeCategoryDialog/>
         </ContentControl>
 
+        <ContentControl IsVisible="{Binding TagEditorVM.IsVisible}">
+            <overlays:TagEditorDialog/>
+        </ContentControl>
+
         <ContentControl IsVisible="{Binding IsYesNoDialogVisible}">
             <overlays:YesNoDialogOverlay/>
         </ContentControl>

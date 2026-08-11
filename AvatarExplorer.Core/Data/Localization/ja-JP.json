@@ -62,6 +62,9 @@
     "Dialog.Confirmation.RemoveFolderFromDatabase": "フォルダパス: {0}\n\nこのフォルダをデータベースから削除しますか？\n※フォルダ自体の削除は次の画面で確認できます。",
     "Dialog.Confirmation.RemoveFolder": "フォルダパス: {0}\n\nこのフォルダを削除しますか？\n※削除すると、フォルダ内の全てのファイルが削除されます。",
     "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "フォルダパス: {0}\n\nこのフォルダはアプリケーションが管理するフォルダに含まれています。削除するには、フォルダ自体を削除する必要があります。続行しますか？",
+    "Dialog.Confirmation.RenameTag": "タグ「{0}」を「{1}」に変更しますか？",
+    "Dialog.Confirmation.RemoveTag": "タグ「{0}」を削除しますか？\n※削除すると、全てのアイテムからこのタグが削除されます。",
+    "Dialog.Confirmation.RenameTagAlreadyExist": "タグ「{0}」は既に存在します。続行すると、同じタグとして認識されるようになります。続行しますか？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "共通素体グループ内のアバターが含まれているアイテムの対応アバターを共通素体グループに置き換えますか？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "共通素体グループが対応アバターとして設定されているアイテムの対応アバターを、個別のアバターに置き換えますか？",
@@ -277,6 +280,9 @@
     "Settings.LinkToOriginal.Description": "アイテム追加時に渡された最初のパスがフォルダの場合、そのフォルダをコピーせずにそのまま使用します",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "対応アバター未設定を未対応として扱う",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "アイテムの対応アバターが一つも設定されていない場合、全てのアバターに対応しているのではなく、どのアバターにも対応していないとみなすようになります。",
+    "Settings.TagEditor.Title": "タグの編集",
+    "Settings.TagEditor.Description": "既存タグの編集ができます",
+    "Settings.TagEditor.Open": "開く",
 
     "Settings.Background": "背景",
     "Settings.UseCustomBackground.Title": "カスタム背景を使用する",
@@ -513,6 +519,12 @@
     "MergeCategory.SourceCategory": "統合元のカテゴリ",
     "MergeCategory.TargetCategory": "統合先のカテゴリ",
     "MergeCategory.Merge": "統合",
+
+    "TagEditor.Title": "タグの編集",
+    "TagEditor.OldTag": "既存タグ",
+    "TagEditor.NewTagName": "新しいタグ名",
+    "TagEditor.Rename": "改名",
+    "TagEditor.Remove": "削除",
 
     "UnitypackageViewer.Export": "エクスポート",
     "UnitypackageViewer.Title": "Unitypackage Viewer",

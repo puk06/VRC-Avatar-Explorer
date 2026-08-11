@@ -42,11 +42,11 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     public void UpdateMemo(string memo) => ItemMemo = memo;
 
     public void UpdateItemPath(string itemPath) => ItemPath = itemPath;
-    public void UpdateItemPaths(IEnumerable<string> newList) => ItemPaths = newList.ToImmutableArray();
+    public void UpdateItemPaths(IEnumerable<string> newList) => ItemPaths = newList.Distinct().ToImmutableArray();
     public void UpdateThumbnailFileName(string fileName) => ThumbnailFileName = fileName;
-    public void UpdateSupportedAvatars(IEnumerable<string> newList) => SupportedAvatars = newList.ToImmutableArray();
-    public void UpdateImplementedAvatars(IEnumerable<string> newList) => ImplementedAvatars = newList.ToImmutableArray();
-    public void UpdateTags(IEnumerable<string> newList) => Tags = newList.ToImmutableArray();
+    public void UpdateSupportedAvatars(IEnumerable<string> newList) => SupportedAvatars = newList.Distinct().ToImmutableArray();
+    public void UpdateImplementedAvatars(IEnumerable<string> newList) => ImplementedAvatars = newList.Distinct().ToImmutableArray();
+    public void UpdateTags(IEnumerable<string> newList) => Tags = newList.Distinct().ToImmutableArray();
     public void SetCreationDates(string createdDate, string updatedDate)
     {
         CreatedDate = createdDate;

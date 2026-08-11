@@ -303,6 +303,37 @@ public class ItemRepository : RepositoryBase<Item>
         InvokeUpdated();
     }
 
+    public void RenameTag(string oldTag, string newTag)
+    {
+        var targetItems = GetAll().Where(i => i.Tags.Contains(oldTag));
+        if (!targetItems.Any()) return;
+
+        targetItems
+            .ForEach(i =>
+            {
+                var updatedTags = i.Tags.Select(t => t == oldTag ? newTag : t);
+                i.UpdateTags(updatedTags);
+            });
+
+        Save();
+        InvokeUpdated();
+    }
+    public void RemoveTag(string tag)
+    {
+        var targetItems = GetAll().Where(i => i.Tags.Contains(tag));
+        if (!targetItems.Any()) return;
+
+        targetItems
+            .ForEach(i =>
+            {
+                var updatedTags = i.Tags.Where(t => t != tag);
+                i.UpdateTags(updatedTags);
+            });
+
+        Save();
+        InvokeUpdated();
+    }
+
     public void ValidateAndAutoFixItemType(bool avatarExist)
     {
         var items = GetAll();

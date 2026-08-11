@@ -62,6 +62,9 @@
     "Dialog.Confirmation.RemoveFolderFromDatabase": "Ruta de la carpeta: {0}\n\n¿Eliminar esta carpeta de la base de datos?\n※Si se elimina la carpeta se confirmará en la siguiente pantalla.",
     "Dialog.Confirmation.RemoveFolder": "Ruta de la carpeta: {0}\n\n¿Eliminar esta carpeta?\n※Al eliminar, se eliminarán todos los archivos dentro de la carpeta.",
     "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "Ruta de la carpeta: {0}\n\nEsta carpeta está incluida en una carpeta gestionada por la aplicación. Para eliminarla, necesitas eliminar la carpeta en sí. ¿Deseas continuar?",
+    "Dialog.Confirmation.RenameTag": "¿Renombrar la etiqueta «{0}» a «{1}»?",
+    "Dialog.Confirmation.RemoveTag": "¿Eliminar la etiqueta «{0}»?\n※Al eliminar, se eliminará esta etiqueta de todos los elementos.",
+    "Dialog.Confirmation.RenameTagAlreadyExist": "La etiqueta \"{0}\" ya existe. Si continúas, se reconocerá como la misma etiqueta. ¿Deseas continuar?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "¿Reemplazar los avatares compatibles de los elementos que contienen avatares en el grupo de avatares comunes por el grupo de avatares comunes?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "¿Reemplazar los avatares compatibles de los elementos que tienen el grupo de avatares comunes configurado como avatares compatibles por avatares individuales?",
@@ -277,6 +280,9 @@
     "Settings.LinkToOriginal.Description": "Cuando la primera ruta proporcionada al agregar un elemento es una carpeta, usar esa carpeta directamente sin copiarla",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Tratar avatares compatibles vacíos como ninguno",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "Cuando un elemento no tiene avatares compatibles configurados, tratarlo como no compatible en lugar de compatible con todos los avatares.",
+    "Settings.TagEditor.Title": "Editar etiquetas",
+    "Settings.TagEditor.Description": "Editar etiquetas existentes",
+    "Settings.TagEditor.Open": "Abrir",
 
     "Settings.Background": "Fondo",
     "Settings.UseCustomBackground.Title": "Usar fondo personalizado",
@@ -513,6 +519,12 @@
     "MergeCategory.SourceCategory": "Categoría de origen",
     "MergeCategory.TargetCategory": "Categoría de destino",
     "MergeCategory.Merge": "Fusionar",
+
+    "TagEditor.Title": "Editar etiquetas",
+    "TagEditor.OldTag": "Etiqueta existente",
+    "TagEditor.NewTagName": "Nuevo nombre de etiqueta",
+    "TagEditor.Rename": "Renombrar",
+    "TagEditor.Remove": "Eliminar",
 
     "UnitypackageViewer.Export": "Exportar",
     "UnitypackageViewer.Title": "Visor de Unitypackage",

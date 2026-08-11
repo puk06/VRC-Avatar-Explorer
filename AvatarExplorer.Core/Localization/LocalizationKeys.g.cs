@@ -117,6 +117,9 @@ public static class Loc
             public const string RemoveFolderFromDatabase = "Dialog.Confirmation.RemoveFolderFromDatabase";
             public const string RemoveFolder = "Dialog.Confirmation.RemoveFolder";
             public const string RemoveFolderFromApplicationManagedFolder = "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder";
+            public const string RenameTag = "Dialog.Confirmation.RenameTag";
+            public const string RemoveTag = "Dialog.Confirmation.RemoveTag";
+            public const string RenameTagAlreadyExist = "Dialog.Confirmation.RenameTagAlreadyExist";
             public static class EditCommonAvatars
             {
                 public const string ReplaceAvatarsToGroup = "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup";
@@ -466,6 +469,12 @@ public static class Loc
         {
             public const string Title = "Settings.TreatEmptySupportedAvatarAsNone.Title";
             public const string Description = "Settings.TreatEmptySupportedAvatarAsNone.Description";
+        }
+        public static class TagEditor
+        {
+            public const string Title = "Settings.TagEditor.Title";
+            public const string Description = "Settings.TagEditor.Description";
+            public const string Open = "Settings.TagEditor.Open";
         }
         public const string Background = "Settings.Background";
         public static class UseCustomBackground
@@ -835,6 +844,14 @@ public static class Loc
         public const string SourceCategory = "MergeCategory.SourceCategory";
         public const string TargetCategory = "MergeCategory.TargetCategory";
         public const string Merge = "MergeCategory.Merge";
+    }
+    public static class TagEditor
+    {
+        public const string Title = "TagEditor.Title";
+        public const string OldTag = "TagEditor.OldTag";
+        public const string NewTagName = "TagEditor.NewTagName";
+        public const string Rename = "TagEditor.Rename";
+        public const string Remove = "TagEditor.Remove";
     }
     public static class UnitypackageViewer
     {

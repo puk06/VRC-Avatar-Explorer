@@ -62,6 +62,9 @@
     "Dialog.Confirmation.RemoveFolderFromDatabase": "폴더 경로: {0}\n\n이 폴더를 데이터베이스에서 삭제하시겠습니까?\n※폴더 삭제 여부는 다음 화면에서 확인할 수 있습니다.",
     "Dialog.Confirmation.RemoveFolder": "폴더 경로: {0}\n\n이 폴더를 삭제하시겠습니까?\n※삭제하면 폴더 내의 모든 파일이 삭제됩니다.",
     "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "폴더 경로: {0}\n\n이 폴더는 애플리케이션이 관리하는 폴더에 포함되어 있습니다. 제거하려면 폴더 자체를 삭제해야 합니다. 계속하시겠습니까?",
+    "Dialog.Confirmation.RenameTag": "태그 \"{0}\"을(를) \"{1}\"(으)로 변경하시겠습니까?",
+    "Dialog.Confirmation.RemoveTag": "태그 \"{0}\"을(를) 삭제하시겠습니까?\n※삭제하면 모든 아이템에서 이 태그가 제거됩니다.",
+    "Dialog.Confirmation.RenameTagAlreadyExist": "태그 \"{0}\"은(는) 이미 존재합니다. 계속하면 같은 태그로 인식됩니다. 계속하시겠습니까?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "공통 바디 그룹에 포함된 아바타가 들어 있는 아이템의 대응 아바타를 공통 바디 그룹으로 바꾸시겠습니까?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "공통 바디 그룹이 대응 아바타로 설정된 아이템의 대응 아바타를 개별 아바타로 바꾸시겠습니까?",
@@ -277,6 +280,9 @@
     "Settings.LinkToOriginal.Description": "아이템 추가 시 전달된 첫 번째 경로가 폴더인 경우, 해당 폴더를 복사하지 않고 그대로 사용합니다",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "대응 아바타 미설정을 미대응으로 처리",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "아이템에 대응 아바타가 하나도 설정되지 않은 경우, 모든 아바타에 대응하는 것이 아니라 어느 아바타에도 대응하지 않는 것으로 간주합니다.",
+    "Settings.TagEditor.Title": "태그 편집",
+    "Settings.TagEditor.Description": "기존 태그를 편집할 수 있습니다",
+    "Settings.TagEditor.Open": "열기",
 
     "Settings.Background": "배경",
     "Settings.UseCustomBackground.Title": "사용자 지정 배경 사용",
@@ -513,6 +519,12 @@
     "MergeCategory.SourceCategory": "통합 원본 카테고리",
     "MergeCategory.TargetCategory": "통합 대상 카테고리",
     "MergeCategory.Merge": "통합",
+
+    "TagEditor.Title": "태그 편집",
+    "TagEditor.OldTag": "기존 태그",
+    "TagEditor.NewTagName": "새 태그 이름",
+    "TagEditor.Rename": "이름 변경",
+    "TagEditor.Remove": "삭제",
 
     "UnitypackageViewer.Export": "내보내기",
     "UnitypackageViewer.Title": "Unitypackage Viewer",

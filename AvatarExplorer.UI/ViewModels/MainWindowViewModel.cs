@@ -72,6 +72,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public MergeCategoryViewModel MergeCategoryVM { get; } = new();
 
+    public TagEditorViewModel TagEditorVM { get; } = new();
+
     public PdfViewerViewModel PdfViewerVM { get; } = new();
 
     public ProgressViewModel ProgressVM { get; } = new();
@@ -269,6 +271,11 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public void ShowTempAvatarResolver(string tempAvatar)
     {
         ResolveTempAvatarVM.Open(tempAvatar);
+    }
+
+    public void ShowTagEditor()
+    {
+        TagEditorVM.Open();
     }
 
     public async Task<string?> ShowTextDialog(string title, string content = "")

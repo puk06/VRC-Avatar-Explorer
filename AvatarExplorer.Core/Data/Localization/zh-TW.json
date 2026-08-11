@@ -62,6 +62,9 @@
     "Dialog.Confirmation.RemoveFolderFromDatabase": "資料夾路徑: {0}\n\n要從資料庫中刪除此資料夾嗎?\n※是否刪除資料夾將在下一個畫面確認。",
     "Dialog.Confirmation.RemoveFolder": "資料夾路徑: {0}\n\n要刪除此資料夾嗎?\n※刪除後,資料夾內的所有檔案都將被刪除。",
     "Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder": "資料夾路徑: {0}\n\n此資料夾包含在應用程式管理的資料夾中。要移除它，您需要刪除資料夾本身。要繼續嗎？",
+    "Dialog.Confirmation.RenameTag": "要將標籤「{0}」變更為「{1}」嗎？",
+    "Dialog.Confirmation.RemoveTag": "要刪除標籤「{0}」嗎？\n※刪除後，該標籤將從所有項目中移除。",
+    "Dialog.Confirmation.RenameTagAlreadyExist": "標籤「{0}」已存在。繼續的話，將被識別為同一標籤。要繼續嗎？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要將包含共通素體群組頭像的項目的支援頭像替換為共通素體群組嗎？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要將將共通素體群組設定為支援頭像的項目的支援頭像替換為個別頭像嗎？",
@@ -277,6 +280,9 @@
     "Settings.LinkToOriginal.Description": "當新增項目時傳入的第一個路徑是資料夾時，不複製而直接使用該資料夾",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "將未設定支援頭像視為不支援",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "當項目沒有設定任何支援頭像時，不將其視為支援所有頭像，而是視為不支援任何頭像。",
+    "Settings.TagEditor.Title": "標籤編輯",
+    "Settings.TagEditor.Description": "可以編輯現有標籤",
+    "Settings.TagEditor.Open": "開啟",
 
     "Settings.Background": "背景",
     "Settings.UseCustomBackground.Title": "使用自訂背景",
@@ -513,6 +519,12 @@
     "MergeCategory.SourceCategory": "來源類別",
     "MergeCategory.TargetCategory": "目標類別",
     "MergeCategory.Merge": "合併",
+
+    "TagEditor.Title": "標籤編輯",
+    "TagEditor.OldTag": "現有標籤",
+    "TagEditor.NewTagName": "新標籤名稱",
+    "TagEditor.Rename": "重新命名",
+    "TagEditor.Remove": "刪除",
 
     "UnitypackageViewer.Export": "匯出",
     "UnitypackageViewer.Title": "Unitypackage Viewer",
