@@ -154,6 +154,7 @@ public class ItemEditorViewModel : ViewModelBase
         if (IsVisible && BoothId == launchInfo.ItemID)
         {
             ItemPaths.Add(new ItemPathViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
+            RemoveDuplicatePaths();
             return;
         }
 
@@ -167,6 +168,8 @@ public class ItemEditorViewModel : ViewModelBase
         IsVisible = true;
 
         ItemPaths.Add(new ItemPathViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
+        RemoveDuplicatePaths();
+
         await FetchBoothData();
     }
 
@@ -186,6 +189,27 @@ public class ItemEditorViewModel : ViewModelBase
 
             return new ItemPathViewModel(fileName, i, itemPathType);
         }));
+
+        RemoveDuplicatePaths();
+    }
+
+    private void RemoveDuplicatePaths()
+    {
+        var uniquePaths = new HashSet<string>();
+        var pathsToRemove = new List<ItemPathViewModel>();
+
+        foreach (var path in ItemPaths)
+        {
+            if (!uniquePaths.Add(path.FullPath))
+            {
+                pathsToRemove.Add(path);
+            }
+        }
+
+        foreach (var path in pathsToRemove)
+        {
+            ItemPaths.Remove(path);
+        }
     }
 
     public void Close()
@@ -295,7 +319,7 @@ public class ItemEditorViewModel : ViewModelBase
         return item.Identifier;
     }
 
-    private async Task AddPathsInBackground(string identifier, List<ItemPathEntry> itemPaths, bool shouldLinkToOriginal)
+    private static async Task AddPathsInBackground(string identifier, List<ItemPathEntry> itemPaths, bool shouldLinkToOriginal)
     {
         MainWindowViewModel.ShowNotification(
             Localizer.Instance[Loc.Processing.Default],
@@ -347,6 +371,7 @@ public class ItemEditorViewModel : ViewModelBase
         if (folders == null || folders.Length == 0) return;
 
         ItemPaths.AddRange(folders.Select(i => new ItemPathViewModel(Path.GetFileName(i), i, ItemPathType.Folder)));
+        RemoveDuplicatePaths();
     }
     private async Task SelectAndAddFiles()
     {
@@ -358,6 +383,7 @@ public class ItemEditorViewModel : ViewModelBase
         if (files == null || files.Length == 0) return;
 
         ItemPaths.AddRange(files.Select(i => new ItemPathViewModel(Path.GetFileName(i), i, ItemPathType.File)));
+        RemoveDuplicatePaths();
     }
     private async Task AddUrl()
     {
@@ -376,6 +402,7 @@ public class ItemEditorViewModel : ViewModelBase
 
         var fileName = Path.GetFileName(uri.GetLeftPart(UriPartial.Path));
         ItemPaths.Add(new ItemPathViewModel(fileName, url, ItemPathType.URL));
+        RemoveDuplicatePaths();
     }
     private async Task FetchBoothData()
     {
