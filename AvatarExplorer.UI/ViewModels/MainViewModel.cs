@@ -494,7 +494,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var displayName = FormatPathNode(stateList[i]);
             if (string.IsNullOrWhiteSpace(displayName)) continue;
 
-
             if ((i > 0 && segments.Count != 0) || searchResultPrefixFlag)
                 segments.Add(new PathSegment { DisplayName = " > " });
 
