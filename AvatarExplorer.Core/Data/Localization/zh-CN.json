@@ -168,6 +168,7 @@
     "Success.ItemFileAdd": "项目文件添加完成",
     "Success.ItemFolderAdd": "项目文件夹添加完成",
     "Success.FetchAllItemThumbnails": "批量获取缩略图完成（成功 {0} 个）",
+    "Success.FetchAllVariationHashs": "批量获取哈希完成（成功 {0} 个）",
 
     "VariationUpdate.UpdateAvailable": "有可用的项目更新",
     "VariationUpdate.NoUpdatesAvailable": "没有更新",
@@ -178,6 +179,7 @@
     "Warning.Default": "警告",
     "Warning.RunningInAdministratorMode": "在管理员模式下，拖放等部分操作可能不可用。",
     "Warning.FetchAllItemThumbnailsCancelled": "批量获取缩略图已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",
+    "Warning.FetchAllVariationHashsCancelled": "批量获取哈希已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",
 
     "Error.Default": "错误",
     "Error.Nothing": "没有找到项目！",
@@ -210,6 +212,7 @@
     "Error.UnsupportedPlatform": "此功能仅在 Windows 和 Linux 上可用",
     "Error.InvalidCategory": "无效类别",
     "Error.FetchAllItemThumbnailsFailed": "批量获取缩略图完成。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个\n请查看错误日志了解详情。",
+    "Error.FetchAllVariationHashsFailed": "批量获取哈希完成。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个\n请查看错误日志了解详情。",
     "Error.UnitypackageNotFound": "未找到Unitypackage",
     "Error.InvalidUrl": "无效的URL",
     "Error.ItemPathNotFound": "找不到项目路径",

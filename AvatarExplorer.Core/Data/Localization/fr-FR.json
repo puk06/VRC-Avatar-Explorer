@@ -168,6 +168,7 @@
     "Success.ItemFileAdd": "Ajout du fichier d'élément terminé",
     "Success.ItemFolderAdd": "Ajout du dossier d'élément terminé",
     "Success.FetchAllItemThumbnails": "Récupération groupée des vignettes terminée ({0} réussies)",
+    "Success.FetchAllVariationHashs": "Récupération groupée des hachages terminée ({0} réussies)",
 
     "VariationUpdate.UpdateAvailable": "Des mises à jour d'éléments sont disponibles",
     "VariationUpdate.NoUpdatesAvailable": "Aucune mise à jour disponible",
@@ -178,6 +179,7 @@
     "Warning.Default": "Avertissement",
     "Warning.RunningInAdministratorMode": "En mode administrateur, certaines opérations comme le glisser-déposer peuvent ne pas être disponibles.",
     "Warning.FetchAllItemThumbnailsCancelled": "La récupération groupée des vignettes a été annulée. Réussies : {0} / Échouées : {1} / Total : {2}",
+    "Warning.FetchAllVariationHashsCancelled": "La récupération groupée des hachages a été annulée. Réussies : {0} / Échouées : {1} / Total : {2}",
 
     "Error.Default": "Erreur",
     "Error.Nothing": "Aucun élément trouvé !",
@@ -210,6 +212,7 @@
     "Error.UnsupportedPlatform": "Cette fonctionnalité n'est disponible que sous Windows et Linux",
     "Error.InvalidCategory": "Catégorie invalide",
     "Error.FetchAllItemThumbnailsFailed": "La récupération groupée des vignettes est terminée. Réussies : {0} / Échouées : {1} / Total : {2}\nConsultez le journal d'erreurs pour plus de détails.",
+    "Error.FetchAllVariationHashsFailed": "La récupération groupée des hachages est terminée. Réussies : {0} / Échouées : {1} / Total : {2}\nConsultez le journal d'erreurs pour plus de détails.",
     "Error.UnitypackageNotFound": "Aucun Unitypackage trouvé",
     "Error.InvalidUrl": "URL invalide",
     "Error.ItemPathNotFound": "Chemin de l'élément introuvable",

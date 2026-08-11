@@ -168,6 +168,7 @@
     "Success.ItemFolderAdd": "アイテムフォルダーの追加が完了しました",
     "Success.FetchAllItemThumbnails": "サムネイル一括取得が完了しました ({0}件成功)",
     "Success.RemoveFolder": "フォルダの削除に成功しました",
+    "Success.FetchAllVariationHashs": "ハッシュ一括取得が完了しました ({0}件成功)",
 
     "VariationUpdate.UpdateAvailable": "アイテムの更新が利用可能です",
     "VariationUpdate.NoUpdatesAvailable": "更新はありませんでした",
@@ -178,6 +179,7 @@
     "Warning.Default": "注意",
     "Warning.RunningInAdministratorMode": "管理者モードでは、ドラッグ＆ドロップなど一部の操作が利用できなくなります。",
     "Warning.FetchAllItemThumbnailsCancelled": "サムネイル一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",
+    "Warning.FetchAllVariationHashsCancelled": "ハッシュ一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",
 
     "Error.Default": "エラー",
     "Error.Nothing": "アイテムが見つからないよっ！",
@@ -210,6 +212,7 @@
     "Error.UnsupportedPlatform": "この機能はWindowsとLinuxでのみ利用可能です",
     "Error.InvalidCategory": "無効なカテゴリです",
     "Error.FetchAllItemThumbnailsFailed": "サムネイル一括取得が完了しました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件\n詳細はエラーログを確認してください。",
+    "Error.FetchAllVariationHashsFailed": "ハッシュ一括取得が完了しました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件\n詳細はエラーログを確認してください。",
     "Error.UnitypackageNotFound": "Unitypackageが見つかりませんでした",
     "Error.InvalidUrl": "無効なURLです",
     "Error.ItemPathNotFound": "アイテムパスが見つかりませんでした",

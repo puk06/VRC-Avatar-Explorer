@@ -168,6 +168,7 @@
     "Success.ItemFileAdd": "Agregado de archivo de elemento completado",
     "Success.ItemFolderAdd": "Agregado de carpeta de elemento completado",
     "Success.FetchAllItemThumbnails": "Obtención masiva de miniaturas completada ({0} correctos)",
+    "Success.FetchAllVariationHashs": "Obtención masiva de hashes completada ({0} correctos)",
 
     "VariationUpdate.UpdateAvailable": "Hay actualizaciones disponibles para el elemento",
     "VariationUpdate.NoUpdatesAvailable": "No hay actualizaciones disponibles",
@@ -178,6 +179,7 @@
     "Warning.Default": "Advertencia",
     "Warning.RunningInAdministratorMode": "En modo administrador, algunas operaciones como arrastrar y soltar pueden no estar disponibles.",
     "Warning.FetchAllItemThumbnailsCancelled": "La obtención masiva de miniaturas se canceló. Correctos: {0} / Fallidos: {1} / Total: {2}",
+    "Warning.FetchAllVariationHashsCancelled": "La obtención masiva de hashes se canceló. Correctos: {0} / Fallidos: {1} / Total: {2}",
 
     "Error.Default": "Error",
     "Error.Nothing": "¡No se encontraron elementos!",
@@ -210,6 +212,7 @@
     "Error.UnsupportedPlatform": "Esta función solo está disponible en Windows y Linux",
     "Error.InvalidCategory": "Categoría inválida",
     "Error.FetchAllItemThumbnailsFailed": "La obtención masiva de miniaturas se completó. Correctos: {0} / Fallidos: {1} / Total: {2}\nConsulta el registro de errores para más detalles.",
+    "Error.FetchAllVariationHashsFailed": "La obtención masiva de hashes se completó. Correctos: {0} / Fallidos: {1} / Total: {2}\nConsulta el registro de errores para más detalles.",
     "Error.UnitypackageNotFound": "No se encontró ningún Unitypackage",
     "Error.InvalidUrl": "URL inválida",
     "Error.ItemPathNotFound": "Ruta del elemento no encontrada",

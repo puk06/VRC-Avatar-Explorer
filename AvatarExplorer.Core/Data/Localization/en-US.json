@@ -168,6 +168,7 @@
     "Success.ItemFileAdd": "Item file addition completed",
     "Success.ItemFolderAdd": "Item folder addition completed",
     "Success.FetchAllItemThumbnails": "Bulk thumbnail fetch completed ({0} succeeded)",
+    "Success.FetchAllVariationHashs": "Bulk hash fetch completed ({0} succeeded)",
 
     "VariationUpdate.UpdateAvailable": "Item updates are available",
     "VariationUpdate.NoUpdatesAvailable": "No updates available",
@@ -178,6 +179,7 @@
     "Warning.Default": "Warning",
     "Warning.RunningInAdministratorMode": "In administrator mode, some operations like drag & drop may not be available.",
     "Warning.FetchAllItemThumbnailsCancelled": "Bulk thumbnail fetch was cancelled. Success: {0} / Failed: {1} / Total: {2}",
+    "Warning.FetchAllVariationHashsCancelled": "Bulk hash fetch was cancelled. Success: {0} / Failed: {1} / Total: {2}",
 
     "Error.Default": "Error",
     "Error.Nothing": "No items found!",
@@ -210,6 +212,7 @@
     "Error.UnsupportedPlatform": "This feature is only available on Windows and Linux.",
     "Error.InvalidCategory": "Invalid category",
     "Error.FetchAllItemThumbnailsFailed": "Bulk thumbnail fetch completed. Success: {0} / Failed: {1} / Total: {2}\nCheck the error log for details.",
+    "Error.FetchAllVariationHashsFailed": "Bulk hash fetch completed. Success: {0} / Failed: {1} / Total: {2}\nCheck the error log for details.",
     "Error.UnitypackageNotFound": "No Unitypackage found",
     "Error.InvalidUrl": "Invalid URL",
     "Error.ItemPathNotFound": "Item path not found",

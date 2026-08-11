@@ -162,7 +162,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
             Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Cancelled];
             MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Warning.Default],
-                Localizer.Instance.Get(Loc.Warning.FetchAllItemThumbnailsCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
+                Localizer.Instance.Get(Loc.Warning.FetchAllVariationHashsCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
                 NotificationType.Warning
             );
             return;
@@ -174,7 +174,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
         {
             MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Success.Default],
-                Localizer.Instance.Get(Loc.Success.FetchAllItemThumbnails, successCount.ToString()),
+                Localizer.Instance.Get(Loc.Success.FetchAllVariationHashs, successCount.ToString()),
                 NotificationType.Success
             );
         }
@@ -182,7 +182,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
         {
             MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance.Get(Loc.Error.FetchAllItemThumbnailsFailed, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
+                Localizer.Instance.Get(Loc.Error.FetchAllVariationHashsFailed, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
                 NotificationType.Error
             );
         }

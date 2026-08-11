@@ -168,6 +168,7 @@
     "Success.ItemFileAdd": "項目檔案新增完成",
     "Success.ItemFolderAdd": "項目資料夾新增完成",
     "Success.FetchAllItemThumbnails": "批次取得縮圖完成（成功 {0} 個）",
+    "Success.FetchAllVariationHashs": "批次取得雜湊完成（成功 {0} 個）",
 
     "VariationUpdate.UpdateAvailable": "有可用的項目更新",
     "VariationUpdate.NoUpdatesAvailable": "沒有更新",
@@ -178,6 +179,7 @@
     "Warning.Default": "注意",
     "Warning.RunningInAdministratorMode": "在管理員模式下，拖放等部分操作可能無法使用。",
     "Warning.FetchAllItemThumbnailsCancelled": "批次取得縮圖已取消。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個",
+    "Warning.FetchAllVariationHashsCancelled": "批次取得雜湊已取消。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個",
 
     "Error.Default": "錯誤",
     "Error.Nothing": "找不到項目！",
@@ -210,6 +212,7 @@
     "Error.UnsupportedPlatform": "此功能僅可在 Windows 和 Linux 上使用",
     "Error.InvalidCategory": "無效的類別",
     "Error.FetchAllItemThumbnailsFailed": "批次取得縮圖完成。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個\n請查看錯誤日誌以取得詳細資訊。",
+    "Error.FetchAllVariationHashsFailed": "批次取得雜湊完成。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個\n請查看錯誤日誌以取得詳細資訊。",
     "Error.UnitypackageNotFound": "未找到Unitypackage",
     "Error.InvalidUrl": "無效的URL",
     "Error.ItemPathNotFound": "找不到項目路徑",

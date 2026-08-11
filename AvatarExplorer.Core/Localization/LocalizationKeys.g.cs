@@ -289,6 +289,7 @@ public static class Loc
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
         public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
         public const string RemoveFolder = "Success.RemoveFolder";
+        public const string FetchAllVariationHashs = "Success.FetchAllVariationHashs";
     }
     public static class VariationUpdate
     {
@@ -303,6 +304,7 @@ public static class Loc
         public const string Default = "Warning.Default";
         public const string RunningInAdministratorMode = "Warning.RunningInAdministratorMode";
         public const string FetchAllItemThumbnailsCancelled = "Warning.FetchAllItemThumbnailsCancelled";
+        public const string FetchAllVariationHashsCancelled = "Warning.FetchAllVariationHashsCancelled";
     }
     public static class Error
     {
@@ -340,6 +342,7 @@ public static class Loc
         public const string UnsupportedPlatform = "Error.UnsupportedPlatform";
         public const string InvalidCategory = "Error.InvalidCategory";
         public const string FetchAllItemThumbnailsFailed = "Error.FetchAllItemThumbnailsFailed";
+        public const string FetchAllVariationHashsFailed = "Error.FetchAllVariationHashsFailed";
         public const string UnitypackageNotFound = "Error.UnitypackageNotFound";
         public const string InvalidUrl = "Error.InvalidUrl";
         public const string ItemPathNotFound = "Error.ItemPathNotFound";
