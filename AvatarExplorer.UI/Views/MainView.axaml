@@ -200,7 +200,7 @@
 
                 <Border Grid.Column="2" Classes="panelbackground">
                     <Panel>
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10" IsVisible="False">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10" IsVisible="{Binding IsMainItemsEmpty}">
                             <Image Source="avares://AvatarExplorer/Assets/Internal/EmptyIcon.png" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <TextBlock Text="{Binding [Error.Nothing], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="25" Foreground="{DynamicResource Text.Primary}"/>
                         </StackPanel>

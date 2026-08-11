@@ -50,6 +50,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     [Reactive] public int SelectedCategory { get; set; } = 0;
     [Reactive] public IEnumerable<ItemViewModel> LeftItems { get; set; } = [];
     [Reactive] public IEnumerable<ItemViewModel> MainItems { get; set; } = [];
+    [Reactive] public bool IsMainItemsEmpty { get; set; }
 
     [Reactive] public PanelPageInfo LeftPageInfo { get; set; } = new();
     [Reactive] public PanelPageInfo RightPageInfo { get; set; } = new();
@@ -417,6 +418,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         MainItems = RightPageInfo.GetPageItems(_allMainItems)
             .Select(i => i.Update(UserPreferences.NormalIconSize, UserPreferences.RemoveBrackets))
             .ToList();
+
+        IsMainItemsEmpty = !MainItems.Any();
     }
     #endregion
 
