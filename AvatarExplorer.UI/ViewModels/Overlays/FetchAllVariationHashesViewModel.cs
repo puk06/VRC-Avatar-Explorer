@@ -11,7 +11,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class FetchAllVariationHashsViewModel : ViewModelBase
+public class FetchAllVariationHashesViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; }
     [Reactive] public string Status { get; set; } = string.Empty;
@@ -29,7 +29,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
     private bool _isRunning = false;
     private CancellationTokenSource? _cancellationTokenSource;
 
-    public FetchAllVariationHashsViewModel()
+    public FetchAllVariationHashesViewModel()
     {
         StartCommand = ReactiveCommand.CreateFromTask(StartInternal);
         CancelCommand = ReactiveCommand.Create(Cancel);
@@ -51,10 +51,10 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
     private void ResetUi()
     {
         Progress = 0;
-        Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Ready];
-        Count = Localizer.Instance.Get(Loc.FetchAllVariationHashs.Progress, ["0", "0", "0", "0"]);
-        CurrentItem = Localizer.Instance.Get(Loc.FetchAllVariationHashs.CurrentItem, "-");
-        Eta = Localizer.Instance[Loc.FetchAllVariationHashs.EtaUnknown];
+        Status = Localizer.Instance[Loc.FetchAllVariationHashes.Status.Ready];
+        Count = Localizer.Instance.Get(Loc.FetchAllVariationHashes.Progress, ["0", "0", "0", "0"]);
+        CurrentItem = Localizer.Instance.Get(Loc.FetchAllVariationHashes.CurrentItem, "-");
+        Eta = Localizer.Instance[Loc.FetchAllVariationHashes.EtaUnknown];
 
         IsStartable = !_isRunning;
         IsCancelable = _isRunning;
@@ -65,7 +65,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
         int clamped = Math.Max(0, totalSeconds);
         int minutes = clamped / 60;
         int seconds = clamped % 60;
-        return Localizer.Instance.Get(Loc.FetchAllVariationHashs.Eta, [minutes.ToString(), seconds.ToString()]);
+        return Localizer.Instance.Get(Loc.FetchAllVariationHashes.Eta, [minutes.ToString(), seconds.ToString()]);
     }
 
     private async Task StartInternal()
@@ -92,7 +92,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
 
         IsStartable = false;
         IsCancelable = true;
-        Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Running];
+        Status = Localizer.Instance[Loc.FetchAllVariationHashes.Status.Running];
 
         int successCount = 0;
         int failureCount = 0;
@@ -111,8 +111,8 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
 
                 var item = allItems[index];
 
-                Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Running];
-                CurrentItem = Localizer.Instance.Get(Loc.FetchAllVariationHashs.CurrentItem, item.Title);
+                Status = Localizer.Instance[Loc.FetchAllVariationHashes.Status.Running];
+                CurrentItem = Localizer.Instance.Get(Loc.FetchAllVariationHashes.CurrentItem, item.Title);
 
                 var result = await AvatarExplorerApp.Instance.VariationHashes.EnsureVariationHash(item.BoothId.ToString());
                 if (!result) failureCount++;
@@ -122,7 +122,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
                 int progress = (int)Math.Clamp(processedCount * 100.0 / allItems.Length, 0, 100);
                 Progress = progress;
                 Count = Localizer.Instance.Get(
-                    Loc.FetchAllVariationHashs.Progress,
+                    Loc.FetchAllVariationHashes.Progress,
                     [processedCount.ToString(), allItems.Length.ToString(), successCount.ToString(), failureCount.ToString()]
                 );
 
@@ -139,7 +139,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
                 }
                 else
                 {
-                    Eta = Localizer.Instance[Loc.FetchAllVariationHashs.EtaUnknown];
+                    Eta = Localizer.Instance[Loc.FetchAllVariationHashes.EtaUnknown];
                 }
             }
         }
@@ -159,22 +159,22 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
 
         if (isCancelled)
         {
-            Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Cancelled];
+            Status = Localizer.Instance[Loc.FetchAllVariationHashes.Status.Cancelled];
             MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Warning.Default],
-                Localizer.Instance.Get(Loc.Warning.FetchAllVariationHashsCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
+                Localizer.Instance.Get(Loc.Warning.FetchAllVariationHashesCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
                 NotificationType.Warning
             );
             return;
         }
 
-        Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Completed];
+        Status = Localizer.Instance[Loc.FetchAllVariationHashes.Status.Completed];
 
         if (failureCount == 0)
         {
             MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Success.Default],
-                Localizer.Instance.Get(Loc.Success.FetchAllVariationHashs, successCount.ToString()),
+                Localizer.Instance.Get(Loc.Success.FetchAllVariationHashes, successCount.ToString()),
                 NotificationType.Success
             );
         }
@@ -182,7 +182,7 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
         {
             MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance.Get(Loc.Error.FetchAllVariationHashsFailed, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
+                Localizer.Instance.Get(Loc.Error.FetchAllVariationHashesFailed, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
                 NotificationType.Error
             );
         }
@@ -194,6 +194,6 @@ public class FetchAllVariationHashsViewModel : ViewModelBase
 
         _cancellationTokenSource?.Cancel();
         IsCancelable = false;
-        Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Cancelling];
+        Status = Localizer.Instance[Loc.FetchAllVariationHashes.Status.Cancelling];
     }
 }

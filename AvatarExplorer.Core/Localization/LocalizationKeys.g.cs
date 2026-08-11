@@ -290,7 +290,7 @@ public static class Loc
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
         public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
         public const string RemoveFolder = "Success.RemoveFolder";
-        public const string FetchAllVariationHashs = "Success.FetchAllVariationHashs";
+        public const string FetchAllVariationHashes = "Success.FetchAllVariationHashes";
     }
     public static class VariationUpdate
     {
@@ -306,7 +306,7 @@ public static class Loc
         public const string Default = "Warning.Default";
         public const string RunningInAdministratorMode = "Warning.RunningInAdministratorMode";
         public const string FetchAllItemThumbnailsCancelled = "Warning.FetchAllItemThumbnailsCancelled";
-        public const string FetchAllVariationHashsCancelled = "Warning.FetchAllVariationHashsCancelled";
+        public const string FetchAllVariationHashesCancelled = "Warning.FetchAllVariationHashesCancelled";
     }
     public static class Error
     {
@@ -344,7 +344,7 @@ public static class Loc
         public const string UnsupportedPlatform = "Error.UnsupportedPlatform";
         public const string InvalidCategory = "Error.InvalidCategory";
         public const string FetchAllItemThumbnailsFailed = "Error.FetchAllItemThumbnailsFailed";
-        public const string FetchAllVariationHashsFailed = "Error.FetchAllVariationHashsFailed";
+        public const string FetchAllVariationHashesFailed = "Error.FetchAllVariationHashesFailed";
         public const string UnitypackageNotFound = "Error.UnitypackageNotFound";
         public const string InvalidUrl = "Error.InvalidUrl";
         public const string ItemPathNotFound = "Error.ItemPathNotFound";
@@ -521,11 +521,11 @@ public static class Loc
             public const string Description = "Settings.FetchAllThumbnails.Description";
             public const string Open = "Settings.FetchAllThumbnails.Open";
         }
-        public static class FetchAllVariationHashs
+        public static class FetchAllVariationHashes
         {
-            public const string Title = "Settings.FetchAllVariationHashs.Title";
-            public const string Description = "Settings.FetchAllVariationHashs.Description";
-            public const string Open = "Settings.FetchAllVariationHashs.Open";
+            public const string Title = "Settings.FetchAllVariationHashes.Title";
+            public const string Description = "Settings.FetchAllVariationHashes.Description";
+            public const string Open = "Settings.FetchAllVariationHashes.Open";
         }
         public static class RestoreFromBackup
         {
@@ -792,23 +792,23 @@ public static class Loc
             public const string Completed = "FetchAllThumbnails.Status.Completed";
         }
     }
-    public static class FetchAllVariationHashs
+    public static class FetchAllVariationHashes
     {
-        public const string Title = "FetchAllVariationHashs.Title";
-        public const string Description = "FetchAllVariationHashs.Description";
-        public const string Start = "FetchAllVariationHashs.Start";
-        public const string CancelRunning = "FetchAllVariationHashs.CancelRunning";
-        public const string CurrentItem = "FetchAllVariationHashs.CurrentItem";
-        public const string Progress = "FetchAllVariationHashs.Progress";
-        public const string Eta = "FetchAllVariationHashs.Eta";
-        public const string EtaUnknown = "FetchAllVariationHashs.EtaUnknown";
+        public const string Title = "FetchAllVariationHashes.Title";
+        public const string Description = "FetchAllVariationHashes.Description";
+        public const string Start = "FetchAllVariationHashes.Start";
+        public const string CancelRunning = "FetchAllVariationHashes.CancelRunning";
+        public const string CurrentItem = "FetchAllVariationHashes.CurrentItem";
+        public const string Progress = "FetchAllVariationHashes.Progress";
+        public const string Eta = "FetchAllVariationHashes.Eta";
+        public const string EtaUnknown = "FetchAllVariationHashes.EtaUnknown";
         public static class Status
         {
-            public const string Ready = "FetchAllVariationHashs.Status.Ready";
-            public const string Running = "FetchAllVariationHashs.Status.Running";
-            public const string Cancelling = "FetchAllVariationHashs.Status.Cancelling";
-            public const string Cancelled = "FetchAllVariationHashs.Status.Cancelled";
-            public const string Completed = "FetchAllVariationHashs.Status.Completed";
+            public const string Ready = "FetchAllVariationHashes.Status.Ready";
+            public const string Running = "FetchAllVariationHashes.Status.Running";
+            public const string Cancelling = "FetchAllVariationHashes.Status.Cancelling";
+            public const string Cancelled = "FetchAllVariationHashes.Status.Cancelled";
+            public const string Completed = "FetchAllVariationHashes.Status.Completed";
         }
     }
     public static class UpdateDialog

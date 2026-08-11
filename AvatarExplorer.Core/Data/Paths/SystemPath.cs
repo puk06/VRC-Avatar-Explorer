@@ -19,7 +19,7 @@ public static class SystemPath
     public static readonly string CommonAvatarDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.CommonAvatars);
     public static readonly string BulkImportPresetDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.BulkImportPresets);
     public static readonly string TempAvatarsDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.TempAvatars);
-    public static readonly string VariationHashDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.VariationHashs);
+    public static readonly string VariationHashDatabasePath = Path.Join(DatabaseFolderPath, SystemFileName.Database.VariationHashes);
 
     public static readonly string RuntimeSettingsFilePath = Path.Join(SettingsFolderPath, SystemFileName.Settings.Runtime);
 

@@ -62,7 +62,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public FatalErrorViewModel FatalErrorVM { get; } = new();
 
     public FetchAllThumbnailsViewModel FetchAllThumbnailsVM { get; } = new();
-    public FetchAllVariationHashsViewModel FetchAllVariationHashsVM { get; } = new();
+    public FetchAllVariationHashesViewModel FetchAllVariationHashesVM { get; } = new();
 
     public ImportDataViewModel ImportDataVM { get; } = new();
     public ExportDataViewModel ExportDataVM { get; } = new();
