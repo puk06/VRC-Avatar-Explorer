@@ -41,7 +41,8 @@ internal static class Downloader
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to download file: '{url}'.", ex);
+            var host = Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri.Host : "unknown";
+            ErrorManager.Instance.PostInternalError($"Failed to download file from '{host}'.", ex);
             return false;
         }
     }
