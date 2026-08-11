@@ -358,6 +358,7 @@
     "Settings.About": "Acerca de este software",
     "Settings.AboutInfo.Title": "VRC Avatar Explorer",
     "Settings.AboutInfo.Subtitle": "Explorador de recursos multiplataforma para modificación de avatares",
+    "Settings.AboutInfo.BoothNote": "Esta aplicación soporta la obtención automática de artículos desde Booth, pero ha sido desarrollada utilizando la plataforma pixiv y no es una aplicación creada o distribuida por pixiv.",
     "Settings.AboutDeveloper.Title": "Acerca del desarrollador",
     "Settings.AboutDeveloper.Label": "Desarrollador",
     "Settings.AboutProject.Title": "Proyecto",

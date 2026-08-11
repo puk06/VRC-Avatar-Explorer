@@ -358,6 +358,7 @@
     "Settings.About": "このソフトについて",
     "Settings.AboutInfo.Title": "VRC Avatar Explorer",
     "Settings.AboutInfo.Subtitle": "VRChatアバター改変用のアセット管理ツール",
+    "Settings.AboutInfo.BoothNote": "Boothからの自動アイテム取得機能に対応していますが、本アプリケーションはpixivプラットフォームを利用して開発されたものであり、pixivが作成・配布しているアプリケーションではありません。",
     "Settings.AboutDeveloper.Title": "開発者について",
     "Settings.AboutDeveloper.Label": "開発者",
     "Settings.AboutProject.Title": "プロジェクト",

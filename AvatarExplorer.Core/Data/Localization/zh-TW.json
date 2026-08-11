@@ -358,6 +358,7 @@
     "Settings.About": "關於此軟體",
     "Settings.AboutInfo.Title": "VRC Avatar Explorer",
     "Settings.AboutInfo.Subtitle": "用於 VRChat 頭像改造的跨平台資產管理工具",
+    "Settings.AboutInfo.BoothNote": "本應用支援Booth自動獲取物品功能，但本應用是利用pixiv平台開發的，並非由pixiv創建或分發的應用。",
     "Settings.AboutDeveloper.Title": "開發者資訊",
     "Settings.AboutDeveloper.Label": "開發者",
     "Settings.AboutProject.Title": "專案",

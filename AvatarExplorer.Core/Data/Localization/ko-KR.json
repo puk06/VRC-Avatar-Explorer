@@ -358,6 +358,7 @@
     "Settings.About": "이 소프트웨어에 대해",
     "Settings.AboutInfo.Title": "VRC Avatar Explorer",
     "Settings.AboutInfo.Subtitle": "VRChat 아바타 수정용 자산 관리 도구",
+    "Settings.AboutInfo.BoothNote": "이 애플리케이션은 Booth의 자동 아이템 가져오기 기능을 지원하지만, pixiv 플랫폼을 기반으로 개발되었으며 pixiv가 제작·배포하는 애플리케이션이 아닙니다.",
     "Settings.AboutDeveloper.Title": "개발자 정보",
     "Settings.AboutDeveloper.Label": "개발자",
     "Settings.AboutProject.Title": "프로젝트",

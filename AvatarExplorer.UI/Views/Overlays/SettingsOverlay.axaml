@@ -587,6 +587,8 @@
 
                                     <Separator Classes="separator"/>
 
+                                    <TextBlock Text="{Binding [Settings.AboutInfo.BoothNote], Source={x:Static loc:Localizer.Instance}}" TextAlignment="Center" FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource Text.Secondary}" Margin="20,0,20,0"/>
+
                                     <StackPanel Spacing="10">
                                         <TextBlock Text="{Binding [Settings.AboutLicense.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                                         <TextBlock Text="{Binding [Settings.AboutLicense.Type], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>

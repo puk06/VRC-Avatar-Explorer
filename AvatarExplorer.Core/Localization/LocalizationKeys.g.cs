@@ -617,6 +617,7 @@ public static class Loc
         {
             public const string Title = "Settings.AboutInfo.Title";
             public const string Subtitle = "Settings.AboutInfo.Subtitle";
+            public const string BoothNote = "Settings.AboutInfo.BoothNote";
         }
         public static class AboutDeveloper
         {

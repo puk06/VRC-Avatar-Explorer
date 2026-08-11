@@ -358,6 +358,7 @@
     "Settings.About": "About This Software",
     "Settings.AboutInfo.Title": "VRC Avatar Explorer",
     "Settings.AboutInfo.Subtitle": "Cross-Platform Asset Explorer For Avatar Modification",
+    "Settings.AboutInfo.BoothNote": "This application supports automatic item retrieval from Booth, but it was developed using the pixiv platform and is not an application created or distributed by pixiv.",
     "Settings.AboutDeveloper.Title": "About Developer",
     "Settings.AboutDeveloper.Label": "Developer",
     "Settings.AboutProject.Title": "Project",
