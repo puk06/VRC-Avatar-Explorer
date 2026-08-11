@@ -612,6 +612,11 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                     _stateCacheManager.RestoreRightState(RightPageInfo);
                 }
             }
+            else
+            {
+                // はじめの画面なので最初に戻す
+                GoHome();
+            }
         }
 
         Refresh(false);
