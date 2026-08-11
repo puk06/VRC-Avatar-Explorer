@@ -445,6 +445,7 @@
     "EditTags.AddTag": "Agregar etiqueta",
     "EditTags.NewTag": "Nueva etiqueta",
     "EditTags.SelectTag": "Selecciona la etiqueta que quieres agregar",
+    "EditTags.SearchTag": "Buscar etiqueta...",
 
     "ImportData.Title": "Importar datos",
     "ImportData.Description": "Importar datos desde otras herramientas",
@@ -525,6 +526,7 @@
     "TagEditor.NewTagName": "Nuevo nombre de etiqueta",
     "TagEditor.Rename": "Renombrar",
     "TagEditor.Remove": "Eliminar",
+    "TagEditor.SearchTag": "Buscar etiqueta...",
 
     "UnitypackageViewer.Export": "Exportar",
     "UnitypackageViewer.Title": "Visor de Unitypackage",

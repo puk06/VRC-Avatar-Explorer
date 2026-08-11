@@ -742,6 +742,7 @@ public static class Loc
         public const string AddTag = "EditTags.AddTag";
         public const string NewTag = "EditTags.NewTag";
         public const string SelectTag = "EditTags.SelectTag";
+        public const string SearchTag = "EditTags.SearchTag";
     }
     public static class ImportData
     {
@@ -852,6 +853,7 @@ public static class Loc
         public const string NewTagName = "TagEditor.NewTagName";
         public const string Rename = "TagEditor.Rename";
         public const string Remove = "TagEditor.Remove";
+        public const string SearchTag = "TagEditor.SearchTag";
     }
     public static class UnitypackageViewer
     {

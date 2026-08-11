@@ -16,6 +16,7 @@
                 <StackPanel Margin="0,10,0,10" Spacing="10">
                     <StackPanel Spacing="8">
                         <TextBlock Text="{Binding [TagEditor.OldTag], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Secondary}"/>
+                        <TextBox Text="{Binding SearchText}" PlaceholderText="{Binding [TagEditor.SearchTag], Source={x:Static loc:Localizer.Instance}}"/>
                         <ComboBox ItemsSource="{Binding ExistTags}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedTagIndex}"/>
                     </StackPanel>
 

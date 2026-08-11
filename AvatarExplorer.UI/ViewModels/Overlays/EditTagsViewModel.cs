@@ -11,7 +11,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class EditTagsViewModel : ViewModelBase
+public class EditTagsViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public ObservableCollection<string> Tags { get; set; } = [];
     private TaskCompletionSource<string[]?> _tcs = new();
@@ -21,7 +21,10 @@ public class EditTagsViewModel : ViewModelBase
     public IReactiveCommand ClearNewTagCommand { get; }
 
     [Reactive] public int SelectedIndex { get; set; } = -1;
+
+    [Reactive] public string SearchText { get; set; } = string.Empty;
     [Reactive] public IEnumerable<string> ExistTags { get; set; } = [];
+    private List<string> _allExistTags = [];
 
     public IReactiveCommand ConfirmCommand { get; }
     public IReactiveCommand CancelCommand { get; }
@@ -33,13 +36,30 @@ public class EditTagsViewModel : ViewModelBase
 
         CreateTagCommand = ReactiveCommand.Create(CreateTag);
         ClearNewTagCommand = ReactiveCommand.Create(() => NewTag = string.Empty);
+
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
+        this.WhenAnyValue(i => i.SearchText)
+            .Subscribe(_ => ApplySearchFilter());
     }
 
     public void RefleshTags()
     {
-        ExistTags = AvatarExplorerApp.Instance.Items.GetAll()
+        _allExistTags = AvatarExplorerApp.Instance.Items.GetAll()
             .SelectMany(i => i.Tags)
-            .Distinct();
+            .Distinct()
+            .ToList();
+        ApplySearchFilter();
+    }
+
+    private void ApplySearchFilter()
+    {
+        ExistTags = string.IsNullOrWhiteSpace(SearchText)
+            ? _allExistTags
+            : _allExistTags.Where(t => t.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
     }
     
     public void CreateTag()
@@ -71,6 +91,7 @@ public class EditTagsViewModel : ViewModelBase
 
         Tags = new ObservableCollection<string>(tags ?? []);
         NewTag = string.Empty;
+        SearchText = string.Empty;
 
         _tcs = new();
 

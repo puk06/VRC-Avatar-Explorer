@@ -445,6 +445,7 @@
     "EditTags.AddTag": "タグの追加",
     "EditTags.NewTag": "新しいタグ",
     "EditTags.SelectTag": "追加したいタグを選択してください",
+    "EditTags.SearchTag": "タグを検索...",
 
     "ImportData.Title": "データをインポート",
     "ImportData.Description": "他のツールからデータをインポートします",
@@ -525,6 +526,7 @@
     "TagEditor.NewTagName": "新しいタグ名",
     "TagEditor.Rename": "改名",
     "TagEditor.Remove": "削除",
+    "TagEditor.SearchTag": "タグを検索...",
 
     "UnitypackageViewer.Export": "エクスポート",
     "UnitypackageViewer.Title": "Unitypackage Viewer",

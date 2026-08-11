@@ -445,6 +445,7 @@
     "EditTags.AddTag": "태그 추가",
     "EditTags.NewTag": "새 태그",
     "EditTags.SelectTag": "추가할 태그를 선택해 주세요",
+    "EditTags.SearchTag": "태그 검색...",
 
     "ImportData.Title": "데이터 가져오기",
     "ImportData.Description": "다른 도구에서 데이터를 가져옵니다",
@@ -525,6 +526,7 @@
     "TagEditor.NewTagName": "새 태그 이름",
     "TagEditor.Rename": "이름 변경",
     "TagEditor.Remove": "삭제",
+    "TagEditor.SearchTag": "태그 검색...",
 
     "UnitypackageViewer.Export": "내보내기",
     "UnitypackageViewer.Title": "Unitypackage Viewer",

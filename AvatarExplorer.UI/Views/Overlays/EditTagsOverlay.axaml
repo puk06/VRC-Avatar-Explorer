@@ -46,6 +46,7 @@
                     </TextBox>
                     <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [EditTags.AddTag], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding CreateTagCommand}"/>
                 </Grid>
+                <TextBox Text="{Binding SearchText}" PlaceholderText="{Binding [EditTags.SearchTag], Source={x:Static loc:Localizer.Instance}}"/>
                 <ComboBox ItemsSource="{Binding ExistTags}" SelectedIndex="{Binding SelectedIndex}" PlaceholderText="{Binding [EditTags.SelectTag], Source={x:Static loc:Localizer.Instance}}" Grid.Row="8" HorizontalAlignment="Stretch" SelectionChanged="OnExistTagSelectionChanged"/>
 
                 <!-- 下のボタン -->

@@ -445,6 +445,7 @@
     "EditTags.AddTag": "添加标签",
     "EditTags.NewTag": "新标签",
     "EditTags.SelectTag": "请选择要添加的标签",
+    "EditTags.SearchTag": "搜索标签...",
 
     "ImportData.Title": "导入数据",
     "ImportData.Description": "从其他工具导入数据",
@@ -525,6 +526,7 @@
     "TagEditor.NewTagName": "新标签名称",
     "TagEditor.Rename": "重命名",
     "TagEditor.Remove": "删除",
+    "TagEditor.SearchTag": "搜索标签...",
 
     "UnitypackageViewer.Export": "导出",
     "UnitypackageViewer.Title": "Unitypackage Viewer",

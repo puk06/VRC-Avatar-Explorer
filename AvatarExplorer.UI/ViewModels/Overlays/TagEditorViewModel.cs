@@ -18,6 +18,9 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
     [Reactive] public IEnumerable<string> ExistTags { get; set; } = [];
     [Reactive] public int SelectedTagIndex { get; set; } = -1;
     [Reactive] public string NewTagName { get; set; } = string.Empty;
+    [Reactive] public string SearchText { get; set; } = string.Empty;
+
+    private List<string> _allExistTags = [];
 
     public IReactiveCommand RenameCommand { get; }
     public IReactiveCommand RemoveCommand { get; }
@@ -47,20 +50,43 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
 
                 NewTagName = ExistTags.ElementAt(i);
             });
+
+        this.WhenAnyValue(i => i.SearchText)
+            .Subscribe(_ => ApplySearchFilter());
     }
 
     public void Open()
     {
         RefleshExistTags();
         SelectedTagIndex = 0;
+        SearchText = string.Empty;
         IsVisible = true;
     }
 
     private void RefleshExistTags()
     {
-        ExistTags = AvatarExplorerApp.Instance.Items.GetAll()
+        _allExistTags = AvatarExplorerApp.Instance.Items.GetAll()
             .SelectMany(i => i.Tags)
-            .Distinct();
+            .Distinct()
+            .ToList();
+        ApplySearchFilter();
+    }
+
+    private void ApplySearchFilter()
+    {
+        var filtered = string.IsNullOrWhiteSpace(SearchText)
+            ? _allExistTags
+            : _allExistTags.Where(t => t.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        var previousTagName = SelectedTagIndex >= 0 && SelectedTagIndex < ExistTags.Count()
+            ? ExistTags.ElementAt(SelectedTagIndex)
+            : null;
+
+        ExistTags = filtered;
+
+        SelectedTagIndex = previousTagName != null
+            ? Math.Max(0, filtered.IndexOf(previousTagName))
+            : (filtered.Count > 0 ? 0 : -1);
     }
 
     public void Close()
@@ -97,10 +123,9 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
 
         Items.RenameTag(sourceTagName, targetTagName);
 
-        var previousSelectedIndex = SelectedTagIndex;
         SelectedTagIndex = -1;
         RefleshExistTags();
-        SelectedTagIndex = previousSelectedIndex;
+        SelectedTagIndex = ExistTags.ToList().IndexOf(targetTagName);
     }
 
     public async Task Remove()
@@ -117,8 +142,10 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
 
         Items.RemoveTag(sourceTagName);
 
-        RefleshExistTags();
+        var previousIndex = SelectedTagIndex;
         SelectedTagIndex = -1;
+        RefleshExistTags();
+        SelectedTagIndex = Math.Min(previousIndex, ExistTags.Count() - 1);
     }
 
     private static bool IsTagNameExist(string tagName)
