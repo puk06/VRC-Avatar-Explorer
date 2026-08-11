@@ -10,7 +10,7 @@ public class CommonAvatar(string groupName) : AbstractDatabaseItem, IIdentifiabl
     [JsonInclude] public ImmutableArray<string> Avatars { get; private set; } = [];
 
     public void UpdateGroupName(string newName) => GroupName = newName;
-    public void UpdateAvatars(IEnumerable<string> avatars) => Avatars = avatars.ToImmutableArray();
+    public void UpdateAvatars(IEnumerable<string> avatars) => Avatars = avatars.Distinct().ToImmutableArray();
 
     [JsonIgnore] public string Identifier => "commonavatar:" + Id;
 }
