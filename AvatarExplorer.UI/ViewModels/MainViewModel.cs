@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
@@ -100,6 +99,9 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
     private string? _searchItemBaseState;
     private bool _hasSearchItem;
+
+    private readonly Guid _preSearchStateGuid = Guid.NewGuid();
+    private bool _isPreviousScreenSearch = false;
 
     private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
     #endregion
@@ -300,6 +302,13 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
     private void RefreshSearchResults(string searchQuery)
     {
+        // 前の画面が普通の画面だった時に復元できるよう、検索画面に入る前の状態を保存する
+        if (!_isPreviousScreenSearch)
+        {
+            _stateCacheManager.SaveRightState(RightPageInfo, _preSearchStateGuid);
+            _isPreviousScreenSearch = true;
+        }
+
         var sortOrder = UserPreferences.SortOrder;
         var sortDirection = UserPreferences.SortDirection;
 
@@ -313,11 +322,10 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         RightPageInfo.TotalItems = _allMainItems.Count;
 
-        if (_searchManager.IsRestored)
+        if (_searchManager.IsRestoring)
         {
-            _searchManager.ClearRestoredFlag();
-            var clampedPage = Math.Min(RightPageInfo.CurrentPage, Math.Max(0, RightPageInfo.TotalPages - 1));
-            RightPageInfo.SetPage(clampedPage);
+            _searchManager.RestorePageInfo(RightPageInfo);
+            _searchManager.MarkAsRestored();
         }
         else
         {
@@ -357,6 +365,13 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         PathSegments = new ObservableCollection<PathSegment>(
             BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
+
+        // 検索画面から戻ってきたときに前の状態を復元する（検索中のアイテムから先に進んだ時に上書きされるのを防ぐため、_hasSearchItemがtrueのときは復元しない）
+        if (_isPreviousScreenSearch && !_hasSearchItem)
+        {
+            _stateCacheManager.RestoreRightState(RightPageInfo, _preSearchStateGuid);
+            _isPreviousScreenSearch = false;
+        }
     }
 
     private static IEnumerable<Item> SortNavigationItems(List<Item> items, ItemSortOrder sortOrder, SortDirection sortDirection, ImplementedSort implementedSort, string? avatarId)
@@ -606,7 +621,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 if (_hasSearchItem && currentState == _searchItemBaseState)
                 {
                     // 検索アイテムがpopされた → 検索状態を復元
-                    _searchManager.TryRestoreQuery(RightPageInfo);
+                    _searchManager.MarkAsRestoring();
+                    _searchManager.TryRestoreQuery();
                     _hasSearchItem = false;
                 }
                 else

@@ -40,17 +40,17 @@ public class StateCacheManager
         }
     }
 
-    public void SaveRightState(PanelPageInfo rightPageInfo)
+    public void SaveRightState(PanelPageInfo rightPageInfo, Guid? customGuid = null)
     {
-        var currentGuid = _navigationService.CurrentStateId ?? Guid.Empty;
+        var currentGuid = customGuid ?? _navigationService.CurrentStateId ?? Guid.Empty;
 
         _pageCache.Add(currentGuid, rightPageInfo.CurrentPage);
         _scrollValueCache.Add(currentGuid, rightPageInfo.ScrollOffset);
     }
 
-    public void RestoreRightState(PanelPageInfo rightPageInfo)
+    public void RestoreRightState(PanelPageInfo rightPageInfo, Guid? customGuid = null)
     {
-        var currentGuid = _navigationService.CurrentStateId ?? Guid.Empty;
+        var currentGuid = customGuid ?? _navigationService.CurrentStateId ?? Guid.Empty;
         if (_pageCache.TryGetValue(currentGuid, out var page))
         {
             rightPageInfo.CurrentPage = page;

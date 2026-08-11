@@ -28,7 +28,7 @@ public class SearchManager
     private Vector _suspendedScrollOffset;
 
     public string? ActiveSearchQuery { get; private set; }
-    public bool IsRestored { get; private set; }
+    public bool IsRestoring { get; private set; }
     public bool HasSuspendedQuery => _suspendedSearchQuery != null;
 
     public string? ActiveSearchQueryDisplayText
@@ -74,16 +74,20 @@ public class SearchManager
         ActiveSearchQuery = null;
     }
 
-    public bool TryRestoreQuery(PanelPageInfo rightPageInfo)
+    public bool TryRestoreQuery()
     {
         if (_suspendedSearchQuery == null) return false;
 
         ActiveSearchQuery = _suspendedSearchQuery;
         _suspendedSearchQuery = null;
-        IsRestored = true;
+        return true;
+    }
+
+    public void RestorePageInfo(PanelPageInfo rightPageInfo)
+    {
+        if (!IsRestoring) return; // Only restore if we are in the restoring state
         rightPageInfo.CurrentPage = _suspendedPage;
         rightPageInfo.RestoreScrollOffset = _suspendedScrollOffset;
-        return true;
     }
 
     public void ClearSuspendedQuery()
@@ -91,10 +95,8 @@ public class SearchManager
         _suspendedSearchQuery = null;
     }
 
-    public void ClearRestoredFlag()
-    {
-        IsRestored = false;
-    }
+    public void MarkAsRestored() => IsRestoring = false;
+    public void MarkAsRestoring() => IsRestoring = true;
 
     public IEnumerable<Item> SearchItems(string query)
     {
