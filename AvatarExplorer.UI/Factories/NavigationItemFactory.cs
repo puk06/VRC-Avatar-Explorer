@@ -4,6 +4,7 @@ using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.UI.Data;
 using AvatarExplorer.UI.ViewModels.Component;
 using AvatarExplorer.Core.Interfaces;
+using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
 
 namespace AvatarExplorer.UI.Factories;
@@ -65,10 +66,12 @@ public static class NavigationItemFactory
         if (source is ItemFile file)
         {
             var hasExtension = !string.IsNullOrEmpty(file.Extension);
+            var isImageFile = ImageService.IsImageFile(file.FilePath);
 
             return new ItemViewModel
             {
                 ImageFileName = SystemIconKey.FileIcon,
+                ThumbnailFilePath = isImageFile ? file.FilePath : null,
                 TitleRaw = file.FileName,
                 TitleLocalizable = false,
                 DescriptionRaw = new(hasExtension ? Loc.Button.Description.File.Extension : Loc.Button.Description.File.NoExtension, [file.Extension]),

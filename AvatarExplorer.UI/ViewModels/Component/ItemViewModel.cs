@@ -1,7 +1,10 @@
 using System;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Utils;
@@ -35,6 +38,7 @@ public class ItemViewModel : ViewModelBase
     [Reactive] public double Height { get; set; } = 0;
 
     public string ImageFileName { get; set; } = string.Empty;
+    public string? ThumbnailFilePath { get; set; } = null;
     public string TitleRaw { get; set; } = string.Empty;
     public bool TitleLocalizable { get; set; } = false;
 
@@ -47,6 +51,8 @@ public class ItemViewModel : ViewModelBase
     public ContextMenuAction[] Actions { get; set; } = [];
     public Action<ContextMenuAction>? onMenuClick = null;
 
+    private CancellationTokenSource? _thumbnailLoadCts;
+
     public string Identifier { get; set; } = string.Empty;
 
     // AvatarならItemのIdentifier、CommonAvatarならCommonAvatarのIdentifier、TempAvatarならTempAvatarのIdentifier、FolderならFolderのPath、FileならFileのPath
@@ -55,7 +61,20 @@ public class ItemViewModel : ViewModelBase
 
     public ItemViewModel Update(int iconSize = 80, bool removeBrackets = false)
     {
-        Thumbnail = ImageService.Get(ImageFileName);
+        _thumbnailLoadCts?.Cancel();
+        _thumbnailLoadCts?.Dispose();
+        _thumbnailLoadCts = null;
+
+        var fallbackIcon = ImageService.Get(ImageFileName);
+        Thumbnail = fallbackIcon;
+
+        if (!string.IsNullOrEmpty(ThumbnailFilePath))
+        {
+            var cts = new CancellationTokenSource();
+            _thumbnailLoadCts = cts;
+            _ = LoadThumbnailAsync(ThumbnailFilePath, cts.Token);
+        }
+
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
         Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
         ContextMenu = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
@@ -128,5 +147,22 @@ public class ItemViewModel : ViewModelBase
     private void HandleMenuClick(ContextMenuAction action)
     {
         ContextMenuHandlerService.Handle(action.ActionKey, ActualValue ?? Identifier);
+    }
+
+    private async Task LoadThumbnailAsync(string filePath, CancellationToken ct)
+    {
+        try
+        {
+            var bitmap = await Task.Run(() => ImageService.GetFromFileSystem(filePath), ct);
+
+            if (ct.IsCancellationRequested || bitmap == null) return;
+
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                if (ct.IsCancellationRequested) return;
+                Thumbnail = bitmap;
+            }, DispatcherPriority.Normal, ct);
+        }
+        catch (OperationCanceledException) { }
     }
 }

@@ -23,6 +23,11 @@ internal static class ImageService
         internal bool Exists { get; init; }
     }
 
+    private static readonly HashSet<string> SupportedImageExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".webp", ".tiff", ".tif"
+    };
+
     private static readonly Dictionary<string, CacheEntry> BitmapCache = new();
     private static readonly Lock BitmapCacheLock = new();
     private static int ThumbnailWarmupStarted = 0;
@@ -44,6 +49,26 @@ internal static class ImageService
     };
 
     internal static bool IsSystemIcon(string fileName) => SystemIconsDictionary.ContainsKey(fileName);
+
+    internal static bool IsImageFile(string filePath)
+    {
+        var ext = Path.GetExtension(filePath);
+        return !string.IsNullOrEmpty(ext) && SupportedImageExtensions.Contains(ext);
+    }
+
+    internal static Bitmap? GetFromFileSystem(string filePath)
+    {
+        try
+        {
+            if (!File.Exists(filePath)) return null;
+            return LoadBitmap(filePath, compressThumbnail: true);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to get image from file system: {filePath}", ex);
+            return null;
+        }
+    }
 
     internal static bool SetThumbnailCompressionMaxEdge(int maxEdge)
     {
