@@ -483,16 +483,19 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         for (int i = 0; i < stateList.Count; i++)
         {
             // 検索状況は前の状況に依存しないため、パスセグメントは検索アイテムのところでリセットする
+            var searchResultPrefixFlag = false;
             if (_hasSearchItem && stateList[i] == currentItemState)
             {
                 segments.Clear();
                 segments.Add(new PathSegment { DisplayName = Localizer.Instance[Loc.Main.Path.SearchResult] });
+                searchResultPrefixFlag = true;
             }
             
             var displayName = FormatPathNode(stateList[i]);
             if (string.IsNullOrWhiteSpace(displayName)) continue;
 
-            if (i > 0 && segments.Count != 0)
+
+            if ((i > 0 && segments.Count != 0) || searchResultPrefixFlag)
                 segments.Add(new PathSegment { DisplayName = " > " });
 
             segments.Add(new PathSegment { DisplayName = displayName, State = stateList[i] });
