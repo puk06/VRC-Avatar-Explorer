@@ -78,6 +78,7 @@ public class AvatarExplorerApp
         CommonAvatars.Load();
         TempAvatars.Load();
         BulkImportPresets.Load();
+        VariationHashes.Load();
 
         ItemGroupService.RebuildIndices();
     }
