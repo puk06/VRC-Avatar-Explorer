@@ -191,7 +191,7 @@ public static class ContextMenuHandlerService
             if (u.Diff.Changed.Count > 0)
                 parts.Add($"  {Localizer.Instance.Get(Loc.VariationUpdate.Changed, u.Diff.Changed.Count.ToString())}");
 
-                return $"- {variationName}\n{string.Join("\n", parts)}";
+            return $"- {variationName}\n{string.Join("\n", parts)}";
         });
 
         MainWindowViewModel.ShowNotification(
