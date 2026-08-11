@@ -58,8 +58,8 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
     public void Open()
     {
         RefleshExistTags();
-        SelectedTagIndex = 0;
         SearchText = string.Empty;
+        SelectedTagIndex = ExistTags.Any() ? 0 : -1;
         IsVisible = true;
     }
 
