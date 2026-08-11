@@ -23,6 +23,7 @@ public class AvatarExplorerApp
     public ItemGroupService ItemGroupService { get; }
     public ItemNavigationService ItemNavigationService { get; }
     public RuntimeSettingsRepository RuntimeSettings { get; } = new();
+    public VariationHashRepository VariationHashes { get; } = new();
 
     public Func<ArchivePasswordRequest, ValueTask<string?>>? ArchivePasswordProvider { get; set; }
 
@@ -44,6 +45,7 @@ public class AvatarExplorerApp
         CommonAvatars.Load();
         TempAvatars.Load();
         BulkImportPresets.Load();
+        VariationHashes.Load();
 
         ItemGroupService.RebuildIndices();
 
@@ -53,7 +55,8 @@ public class AvatarExplorerApp
                 SystemPath.CommonAvatarDatabasePath,
                 SystemPath.TempAvatarsDatabasePath,
                 SystemPath.BulkImportPresetDatabasePath,
-                SystemPath.RuntimeSettingsFilePath
+                SystemPath.RuntimeSettingsFilePath,
+                SystemPath.VariationHashDatabasePath
             ]
         );
         BackupManager.OnBackupRestored += OnBackupRestored;

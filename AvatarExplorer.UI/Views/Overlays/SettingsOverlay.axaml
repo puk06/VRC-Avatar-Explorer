@@ -379,6 +379,17 @@
 
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                                         <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.FetchAllVariationHashs.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.FetchAllVariationHashs.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="5">
+                                            <Button Grid.Column="1" Classes="accentbutton" Content="{Binding [Settings.FetchAllVariationHashs.Open], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding FetchAllVariationHashsCommand}"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
                                             <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.AutoFixDatabase.Title], Source={x:Static loc:Localizer.Instance}}"/>
                                             <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.AutoFixDatabase.Description], Source={x:Static loc:Localizer.Instance}}"/>
                                         </Grid>

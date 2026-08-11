@@ -48,6 +48,7 @@ public static class ContextMenuHandlerService
     {
         Register(ActionKey.OpenFolder, OpenFolder);
         Register(ActionKey.RemoveFolder, RemoveFolder);
+        Register(ActionKey.CheckForUpdate, CheckForUpdate);
         Register(ActionKey.CopyBoothLink, CopyBoothLink);
         Register(ActionKey.OpenBoothLink, OpenBoothLink);
         Register(ActionKey.ShowOtherItemsByAuthor, ShowOtherItemsByAuthor);
@@ -161,6 +162,41 @@ public static class ContextMenuHandlerService
             NotificationType.Success
         );
     }
+    private static async void CheckForUpdate(string identifier)
+    {
+        var item = GetByIdentifier(identifier);
+        if (item == null) return;
+
+        var updates = await AvatarExplorerApp.Instance.VariationHashes.CheckVariationAndNotify(item.BoothId.ToString());
+        if (updates.Count == 0)
+        {
+            MainWindowViewModel.ShowNotification(
+                Localizer.Instance[Loc.VariationUpdate.NoUpdatesAvailable],
+                string.Empty,
+                NotificationType.Information
+            );
+            return;
+        }
+
+        var contentLines = updates.Select(u =>
+        {
+            var parts = new List<string>();
+            if (u.Diff.Added.Count > 0)
+                parts.Add(Localizer.Instance.Get(Loc.VariationUpdate.Added, u.Diff.Added.Count.ToString()));
+            if (u.Diff.Removed.Count > 0)
+                parts.Add(Localizer.Instance.Get(Loc.VariationUpdate.Removed, u.Diff.Removed.Count.ToString()));
+            if (u.Diff.Changed.Count > 0)
+                parts.Add(Localizer.Instance.Get(Loc.VariationUpdate.Changed, u.Diff.Changed.Count.ToString()));
+            return $"- {u.VariationName}\n{string.Join("\n  ", parts)}";
+        });
+
+        MainWindowViewModel.ShowNotification(
+            Localizer.Instance[Loc.VariationUpdate.UpdateAvailable],
+            string.Join("\n", contentLines),
+            NotificationType.Information
+        );
+    }
+    
     private static async void CopyBoothLink(string identifier)
     {
         var link = GetByIdentifier(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);

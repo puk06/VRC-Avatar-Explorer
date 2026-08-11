@@ -24,6 +24,10 @@ By linking asset files with Booth item information, Avatar Explorer can automati
 - **Direct drag and drop from app to external tools**: Drag files directly from the app to tools like Unity.
 - **Unregistered avatar handling**: Temporarily adds unregistered avatars as supported targets and links them later to official items.
 
+## Disclaimer
+
+This application supports automatic item retrieval from Booth, but it was developed using the Pixiv platform and is not an application created or distributed by Pixiv.
+
 ## Differences from KonoAsset
 
 | Item | Avatar Explorer | KonoAsset |

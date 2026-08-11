@@ -12,7 +12,7 @@ namespace AvatarExplorer.Core.Services.System;
 public static class BoothService
 {
     private static DateTime _lastBoothApiGetTime;
-    public static bool IsApiCooldownNow => _lastBoothApiGetTime.AddSeconds(2) > DateTime.Now;
+    public static bool IsApiCooldownNow => _lastBoothApiGetTime.AddSeconds(3) > DateTime.Now;
 
     private static async Task WaitForApiCooldownAsync(int pollingIntervalMs = 100, CancellationToken cancellationToken = default)
     {
@@ -43,6 +43,26 @@ public static class BoothService
             return Error.Failure(description: "Failed to retrieve booth item information.");
         }
     }
+    private static async Task<ErrorOr<BoothItem>> GetItemWithVariations(string boothId)
+    {
+        try
+        {
+            if (boothId.Any(c => !char.IsNumber(c))) return Error.Failure(description: "The BoothId contains characters other than numbers.");
+
+            var url = string.Format(BoothLink.ItemWithVariationJsonURLFormat, boothId);
+            var response = await HttpService.Client.GetStringAsync(url);
+
+            var boothItem = JsonManager.Deserialize<BoothItem>(response);
+            if (boothItem == null) return Error.Failure(description: "Failed to deserialize data.");
+
+            return boothItem;
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to retrieve booth item information: '{boothId}'.", ex);
+            return Error.Failure(description: "Failed to retrieve booth item information.");
+        }
+    }
     private static ItemType SuggestItemType(string title, string type)
     {
         if (!BoothMapping.CategoryMappings.TryGetValue(type, out ItemType categorySuggestedType))
@@ -62,11 +82,31 @@ public static class BoothService
         if (!waitCooldown && IsApiCooldownNow) return Error.Failure(description: "Booth API Cooldown Error.");
         else await WaitForApiCooldownAsync();
 
-        string boothId = boothUrl.Split('/')[^1];
+        var boothId = boothUrl.Split('/')[^1];
 
         _lastBoothApiGetTime = DateTime.Now;
 
-        ErrorOr<BoothItem> result = await GetItem(boothId);
+        var result = await GetItem(boothId);
+        if (result.IsError)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to fetch booth item.", tag: result.Errors.ToErrorString());
+            return Error.Failure(description: "Failed to fetch booth item.");
+        }
+
+        return result.Value;
+    }
+    public static async Task<ErrorOr<BoothItem>> GetItemWithVariations(string boothUrl, bool waitCooldown = true)
+    {
+        if (string.IsNullOrEmpty(boothUrl)) return Error.Failure(description: "Invalid Url.");
+    
+        if (!waitCooldown && IsApiCooldownNow) return Error.Failure(description: "Booth API Cooldown Error.");
+        else await WaitForApiCooldownAsync();
+
+        var boothId = boothUrl.Split('/')[^1];
+
+        _lastBoothApiGetTime = DateTime.Now;
+
+        var result = await GetItemWithVariations(boothId);
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to fetch booth item.", tag: result.Errors.ToErrorString());

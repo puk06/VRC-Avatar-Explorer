@@ -8,6 +8,7 @@ public static class SystemFileName
         public const string CommonAvatars = "commonAvatars.json";
         public const string BulkImportPresets = "bulkImportPresets.json";
         public const string TempAvatars = "tempAvatars.json";
+        public const string VariationHashs = "variationHashs.json";
     }
 
     public static class Settings

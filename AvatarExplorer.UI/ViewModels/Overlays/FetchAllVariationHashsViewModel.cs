@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
-using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
@@ -12,7 +11,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class FetchAllThumbnailsViewModel : ViewModelBase
+public class FetchAllVariationHashsViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; }
     [Reactive] public string Status { get; set; } = string.Empty;
@@ -30,7 +29,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
     private bool _isRunning = false;
     private CancellationTokenSource? _cancellationTokenSource;
 
-    public FetchAllThumbnailsViewModel()
+    public FetchAllVariationHashsViewModel()
     {
         StartCommand = ReactiveCommand.CreateFromTask(StartInternal);
         CancelCommand = ReactiveCommand.Create(Cancel);
@@ -52,10 +51,10 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
     private void ResetUi()
     {
         Progress = 0;
-        Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Ready];
-        Count = Localizer.Instance.Get(Loc.FetchAllThumbnails.Progress, ["0", "0", "0", "0"]);
-        CurrentItem = Localizer.Instance.Get(Loc.FetchAllThumbnails.CurrentItem, "-");
-        Eta = Localizer.Instance[Loc.FetchAllThumbnails.EtaUnknown];
+        Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Ready];
+        Count = Localizer.Instance.Get(Loc.FetchAllVariationHashs.Progress, ["0", "0", "0", "0"]);
+        CurrentItem = Localizer.Instance.Get(Loc.FetchAllVariationHashs.CurrentItem, "-");
+        Eta = Localizer.Instance[Loc.FetchAllVariationHashs.EtaUnknown];
 
         IsStartable = !_isRunning;
         IsCancelable = _isRunning;
@@ -66,7 +65,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
         int clamped = Math.Max(0, totalSeconds);
         int minutes = clamped / 60;
         int seconds = clamped % 60;
-        return Localizer.Instance.Get(Loc.FetchAllThumbnails.Eta, [minutes.ToString(), seconds.ToString()]);
+        return Localizer.Instance.Get(Loc.FetchAllVariationHashs.Eta, [minutes.ToString(), seconds.ToString()]);
     }
 
     private async Task StartInternal()
@@ -93,7 +92,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
         IsStartable = false;
         IsCancelable = true;
-        Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Running];
+        Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Running];
 
         int successCount = 0;
         int failureCount = 0;
@@ -112,25 +111,18 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
                 var item = allItems[index];
 
-                Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Running];
-                CurrentItem = Localizer.Instance.Get(Loc.FetchAllThumbnails.CurrentItem, item.Title);
+                Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Running];
+                CurrentItem = Localizer.Instance.Get(Loc.FetchAllVariationHashs.CurrentItem, item.Title);
 
-                var result = await AvatarExplorerApp.Instance.Items.FetchThumbnailFromBooth(item.Identifier);
-                if (result.IsError)
-                {
-                    failureCount++;
-                    ErrorManager.Instance.PostInternalError($"Failed to fetch item thumbnail in bulk process. ItemId: '{item.Id}'.", tag: result.Errors.ToErrorString());
-                }
-                else
-                {
-                    successCount++;
-                }
+                var result = await AvatarExplorerApp.Instance.VariationHashes.EnsureVariationHash(item.BoothId.ToString());
+                if (!result) failureCount++;
+                else successCount++;
 
                 int processedCount = index + 1;
                 int progress = (int)Math.Clamp(processedCount * 100.0 / allItems.Length, 0, 100);
                 Progress = progress;
                 Count = Localizer.Instance.Get(
-                    Loc.FetchAllThumbnails.Progress,
+                    Loc.FetchAllVariationHashs.Progress,
                     [processedCount.ToString(), allItems.Length.ToString(), successCount.ToString(), failureCount.ToString()]
                 );
 
@@ -147,7 +139,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
                 }
                 else
                 {
-                    Eta = Localizer.Instance[Loc.FetchAllThumbnails.EtaUnknown];
+                    Eta = Localizer.Instance[Loc.FetchAllVariationHashs.EtaUnknown];
                 }
             }
         }
@@ -167,7 +159,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
         if (isCancelled)
         {
-            Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Cancelled];
+            Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Cancelled];
             MainWindowViewModel.ShowNotification(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(Loc.Warning.FetchAllItemThumbnailsCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
@@ -176,7 +168,7 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
             return;
         }
 
-        Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Completed];
+        Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Completed];
 
         if (failureCount == 0)
         {
@@ -202,6 +194,6 @@ public class FetchAllThumbnailsViewModel : ViewModelBase
 
         _cancellationTokenSource?.Cancel();
         IsCancelable = false;
-        Status = Localizer.Instance[Loc.FetchAllThumbnails.Status.Cancelling];
+        Status = Localizer.Instance[Loc.FetchAllVariationHashs.Status.Cancelling];
     }
 }

@@ -13,7 +13,6 @@ public enum ViewModelType
     Avatar,
     Item,
     CommonAvatar,
-    Author,
     Folder,
     File,
     BulkImportPreset,
@@ -42,6 +41,7 @@ internal static class ContextMenuCreator
     {
         List<ContextMenuAction> contextMenuActions =
         [
+            new ContextMenuAction(Loc.ContextMenu.Item.CheckForUpdate, ActionKey.CheckForUpdate, ContextMenuIconType.Update, itemId, addSeparator: true),
             new ContextMenuAction(Loc.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, itemId, addSeparator: true),
 
             new ContextMenuAction(Loc.ContextMenu.Item.Add.BulkImportList, ActionKey.AddToBulkImportList, ContextMenuIconType.Add, itemId),

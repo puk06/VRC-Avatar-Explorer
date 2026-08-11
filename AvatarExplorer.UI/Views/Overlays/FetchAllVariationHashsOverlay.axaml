@@ -2,16 +2,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
-    x:Class="AvatarExplorer.UI.Views.Overlays.FetchAllThumbnailsOverlay"
-    x:DataType="vm:FetchAllThumbnailsViewModel">
+    x:Class="AvatarExplorer.UI.Views.Overlays.FetchAllVariationHashsOverlay"
+    x:DataType="vm:FetchAllVariationHashsViewModel">
 
     <Border Classes="overlaybackground">
         <Border Classes="overlay" Width="680" Padding="24">
             <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="12">
-                <TextBlock Grid.Row="0" Text="{Binding [FetchAllThumbnails.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource Text.Primary}"/>
+                <TextBlock Grid.Row="0" Text="{Binding [FetchAllVariationHashs.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,4,0,0" Foreground="{DynamicResource Text.Primary}"/>
                 <Separator Grid.Row="1" Classes="separator"/>
 
-                <TextBlock Grid.Row="2" Text="{Binding [FetchAllThumbnails.Description], Source={x:Static loc:Localizer.Instance}}" TextWrapping="Wrap" Foreground="{DynamicResource Text.Secondary}"/>
+                <TextBlock Grid.Row="2" Text="{Binding [FetchAllVariationHashs.Description], Source={x:Static loc:Localizer.Instance}}" TextWrapping="Wrap" Foreground="{DynamicResource Text.Secondary}"/>
 
                 <StackPanel Grid.Row="3" Spacing="4">
                     <TextBlock Text="{Binding Status}" FontSize="13" Foreground="{DynamicResource Text.Secondary}"/>
@@ -23,8 +23,8 @@
                 <ProgressBar Grid.Row="4" Value="{Binding Progress}" Minimum="0" Maximum="100"/>
 
                 <Grid Grid.Row="5" ColumnDefinitions="*,*" ColumnSpacing="10">
-                    <Button Grid.Column="0" Classes="accentbutton" FontWeight="Bold" Content="{Binding [FetchAllThumbnails.Start], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding StartCommand}"/>
-                    <Button Grid.Column="1" Classes="button" FontWeight="Bold" Content="{Binding [FetchAllThumbnails.CancelRunning], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding CancelCommand}" IsEnabled="{Binding IsCancelable}"/>
+                    <Button Grid.Column="0" Classes="accentbutton" FontWeight="Bold" Content="{Binding [FetchAllVariationHashs.Start], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding StartCommand}"/>
+                    <Button Grid.Column="1" Classes="button" FontWeight="Bold" Content="{Binding [FetchAllVariationHashs.CancelRunning], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Command="{Binding CancelCommand}" IsEnabled="{Binding IsCancelable}"/>
                 </Grid>
 
                 <Button Grid.Row="6" Classes="button" FontWeight="Bold" Content="{Binding [Button.Close], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="15" Padding="10" Margin="0,2,0,0" Command="{Binding CloseCommand}"/>

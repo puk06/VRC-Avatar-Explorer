@@ -4,6 +4,7 @@ public enum ActionKey
 {
     None,
     
+    CheckForUpdate,
     CopyBoothLink,
     OpenBoothLink,
     ShowOtherItemsByAuthor,

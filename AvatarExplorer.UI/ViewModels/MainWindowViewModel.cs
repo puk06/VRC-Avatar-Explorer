@@ -19,7 +19,6 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
-using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Overlays;
 using Message.Avalonia;
@@ -63,6 +62,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public FatalErrorViewModel FatalErrorVM { get; } = new();
 
     public FetchAllThumbnailsViewModel FetchAllThumbnailsVM { get; } = new();
+    public FetchAllVariationHashsViewModel FetchAllVariationHashsVM { get; } = new();
 
     public ImportDataViewModel ImportDataVM { get; } = new();
     public ExportDataViewModel ExportDataVM { get; } = new();

@@ -70,6 +70,10 @@
             <overlays:FetchAllThumbnailsOverlay/>
         </ContentControl>
 
+        <ContentControl IsVisible="{Binding FetchAllVariationHashsVM.IsVisible}">
+            <overlays:FetchAllVariationHashsOverlay/>
+        </ContentControl>
+
         <ContentControl IsVisible="{Binding UnitypackageViewerVM.IsVisible}">
             <overlays:UnitypackageViewerOverlay/>
         </ContentControl>

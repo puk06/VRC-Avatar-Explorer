@@ -7,6 +7,9 @@ public enum ContextMenuIconType
 {
     None,
 
+    [MaterialIcon(MaterialIconKind.Reload)]
+    Update,
+
     [MaterialIcon(MaterialIconKind.OpenInNew)]
     Open,
 

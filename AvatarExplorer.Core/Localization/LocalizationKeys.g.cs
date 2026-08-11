@@ -195,6 +195,7 @@ public static class Loc
     {
         public static class Item
         {
+            public const string CheckForUpdate = "ContextMenu.Item.CheckForUpdate";
             public const string ShowOtherItemsByAuthor = "ContextMenu.Item.ShowOtherItemsByAuthor";
             public static class Add
             {
@@ -288,6 +289,14 @@ public static class Loc
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
         public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
         public const string RemoveFolder = "Success.RemoveFolder";
+    }
+    public static class VariationUpdate
+    {
+        public const string UpdateAvailable = "VariationUpdate.UpdateAvailable";
+        public const string NoUpdatesAvailable = "VariationUpdate.NoUpdatesAvailable";
+        public const string Added = "VariationUpdate.Added";
+        public const string Removed = "VariationUpdate.Removed";
+        public const string Changed = "VariationUpdate.Changed";
     }
     public static class Warning
     {
@@ -506,6 +515,12 @@ public static class Loc
             public const string Title = "Settings.FetchAllThumbnails.Title";
             public const string Description = "Settings.FetchAllThumbnails.Description";
             public const string Open = "Settings.FetchAllThumbnails.Open";
+        }
+        public static class FetchAllVariationHashs
+        {
+            public const string Title = "Settings.FetchAllVariationHashs.Title";
+            public const string Description = "Settings.FetchAllVariationHashs.Description";
+            public const string Open = "Settings.FetchAllVariationHashs.Open";
         }
         public static class RestoreFromBackup
         {
@@ -770,6 +785,25 @@ public static class Loc
             public const string Cancelling = "FetchAllThumbnails.Status.Cancelling";
             public const string Cancelled = "FetchAllThumbnails.Status.Cancelled";
             public const string Completed = "FetchAllThumbnails.Status.Completed";
+        }
+    }
+    public static class FetchAllVariationHashs
+    {
+        public const string Title = "FetchAllVariationHashs.Title";
+        public const string Description = "FetchAllVariationHashs.Description";
+        public const string Start = "FetchAllVariationHashs.Start";
+        public const string CancelRunning = "FetchAllVariationHashs.CancelRunning";
+        public const string CurrentItem = "FetchAllVariationHashs.CurrentItem";
+        public const string Progress = "FetchAllVariationHashs.Progress";
+        public const string Eta = "FetchAllVariationHashs.Eta";
+        public const string EtaUnknown = "FetchAllVariationHashs.EtaUnknown";
+        public static class Status
+        {
+            public const string Ready = "FetchAllVariationHashs.Status.Ready";
+            public const string Running = "FetchAllVariationHashs.Status.Running";
+            public const string Cancelling = "FetchAllVariationHashs.Status.Cancelling";
+            public const string Cancelled = "FetchAllVariationHashs.Status.Cancelled";
+            public const string Completed = "FetchAllVariationHashs.Status.Completed";
         }
     }
     public static class UpdateDialog

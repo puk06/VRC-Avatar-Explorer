@@ -66,6 +66,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     public IReactiveCommand ImportDataCommand { get; }
     public IReactiveCommand ExportDataCommand { get; }
     public IReactiveCommand FetchAllThumbnailsCommand { get; }
+    public IReactiveCommand FetchAllVariationHashsCommand { get; }
     public IReactiveCommand RestoreFromBackupCommand { get; }
     public IReactiveCommand AutoFixDatabaseCommand { get; }
     public IReactiveCommand ResetDatabaseCommand { get; }
@@ -92,6 +93,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         OpenAutoBackupFolderCommand = ReactiveCommand.CreateFromTask(OpenAutoBackupFolder);
         ImportDataCommand = ReactiveCommand.Create(ImportData);
         ExportDataCommand = ReactiveCommand.Create(ExportData);
+        FetchAllVariationHashsCommand = ReactiveCommand.Create(FetchAllVariationHashs);
         FetchAllThumbnailsCommand = ReactiveCommand.Create(FetchAllThumbnails);
         RestoreFromBackupCommand = ReactiveCommand.CreateFromTask(RestoreFromBackup);
         AutoFixDatabaseCommand = ReactiveCommand.CreateFromTask(AutoFixDatabase);
@@ -254,6 +256,11 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     private void FetchAllThumbnails()
     {
         MainWindowViewModel.Instance.FetchAllThumbnailsVM.IsVisible = true;
+    }
+
+    private void FetchAllVariationHashs()
+    {
+        MainWindowViewModel.Instance.FetchAllVariationHashsVM.IsVisible = true;
     }
 
     private async Task RestoreFromBackup()
