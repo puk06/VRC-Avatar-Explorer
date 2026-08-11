@@ -142,10 +142,8 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
 
         Items.RemoveTag(sourceTagName);
 
-        var previousIndex = SelectedTagIndex;
-        SelectedTagIndex = -1;
         RefleshExistTags();
-        SelectedTagIndex = Math.Min(previousIndex, ExistTags.Count() - 1);
+        SelectedTagIndex = -1;
     }
 
     private static bool IsTagNameExist(string tagName)
