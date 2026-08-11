@@ -172,6 +172,7 @@
 
     "VariationUpdate.UpdateAvailable": "アイテムの更新が利用可能です",
     "VariationUpdate.NoUpdatesAvailable": "更新はありませんでした",
+    "VariationUpdate.DefaultVariation": "デフォルトバリエーション",
     "VariationUpdate.Added": "追加ファイル: {0}件",
     "VariationUpdate.Removed": "削除ファイル: {0}件",
     "VariationUpdate.Changed": "変更ファイル: {0}件",

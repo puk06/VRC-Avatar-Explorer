@@ -172,6 +172,7 @@
 
     "VariationUpdate.UpdateAvailable": "아이템 업데이트를 사용할 수 있습니다",
     "VariationUpdate.NoUpdatesAvailable": "사용 가능한 업데이트 없음",
+    "VariationUpdate.DefaultVariation": "기본 변형",
     "VariationUpdate.Added": "추가된 파일: {0}개",
     "VariationUpdate.Removed": "삭제된 파일: {0}개",
     "VariationUpdate.Changed": "변경된 파일: {0}개",

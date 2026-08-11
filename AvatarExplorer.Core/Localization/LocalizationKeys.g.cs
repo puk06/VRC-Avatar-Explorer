@@ -295,6 +295,7 @@ public static class Loc
     {
         public const string UpdateAvailable = "VariationUpdate.UpdateAvailable";
         public const string NoUpdatesAvailable = "VariationUpdate.NoUpdatesAvailable";
+        public const string DefaultVariation = "VariationUpdate.DefaultVariation";
         public const string Added = "VariationUpdate.Added";
         public const string Removed = "VariationUpdate.Removed";
         public const string Changed = "VariationUpdate.Changed";

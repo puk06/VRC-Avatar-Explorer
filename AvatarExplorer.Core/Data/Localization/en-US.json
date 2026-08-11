@@ -172,6 +172,7 @@
 
     "VariationUpdate.UpdateAvailable": "Item updates are available",
     "VariationUpdate.NoUpdatesAvailable": "No updates available",
+    "VariationUpdate.DefaultVariation": "Default Variation",
     "VariationUpdate.Added": "Added files: {0}",
     "VariationUpdate.Removed": "Removed files: {0}",
     "VariationUpdate.Changed": "Changed files: {0}",

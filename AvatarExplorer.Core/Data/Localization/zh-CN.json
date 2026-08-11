@@ -172,6 +172,7 @@
 
     "VariationUpdate.UpdateAvailable": "有可用的项目更新",
     "VariationUpdate.NoUpdatesAvailable": "没有更新",
+    "VariationUpdate.DefaultVariation": "默认变体",
     "VariationUpdate.Added": "添加文件：{0} 个",
     "VariationUpdate.Removed": "删除文件：{0} 个",
     "VariationUpdate.Changed": "更改文件：{0} 个",

@@ -172,6 +172,7 @@
 
     "VariationUpdate.UpdateAvailable": "Hay actualizaciones disponibles para el elemento",
     "VariationUpdate.NoUpdatesAvailable": "No hay actualizaciones disponibles",
+    "VariationUpdate.DefaultVariation": "Variación predeterminada",
     "VariationUpdate.Added": "Archivos agregados: {0}",
     "VariationUpdate.Removed": "Archivos eliminados: {0}",
     "VariationUpdate.Changed": "Archivos modificados: {0}",

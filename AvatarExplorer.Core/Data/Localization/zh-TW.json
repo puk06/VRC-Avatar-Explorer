@@ -172,6 +172,7 @@
 
     "VariationUpdate.UpdateAvailable": "有可用的項目更新",
     "VariationUpdate.NoUpdatesAvailable": "沒有更新",
+    "VariationUpdate.DefaultVariation": "預設變體",
     "VariationUpdate.Added": "新增檔案：{0} 個",
     "VariationUpdate.Removed": "刪除檔案：{0} 個",
     "VariationUpdate.Changed": "變更檔案：{0} 個",
