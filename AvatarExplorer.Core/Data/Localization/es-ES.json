@@ -94,7 +94,7 @@
     "FileCategory.Texture": "Textura",
     "FileCategory.Document": "Documento",
     "FileCategory.Unitypackage": "Unitypackage",
-    "FileCategory.Material": "Material",
+    "FileCategory.Material": "Material (Unitypackage)",
     "FileCategory.UrlShortcut": "Acceso directo URL",
     "FileCategory.Font": "Fuente",
     "FileCategory.Unknown": "Desconocido",

@@ -94,7 +94,7 @@
     "FileCategory.Texture": "テクスチャ",
     "FileCategory.Document": "ドキュメント",
     "FileCategory.Unitypackage": "Unitypackage",
-    "FileCategory.Material": "マテリアル",
+    "FileCategory.Material": "マテリアル (Unitypackage)",
     "FileCategory.UrlShortcut": "URLショートカット",
     "FileCategory.Font": "フォント",
     "FileCategory.Unknown": "不明",

@@ -94,7 +94,7 @@
     "FileCategory.Texture": "纹理",
     "FileCategory.Document": "文档",
     "FileCategory.Unitypackage": "Unitypackage",
-    "FileCategory.Material": "材质",
+    "FileCategory.Material": "材质 (Unitypackage)",
     "FileCategory.UrlShortcut": "URL 快捷方式",
     "FileCategory.Font": "字体",
     "FileCategory.Unknown": "未知",

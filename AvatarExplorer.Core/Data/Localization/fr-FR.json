@@ -94,7 +94,7 @@
     "FileCategory.Texture": "Texture",
     "FileCategory.Document": "Document",
     "FileCategory.Unitypackage": "Unitypackage",
-    "FileCategory.Material": "Matériau",
+    "FileCategory.Material": "Matériau (Unitypackage)",
     "FileCategory.UrlShortcut": "Raccourci URL",
     "FileCategory.Font": "Police",
     "FileCategory.Unknown": "Inconnu",

@@ -94,7 +94,7 @@
     "FileCategory.Texture": "텍스처",
     "FileCategory.Document": "문서",
     "FileCategory.Unitypackage": "Unitypackage",
-    "FileCategory.Material": "재질",
+    "FileCategory.Material": "재질 (Unitypackage)",
     "FileCategory.UrlShortcut": "URL 바로가기",
     "FileCategory.Font": "폰트",
     "FileCategory.Unknown": "알 수 없음",
