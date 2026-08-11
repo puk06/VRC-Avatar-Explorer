@@ -243,6 +243,15 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             );
             MainWindowViewModel.Instance.ProgressVM.Close();
 
+            if (importResult.ContainsScripts)
+            {
+                MainWindowViewModel.ShowNotification(
+                    Localizer.Instance[Loc.Warning.Default],
+                    Localizer.Instance[Loc.Warning.ScriptsFoundInUnitypackage],
+                    NotificationType.Warning
+                );
+            }
+
             if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
             {
                 var result = await LauncherService.OpenFile(TopLevelProvider.Current, importResult.ModifiedUnitypackagePath);

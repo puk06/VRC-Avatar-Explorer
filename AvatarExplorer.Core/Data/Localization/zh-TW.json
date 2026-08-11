@@ -182,6 +182,7 @@
     "VariationUpdate.Changed": "變更檔案：{0} 個",
 
     "Warning.Default": "注意",
+    "Warning.ScriptsFoundInUnitypackage": "處理過程中發現了指令碼(.cs)。由於變更指令碼路徑可能導致錯誤等問題，建議透過右鍵正常匯入。",
     "Warning.RunningInAdministratorMode": "在管理員模式下，拖放等部分操作可能無法使用。",
     "Warning.FetchAllItemThumbnailsCancelled": "批次取得縮圖已取消。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個",
     "Warning.FetchAllVariationHashesCancelled": "批次取得雜湊已取消。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個",

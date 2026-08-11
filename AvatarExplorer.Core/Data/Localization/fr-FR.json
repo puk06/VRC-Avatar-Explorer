@@ -182,6 +182,7 @@
     "VariationUpdate.Changed": "Fichiers modifiés : {0}",
 
     "Warning.Default": "Avertissement",
+    "Warning.ScriptsFoundInUnitypackage": "Des scripts (.cs) ont été trouvés pendant le traitement. Comme la modification des chemins de scripts peut entraîner des erreurs ou d'autres problèmes, nous recommandons d'importer normalement via le clic droit.",
     "Warning.RunningInAdministratorMode": "En mode administrateur, certaines opérations comme le glisser-déposer peuvent ne pas être disponibles.",
     "Warning.FetchAllItemThumbnailsCancelled": "La récupération groupée des vignettes a été annulée. Réussies : {0} / Échouées : {1} / Total : {2}",
     "Warning.FetchAllVariationHashesCancelled": "La récupération groupée des hachages a été annulée. Réussies : {0} / Échouées : {1} / Total : {2}",

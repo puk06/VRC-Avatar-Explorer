@@ -182,6 +182,7 @@
     "VariationUpdate.Changed": "更改文件：{0} 个",
 
     "Warning.Default": "警告",
+    "Warning.ScriptsFoundInUnitypackage": "处理过程中发现了脚本(.cs)。由于更改脚本路径可能导致错误等问题，建议通过右键正常导入。",
     "Warning.RunningInAdministratorMode": "在管理员模式下，拖放等部分操作可能不可用。",
     "Warning.FetchAllItemThumbnailsCancelled": "批量获取缩略图已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",
     "Warning.FetchAllVariationHashesCancelled": "批量获取哈希已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",

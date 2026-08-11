@@ -182,6 +182,7 @@
     "VariationUpdate.Changed": "변경된 파일: {0}개",
 
     "Warning.Default": "주의",
+    "Warning.ScriptsFoundInUnitypackage": "처리 중 스크립트(.cs)가 발견되었습니다. 스크립트 경로 변경은 오류 등의 문제를 일으킬 수 있으므로, 마우스 오른쪽 버튼을 통해 일반적인 방법으로 가져오는 것을 권장합니다.",
     "Warning.RunningInAdministratorMode": "관리자 모드에서는 드래그 앤 드롭 등 일부 작업을 사용할 수 없습니다.",
     "Warning.FetchAllItemThumbnailsCancelled": "썸네일 일괄 가져오기를 취소했습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개",
     "Warning.FetchAllVariationHashesCancelled": "해시 일괄 가져오기를 취소했습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개",

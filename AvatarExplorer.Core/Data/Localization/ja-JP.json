@@ -182,6 +182,7 @@
     "VariationUpdate.Changed": "変更ファイル: {0}件",
 
     "Warning.Default": "注意",
+    "Warning.ScriptsFoundInUnitypackage": "処理中にスクリプト(.cs)が見つかりました。スクリプトのパス変更はエラーなどの不具合に繋がるため、右クリックから通常通りインポートすることをおすすめします。",
     "Warning.RunningInAdministratorMode": "管理者モードでは、ドラッグ＆ドロップなど一部の操作が利用できなくなります。",
     "Warning.FetchAllItemThumbnailsCancelled": "サムネイル一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",
     "Warning.FetchAllVariationHashesCancelled": "ハッシュ一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",

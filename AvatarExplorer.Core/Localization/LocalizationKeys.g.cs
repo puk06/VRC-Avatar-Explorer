@@ -307,6 +307,7 @@ public static class Loc
     public static class Warning
     {
         public const string Default = "Warning.Default";
+        public const string ScriptsFoundInUnitypackage = "Warning.ScriptsFoundInUnitypackage";
         public const string RunningInAdministratorMode = "Warning.RunningInAdministratorMode";
         public const string FetchAllItemThumbnailsCancelled = "Warning.FetchAllItemThumbnailsCancelled";
         public const string FetchAllVariationHashesCancelled = "Warning.FetchAllVariationHashesCancelled";

@@ -182,6 +182,7 @@
     "VariationUpdate.Changed": "Changed files: {0}",
 
     "Warning.Default": "Warning",
+    "Warning.ScriptsFoundInUnitypackage": "Scripts (.cs) were found during processing. Since changing script paths can lead to errors or other issues, we recommend importing normally via right-click.",
     "Warning.RunningInAdministratorMode": "In administrator mode, some operations like drag & drop may not be available.",
     "Warning.FetchAllItemThumbnailsCancelled": "Bulk thumbnail fetch was cancelled. Success: {0} / Failed: {1} / Total: {2}",
     "Warning.FetchAllVariationHashesCancelled": "Bulk hash fetch was cancelled. Success: {0} / Failed: {1} / Total: {2}",

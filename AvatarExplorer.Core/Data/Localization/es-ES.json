@@ -182,6 +182,7 @@
     "VariationUpdate.Changed": "Archivos modificados: {0}",
 
     "Warning.Default": "Advertencia",
+    "Warning.ScriptsFoundInUnitypackage": "Se encontraron scripts (.cs) durante el procesamiento. Dado que cambiar las rutas de los scripts puede provocar errores u otros problemas, recomendamos importar normalmente con el botón derecho.",
     "Warning.RunningInAdministratorMode": "En modo administrador, algunas operaciones como arrastrar y soltar pueden no estar disponibles.",
     "Warning.FetchAllItemThumbnailsCancelled": "La obtención masiva de miniaturas se canceló. Correctos: {0} / Fallidos: {1} / Total: {2}",
     "Warning.FetchAllVariationHashesCancelled": "La obtención masiva de hashes se canceló. Correctos: {0} / Fallidos: {1} / Total: {2}",

@@ -42,6 +42,7 @@ public class ModifiedUnitypackagesResult
     public string? ModifiedUnitypackagePath { get; set; } = null;
     public List<string> Success { get; } = new();
     public List<string> Failed { get; } = new();
+    public bool ContainsScripts { get; set; }
 }
 
 public class ItemPathEntry
@@ -249,7 +250,9 @@ public static class FileSystemService
             {
                 try
                 {
-                    currentProcessedEntries = await ExtractUnitypackageToFolderAsync(entry.FilePath, saveFolderPath, entry.CategoryDisplayName, totalEntries, currentProcessedEntries, reportProgress);
+                    var (ProcessedEntries, ContainsScripts) = await ExtractUnitypackageToFolderAsync(entry.FilePath, saveFolderPath, entry.CategoryDisplayName, totalEntries, currentProcessedEntries, reportProgress);
+                    currentProcessedEntries = ProcessedEntries;
+                    if (ContainsScripts) result.ContainsScripts = true;
                     result.Success.Add(entry.FilePath);
                 }
                 catch
@@ -307,9 +310,10 @@ public static class FileSystemService
         await TarGzReader(tarGzFilePath, _ => count++);
         return count;
     }
-    private static async Task<int> ExtractUnitypackageToFolderAsync(string tarGzFilePath, string saveFilePath, string category, int totalEntries, int currentProcessedEntries = 0, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<(int ProcessedEntries, bool ContainsScripts)> ExtractUnitypackageToFolderAsync(string tarGzFilePath, string saveFilePath, string category, int totalEntries, int currentProcessedEntries = 0, Func<(string, int), Task>? reportProgress = null)
     {
         int processedEntries = currentProcessedEntries;
+        bool containsScripts = false;
 
         int lastProgress = -1;
 
@@ -321,6 +325,9 @@ public static class FileSystemService
                 {
                     using StreamReader reader = new(entry.DataStream);
                     string assetPath = await reader.ReadToEndAsync();
+
+                    if (Path.GetExtension(assetPath).Equals(".cs", StringComparison.OrdinalIgnoreCase))
+                        containsScripts = true;
 
                     // 親フォルダがAssetsのものだけ変更するようにする (例えば、親フォルダがPackagesのものは変更しない)
                     if (assetPath.StartsWith("Assets")) assetPath = assetPath.Insert(7, $"{category}/");
@@ -358,7 +365,7 @@ public static class FileSystemService
             return true;
         });
 
-        return processedEntries;
+        return (processedEntries, containsScripts);
     }
 
     private static async Task TarGzReader(string filePath, Func<TarEntry, Task<bool>> action)
