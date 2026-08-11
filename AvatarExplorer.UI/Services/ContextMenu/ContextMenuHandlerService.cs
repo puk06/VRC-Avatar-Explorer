@@ -328,10 +328,11 @@ public static class ContextMenuHandlerService
 
         await AddPathsInternal(
             identifier,
-            folders.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i })
+            folders.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i }),
+            isFile: false
         );
     }
-    private static async Task AddPathsInternal(string identifier, IEnumerable<ItemPathEntry> paths, bool isFile = true)
+    private static async Task AddPathsInternal(string identifier, IEnumerable<ItemPathEntry> paths, bool isFile)
     {
         var extractResult = await Items.AddPaths(identifier, paths, RuntimeSettings.ShouldLinkToOriginal);
 
