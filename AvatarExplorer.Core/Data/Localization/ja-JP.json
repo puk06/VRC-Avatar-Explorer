@@ -43,6 +43,7 @@
     "Button.ToolTip.UpdatedDate": "更新日時: {0}",
     "Button.ToolTip.FilePath": "開くファイルのパス: {0}",
     "Button.SelectVisible": "表示中を全選択",
+    "Button.UnselectVisible": "表示中を全解除",
 
     "ItemWindow.CurrentPage": "{0} / {1}ページ",
     "ItemWindow.PageItemCount": "{0} - {1} / {2}個の項目",

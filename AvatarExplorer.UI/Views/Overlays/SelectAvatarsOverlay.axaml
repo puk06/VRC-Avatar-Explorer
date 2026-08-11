@@ -15,9 +15,10 @@
                     <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="{Binding Title}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
                     
                     <!-- 検索バー -->
-                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
                         <TextBox Grid.Column="0" Text="{Binding SearchText}" PlaceholderText="{Binding [SelectAvatars.Search], Source={x:Static loc:Localizer.Instance}}"/>
                         <Button Grid.Column="1" Classes="button" Content="{Binding [Button.SelectVisible], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Command="{Binding SelectVisibleCommand}"/>
+                        <Button Grid.Column="2" Classes="button" Content="{Binding [Button.UnselectVisible], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,6" Command="{Binding UnselectVisibleCommand}"/>
                     </Grid>
 
                     <!-- アバターリスト -->

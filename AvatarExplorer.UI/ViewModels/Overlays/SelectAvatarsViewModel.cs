@@ -29,6 +29,7 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
 
     public IReactiveCommand SelectItemCommand { get; }
     public IReactiveCommand SelectVisibleCommand { get; }
+    public IReactiveCommand UnselectVisibleCommand { get; }
 
     public IReactiveCommand AddTempAvatarCommand { get; }
     public IReactiveCommand CancelCommand { get; }
@@ -45,6 +46,7 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
         AddTempAvatarCommand = ReactiveCommand.Create(AddTempAvatar);
         SelectItemCommand = ReactiveCommand.Create<ItemViewModel>(SelectItem);
         SelectVisibleCommand = ReactiveCommand.Create(SelectVisible);
+        UnselectVisibleCommand = ReactiveCommand.Create(UnselectVisible);
 
         CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
         ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Avatars.Where(i => i.IsSelected).Select(i => i.Identifier).ToArray()));
@@ -66,6 +68,11 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
     private void SelectVisible()
     {
         Avatars.ForEach(i => i.IsSelected = true);
+    }
+
+    private void UnselectVisible()
+    {
+        Avatars.ForEach(i => i.IsSelected = false);
     }
 
     private void ApplySearchResult(string searchText)

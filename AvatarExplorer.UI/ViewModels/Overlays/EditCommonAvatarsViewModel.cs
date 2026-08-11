@@ -40,6 +40,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
     public IReactiveCommand RenameGroupCommand { get; }
     public IReactiveCommand RemoveGroupCommand { get; }
     public IReactiveCommand SelectVisibleCommand { get; }
+    public IReactiveCommand UnselectVisibleCommand { get; }
     public IReactiveCommand ReplaceAvatarsToGroupCommand { get; }
     public IReactiveCommand CloseCommand { get; }
 
@@ -54,6 +55,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         RenameGroupCommand = ReactiveCommand.Create(RenameGroup);
         RemoveGroupCommand = ReactiveCommand.Create(RemoveGroup);
         SelectVisibleCommand = ReactiveCommand.Create(SelectVisible);
+        UnselectVisibleCommand = ReactiveCommand.Create(UnselectVisible);
         ReplaceAvatarsToGroupCommand = ReactiveCommand.CreateFromTask(ReplaceAvatarsToGroup);
         CloseCommand = ReactiveCommand.Create(Close);
 
@@ -158,6 +160,12 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
     private void SelectVisible()
     {
         Avatars.ForEach(i => i.IsSelected = true);
+        UpdateGroupAvatars();
+    }
+
+    private void UnselectVisible()
+    {
+        Avatars.ForEach(i => i.IsSelected = false);
         UpdateGroupAvatars();
     }
 

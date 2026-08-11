@@ -43,6 +43,7 @@
     "Button.ToolTip.UpdatedDate": "Fecha de actualización: {0}",
     "Button.ToolTip.FilePath": "Ruta del archivo a abrir: {0}",
     "Button.SelectVisible": "Seleccionar visibles",
+    "Button.UnselectVisible": "Deseleccionar visibles",
 
     "ItemWindow.CurrentPage": "{0} / {1} páginas",
     "ItemWindow.PageItemCount": "{0} - {1} / {2} elementos",

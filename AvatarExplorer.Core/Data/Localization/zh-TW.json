@@ -43,6 +43,7 @@
     "Button.ToolTip.UpdatedDate": "更新時間: {0}",
     "Button.ToolTip.FilePath": "要開啟的檔案路徑: {0}",
     "Button.SelectVisible": "全選可見項目",
+    "Button.UnselectVisible": "取消全選可見項目",
 
     "ItemWindow.CurrentPage": "第 {0} / {1} 頁",
     "ItemWindow.PageItemCount": "{0} - {1} / {2} 個項目",

@@ -89,6 +89,7 @@ public static class Loc
             public const string FilePath = "Button.ToolTip.FilePath";
         }
         public const string SelectVisible = "Button.SelectVisible";
+        public const string UnselectVisible = "Button.UnselectVisible";
         public const string Close = "Button.Close";
         public const string Confirm = "Button.Confirm";
         public const string Cancel = "Button.Cancel";
