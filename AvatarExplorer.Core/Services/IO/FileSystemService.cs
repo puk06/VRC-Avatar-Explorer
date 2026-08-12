@@ -450,7 +450,8 @@ public static class FileSystemService
             var downloadResult = await Downloader.Fetch(url, downloadedPath);
             if (!downloadResult)
             {
-                ErrorManager.Instance.PostInternalError($"An error occurred while downloading item '{url}'.");
+                var host = Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri.Host : "unknown";
+                ErrorManager.Instance.PostInternalError($"Failed to download file from '{host}'.");
                 lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(downloadedPath);
                 continue;
             }
