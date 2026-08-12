@@ -35,7 +35,7 @@ public class ItemEditorViewModel : ViewModelBase
     [Reactive] public string Title { get; set; } = string.Empty;
     [Reactive] public string Author { get; set; } = string.Empty;
     [Reactive] public int SelectedCategoryIndex { get; set; } = 0;
-    public ItemCategoryViewModel? SelectedCategory => Categories.Count > SelectedCategoryIndex ? Categories[SelectedCategoryIndex] : null;
+    public ItemCategoryViewModel? SelectedCategory => (SelectedCategoryIndex > 0 && SelectedCategoryIndex < Categories.Count) ? Categories[SelectedCategoryIndex] : null;
     [Reactive] public ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
 
     [Reactive] public string SupportedAvatarsText { get; set; } = string.Empty;
@@ -113,9 +113,7 @@ public class ItemEditorViewModel : ViewModelBase
                 Memo = item.ItemMemo;
                 SupportedAvatars = item.SupportedAvatars;
                 Tags = item.Tags;
-
-                var categoryIndex = GetCategoryIndex(item.Category);
-                SelectedCategoryIndex = categoryIndex >= 0 ? categoryIndex : 0;
+                SelectedCategoryIndex = GetCategoryIndex(item.Category);
             }
         }
         else
@@ -228,7 +226,7 @@ public class ItemEditorViewModel : ViewModelBase
             }
         }
 
-        return -1;
+        return 0; // Default = Avatar
     }
 
     private void Cancel()
