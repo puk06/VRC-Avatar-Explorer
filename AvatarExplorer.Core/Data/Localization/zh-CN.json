@@ -474,6 +474,7 @@
     "ResetDatabase.TempAvatarDatabase": "临时头像数据库",
     "ResetDatabase.CommonAvatarDatabase": "共通素体数据库",
     "ResetDatabase.BulkImportPresetDatabase": "批量导入预设数据库",
+    "ResetDatabase.VariationHashDatabase": "变体哈希数据库",
     "ResetDatabase.Reset": "重置",
 
     "FetchAllThumbnails.Title": "批量获取缩略图",

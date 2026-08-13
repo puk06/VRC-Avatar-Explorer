@@ -474,6 +474,7 @@
     "ResetDatabase.TempAvatarDatabase": "임시 아바타 데이터베이스",
     "ResetDatabase.CommonAvatarDatabase": "공통 바디 데이터베이스",
     "ResetDatabase.BulkImportPresetDatabase": "일괄 가져오기 프리셋 데이터베이스",
+    "ResetDatabase.VariationHashDatabase": "변형 해시 데이터베이스",
     "ResetDatabase.Reset": "초기화",
 
     "FetchAllThumbnails.Title": "썸네일 일괄 가져오기",

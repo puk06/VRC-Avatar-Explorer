@@ -474,6 +474,7 @@
     "ResetDatabase.TempAvatarDatabase": "Base de datos de avatares temporales",
     "ResetDatabase.CommonAvatarDatabase": "Base de datos de avatares comunes",
     "ResetDatabase.BulkImportPresetDatabase": "Base de datos de ajustes preestablecidos de importación masiva",
+    "ResetDatabase.VariationHashDatabase": "Base de datos de hash de variaciones",
     "ResetDatabase.Reset": "Reiniciar",
 
     "FetchAllThumbnails.Title": "Obtención masiva de miniaturas",

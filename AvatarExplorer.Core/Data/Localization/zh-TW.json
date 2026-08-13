@@ -474,6 +474,7 @@
     "ResetDatabase.TempAvatarDatabase": "暫時頭像資料庫",
     "ResetDatabase.CommonAvatarDatabase": "共通素體資料庫",
     "ResetDatabase.BulkImportPresetDatabase": "批次匯入預設資料庫",
+    "ResetDatabase.VariationHashDatabase": "變體雜湊資料庫",
     "ResetDatabase.Reset": "重設",
 
     "FetchAllThumbnails.Title": "批次取得縮圖",

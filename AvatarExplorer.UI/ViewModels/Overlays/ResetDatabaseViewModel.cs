@@ -15,6 +15,7 @@ public class ResetDatabaseViewModel : ViewModelBase
     [Reactive] public bool ResetTempAvatars { get; set; } = true;
     [Reactive] public bool ResetCommonAvatars { get; set; } = true;
     [Reactive] public bool ResetBulkImportPresets { get; set; } = true;
+    [Reactive] public bool ResetVariationHashes { get; set; } = true;
 
     public IReactiveCommand ResetCommand { get; }
     public IReactiveCommand CancelCommand { get; }
@@ -31,12 +32,13 @@ public class ResetDatabaseViewModel : ViewModelBase
         ResetTempAvatars = true;
         ResetCommonAvatars = true;
         ResetBulkImportPresets = true;
+        ResetVariationHashes = true;
         IsVisible = true;
     }
 
     private async Task Reset()
     {
-        if (!ResetItems && !ResetTempAvatars && !ResetCommonAvatars && !ResetBulkImportPresets) return;
+        if (!ResetItems && !ResetTempAvatars && !ResetCommonAvatars && !ResetBulkImportPresets && !ResetVariationHashes) return;
 
         var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
@@ -64,6 +66,11 @@ public class ResetDatabaseViewModel : ViewModelBase
         if (ResetBulkImportPresets)
         {
             AvatarExplorerApp.Instance.BulkImportPresets.Clear();
+        }
+
+        if (ResetVariationHashes)
+        {
+            AvatarExplorerApp.Instance.VariationHashes.Clear();
         }
 
         IsVisible = false;

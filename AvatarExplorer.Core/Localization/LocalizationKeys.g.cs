@@ -783,6 +783,7 @@ public static class Loc
         public const string TempAvatarDatabase = "ResetDatabase.TempAvatarDatabase";
         public const string CommonAvatarDatabase = "ResetDatabase.CommonAvatarDatabase";
         public const string BulkImportPresetDatabase = "ResetDatabase.BulkImportPresetDatabase";
+        public const string VariationHashDatabase = "ResetDatabase.VariationHashDatabase";
         public const string Reset = "ResetDatabase.Reset";
     }
     public static class FetchAllThumbnails

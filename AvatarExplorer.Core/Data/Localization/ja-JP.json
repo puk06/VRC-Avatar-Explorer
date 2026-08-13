@@ -474,6 +474,7 @@
     "ResetDatabase.TempAvatarDatabase": "仮登録アバターデータベース",
     "ResetDatabase.CommonAvatarDatabase": "共通素体データベース",
     "ResetDatabase.BulkImportPresetDatabase": "一括インポートプリセットデータベース",
+    "ResetDatabase.VariationHashDatabase": "バリエーションハッシュデータベース",
     "ResetDatabase.Reset": "リセット",
 
     "FetchAllThumbnails.Title": "サムネイル一括取得",

@@ -474,6 +474,7 @@
     "ResetDatabase.TempAvatarDatabase": "Temp Avatar Database",
     "ResetDatabase.CommonAvatarDatabase": "Common Avatar Database",
     "ResetDatabase.BulkImportPresetDatabase": "Bulk Import Preset Database",
+    "ResetDatabase.VariationHashDatabase": "Variation Hash Database",
     "ResetDatabase.Reset": "Reset",
 
     "FetchAllThumbnails.Title": "Bulk Thumbnail Fetch",

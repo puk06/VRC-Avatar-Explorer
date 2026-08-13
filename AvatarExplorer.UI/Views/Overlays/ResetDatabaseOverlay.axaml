@@ -23,6 +23,7 @@
                         <CheckBox IsChecked="{Binding ResetTempAvatars}" Content="{Binding [ResetDatabase.TempAvatarDatabase], Source={x:Static loc:Localizer.Instance}}"/>
                         <CheckBox IsChecked="{Binding ResetCommonAvatars}" Content="{Binding [ResetDatabase.CommonAvatarDatabase], Source={x:Static loc:Localizer.Instance}}"/>
                         <CheckBox IsChecked="{Binding ResetBulkImportPresets}" Content="{Binding [ResetDatabase.BulkImportPresetDatabase], Source={x:Static loc:Localizer.Instance}}"/>
+                        <CheckBox IsChecked="{Binding ResetVariationHashes}" Content="{Binding [ResetDatabase.VariationHashDatabase], Source={x:Static loc:Localizer.Instance}}"/>
                     </StackPanel>
                 </StackPanel>
 
