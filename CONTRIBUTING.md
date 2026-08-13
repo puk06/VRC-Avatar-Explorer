@@ -95,6 +95,11 @@ PR 前の確認事項:
 - `AvatarExplorer.UI` または `AvatarExplorer.Core` をビルドして、エラーが出ないことを確認する
 - `Tools/LocalizationKeyGenerator` を実行して、`AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` を再生成する（変更がない場合でも実行する）
 
+### ローカライゼーション
+
+- ローカライゼーションファイル（`AvatarExplorer.Core/Data/Localization/*.json`）とローカライゼーションキー用のクラス（`AvatarExplorer.Core/Localization/LocalizationKeys.g.cs`）は `AvatarExplorer.Core` にあります。
+- これらはお好きに使ってもらって構いません。UI には依存しておらず、そこに `Localization` があるだけです。
+
 ### AI 利用時のガイドライン
 
 GitHub Copilot などの AI ツールを使うことは問題ありませんが、生成結果は必ず人の目でレビュー・検証してください。
@@ -181,6 +186,11 @@ Write the PR description briefly with the purpose, background, related issues, a
 Pre-PR checklist:
 - Build `AvatarExplorer.UI` or `AvatarExplorer.Core` and confirm there are no errors
 - Run `Tools/LocalizationKeyGenerator` to regenerate `AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` (run even if there are no changes)
+
+### Localization
+
+- The localization files (`AvatarExplorer.Core/Data/Localization/*.json`) and the localization key class (`AvatarExplorer.Core/Localization/LocalizationKeys.g.cs`) live in `AvatarExplorer.Core`.
+- Feel free to use them however you like. They do not depend on the UI — `Localization` is simply there.
 
 ### AI usage guidelines
 
