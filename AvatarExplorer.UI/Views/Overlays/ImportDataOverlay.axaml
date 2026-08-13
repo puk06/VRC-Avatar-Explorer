@@ -37,7 +37,7 @@
                     <TextBlock Text="{Binding [ImportData.SelectData], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
                     <StackPanel Spacing="8">
                         <CheckBox IsChecked="{Binding ImportItems}" Content="{Binding [ImportData.Database], Source={x:Static loc:Localizer.Instance}}"/>
-                        <CheckBox IsChecked="{Binding ImportThumbnails}" Content="{Binding [ImportData.Thumbnails], Source={x:Static loc:Localizer.Instance}}"/>
+                        <CheckBox IsChecked="{Binding ImportThumbnails}" IsEnabled="{Binding CanImportThumbnails}" Content="{Binding [ImportData.Thumbnails], Source={x:Static loc:Localizer.Instance}}"/>
                     </StackPanel>
                 </StackPanel>
 

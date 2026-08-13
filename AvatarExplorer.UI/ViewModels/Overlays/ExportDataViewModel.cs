@@ -6,6 +6,7 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
@@ -14,21 +15,23 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ExportDataViewModel : ViewModelBase
+public class ExportDataViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public bool IsVisible { get; set; }
     [Reactive] public int SelectedExportTypeIndex { get; set; }
     [Reactive] public string FolderPath { get; set; } = string.Empty;
     [Reactive] public bool IncludeCommonToSupported { get; set; } = true;
 
-    private List<(string Name, DataExportType Type)> ExportTypeOptions { get; } =
+    private List<(string LocKey, DataExportType Type)> ExportTypeOptions { get; } =
     [
-        ("CSV", DataExportType.Csv),
+        (Loc.ExportData.ExportTypeOptions.Csv, DataExportType.Csv),
     ];
 
-    public List<string> ExportTypeNames => ExportTypeOptions.ConvertAll(o => o.Name);
+    public List<string> ExportTypeNames => ExportTypeOptions.ConvertAll(o => Localizer.Instance[o.LocKey]);
 
-    private DataExportType SelectedExportType => ExportTypeOptions[SelectedExportTypeIndex].Type;
+    private DataExportType SelectedExportType => (SelectedExportTypeIndex >= 0 && SelectedExportTypeIndex < ExportTypeOptions.Count)
+        ? ExportTypeOptions[SelectedExportTypeIndex].Type
+        : DataExportType.None;
 
     public IReactiveCommand BrowseFolderCommand { get; }
     public IReactiveCommand ExportCommand { get; }
@@ -39,6 +42,19 @@ public class ExportDataViewModel : ViewModelBase
         BrowseFolderCommand = ReactiveCommand.CreateFromTask(BrowseFolder);
         ExportCommand = ReactiveCommand.CreateFromTask(Export);
         CancelCommand = ReactiveCommand.Create(() => IsVisible = false);
+
+        IInitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
+        Localizer.Instance.LanguageChanged += OnLanguageChanged;
+        OnLanguageChanged();
+    }
+
+    private void OnLanguageChanged()
+    {
+        this.RaisePropertyChanged(nameof(ExportTypeNames));
     }
 
     public void Open()

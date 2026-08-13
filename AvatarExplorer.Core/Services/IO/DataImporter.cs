@@ -37,6 +37,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
             {
                 DataImportType.V1 => await FromV1(importRequest),
                 DataImportType.KonoAsset => await FromKonoAsset(importRequest),
+                DataImportType.Folder => await FromFolder(importRequest),
                 _ => Error.Unexpected(description: $"Unexpected import source: {source}")
             };
             if (result.IsError) return result;
@@ -48,6 +49,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
             {
                 DataImportType.V1 => await FromV1Thumbnail(_items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
                 DataImportType.KonoAsset => await FromKonoAssetThumbnail(_items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
+                DataImportType.Folder => Result.Success, // Folders do not have thumbnails to import
                 _ => Error.Unexpected(description: $"Unexpected import source: {source}")
             };
             if (result.IsError) return result;
@@ -267,6 +269,62 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
         }
     }
 
+    private async Task<ErrorOr<Success>> FromFolder(ImportRequest importRequest)
+    {
+        try
+        {
+            var folderPath = importRequest.DataFolderPath;
+            if (!Directory.Exists(folderPath))
+                return Error.Unexpected(description: $"Folder not found: {folderPath}");
+
+            var subfolders = Directory.GetDirectories(folderPath);
+            if (subfolders.Length == 0)
+                return Error.Unexpected(description: $"No subfolders found in: {folderPath}");
+
+            var reportProgress = importRequest.ReportProgress;
+            var shouldCopyAsset = importRequest.CopyAssetData;
+
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 0));
+
+            var lastPercent = -1;
+
+            for (int i = 0; i < subfolders.Length; i++)
+            {
+                var subfolder = subfolders[i];
+                var folderName = Path.GetFileName(subfolder);
+
+                var creationContext = new ItemCreationContext
+                {
+                    Title = folderName,
+                    Author = "Unknown",
+                    ItemType = ItemType.Custom,
+                    CustomCategory = "Folder",
+                };
+
+                var item = await _items.Create(creationContext);
+                await _items.AddPaths(item.Identifier, [new ItemPathEntry { FileName = folderName, Path = subfolder }], !shouldCopyAsset, false);
+
+                int percent = (int)(100.0 * i / subfolders.Length);
+                if (percent != lastPercent)
+                {
+                    lastPercent = percent;
+                    if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, percent));
+                }
+            }
+
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 100));
+
+            _items.Save();
+            _items.MarkAsChanged();
+
+            return Result.Success;
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to import data from folder.", ex);
+            return Error.Failure(description: "Failed to import data from folder.");
+        }
+    }
     private async Task<ErrorOr<Success>> FromV1Thumbnail(
         IEnumerable<Item> currentItems,
         string dataFolderPath,

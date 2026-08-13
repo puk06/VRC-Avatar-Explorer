@@ -747,6 +747,12 @@ public static class Loc
         public const string Title = "ImportData.Title";
         public const string Description = "ImportData.Description";
         public const string ImportSource = "ImportData.ImportSource";
+        public static class ImportSourceOptions
+        {
+            public const string V1 = "ImportData.ImportSourceOptions.V1";
+            public const string KonoAsset = "ImportData.ImportSourceOptions.KonoAsset";
+            public const string Folder = "ImportData.ImportSourceOptions.Folder";
+        }
         public static class FolderPath
         {
             public const string Title = "ImportData.FolderPath.Title";
@@ -762,6 +768,10 @@ public static class Loc
         public const string Title = "ExportData.Title";
         public const string Description = "ExportData.Description";
         public const string ExportType = "ExportData.ExportType";
+        public static class ExportTypeOptions
+        {
+            public const string Csv = "ExportData.ExportTypeOptions.Csv";
+        }
         public static class FolderPath
         {
             public const string Title = "ExportData.FolderPath.Title";
