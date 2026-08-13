@@ -595,6 +595,14 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     {
         if (item == null || string.IsNullOrWhiteSpace(item.Identifier)) return;
 
+        // ファイルだった場合
+        if (item.ViewModelType == ViewModelType.File && item.Identifier.StartsWith(ItemNavigationService.FilePrefix))
+        {
+            // ファイルはただ選択してイベントを発生させる（選択処理が行われないため、再描画などが必要ない）
+            _itemNavigationService.Select(item.Identifier);
+            return;
+        }
+
         if (_searchManager.ActiveSearchQuery != null)
         {
             // 検索からアイテム選択: 検索アイテムは1つのみ（上書き）
