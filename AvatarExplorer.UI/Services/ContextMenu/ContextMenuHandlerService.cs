@@ -571,8 +571,7 @@ public static class ContextMenuHandlerService
     }
     private static async void EditCustomCategoryName(string identifier)
     {
-        // custom:ABC
-        var oldCategory = identifier[(ItemNavigationService.CustomPrefix.Length + 1)..];
+        var oldCategory = ItemCategory.FromIdentifier(identifier).CustomCategory;
 
         var newName = await MainWindowViewModel.Instance.ShowTextDialog(
             Localizer.Instance[Loc.Dialog.Title.NewCustomCategoryName],

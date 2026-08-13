@@ -93,7 +93,7 @@ public class ItemGroupService
         
         if (includeAllCategory)
         {
-            categories.Add(new Folder("type:" + (int)ItemType.All)
+            categories.Add(new Folder(new ItemCategory(ItemType.All).Identifier)
             {
                 Title = ItemType.All.GetLocalizationKey() ?? string.Empty,
                 TitleLocalizable = true,
@@ -119,7 +119,7 @@ public class ItemGroupService
                 .Where(i => includeEmptyCategory || existCategories.Contains(i))
                 .Select(i =>
                 {
-                    return new Folder("type:" + (int)i)
+                    return new Folder(new ItemCategory(i).Identifier)
                     {
                         Title = i.GetLocalizationKey() ?? string.Empty,
                         TitleLocalizable = true,
@@ -130,7 +130,7 @@ public class ItemGroupService
 
         categories.AddRange(existCustomCategories.Select(i =>
         {
-            return new Folder("custom:" + i)
+            return new Folder(new ItemCategory(i).Identifier)
             {
                 Title = i,
                 TitleLocalizable = false,

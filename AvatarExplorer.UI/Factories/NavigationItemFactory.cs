@@ -50,7 +50,7 @@ public static class NavigationItemFactory
 
         if (source is Folder folder)
         {
-            var isCategory = folder.Identifier.StartsWith("type:") || folder.Identifier.StartsWith("custom:");
+            var isCategory = ItemCategory.IsCategoryIdentifier(folder.Identifier);
             return new ItemViewModel
             {
                 ImageFileName = SystemIconKey.FolderIcon,

@@ -167,9 +167,7 @@ public class ItemRepository : RepositoryBase<Item>
 
         foreach (var item in items)
         {
-            var key = item.Category.Type == ItemType.Custom && !string.IsNullOrWhiteSpace(item.Category.CustomCategory)
-                ? $"custom:{item.Category.CustomCategory}"
-                : $"type:{(int)item.Category.Type}";
+            var key = item.Category.Identifier;
 
             if (!result.TryGetValue(key, out var list))
             {
@@ -181,8 +179,8 @@ public class ItemRepository : RepositoryBase<Item>
         }
 
         return result
-            .OrderBy(kvp => kvp.Key.StartsWith("type:") ? 0 : 1)
-            .ThenBy(kvp => kvp.Key.StartsWith("type:") ? int.Parse(kvp.Key[5..]) : 0)
+            .OrderBy(kvp => kvp.Key.StartsWith(ItemCategory.TypeCategoryPrefix) ? 0 : 1)
+            .ThenBy(kvp => kvp.Key.StartsWith(ItemCategory.TypeCategoryPrefix) ? int.Parse(kvp.Key[5..]) : 0)
             .ThenBy(kvp => kvp.Key);
     }
 

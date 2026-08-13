@@ -167,6 +167,9 @@ public class ItemNavigationService
         else
             items = _items.ItemRepository.GetAll();
 
+        if (ItemCategory.FromIdentifier(state).Type == ItemType.All)
+            return items.ToArray();
+
         return items.Where(i => i.IsCategoryMatch(state)).ToArray();
     }
 

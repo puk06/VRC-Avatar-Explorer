@@ -148,19 +148,17 @@ internal static class ContextMenuCreator
     
     private static ContextMenuAction[] CreateFromItemCategory(string category)
     {
-        List<ContextMenuAction> contextMenuActions = new();
+        List<ContextMenuAction> contextMenuActions = [];
 
-        if (category.StartsWith("type:")) // type: => Enum
-        {
-            var raw = category["type:".Length..];
-            if ((ItemType)ValueParser.Int(raw) != ItemType.All)
-            {
-                contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
-            }
-        }
-        else
+        var itemCategory = ItemCategory.FromIdentifier(category);
+
+        if (itemCategory.Type == ItemType.Custom)
         {
             contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.EditCustomCategoryName, ActionKey.EditCustomCategoryName, ContextMenuIconType.Edit, category));
+        }
+
+        if (itemCategory.Type != ItemType.None && itemCategory.Type != ItemType.All)
+        {
             contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
         }
 
