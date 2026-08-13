@@ -17,7 +17,6 @@ using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
-using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Models.Sort;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
@@ -35,6 +34,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public int SelectedSortOrder { get; set; }
     [Reactive] public SortDirection SelectedSortDirection { get; set; }
     [Reactive] public int SelectedImplementedSort { get; set; }
+    [Reactive] public bool EnableSearchInFolder { get; set; }
     [Reactive] public int SelectedTheme { get; set; }
     [Reactive] public bool RemoveBrackets { get; set; }
     [Reactive] public double NormalIconSize { get; set; }
@@ -204,7 +204,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             BackgroundOpacity = (int)BackgroundImageOpacity,
             SortOrder = (ItemSortOrder)SelectedSortOrder,
             SortDirection = SelectedSortDirection,
-            ImplementedSort = (ImplementedSort)SelectedImplementedSort
+            ImplementedSort = (ImplementedSort)SelectedImplementedSort,
+            EnableSearchInFolder = EnableSearchInFolder,
         });
     }
 

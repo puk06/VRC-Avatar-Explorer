@@ -1,6 +1,7 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Utils;
@@ -230,6 +231,27 @@ public class ItemRepository : RepositoryBase<Item>
                 files.Add(new(otherFolder, otherFile));
 
         return files;
+    }
+
+    public ItemFile[] SearchItemFiles(string id, string searchString)
+    {
+        var item = Get(id);
+        if (item == null) return [];
+
+        var query = SearchQueryParser.Parse(searchString);
+        var files = EnumerateItemFiles(id);
+
+        return files
+            .Where(f => query.Tokens.All(t => IsMatch(f.FileName, t)))
+            .ToArray();
+
+        static bool IsMatch(string fileName, SearchQueryToken token)
+        {
+            if (token.Field != null) return false; // フィールド指定がある場合は無視する
+            var value = token.Value;
+            if (token.IsNegation) return !fileName.Contains(value, StringComparison.OrdinalIgnoreCase);
+            else return fileName.Contains(value, StringComparison.OrdinalIgnoreCase);
+        }
     }
 
     public async Task<ErrorOr<Success>> UpdateThumbnail(string identifier, string imageFilePath)

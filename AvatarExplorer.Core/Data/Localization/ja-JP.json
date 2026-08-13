@@ -240,6 +240,8 @@
     "Settings.ImplementedSort.Options.None": "なし",
     "Settings.ImplementedSort.Options.Implemented": "実装済み",
     "Settings.ImplementedSort.Options.NotImplemented": "未実装",
+    "Settings.EnableSearchInFolder.Title": "フォルダ内検索を有効化",
+    "Settings.EnableSearchInFolder.Description": "アイテムが選択されていた状態だと、フォルダー内検索に自動で切り替わるようになります",
     "Settings.Theme.Title": "テーマ",
     "Settings.Theme.Description": "ソフト内で使用されるテーマです",
     "Settings.Theme.Options.Dark": "ダーク",

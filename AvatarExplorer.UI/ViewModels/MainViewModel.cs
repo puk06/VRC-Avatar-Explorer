@@ -320,14 +320,24 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         var sortOrder = UserPreferences.SortOrder;
         var sortDirection = UserPreferences.SortDirection;
+        var isFolderSearchEnabled = UserPreferences.EnableSearchInFolder && _itemNavigationService.GetCurrentItemId != null;
 
-        _allMainItems = ItemSortService
+        if (isFolderSearchEnabled)
+        {
+            _allMainItems = _itemNavigationService.SearchFilesForCurrentItem(searchQuery)
+                .Select(CreateItemViewModel)
+                .ToList();
+        }
+        else
+        {
+            _allMainItems = ItemSortService
             .Sort(
                 _searchManager.SearchItems(searchQuery),
                 sortOrder, sortDirection, UserPreferences.RemoveBrackets
             )
             .Select(CreateItemViewModel)
             .ToList();
+        }
 
         RightPageInfo.TotalItems = _allMainItems.Count;
 

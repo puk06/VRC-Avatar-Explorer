@@ -390,6 +390,11 @@ public static class Loc
                 public const string NotImplemented = "Settings.ImplementedSort.Options.NotImplemented";
             }
         }
+        public static class EnableSearchInFolder
+        {
+            public const string Title = "Settings.EnableSearchInFolder.Title";
+            public const string Description = "Settings.EnableSearchInFolder.Description";
+        }
         public static class Theme
         {
             public const string Title = "Settings.Theme.Title";

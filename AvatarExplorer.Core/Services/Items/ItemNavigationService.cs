@@ -256,6 +256,21 @@ public class ItemNavigationService
         FileOpenRequested?.Invoke(file);
     }
 
+    public IIdentifiable[] SearchFilesForCurrentItem(string query)
+    {
+        var itemId = GetItemId();
+        if (itemId == null) return [];
+
+        var itemFiles = PopulatePathCache(itemId);
+        var searchResults = _items.ItemRepository.SearchItemFiles(itemId, query);
+
+        return searchResults
+            .Select(f => itemFiles.FirstOrDefault(i => i.FilePath == f.FilePath))
+            .Where(f => f != null)
+            .Cast<IIdentifiable>()
+            .ToArray();
+    }
+
     private string? ResolvePath(string hash) => _pathCache.TryGetValue(hash, out var path) ? path : null;
 
     private string? GetItemId() => _state.FirstOrDefault(ItemPrefix)?.Value;

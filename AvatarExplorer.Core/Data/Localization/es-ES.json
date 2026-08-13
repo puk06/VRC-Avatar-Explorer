@@ -240,6 +240,8 @@
     "Settings.ImplementedSort.Options.None": "Ninguno",
     "Settings.ImplementedSort.Options.Implemented": "Implementado",
     "Settings.ImplementedSort.Options.NotImplemented": "No implementado",
+    "Settings.EnableSearchInFolder.Title": "Habilitar búsqueda en carpeta",
+    "Settings.EnableSearchInFolder.Description": "Cuando hay un elemento seleccionado, cambia automáticamente a la búsqueda en carpeta",
     "Settings.Theme.Title": "Tema",
     "Settings.Theme.Description": "Tema usado en el software",
     "Settings.Theme.Options.Dark": "Oscuro",

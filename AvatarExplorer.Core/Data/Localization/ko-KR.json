@@ -240,6 +240,8 @@
     "Settings.ImplementedSort.Options.None": "없음",
     "Settings.ImplementedSort.Options.Implemented": "구현됨",
     "Settings.ImplementedSort.Options.NotImplemented": "미구현",
+    "Settings.EnableSearchInFolder.Title": "폴더 내 검색 활성화",
+    "Settings.EnableSearchInFolder.Description": "아이템이 선택된 상태이면 폴더 내 검색으로 자동 전환됩니다",
     "Settings.Theme.Title": "테마",
     "Settings.Theme.Description": "소프트웨어 내에서 사용되는 테마입니다",
     "Settings.Theme.Options.Dark": "다크",
