@@ -320,7 +320,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         var sortOrder = UserPreferences.SortOrder;
         var sortDirection = UserPreferences.SortDirection;
-        var isFolderSearchEnabled = UserPreferences.EnableSearchInFolder && _itemNavigationService.GetCurrentItemId != null;
+        var isFolderSearchEnabled = UserPreferences.EnableSearchInFolder && _itemNavigationService.GetCurrentItemId() != null;
 
         if (isFolderSearchEnabled)
         {
