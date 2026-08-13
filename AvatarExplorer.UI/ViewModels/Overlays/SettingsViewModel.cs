@@ -183,9 +183,12 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         };
     }
 
-    public UserPreferences CreateUserPreferences()
+    private void OnApply()
     {
-        return new UserPreferences
+        AvatarExplorerApp.Instance.RuntimeSettings.Update(CreateRuntimeSettings());
+
+        var current = UserPreferencesService.Instance.Repository.Settings;
+        UserPreferencesService.Instance.Repository.Update(current with
         {
             Language = SelectedLanguage,
             Theme = (Theme)SelectedTheme,
@@ -202,13 +205,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             SortOrder = (ItemSortOrder)SelectedSortOrder,
             SortDirection = SelectedSortDirection,
             ImplementedSort = (ImplementedSort)SelectedImplementedSort
-        };
-    }
-
-    private void OnApply()
-    {
-        AvatarExplorerApp.Instance.RuntimeSettings.Update(CreateRuntimeSettings());
-        UserPreferencesService.Instance.Repository.Update(CreateUserPreferences());
+        });
     }
 
     private void OnClose()

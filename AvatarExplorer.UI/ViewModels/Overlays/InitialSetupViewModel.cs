@@ -10,6 +10,7 @@ using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -26,6 +27,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
     public IReactiveCommand CloseCommand { get; }
 
     private static RuntimeSettingsRepository Settings => AvatarExplorerApp.Instance.RuntimeSettings;
+    private static UserPreferencesRepository UserPreferences => UserPreferencesService.Instance.Repository;
 
     public InitialSetupViewModel()
     {
@@ -54,11 +56,16 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
 
     public async Task OnInitialized()
     {
-        if (!AvatarExplorerApp.Instance.Items.GetAll().Any())
+        if (UserPreferences.Settings.InitialSetupCompleted) return;
+
+        if (AvatarExplorerApp.Instance.Items.GetAll().Any())
         {
-            Open();
-            ShowSchemeRegistrationDialog();
+            MarkInitialSetupCompleted();
+            return;
         }
+
+        Open();
+        ShowSchemeRegistrationDialog();
     }
 
     public void Open()
@@ -73,8 +80,12 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
 
     private void Close()
     {
+        MarkInitialSetupCompleted();
         IsVisible = false;
     }
+
+    private void MarkInitialSetupCompleted() =>
+        UserPreferences.Update(UserPreferences.Settings with { InitialSetupCompleted = true });
 
     private static async void ShowSchemeRegistrationDialog()
     {
