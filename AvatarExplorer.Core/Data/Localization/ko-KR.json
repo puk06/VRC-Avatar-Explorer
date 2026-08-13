@@ -108,7 +108,6 @@
     "Processing.Booth.Status.Fetching": "아이템 정보를 가져오는 중입니다...",
     "Processing.DirectoryCopy.Copying": "폴더를 복사하는 중입니다... {0}%",
     "Processing.Import.Copying": "데이터를 가져오는 중입니다... {0}%",
-    "Processing.ItemAdd.Copying": "아이템을 추가하는 중입니다...",
 
     "ContextMenu.Item.CheckForUpdate": "아이템 업데이트 확인",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "이 작성자의 다른 아이템 보기",

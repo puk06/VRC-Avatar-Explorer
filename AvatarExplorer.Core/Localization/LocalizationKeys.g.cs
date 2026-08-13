@@ -190,10 +190,6 @@ public static class Loc
         {
             public const string Copying = "Processing.Import.Copying";
         }
-        public static class ItemAdd
-        {
-            public const string Copying = "Processing.ItemAdd.Copying";
-        }
     }
     public static class ContextMenu
     {

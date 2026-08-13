@@ -108,7 +108,6 @@
     "Processing.Booth.Status.Fetching": "正在获取项目信息...",
     "Processing.DirectoryCopy.Copying": "正在复制文件夹... {0}%",
     "Processing.Import.Copying": "正在导入数据... {0}%",
-    "Processing.ItemAdd.Copying": "正在添加项目...",
 
     "ContextMenu.Item.CheckForUpdate": "检查项目更新",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "显示该作者的其他项目",

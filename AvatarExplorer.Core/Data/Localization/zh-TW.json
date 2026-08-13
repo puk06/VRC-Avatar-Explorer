@@ -108,7 +108,6 @@
     "Processing.Booth.Status.Fetching": "正在取得項目資訊...",
     "Processing.DirectoryCopy.Copying": "正在複製資料夾... {0}%",
     "Processing.Import.Copying": "正在匯入資料... {0}%",
-    "Processing.ItemAdd.Copying": "正在新增項目...",
 
     "ContextMenu.Item.CheckForUpdate": "檢查項目更新",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "顯示此作者的其他項目",

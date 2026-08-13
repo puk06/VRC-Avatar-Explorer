@@ -108,7 +108,6 @@
     "Processing.Booth.Status.Fetching": "Récupération des informations de l'élément...",
     "Processing.DirectoryCopy.Copying": "Copie du dossier... {0}%",
     "Processing.Import.Copying": "Importation des données... {0}%",
-    "Processing.ItemAdd.Copying": "Ajout de l'élément...",
 
     "ContextMenu.Item.CheckForUpdate": "Vérifier les mises à jour de l'élément",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "Afficher les autres éléments de cet auteur",

@@ -108,7 +108,6 @@
     "Processing.Booth.Status.Fetching": "アイテム情報の取得中です...",
     "Processing.DirectoryCopy.Copying": "フォルダのコピー中です... {0}%",
     "Processing.Import.Copying": "データの取り込み中です... {0}%",
-    "Processing.ItemAdd.Copying": "アイテムの追加中です...",
 
     "ContextMenu.Item.CheckForUpdate": "アイテムの更新を確認",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "この作者の他のアイテムを表示",
