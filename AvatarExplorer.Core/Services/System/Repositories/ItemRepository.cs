@@ -216,11 +216,11 @@ public class ItemRepository : RepositoryBase<Item>
         var files = new List<ItemFile>();
 
         var root = item.ItemPath;
-        foreach (var rootFile in FileSystemService.EnumerateFiles(root, isRecursive: false))
-            files.Add(new(root, rootFile));
-
         if (Directory.Exists(root))
         {
+            foreach (var rootFile in FileSystemService.EnumerateFiles(root, isRecursive: false))
+                files.Add(new(root, rootFile));
+
             foreach (var rootFolder in Directory.GetDirectories(root))
                 foreach (var rootFolderFile in FileSystemService.EnumerateFiles(rootFolder, isRecursive: true))
                     files.Add(new(rootFolder, rootFolderFile));
