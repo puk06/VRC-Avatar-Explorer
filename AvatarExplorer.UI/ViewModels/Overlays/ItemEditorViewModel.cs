@@ -105,11 +105,11 @@ public class ItemEditorViewModel : ViewModelBase
             var item = AvatarExplorerApp.Instance.Items.Get(itemId);
             if (item != null)
             {
-                BoothUrl = item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
+                if (item.BoothId != -1) BoothUrl = item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
                 Title = item.Title;
                 Author = item.Author;
                 AuthorId = item.AuthorId;
-                BoothId = item.BoothId.ToString();
+                if (item.BoothId != -1) BoothId = item.BoothId.ToString();
                 Memo = item.ItemMemo;
                 SupportedAvatars = item.SupportedAvatars;
                 Tags = item.Tags;
