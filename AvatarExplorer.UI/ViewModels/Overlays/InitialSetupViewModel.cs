@@ -84,7 +84,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
         IsVisible = false;
     }
 
-    private void MarkInitialSetupCompleted() =>
+    private static void MarkInitialSetupCompleted() =>
         UserPreferences.Update(UserPreferences.Settings with { InitialSetupCompleted = true });
 
     private static async void ShowSchemeRegistrationDialog()
