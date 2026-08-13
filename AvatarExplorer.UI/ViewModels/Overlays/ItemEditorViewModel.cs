@@ -285,7 +285,7 @@ public class ItemEditorViewModel : ViewModelBase
             Title = Title,
             Author = Author,
             AuthorId = AuthorId,
-            BoothId = int.TryParse(BoothId, out var boothId) ? boothId : -1,
+            BoothId = ValueParser.Int(BoothId, -1),
             ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
             CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory ?? string.Empty : string.Empty,
             ThumbnailUrl = ThumbnailUrl,
