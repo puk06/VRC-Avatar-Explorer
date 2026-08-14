@@ -23,13 +23,13 @@ public class SearchManager
     private readonly Func<AdvancedSearchViewModel> _getAdvancedSearchVM;
     private readonly Action _onSearchExecuted;
 
-    private string? _suspendedSearchQuery;
-    private int _suspendedPage;
-    private Vector _suspendedScrollOffset;
+    private readonly record struct SuspendedContext(string Query, int Page, Vector ScrollOffset);
+    private readonly Stack<SuspendedContext> _suspended = new();
+    private SuspendedContext? _restoringContext;
 
     public string? ActiveSearchQuery { get; private set; }
     public bool IsRestoring { get; private set; }
-    public bool HasSuspendedQuery => _suspendedSearchQuery != null;
+    public bool HasSuspendedQuery => _suspended.Count > 0;
 
     public string? ActiveSearchQueryDisplayText
     {
@@ -68,34 +68,34 @@ public class SearchManager
     public void SuspendQuery(PanelPageInfo rightPageInfo)
     {
         if (ActiveSearchQuery == null) return;
-        _suspendedSearchQuery = ActiveSearchQuery;
-        _suspendedPage = rightPageInfo.CurrentPage;
-        _suspendedScrollOffset = rightPageInfo.ScrollOffset;
+        _suspended.Push(new SuspendedContext(ActiveSearchQuery, rightPageInfo.CurrentPage, rightPageInfo.ScrollOffset));
         ActiveSearchQuery = null;
     }
 
     public bool TryRestoreQuery()
     {
-        if (_suspendedSearchQuery == null) return false;
+        if (_suspended.Count == 0) return false;
 
-        ActiveSearchQuery = _suspendedSearchQuery;
-        _suspendedSearchQuery = null;
+        var ctx = _suspended.Pop();
+        _restoringContext = ctx;
+        ActiveSearchQuery = ctx.Query;
         return true;
     }
 
     public void RestorePageInfo(PanelPageInfo rightPageInfo)
     {
-        if (!IsRestoring) return; // Only restore if we are in the restoring state
-        rightPageInfo.CurrentPage = _suspendedPage;
-        rightPageInfo.RestoreScrollOffset = _suspendedScrollOffset;
+        if (!IsRestoring || _restoringContext == null) return;
+        rightPageInfo.CurrentPage = _restoringContext.Value.Page;
+        rightPageInfo.RestoreScrollOffset = _restoringContext.Value.ScrollOffset;
     }
 
     public void ClearSuspendedQuery()
     {
-        _suspendedSearchQuery = null;
+        _suspended.Clear();
+        _restoringContext = null;
     }
 
-    public void MarkAsRestored() => IsRestoring = false;
+    public void MarkAsRestored() { IsRestoring = false; _restoringContext = null; }
     public void MarkAsRestoring() => IsRestoring = true;
 
     public IEnumerable<Item> SearchItems(string query)
@@ -118,7 +118,6 @@ public class SearchManager
         var query = BuildSearchString(_getSearchText(), _getAdvancedSearchVM());
         var parsed = SearchQueryParser.Parse(query);
         ActiveSearchQuery = parsed.Tokens.Count == 0 ? null : query;
-        _suspendedSearchQuery = null;
         _onSearchExecuted();
     }
 
