@@ -100,7 +100,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private string? _searchItemBaseState;
     private bool _hasSearchItem;
 
-    private readonly Guid _preSearchStateGuid = Guid.NewGuid();
+    private readonly Guid _preLevel0StateGuid = Guid.NewGuid();
+    private readonly Guid _preLevel1StateGuid = Guid.NewGuid();
     private bool _isPreviousScreenSearch = false;
 
     private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
@@ -311,19 +312,17 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
     private void RefreshSearchResults(string searchQuery)
     {
-        // 検索画面に入る前の状態（通常ナビ or アイテムナビ）を保存する
+        // 検索前の画面状態を保存
+        // 通常画面から検索に入るところ（Lv0）: _preLevel0StateGuid に保存
+        // アイテム表示中からファイル検索に入るところ（Lv1）: _preLevel1StateGuid に保存
         if (!_isPreviousScreenSearch)
         {
-            // Lv0 (アイテム検索): 検索前の通常ナビ画面を _preSearchStateGuid で保存
-            _stateCacheManager.SaveRightState(RightPageInfo, _preSearchStateGuid);
-            _isPreviousScreenSearch = true;
+            if (_hasSearchItem)
+                _stateCacheManager.SaveRightStateIfAbsent(RightPageInfo, _preLevel1StateGuid);
+            else
+                _stateCacheManager.SaveRightStateIfAbsent(RightPageInfo, _preLevel0StateGuid);
         }
-        else
-        {
-            // Lv1 (ファイル検索): ファイル検索前のアイテムナビ画面を
-            //   現在のナビ状態 Guid (検索で選択したアイテム) で保存
-            _stateCacheManager.SaveRightState(RightPageInfo);
-        }
+        _isPreviousScreenSearch = true;
 
         var sortOrder = UserPreferences.SortOrder;
         var sortDirection = UserPreferences.SortDirection;
@@ -392,10 +391,13 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         PathSegments = new ObservableCollection<PathSegment>(
             BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
 
-        // 検索画面から戻ってきたときに前の状態を復元する（検索中のアイテムから先に進んだ時に上書きされるのを防ぐため、_hasSearchItemがtrueのときは復元しない）
-        if (_isPreviousScreenSearch && !_hasSearchItem)
+        if (_isPreviousScreenSearch)
         {
-            _stateCacheManager.RestoreRightState(RightPageInfo, _preSearchStateGuid);
+            if (_hasSearchItem)
+                _stateCacheManager.RestoreRightState(RightPageInfo, _preLevel1StateGuid);
+            else
+                _stateCacheManager.RestoreRightState(RightPageInfo, _preLevel0StateGuid);
+
             _isPreviousScreenSearch = false;
         }
     }
@@ -627,6 +629,10 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             _searchManager.SuspendQuery(RightPageInfo);
             _itemNavigationService.Select(item.Identifier);
             _hasSearchItem = true;
+
+            // B画面に入るので、検索モードを一時的に抜ける
+            // これによりRefreshNavigationViewでの復元を防ぎ、ファイル検索時に_preLevel1StateGuidが保存される
+            _isPreviousScreenSearch = false;
         }
         else
         {
@@ -646,16 +652,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var wasInsideSearchItem = _hasSearchItem; // Lv1(ファイル検索)中か否か
             _searchManager.ClearQuery();
 
-            if (wasInsideSearchItem)
+            if (!wasInsideSearchItem)
             {
-                // Lv1ファイル検索中 → 選択したアイテム(B)のナビ画面に戻る
-                //   _hasSearchItem は true のまま維持し、B の page/scroll を復元する
-                _stateCacheManager.RestoreRightState(RightPageInfo);
-            }
-            else
-            {
-                // Lv0アイテム検索中 → 検索前のナビ画面(A)に戻る
-                _searchManager.ClearSuspendedQuery();
                 _hasSearchItem = false;
             }
         }

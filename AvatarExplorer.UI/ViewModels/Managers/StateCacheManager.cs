@@ -48,6 +48,20 @@ public class StateCacheManager
         _scrollValueCache.Add(currentGuid, rightPageInfo.ScrollOffset);
     }
 
+    /// <summary>
+    /// キャッシュに未登録の場合のみ保存する。既に登録されている場合は何もしない。
+    /// 検索前の画面状態を保存する際に、テキスト変更で何度も呼ばれても初回だけ保存したい場合に使う。
+    /// </summary>
+    public bool SaveRightStateIfAbsent(PanelPageInfo rightPageInfo, Guid? customGuid = null)
+    {
+        var currentGuid = customGuid ?? _navigationService.CurrentStateId ?? Guid.Empty;
+        if (_pageCache.ContainsKey(currentGuid)) return false;
+
+        _pageCache.Add(currentGuid, rightPageInfo.CurrentPage);
+        _scrollValueCache.Add(currentGuid, rightPageInfo.ScrollOffset);
+        return true;
+    }
+
     public void RestoreRightState(PanelPageInfo rightPageInfo, Guid? customGuid = null)
     {
         var currentGuid = customGuid ?? _navigationService.CurrentStateId ?? Guid.Empty;
