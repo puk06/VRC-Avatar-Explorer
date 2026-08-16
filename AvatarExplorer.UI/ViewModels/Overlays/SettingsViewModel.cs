@@ -260,12 +260,12 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private void FetchAllThumbnails()
     {
-        MainWindowViewModel.Instance.FetchAllThumbnailsVM.IsVisible = true;
+        MainWindowViewModel.Instance.FetchAllThumbnailsVM.Open();
     }
 
     private void FetchAllVariationHashes()
     {
-        MainWindowViewModel.Instance.FetchAllVariationHashesVM.IsVisible = true;
+        MainWindowViewModel.Instance.FetchAllVariationHashesVM.Open();
     }
 
     private async Task RestoreFromBackup()
