@@ -193,7 +193,6 @@
     "Error.PresetNotFound": "Preset not found",
     "Error.Validation.EmptyTitle": "Item title field is empty",
     "Error.Validation.EmptyAuthor": "Item author field is empty",
-    "Error.Validation.NotClothingWithCommonAvatar": "Common avatars are only valid for clothing category. They will be invalid in the current selection.",
     "Error.ImportFailed": "Data import failed",
     "Error.ExportFailed": "Data export failed",
     "Error.ItemEditFailed": "Item edit failed",

@@ -193,7 +193,6 @@
     "Error.PresetNotFound": "找不到預設",
     "Error.Validation.EmptyTitle": "項目標題為空",
     "Error.Validation.EmptyAuthor": "項目作者為空",
-    "Error.Validation.NotClothingWithCommonAvatar": "共通素體僅對服裝類別有效。於目前選擇下將無效。",
     "Error.ImportFailed": "資料匯入失敗",
     "Error.ExportFailed": "資料匯出失敗",
     "Error.ItemEditFailed": "項目編輯失敗",

@@ -193,7 +193,6 @@
     "Error.PresetNotFound": "Préréglage introuvable",
     "Error.Validation.EmptyTitle": "Le champ du titre de l'élément est vide",
     "Error.Validation.EmptyAuthor": "Le champ de l'auteur de l'élément est vide",
-    "Error.Validation.NotClothingWithCommonAvatar": "Les avatars communs ne sont valides que pour la catégorie vêtements. Ils seront invalides dans la sélection actuelle.",
     "Error.ImportFailed": "L'importation des données a échoué",
     "Error.ExportFailed": "L'exportation des données a échoué",
     "Error.ItemEditFailed": "La modification de l'élément a échoué",

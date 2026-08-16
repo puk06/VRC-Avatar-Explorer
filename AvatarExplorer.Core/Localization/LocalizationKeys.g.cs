@@ -319,7 +319,6 @@ public static class Loc
         {
             public const string EmptyTitle = "Error.Validation.EmptyTitle";
             public const string EmptyAuthor = "Error.Validation.EmptyAuthor";
-            public const string NotClothingWithCommonAvatar = "Error.Validation.NotClothingWithCommonAvatar";
         }
         public const string ImportFailed = "Error.ImportFailed";
         public const string ExportFailed = "Error.ExportFailed";

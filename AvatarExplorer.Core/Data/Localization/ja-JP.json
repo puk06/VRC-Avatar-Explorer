@@ -193,7 +193,6 @@
     "Error.PresetNotFound": "プリセットが見つかりませんでした",
     "Error.Validation.EmptyTitle": "アイテムのタイトル欄が空です",
     "Error.Validation.EmptyAuthor": "アイテムの作者欄が空です",
-    "Error.Validation.NotClothingWithCommonAvatar": "共通素体は衣装カテゴリでのみ有効です。現在の選択では無効になります。",
     "Error.ImportFailed": "データのインポートに失敗しました",
     "Error.ExportFailed": "データのエクスポートに失敗しました",
     "Error.ItemEditFailed": "アイテムの編集に失敗しました",

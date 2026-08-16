@@ -193,7 +193,6 @@
     "Error.PresetNotFound": "Ajuste preestablecido no encontrado",
     "Error.Validation.EmptyTitle": "El campo del título del elemento está vacío",
     "Error.Validation.EmptyAuthor": "El campo del autor del elemento está vacío",
-    "Error.Validation.NotClothingWithCommonAvatar": "Los avatares comunes solo son válidos para la categoría de ropa. No serán válidos en la selección actual.",
     "Error.ImportFailed": "La importación de datos falló",
     "Error.ExportFailed": "La exportación de datos falló",
     "Error.ItemEditFailed": "La edición del elemento falló",

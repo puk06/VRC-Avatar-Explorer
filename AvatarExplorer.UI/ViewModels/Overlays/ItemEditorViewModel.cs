@@ -547,17 +547,6 @@ public class ItemEditorViewModel : ViewModelBase
             return false;
         }
 
-        // Supported Avatars
-        if (SelectedCategory.Category.Type != ItemType.Clothing && SupportedAvatars.Any(i => i.StartsWith("commonavatar")))
-        {
-            MainWindowViewModel.ShowNotification(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.Validation.NotClothingWithCommonAvatar],
-                NotificationType.Error
-            );
-            return false;
-        }
-
         return true;
     }
 }

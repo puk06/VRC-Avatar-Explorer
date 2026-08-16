@@ -193,7 +193,6 @@
     "Error.PresetNotFound": "未找到预设",
     "Error.Validation.EmptyTitle": "项目标题为空",
     "Error.Validation.EmptyAuthor": "项目作者为空",
-    "Error.Validation.NotClothingWithCommonAvatar": "共通素体仅对服装类别有效。当前选择将无效。",
     "Error.ImportFailed": "数据导入失败",
     "Error.ExportFailed": "数据导出失败",
     "Error.ItemEditFailed": "项目编辑失败",
