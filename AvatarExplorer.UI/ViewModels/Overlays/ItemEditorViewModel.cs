@@ -251,6 +251,7 @@ public class ItemEditorViewModel : ViewModelBase
 
         Close();
 
+        if (itemPaths.Count == 0) return;
         _ = AddPathsInBackground(identifier, itemPaths, shouldLinkToOriginal);
     }
 
