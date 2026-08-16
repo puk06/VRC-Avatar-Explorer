@@ -64,7 +64,32 @@ public class ItemRepository : RepositoryBase<Item>
 
         Add(item);
 
+        // BoothIdがある場合は、Createの成否に影響を与えずに非同期でVariationHashをシードする
+        if (item.BoothId != -1)
+        {
+            _ = SeedVariationHashAsync(item.BoothId.ToString());
+        }
+
         return item;
+    }
+
+    /// <summary>
+    /// アイテム作成時にバックグラウンドでVariationHashをシードします。
+    /// ネットワーク障害が発生してもアイテム作成自体には影響しないよう、エラーはErrorManagerへ通報します。
+    /// </summary>
+    private static async Task SeedVariationHashAsync(string itemId)
+    {
+        try
+        {
+            await AvatarExplorerApp.Instance.VariationHashes.EnsureVariationHash(itemId);
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError(
+                $"Failed to seed variation hash for item '{itemId}'.",
+                ex
+            );
+        }
     }
 
     public async Task<bool> Update(string identifier, ItemEditContext context)
