@@ -63,10 +63,15 @@ public class BulkImportItemViewModel : ViewModelBase
             Title = TextBracketsUtils.RemoveBrackets(TitleRaw);
         }
 
-        UnitypackageViewModels = UnitypackageFullPaths.Select(path => new UnitypackageViewModel(path));
         var previousSelectedPackage = SelectedUnitypackage;
-        SelectedUnitypackage = -1;
-        SelectedUnitypackage = previousSelectedPackage;
+        UnitypackageViewModels = UnitypackageFullPaths.Select(path => new UnitypackageViewModel(path));
+
+        if (!UnitypackageViewModels.Any())
+            SelectedUnitypackage = -1;
+        else if (previousSelectedPackage < 0 || previousSelectedPackage >= UnitypackageViewModels.Count())
+            SelectedUnitypackage = 0;
+        else
+            SelectedUnitypackage = previousSelectedPackage;
 
         return this;
     }
