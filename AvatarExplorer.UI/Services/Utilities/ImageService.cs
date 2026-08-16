@@ -70,22 +70,6 @@ internal static class ImageService
         }
     }
 
-    internal static bool SetThumbnailCompressionMaxEdge(int maxEdge)
-    {
-        int clampedMaxEdge = Math.Clamp(maxEdge, 64, 2048);
-
-        lock (BitmapCacheLock)
-        {
-            if (_compressedThumbnailMaxEdge == clampedMaxEdge) return true;
-
-            // キャッシュが生成された後は圧縮サイズを固定して、既存キャッシュの破棄を避ける
-            if (BitmapCache.Count > 0) return false;
-
-            _compressedThumbnailMaxEdge = clampedMaxEdge;
-            return true;
-        }
-    }
-
     internal static Bitmap? Get(string fileName)
     {
         try

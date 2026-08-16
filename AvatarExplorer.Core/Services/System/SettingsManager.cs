@@ -1,6 +1,5 @@
 using System.Text.Json.Nodes;
 using AvatarExplorer.Core.Services.IO;
-using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.Core.Services.System;
 

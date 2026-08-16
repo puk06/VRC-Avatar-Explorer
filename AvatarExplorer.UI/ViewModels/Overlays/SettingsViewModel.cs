@@ -333,8 +333,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
         if (SchemeService.IsAnySchemeRegistered(protocol))
         {
-            var command = SchemeService.GetRegisteredCommand(protocol) ?? "";
-            var applicationName = command.Split(" ").FirstOrDefault() ?? "";
+            var command = SchemeService.GetRegisteredCommand(protocol) ?? string.Empty;
+            var applicationName = command.Split(" ").FirstOrDefault() ?? string.Empty;
             
             // ユーザー名を*****にする
             var userName = Environment.UserName;
@@ -452,7 +452,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task ViewLicense()
     {
-        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.License);
+        var licensePath = Path.Combine(AppContext.BaseDirectory, SystemFileName.License);
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
         else
         {
@@ -466,7 +466,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task ViewThirdPartyLicenses()
     {
-        var licensePath = Path.Combine(System.AppContext.BaseDirectory, SystemFileName.ThirdPartyLicenses);
+        var licensePath = Path.Combine(AppContext.BaseDirectory, SystemFileName.ThirdPartyLicenses);
         if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
         else
         {

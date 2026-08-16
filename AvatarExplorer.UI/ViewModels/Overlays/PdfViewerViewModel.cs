@@ -18,8 +18,6 @@ public class PdfViewerViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; }
     public ObservableCollection<PdfPageViewModel> Pages { get; set; } = [];
-    [Reactive] public string FileName { get; set; } = string.Empty;
-    [Reactive] public string Status { get; set; } = string.Empty;
 
     public IReactiveCommand CloseCommand { get; }
 

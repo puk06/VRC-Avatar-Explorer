@@ -118,10 +118,6 @@
             <overlays:ErrorLogOverlay/>
         </ContentControl>
 
-        <ContentControl IsVisible="{Binding FatalErrorVM.IsVisible}">
-            <overlays:FatalErrorOverlay/>
-        </ContentControl>
-
         <msg:MessageHost Position="BottomRight"/>
     </Panel>
 </Window>

@@ -86,14 +86,14 @@ internal static class ContextMenuCreator
 
         var isWindows = ProcessUtils.IsWindows();
 
-        contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.OpenFolder, ActionKey.OpenFolder, ContextMenuIconType.Open, path, addSeparator: !isWindows));
+        contextMenuActions.Add(new(Loc.ContextMenu.ItemFolder.OpenFolder, ActionKey.OpenFolder, ContextMenuIconType.Open, path, addSeparator: !isWindows));
 
         if (isWindows)
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, path, addSeparator: true));
+            contextMenuActions.Add(new(Loc.ContextMenu.ItemFolder.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, path, addSeparator: true));
         }
 
-        contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFolder.RemoveFolder, ActionKey.RemoveFolder, ContextMenuIconType.Delete, path));
+        contextMenuActions.Add(new(Loc.ContextMenu.ItemFolder.RemoveFolder, ActionKey.RemoveFolder, ContextMenuIconType.Delete, path));
 
         return contextMenuActions.ToArray();
     }
@@ -102,23 +102,23 @@ internal static class ContextMenuCreator
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(Loc.ContextMenu.ItemFile.OpenFile, ActionKey.OpenFile, ContextMenuIconType.Open, path),
-            new ContextMenuAction(Loc.ContextMenu.ItemFile.BulkImportList, ActionKey.AddFileToBulkImportList, ContextMenuIconType.Add, path)
+            new(Loc.ContextMenu.ItemFile.OpenFile, ActionKey.OpenFile, ContextMenuIconType.Open, path),
+            new(Loc.ContextMenu.ItemFile.BulkImportList, ActionKey.AddFileToBulkImportList, ContextMenuIconType.Add, path)
         ];
 
         if (ProcessUtils.IsWindows())
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFile.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, path));
+            contextMenuActions.Add(new(Loc.ContextMenu.ItemFile.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, path));
         }
 
         if (PathUtils.IsUnitypackageFile(path))
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFile.OpenUnitypackageViewer, ActionKey.OpenUnitypackageViewer, ContextMenuIconType.Open, path));
+            contextMenuActions.Add(new(Loc.ContextMenu.ItemFile.OpenUnitypackageViewer, ActionKey.OpenUnitypackageViewer, ContextMenuIconType.Open, path));
         }
 
         if (PathUtils.IsPdfFile(path))
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemFile.OpenPdfViewer, ActionKey.OpenPdfViewer, ContextMenuIconType.Open, path));
+            contextMenuActions.Add(new(Loc.ContextMenu.ItemFile.OpenPdfViewer, ActionKey.OpenPdfViewer, ContextMenuIconType.Open, path));
         }
 
         return contextMenuActions.ToArray();
@@ -128,7 +128,7 @@ internal static class ContextMenuCreator
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(Loc.ContextMenu.BulkImportPreset.RemovePreset, ActionKey.RemovePreset, ContextMenuIconType.Delete, itemId),
+            new(Loc.ContextMenu.BulkImportPreset.RemovePreset, ActionKey.RemovePreset, ContextMenuIconType.Delete, itemId),
         ];
 
         return contextMenuActions.ToArray();
@@ -138,9 +138,9 @@ internal static class ContextMenuCreator
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(Loc.ContextMenu.TempAvatar.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit, itemId),
-            new ContextMenuAction(Loc.ContextMenu.TempAvatar.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, itemId, addSeparator: true),
-            new ContextMenuAction(Loc.ContextMenu.TempAvatar.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete, itemId),
+            new(Loc.ContextMenu.TempAvatar.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit, itemId),
+            new(Loc.ContextMenu.TempAvatar.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, itemId, addSeparator: true),
+            new(Loc.ContextMenu.TempAvatar.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete, itemId),
         ];
 
         return contextMenuActions.ToArray();
@@ -154,12 +154,12 @@ internal static class ContextMenuCreator
 
         if (itemCategory.Type == ItemType.Custom)
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.EditCustomCategoryName, ActionKey.EditCustomCategoryName, ContextMenuIconType.Edit, category));
+            contextMenuActions.Add(new(Loc.ContextMenu.ItemCategory.EditCustomCategoryName, ActionKey.EditCustomCategoryName, ContextMenuIconType.Edit, category));
         }
 
         if (itemCategory.Type != ItemType.None && itemCategory.Type != ItemType.All)
         {
-            contextMenuActions.Add(new ContextMenuAction(Loc.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
+            contextMenuActions.Add(new(Loc.ContextMenu.ItemCategory.MergeWithOtherCategory, ActionKey.MergeWithOtherCategory, ContextMenuIconType.Merge, category));
         }
 
         return contextMenuActions.ToArray();

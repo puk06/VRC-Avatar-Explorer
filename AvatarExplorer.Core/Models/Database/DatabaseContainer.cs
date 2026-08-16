@@ -1,4 +1,4 @@
-namespace AvatarExplorer.Core.Services.Database;
+namespace AvatarExplorer.Core.Models.Database;
 
 internal class DatabaseContainer<T>
 {

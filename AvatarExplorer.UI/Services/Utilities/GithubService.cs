@@ -11,18 +11,16 @@ namespace AvatarExplorer.UI.Services.Utilities;
 
 public static class GithubService
 {
-    private const string Main_GithubApiBaseUrl = "https://api.github.com/users/{0}";
+    private const string GithubApiBaseUrl = "https://api.github.com/users/{0}";
 
     public static async Task<Bitmap?> GetProfileIconAsync()
     {
         try
         {
-            string githubOwner = Main_GetRepositoryOwner();
-            string profileApiUrl = string.Format(Main_GithubApiBaseUrl, githubOwner);
+            var githubOwner = GetRepositoryOwner();
+            var profileApiUrl = string.Format(GithubApiBaseUrl, githubOwner);
 
             using var request = new HttpRequestMessage(HttpMethod.Get, profileApiUrl);
-            request.Headers.UserAgent.ParseAdd("AvatarExplorer");
-
             using var response = await HttpService.Client.SendAsync(request);
             if (!response.IsSuccessStatusCode) return null;
 
@@ -35,8 +33,6 @@ public static class GithubService
             if (string.IsNullOrWhiteSpace(avatarUrl)) return null;
 
             using var avatarRequest = new HttpRequestMessage(HttpMethod.Get, avatarUrl);
-            avatarRequest.Headers.UserAgent.ParseAdd("AvatarExplorer");
-
             using var avatarResponse = await HttpService.Client.SendAsync(avatarRequest);
             if (!avatarResponse.IsSuccessStatusCode) return null;
 
@@ -45,11 +41,11 @@ public static class GithubService
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError("Failed to load developer profile icon from GitHub API.", ex);
+            ErrorManager.Instance.PostError("Failed to load developer profile icon from GitHub API.", ex);
             return null;
         }
     }
-    private static string Main_GetRepositoryOwner()
+    private static string GetRepositoryOwner()
     {
         try
         {
@@ -60,7 +56,7 @@ public static class GithubService
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError("Failed to parse repository owner from RepositoryURL.", ex);
+            ErrorManager.Instance.PostError("Failed to parse repository owner from RepositoryURL.", ex);
         }
 
         return "puk06";

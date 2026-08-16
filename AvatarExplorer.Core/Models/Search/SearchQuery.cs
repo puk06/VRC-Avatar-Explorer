@@ -6,25 +6,16 @@ public sealed class SearchQuery(IReadOnlyList<SearchQueryToken> tokens, bool isO
     public bool IsOr { get; } = isOr;
 }
 
-public sealed class SearchQueryToken
+public sealed class SearchQueryToken(string? field, string value, bool isNegation)
 {
     public const char NegationPrefix = '~';
 
     /// <summary>
     /// 検索対象のフィールド名。null の場合はフリーワード検索。
     /// </summary>
-    public string? Field { get; }
-
-    public string Value { get; }
-
-    public bool IsNegation { get; }
-
-    public SearchQueryToken(string? field, string value, bool isNegation)
-    {
-        Field = field;
-        Value = value;
-        IsNegation = isNegation;
-    }
+    public string? Field { get; } = field;
+    public string Value { get; } = value;
+    public bool IsNegation { get; } = isNegation;
 
     public static SearchQueryToken Parse(string rawToken)
     {

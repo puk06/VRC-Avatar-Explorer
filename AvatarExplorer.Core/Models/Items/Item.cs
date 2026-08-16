@@ -22,8 +22,6 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     [JsonInclude] public string CreatedDate { get; private set; } = string.Empty;
     [JsonInclude] public string UpdatedDate { get; private set; } = string.Empty;
 
-    [JsonIgnore] public string Identifier => "item:" + Id;
-
     public void UpdateMetadata(string title, string author, string authorId, int boothId, ItemCategory category, string itemMemo)
     {
         Title = title;
@@ -59,4 +57,6 @@ public class Item : AbstractDatabaseItem, IIdentifiable
         if (string.IsNullOrEmpty(AuthorId)) return string.Format(BoothLink.ItemURLWithoutAuthorFormat, languageCode, BoothId);
         else return string.Format(BoothLink.ItemURLFormat, AuthorId, BoothId);
     }
+    
+    [JsonIgnore] public string Identifier => "item:" + Id;
 }

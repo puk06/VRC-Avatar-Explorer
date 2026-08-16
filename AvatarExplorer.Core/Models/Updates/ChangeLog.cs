@@ -4,13 +4,13 @@ namespace AvatarExplorer.Core.Models.Updates;
 
 public class ChangeLog
 {
-    public List<string> Added { get; set; } = new();
-    public List<string> Fixed { get; set; } = new();
-    public List<string> Changed { get; set; } = new();
+    public List<string> Added { get; set; } = [];
+    public List<string> Fixed { get; set; } = [];
+    public List<string> Changed { get; set; } = [];
 
     public override string ToString()
     {
-        StringBuilder stringBuilder = new();
+        var  stringBuilder = new StringBuilder();
 
         void AppendSection(string title, List<string> items)
         {

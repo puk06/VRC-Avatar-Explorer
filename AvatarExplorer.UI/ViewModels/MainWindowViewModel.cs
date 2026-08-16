@@ -59,8 +59,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public ErrorLogViewModel ErrorLogVM { get; } = new();
 
-    public FatalErrorViewModel FatalErrorVM { get; } = new();
-
     public FetchAllThumbnailsViewModel FetchAllThumbnailsVM { get; } = new();
     public FetchAllVariationHashesViewModel FetchAllVariationHashesVM { get; } = new();
 
@@ -92,8 +90,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
     [Reactive] public bool IsYesNoDialogVisible { get; set; }
-
-    public WindowNotificationManager? NotificationManager { get; set; }
 
     public event Action? WindowClosing;
 

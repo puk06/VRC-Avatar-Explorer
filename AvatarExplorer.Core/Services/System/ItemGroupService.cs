@@ -6,7 +6,6 @@ using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Avatars;
-using AvatarExplorer.Core.Services.Avatars.Internal;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.Core.Utils;

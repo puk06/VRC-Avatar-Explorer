@@ -1,7 +1,7 @@
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.Avatars.Internal;
+using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.Core.Utils;
@@ -58,16 +58,6 @@ public class ItemNavigationService
         return _state.Push(state);
     }
 
-    public AvatarStatus? ResolveAvatarStatusForCurrentAvatar(Item item)
-    {
-        var avatarNode = _state.LastOrDefault(AvatarPrefix);
-        if (avatarNode == null) return null;
-
-        if (!TryParseState(avatarNode.Value, out var _, out var avatarId)) return null;
-
-        return AvatarStatusResolver.Resolve(item, avatarId, _items.CommonAvatarRepository.GetAll());
-    }
-
     public string? GetCurrentAvatarId()
     {
         var avatarNode = _state.LastOrDefault(AvatarPrefix);
@@ -116,7 +106,6 @@ public class ItemNavigationService
     public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _state.GetCurrentSelectionNodes();
 
     public string? ResolveFolderPath(string state) => TryParseState(state, out _, out var hash) ? ResolvePath(hash) : null;
-    public string? ResolveFilePath(string state) => TryParseState(state, out _, out var hash) ? ResolvePath(hash) : null;
 
     public IIdentifiable[] GetCurrentSelectionView()
     {

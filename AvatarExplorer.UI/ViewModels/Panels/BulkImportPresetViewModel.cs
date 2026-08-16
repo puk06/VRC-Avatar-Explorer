@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Data;
@@ -56,7 +55,7 @@ public class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostIni
             });
     }
 
-    public void Select(ItemViewModel presetVm)
+    public static void Select(ItemViewModel presetVm)
     {
         var presetIdentifier = presetVm.Identifier;
         var preset = AvatarExplorerApp.Instance.BulkImportPresets.Get(presetIdentifier);

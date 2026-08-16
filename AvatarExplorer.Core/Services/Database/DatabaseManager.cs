@@ -1,5 +1,6 @@
 using System.Text.Json.Nodes;
 using AvatarExplorer.Core.Interfaces.Database;
+using AvatarExplorer.Core.Models.Database;
 using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.Database;

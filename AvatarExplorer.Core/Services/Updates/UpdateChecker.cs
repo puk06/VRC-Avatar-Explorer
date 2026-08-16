@@ -1,6 +1,5 @@
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Extensions;
-using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Network;

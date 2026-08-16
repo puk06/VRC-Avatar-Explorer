@@ -34,9 +34,5 @@ public class CacheManager<T, TValue>(TValue? defaultValue = default) where T : n
 
     public virtual bool ContainsKey(T key) => _cache.ContainsKey(key);
     public virtual bool Remove(T key) => _cache.Remove(key);
-
-    public T[] GetKeys() => _cache.Keys.ToArray();
-    public TValue[] GetValues() => _cache.Values.ToArray();
-
     public virtual void Clear() => _cache.Clear();
 }

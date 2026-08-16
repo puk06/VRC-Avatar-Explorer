@@ -1,6 +1,6 @@
 using AvatarExplorer.Core.Models.Items;
 
-namespace AvatarExplorer.Core.Services.Avatars.Internal;
+namespace AvatarExplorer.Core.Services.Avatars;
 
 internal static class AvatarStatusResolver
 {

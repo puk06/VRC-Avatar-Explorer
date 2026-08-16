@@ -11,10 +11,6 @@ public record ItemCategory : IIdentifiable
 
     public const string CustomCategoryPrefix = "custom:";
     public const string TypeCategoryPrefix = "type:";
-    
-    [JsonIgnore] public string Identifier => Type == ItemType.Custom ?
-        (CustomCategoryPrefix + CustomCategory) :
-        (TypeCategoryPrefix + (int)Type);
 
     [JsonIgnore] public bool IsLocalizable => Type != ItemType.Custom && Type != ItemType.None;
 
@@ -62,4 +58,8 @@ public record ItemCategory : IIdentifiable
     #endregion
 
     public override string ToString() => Type == ItemType.Custom ? CustomCategory : (Type.GetLocalizationKey() ?? Type.ToString());
+
+    [JsonIgnore] public string Identifier => Type == ItemType.Custom ?
+        (CustomCategoryPrefix + CustomCategory) :
+        (TypeCategoryPrefix + (int)Type);
 }
