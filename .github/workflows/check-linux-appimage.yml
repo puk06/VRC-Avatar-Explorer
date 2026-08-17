@@ -30,12 +30,12 @@ jobs:
           wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
           chmod +x appimagetool-x86_64.AppImage
 
-          mkdir -p AppDir/usr/bin AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/512x512/apps
+          mkdir -p AppDir/usr/bin AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/256x256/apps
           cp publish/AvatarExplorer AppDir/usr/bin/AvatarExplorer
           cp .github/appimage/AppRun AppDir/AppRun
           cp .github/appimage/avatar-explorer.desktop AppDir/
           cp .github/appimage/avatar-explorer.desktop AppDir/usr/share/applications/
-          cp AvatarExplorer.UI/Assets/Internal/SoftwareIcon.png AppDir/usr/share/icons/hicolor/512x512/apps/avatar-explorer.png
+          cp .github/appimage/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/avatar-explorer.png
           chmod +x AppDir/AppRun AppDir/usr/bin/AvatarExplorer
 
           ./appimagetool-x86_64.AppImage --appimage-extract-and-run AppDir VRC-Avatar-Explorer_0.0.0-ci-linux-x64.AppImage
