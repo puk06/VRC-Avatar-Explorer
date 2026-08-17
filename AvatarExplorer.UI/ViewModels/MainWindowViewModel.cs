@@ -33,17 +33,28 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     [Reactive] public FontFamily FontFamily { get; set; } = FontUtils.GetFontFamily(null);
 
     public static MainWindowViewModel Instance { get; private set; } = null!;
-
     public string? LastDragDropPath { get; set; } = null;
 
     public MainViewModel MainVM { get; } = new();
-
     public ItemEditorViewModel ItemEditorVM { get; } = new();
-
-    public ArchivePasswordDialogViewModel ArchivePasswordDialogVM { get; } = new();
-    [Reactive] public bool IsArchivePasswordDialogVisible { get; set; }
-
     public EditCommonAvatarsViewModel EditCommonAvatarsVM { get; } = new();
+    public ErrorLogViewModel ErrorLogVM { get; } = new();
+    public FetchAllThumbnailsViewModel FetchAllThumbnailsVM { get; } = new();
+    public FetchAllVariationHashesViewModel FetchAllVariationHashesVM { get; } = new();
+    public ImportDataViewModel ImportDataVM { get; } = new();
+    public ExportDataViewModel ExportDataVM { get; } = new();
+    public ResetDatabaseViewModel ResetDatabaseVM { get; } = new();
+    public InitialSetupViewModel InitialSetupVM { get; } = new();
+    public MergeCategoryViewModel MergeCategoryVM { get; } = new();
+    public TagEditorViewModel TagEditorVM { get; } = new();
+    public PdfViewerViewModel PdfViewerVM { get; } = new();
+    public ProgressViewModel ProgressVM { get; } = new();
+    public ResolveTempAvatarViewModel ResolveTempAvatarVM { get; } = new();
+    public SettingsViewModel SettingsVM { get; } = new();
+    public UnitypackageViewerViewModel UnitypackageViewerVM { get; } = new();
+
+    public TextDialogViewModel TextDialogVM { get; } = new();
+    [Reactive] public bool IsTextDialogVisible { get; set; }
 
     public SelectAvatarsViewModel SelectAvatarsVM { get; } = new();
     [Reactive] public bool SelectAvatarsVisible { get; set; }
@@ -54,39 +65,14 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public EditTagsViewModel EditTagsVM { get; } = new();
     [Reactive] public bool IsEditTagsVisible { get; set; }
 
-    public ErrorLogViewModel ErrorLogVM { get; } = new();
-
-    public FetchAllThumbnailsViewModel FetchAllThumbnailsVM { get; } = new();
-    public FetchAllVariationHashesViewModel FetchAllVariationHashesVM { get; } = new();
-
-    public ImportDataViewModel ImportDataVM { get; } = new();
-    public ExportDataViewModel ExportDataVM { get; } = new();
-    public ResetDatabaseViewModel ResetDatabaseVM { get; } = new();
-
-    public InitialSetupViewModel InitialSetupVM { get; } = new();
-
-    public MergeCategoryViewModel MergeCategoryVM { get; } = new();
-
-    public TagEditorViewModel TagEditorVM { get; } = new();
-
-    public PdfViewerViewModel PdfViewerVM { get; } = new();
-
-    public ProgressViewModel ProgressVM { get; } = new();
-
-    public ResolveTempAvatarViewModel ResolveTempAvatarVM { get; } = new();
-
-    public SettingsViewModel SettingsVM { get; } = new();
-
-    public TextDialogViewModel TextDialogVM { get; } = new();
-    [Reactive] public bool IsTextDialogVisible { get; set; }
-
-    public UnitypackageViewerViewModel UnitypackageViewerVM { get; } = new();
-
     public UpdateDialogViewModel UpdateDialogVM { get; } = new();
     [Reactive] public bool IsUpdateDialogVisible { get; set; }
 
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
     [Reactive] public bool IsYesNoDialogVisible { get; set; }
+
+    public ArchivePasswordDialogViewModel ArchivePasswordDialogVM { get; } = new();
+    [Reactive] public bool IsArchivePasswordDialogVisible { get; set; }
 
     public event Action? WindowClosing;
 
