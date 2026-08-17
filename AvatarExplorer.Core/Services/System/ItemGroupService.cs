@@ -33,11 +33,6 @@ public class ItemGroupService
     private bool _indicesBuilt;
     private readonly Lock _indicesLock = new();
 
-    public ItemRepository ItemRepository => _items;
-    public CommonAvatarRepository CommonAvatarRepository => _commonAvatars;
-    public TempAvatarRepository TempAvatarRepository => _tempAvatars;
-    public RuntimeSettingsRepository RuntimeSettings => _runtimesettings;
-
     public ItemGroupService(ItemRepository items, CommonAvatarRepository commonAvatars, TempAvatarRepository tempAvatars, RuntimeSettingsRepository settings)
     {
         _items = items;

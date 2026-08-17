@@ -432,31 +432,12 @@ public class ItemEditorViewModel : ViewModelBase
 
     private void RefleshCategories()
     {
-        var categories = InstanceRepository.ItemGroupService.GetCategoryFolders(includeEmptyCategory: true)
-            .Select(i => ResolveCategory(i.Identifier))
-            .Where(i => i != null)
-            .Cast<ItemCategory>();
+        var categories = InstanceRepository.ItemGroupService
+            .GetCategoryFolders(includeEmptyCategory: true)
+            .Select(i => ItemCategory.FromIdentifier(i.Identifier));
 
         Categories.Clear();
         Categories.AddRange(categories.Select(i => new ItemCategoryViewModel(i).Update()));
-    }
-    private static ItemCategory? ResolveCategory(string groupKey)
-    {
-        if (!ItemNavigationService.TryParseState(groupKey, out var prefix, out var value)) return null;
-
-        if (prefix == ItemNavigationService.TypePrefix)
-        {
-            if (ItemNavigationService.TryResolveItemType(value, out var itemType))
-            {
-                return new(itemType);
-            }
-
-            return null;
-        }
-
-        if (prefix == ItemNavigationService.CustomPrefix) return new(value);
-
-        return null;
     }
 
     private async Task AddCustomCategory()

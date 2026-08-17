@@ -12,6 +12,7 @@ using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Component;
 using AvatarExplorer.UI.ViewModels.Panels;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.UI.Services;
 
 namespace AvatarExplorer.UI.ViewModels.Managers;
 
@@ -102,7 +103,7 @@ public class SearchManager
     {
         var identifiers = _itemGroupService.SearchItems(query, SearchResultType.Items, SearchUtils.ParseCategory);
         return identifiers
-            .Select(_itemGroupService.ItemRepository.Get)
+            .Select(InstanceRepository.Items.Get)
             .Where(item => item != null)
             .Cast<Item>();
     }

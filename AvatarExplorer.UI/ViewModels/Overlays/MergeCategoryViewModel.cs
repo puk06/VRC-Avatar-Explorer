@@ -42,7 +42,7 @@ public class MergeCategoryViewModel : ViewModelBase
 
         RefleshCategories();
 
-        var sourceIndex = GetCategoryIndex(ResolveCategory(state));
+        var sourceIndex = GetCategoryIndex(ItemCategory.FromIdentifier(state));
         SelectedSourceCategoryIndex = sourceIndex >= 0 ? sourceIndex : 0;
 
         var targetIndex = GetCategoryIndex(new(ItemType.Avatar));
@@ -70,31 +70,10 @@ public class MergeCategoryViewModel : ViewModelBase
     {
         var categories = InstanceRepository.ItemGroupService
             .GetCategoryFolders(includeEmptyCategory: true, includeAllCategory: false)
-            .Select(i => ResolveCategory(i.Identifier))
-            .Where(i => i != null)
-            .Cast<ItemCategory>();
+            .Select(i => ItemCategory.FromIdentifier(i.Identifier));
 
         Categories.Clear();
         Categories.AddRange(categories.Select(i => new ItemCategoryViewModel(i).Update()));
-    }
-    
-    private static ItemCategory? ResolveCategory(string groupKey)
-    {
-        if (!ItemNavigationService.TryParseState(groupKey, out var prefix, out var value)) return null;
-
-        if (prefix == ItemNavigationService.TypePrefix)
-        {
-            if (ItemNavigationService.TryResolveItemType(value, out var itemType))
-            {
-                return new(itemType);
-            }
-
-            return null;
-        }
-
-        if (prefix == ItemNavigationService.CustomPrefix) return new(value);
-
-        return null;
     }
 
     public void Cancel()

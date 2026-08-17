@@ -183,9 +183,9 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         Observable
             .Merge(
-                Observable.FromEvent(h => _itemGroupService.ItemRepository.OnUpdated += h, h => _itemGroupService.ItemRepository.OnUpdated -= h),
-                Observable.FromEvent(h => _itemGroupService.CommonAvatarRepository.OnUpdated += h, h => _itemGroupService.CommonAvatarRepository.OnUpdated -= h),
-                Observable.FromEvent(h => _itemGroupService.TempAvatarRepository.OnUpdated += h, h => _itemGroupService.TempAvatarRepository.OnUpdated -= h)
+                Observable.FromEvent(h => InstanceRepository.Items.OnUpdated += h, h => InstanceRepository.Items.OnUpdated -= h),
+                Observable.FromEvent(h => InstanceRepository.CommonAvatars.OnUpdated += h, h => InstanceRepository.CommonAvatars.OnUpdated -= h),
+                Observable.FromEvent(h => InstanceRepository.TempAvatars.OnUpdated += h, h => InstanceRepository.TempAvatars.OnUpdated -= h)
             )
             .Throttle(TimeSpan.FromMilliseconds(100))
             .Subscribe(async _ => await Dispatcher.UIThread.InvokeAsync(() => Refresh()));
@@ -214,7 +214,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 return;
             }
 
-            var item = _itemGroupService.ItemRepository.Get(itemId);
+            var item = InstanceRepository.Items.Get(itemId);
             if (item == null)
             {
                 NotificationManager.Show(
@@ -363,7 +363,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private void RefreshNavigationView()
     {
         var avatarId = _itemNavigationService.GetCurrentAvatarId();
-        var commonAvatars = _itemGroupService.CommonAvatarRepository.GetAll();
+        var commonAvatars = InstanceRepository.CommonAvatars.GetAll();
         var sortOrder = UserPreferences.SortOrder;
         var sortDirection = UserPreferences.SortDirection;
         var implementedSort = UserPreferences.ImplementedSort;
@@ -476,15 +476,6 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         {
             if (!ItemNavigationService.TryParseState(state, out var prefix, out var value)) return state;
 
-            if (prefix == ItemNavigationService.TypePrefix)
-            {
-                var categoryDisplay = ItemNavigationService.GetCategoryDisplayName(state);
-                return Localizer.Instance[categoryDisplay];
-            }
-
-            if (prefix == ItemNavigationService.CustomPrefix || prefix == ItemNavigationService.AuthorPrefix)
-                return value;
-
             if (prefix == ItemNavigationService.AvatarPrefix)
             {
                 // Item
@@ -500,6 +491,15 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                     return InstanceRepository.CommonAvatars.Get(value)?.GroupName ?? value;
 
                 return value;
+            }
+
+            if (prefix == ItemNavigationService.AuthorPrefix)
+                return value;
+            
+            if (prefix == ItemNavigationService.TypePrefix || prefix == ItemNavigationService.CustomPrefix)
+            {
+                var category = ItemCategory.FromIdentifier(state);
+                return category.IsLocalizable ? Localizer.Instance[category.ToString()] : category.ToString();
             }
 
             if (prefix == ItemNavigationService.ItemPrefix)

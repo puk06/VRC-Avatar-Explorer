@@ -110,7 +110,7 @@ public class ItemNavigationService
     public IIdentifiable[] GetCurrentSelectionView()
     {
         var state = _state.Current?.Value;
-        if (state == null) return _items.ItemRepository.GetAll().ToArray<IIdentifiable>();
+        if (state == null) return AvatarExplorerApp.Instance.ItemRepository.GetAll().ToArray<IIdentifiable>();
         if (!TryParseState(state, out var key, out _)) return [];
         return _handlers.TryGetValue(key, out var func) ? func(state) : [];
     }
@@ -131,11 +131,11 @@ public class ItemNavigationService
         var categolized = ItemRepository.CategorizeItems(items);
         return categolized.Select(i =>
         {
-            var (displayName, isLocalizable) = ResolveCategoryDisplay(i.Key);
+            var category = ItemCategory.FromIdentifier(i.Key);
             return new Folder(i.Key)
             {
-                Title = displayName,
-                TitleLocalizable = isLocalizable,
+                Title = category.ToString(),
+                TitleLocalizable = category.IsLocalizable,
                 ItemCount = i.Value.Count
             };
         }).ToArray<IIdentifiable>();
@@ -154,7 +154,7 @@ public class ItemNavigationService
         else if (TryParseState(root, out rootPrefix, out rootValue) && rootPrefix == AuthorPrefix)
             items = _items.GetItemsFromAuthor(rootValue);
         else
-            items = _items.ItemRepository.GetAll();
+            items = AvatarExplorerApp.Instance.ItemRepository.GetAll();
 
         if (ItemCategory.FromIdentifier(state).Type == ItemType.All)
             return items.ToArray();
@@ -165,7 +165,8 @@ public class ItemNavigationService
     private IIdentifiable[] HandleItem(string state)
     {
         var itemFiles = PopulatePathCache(state);
-        var allFolders = _items.ItemRepository.EnumerateItemFolders(GetItemId()!);
+        var allFolders = AvatarExplorerApp.Instance.ItemRepository
+            .EnumerateItemFolders(GetItemId() ?? string.Empty);
 
         foreach (var folder in allFolders)
             _pathCache[PathUtils.ComputeHash(folder)] = folder;
@@ -251,7 +252,8 @@ public class ItemNavigationService
         if (itemId == null) return [];
 
         var itemFiles = PopulatePathCache(itemId);
-        var searchResults = _items.ItemRepository.SearchItemFiles(itemId, query);
+        var searchResults = AvatarExplorerApp.Instance.ItemRepository
+            .SearchItemFiles(itemId, query);
 
         return searchResults
             .Select(f => itemFiles.FirstOrDefault(i => i.FilePath == f.FilePath))
@@ -266,32 +268,13 @@ public class ItemNavigationService
 
     private List<ItemFile> PopulatePathCache(string itemId)
     {
-        var itemFiles = _items.ItemRepository.EnumerateItemFiles(itemId);
+        var itemFiles = AvatarExplorerApp.Instance.ItemRepository
+            .EnumerateItemFiles(itemId);
 
         foreach (var file in itemFiles)
             _pathCache[PathUtils.ComputeHash(file.FilePath)] = file.FilePath;
 
         return itemFiles;
-    }
-
-    public static string GetCategoryDisplayName(string groupKey) => ResolveCategoryDisplay(groupKey).displayName;
-
-    private static (string displayName, bool isLocalizable) ResolveCategoryDisplay(string groupKey)
-    {
-        if (!TryParseState(groupKey, out var prefix, out var value)) return (groupKey, false);
-
-        if (prefix == TypePrefix)
-        {
-            if (TryResolveItemType(value, out var itemType))
-            {
-                var key = itemType.GetLocalizationKey();
-                return string.IsNullOrEmpty(key) ? (value, false) : (key, true);
-            }
-            return (value, false);
-        }
-
-        if (prefix == CustomPrefix) return (value, false);
-        return (groupKey, false);
     }
 
     public static bool TryParseState(string rawState, out string key, out string value)
@@ -302,15 +285,6 @@ public class ItemNavigationService
         if (delimiterIndex < 0) return false;
         key = rawState[..delimiterIndex];
         value = rawState[(delimiterIndex + 1)..];
-        return true;
-    }
-
-    public static bool TryResolveItemType(string raw, out ItemType itemType)
-    {
-        itemType = ItemType.None;
-        var index = ValueParser.Int(raw);
-        if (!Enum.IsDefined(typeof(ItemType), index)) return false;
-        itemType = (ItemType)index;
         return true;
     }
 }
