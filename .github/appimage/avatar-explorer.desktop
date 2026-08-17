@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=VRC Avatar Explorer
+Comment=VRChat avatar/asset organizer
+Exec=AvatarExplorer
+Icon=avatar-explorer
+Categories=Utility;
+Terminal=false
