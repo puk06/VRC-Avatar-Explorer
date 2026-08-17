@@ -84,7 +84,8 @@ public class BulkImportItemViewModel : ViewModelBase
             TitleRaw = TitleRaw,
             DescriptionRaw = DescriptionRaw,
             UnitypackageFullPaths = UnitypackageFullPaths,
-            SelectedUnitypackage = SelectedUnitypackage
+            SelectedUnitypackage = SelectedUnitypackage,
+            ItemId = ItemId
         };
     }
 }
