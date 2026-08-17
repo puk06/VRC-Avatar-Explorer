@@ -104,7 +104,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private readonly Guid _preLevel1StateGuid = Guid.NewGuid();
     private bool _isPreviousScreenSearch = false;
 
-    private static UserPreferences UserPreferences => InstanceRepository.UserPreferences.Settings;
+    private static UserPreferences UserPreferences => InstanceRepository.UserPreferences;
     #endregion
 
     #region Constructor
@@ -151,7 +151,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         InitializeSubscriptions();
 
         Localizer.Instance.LanguageChanged += RefreshAllItems;
-        InstanceRepository.UserPreferences.OnSettingsChanged += _ =>
+        InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ =>
         {
             UpdateItemsPerPage();
             Refresh();

@@ -131,8 +131,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     public void Open()
     {
-        var runtimeSettings = InstanceRepository.RuntimeSettings.Settings;
-        var preferences = InstanceRepository.UserPreferences.Settings;
+        var runtimeSettings = InstanceRepository.RuntimeSettings;
+        var preferences = InstanceRepository.UserPreferences;
 
         Languages = Localizer.Instance.GetLanguageList();
 
@@ -436,10 +436,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     }
     private void Apply()
     {
-        InstanceRepository.RuntimeSettings.Update(CreateRuntimeSettings());
-
-        var current = InstanceRepository.UserPreferences.Settings;
-        InstanceRepository.UserPreferences.Update(current with
+        InstanceRepository.RuntimeSettingsRepository.Update(CreateRuntimeSettings());
+        InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with
         {
             Language = SelectedLanguage,
             Theme = (Theme)SelectedTheme,

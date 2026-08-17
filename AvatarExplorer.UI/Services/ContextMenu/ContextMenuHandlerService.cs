@@ -321,7 +321,7 @@ public static class ContextMenuHandlerService
     }
     private static async Task AddPathsInternal(string identifier, IEnumerable<ItemPathEntry> paths, bool isFile)
     {
-        var extractResult = await InstanceRepository.Items.AddPaths(identifier, paths, InstanceRepository.RuntimeSettings.Settings.ShouldLinkToOriginal);
+        var extractResult = await InstanceRepository.Items.AddPaths(identifier, paths, InstanceRepository.RuntimeSettings.ShouldLinkToOriginal);
 
         if (extractResult.IsError)
         {

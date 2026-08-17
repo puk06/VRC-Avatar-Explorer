@@ -1,6 +1,8 @@
+using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
+using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels;
 
@@ -18,11 +20,13 @@ public static class InstanceRepository
     public static ItemGroupService ItemGroupService => App.ItemGroupService;
 
     public static ItemNavigationService NavigationService => App.ItemNavigationService;
-    public static RuntimeSettingsRepository RuntimeSettings => App.RuntimeSettingsRepository;
+    public static RuntimeSettingsRepository RuntimeSettingsRepository => App.RuntimeSettingsRepository;
+    public static RuntimeSettings RuntimeSettings => App.RuntimeSettings;
     public static BackupManager BackupManager => App.BackupManager;
 
     // UI
     public static MainWindowViewModel MainWindow => MainWindowViewModel.Instance;
     public static MainViewModel MainView => MainWindow.MainVM;
-    public static UserPreferencesRepository UserPreferences => UserPreferencesService.Instance.Repository;
+    public static UserPreferencesRepository UserPreferencesRepository => UserPreferencesService.Instance.Repository;
+    public static UserPreferences UserPreferences => UserPreferencesRepository.Settings;
 }

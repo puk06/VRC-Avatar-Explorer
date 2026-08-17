@@ -208,7 +208,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
     private void RefleshAvatars()
     {
         var avatars = InstanceRepository.ItemGroupService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
-        var userPreference = InstanceRepository.UserPreferences.Settings;
+        var userPreference = InstanceRepository.UserPreferences;
         var sortedAvatars = ItemSortService.SortAvatars(
             avatars,
             userPreference.SortOrder,

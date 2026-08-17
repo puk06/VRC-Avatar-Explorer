@@ -47,13 +47,13 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
             .Subscribe(path =>
             {
                 if (!IsVisible) return;
-                InstanceRepository.RuntimeSettings.Update(InstanceRepository.RuntimeSettings.Settings with { DataRootDirectory = path });
+                InstanceRepository.RuntimeSettingsRepository.Update(InstanceRepository.RuntimeSettings with { DataRootDirectory = path });
             });
     }
 
     public async Task OnInitialized()
     {
-        if (InstanceRepository.UserPreferences.Settings.InitialSetupCompleted) return;
+        if (InstanceRepository.UserPreferences.InitialSetupCompleted) return;
 
         if (InstanceRepository.Items.GetAll().Any())
         {
@@ -70,7 +70,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
         Languages = Localizer.Instance.GetLanguageList();
         SelectedLanguage = -1;
         SelectedLanguage = Localizer.Instance.CurrentLanguageIndex;
-        ItemsFolder = InstanceRepository.RuntimeSettings.Settings.DataRootDirectory;
+        ItemsFolder = InstanceRepository.RuntimeSettings.DataRootDirectory;
 
         IsVisible = true;
     }
@@ -82,7 +82,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
     }
 
     private static void MarkInitialSetupCompleted() =>
-        InstanceRepository.UserPreferences.Update(InstanceRepository.UserPreferences.Settings with { InitialSetupCompleted = true });
+        InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with { InitialSetupCompleted = true });
 
     private static async void ShowSchemeRegistrationDialog()
     {

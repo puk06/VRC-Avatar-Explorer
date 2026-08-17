@@ -122,7 +122,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
         InstanceRepository.App.BackupManager.OnBackupRestored += OnBackupRestored;
 
-        ApplyPreferenceSettings(InstanceRepository.UserPreferences.Settings);
+        ApplyPreferenceSettings(InstanceRepository.UserPreferences);
         UpdateFontFamily();
         UpdateWindowTitle();
     }
@@ -177,8 +177,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     private static async void CheckForUpdateOnStartup()
     {
-        var settings = InstanceRepository.RuntimeSettings.Settings;
-        if (!InstanceRepository.RuntimeSettings.Settings.CheckForUpdate) return;
+        var settings = InstanceRepository.RuntimeSettings;
+        if (!InstanceRepository.RuntimeSettings.CheckForUpdate) return;
 
         await UpdateChecker.CheckForUpdate(settings.UpdateChannel);
     }

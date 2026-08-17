@@ -122,7 +122,7 @@ public class ItemEditorViewModel : ViewModelBase
             SelectedCategoryIndex = 0;
         }
 
-        ShouldLinkToOriginal = InstanceRepository.RuntimeSettings.Settings.ShouldLinkToOriginal;
+        ShouldLinkToOriginal = InstanceRepository.RuntimeSettings.ShouldLinkToOriginal;
 
         UpdateCountField();
         IsVisible = true;

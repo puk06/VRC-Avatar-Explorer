@@ -174,7 +174,7 @@ public partial class MainView : UserControl
         if (isVisible)
         {
             _hoverWindow.Show();
-            _hoverWindow.SetSize(InstanceRepository.UserPreferences.Settings.HoverIconSize);
+            _hoverWindow.SetSize(InstanceRepository.UserPreferences.HoverIconSize);
             _hoverWindow.Topmost = false;
             _hoverWindow.Topmost = true;
         }
@@ -187,7 +187,7 @@ public partial class MainView : UserControl
     {
         if (sender is not Image image) return;
 
-        var bitmapInterpolationMode = InstanceRepository.UserPreferences.Settings.AntiAliasingMode.GetInterpolationMode();
+        var bitmapInterpolationMode = InstanceRepository.UserPreferences.AntiAliasingMode.GetInterpolationMode();
         if (bitmapInterpolationMode != BitmapInterpolationMode.None && bitmapInterpolationMode != BitmapInterpolationMode.Unspecified)
             RenderOptions.SetBitmapInterpolationMode(image, bitmapInterpolationMode);
 

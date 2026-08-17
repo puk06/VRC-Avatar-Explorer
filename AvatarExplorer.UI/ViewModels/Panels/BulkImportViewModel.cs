@@ -51,7 +51,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
     private void OnUserPreferencesChanged()
     {
-        var settings = InstanceRepository.UserPreferences.Settings;
+        var settings = InstanceRepository.UserPreferences;
         foreach (var item in Items)
         {
             item.Update(settings.NormalIconSize, settings.RemoveBrackets);
@@ -215,7 +215,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             if (index != -1) bulkVm.SelectedUnitypackage = index;
         }
 
-        var settings = InstanceRepository.UserPreferences.Settings;
+        var settings = InstanceRepository.UserPreferences;
         Items.Add(bulkVm.Update(settings.NormalIconSize, settings.RemoveBrackets));
     }
 
@@ -223,7 +223,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
     {
         var newItems = new List<BulkImportItemViewModel>();
 
-        var settings = InstanceRepository.UserPreferences.Settings;
+        var settings = InstanceRepository.UserPreferences;
         foreach (var itemVm in Items)
         {
             var item = InstanceRepository.Items.Get(itemVm.ItemId);

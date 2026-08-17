@@ -97,7 +97,7 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
     private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)
     {
         var avatars = InstanceRepository.ItemGroupService.GetAvatars(includeCommonAvatar, includeTempAvatar, rawIdentifier: true);
-        var userPreference = InstanceRepository.UserPreferences.Settings;
+        var userPreference = InstanceRepository.UserPreferences;
         var sortedAvatars = ItemSortService.SortAvatars(
             avatars,
             userPreference.SortOrder,
