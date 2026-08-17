@@ -9,7 +9,7 @@ namespace AvatarExplorer.Core.Services.System;
 
 public class AvatarExplorerApp
 {
-    public static readonly string CurrentVersion = "2.8.0-beta.0";
+    public static readonly string CurrentVersion = "2.8.0-beta.1";
 
     private static readonly AvatarExplorerApp _instance = new();
     public static AvatarExplorerApp Instance => _instance;
