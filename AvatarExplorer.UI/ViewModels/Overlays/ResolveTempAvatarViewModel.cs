@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Search;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
-using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
@@ -30,12 +29,9 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
 
     private string? SelectedAvatar { get; set; } = null;
 
-    private static ItemGroupService ItemService => AvatarExplorerApp.Instance.ItemGroupService;
-    private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
-
     public ResolveTempAvatarViewModel()
     {
-        CancelCommand = ReactiveCommand.Create(() => IsVisible = false);
+        CancelCommand = ReactiveCommand.Create(Close);
         SelectItemCommand = ReactiveCommand.CreateFromTask<ItemViewModel>(SelectItem);
 
         IInitializableRegistry.Register(0, this);
@@ -54,15 +50,17 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         SearchText = string.Empty;
         IsVisible = true;
     }
+    private void Close() => IsVisible = false;
 
     private void RefreshAvatars()
     {
-        var avatars = ItemService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
+        var avatars = InstanceRepository.ItemGroupService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
+        var userPreference = InstanceRepository.UserPreferences.Settings;
         var sortedAvatars = ItemSortService.SortAvatars(
             avatars,
-            UserPreferences.SortOrder,
-            UserPreferences.SortDirection,
-            UserPreferences.RemoveBrackets,
+            userPreference.SortOrder,
+            userPreference.SortDirection,
+            userPreference.RemoveBrackets,
             rawIdentifier: true
         );
         
@@ -74,6 +72,39 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         Avatars = _allAvatars;
     }
 
+    private async Task SelectItem(ItemViewModel item)
+    {
+        if (SelectedAvatar == null)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.TempAvatarNotFound],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        var tempAvatar = InstanceRepository.TempAvatars.Get(SelectedAvatar);
+        if (tempAvatar == null)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.TempAvatarNotFound],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        var resolveConfirmationResult = await InstanceRepository.MainWindow.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.ResolveTempAvatar, [tempAvatar.AvatarName, item.Title])
+        );
+        if (!resolveConfirmationResult) return;
+
+        InstanceRepository.ItemGroupService.ResolveTempAvatar(SelectedAvatar, item.Identifier);
+        IsVisible = false;
+    }
+
     private void ApplySearchResult(string searchText)
     {
         if (string.IsNullOrWhiteSpace(searchText))
@@ -83,7 +114,7 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         }
 
         var searchQuery = searchText + " OR=true";
-        var result = ItemService.SearchItems(searchQuery, SearchResultType.All);
+        var result = InstanceRepository.ItemGroupService.SearchItems(searchQuery, SearchResultType.All);
         if (result == null)
         {
             Avatars = _allAvatars;
@@ -91,38 +122,5 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         }
 
         Avatars = _allAvatars.Where(i => result.Contains(i.Identifier)).ToList();
-    }
-
-    private async Task SelectItem(ItemViewModel item)
-    {
-        if (SelectedAvatar == null)
-        {
-            MainWindowViewModel.ShowNotification(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.TempAvatarNotFound],
-                NotificationType.Error
-            );
-            return;
-        }
-
-        var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(SelectedAvatar);
-        if (tempAvatar == null)
-        {
-            MainWindowViewModel.ShowNotification(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.TempAvatarNotFound],
-                NotificationType.Error
-            );
-            return;
-        }
-
-        var resolveConfirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
-            Localizer.Instance[Loc.Dialog.Confirmation.Default],
-            Localizer.Instance.Get(Loc.Dialog.Confirmation.ResolveTempAvatar, [tempAvatar.AvatarName, item.Title])
-        );
-        if (!resolveConfirmationResult) return;
-
-        AvatarExplorerApp.Instance.ItemGroupService.ResolveTempAvatar(SelectedAvatar, item.Identifier);
-        IsVisible = false;
     }
 }

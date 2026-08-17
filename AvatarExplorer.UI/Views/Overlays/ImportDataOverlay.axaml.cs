@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using AvatarExplorer.UI.ViewModels;
+using AvatarExplorer.UI.Services;
 
 namespace AvatarExplorer.UI.Views.Overlays;
 
@@ -8,6 +8,6 @@ public partial class ImportDataOverlay : UserControl
     public ImportDataOverlay()
     {
         InitializeComponent();
-        DataContext = MainWindowViewModel.Instance.ImportDataVM;
+        DataContext = InstanceRepository.MainWindow.ImportDataVM;
     }
 }

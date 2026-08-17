@@ -7,12 +7,10 @@ using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Search;
-using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
-using AvatarExplorer.UI.Models.Settings;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
@@ -43,18 +41,14 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
     public IReactiveCommand ReplaceAvatarsToGroupCommand { get; }
     public IReactiveCommand CloseCommand { get; }
 
-    private static ItemGroupService ItemService => AvatarExplorerApp.Instance.ItemGroupService;
-    private static CommonAvatarRepository CommonAvatarRep => ItemService.CommonAvatarRepository;
-    private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
-
     public EditCommonAvatarsViewModel()
     {
         SelectItemCommand = ReactiveCommand.Create<ItemViewModel>(SelectItem);
         AddGroupCommand = ReactiveCommand.CreateFromTask(AddGroup);
         RenameGroupCommand = ReactiveCommand.Create(RenameGroup);
         RemoveGroupCommand = ReactiveCommand.Create(RemoveGroup);
-        SelectVisibleCommand = ReactiveCommand.Create(SelectVisible);
-        UnselectVisibleCommand = ReactiveCommand.Create(UnselectVisible);
+        SelectVisibleCommand = ReactiveCommand.Create(() => SetVisibleStatus(true));
+        UnselectVisibleCommand = ReactiveCommand.Create(() => SetVisibleStatus(false));
         ReplaceAvatarsToGroupCommand = ReactiveCommand.CreateFromTask(ReplaceAvatarsToGroup);
         CloseCommand = ReactiveCommand.Create(Close);
 
@@ -78,7 +72,6 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         SelectedGroupIndex = Groups.Count > 0 ? 0 : -1;
         IsVisible = true;
     }
-
     private void Close()
     {
         SelectedGroupIndex = -1;
@@ -93,21 +86,20 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
 
     private async Task AddGroup()
     {
-        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCommonAvatarGroup]);
+        var newGroupName = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCommonAvatarGroup]);
         if (string.IsNullOrEmpty(newGroupName)) return;
 
-        CommonAvatarRep.Create(newGroupName);
+        InstanceRepository.CommonAvatars.Create(newGroupName);
         RefleshGroups();
 
         SelectedGroupIndex = Groups.Count - 1;
     }
-
     private async Task RenameGroup()
     {
         var group = SelectedGroup;
         if (group == null)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.CommonAvatarNotFound],
                 NotificationType.Error
@@ -115,22 +107,21 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
             return;
         }
         
-        var newGroupName = await MainWindowViewModel.Instance.ShowTextDialog(
+        var newGroupName = await InstanceRepository.MainWindow.ShowTextDialog(
             Localizer.Instance[Loc.Dialog.Title.NewCommonAvatarGroupName],
             group.DisplayName
         );
         if (string.IsNullOrEmpty(newGroupName)) return;
 
-        CommonAvatarRep.RenameGroup(group.Identifier, newGroupName);
+        InstanceRepository.CommonAvatars.RenameGroup(group.Identifier, newGroupName);
         RefleshGroups();
     }
-
     private async Task RemoveGroup()
     {
         var group = SelectedGroup;
         if (group == null)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.CommonAvatarNotFound],
                 NotificationType.Error
@@ -138,33 +129,27 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
             return;
         }
 
-        var confirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var confirmationResult = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveCommonAvatarGroup, group.DisplayName)
         );
         if (!confirmationResult) return;
 
-        var replaceToAvatars = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var replaceToAvatars = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars]
         );
         
-        AvatarExplorerApp.Instance.ItemGroupService.RemoveCommonAvatar(group.Identifier, replaceToAvatars);
+        InstanceRepository.ItemGroupService.RemoveCommonAvatar(group.Identifier, replaceToAvatars);
         RefleshGroups();
 
         if (Groups.Count == 0) SelectedGroupIndex = -1;
         else if (SelectedGroupIndex >= Groups.Count) SelectedGroupIndex = Groups.Count - 1;
     }
 
-    private void SelectVisible()
+    private void SetVisibleStatus(bool status)
     {
-        Avatars.ForEach(i => i.IsSelected = true);
-        UpdateGroupAvatars();
-    }
-
-    private void UnselectVisible()
-    {
-        Avatars.ForEach(i => i.IsSelected = false);
+        Avatars.ForEach(i => i.IsSelected = status);
         UpdateGroupAvatars();
     }
 
@@ -177,7 +162,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         }
 
         var searchQuery = searchText + " OR=true";
-        var result = AvatarExplorerApp.Instance.ItemGroupService.SearchItems(searchQuery, SearchResultType.Items | SearchResultType.TempAvatar);
+        var result = InstanceRepository.ItemGroupService.SearchItems(searchQuery, SearchResultType.Items | SearchResultType.TempAvatar);
         if (result == null)
         {
             Avatars = _allAvatars;
@@ -192,38 +177,19 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         var group = SelectedGroup;
         if (group == null) return;
 
-        var confirmationResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var confirmationResult = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup]
         );
         if (confirmationResult is false) return;
 
-        ItemService.ReplaceSupportedAvatarsToCommonAvatarGroup(group.Identifier);
-    }
-
-    private void RefleshAvatars()
-    {
-        var avatars = ItemService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
-        var sortedAvatars = ItemSortService.SortAvatars(
-            avatars,
-            UserPreferences.SortOrder,
-            UserPreferences.SortDirection,
-            UserPreferences.RemoveBrackets,
-            rawIdentifier: true
-        );
-
-        _allAvatars = sortedAvatars
-            .Select(NavigationItemFactory.CreateFromNavigationable)
-            .Select(i => i.Update())
-            .ToList();
-
-        Avatars = _allAvatars;
+        InstanceRepository.ItemGroupService.ReplaceSupportedAvatarsToCommonAvatarGroup(group.Identifier);
     }
 
     private void RefleshGroups()
     {
         var lastSelectedGroupIndex = SelectedGroupIndex;
-        var groups = CommonAvatarRep.GetAll();
+        var groups = InstanceRepository.CommonAvatars.GetAll();
 
         Groups = new ObservableCollection<CommonAvatarViewModel>(
             groups.Select(i => new CommonAvatarViewModel()
@@ -239,24 +205,47 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         else if (lastSelectedGroupIndex >= 0 && lastSelectedGroupIndex < Groups.Count) SelectedGroupIndex = lastSelectedGroupIndex;
         else SelectedGroupIndex = 0;
     }
+    private void RefleshAvatars()
+    {
+        var avatars = InstanceRepository.ItemGroupService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
+        var userPreference = InstanceRepository.UserPreferences.Settings;
+        var sortedAvatars = ItemSortService.SortAvatars(
+            avatars,
+            userPreference.SortOrder,
+            userPreference.SortDirection,
+            userPreference.RemoveBrackets,
+            rawIdentifier: true
+        );
+
+        _allAvatars = sortedAvatars
+            .Select(NavigationItemFactory.CreateFromNavigationable)
+            .Select(i => i.Update())
+            .ToList();
+
+        Avatars = _allAvatars;
+    }
 
     private void UpdateSelectedGroupAvatars()
     {
         var group = SelectedGroup;
         if (group == null) return;
         
-        var commonAvatar = CommonAvatarRep.Get(group.Identifier);
+        var commonAvatar = InstanceRepository.CommonAvatars.Get(group.Identifier);
         if (commonAvatar == null) return;
 
         _allAvatars.ForEach(i => i.IsSelected = commonAvatar.Avatars.Contains(i.Identifier));
         ApplySearchResult(SearchText);
     }
-
     private void UpdateGroupAvatars()
     {
         var group = SelectedGroup;
         if (group == null) return;
 
-        CommonAvatarRep.UpdateAvatars(group.Identifier, _allAvatars.Where(i => i.IsSelected).Select(i => i.Identifier));
+        InstanceRepository.CommonAvatars.UpdateAvatars(
+            group.Identifier,
+            _allAvatars
+                .Where(i => i.IsSelected)
+                .Select(i => i.Identifier)
+        );
     }
 }

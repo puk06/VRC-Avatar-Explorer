@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.Items;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.ViewModels.Component;
 using DynamicData;
 using ReactiveUI;
@@ -27,7 +27,7 @@ public class MergeCategoryViewModel : ViewModelBase
     public IReactiveCommand CancelCommand { get; }
     public IReactiveCommand MergeCommand { get; }
 
-    private static ItemRepository Items => AvatarExplorerApp.Instance.Items;
+    private static ItemRepository Items => InstanceRepository.Items;
 
     public MergeCategoryViewModel()
     {
@@ -68,8 +68,8 @@ public class MergeCategoryViewModel : ViewModelBase
 
     private void RefleshCategories()
     {
-        var itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
-        var categories = itemGroupService.GetCategoryFolders(includeEmptyCategory: true, includeAllCategory: false)
+        var categories = InstanceRepository.ItemGroupService
+            .GetCategoryFolders(includeEmptyCategory: true, includeAllCategory: false)
             .Select(i => ResolveCategory(i.Identifier))
             .Where(i => i != null)
             .Cast<ItemCategory>();
@@ -111,7 +111,7 @@ public class MergeCategoryViewModel : ViewModelBase
         var sourceCategoryName = SelectedSourceCategory.DisplayName;
         var targetCategoryName = SelectedTargetCategory.DisplayName;
 
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance.Get(Loc.Dialog.Confirmation.MergeCategory, [sourceCategoryName, targetCategoryName])
         );

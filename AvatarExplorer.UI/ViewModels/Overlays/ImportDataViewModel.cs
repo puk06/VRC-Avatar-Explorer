@@ -6,9 +6,9 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
@@ -76,7 +76,6 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
     private async Task BrowseFolder()
     {
         var folders = await StorageService.OpenFolderDialog(
-            TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFolderPath],
             allowMultiple: false
         );
@@ -93,7 +92,7 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
         if (ImportItems) type |= DataImportType.Items;
         if (ImportThumbnails) type |= DataImportType.Thumbnails;
 
-        var copyAssetData = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var copyAssetData = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Dialog.Confirmation.CopyAssetData]
         );
@@ -102,7 +101,7 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                MainWindowViewModel.Instance.ProgressVM.Update(
+                InstanceRepository.MainWindow.ProgressVM.Update(
                     Localizer.Instance.Get(tuple.localizationKey, tuple.progress.ToString()),
                     tuple.progress
                 );
@@ -117,13 +116,13 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
             ReportProgress = ProgressAction
         };
 
-        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Import.Copying]);
-        var result = await AvatarExplorerApp.Instance.ItemGroupService.Import(request);
-        MainWindowViewModel.Instance.ProgressVM.Close();
+        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Import.Copying]);
+        var result = await InstanceRepository.ItemGroupService.Import(request);
+        InstanceRepository.MainWindow.ProgressVM.Close();
 
         if (result.IsError)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ImportFailed],
                 NotificationType.Error
@@ -131,7 +130,7 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
             return;
         }
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.Import],
             NotificationType.Success

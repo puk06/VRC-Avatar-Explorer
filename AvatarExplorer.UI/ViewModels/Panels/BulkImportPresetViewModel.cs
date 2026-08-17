@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Data;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
@@ -29,7 +29,7 @@ public class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostIni
     public async Task Initialize()
     {
         Localizer.Instance.LanguageChanged += Reload;
-        AvatarExplorerApp.Instance.BulkImportPresets.OnUpdated += Reload;
+        InstanceRepository.BulkImportPresets.OnUpdated += Reload;
     }
 
     public async Task OnInitialized()
@@ -39,7 +39,7 @@ public class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostIni
 
     public void Reload()
     {
-        Items = AvatarExplorerApp.Instance.BulkImportPresets.GetAll()
+        Items = InstanceRepository.BulkImportPresets.GetAll()
             .Select(i => {
                 var vm = new ItemViewModel()
                 {
@@ -58,13 +58,13 @@ public class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostIni
     public static void Select(ItemViewModel presetVm)
     {
         var presetIdentifier = presetVm.Identifier;
-        var preset = AvatarExplorerApp.Instance.BulkImportPresets.Get(presetIdentifier);
+        var preset = InstanceRepository.BulkImportPresets.Get(presetIdentifier);
         if (preset == null) return;
 
-        var bulkVm = MainWindowViewModel.Instance.MainVM.BulkImportVM;
+        var bulkVm = InstanceRepository.MainWindow.MainVM.BulkImportVM;
         foreach (var item in preset.Items) bulkVm.AddItem(item.ItemId, item.FilePath);
 
         // 一括インポートの画面
-        MainWindowViewModel.Instance.MainVM.SelectedSidePanelTab = 1;
+        InstanceRepository.MainWindow.MainVM.SelectedSidePanelTab = 1;
     }
 }

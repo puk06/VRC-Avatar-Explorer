@@ -12,7 +12,7 @@ public static class AppInitializer
 {
     public static void InitializeApp()
     {
-        AvatarExplorerApp.Instance.Initialize();
+        InstanceRepository.App.Initialize();
     }
 
     public static void InitializeLocalization(string localizationFolderPath)
@@ -32,7 +32,7 @@ public static class AppInitializer
 
     public static void StartThumbnailCacheWarmup()
     {
-        var thumbnailFileNames = AvatarExplorerApp.Instance.Items.GetAll()
+        var thumbnailFileNames = InstanceRepository.Items.GetAll()
             .Select(i => i.ThumbnailFileName)
             .Where(p => !string.IsNullOrEmpty(p));
         ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
@@ -45,7 +45,7 @@ public static class AppInitializer
 
     public static void RegisterBackupFiles()
     {
-        AvatarExplorerApp.Instance.BackupManager.AddTargetFiles(
+        InstanceRepository.BackupManager.AddTargetFiles(
             [
                 UISystemPath.UserPreferencesFilePath
             ]

@@ -18,6 +18,7 @@ using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Sort;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
@@ -111,8 +112,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         OpenSourceCodeCommand = ReactiveCommand.CreateFromTask(OpenSourceCode);
         ViewLicenseCommand = ReactiveCommand.CreateFromTask(ViewLicense);
         ViewThirdPartyLicensesCommand = ReactiveCommand.CreateFromTask(ViewThirdPartyLicenses);
-        CloseCommand = ReactiveCommand.Create(OnClose);
-        ApplyCommand = ReactiveCommand.Create(OnApply);
+        CloseCommand = ReactiveCommand.Create(Close);
+        ApplyCommand = ReactiveCommand.Create(Apply);
 
         IInitializableRegistry.Register(0, this);
     }
@@ -130,8 +131,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     public void Open()
     {
-        var runtimeSettings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
-        var preferences = UserPreferencesService.Instance.Repository.Settings;
+        var runtimeSettings = InstanceRepository.RuntimeSettings.Settings;
+        var preferences = InstanceRepository.UserPreferences.Settings;
 
         Languages = Localizer.Instance.GetLanguageList();
 
@@ -167,66 +168,19 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         IsVisible = true;
     }
 
-    public RuntimeSettings CreateRuntimeSettings()
-    {
-        return new RuntimeSettings
-        {
-            DataRootDirectory = ItemsFolderPath,
-            AutoBackupRootDirectory = AutoBackupFolderPath,
-            RemoveOriginal = RemoveOriginal,
-            ShouldLinkToOriginal = LinkToOriginal,
-            AutoBackupInterval = ValueParser.Int(AutoBackupInterval, 5),
-            TreatEmptySupportedAvatarAsNone = TreatEmptySupportedAvatarAsNone,
-            MaxDegreeOfParallelism = ValueParser.Int(MaxDegreeOfParallelism, 4),
-            CheckForUpdate = CheckForUpdate,
-            UpdateChannel = (UpdateChannel)SelectedUpdateChannel
-        };
-    }
-
-    private void OnApply()
-    {
-        AvatarExplorerApp.Instance.RuntimeSettings.Update(CreateRuntimeSettings());
-
-        var current = UserPreferencesService.Instance.Repository.Settings;
-        UserPreferencesService.Instance.Repository.Update(current with
-        {
-            Language = SelectedLanguage,
-            Theme = (Theme)SelectedTheme,
-            RemoveBrackets = RemoveBrackets,
-            NormalIconSize = (int)NormalIconSize,
-            EnableHoverIconSize = EnableHoverIconSize,
-            HoverIconSize = (int)HoverIconSize,
-            AntiAliasingMode = (BitmapAntiAliasingMode)SelectedAntiAliasing,
-            ItemsPerPage = ValueParser.Int(ItemsPerPage, 30),
-            ThumbnailCompressionMaxEdge = (int)ThumbnailCompressionMaxSize,
-            UseBackgroundImage = UseBackgroundImage,
-            BackgroundImage = BackgroundImagePath,
-            BackgroundOpacity = (int)BackgroundImageOpacity,
-            SortOrder = (ItemSortOrder)SelectedSortOrder,
-            SortDirection = SelectedSortDirection,
-            ImplementedSort = (ImplementedSort)SelectedImplementedSort,
-            EnableSearchInFolder = EnableSearchInFolder,
-        });
-    }
-
-    private void OnClose()
-    {
-        IsVisible = false;
-    }
-
     private void OpenTagEditor()
     {
-        MainWindowViewModel.Instance.ShowTagEditor();
+        InstanceRepository.MainWindow.TagEditorVM.Open();
     }
 
     private void OpenCommonAvatarManager()
     {
-        MainWindowViewModel.Instance.EditCommonAvatarsVM.Open();
+        InstanceRepository.MainWindow.EditCommonAvatarsVM.Open();
     }
 
     private async Task OpenBackgroundImage()
     {
-        var files = await StorageService.OpenFileDialog(TopLevelProvider.Current, Localizer.Instance[Loc.Dialog.SelectFilePath]);
+        var files = await StorageService.OpenFileDialog(Localizer.Instance[Loc.Dialog.SelectFilePath]);
         if (files == null || files.Length == 0) return;
 
         BackgroundImagePath = files[0];
@@ -234,7 +188,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task OpenItemsFolder()
     {
-        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, Localizer.Instance[Loc.Dialog.SelectFolderPath]);
+        var folders = await StorageService.OpenFolderDialog(Localizer.Instance[Loc.Dialog.SelectFolderPath]);
         if (folders == null || folders.Length == 0) return;
 
         ItemsFolderPath = folders[0];
@@ -242,7 +196,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task OpenAutoBackupFolder()
     {
-        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, Localizer.Instance[Loc.Dialog.SelectFolderPath]);
+        var folders = await StorageService.OpenFolderDialog(Localizer.Instance[Loc.Dialog.SelectFolderPath]);
         if (folders == null || folders.Length == 0) return;
 
         AutoBackupFolderPath = folders[0];
@@ -250,67 +204,67 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private void ImportData()
     {
-        MainWindowViewModel.Instance.ImportDataVM.Open();
+        InstanceRepository.MainWindow.ImportDataVM.Open();
     }
 
     private void ExportData()
     {
-        MainWindowViewModel.Instance.ExportDataVM.Open();
+        InstanceRepository.MainWindow.ExportDataVM.Open();
     }
 
     private void FetchAllThumbnails()
     {
-        MainWindowViewModel.Instance.FetchAllThumbnailsVM.Open();
+        InstanceRepository.MainWindow.FetchAllThumbnailsVM.Open();
     }
 
     private void FetchAllVariationHashes()
     {
-        MainWindowViewModel.Instance.FetchAllVariationHashesVM.Open();
+        InstanceRepository.MainWindow.FetchAllVariationHashesVM.Open();
     }
 
     private async Task RestoreFromBackup()
     {
-        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, "Select Items Folder");
+        var folders = await StorageService.OpenFolderDialog(Localizer.Instance[Loc.Dialog.SelectFolderPath]);
         if (folders == null || folders.Length == 0) return;
 
         var selectedBackupPath = folders[0];
-        await AvatarExplorerApp.Instance.BackupManager.RestoreBackup(selectedBackupPath);
+        await InstanceRepository.BackupManager.RestoreBackup(selectedBackupPath);
     }
 
     private async Task AutoFixDatabase()
     {
-        var items = AvatarExplorerApp.Instance.Items.GetAll();
+        var items = InstanceRepository.Items.GetAll();
 
         var avatarExists = items.Any(i => i.Category.Type == ItemType.Avatar);
         var unknownCategoryExists = items.Any(i => (int)i.Category.Type >= 11);
         if (!avatarExists)
         {
-            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance[Loc.Dialog.Confirmation.NoAvatarsAndValidateType]
             );
 
             if (result)
             {
-                await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
-                AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(true);
+                await InstanceRepository.BackupManager.ExecuteBackup();
+                InstanceRepository.Items.ValidateAndAutoFixItemType(true);
             }
         }
         else if (unknownCategoryExists)
         {
-            await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
-            AvatarExplorerApp.Instance.Items.ValidateAndAutoFixItemType(false);
+            await InstanceRepository.BackupManager.ExecuteBackup();
+            InstanceRepository.Items.ValidateAndAutoFixItemType(false);
         }
     }
 
     private void ResetDatabase()
     {
-        MainWindowViewModel.Instance.ResetDatabaseVM.Open();
+        InstanceRepository.MainWindow.ResetDatabaseVM.Open();
     }
 
     private void ShowErrorLog()
     {
-        MainWindowViewModel.Instance.ShowErrorLog();
+        InstanceRepository.MainWindow.ErrorLogVM.Open();
     }
 
     private void UpdateSchemeStatus()
@@ -351,7 +305,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     {
         if (!ProcessUtils.IsWindows() && !ProcessUtils.IsLinux())
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.UnsupportedPlatform],
                 NotificationType.Error
@@ -361,7 +315,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
         if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
         {
-            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance[Loc.Scheme.RestartAsAdmin]
             );
@@ -373,7 +327,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         if (SchemeService.IsAnySchemeRegistered(protocol) && !SchemeService.IsOwnSchemeRegistered(protocol))
         {
             var command = SchemeService.GetRegisteredCommand(protocol) ?? "";
-            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance.Get(Loc.Settings.RegisterScheme.OverwriteConfirm, command)
             );
@@ -383,7 +337,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SchemeService.RegisterScheme(protocol);
         UpdateSchemeStatus();
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Scheme.RegisterSuccess],
             NotificationType.Success
@@ -394,7 +348,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     {
         if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
         {
-            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance[Loc.Scheme.RestartAsAdmin]
             );
@@ -405,7 +359,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
         if (!SchemeService.IsAnySchemeRegistered(protocol)) return;
 
-        var confirm = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var confirm = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Settings.RegisterScheme.UnregisterConfirm]
         );
@@ -414,7 +368,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SchemeService.UnregisterScheme(protocol);
         UpdateSchemeStatus();
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Settings.RegisterScheme.UnregisterSuccess],
             NotificationType.Success
@@ -427,7 +381,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         var result = await UpdateChecker.CheckForUpdate((UpdateChannel)SelectedUpdateChannel);
         if (!result)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.UpdateDialog.NoUpdateAvailableTitle],
                 Localizer.Instance.Get(Loc.UpdateDialog.NoUpdateAvailable, AvatarExplorerApp.CurrentVersion),
                 NotificationType.Information
@@ -435,46 +389,78 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         }
     }
 
-    private async Task OpenTwitter()
-    {
-        await LauncherService.OpenUri(TopLevelProvider.Current, DeveloperLink.TwitterURL);
-    }
-
-    private async Task OpenGithub()
-    {
-        await LauncherService.OpenUri(TopLevelProvider.Current, DeveloperLink.GithubURL);
-    }
-
-    private async Task OpenSourceCode()
-    {
-        await LauncherService.OpenUri(TopLevelProvider.Current, SoftwareLink.RepositoryURL);
-    }
-
+    private async Task OpenTwitter() => await LauncherService.OpenUri(DeveloperLink.TwitterURL);
+    private async Task OpenGithub() => await LauncherService.OpenUri(DeveloperLink.GithubURL);
+    private async Task OpenSourceCode() => await LauncherService.OpenUri(SoftwareLink.RepositoryURL);
     private async Task ViewLicense()
     {
         var licensePath = Path.Combine(AppContext.BaseDirectory, SystemFileName.License);
-        if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
+        if (File.Exists(licensePath)) await LauncherService.OpenUri(licensePath);
         else
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.LicenseFileNotFound],
                 NotificationType.Error
             );
         }
     }
-
     private async Task ViewThirdPartyLicenses()
     {
         var licensePath = Path.Combine(AppContext.BaseDirectory, SystemFileName.ThirdPartyLicenses);
-        if (File.Exists(licensePath)) await LauncherService.OpenUri(TopLevelProvider.Current, licensePath);
+        if (File.Exists(licensePath)) await LauncherService.OpenUri(licensePath);
         else
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ThirdPartyLicenseFileNotFound],
                 NotificationType.Error
             );
         }
+    }
+    
+    public RuntimeSettings CreateRuntimeSettings()
+    {
+        return new RuntimeSettings
+        {
+            DataRootDirectory = ItemsFolderPath,
+            AutoBackupRootDirectory = AutoBackupFolderPath,
+            RemoveOriginal = RemoveOriginal,
+            ShouldLinkToOriginal = LinkToOriginal,
+            AutoBackupInterval = ValueParser.Int(AutoBackupInterval, 5),
+            TreatEmptySupportedAvatarAsNone = TreatEmptySupportedAvatarAsNone,
+            MaxDegreeOfParallelism = ValueParser.Int(MaxDegreeOfParallelism, 4),
+            CheckForUpdate = CheckForUpdate,
+            UpdateChannel = (UpdateChannel)SelectedUpdateChannel
+        };
+    }
+    private void Apply()
+    {
+        InstanceRepository.RuntimeSettings.Update(CreateRuntimeSettings());
+
+        var current = InstanceRepository.UserPreferences.Settings;
+        InstanceRepository.UserPreferences.Update(current with
+        {
+            Language = SelectedLanguage,
+            Theme = (Theme)SelectedTheme,
+            RemoveBrackets = RemoveBrackets,
+            NormalIconSize = (int)NormalIconSize,
+            EnableHoverIconSize = EnableHoverIconSize,
+            HoverIconSize = (int)HoverIconSize,
+            AntiAliasingMode = (BitmapAntiAliasingMode)SelectedAntiAliasing,
+            ItemsPerPage = ValueParser.Int(ItemsPerPage, 30),
+            ThumbnailCompressionMaxEdge = (int)ThumbnailCompressionMaxSize,
+            UseBackgroundImage = UseBackgroundImage,
+            BackgroundImage = BackgroundImagePath,
+            BackgroundOpacity = (int)BackgroundImageOpacity,
+            SortOrder = (ItemSortOrder)SelectedSortOrder,
+            SortDirection = SelectedSortDirection,
+            ImplementedSort = (ImplementedSort)SelectedImplementedSort,
+            EnableSearchInFolder = EnableSearchInFolder,
+        });
+    }
+    private void Close()
+    {
+        IsVisible = false;
     }
 }

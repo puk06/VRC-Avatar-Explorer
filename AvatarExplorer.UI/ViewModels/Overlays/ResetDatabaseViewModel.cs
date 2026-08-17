@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -23,7 +23,7 @@ public class ResetDatabaseViewModel : ViewModelBase
     public ResetDatabaseViewModel()
     {
         ResetCommand = ReactiveCommand.CreateFromTask(Reset);
-        CancelCommand = ReactiveCommand.Create(() => IsVisible = false);
+        CancelCommand = ReactiveCommand.Create(Close);
     }
 
     public void Open()
@@ -40,39 +40,31 @@ public class ResetDatabaseViewModel : ViewModelBase
     {
         if (!ResetItems && !ResetTempAvatars && !ResetCommonAvatars && !ResetBulkImportPresets && !ResetVariationHashes) return;
 
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Dialog.Confirmation.ResetDatabase]
         );
         if (!result) return;
 
-        await AvatarExplorerApp.Instance.BackupManager.ExecuteBackup();
+        await InstanceRepository.BackupManager.ExecuteBackup();
 
         if (ResetItems)
-        {
-            AvatarExplorerApp.Instance.Items.Clear();
-        }
+            InstanceRepository.Items.Clear();
 
         if (ResetTempAvatars)
-        {
-            AvatarExplorerApp.Instance.TempAvatars.Clear();
-        }
+            InstanceRepository.TempAvatars.Clear();
 
         if (ResetCommonAvatars)
-        {
-            AvatarExplorerApp.Instance.CommonAvatars.Clear();
-        }
+            InstanceRepository.CommonAvatars.Clear();
 
         if (ResetBulkImportPresets)
-        {
-            AvatarExplorerApp.Instance.BulkImportPresets.Clear();
-        }
+            InstanceRepository.BulkImportPresets.Clear();
 
         if (ResetVariationHashes)
-        {
-            AvatarExplorerApp.Instance.VariationHashes.Clear();
-        }
+            InstanceRepository.VariationHashes.Clear();
 
-        IsVisible = false;
+        Close();
     }
+
+    private void Close() => IsVisible = false;
 }

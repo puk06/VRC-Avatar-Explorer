@@ -16,14 +16,17 @@ public class AvatarExplorerApp
 
     private bool _initialized = false;
 
-    public ItemRepository Items { get; } = new();
-    public CommonAvatarRepository CommonAvatars { get; } = new();
-    public TempAvatarRepository TempAvatars { get; } = new();
-    public BulkImportPresetRepository BulkImportPresets { get; } = new();
+    public ItemRepository ItemRepository { get; } = new();
+    public CommonAvatarRepository CommonAvatarRepository { get; } = new();
+    public TempAvatarRepository TempAvatarRepository { get; } = new();
+    public BulkImportPresetRepository BulkImportPresetRepository { get; } = new();
     public ItemGroupService ItemGroupService { get; }
     public ItemNavigationService ItemNavigationService { get; }
-    public RuntimeSettingsRepository RuntimeSettings { get; } = new();
-    public VariationHashRepository VariationHashes { get; } = new();
+    public RuntimeSettingsRepository RuntimeSettingsRepository { get; } = new();
+    public VariationHashRepository VariationHashRepository { get; } = new();
+
+    // Aliases for easier access
+    public RuntimeSettings RuntimeSettings => RuntimeSettingsRepository.Settings;
 
     public Func<ArchivePasswordRequest, ValueTask<string?>>? ArchivePasswordProvider { get; set; }
 
@@ -31,7 +34,7 @@ public class AvatarExplorerApp
 
     private AvatarExplorerApp()
     {
-        ItemGroupService = new(Items, CommonAvatars, TempAvatars, RuntimeSettings);
+        ItemGroupService = new(ItemRepository, CommonAvatarRepository, TempAvatarRepository, RuntimeSettingsRepository);
         ItemNavigationService = new(ItemGroupService);
     }
 
@@ -39,13 +42,13 @@ public class AvatarExplorerApp
     {
         if (_initialized) return;
 
-        RuntimeSettings.Load();
+        RuntimeSettingsRepository.Load();
 
-        Items.Load();
-        CommonAvatars.Load();
-        TempAvatars.Load();
-        BulkImportPresets.Load();
-        VariationHashes.Load();
+        ItemRepository.Load();
+        CommonAvatarRepository.Load();
+        TempAvatarRepository.Load();
+        BulkImportPresetRepository.Load();
+        VariationHashRepository.Load();
 
         ItemGroupService.RebuildIndices();
 
@@ -61,8 +64,8 @@ public class AvatarExplorerApp
         );
         BackupManager.OnBackupRestored += OnBackupRestored;
 
-        RuntimeSettings.OnSettingsChanged += OnRuntimeSettingsUpdated;
-        BackupManager.StartAutoBackup(RuntimeSettings.Settings.AutoBackupInterval, RuntimeSettings.Settings.AutoBackupRootDirectory);
+        RuntimeSettingsRepository.OnSettingsChanged += OnRuntimeSettingsUpdated;
+        BackupManager.StartAutoBackup(RuntimeSettings.AutoBackupInterval, RuntimeSettings.AutoBackupRootDirectory);
 
         ErrorManager.Instance.OnErrorOccured += ErrorLogWriter.Instance.Write;
         ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;
@@ -72,13 +75,13 @@ public class AvatarExplorerApp
 
     public void OnBackupRestored()
     {
-        RuntimeSettings.Load();
+        RuntimeSettingsRepository.Load();
 
-        Items.Load();
-        CommonAvatars.Load();
-        TempAvatars.Load();
-        BulkImportPresets.Load();
-        VariationHashes.Load();
+        ItemRepository.Load();
+        CommonAvatarRepository.Load();
+        TempAvatarRepository.Load();
+        BulkImportPresetRepository.Load();
+        VariationHashRepository.Load();
 
         ItemGroupService.RebuildIndices();
     }

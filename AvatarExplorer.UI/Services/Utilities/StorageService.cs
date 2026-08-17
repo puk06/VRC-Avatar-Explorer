@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.UI.Services.System;
 
 namespace AvatarExplorer.UI.Services.Utilities;
 
@@ -12,11 +13,11 @@ internal static class StorageService
 {
     private static IStorageProvider? GetStorageProvider(TopLevel? topLebel) => topLebel?.StorageProvider;
 
-    internal static async Task<string[]?> OpenFileDialog(TopLevel? topLebel, string title, bool allowMultiple = false)
+    internal static async Task<string[]?> OpenFileDialog(string title, bool allowMultiple = false)
     {
         try
         {
-            var storageProvider = GetStorageProvider(topLebel);
+            var storageProvider = GetStorageProvider(TopLevelProvider.Current);
             if (storageProvider == null) return [];
 
             var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
@@ -40,11 +41,11 @@ internal static class StorageService
         }
     }
 
-    internal static async Task<string[]?> OpenFolderDialog(TopLevel? topLebel, string title, bool allowMultiple = false, string? initialPath = null)
+    internal static async Task<string[]?> OpenFolderDialog(string title, bool allowMultiple = false, string? initialPath = null)
     {
         try
         {
-            var storageProvider = GetStorageProvider(topLebel);
+            var storageProvider = GetStorageProvider(TopLevelProvider.Current);
             if (storageProvider == null) return [];
 
             var folderPickerOpenOptions = new FolderPickerOpenOptions()
@@ -72,11 +73,11 @@ internal static class StorageService
         }
     }
 
-    internal static async Task<string?> OpenSaveFileDialog(TopLevel? topLebel, string title, string defaultExtension)
+    internal static async Task<string?> OpenSaveFileDialog(string title, string defaultExtension)
     {
         try
         {
-            var storageProvider = GetStorageProvider(topLebel);
+            var storageProvider = GetStorageProvider(TopLevelProvider.Current);
             if (storageProvider == null) return null;
 
             var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
@@ -94,11 +95,11 @@ internal static class StorageService
         }
     }
 
-    internal static async Task<IStorageFile?> GetStorageFileFromPath(TopLevel? topLebel, string filePath)
+    internal static async Task<IStorageFile?> GetStorageFileFromPath(string filePath)
     {
         try
         {
-            var storageProvider = GetStorageProvider(topLebel);
+            var storageProvider = GetStorageProvider(TopLevelProvider.Current);
             if (storageProvider == null) return null;
 
             return await storageProvider.TryGetFileFromPathAsync(filePath);

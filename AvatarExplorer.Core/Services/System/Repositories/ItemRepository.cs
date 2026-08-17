@@ -18,7 +18,7 @@ public class ItemRepository : RepositoryBase<Item>
         DatabaseMigrationService.MigrateDatabase(
             Db.DatabaseFilePath,
             DatabaseMigrations.ItemVersion,
-            (items, version) => DatabaseMigrations.ApplyItemMigration(items, version, AvatarExplorerApp.Instance.RuntimeSettings.Settings.DataRootDirectory));
+            (items, version) => DatabaseMigrations.ApplyItemMigration(items, version, AvatarExplorerApp.Instance.RuntimeSettings.DataRootDirectory));
 
         Db.Load();
         Db.MigrationVersion = DatabaseMigrations.ItemVersion;
@@ -81,7 +81,7 @@ public class ItemRepository : RepositoryBase<Item>
     {
         try
         {
-            await AvatarExplorerApp.Instance.VariationHashes.EnsureVariationHash(itemId);
+            await AvatarExplorerApp.Instance.VariationHashRepository.EnsureVariationHash(itemId);
         }
         catch (Exception ex)
         {
@@ -144,7 +144,7 @@ public class ItemRepository : RepositoryBase<Item>
         var item = Get(identifier);
         if (item == null) return Error.NotFound(description: "Item not found.");
 
-        var settings = AvatarExplorerApp.Instance.RuntimeSettings.Settings;
+        var settings = AvatarExplorerApp.Instance.RuntimeSettings;
 
         var defaultExtractPath = string.IsNullOrEmpty(item.ItemPath) ? GetSafePath(item, settings.DataRootDirectory) : item.ItemPath;
         var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal);

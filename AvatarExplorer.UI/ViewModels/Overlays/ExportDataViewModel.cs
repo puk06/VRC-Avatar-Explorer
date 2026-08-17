@@ -5,9 +5,9 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
@@ -41,7 +41,7 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
     {
         BrowseFolderCommand = ReactiveCommand.CreateFromTask(BrowseFolder);
         ExportCommand = ReactiveCommand.CreateFromTask(Export);
-        CancelCommand = ReactiveCommand.Create(() => IsVisible = false);
+        CancelCommand = ReactiveCommand.Create(Close);
 
         IInitializableRegistry.Register(0, this);
     }
@@ -66,7 +66,7 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
 
     private async Task BrowseFolder()
     {
-        var folders = await StorageService.OpenFolderDialog(TopLevelProvider.Current, Localizer.Instance[Loc.Dialog.SelectSaveFolderPath]);
+        var folders = await StorageService.OpenFolderDialog(Localizer.Instance[Loc.Dialog.SelectSaveFolderPath]);
         if (folders == null || folders.Length == 0) return;
 
         FolderPath = folders[0];
@@ -76,11 +76,11 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
     {
         if (string.IsNullOrEmpty(FolderPath)) return;
 
-        var result = await AvatarExplorerApp.Instance.ItemGroupService.Export(SelectedExportType, FolderPath, GetLocalizedType, IncludeCommonToSupported);
+        var result = await InstanceRepository.ItemGroupService.Export(SelectedExportType, FolderPath, GetLocalizedType, IncludeCommonToSupported);
 
         if (result.IsError)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ExportFailed],
                 NotificationType.Error
@@ -88,13 +88,14 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
         }
         else
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance[Loc.Success.Export],
                 NotificationType.Success
             );
         }
     }
+    private void Close() => IsVisible = false;
 
     private async ValueTask<string?> GetLocalizedType(ItemType type)
     {

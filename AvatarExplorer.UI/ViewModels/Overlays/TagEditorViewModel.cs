@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -25,8 +24,6 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
     public IReactiveCommand RenameCommand { get; }
     public IReactiveCommand RemoveCommand { get; }
     public IReactiveCommand CloseCommand { get; }
-
-    private static ItemRepository Items => AvatarExplorerApp.Instance.Items;
 
     public TagEditorViewModel()
     {
@@ -65,7 +62,7 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
 
     private void RefleshExistTags()
     {
-        _allExistTags = AvatarExplorerApp.Instance.Items.GetAll()
+        _allExistTags = InstanceRepository.Items.GetAll()
             .SelectMany(i => i.Tags)
             .Distinct()
             .ToList();
@@ -89,12 +86,6 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
             : (filtered.Count > 0 ? 0 : -1);
     }
 
-    public void Close()
-    {
-        SelectedTagIndex = -1;
-        IsVisible = false;
-    }
-
     public async Task Rename()
     {
         if (SelectedTagIndex < 0 || SelectedTagIndex >= ExistTags.Count()) return;
@@ -106,7 +97,7 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
 
         if (IsTagNameExist(targetTagName))
         {
-            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance.Get(Loc.Dialog.Confirmation.RenameTagAlreadyExist, targetTagName)
             );
@@ -114,33 +105,32 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
         }
         else
         {
-            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance.Get(Loc.Dialog.Confirmation.RenameTag, [sourceTagName, targetTagName])
             );
             if (!result) return;
         }
 
-        Items.RenameTag(sourceTagName, targetTagName);
+        InstanceRepository.Items.RenameTag(sourceTagName, targetTagName);
 
         SelectedTagIndex = -1;
         RefleshExistTags();
         SelectedTagIndex = ExistTags.ToList().IndexOf(targetTagName);
     }
-
     public async Task Remove()
     {
         if (SelectedTagIndex < 0 || SelectedTagIndex >= ExistTags.Count()) return;
 
         var sourceTagName = ExistTags.ElementAt(SelectedTagIndex);
 
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveTag, sourceTagName)
         );
         if (!result) return;
 
-        Items.RemoveTag(sourceTagName);
+        InstanceRepository.Items.RemoveTag(sourceTagName);
 
         RefleshExistTags();
         SelectedTagIndex = -1;
@@ -148,8 +138,14 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
 
     private static bool IsTagNameExist(string tagName)
     {
-        return AvatarExplorerApp.Instance.Items.GetAll()
+        return InstanceRepository.Items.GetAll()
             .SelectMany(i => i.Tags)
             .Contains(tagName);
+    }
+
+    public void Close()
+    {
+        SelectedTagIndex = -1;
+        IsVisible = false;
     }
 }

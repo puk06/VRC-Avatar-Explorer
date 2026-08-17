@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using AvatarExplorer.UI.Localization;
-using AvatarExplorer.UI.ViewModels;
+using AvatarExplorer.UI.Services;
 
 namespace AvatarExplorer.UI.Views.Overlays;
 
@@ -10,7 +10,7 @@ public partial class SettingsOverlay : UserControl
     public SettingsOverlay()
     {
         InitializeComponent();
-        DataContext = MainWindowViewModel.Instance.SettingsVM;
+        DataContext = InstanceRepository.MainWindow.SettingsVM;
         Localizer.Instance.LanguageChanged += OnLanguageChanged;
     }
 

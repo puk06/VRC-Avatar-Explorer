@@ -15,8 +15,8 @@ public class TextDialogViewModel : ViewModelBase
 
     public TextDialogViewModel()
     {
-        ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Content));
-        CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
+        ConfirmCommand = ReactiveCommand.Create(Confirm);
+        CancelCommand = ReactiveCommand.Create(Cancel);
     }
 
     public Task<string?> ShowAsync(string title, string content = "")
@@ -25,7 +25,9 @@ public class TextDialogViewModel : ViewModelBase
         Content = content;
 
         _tcs = new();
-
         return _tcs.Task;
     }
+
+    private void Confirm() => _tcs.SetResult(Content);
+    private void Cancel() => _tcs.SetResult(null);
 }

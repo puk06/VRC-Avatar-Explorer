@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -25,9 +25,6 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
     [Reactive] public string ItemsFolder { get; set; } = string.Empty;
 
     public IReactiveCommand CloseCommand { get; }
-
-    private static RuntimeSettingsRepository Settings => AvatarExplorerApp.Instance.RuntimeSettings;
-    private static UserPreferencesRepository UserPreferences => UserPreferencesService.Instance.Repository;
 
     public InitialSetupViewModel()
     {
@@ -50,15 +47,15 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
             .Subscribe(path =>
             {
                 if (!IsVisible) return;
-                Settings.Update(Settings.Settings with { DataRootDirectory = path });
+                InstanceRepository.RuntimeSettings.Update(InstanceRepository.RuntimeSettings.Settings with { DataRootDirectory = path });
             });
     }
 
     public async Task OnInitialized()
     {
-        if (UserPreferences.Settings.InitialSetupCompleted) return;
+        if (InstanceRepository.UserPreferences.Settings.InitialSetupCompleted) return;
 
-        if (AvatarExplorerApp.Instance.Items.GetAll().Any())
+        if (InstanceRepository.Items.GetAll().Any())
         {
             MarkInitialSetupCompleted();
             return;
@@ -73,7 +70,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
         Languages = Localizer.Instance.GetLanguageList();
         SelectedLanguage = -1;
         SelectedLanguage = Localizer.Instance.CurrentLanguageIndex;
-        ItemsFolder = Settings.Settings.DataRootDirectory;
+        ItemsFolder = InstanceRepository.RuntimeSettings.Settings.DataRootDirectory;
 
         IsVisible = true;
     }
@@ -85,13 +82,13 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
     }
 
     private static void MarkInitialSetupCompleted() =>
-        UserPreferences.Update(UserPreferences.Settings with { InitialSetupCompleted = true });
+        InstanceRepository.UserPreferences.Update(InstanceRepository.UserPreferences.Settings with { InitialSetupCompleted = true });
 
     private static async void ShowSchemeRegistrationDialog()
     {
         if (SchemeService.IsOwnSchemeRegistered(SchemeService.ProtocolVRCAE)) return;
 
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Scheme.Register]
         );
@@ -100,7 +97,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
         {
             if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
             {
-                var restartAsAdmin = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                var restartAsAdmin = await InstanceRepository.MainWindow.ShowYesNoDialog(
                     Localizer.Instance[Loc.Dialog.Confirmation.Default],
                     Localizer.Instance[Loc.Scheme.RestartAsAdmin]
                 );
@@ -110,7 +107,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
             }
 
             SchemeService.RegisterScheme(SchemeService.ProtocolVRCAE);
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance[Loc.Scheme.RegisterSuccess],
                 NotificationType.Success
@@ -118,7 +115,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
         }
         else
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance[Loc.Scheme.RegisterSkipped],
                 NotificationType.Information

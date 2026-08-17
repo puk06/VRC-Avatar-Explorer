@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using AvatarExplorer.UI.ViewModels;
+using AvatarExplorer.UI.Services;
 
 namespace AvatarExplorer.UI.Views.Panels;
 
@@ -8,6 +8,6 @@ public partial class BulkImportPreset : UserControl
     public BulkImportPreset()
     {
         InitializeComponent();
-        DataContext = MainViewModel.Instance.BulkImportPresetVM;
+        DataContext = InstanceRepository.MainView.BulkImportPresetVM;
     }
 }

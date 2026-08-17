@@ -21,6 +21,7 @@ using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Models.Sort;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
@@ -37,7 +38,6 @@ namespace AvatarExplorer.UI.ViewModels;
 public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
     #region Properties
-    public static MainViewModel Instance { get; private set; } = null!;
     public AdvancedSearchViewModel AdvancedSearchVM { get; } = new();
     public BulkImportViewModel BulkImportVM { get; } = new();
     public BulkImportPresetViewModel BulkImportPresetVM { get; } = new();
@@ -104,22 +104,20 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private readonly Guid _preLevel1StateGuid = Guid.NewGuid();
     private bool _isPreviousScreenSearch = false;
 
-    private static UserPreferences UserPreferences => UserPreferencesService.Instance.Repository.Settings;
+    private static UserPreferences UserPreferences => InstanceRepository.UserPreferences.Settings;
     #endregion
 
     #region Constructor
     public MainViewModel()
     {
-        Instance = this;
-
         UndoCommand = ReactiveCommand.Create(Undo);
         HomeCommand = ReactiveCommand.Create(GoHome);
-        OpenSettingsCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.SettingsVM.Open());
-        AddItemCommand = ReactiveCommand.Create(() => MainWindowViewModel.Instance.ShowItemEditor());
+        OpenSettingsCommand = ReactiveCommand.Create(OpenSettings);
+        AddItemCommand = ReactiveCommand.Create(OpenItemEditor);
         SidePanelButtonPressedCommand = ReactiveCommand.Create<int>(SidePanelButtonPressed);
         SelectLeftItemCommand = ReactiveCommand.Create<ItemViewModel>(OnLeftItemSelected);
         SelectRightItemCommand = ReactiveCommand.Create<ItemViewModel>(OnRightItemSelected);
-        OpenSidePanelCommand = ReactiveCommand.Create<string>(OpenSidePanel);
+        OpenSidePanelCommand = ReactiveCommand.Create<string>(i => OpenSidePanel(ValueParser.Int(i)));
         NavigateToSegmentCommand = ReactiveCommand.Create<string>(NavigateToSegment);
 
         LeftGoFirstCommand = ReactiveCommand.Create(LeftPageInfo.GoFirst);
@@ -131,8 +129,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         RightGoNextCommand = ReactiveCommand.Create(RightPageInfo.GoNext);
         RightGoLastCommand = ReactiveCommand.Create(RightPageInfo.GoLast);
 
-        _itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
-        _itemNavigationService = AvatarExplorerApp.Instance.ItemNavigationService;
+        _itemGroupService = InstanceRepository.ItemGroupService;
+        _itemNavigationService = InstanceRepository.NavigationService;
 
         _hoverThumbnailManager = new HoverThumbnailManager(this);
         _sidePanelManager = new SidePanelManager(this);
@@ -153,14 +151,14 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         InitializeSubscriptions();
 
         Localizer.Instance.LanguageChanged += RefreshAllItems;
-        UserPreferencesService.Instance.Repository.OnSettingsChanged += _ =>
+        InstanceRepository.UserPreferences.OnSettingsChanged += _ =>
         {
             UpdateItemsPerPage();
             Refresh();
         };
         _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
         AdvancedSearchVM.SearchPropertyChanged += _searchManager.RestartTimer;
-        BulkImportVM.OnItemsChanged += () => OpenSidePanel("1");
+        BulkImportVM.OnItemsChanged += () => OpenSidePanel(1);
     }
 
     public async Task OnInitialized()
@@ -208,7 +206,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var itemId = _itemNavigationService.GetCurrentItemId();
             if (itemId == null)
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.FailedToGetCurrentItem],
                     NotificationType.Error
@@ -219,7 +217,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var item = _itemGroupService.ItemRepository.Get(itemId);
             if (item == null)
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.ItemNotFound],
                     NotificationType.Error
@@ -231,22 +229,22 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var isLocalizable = category.IsLocalizable;
             var displayName = isLocalizable ? Localizer.Instance[item.Category.ToString()] : item.Category.ToString();
 
-            MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Unitypackage.Status.Preparing]);
+            InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Unitypackage.Status.Preparing]);
             var importResult = await UnitypackageService.Import(
                 [ new() { FilePath = file, CategoryDisplayName = displayName } ],
                 onProgress: async (name, percent) =>
                 {
-                    MainWindowViewModel.Instance.ProgressVM.Update(
+                    InstanceRepository.MainWindow.ProgressVM.Update(
                         Localizer.Instance.Get(name, percent.ToString()),
                         percent
                     );
                 }
             );
-            MainWindowViewModel.Instance.ProgressVM.Close();
+            InstanceRepository.MainWindow.ProgressVM.Close();
 
             if (importResult.ContainsScripts)
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Warning.Default],
                     Localizer.Instance[Loc.Warning.ScriptsFoundInUnitypackage],
                     NotificationType.Warning
@@ -255,10 +253,10 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
             if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
             {
-                var result = await LauncherService.OpenFile(TopLevelProvider.Current, importResult.ModifiedUnitypackagePath);
+                var result = await LauncherService.OpenFile(importResult.ModifiedUnitypackagePath);
                 if (result.IsError)
                 {
-                    MainWindowViewModel.ShowNotification(
+                    NotificationManager.Show(
                         Localizer.Instance[Loc.Error.Default],
                         Localizer.Instance[Loc.Error.OpenFileFailed],
                         NotificationType.Error
@@ -267,7 +265,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             }
             else
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.ImportUnitypackageFailed],
                     NotificationType.Error
@@ -276,10 +274,10 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         }
         else
         {
-            var result = await LauncherService.OpenFile(TopLevelProvider.Current, file);
+            var result = await LauncherService.OpenFile(file);
             if (result.IsError)
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.OpenFileFailed],
                     NotificationType.Error
@@ -287,10 +285,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             }
         }
     }
-    public void OpenSidePanel(string index)
-    {
-        _sidePanelManager.Open(index);
-    }
+    public void OpenSidePanel(int index) => _sidePanelManager.Open(index);
     #endregion
 
     #region Refresh
@@ -494,21 +489,21 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             {
                 // Item
                 if (value.StartsWith("item"))
-                    return AvatarExplorerApp.Instance.Items.Get(value)?.Title ?? value;
+                    return InstanceRepository.Items.Get(value)?.Title ?? value;
 
                 // Temp Avatar
                 if (value.StartsWith("tempavatar"))
-                    return AvatarExplorerApp.Instance.TempAvatars.Get(value)?.AvatarName ?? value;
+                    return InstanceRepository.TempAvatars.Get(value)?.AvatarName ?? value;
 
                 // Common Avatar (現在は未実装)
                 if (value.StartsWith("commonavatar"))
-                    return AvatarExplorerApp.Instance.CommonAvatars.Get(value)?.GroupName ?? value;
+                    return InstanceRepository.CommonAvatars.Get(value)?.GroupName ?? value;
 
                 return value;
             }
 
             if (prefix == ItemNavigationService.ItemPrefix)
-                return AvatarExplorerApp.Instance.Items.Get(state)?.Title ?? value;
+                return InstanceRepository.Items.Get(state)?.Title ?? value;
 
             if (prefix == ItemNavigationService.FolderPrefix)
                 return System.IO.Path.GetFileName(_itemNavigationService.ResolveFolderPath(state) ?? "Unknown Folder");
@@ -694,6 +689,9 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         RightPageInfo.Reset();
         Refresh(false);
     }
+
+    private static void OpenSettings() => InstanceRepository.MainWindow.SettingsVM.Open();
+    private static void OpenItemEditor() => InstanceRepository.MainWindow.ItemEditorVM.Open();
     #endregion
 
     #region Side Panel

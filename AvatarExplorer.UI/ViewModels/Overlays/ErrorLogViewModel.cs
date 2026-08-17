@@ -19,17 +19,11 @@ public class ErrorLogViewModel : ViewModelBase
 
     public ErrorLogViewModel()
     {
-        CloseCommand = ReactiveCommand.Create(OnClose);
-        OpenFolderCommand = ReactiveCommand.CreateFromTask(OpenFolder);
+        CloseCommand = ReactiveCommand.Create(Close);
+        OpenFolderCommand = ReactiveCommand.CreateFromTask(OpenLogFolder);
     }
 
-    private void OnClose()
-    {
-        IsVisible = false;
-    }
-
-    private async Task OpenFolder()
-    {
-        await LauncherService.OpenFolder(TopLevelProvider.Current, SystemPath.LogsFolderPath);
-    }
+    public void Open() => IsVisible = true;
+    public void Close() => IsVisible = false;
+    public static async Task OpenLogFolder() => await LauncherService.OpenFolder(SystemPath.LogsFolderPath);
 }

@@ -15,6 +15,7 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.System;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.ViewModels.Component;
@@ -102,7 +103,7 @@ public class ItemEditorViewModel : ViewModelBase
 
         if (itemId != null)
         {
-            var item = AvatarExplorerApp.Instance.Items.Get(itemId);
+            var item = InstanceRepository.Items.Get(itemId);
             if (item != null)
             {
                 if (item.BoothId != -1) BoothUrl = item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
@@ -121,7 +122,7 @@ public class ItemEditorViewModel : ViewModelBase
             SelectedCategoryIndex = 0;
         }
 
-        ShouldLinkToOriginal = AvatarExplorerApp.Instance.RuntimeSettings.Settings.ShouldLinkToOriginal;
+        ShouldLinkToOriginal = InstanceRepository.RuntimeSettings.Settings.ShouldLinkToOriginal;
 
         UpdateCountField();
         IsVisible = true;
@@ -271,8 +272,8 @@ public class ItemEditorViewModel : ViewModelBase
             Tags = Tags
         };
 
-        bool updateResult = await AvatarExplorerApp.Instance.Items.Update(identifier, editContext);
-        MainWindowViewModel.ShowNotification(
+        bool updateResult = await InstanceRepository.Items.Update(identifier, editContext);
+        NotificationManager.Show(
             Localizer.Instance[updateResult ? Loc.Success.Default : Loc.Error.Default],
             Localizer.Instance[updateResult ? Loc.Success.ItemEdit : Loc.Error.ItemEditFailed],
             updateResult ? NotificationType.Success : NotificationType.Error
@@ -297,11 +298,11 @@ public class ItemEditorViewModel : ViewModelBase
 
         if (creationContext.BoothId != -1)
         {
-            var existingSameBoothIdItem = AvatarExplorerApp.Instance.Items.GetAll().FirstOrDefault(i => i.BoothId == creationContext.BoothId);
+            var existingSameBoothIdItem = InstanceRepository.Items.GetAll().FirstOrDefault(i => i.BoothId == creationContext.BoothId);
 
             if (existingSameBoothIdItem != null)
             {
-                var addToExistingItem = await MainWindowViewModel.Instance.ShowYesNoDialog(
+                var addToExistingItem = await InstanceRepository.MainWindow.ShowYesNoDialog(
                     Localizer.Instance[Loc.Dialog.Confirmation.Default],
                     Localizer.Instance[Loc.Dialog.Confirmation.AddToExistingItem]
                 );
@@ -309,8 +310,8 @@ public class ItemEditorViewModel : ViewModelBase
             }
         }
 
-        var item = await AvatarExplorerApp.Instance.Items.Create(creationContext);
-        MainWindowViewModel.ShowNotification(
+        var item = await InstanceRepository.Items.Create(creationContext);
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.ItemAdd],
             NotificationType.Success
@@ -320,7 +321,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     private static async Task AddPathsInBackground(string identifier, List<ItemPathEntry> itemPaths, bool shouldLinkToOriginal)
     {
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Processing.Default],
             Localizer.Instance[Loc.Processing.AddContent],
             NotificationType.Information
@@ -328,11 +329,11 @@ public class ItemEditorViewModel : ViewModelBase
 
         try
         {
-            var result = await AvatarExplorerApp.Instance.Items.AddPaths(identifier, itemPaths, shouldLinkToOriginal);
+            var result = await InstanceRepository.Items.AddPaths(identifier, itemPaths, shouldLinkToOriginal);
 
             if (result.IsError)
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.AddContentFailed],
                     NotificationType.Error
@@ -340,7 +341,7 @@ public class ItemEditorViewModel : ViewModelBase
             }
             else if (result.Value.ProcessingFailedPaths.Count > 0)
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()),
                     NotificationType.Error
@@ -348,7 +349,7 @@ public class ItemEditorViewModel : ViewModelBase
             }
             else
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Success.Default],
                     Localizer.Instance[Loc.Success.ContentAdd],
                     NotificationType.Success
@@ -363,7 +364,6 @@ public class ItemEditorViewModel : ViewModelBase
     private async Task SelectAndAddFolders()
     {
         var folders = await StorageService.OpenFolderDialog(
-            TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFolderPath],
             allowMultiple: true
         );
@@ -375,7 +375,6 @@ public class ItemEditorViewModel : ViewModelBase
     private async Task SelectAndAddFiles()
     {
         var files = await StorageService.OpenFileDialog(
-            TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFilePath],
             allowMultiple: true
         );
@@ -386,12 +385,12 @@ public class ItemEditorViewModel : ViewModelBase
     }
     private async Task AddUrl()
     {
-        var url = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddUrl]);
+        var url = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddUrl]);
         if (string.IsNullOrEmpty(url)) return;
 
         if (!UriUtils.TryParse(url, out var uri))
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.InvalidUrl],
                 NotificationType.Error
@@ -405,14 +404,14 @@ public class ItemEditorViewModel : ViewModelBase
     }
     private async Task FetchBoothData()
     {
-        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Booth.Status.Fetching]);
-        MainWindowViewModel.Instance.ProgressVM.Update(0);
+        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Booth.Status.Fetching]);
+        InstanceRepository.MainWindow.ProgressVM.Update(0);
         var fetchResult = await BoothService.Fetch(BoothUrl, waitCooldown: true);
-        MainWindowViewModel.Instance.ProgressVM.Close();
+        InstanceRepository.MainWindow.ProgressVM.Close();
 
         if (fetchResult.IsError)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.RetrieveBoothItemFailed],
                 NotificationType.Error
@@ -433,8 +432,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     private void RefleshCategories()
     {
-        var itemGroupService = AvatarExplorerApp.Instance.ItemGroupService;
-        var categories = itemGroupService.GetCategoryFolders(includeEmptyCategory: true)
+        var categories = InstanceRepository.ItemGroupService.GetCategoryFolders(includeEmptyCategory: true)
             .Select(i => ResolveCategory(i.Identifier))
             .Where(i => i != null)
             .Cast<ItemCategory>();
@@ -463,7 +461,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     private async Task AddCustomCategory()
     {
-        var newCategory = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCustomCategory]);
+        var newCategory = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCustomCategory]);
         if (string.IsNullOrEmpty(newCategory)) return;
 
         Categories.Add(new ItemCategoryViewModel(new ItemCategory(newCategory)).Update());
@@ -472,7 +470,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     private async Task SelectSupportedAvatars()
     {
-        var avatars = await MainWindowViewModel.Instance.ShowSelectAvatars(
+        var avatars = await InstanceRepository.MainWindow.ShowSelectAvatars(
             Localizer.Instance[Loc.SelectAvatars.Title.SupportedAvatars],
             SupportedAvatars.ToArray(),
             includeCommonAvatar: true,
@@ -486,20 +484,19 @@ public class ItemEditorViewModel : ViewModelBase
     }
     private int GetSupportedAvatarsCount()
     {
-        var itemGroup = AvatarExplorerApp.Instance.ItemGroupService;
-        return itemGroup.GetAllSupportedAvatarsIds(SupportedAvatars, false).Length;
+        return InstanceRepository.ItemGroupService.GetAllSupportedAvatarsIds(SupportedAvatars, false).Length;
     }
 
     private async Task EditItemMemo()
     {
-        var newMemo = await MainWindowViewModel.Instance.ShowEditMemoDialog(Memo);
+        var newMemo = await InstanceRepository.MainWindow.ShowEditMemoDialog(Memo);
         if (newMemo == null) return;
 
         Memo = newMemo;
     }
     private async Task EditItemTags()
     {
-        var newTags = await MainWindowViewModel.Instance.ShowEditTagsDialog(Tags.ToArray());
+        var newTags = await InstanceRepository.MainWindow.ShowEditTagsDialog(Tags.ToArray());
         if (newTags == null) return;
 
         Tags = newTags;
@@ -517,7 +514,7 @@ public class ItemEditorViewModel : ViewModelBase
         // Title
         if (string.IsNullOrWhiteSpace(Title))
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.EmptyTitle],
                 NotificationType.Error
@@ -528,7 +525,7 @@ public class ItemEditorViewModel : ViewModelBase
         // Author
         if (string.IsNullOrWhiteSpace(Author))
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.Validation.EmptyAuthor],
                 NotificationType.Error
@@ -539,7 +536,7 @@ public class ItemEditorViewModel : ViewModelBase
         // Category
         if (SelectedCategory == null)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.InvalidCategory],
                 NotificationType.Error

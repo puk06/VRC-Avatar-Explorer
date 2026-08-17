@@ -4,8 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
+using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -72,13 +73,13 @@ public class FetchAllVariationHashesViewModel : ViewModelBase
     {
         if (_isRunning) return;
 
-        var allItems = AvatarExplorerApp.Instance.Items.GetAll()
+        var allItems = InstanceRepository.Items.GetAll()
             .Where(i => i.BoothId != -1)
             .ToArray();
 
         if (allItems.Length == 0)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ItemNotFound],
                 NotificationType.Error
@@ -114,7 +115,7 @@ public class FetchAllVariationHashesViewModel : ViewModelBase
                 Status = Localizer.Instance[Loc.FetchAllVariationHashes.Status.Running];
                 CurrentItem = Localizer.Instance.Get(Loc.FetchAllVariationHashes.CurrentItem, item.Title);
 
-                var result = await AvatarExplorerApp.Instance.VariationHashes.EnsureVariationHash(item.BoothId.ToString());
+                var result = await InstanceRepository.VariationHashes.EnsureVariationHash(item.BoothId.ToString());
                 if (!result) failureCount++;
                 else successCount++;
 
@@ -160,7 +161,7 @@ public class FetchAllVariationHashesViewModel : ViewModelBase
         if (isCancelled)
         {
             Status = Localizer.Instance[Loc.FetchAllVariationHashes.Status.Cancelled];
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(Loc.Warning.FetchAllVariationHashesCancelled, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
                 NotificationType.Warning
@@ -172,7 +173,7 @@ public class FetchAllVariationHashesViewModel : ViewModelBase
 
         if (failureCount == 0)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance.Get(Loc.Success.FetchAllVariationHashes, successCount.ToString()),
                 NotificationType.Success
@@ -180,7 +181,7 @@ public class FetchAllVariationHashesViewModel : ViewModelBase
         }
         else
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance.Get(Loc.Error.FetchAllVariationHashesFailed, [successCount.ToString(), failureCount.ToString(), allItems.Length.ToString()]),
                 NotificationType.Error

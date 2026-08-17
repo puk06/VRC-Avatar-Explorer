@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using AvatarExplorer.UI.ViewModels;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.ViewModels.Overlays;
 
 namespace AvatarExplorer.UI.Views.Overlays;
@@ -10,7 +10,7 @@ public partial class EditTagsOverlay : UserControl
     public EditTagsOverlay()
     {
         InitializeComponent();
-        DataContext = MainWindowViewModel.Instance.EditTagsVM;
+        DataContext = InstanceRepository.MainWindow.EditTagsVM;
     }
 
     private void OnTagBorderClick(object? sender, PointerPressedEventArgs e)

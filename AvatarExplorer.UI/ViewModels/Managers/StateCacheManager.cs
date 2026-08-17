@@ -7,18 +7,13 @@ using AvatarExplorer.UI.ViewModels.Component;
 
 namespace AvatarExplorer.UI.ViewModels.Managers;
 
-public class StateCacheManager
+public class StateCacheManager(ItemNavigationService navigationService)
 {
     private readonly CacheManager<Guid, int> _pageCache = new(0);
     private readonly CacheManager<Guid, Vector> _scrollValueCache = new(AvaloniaVectorUtils.MaxValue);
     private readonly CacheManager<int, (int, Vector)> _leftStateCache = new((0, AvaloniaVectorUtils.MaxValue));
 
-    private readonly ItemNavigationService _navigationService;
-
-    public StateCacheManager(ItemNavigationService navigationService)
-    {
-        _navigationService = navigationService;
-    }
+    private readonly ItemNavigationService _navigationService = navigationService;
 
     public void SaveLeftState(int categoryIndex, PanelPageInfo leftPageInfo)
     {

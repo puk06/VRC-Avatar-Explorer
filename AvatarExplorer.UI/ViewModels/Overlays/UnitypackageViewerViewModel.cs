@@ -38,7 +38,7 @@ public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
     public UnitypackageViewerViewModel()
     {
         ExportCommand = ReactiveCommand.CreateFromTask(Export);
-        CloseCommand = ReactiveCommand.Create(OnClose);
+        CloseCommand = ReactiveCommand.Create(Close);
 
         IInitializableRegistry.Register(0, this);
     }
@@ -136,7 +136,6 @@ public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
 
         var initialPath = Path.GetDirectoryName(UnitypackagePath);
         var folders = await StorageService.OpenFolderDialog(
-            TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFolderPath],
             allowMultiple: false,
             initialPath
@@ -154,7 +153,7 @@ public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to export unitypackage asset.", tag: result.Errors.ToErrorString());
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ExportFailed],
                 NotificationType.Error
@@ -165,7 +164,7 @@ public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
         Status = $"{Localizer.Instance[Loc.Success.Export]}: {result.Value}";
     }
 
-    private void OnClose()
+    private void Close()
     {
         IsVisible = false;
     }

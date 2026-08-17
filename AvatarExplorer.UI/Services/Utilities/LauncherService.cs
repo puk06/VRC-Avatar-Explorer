@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.UI.Services.System;
 using ErrorOr;
 
 namespace AvatarExplorer.UI.Services.Utilities;
@@ -13,11 +13,11 @@ internal static class LauncherService
 {
     private static ILauncher? GetLauncher(TopLevel? topLevel) => topLevel?.Launcher;
 
-    internal static async Task<ErrorOr<Success>> OpenFile(TopLevel? topLevel, string filePath)
+    internal static async Task<ErrorOr<Success>> OpenFile(string filePath)
     {
         try
         {
-            var launcher = GetLauncher(topLevel);
+            var launcher = GetLauncher(TopLevelProvider.Current);
             if (launcher == null) return Error.Failure(description: "Failed to get launcher.");
 
             var fileInfo = new FileInfo(filePath);
@@ -32,11 +32,11 @@ internal static class LauncherService
         }
     }
 
-    internal static async Task<ErrorOr<Success>> OpenFolder(TopLevel? topLevel, string folderPath)
+    internal static async Task<ErrorOr<Success>> OpenFolder(string folderPath)
     {
         try
         {
-            var launcher = GetLauncher(topLevel);
+            var launcher = GetLauncher(TopLevelProvider.Current);
             if (launcher == null) return Error.Failure(description: "Failed to get launcher.");
 
             var folderInfo = new DirectoryInfo(folderPath);
@@ -51,11 +51,11 @@ internal static class LauncherService
         }
     }
 
-    internal static async Task<ErrorOr<Success>> OpenUri(TopLevel? topLevel, string uri)
+    internal static async Task<ErrorOr<Success>> OpenUri(string uri)
     {
         try
         {
-            var launcher = GetLauncher(topLevel);
+            var launcher = GetLauncher(TopLevelProvider.Current);
             if (launcher == null) return Error.Failure(description: "Failed to get launcher.");
 
             var uriInfo = new Uri(uri);

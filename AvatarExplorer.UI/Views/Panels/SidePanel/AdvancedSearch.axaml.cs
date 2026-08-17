@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using AvatarExplorer.UI.ViewModels;
+using AvatarExplorer.UI.Services;
 
 namespace AvatarExplorer.UI.Views.Panels;
 
@@ -8,6 +8,6 @@ public partial class AdvancedSearch : UserControl
     public AdvancedSearch()
     {
         InitializeComponent();
-        DataContext = MainViewModel.Instance.AdvancedSearchVM;
+        DataContext = InstanceRepository.MainView.AdvancedSearchVM;
     }
 }

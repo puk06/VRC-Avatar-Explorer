@@ -14,16 +14,17 @@ public class EditMemoViewModel : ViewModelBase
 
     public EditMemoViewModel()
     {
-        ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Memo));
-        CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
+        ConfirmCommand = ReactiveCommand.Create(Confirm);
+        CancelCommand = ReactiveCommand.Create(Cancel);
     }
 
     public Task<string?> ShowAsync(string content)
     {
         Memo = content;
-
         _tcs = new();
-
         return _tcs.Task;
     }
+
+    public void Confirm() => _tcs.SetResult(Memo);
+    public void Cancel() => _tcs.SetResult(null);
 }

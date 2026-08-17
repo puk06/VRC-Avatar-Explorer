@@ -12,7 +12,7 @@ using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Extensions;
-using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels;
@@ -27,7 +27,7 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        DataContext = MainWindowViewModel.Instance.MainVM;
+        DataContext = InstanceRepository.MainView;
 
         RegisterSidePanelEvent();
         RegisterPathScrollEvent();
@@ -38,7 +38,7 @@ public partial class MainView : UserControl
 
     private void RegisterWindowClosingEvent()
     {
-        MainWindowViewModel.Instance.WindowClosing += CloseHoverWindow;
+        InstanceRepository.MainWindow.WindowClosing += CloseHoverWindow;
     }
 
     private void RegisterPathScrollEvent()
@@ -174,7 +174,7 @@ public partial class MainView : UserControl
         if (isVisible)
         {
             _hoverWindow.Show();
-            _hoverWindow.SetSize(UserPreferencesService.Instance.Repository.Settings.HoverIconSize);
+            _hoverWindow.SetSize(InstanceRepository.UserPreferences.Settings.HoverIconSize);
             _hoverWindow.Topmost = false;
             _hoverWindow.Topmost = true;
         }
@@ -187,8 +187,7 @@ public partial class MainView : UserControl
     {
         if (sender is not Image image) return;
 
-        var userPreferences = UserPreferencesService.Instance.Repository.Settings;
-        var bitmapInterpolationMode = userPreferences.AntiAliasingMode.GetInterpolationMode();
+        var bitmapInterpolationMode = InstanceRepository.UserPreferences.Settings.AntiAliasingMode.GetInterpolationMode();
         if (bitmapInterpolationMode != BitmapInterpolationMode.None && bitmapInterpolationMode != BitmapInterpolationMode.Unspecified)
             RenderOptions.SetBitmapInterpolationMode(image, bitmapInterpolationMode);
 
@@ -270,7 +269,7 @@ public partial class MainView : UserControl
 
         if (viewModelType == ViewModelType.File && !string.IsNullOrEmpty(item.ActualValue))
         {
-            var storageFile = await StorageService.GetStorageFileFromPath(TopLevelProvider.Current, item.ActualValue);
+            var storageFile = await StorageService.GetStorageFileFromPath(item.ActualValue);
             if (storageFile != null)
             {
                 transferItem.Set(DataFormat.File, storageFile);
@@ -302,7 +301,7 @@ public partial class MainView : UserControl
 
         if (!button.IsPressed) return;
 
-        MainWindowViewModel.Instance.LastDragDropPath = droppedPath;
+        InstanceRepository.MainWindow.LastDragDropPath = droppedPath;
         await DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Copy);
     }
     private async void OnMainPointerPressed(object? sender, PointerPressedEventArgs e)

@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
-using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
@@ -23,12 +20,7 @@ namespace AvatarExplorer.UI.Services.ContextMenu;
 
 public static class ContextMenuHandlerService
 {
-    private static readonly Dictionary<ActionKey, Action<string>> _handlers = new();
-
-    private static ItemRepository Items => AvatarExplorerApp.Instance.Items;
-    private static ItemGroupService ItemGroupService => AvatarExplorerApp.Instance.ItemGroupService;
-    private static ItemNavigationService ItemNavigationService => AvatarExplorerApp.Instance.ItemNavigationService;
-    private static RuntimeSettings RuntimeSettings => AvatarExplorerApp.Instance.RuntimeSettings.Settings;
+    private static readonly Dictionary<ActionKey, Action<string>> _handlers = [];
 
     public static void Register(ActionKey key, Action<string> handler)
     {
@@ -80,10 +72,10 @@ public static class ContextMenuHandlerService
 
     private static Item? GetByIdentifier(string identifier)
     {
-        var item = Items.Get(identifier);
+        var item = InstanceRepository.Items.Get(identifier);
         if (item == null)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ItemNotFound],
                 NotificationType.Error
@@ -94,8 +86,8 @@ public static class ContextMenuHandlerService
     }
     private static async Task EditItemInternal(string identifier, ItemEditContext context)
     {
-        var result = await Items.Update(identifier, context);
-        MainWindowViewModel.ShowNotification(
+        var result = await InstanceRepository.Items.Update(identifier, context);
+        NotificationManager.Show(
             result ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             result ? Localizer.Instance[Loc.Success.ItemEdit] : Localizer.Instance[Loc.Error.ItemEditFailed],
             result ? NotificationType.Success : NotificationType.Error
@@ -104,10 +96,10 @@ public static class ContextMenuHandlerService
 
     private static async void OpenFolder(string path)
     {
-        var result = await LauncherService.OpenFolder(TopLevelProvider.Current, path);
+        var result = await LauncherService.OpenFolder(path);
         if (result.IsError)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.OpenFolderFailed],
                 NotificationType.Error
@@ -116,39 +108,39 @@ public static class ContextMenuHandlerService
     }
     private static async void RemoveFolder(string path)
     {
-        var currentItem = ItemNavigationService.GetCurrentItemId();
+        var currentItem = InstanceRepository.NavigationService.GetCurrentItemId();
         var item = GetByIdentifier(currentItem ?? string.Empty);
         if (item == null) return;
 
         var isAppManaged = ItemUtils.IsAppManagedPath(item.ItemPath, path);
         if (isAppManaged)
         {
-            var removeFromDatabase = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var removeFromDatabase = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance.Get(Localizer.Instance[Loc.Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder], path)
             );
             if (!removeFromDatabase) return;
             
-            await Items.RemovePath(item.Identifier, path, true);
+            await InstanceRepository.Items.RemovePath(item.Identifier, path, true);
         }
         else if (item.ItemPaths.Contains(path))
         {
-            var removeFromDatabase = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var removeFromDatabase = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveFolderFromDatabase, path)
             );
             if (!removeFromDatabase) return;
 
-            var removeFolder = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var removeFolder = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveFolder, path)
             );
 
-            await Items.RemovePath(item.Identifier, path, removeFolder);
+            await InstanceRepository.Items.RemovePath(item.Identifier, path, removeFolder);
         }
         else
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ItemPathNotFound],
                 NotificationType.Error
@@ -156,7 +148,7 @@ public static class ContextMenuHandlerService
             return;
         }
         
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.RemoveFolder],
             NotificationType.Success
@@ -167,10 +159,10 @@ public static class ContextMenuHandlerService
         var item = GetByIdentifier(identifier);
         if (item == null) return;
 
-        var updates = await AvatarExplorerApp.Instance.VariationHashes.CheckVariationAndNotify(item.BoothId.ToString());
+        var updates = await InstanceRepository.VariationHashes.CheckVariationAndNotify(item.BoothId.ToString());
         if (updates.Count == 0)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.VariationUpdate.NoUpdatesAvailable],
                 string.Empty,
                 NotificationType.Information
@@ -194,7 +186,7 @@ public static class ContextMenuHandlerService
             return $"- {variationName}\n{string.Join("\n", parts)}";
         });
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.VariationUpdate.UpdateAvailable],
             string.Join("\n", contentLines),
             NotificationType.Information
@@ -207,7 +199,7 @@ public static class ContextMenuHandlerService
         if (string.IsNullOrEmpty(link)) return;
 
         var result = await ClipboardService.SetText(link);
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             !result.IsError ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             !result.IsError ? Localizer.Instance[Loc.Success.ClipboardSet] : Localizer.Instance[Loc.Error.ClipboardSetFailed],
             !result.IsError ? NotificationType.Success : NotificationType.Error
@@ -218,10 +210,10 @@ public static class ContextMenuHandlerService
         var link = GetByIdentifier(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
         if (string.IsNullOrEmpty(link)) return;
 
-        var result = await LauncherService.OpenUri(TopLevelProvider.Current, link);
+        var result = await LauncherService.OpenUri(link);
         if (result.IsError)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.OpenUriFailed],
                 NotificationType.Error
@@ -233,16 +225,16 @@ public static class ContextMenuHandlerService
         var author = GetByIdentifier(identifier)?.Author;
         if (string.IsNullOrEmpty(author)) return;
 
-        var mainVm = MainWindowViewModel.Instance.MainVM;
+        var mainVm = InstanceRepository.MainWindow.MainVM;
         mainVm.SearchText = $"Author=\"{author}\"";
     }
     private static async void ChangeThumbnail(string identifier)
     {
-        var files = await StorageService.OpenFileDialog(TopLevelProvider.Current, "Select Thumbnail Image");
+        var files = await StorageService.OpenFileDialog(Localizer.Instance[Loc.Dialog.SelectFilePath]);
         if (files == null || files.Length == 0) return;
 
-        var result = await Items.UpdateThumbnail(identifier, files[0]);
-        MainWindowViewModel.ShowNotification(
+        var result = await InstanceRepository.Items.UpdateThumbnail(identifier, files[0]);
+        NotificationManager.Show(
             !result.IsError ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             !result.IsError ? Localizer.Instance[Loc.Success.ItemThumbnailEdit] : Localizer.Instance[Loc.Error.ItemThumbnailEditFailed],
             !result.IsError ? NotificationType.Success : NotificationType.Error
@@ -250,8 +242,8 @@ public static class ContextMenuHandlerService
     }
     private static async void FetchThumbnail(string identifier)
     {
-        var result = await Items.FetchThumbnailFromBooth(identifier);
-        MainWindowViewModel.ShowNotification(
+        var result = await InstanceRepository.Items.FetchThumbnailFromBooth(identifier);
+        NotificationManager.Show(
             !result.IsError ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             !result.IsError ? Localizer.Instance[Loc.Success.FetchItemThumbnail] : Localizer.Instance[Loc.Error.FetchItemThumbnailFailed],
             !result.IsError ? NotificationType.Success : NotificationType.Error
@@ -264,22 +256,19 @@ public static class ContextMenuHandlerService
 
         string itemInfo = string.Format("{0} - {1}\n{2}", item.Title, item.Author, item.BoothId != -1 ? item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]) : "(No Booth Link)");
         var result = await ClipboardService.SetText(itemInfo);
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             !result.IsError ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             !result.IsError ? Localizer.Instance[Loc.Success.ClipboardSet] : Localizer.Instance[Loc.Error.ClipboardSetFailed],
             !result.IsError ? NotificationType.Success : NotificationType.Error
         );
     }
-    private static void EditItem(string identifier)
-    {
-        MainWindowViewModel.Instance.ShowItemEditor(identifier);
-    }
+    private static void EditItem(string identifier) => InstanceRepository.MainWindow.ItemEditorVM.Open(identifier);
     private static async void EditItemTitle(string identifier)
     {
         var item = GetByIdentifier(identifier);
         if (item == null) return;
 
-        var newTitle = await MainWindowViewModel.Instance.ShowTextDialog(
+        var newTitle = await InstanceRepository.MainWindow.ShowTextDialog(
             Localizer.Instance[Loc.Dialog.Title.NewItemTitle],
             item.Title
         );
@@ -292,20 +281,19 @@ public static class ContextMenuHandlerService
         var item = GetByIdentifier(identifier);
         if (item == null) return;
 
-        var newMemo = await MainWindowViewModel.Instance.ShowEditMemoDialog(item.ItemMemo);
+        var newMemo = await InstanceRepository.MainWindow.ShowEditMemoDialog(item.ItemMemo);
         if (newMemo == null) return;
 
         await EditItemInternal(identifier, new() { ItemMemo = newMemo });
     }
     private static void AddToBulkImportList(string identifier)
     {
-        var bulkVm = MainWindowViewModel.Instance.MainVM.BulkImportVM;
+        var bulkVm = InstanceRepository.MainWindow.MainVM.BulkImportVM;
         bulkVm.AddItem(identifier);
     }
     private static async void AddItemFile(string identifier)
     {
         var files = await StorageService.OpenFileDialog(
-            TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFilePath],
             allowMultiple: true
         );
@@ -320,7 +308,6 @@ public static class ContextMenuHandlerService
     private static async void AddItemFolder(string identifier)
     {
         var folders = await StorageService.OpenFolderDialog(
-            TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFolderPath],
             allowMultiple: true
         );
@@ -334,11 +321,11 @@ public static class ContextMenuHandlerService
     }
     private static async Task AddPathsInternal(string identifier, IEnumerable<ItemPathEntry> paths, bool isFile)
     {
-        var extractResult = await Items.AddPaths(identifier, paths, RuntimeSettings.ShouldLinkToOriginal);
+        var extractResult = await InstanceRepository.Items.AddPaths(identifier, paths, InstanceRepository.RuntimeSettings.Settings.ShouldLinkToOriginal);
 
         if (extractResult.IsError)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 isFile ? Localizer.Instance[Loc.Error.AddItemFileFailed] : Localizer.Instance[Loc.Error.AddItemFolderFailed],
                 NotificationType.Error
@@ -346,7 +333,7 @@ public static class ContextMenuHandlerService
         }
         else if (extractResult.Value.ProcessingFailedPaths.Count > 0)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(
                     Loc.Error.FoundProcessingFailedPath,
@@ -357,7 +344,7 @@ public static class ContextMenuHandlerService
         }
         else
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Success.Default],
                 isFile ? Localizer.Instance[Loc.Success.ItemFileAdd] : Localizer.Instance[Loc.Success.ItemFolderAdd],
                 NotificationType.Success
@@ -369,7 +356,7 @@ public static class ContextMenuHandlerService
         var item = GetByIdentifier(identifier);
         if (item == null) return;
 
-        var newAvatars = await MainWindowViewModel.Instance.ShowSelectAvatars(
+        var newAvatars = await InstanceRepository.MainWindow.ShowSelectAvatars(
             Localizer.Instance[Loc.SelectAvatars.Title.ImplementedAvatars],
             item.ImplementedAvatars.ToArray(),
             includeCommonAvatar: false,
@@ -386,14 +373,13 @@ public static class ContextMenuHandlerService
         if (item == null) return;
 
         var folders = await StorageService.OpenFolderDialog(
-            TopLevelProvider.Current,
             Localizer.Instance[Loc.Dialog.SelectFolderPath],
             allowMultiple: false
         );
         if (folders == null || folders.Length == 0) return;
 
-        var result = await Items.Update(item.Identifier, new() { ItemPath = folders[0] });
-        MainWindowViewModel.ShowNotification(
+        var result = await InstanceRepository.Items.Update(item.Identifier, new() { ItemPath = folders[0] });
+        NotificationManager.Show(
             result ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
             result ? Localizer.Instance[Loc.Success.ItemEdit] : Localizer.Instance[Loc.Error.ItemEditFailed],
             result ? NotificationType.Success : NotificationType.Error
@@ -404,7 +390,7 @@ public static class ContextMenuHandlerService
         var item = GetByIdentifier(identifier);
         if (item == null) return;
 
-        var newTags = await MainWindowViewModel.Instance.ShowEditTagsDialog(item.Tags.ToArray());
+        var newTags = await InstanceRepository.MainWindow.ShowEditTagsDialog(item.Tags.ToArray());
         if (newTags == null) return;
 
         await EditItemInternal(item.Identifier, new() { Tags = newTags });
@@ -414,7 +400,7 @@ public static class ContextMenuHandlerService
         var item = GetByIdentifier(identifier);
         if (item == null) return;
 
-        var removeResult = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var removeResult = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveItem, item.Title)
         );
@@ -424,15 +410,15 @@ public static class ContextMenuHandlerService
 
         if (!string.IsNullOrEmpty(item.ItemPath) && Directory.Exists(item.ItemPath))
         {
-            removeDirectory = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            removeDirectory = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveAssetData, item.ItemPath)
             );
         }
 
-        ItemGroupService.RemoveItem(item.Identifier, removeDirectory);
+        InstanceRepository.ItemGroupService.RemoveItem(item.Identifier, removeDirectory);
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.Remove],
             NotificationType.Success
@@ -440,10 +426,10 @@ public static class ContextMenuHandlerService
     }
     private static async void OpenFile(string path)
     {
-        var result = await LauncherService.OpenFile(TopLevelProvider.Current, path);
+        var result = await LauncherService.OpenFile(path);
         if (result.IsError)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.OpenFileFailed],
                 NotificationType.Error
@@ -452,10 +438,10 @@ public static class ContextMenuHandlerService
     }
     private static void AddFileToBulkImportList(string path)
     {
-        var currentItem = ItemNavigationService.GetCurrentItemId();
+        var currentItem = InstanceRepository.NavigationService.GetCurrentItemId();
         if (string.IsNullOrEmpty(currentItem)) return;
         
-        var bulkVm = MainWindowViewModel.Instance.MainVM.BulkImportVM;
+        var bulkVm = InstanceRepository.MainWindow.MainVM.BulkImportVM;
         bulkVm.AddItem(currentItem, path);
     }
     private static void ShowInExplorer(string path)
@@ -468,7 +454,7 @@ public static class ContextMenuHandlerService
         }
         catch (Exception ex)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.OpenFileFailed],
                 NotificationType.Error
@@ -478,18 +464,18 @@ public static class ContextMenuHandlerService
     }
     private static void OpenUnitypackageViewer(string path)
     {
-        MainWindowViewModel.Instance.ShowUnitypackageViewer(path);
+        InstanceRepository.MainWindow.UnitypackageViewerVM.Open(path);
     }
     private static void OpenPdfViewer(string path)
     {
-        MainWindowViewModel.Instance.ShowPdfViewer(path);
+        InstanceRepository.MainWindow.PdfViewerVM.Open(path);
     }
     private static async void RemovePreset(string identifier)
     {
-        var preset = AvatarExplorerApp.Instance.BulkImportPresets.Get(identifier);
+        var preset = InstanceRepository.BulkImportPresets.Get(identifier);
         if (preset == null)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.PresetNotFound],
                 NotificationType.Error
@@ -497,15 +483,15 @@ public static class ContextMenuHandlerService
             return;
         }
 
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance.Get(Loc.Dialog.Confirmation.RemovePreset, preset.PresetName)
         );
         if (!result) return;
 
-        AvatarExplorerApp.Instance.BulkImportPresets.Remove(preset.Identifier);
+        InstanceRepository.BulkImportPresets.Remove(preset.Identifier);
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.Remove],
             NotificationType.Success
@@ -513,10 +499,10 @@ public static class ContextMenuHandlerService
     }
     private static async void EditTempAvatarName(string identifier)
     {
-        var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(identifier);
+        var tempAvatar = InstanceRepository.TempAvatars.Get(identifier);
         if (tempAvatar == null)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.TempAvatarNotFound],
                 NotificationType.Error
@@ -524,15 +510,15 @@ public static class ContextMenuHandlerService
             return;
         }
 
-        var newName = await MainWindowViewModel.Instance.ShowTextDialog(
+        var newName = await InstanceRepository.MainWindow.ShowTextDialog(
             Localizer.Instance[Loc.Dialog.Title.NewTempAvatarName],
             tempAvatar.AvatarName
         );
         if (string.IsNullOrEmpty(newName)) return;
 
-        AvatarExplorerApp.Instance.TempAvatars.RenameAvatar(tempAvatar.Identifier, newName);
+        InstanceRepository.TempAvatars.RenameAvatar(tempAvatar.Identifier, newName);
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.ItemEdit],
             NotificationType.Success
@@ -540,14 +526,14 @@ public static class ContextMenuHandlerService
     }
     private static void ResolveTempAvatar(string identifier)
     {
-        MainWindowViewModel.Instance.ShowTempAvatarResolver(identifier);
+        InstanceRepository.MainWindow.ResolveTempAvatarVM.Open(identifier);
     }
     private static async void RemoveTempAvatar(string identifier)
     {
-        var tempAvatar = AvatarExplorerApp.Instance.TempAvatars.Get(identifier);
+        var tempAvatar = InstanceRepository.TempAvatars.Get(identifier);
         if (tempAvatar == null)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.TempAvatarNotFound],
                 NotificationType.Error
@@ -555,15 +541,15 @@ public static class ContextMenuHandlerService
             return;
         }
 
-        var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+        var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveTempAvatar, tempAvatar.AvatarName)
         );
         if (!result) return;
 
-        ItemGroupService.RemoveTempAvatar(tempAvatar.Identifier);
+        InstanceRepository.ItemGroupService.RemoveTempAvatar(tempAvatar.Identifier);
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.Remove],
             NotificationType.Success
@@ -573,27 +559,27 @@ public static class ContextMenuHandlerService
     {
         var oldCategory = ItemCategory.FromIdentifier(identifier).CustomCategory;
 
-        var newName = await MainWindowViewModel.Instance.ShowTextDialog(
+        var newName = await InstanceRepository.MainWindow.ShowTextDialog(
             Localizer.Instance[Loc.Dialog.Title.NewCustomCategoryName],
             oldCategory
         );
         if (string.IsNullOrEmpty(newName)) return;
 
-        var isDuplicate = AvatarExplorerApp.Instance.Items.GetAll()
+        var isDuplicate = InstanceRepository.Items.GetAll()
             .Any(i => i.Category.Type == ItemType.Custom && i.Category.CustomCategory == newName);
 
         if (isDuplicate)
         {
-            var result = await MainWindowViewModel.Instance.ShowYesNoDialog(
+            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
                 Localizer.Instance[Loc.Dialog.Confirmation.DuplicateCustomCategoryName]
             );
             if (!result) return;
         }
 
-        AvatarExplorerApp.Instance.Items.RenameCustomCategory(oldCategory, newName);
+        InstanceRepository.Items.RenameCustomCategory(oldCategory, newName);
 
-        MainWindowViewModel.ShowNotification(
+        NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.RenameCustomCategory],
             NotificationType.Success
@@ -601,6 +587,6 @@ public static class ContextMenuHandlerService
     }
     private static void MergeWithOtherCategory(string identifier)
     {
-        MainWindowViewModel.Instance.MergeCategoryVM.Open(identifier);
+        InstanceRepository.MainWindow.MergeCategoryVM.Open(identifier);
     }
 }

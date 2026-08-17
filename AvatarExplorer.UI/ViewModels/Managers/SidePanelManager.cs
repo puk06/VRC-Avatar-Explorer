@@ -20,11 +20,9 @@ public class SidePanelManager
         ApplyState();
     }
 
-    public void Open(string index)
+    public void Open(int index)
     {
-        if (!int.TryParse(index, out var selected)) return;
-
-        _vm.SelectedSidePanelTab = selected;
+        _vm.SelectedSidePanelTab = index;
         _state = SidePanelState.Expanded;
         _expandedWidth = DefaultExpandedWidth;
         ApplyState();

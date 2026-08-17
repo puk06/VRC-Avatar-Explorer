@@ -8,9 +8,9 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
@@ -44,14 +44,14 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
     public async Task Initialize()
     {
-        AvatarExplorerApp.Instance.Items.OnUpdated += RefreshItems;
+        InstanceRepository.Items.OnUpdated += RefreshItems;
         UserPreferencesService.Instance.Repository.OnSettingsChanged += _ => OnUserPreferencesChanged();
         Items.CollectionChanged += (s, e) => OnItemsChanged?.Invoke();
     }
 
     private void OnUserPreferencesChanged()
     {
-        var settings = UserPreferencesService.Instance.Repository.Settings;
+        var settings = InstanceRepository.UserPreferences.Settings;
         foreach (var item in Items)
         {
             item.Update(settings.NormalIconSize, settings.RemoveBrackets);
@@ -64,10 +64,10 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
         foreach (var bulkImportItem in Items)
         {
-            var item = AvatarExplorerApp.Instance.Items.Get(bulkImportItem.ItemId);
+            var item = InstanceRepository.Items.Get(bulkImportItem.ItemId);
             if (item == null)
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.ItemNotFound],
                     NotificationType.Warning
@@ -78,7 +78,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             var selectedPath = bulkImportItem.SelectedUnitypackagePath;
             if (string.IsNullOrEmpty(selectedPath))
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.UnitypackageNotFound],
                     NotificationType.Warning
@@ -97,22 +97,22 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             }
         }
 
-        MainWindowViewModel.Instance.ProgressVM.Open(Localizer.Instance[Loc.Processing.Unitypackage.Status.Preparing]);
+        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Unitypackage.Status.Preparing]);
         var importResult = await UnitypackageService.Import(
             itemPathCategoryEntries,
             onProgress: async (name, percent) =>
             {
-                MainWindowViewModel.Instance.ProgressVM.Update(
+                InstanceRepository.MainWindow.ProgressVM.Update(
                     Localizer.Instance.Get(name, percent.ToString()),
                     percent
                 );
             }
         );
-        MainWindowViewModel.Instance.ProgressVM.Close();
+        InstanceRepository.MainWindow.ProgressVM.Close();
 
         if (importResult.ContainsScripts)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance[Loc.Warning.ScriptsFoundInUnitypackage],
                 NotificationType.Warning
@@ -121,10 +121,10 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
         if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
         {
-            var result = await LauncherService.OpenFile(TopLevelProvider.Current, importResult.ModifiedUnitypackagePath);
+            var result = await LauncherService.OpenFile(importResult.ModifiedUnitypackagePath);
             if (result.IsError)
             {
-                MainWindowViewModel.ShowNotification(
+                NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
                     Localizer.Instance[Loc.Error.OpenFileFailed],
                     NotificationType.Error
@@ -133,7 +133,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
         }
         else
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.BulkImportFailed],
                 NotificationType.Error
@@ -148,10 +148,10 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
     private async Task Save()
     {
-        var presetName = await MainWindowViewModel.Instance.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewBulkImportPresetName]);
+        var presetName = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewBulkImportPresetName]);
         if (string.IsNullOrEmpty(presetName)) return;
 
-        AvatarExplorerApp.Instance.BulkImportPresets.Create(
+        InstanceRepository.BulkImportPresets.Create(
             presetName,
             Items
                 .Select(i => new BulkImportItem(i.ItemId, i.SelectedUnitypackagePath))
@@ -163,7 +163,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
     {
         if (isFile)
         {
-            var currentItem = AvatarExplorerApp.Instance.ItemNavigationService.GetCurrentItemId();
+            var currentItem = InstanceRepository.NavigationService.GetCurrentItemId();
             if (currentItem == null) return;
 
             AddItem(currentItem, value);
@@ -176,10 +176,10 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
     public void AddItem(string itemid, string? filePath = null)
     {
-        var item = AvatarExplorerApp.Instance.Items.Get(itemid);
+        var item = InstanceRepository.Items.Get(itemid);
         if (item == null)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ItemNotFound],
                 NotificationType.Warning
@@ -191,7 +191,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
         if (unitypackagePaths.Length == 0)
         {
-            MainWindowViewModel.ShowNotification(
+            NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.UnitypackageNotFound],
                 NotificationType.Warning
@@ -215,7 +215,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             if (index != -1) bulkVm.SelectedUnitypackage = index;
         }
 
-        var settings = UserPreferencesService.Instance.Repository.Settings;
+        var settings = InstanceRepository.UserPreferences.Settings;
         Items.Add(bulkVm.Update(settings.NormalIconSize, settings.RemoveBrackets));
     }
 
@@ -223,10 +223,10 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
     {
         var newItems = new List<BulkImportItemViewModel>();
 
-        var settings = UserPreferencesService.Instance.Repository.Settings;
+        var settings = InstanceRepository.UserPreferences.Settings;
         foreach (var itemVm in Items)
         {
-            var item = AvatarExplorerApp.Instance.Items.Get(itemVm.ItemId);
+            var item = InstanceRepository.Items.Get(itemVm.ItemId);
             if (item == null) continue;
 
             itemVm.ImageFileName = item.ThumbnailFileName;

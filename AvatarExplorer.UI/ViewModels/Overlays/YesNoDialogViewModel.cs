@@ -15,8 +15,8 @@ public class YesNoDialogViewModel : ViewModelBase
 
     public YesNoDialogViewModel()
     {
-        YesCommand = ReactiveCommand.Create(() => _tcs.SetResult(true));
-        NoCommand = ReactiveCommand.Create(() => _tcs.SetResult(false));
+        YesCommand = ReactiveCommand.Create(Yes);
+        NoCommand = ReactiveCommand.Create(No);
     }
 
     public Task<bool> ShowAsync(string title, string content)
@@ -25,7 +25,9 @@ public class YesNoDialogViewModel : ViewModelBase
         Content = content;
 
         _tcs = new();
-
         return _tcs.Task;
     }
+
+    private void Yes() => _tcs.SetResult(true);
+    private void No() => _tcs.SetResult(false);
 }

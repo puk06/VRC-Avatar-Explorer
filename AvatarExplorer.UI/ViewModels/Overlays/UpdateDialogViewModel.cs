@@ -12,6 +12,7 @@ namespace AvatarExplorer.UI.ViewModels.Overlays;
 public class UpdateDialogViewModel : ViewModelBase
 {
     [Reactive] public bool IsVisible { get; set; }
+
     private string CurrentVersion { get; set; } = string.Empty;
     private string LatestVersion { get; set; } = string.Empty;
     private string ReleaseDate { get; set; } = string.Empty;
@@ -26,7 +27,7 @@ public class UpdateDialogViewModel : ViewModelBase
     public UpdateDialogViewModel()
     {
         LaterCommand = ReactiveCommand.Create(OnLater);
-        UpdateNowCommand = ReactiveCommand.CreateFromTask(OnUpdateNow);
+        UpdateNowCommand = ReactiveCommand.CreateFromTask(UpdateNow);
     }
 
     public void Open(string currentVersion, VersionRelease latestRelease)
@@ -51,9 +52,9 @@ public class UpdateDialogViewModel : ViewModelBase
         IsVisible = false;
     }
 
-    private async Task OnUpdateNow()
+    private async Task UpdateNow()
     {
-        await LauncherService.OpenUri(TopLevelProvider.Current, ReleaseUrl);
+        await LauncherService.OpenUri(ReleaseUrl);
         IsVisible = false;
     }
 }

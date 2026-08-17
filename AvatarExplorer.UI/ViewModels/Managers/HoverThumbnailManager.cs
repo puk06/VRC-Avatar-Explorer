@@ -1,5 +1,5 @@
 using Avalonia;
-using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels.Component;
 
@@ -14,11 +14,12 @@ public class HoverThumbnailManager(MainViewModel vm)
         var isSuppotedType = item.ViewModelType == ViewModelType.Item || item.ViewModelType == ViewModelType.Avatar || (item.ViewModelType == ViewModelType.File && item.ThumbnailFilePath != null);
         if (!isSuppotedType || item.Thumbnail == null) return;
 
-        var preferences = UserPreferencesService.Instance.Repository.Settings;
-        if (!preferences.EnableHoverIconSize) return;
+        if (InstanceRepository.UserPreferences.Settings.EnableHoverIconSize)
+        {
+            _vm.HoverThumbnailImage = item.Thumbnail;
+            _vm.IsHoverThumbnailVisible = true;
+        }
 
-        _vm.HoverThumbnailImage = item.Thumbnail;
-        _vm.IsHoverThumbnailVisible = true;
     }
 
     public void Hide()

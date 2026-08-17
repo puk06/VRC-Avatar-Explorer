@@ -19,13 +19,13 @@ public class ArchivePasswordDialogViewModel : ViewModelBase
     [Reactive] public string Password { get; set; } = string.Empty;
     private TaskCompletionSource<string?> _tcs = new();
 
-    public IReactiveCommand CancelCommand { get; }
     public IReactiveCommand ConfirmCommand { get; }
+    public IReactiveCommand CancelCommand { get; }
 
     public ArchivePasswordDialogViewModel()
     {
-        CancelCommand = ReactiveCommand.Create(() => _tcs.SetResult(null));
-        ConfirmCommand = ReactiveCommand.Create(() => _tcs.SetResult(Password));
+        ConfirmCommand = ReactiveCommand.Create(Confirm);
+        CancelCommand = ReactiveCommand.Create(Cancel);
     }
 
     public Task<string?> ShowAsync(ArchivePasswordRequest request)
@@ -40,4 +40,7 @@ public class ArchivePasswordDialogViewModel : ViewModelBase
         _tcs = new();
         return _tcs.Task;
     }
+
+    public void Confirm() => _tcs.SetResult(Password);
+    public void Cancel() => _tcs.SetResult(null);
 }

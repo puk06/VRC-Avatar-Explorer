@@ -37,7 +37,7 @@ You are a **Code Reviewer specialist** for the AvatarExplorer project. Your job 
 - **Overlay Pattern**: Each overlay has a ViewModel in `ViewModels/Overlays/` and a View in `Views/Overlays/`
 - **Dialog Results**: Use `TaskCompletionSource`-style `WaitForResult()` async pattern
 - **Manager Pattern**: Complex logic extracted into `ViewModels/Managers/` (e.g., SidePanelManager, SearchManager)
-- **Singleton Access**: `MainWindowViewModel.Instance` / `MainViewModel.Instance` for cross-VM communication
+- **Singleton Access**: `InstanceRepository.MainWindow` / `MainViewModel.Instance` for cross-VM communication
 - **Compiled Bindings**: Enabled by default (`x:DataType` required in XAML)
 - **Private Fields**: Use `_camelCase` (e.g., `_tcs`, `_allAvatars`)
 
