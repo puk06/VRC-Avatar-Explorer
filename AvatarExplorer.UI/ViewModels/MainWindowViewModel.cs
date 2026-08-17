@@ -86,11 +86,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         IInitializableRegistry.Register(9999, (IPostInitializable)this);
     }
 
-    private void OnBackupRestored()
-    {
-        AppInitializer.InitializeUserPreferences();
-    }
-
     public async Task Initialize()
     {
         AppInitializer.InitializeApp();
@@ -123,6 +118,51 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         UpdateFontFamily();
         UpdateWindowTitle();
     }
+    private void UpdateFontFamily()
+    {
+        FontFamily = FontUtils.GetFontFamily(Localizer.Instance[Loc.FontFamily]);
+    }
+
+    private void OnBackupRestored()
+    {
+        AppInitializer.InitializeUserPreferences();
+    }
+
+    private static void CheckIfRunningAsAdmin()
+    {
+        if (!ProcessUtils.IsWindows()) return;
+
+        if (SchemeService.IsRunAsAdmin())
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Warning.Default],
+                Localizer.Instance[Loc.Warning.RunningInAdministratorMode],
+                NotificationType.Warning
+            );
+        }
+    }
+    private void UpdateWindowTitle()
+    {
+        var title = string.Format("VRC Avatar Explorer v{0}", AvatarExplorerApp.CurrentVersion);
+
+        if (ProcessUtils.IsWindows() && SchemeService.IsRunAsAdmin())
+            title += string.Format(" - [{0}]", Localizer.Instance[Loc.Title.AdministratorMode]);
+
+        WindowTitle = title;
+    }
+
+    private static async void CheckForUpdateOnStartup()
+    {
+        var settings = InstanceRepository.RuntimeSettings;
+        if (!InstanceRepository.RuntimeSettings.CheckForUpdate) return;
+
+        await UpdateChecker.CheckForUpdate(settings.UpdateChannel);
+    }
+    private void OnUpdateAvailable(VersionRelease release)
+    {
+        UpdateDialogVM.Open(AvatarExplorerApp.CurrentVersion, release);
+        IsUpdateDialogVisible = true;
+    }
 
     private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => OnArgsReceived(args));
     public void SetApplicationArgs(string[] args)
@@ -130,7 +170,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         ApplicationArgs = args;
         OnArgsReceived(args);
     }
-
     public void OnArgsReceived(string[] args)
     {
         if (args == null || args.Length == 0 || string.IsNullOrEmpty(args[0])) return;
@@ -147,59 +186,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
             var launchInfo = LaunchInfoService.GetLaunchInfo(uri);
             if (launchInfo != null) ItemEditorVM.Open(launchInfo);
         }
-    }
-
-    private void ApplyPreferenceSettings(UserPreferences settings)
-    {
-        Localizer.Instance.SetLanguage(settings.Language);
-
-        if (settings.UseBackgroundImage) SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
-        else BackgroundImage = null;
-
-        var (themeVariant, backgroundColor) = settings.Theme.GetThemeVariant();
-        SetBackgroundColor(backgroundColor);
-        SetTheme(themeVariant);
-    }
-
-    private static async void CheckForUpdateOnStartup()
-    {
-        var settings = InstanceRepository.RuntimeSettings;
-        if (!InstanceRepository.RuntimeSettings.CheckForUpdate) return;
-
-        await UpdateChecker.CheckForUpdate(settings.UpdateChannel);
-    }
-    private void OnUpdateAvailable(VersionRelease release)
-    {
-        UpdateDialogVM.Open(AvatarExplorerApp.CurrentVersion, release);
-        IsUpdateDialogVisible = true;
-    }
-
-    private static void CheckIfRunningAsAdmin()
-    {
-        if (!ProcessUtils.IsWindows()) return;
-
-        if (SchemeService.IsRunAsAdmin())
-        {
-            NotificationManager.Show(
-                Localizer.Instance[Loc.Warning.Default],
-                Localizer.Instance[Loc.Warning.RunningInAdministratorMode],
-                NotificationType.Warning
-            );
-        }
-    }
-
-    private void UpdateWindowTitle()
-    {
-        var title = string.Format("VRC Avatar Explorer v{0}", AvatarExplorerApp.CurrentVersion);
-
-        if (ProcessUtils.IsWindows() && SchemeService.IsRunAsAdmin())
-            title += string.Format(" - [{0}]", Localizer.Instance[Loc.Title.AdministratorMode]);
-
-        WindowTitle = title;
-    }
-    private void UpdateFontFamily()
-    {
-        FontFamily = FontUtils.GetFontFamily(Localizer.Instance[Loc.FontFamily]);
     }
 
     public void OnFilesDrop(string[] filePaths)
@@ -250,7 +236,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
         return result;
     }
-
     private async ValueTask<string?> GetArchivePassword(ArchivePasswordRequest request)
     {
         IsArchivePasswordDialogVisible = true;
@@ -260,6 +245,17 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         return password;
     }
 
+    private void ApplyPreferenceSettings(UserPreferences settings)
+    {
+        Localizer.Instance.SetLanguage(settings.Language);
+
+        if (settings.UseBackgroundImage) SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
+        else BackgroundImage = null;
+
+        var (themeVariant, backgroundColor) = settings.Theme.GetThemeVariant();
+        SetBackgroundColor(backgroundColor);
+        SetTheme(themeVariant);
+    }
     private void SetBackgroundImage(string path, int opacity)
     {
         try
