@@ -115,7 +115,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         AppInitializer.StartThumbnailCacheWarmup();
         AppInitializer.StartSingleInstanceService();
 
-        UserPreferencesService.Instance.Repository.OnSettingsChanged += ApplyPreferenceSettings;
+        InstanceRepository.UserPreferencesRepository.OnSettingsChanged += ApplyPreferenceSettings;
         Localizer.Instance.LanguageChanged += OnLanguageUpdated;
         InstanceRepository.App.ArchivePasswordProvider = GetArchivePassword;
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;

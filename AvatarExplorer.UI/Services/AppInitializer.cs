@@ -27,7 +27,7 @@ public static class AppInitializer
 
     public static void InitializeUserPreferences()
     {
-        UserPreferencesService.Instance.Repository.Load();
+        InstanceRepository.UserPreferencesRepository.Load();
     }
 
     public static void StartThumbnailCacheWarmup()

@@ -47,7 +47,7 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
     {
         BrowseFolderCommand = ReactiveCommand.CreateFromTask(BrowseFolder);
         ImportCommand = ReactiveCommand.CreateFromTask(Import);
-        CancelCommand = ReactiveCommand.Create(() => IsVisible = false);
+        CancelCommand = ReactiveCommand.Create(Cancel);
 
         IInitializableRegistry.Register(0, this);
     }
@@ -138,4 +138,6 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
 
         IsVisible = false;
     }
+
+    private void Cancel() => IsVisible = false;
 }

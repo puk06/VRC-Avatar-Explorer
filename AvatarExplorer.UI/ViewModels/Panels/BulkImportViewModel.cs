@@ -33,8 +33,8 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
     public BulkImportViewModel()
     {
-        CopyCommand = ReactiveCommand.Create<BulkImportItemViewModel>(i => Items.Add(i.Copy().Update()));
-        RemoveCommand = ReactiveCommand.Create<BulkImportItemViewModel>(i => Items.Remove(i));
+        CopyCommand = ReactiveCommand.Create<BulkImportItemViewModel>(CopyItem);
+        RemoveCommand = ReactiveCommand.Create<BulkImportItemViewModel>(RemoveItem);
         ImportCommand = ReactiveCommand.CreateFromTask(Import);
         ResetCommand = ReactiveCommand.Create(Reset);
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
@@ -45,7 +45,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
     public async Task Initialize()
     {
         InstanceRepository.Items.OnUpdated += RefreshItems;
-        UserPreferencesService.Instance.Repository.OnSettingsChanged += _ => OnUserPreferencesChanged();
+        InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ => OnUserPreferencesChanged();
         Items.CollectionChanged += (s, e) => OnItemsChanged?.Invoke();
     }
 
@@ -57,6 +57,9 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             item.Update(settings.NormalIconSize, settings.RemoveBrackets);
         }
     }
+
+    private void CopyItem(BulkImportItemViewModel item) => Items.Add(item.Copy().Update());
+    private void RemoveItem(BulkImportItemViewModel item) => Items.Remove(item);
 
     private async Task Import()
     {
