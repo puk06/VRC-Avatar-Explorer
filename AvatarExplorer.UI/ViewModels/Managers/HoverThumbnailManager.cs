@@ -19,7 +19,6 @@ public class HoverThumbnailManager(MainViewModel vm)
             _vm.HoverThumbnailImage = item.Thumbnail;
             _vm.IsHoverThumbnailVisible = true;
         }
-
     }
 
     public void Hide()
