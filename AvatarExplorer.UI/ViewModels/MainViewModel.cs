@@ -326,12 +326,14 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         if (isFolderSearchEnabled)
         {
+            DisposeItemViewModels(_allMainItems);
             _allMainItems = _itemNavigationService.SearchFilesForCurrentItem(searchQuery)
                 .Select(CreateItemViewModel)
                 .ToList();
         }
         else
         {
+            DisposeItemViewModels(_allMainItems);
             _allMainItems = ItemSortService
             .Sort(
                 _searchManager.SearchItems(searchQuery),
@@ -377,6 +379,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         var sortedItems = SortNavigationItems(items, sortOrder, sortDirection, implementedSort, avatarId);
         var sortedNavigationables = sortedItems.Cast<IIdentifiable>().Concat(nonItems);
 
+        DisposeItemViewModels(_allMainItems);
         _allMainItems = sortedNavigationables
             .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars, implementedEnabled))
             .ToList();
@@ -445,6 +448,12 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     {
         RefreshLeftItems();
         RefreshMainItems();
+    }
+
+    private static void DisposeItemViewModels(IEnumerable<ItemViewModel> items)
+    {
+        foreach (var item in items)
+            item.Dispose();
     }
     private void RefreshLeftItems()
     {
@@ -570,6 +579,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             queryItems = ItemSortService.SortAvatars(queryItems, sortOrder, sortDirection, removeBrackets);
         }
 
+        DisposeItemViewModels(_allLeftItems);
         _allLeftItems = queryItems
             .Select(CreateItemViewModel)
             .ToList();

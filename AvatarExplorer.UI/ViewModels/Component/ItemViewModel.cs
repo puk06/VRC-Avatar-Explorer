@@ -20,7 +20,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
-public class ItemViewModel : ViewModelBase
+public class ItemViewModel : ViewModelBase, IDisposable
 {
     [Reactive] public bool IsVisible { get; set; } = true;
     [Reactive] public bool IsSelected { get; set; } = false;
@@ -52,6 +52,8 @@ public class ItemViewModel : ViewModelBase
     public Action<ContextMenuAction>? onMenuClick = null;
 
     private CancellationTokenSource? _thumbnailLoadCts;
+    private Bitmap? _ownedThumbnail;
+    private bool _disposed;
 
     public string Identifier { get; set; } = string.Empty;
 
@@ -66,7 +68,7 @@ public class ItemViewModel : ViewModelBase
         _thumbnailLoadCts = null;
 
         var fallbackIcon = ImageService.Get(ImageFileName);
-        Thumbnail = fallbackIcon;
+        SetThumbnail(fallbackIcon, owned: false);
 
         if (!string.IsNullOrEmpty(ThumbnailFilePath))
         {
@@ -155,14 +157,48 @@ public class ItemViewModel : ViewModelBase
         {
             var bitmap = await Task.Run(() => ImageService.GetFromFileSystem(filePath), ct);
 
-            if (ct.IsCancellationRequested || bitmap == null) return;
+            if (bitmap == null) return;
+
+            if (ct.IsCancellationRequested)
+            {
+                bitmap.Dispose();
+                return;
+            }
 
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                if (ct.IsCancellationRequested) return;
-                Thumbnail = bitmap;
+                if (ct.IsCancellationRequested)
+                {
+                    bitmap.Dispose();
+                    return;
+                }
+                SetThumbnail(bitmap, owned: true);
             }, DispatcherPriority.Normal, ct);
         }
         catch (OperationCanceledException) { }
+    }
+
+    private void SetThumbnail(Bitmap? value, bool owned)
+    {
+        if (_ownedThumbnail != null && !ReferenceEquals(_ownedThumbnail, value))
+        {
+            _ownedThumbnail.Dispose();
+        }
+        _ownedThumbnail = owned ? value : null;
+        Thumbnail = value;
+    }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _disposed = true;
+
+        _thumbnailLoadCts?.Cancel();
+        _thumbnailLoadCts?.Dispose();
+        _thumbnailLoadCts = null;
+        _ownedThumbnail?.Dispose();
+        _ownedThumbnail = null;
+
+        GC.SuppressFinalize(this);
     }
 }
