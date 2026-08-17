@@ -13,6 +13,7 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
@@ -408,7 +409,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         return sorted.OrderByDescending(i => i.ImplementedAvatars.Contains(avatarId) == priority);
     }
 
-    private ItemViewModel CreateItemViewModelWithStatus(IIdentifiable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled)
+    private static ItemViewModel CreateItemViewModelWithStatus(IIdentifiable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled)
     {
         var vm = CreateItemViewModel(nav);
 
@@ -426,7 +427,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             vm.IsNotImplemented = !isImplemented;
         }
 
-        var status = _itemNavigationService.ResolveAvatarStatusForCurrentAvatar(item, avatarId, commonAvatars);
+        var status = AvatarStatusResolver.Resolve(item, avatarId, commonAvatars);
         if (status.IsOnlyCommon)
         {
             var tags = new List<TagViewModel>(item.Tags.Length + 1)
@@ -506,7 +507,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 return InstanceRepository.Items.Get(state)?.Title ?? value;
 
             if (prefix == ItemNavigationService.FolderPrefix)
-                return System.IO.Path.GetFileName(_itemNavigationService.ResolveFolderPath(state) ?? "Unknown Folder");
+                return System.IO.Path.GetFileName(_itemNavigationService.ResolvePath(state) ?? "Unknown Folder");
 
             if (prefix == ItemNavigationService.ExtensionPrefix && Enum.TryParse<ItemFileCategoryType>(value, out var extensionCategory))
                 return Localizer.Instance[extensionCategory.GetLocalizationKey() ?? value];
@@ -620,7 +621,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 _stateCacheManager.SaveRightState(RightPageInfo);
             }
 
-            _searchItemBaseState = _itemNavigationService.CurrentStateValue;
+            _searchItemBaseState = _itemNavigationService.CurrentState?.Value;
             _searchManager.SuspendQuery(RightPageInfo);
             _itemNavigationService.Select(item.Identifier);
             _hasSearchItem = true;
@@ -657,8 +658,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var popped = _itemNavigationService.Undo();
             if (popped != null)
             {
-                var currentState = _itemNavigationService.CurrentStateValue;
-                if (_hasSearchItem && currentState == _searchItemBaseState)
+                var currentState = _itemNavigationService.CurrentState?.Value;
+                if (_hasSearchItem && currentState != null && currentState == _searchItemBaseState)
                 {
                     // 検索アイテムがpopされた → 検索状態を復元
                     _searchManager.MarkAsRestoring();

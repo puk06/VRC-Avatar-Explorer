@@ -1,7 +1,6 @@
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.Core.Utils;
@@ -57,41 +56,12 @@ public class ItemNavigationService
 
         return _state.Push(state);
     }
-
-    public string? GetCurrentAvatarId()
-    {
-        var avatarNode = _state.LastOrDefault(AvatarPrefix);
-        if (avatarNode == null) return null;
-
-        if (!TryParseState(avatarNode.Value, out var _, out var avatarId)) return null;
-
-        return avatarId;
-    }
-
-    public string? GetCurrentItemId()
-    {
-        var itemNode = _state.FirstOrDefault(ItemPrefix);
-        if (itemNode == null) return null;
-
-        return itemNode.Value;
-    }
-
-    public AvatarStatus ResolveAvatarStatusForCurrentAvatar(Item item, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars)
-    {
-        return AvatarStatusResolver.Resolve(item, avatarId, commonAvatars);
-    }
-
     public SelectionNode? Undo() => _state.Pop();
-
     public void Clear()
     {
         _state.Clear();
         _pathCache.Clear();
     }
-
-    public Guid? CurrentStateId => _state.Current?.Id;
-    public string? CurrentStateValue => _state.Current?.Value;
-
     public void PopToState(string targetState)
     {
         var nodes = _state.GetCurrentSelectionNodes().ToList();
@@ -103,18 +73,30 @@ public class ItemNavigationService
         }
     }
 
+    public SelectionNode? CurrentState => _state.Current;
     public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _state.GetCurrentSelectionNodes();
 
-    public string? ResolveFolderPath(string state) => TryParseState(state, out _, out var hash) ? ResolvePath(hash) : null;
+    public string? GetCurrentAvatarId()
+    {
+        var avatarNode = _state.LastOrDefault(AvatarPrefix);
+        if (avatarNode == null) return null;
+
+        if (!TryParseState(avatarNode.Value, out var _, out var avatarId)) return null;
+
+        return avatarId;
+    }
+    public string? GetCurrentItemId() => _state.FirstOrDefault(ItemPrefix)?.Value;
+
+    public string? ResolvePath(string state) => TryParseState(state, out _, out var hash) ? ResolvePathInternal(hash) : null;
+    private string? ResolvePathInternal(string hash) => _pathCache.TryGetValue(hash, out var path) ? path : null;
 
     public IIdentifiable[] GetCurrentSelectionView()
     {
         var state = _state.Current?.Value;
-        if (state == null) return AvatarExplorerApp.Instance.ItemRepository.GetAll().ToArray<IIdentifiable>();
+        if (state == null) return _items.ItemRepository.GetAll().ToArray<IIdentifiable>();
         if (!TryParseState(state, out var key, out _)) return [];
         return _handlers.TryGetValue(key, out var func) ? func(state) : [];
     }
-
     private IIdentifiable[] HandleRoot(string state)
     {
         if (!TryParseState(state, out var prefix, out var value)) return [];
@@ -140,7 +122,6 @@ public class ItemNavigationService
             };
         }).ToArray<IIdentifiable>();
     }
-
     private IIdentifiable[] HandleCategory(string state)
     {
         if (!TryParseState(state, out var prefix, out var value)) return [];
@@ -154,19 +135,17 @@ public class ItemNavigationService
         else if (TryParseState(root, out rootPrefix, out rootValue) && rootPrefix == AuthorPrefix)
             items = _items.GetItemsFromAuthor(rootValue);
         else
-            items = AvatarExplorerApp.Instance.ItemRepository.GetAll();
+            items = _items.ItemRepository.GetAll();
 
         if (ItemCategory.FromIdentifier(state).Type == ItemType.All)
             return items.ToArray();
 
-        return items.Where(i => i.IsCategoryMatch(state)).ToArray();
+        return items.Where(i => i.Category.Identifier == state).ToArray();
     }
-
     private IIdentifiable[] HandleItem(string state)
     {
         var itemFiles = PopulatePathCache(state);
-        var allFolders = AvatarExplorerApp.Instance.ItemRepository
-            .EnumerateItemFolders(GetItemId() ?? string.Empty);
+        var allFolders = _items.ItemRepository.EnumerateItemFolders(GetCurrentItemId() ?? string.Empty);
 
         foreach (var folder in allFolders)
             _pathCache[PathUtils.ComputeHash(folder)] = folder;
@@ -182,16 +161,15 @@ public class ItemNavigationService
             };
         }).ToArray<IIdentifiable>();
     }
-
     private IIdentifiable[] HandleFolder(string state)
     {
         if (!TryParseState(state, out _, out var hash)) return [];
 
-        var itemId = GetItemId();
+        var itemId = GetCurrentItemId();
         if (itemId == null) return [];
 
         var itemFiles = PopulatePathCache(itemId);
-        var selectedFolderPath = ResolvePath(hash);
+        var selectedFolderPath = ResolvePathInternal(hash);
         if (selectedFolderPath == null) return [];
 
         var files = itemFiles.Where(i => i.ParentFolderPath == selectedFolderPath);
@@ -208,7 +186,6 @@ public class ItemNavigationService
             };
         }).ToArray<IIdentifiable>();
     }
-
     private IIdentifiable[] HandleExtension(string state)
     {
         if (!TryParseState(state, out _, out var categoryRaw)) return [];
@@ -216,13 +193,13 @@ public class ItemNavigationService
         var categoryIndex = ValueParser.Int(categoryRaw);
         if (!Enum.IsDefined(typeof(ItemFileCategoryType), categoryIndex)) return [];
 
-        var itemId = GetItemId();
+        var itemId = GetCurrentItemId();
         var folderState = _state.FirstOrDefault(FolderPrefix)?.Value;
         if (itemId == null || folderState == null) return [];
         if (!TryParseState(folderState, out _, out var folderHash)) return [];
 
         var itemFiles = PopulatePathCache(itemId);
-        var selectedFolderPath = ResolvePath(folderHash);
+        var selectedFolderPath = ResolvePathInternal(folderHash);
         if (selectedFolderPath == null) return [];
 
         var files = itemFiles.Where(i => i.ParentFolderPath == selectedFolderPath);
@@ -232,15 +209,14 @@ public class ItemNavigationService
             ? categorizedFiles.ToArray()
             : [];
     }
-
     private void HandleFile(string hash)
     {
-        var itemid = GetItemId();
+        var itemid = GetCurrentItemId();
         if (itemid == null) return;
 
         PopulatePathCache(itemid);
 
-        var file = ResolvePath(hash);
+        var file = ResolvePathInternal(hash);
         if (file == null) return;
 
         FileOpenRequested?.Invoke(file);
@@ -248,12 +224,11 @@ public class ItemNavigationService
 
     public IIdentifiable[] SearchFilesForCurrentItem(string query)
     {
-        var itemId = GetItemId();
+        var itemId = GetCurrentItemId();
         if (itemId == null) return [];
 
         var itemFiles = PopulatePathCache(itemId);
-        var searchResults = AvatarExplorerApp.Instance.ItemRepository
-            .SearchItemFiles(itemId, query);
+        var searchResults = _items.ItemRepository.SearchItemFiles(itemId, query);
 
         return searchResults
             .Select(f => itemFiles.FirstOrDefault(i => i.FilePath == f.FilePath))
@@ -262,14 +237,9 @@ public class ItemNavigationService
             .ToArray();
     }
 
-    private string? ResolvePath(string hash) => _pathCache.TryGetValue(hash, out var path) ? path : null;
-
-    private string? GetItemId() => _state.FirstOrDefault(ItemPrefix)?.Value;
-
     private List<ItemFile> PopulatePathCache(string itemId)
     {
-        var itemFiles = AvatarExplorerApp.Instance.ItemRepository
-            .EnumerateItemFiles(itemId);
+        var itemFiles = _items.ItemRepository.EnumerateItemFiles(itemId);
 
         foreach (var file in itemFiles)
             _pathCache[PathUtils.ComputeHash(file.FilePath)] = file.FilePath;

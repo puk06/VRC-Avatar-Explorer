@@ -37,7 +37,7 @@ public class StateCacheManager(ItemNavigationService navigationService)
 
     public void SaveRightState(PanelPageInfo rightPageInfo, Guid? customGuid = null)
     {
-        var currentGuid = customGuid ?? _navigationService.CurrentStateId ?? Guid.Empty;
+        var currentGuid = customGuid ?? _navigationService.CurrentState?.Id ?? Guid.Empty;
 
         _pageCache.Add(currentGuid, rightPageInfo.CurrentPage);
         _scrollValueCache.Add(currentGuid, rightPageInfo.ScrollOffset);
@@ -49,7 +49,7 @@ public class StateCacheManager(ItemNavigationService navigationService)
     /// </summary>
     public bool SaveRightStateIfAbsent(PanelPageInfo rightPageInfo, Guid? customGuid = null)
     {
-        var currentGuid = customGuid ?? _navigationService.CurrentStateId ?? Guid.Empty;
+        var currentGuid = customGuid ?? _navigationService.CurrentState?.Id ?? Guid.Empty;
         if (_pageCache.ContainsKey(currentGuid)) return false;
 
         _pageCache.Add(currentGuid, rightPageInfo.CurrentPage);
@@ -59,7 +59,7 @@ public class StateCacheManager(ItemNavigationService navigationService)
 
     public void RestoreRightState(PanelPageInfo rightPageInfo, Guid? customGuid = null)
     {
-        var currentGuid = customGuid ?? _navigationService.CurrentStateId ?? Guid.Empty;
+        var currentGuid = customGuid ?? _navigationService.CurrentState?.Id ?? Guid.Empty;
         if (_pageCache.TryGetValue(currentGuid, out var page))
         {
             rightPageInfo.CurrentPage = page;

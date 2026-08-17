@@ -4,12 +4,6 @@ namespace AvatarExplorer.Core.Extensions;
 
 public static class ItemExtensions
 {
-    internal static bool IsCategoryMatch(this Item item, string identifier)
-    {
-        if (identifier == $"type:{(int)ItemType.All}") return true;
-        return item.Category.Identifier == identifier;
-    }
-
     public static IEnumerable<string> GetFolderPaths(this Item item, bool includeRootFolder = true)
     {
         var folderList = new List<string>();

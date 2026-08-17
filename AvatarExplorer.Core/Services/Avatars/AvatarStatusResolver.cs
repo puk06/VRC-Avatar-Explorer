@@ -2,9 +2,9 @@ using AvatarExplorer.Core.Models.Items;
 
 namespace AvatarExplorer.Core.Services.Avatars;
 
-internal static class AvatarStatusResolver
+public static class AvatarStatusResolver
 {
-    internal static AvatarStatus Resolve(Item item, string? avatarId, IEnumerable<CommonAvatar> commonAvatars, bool treatEmptySupportedAvatarAsNone = false)
+    public static AvatarStatus Resolve(Item item, string? avatarId, IEnumerable<CommonAvatar> commonAvatars, bool treatEmptySupportedAvatarAsNone = false)
     {
         var result = new AvatarStatus();
         if (string.IsNullOrEmpty(avatarId)) return result;
