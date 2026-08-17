@@ -41,39 +41,39 @@ internal static class ContextMenuCreator
     {
         List<ContextMenuAction> contextMenuActions =
         [
-            new ContextMenuAction(Loc.ContextMenu.Item.CheckForUpdate, ActionKey.CheckForUpdate, ContextMenuIconType.Update, itemId, addSeparator: true),
-            new ContextMenuAction(Loc.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, itemId, addSeparator: true),
+            new(Loc.ContextMenu.Item.CheckForUpdate, ActionKey.CheckForUpdate, ContextMenuIconType.Update, itemId, addSeparator: true),
+            new(Loc.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, itemId, addSeparator: true),
 
-            new ContextMenuAction(Loc.ContextMenu.Item.Add.BulkImportList, ActionKey.AddToBulkImportList, ContextMenuIconType.Add, itemId),
-            new ContextMenuAction(Loc.ContextMenu.Item.Add.File, ActionKey.None, ContextMenuIconType.Add, addSeparator: true)
+            new(Loc.ContextMenu.Item.Add.BulkImportList, ActionKey.AddToBulkImportList, ContextMenuIconType.Add, itemId),
+            new(Loc.ContextMenu.Item.Add.File, ActionKey.None, ContextMenuIconType.Add, addSeparator: true)
             {
                 SubMenuItems =
                 {
-                    new ContextMenuAction(Loc.ContextMenu.Item.Add.File, ActionKey.AddItemFile, ContextMenuIconType.Add, itemId),
-                    new ContextMenuAction(Loc.ContextMenu.Item.Add.Folder, ActionKey.AddItemFolder, ContextMenuIconType.Add, itemId)
+                    new(Loc.ContextMenu.Item.Add.File, ActionKey.AddItemFile, ContextMenuIconType.Add, itemId),
+                    new(Loc.ContextMenu.Item.Add.Folder, ActionKey.AddItemFolder, ContextMenuIconType.Add, itemId)
                 }
             },
-            new ContextMenuAction(Loc.ContextMenu.Item.Booth.Open, ActionKey.OpenBoothLink, ContextMenuIconType.Open, itemId),
-            new ContextMenuAction(Loc.ContextMenu.Item.Booth.Copy, ActionKey.CopyBoothLink, ContextMenuIconType.Copy, itemId, addSeparator: true),
+            new(Loc.ContextMenu.Item.Booth.Open, ActionKey.OpenBoothLink, ContextMenuIconType.Open, itemId),
+            new(Loc.ContextMenu.Item.Booth.Copy, ActionKey.CopyBoothLink, ContextMenuIconType.Copy, itemId, addSeparator: true),
 
-            new ContextMenuAction(Loc.ContextMenu.Item.CopyItemInfo, ActionKey.CopyItemInfo, ContextMenuIconType.Copy, itemId, addSeparator: true),
+            new(Loc.ContextMenu.Item.CopyItemInfo, ActionKey.CopyItemInfo, ContextMenuIconType.Copy, itemId, addSeparator: true),
 
-            new ContextMenuAction(Loc.ContextMenu.Item.Edit.Tag, ActionKey.EditItemTag, ContextMenuIconType.Edit, itemId),
-            new ContextMenuAction(Loc.ContextMenu.Item.Edit.Memo, ActionKey.EditItemMemo, ContextMenuIconType.Edit, itemId),
-            new ContextMenuAction(Loc.ContextMenu.Item.Edit.Implemented, ActionKey.EditImplementedAvatar, ContextMenuIconType.Edit, itemId, addSeparator: true),
-            new ContextMenuAction(Loc.ContextMenu.Item.Edit.Default, ActionKey.None, ContextMenuIconType.Edit, itemId, addSeparator: true)
+            new(Loc.ContextMenu.Item.Edit.Tag, ActionKey.EditItemTag, ContextMenuIconType.Edit, itemId),
+            new(Loc.ContextMenu.Item.Edit.Memo, ActionKey.EditItemMemo, ContextMenuIconType.Edit, itemId),
+            new(Loc.ContextMenu.Item.Edit.Implemented, ActionKey.EditImplementedAvatar, ContextMenuIconType.Edit, itemId, addSeparator: true),
+            new(Loc.ContextMenu.Item.Edit.Default, ActionKey.None, ContextMenuIconType.Edit, itemId, addSeparator: true)
             {
                 SubMenuItems =
                 {
-                    new ContextMenuAction(Loc.ContextMenu.Item.Edit.Default, ActionKey.EditItem, ContextMenuIconType.Edit, itemId),
-                    new ContextMenuAction(Loc.ContextMenu.Item.Edit.Title, ActionKey.EditItemTitle, ContextMenuIconType.Edit, itemId),
-                    new ContextMenuAction(Loc.ContextMenu.Item.Edit.DefaultPath, ActionKey.EditItemDefaultPath, ContextMenuIconType.Edit, itemId, addSeparator: true),
-                    new ContextMenuAction(Loc.ContextMenu.Item.Thumbnail.Change, ActionKey.ChangeThumbnail, ContextMenuIconType.Edit, itemId),
-                    new ContextMenuAction(Loc.ContextMenu.Item.Thumbnail.Fetch, ActionKey.FetchThumbnail, ContextMenuIconType.Fetch, itemId)
+                    new(Loc.ContextMenu.Item.Edit.Default, ActionKey.EditItem, ContextMenuIconType.Edit, itemId),
+                    new(Loc.ContextMenu.Item.Edit.Title, ActionKey.EditItemTitle, ContextMenuIconType.Edit, itemId),
+                    new(Loc.ContextMenu.Item.Edit.DefaultPath, ActionKey.EditItemDefaultPath, ContextMenuIconType.Edit, itemId, addSeparator: true),
+                    new(Loc.ContextMenu.Item.Thumbnail.Change, ActionKey.ChangeThumbnail, ContextMenuIconType.Edit, itemId),
+                    new(Loc.ContextMenu.Item.Thumbnail.Fetch, ActionKey.FetchThumbnail, ContextMenuIconType.Fetch, itemId)
                 }
             },
 
-            new ContextMenuAction(Loc.ContextMenu.Item.Remove, ActionKey.RemoveItem, ContextMenuIconType.Delete, itemId)
+            new(Loc.ContextMenu.Item.Remove, ActionKey.RemoveItem, ContextMenuIconType.Delete, itemId)
         ];
 
         return contextMenuActions.ToArray();

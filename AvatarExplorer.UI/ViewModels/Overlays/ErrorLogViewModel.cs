@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

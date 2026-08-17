@@ -3,7 +3,6 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Data.Paths;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.ContextMenu;
-using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 
 namespace AvatarExplorer.UI.Services;

@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.UI.Localization;
-using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

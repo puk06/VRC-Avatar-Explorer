@@ -14,7 +14,6 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
-using AvatarExplorer.UI.ViewModels;
 
 namespace AvatarExplorer.UI.Services.ContextMenu;
 
