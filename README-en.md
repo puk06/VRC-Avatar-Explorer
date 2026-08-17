@@ -41,8 +41,6 @@ This application supports automatic item retrieval from Booth, but it was develo
 1. Open the [latest release page](https://github.com/puk06/VRC-Avatar-Explorer/releases/latest).
 2. Download the file for your operating system.
 3. For non-Windows platforms, run `AvatarExplorer` in the extracted folder.
-   - On Linux (x64), an AppImage (`.AppImage`) is also available. After downloading, grant execute permission with `chmod +x` before running.
-   - Running an AppImage requires `libfuse2`. On systems without it, launch with the `--appimage-extract-and-run` option (e.g. `./VRC-Avatar-Explorer_*-linux-x64.AppImage --appimage-extract-and-run`).
 4. On Windows, run the downloaded `setup` (`.exe`) and complete the installation.
 5. If Windows SmartScreen appears, select `More info` and then `Run anyway` to continue.
 

@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=VRC Avatar Explorer
-Comment=Cross-Platform Asset Explorer For Avatar Modification
-Exec=AvatarExplorer
-Icon=avatar-explorer
-Categories=Utility;
-Terminal=false

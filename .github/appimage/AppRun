@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# AppImage runtime injects its own LD_LIBRARY_PATH which can interfere with
-# the .NET runtime's native library loading, so unset it before launching.
-unset LD_LIBRARY_PATH
-
-APPDIR="${APPDIR:-$(dirname "$(readlink -f "$0")")}"
-exec "$APPDIR/usr/bin/AvatarExplorer" "$@"

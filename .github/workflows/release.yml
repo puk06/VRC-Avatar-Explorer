@@ -102,33 +102,6 @@ jobs:
           fi
           echo "ASSET_PATH=${OUTPUT_NAME}" >> $GITHUB_ENV
 
-      - name: Build AppImage
-        if: matrix.runtime == 'linux-x64'
-        shell: bash
-        run: |
-          APP_NAME="VRC-Avatar-Explorer"
-          VERSION="${{ github.ref_name }}"
-          VERSION="${VERSION#v}"
-          VERSION="${VERSION%-stable}"
-          RUNTIME="${{ matrix.runtime }}"
-          OUTPUT_NAME="${APP_NAME}_${VERSION}-${RUNTIME}.AppImage"
-
-          wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-          chmod +x appimagetool-x86_64.AppImage
-
-          mkdir -p AppDir/usr/bin AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/256x256/apps
-          cp publish/AvatarExplorer AppDir/usr/bin/AvatarExplorer
-          cp .github/appimage/AppRun AppDir/AppRun
-          cp .github/appimage/avatar-explorer.desktop AppDir/
-          cp .github/appimage/avatar-explorer.desktop AppDir/usr/share/applications/
-          cp .github/appimage/icon.png AppDir/avatar-explorer.png
-          cp .github/appimage/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/avatar-explorer.png
-          chmod +x AppDir/AppRun AppDir/usr/bin/AvatarExplorer
-
-          ./appimagetool-x86_64.AppImage --appimage-extract-and-run AppDir "${OUTPUT_NAME}"
-
-          printf 'ASSET_PATH=%s\n%s\n' "$ASSET_PATH" "$OUTPUT_NAME" >> "$GITHUB_ENV"
-
       - name: Upload Asset
         uses: softprops/action-gh-release@v2
         with:
