@@ -35,6 +35,7 @@ jobs:
           cp .github/appimage/AppRun AppDir/AppRun
           cp .github/appimage/avatar-explorer.desktop AppDir/
           cp .github/appimage/avatar-explorer.desktop AppDir/usr/share/applications/
+          cp .github/appimage/icon.png AppDir/avatar-explorer.png
           cp .github/appimage/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/avatar-explorer.png
           chmod +x AppDir/AppRun AppDir/usr/bin/AvatarExplorer
 
