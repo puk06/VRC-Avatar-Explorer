@@ -121,10 +121,10 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     public async Task Initialize()
     {
         Localizer.Instance.LanguageChanged += UpdateSchemeStatus;
-        LoadProfileImage();
+        _ = LoadProfileImage();
     }
 
-    public async void LoadProfileImage()
+    public async Task LoadProfileImage()
     {
         GithubUserImage = await GithubService.GetProfileIconAsync();
     }

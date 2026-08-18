@@ -109,7 +109,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     }
     public async Task OnInitialized()
     {
-        CheckForUpdateOnStartup();
+        _ = CheckForUpdateOnStartup();
         CheckIfRunningAsAdmin();
     }
 
