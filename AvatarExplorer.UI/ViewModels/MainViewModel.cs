@@ -351,14 +351,14 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         MainGridItemSize = (int)UserPreferences.GridItemSize;
     }
 
-    private void Refresh(bool refreshLeftPanelItems = true)
+    private void Refresh(bool refreshLeftPanelItems = true, Guid? restoreRightStateGuid = null)
     {
         if (refreshLeftPanelItems) UpdateLeftPanelItems();
 
         if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
             RefreshSearchResults(_searchManager.ActiveSearchQuery);
         else
-            RefreshNavigationView();
+            RefreshNavigationView(restoreRightStateGuid);
     }
 
     private void RefreshSearchResults(string searchQuery)
@@ -418,7 +418,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         }];
     }
 
-    private void RefreshNavigationView()
+    private void RefreshNavigationView(Guid? restoreRightStateGuid = null)
     {
         var avatarId = _itemNavigationService.GetCurrentAvatarId();
         var commonAvatars = InstanceRepository.CommonAvatars.GetAll();
@@ -445,7 +445,10 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         PathSegments = new ObservableCollection<PathSegment>(
             BuildPathSegments(_itemNavigationService.GetCurrentSelectionNodes().Select(i => i.Value)));
 
-        if (_isPreviousScreenSearch)
+        // TotalItems 設定後に復元する（0クランプによるページリセットを回避）
+        if (restoreRightStateGuid != null)
+            _stateCacheManager.RestoreRightState(RightPageInfo, restoreRightStateGuid);
+        else if (_isPreviousScreenSearch)
         {
             if (_hasSearchItem)
                 _stateCacheManager.RestoreRightState(RightPageInfo, _preLevel1StateGuid);
@@ -531,8 +534,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     {
         if (string.IsNullOrEmpty(state)) return;
         _itemNavigationService.PopToState(state);
-        _stateCacheManager.RestoreRightState(RightPageInfo);
-        Refresh(false);
+        Refresh(false, _itemNavigationService.CurrentState?.Id);
     }
 
     private List<PathSegment> BuildPathSegments(IEnumerable<string> states)
@@ -708,6 +710,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
     internal void Undo()
     {
+        Guid? restoreGuid = null;
         if (_searchManager.ActiveSearchQuery != null)
         {
             // 検索中の Undo: 検索クエリを消して1つ前の画面に戻る
@@ -735,7 +738,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 else
                 {
                     var isInitial = _itemNavigationService.CurrentState == null;
-                    _stateCacheManager.RestoreRightState(RightPageInfo, isInitial ? _initialWindowStateGuid : null);
+                    restoreGuid = isInitial ? _initialWindowStateGuid : null;
                 }
             }
             else
@@ -745,7 +748,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             }
         }
 
-        Refresh(false);
+        Refresh(false, restoreGuid);
     }
 
     private void GoHome()
