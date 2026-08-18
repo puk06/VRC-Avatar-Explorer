@@ -3,6 +3,7 @@
         xmlns:ui="clr-namespace:AvatarExplorer.UI"
         xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
+        xmlns:converters="using:AvatarExplorer.UI.Converters"
         x:Class="AvatarExplorer.UI.App"
         RequestedThemeVariant="Dark">
         <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
@@ -14,6 +15,7 @@
 
     <Application.Resources>
         <ResourceDictionary>
+            <converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <!-- 画面全体や通常パネルの背景 -->
