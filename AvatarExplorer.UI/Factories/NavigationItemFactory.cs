@@ -23,6 +23,7 @@ public static class NavigationItemFactory
             return new ItemViewModel
             {
                 ImageFileName = item.ThumbnailFileName,
+                FallbackImageFileName = SystemIconKey.FileIcon,
                 TitleRaw = item.Title,
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
@@ -100,6 +101,7 @@ public static class NavigationItemFactory
             return new ItemViewModel
             {
                 ImageFileName = item.ThumbnailFileName,
+                FallbackImageFileName = SystemIconKey.FileIcon,
                 TitleRaw = item.Title,
                 TitleLocalizable = false,
                 DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
