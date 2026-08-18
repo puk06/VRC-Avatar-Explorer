@@ -42,6 +42,11 @@
 			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
 		</Content>
 
+		<Content Include="Assets/SoftwareIcon-128x128.png" Condition="'$(BuildTargetIsFlatpak)'=='true'">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
+
 		<AvaloniaResource Include="Assets\Internal\**" />
 		<AvaloniaResource Include="Assets\Fonts\**\*.ttf" />
 		<AvaloniaResource Include="Assets\Fonts\**\*.otf" />
