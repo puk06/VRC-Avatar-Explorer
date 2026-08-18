@@ -39,6 +39,8 @@
 
     "Button.Tag.CommonAvatar": "共通素体: {0}",
 
+    "Button.ToolTip.CommonAvatar": "共通素体: {0}",
+    "Button.ToolTip.Tag": "タグ: {0}",
     "Button.ToolTip.CreatedDate": "登録日時: {0}",
     "Button.ToolTip.UpdatedDate": "更新日時: {0}",
     "Button.ToolTip.FilePath": "開くファイルのパス: {0}",

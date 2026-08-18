@@ -39,6 +39,8 @@
 
     "Button.Tag.CommonAvatar": "Avatar commun : {0}",
 
+    "Button.ToolTip.CommonAvatar": "Avatar commun : {0}",
+    "Button.ToolTip.Tag": "Tag : {0}",
     "Button.ToolTip.CreatedDate": "Date de création : {0}",
     "Button.ToolTip.UpdatedDate": "Date de mise à jour : {0}",
     "Button.ToolTip.FilePath": "Chemin du fichier à ouvrir : {0}",

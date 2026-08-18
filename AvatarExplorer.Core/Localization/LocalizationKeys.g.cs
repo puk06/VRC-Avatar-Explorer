@@ -84,6 +84,8 @@ public static class Loc
         }
         public static class ToolTip
         {
+            public const string CommonAvatar = "Button.ToolTip.CommonAvatar";
+            public const string Tag = "Button.ToolTip.Tag";
             public const string CreatedDate = "Button.ToolTip.CreatedDate";
             public const string UpdatedDate = "Button.ToolTip.UpdatedDate";
             public const string FilePath = "Button.ToolTip.FilePath";

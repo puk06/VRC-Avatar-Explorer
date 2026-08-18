@@ -39,6 +39,8 @@
 
     "Button.Tag.CommonAvatar": "공통 바디: {0}",
 
+    "Button.ToolTip.CommonAvatar": "공통 바디: {0}",
+    "Button.ToolTip.Tag": "태그: {0}",
     "Button.ToolTip.CreatedDate": "등록일시: {0}",
     "Button.ToolTip.UpdatedDate": "수정일시: {0}",
     "Button.ToolTip.FilePath": "열 파일 경로: {0}",

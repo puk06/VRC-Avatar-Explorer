@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,7 +92,7 @@ public class ItemViewModel : ViewModelBase, IDisposable
         Width = Height = (Thumbnail != null) ? iconSize : 0;
         Tags.ForEach(i => i.Update());
 
-        if (removeBrackets && ViewModelType == ViewModelType.Item)
+        if (removeBrackets && (ViewModelType == ViewModelType.Item || ViewModelType == ViewModelType.Avatar))
         {
             Title = TextBracketsUtils.RemoveBrackets(TitleRaw);
         }
@@ -102,38 +104,59 @@ public class ItemViewModel : ViewModelBase, IDisposable
 
     private string? GenerateToolTipText()
     {
-        if (ViewModelType == ViewModelType.Item)
+        if (ViewModelType == ViewModelType.Item || ViewModelType == ViewModelType.Avatar)
         {
-            var sb = new StringBuilder();
-            sb.Append(TitleRaw);
+            var blocks = new List<List<string>>();
 
-            if (!string.IsNullOrEmpty(CreatedDate) || !string.IsNullOrEmpty(UpdatedDate))
+            var avatarTagLines = new List<string>();
+            var commonAvatarTag = Tags.FirstOrDefault(t => t.IsCommonAvatar);
+            var otherTags = Tags.Where(t => !t.IsCommonAvatar).ToArray();
+
+            if (commonAvatarTag != null)
             {
-                sb.AppendLine();
-                sb.AppendLine();
-                
-                if (!string.IsNullOrEmpty(UpdatedDate))
-                    sb.AppendLine(
-                        Localizer.Instance.Get(
-                            Loc.Button.ToolTip.UpdatedDate,
-                            DatetimeUtils.GetDateStringFromUnixTime(UpdatedDate)
-                        )
-                    );
+                avatarTagLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.CommonAvatar, commonAvatarTag.ValueRaw));
+            }
 
-                if (!string.IsNullOrEmpty(CreatedDate))
-                    sb.Append(
-                        Localizer.Instance.Get(
-                            Loc.Button.ToolTip.CreatedDate,
-                            DatetimeUtils.GetDateStringFromUnixTime(CreatedDate)
-                        )
-                    );
+            if (otherTags.Length > 0)
+            {
+                avatarTagLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.Tag, string.Join(", ", otherTags.Select(t => t.ValueRaw))));
+            }
+
+            if (avatarTagLines.Count > 0)
+            {
+                blocks.Add(avatarTagLines);
+            }
+
+            var dateLines = new List<string>();
+
+            if (!string.IsNullOrEmpty(UpdatedDate))
+            {
+                dateLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.UpdatedDate, DatetimeUtils.GetDateStringFromUnixTime(UpdatedDate)));
+            }
+
+            if (!string.IsNullOrEmpty(CreatedDate))
+            {
+                dateLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.CreatedDate, DatetimeUtils.GetDateStringFromUnixTime(CreatedDate)));
+            }
+
+            if (dateLines.Count > 0)
+            {
+                blocks.Add(dateLines);
             }
 
             if (!string.IsNullOrEmpty(ItemMemo))
             {
+                blocks.Add([ItemMemo]);
+            }
+
+            var sb = new StringBuilder();
+            sb.Append(TitleRaw);
+
+            foreach (var block in blocks)
+            {
                 sb.AppendLine();
                 sb.AppendLine();
-                sb.Append(ItemMemo);
+                sb.Append(string.Join(Environment.NewLine, block));
             }
 
             return sb.ToString();
