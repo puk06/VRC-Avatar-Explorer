@@ -192,6 +192,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             .Subscribe(_ => UpdateLeftPanelItems());
 
         this.WhenAnyValue(x => x.SearchText)
+            .Skip(1)
             .Subscribe(_ => _searchManager.RestartTimer());
 
         this.WhenAnyValue(x => x.SidePanelWidth)
@@ -213,7 +214,10 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 this.WhenAnyValue(x => x.MainImplementedSort)
             )
             .Throttle(TimeSpan.FromMilliseconds(100));
-        _sortOrderObservable.Subscribe(async _ => await Dispatcher.UIThread.InvokeAsync(() => Refresh()));
+
+        _sortOrderObservable
+            .Skip(1)
+            .Subscribe(async _ => await Dispatcher.UIThread.InvokeAsync(() => Refresh()));
     }
     #endregion
 
