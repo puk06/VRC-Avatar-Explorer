@@ -143,8 +143,8 @@
                                             <ComboBoxItem Content="{Binding [Settings.ImplementedSort.Options.NotImplemented], Source={x:Static loc:Localizer.Instance}}"/>
                                         </ComboBox>
 
-                                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding [Settings.GridItemSize.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="12" IsVisible="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}"/>
-                                        <ComboBox Grid.Row="4" Grid.Column="1" SelectedIndex="{Binding MainGridItemSize}" FontSize="12" Padding="8,4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsVisible="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}">
+                                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding [Settings.GridItemSize.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="12"/>
+                                        <ComboBox Grid.Row="4" Grid.Column="1" SelectedIndex="{Binding MainGridItemSize}" FontSize="12" Padding="8,4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                             <ComboBoxItem Content="{Binding [Settings.GridItemSize.Options.Small], Source={x:Static loc:Localizer.Instance}}"/>
                                             <ComboBoxItem Content="{Binding [Settings.GridItemSize.Options.Medium], Source={x:Static loc:Localizer.Instance}}"/>
                                             <ComboBoxItem Content="{Binding [Settings.GridItemSize.Options.Large], Source={x:Static loc:Localizer.Instance}}"/>
