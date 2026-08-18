@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Localization;
@@ -14,9 +15,10 @@ namespace AvatarExplorer.UI.Factories;
 
 internal static class ContextMenuFactory
 {
-    internal static ContextMenu? GetContextMenu(ContextMenuAction[] contextMenuActions, Action<ContextMenuAction>? onContextClick = null)
+    internal static ContextMenuHolder GetContextMenu(ContextMenuAction[] contextMenuActions, Action<ContextMenuAction>? onContextClick = null)
     {
-        if (contextMenuActions.Length == 0) return null;
+        if (contextMenuActions.Length == 0)
+            return new ContextMenuHolder(null);
 
         var fontFamily = FontUtils.GetFontFamily(Localizer.Instance[Loc.FontFamily]);
         var contextMenu = new ContextMenu()
@@ -24,17 +26,19 @@ internal static class ContextMenuFactory
             FontFamily = fontFamily
         };
 
+        var holder = new ContextMenuHolder(contextMenu);
+
         foreach (var contextMenuAction in contextMenuActions)
         {
-            // TODO: これ、メモリリーク起こすかも（イベントが解除されない気がする）。まあこれはいつか改善します
             void SetClickHandlers(MenuItem item, ContextMenuAction tagData)
             {
                 if (onContextClick != null)
                 {
-                    item.Click += (s, e) => onContextClick(tagData);
+                    EventHandler<RoutedEventArgs> handler = (_, _) => onContextClick(tagData);
+                    holder.AddClickHandler(item, handler);
                 }
             }
-            
+
             var menuItem = new MenuItem()
             {
                 Icon = GetMaterialIcon(contextMenuAction.ContextMenuIconType),
@@ -74,7 +78,7 @@ internal static class ContextMenuFactory
             if (contextMenuAction.AddSeparator) contextMenu.Items.Add(new Separator());
         }
 
-        return contextMenu;
+        return holder;
     }
 
     private static MaterialIcon? GetMaterialIcon(ContextMenuIconType contextMenuIconType, double size = 16)

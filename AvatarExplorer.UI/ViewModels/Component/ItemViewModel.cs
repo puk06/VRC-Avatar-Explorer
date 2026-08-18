@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Localization;
@@ -42,17 +43,17 @@ public class ItemViewModel : ViewModelBase, IDisposable
     public string TitleRaw { get; set; } = string.Empty;
     public bool TitleLocalizable { get; set; } = false;
 
-    public LoclizableField DescriptionRaw = new();
+    public LoclizableField DescriptionRaw { get; set; } = new();
 
     public string CreatedDate { get; set; } = string.Empty;
     public string UpdatedDate { get; set; } = string.Empty;
     public string ItemMemo { get; set; } = string.Empty;
 
     public ContextMenuAction[] Actions { get; set; } = [];
-    public Action<ContextMenuAction>? onMenuClick = null;
 
     private CancellationTokenSource? _thumbnailLoadCts;
     private Bitmap? _ownedThumbnail;
+    private ContextMenuHolder? _contextMenuHolder;
     private bool _disposed;
 
     public string Identifier { get; set; } = string.Empty;
@@ -79,7 +80,12 @@ public class ItemViewModel : ViewModelBase, IDisposable
 
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
         Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
-        ContextMenu = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
+
+        // 古い ContextMenu のイベントハンドラーを解放してから再生成する
+        _contextMenuHolder?.Dispose();
+        var holder = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
+        _contextMenuHolder = holder;
+        ContextMenu = holder.Menu;
 
         Width = Height = (Thumbnail != null) ? iconSize : 0;
         Tags.ForEach(i => i.Update());
@@ -175,7 +181,14 @@ public class ItemViewModel : ViewModelBase, IDisposable
                 SetThumbnail(bitmap, owned: true);
             }, DispatcherPriority.Normal, ct);
         }
-        catch (OperationCanceledException) { }
+        catch (OperationCanceledException)
+        {
+            // キャンセルされた場合は何もしない
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostError($"Failed to load thumbnail from {filePath}: {ex.Message}");
+        }
     }
 
     private void SetThumbnail(Bitmap? value, bool owned)
@@ -190,15 +203,25 @@ public class ItemViewModel : ViewModelBase, IDisposable
 
     public void Dispose()
     {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
         if (_disposed) return;
         _disposed = true;
 
-        _thumbnailLoadCts?.Cancel();
-        _thumbnailLoadCts?.Dispose();
-        _thumbnailLoadCts = null;
-        _ownedThumbnail?.Dispose();
-        _ownedThumbnail = null;
-
-        GC.SuppressFinalize(this);
+        if (disposing)
+        {
+            _thumbnailLoadCts?.Cancel();
+            _thumbnailLoadCts?.Dispose();
+            _thumbnailLoadCts = null;
+            _ownedThumbnail?.Dispose();
+            _ownedThumbnail = null;
+            _contextMenuHolder?.Dispose();
+            _contextMenuHolder = null;
+            ContextMenu = null;
+        }
     }
 }
