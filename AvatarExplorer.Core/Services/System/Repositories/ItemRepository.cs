@@ -32,9 +32,10 @@ public class ItemRepository : RepositoryBase<Item>
         var item = Get(identifier);
         if (item == null) return;
 
-        if (removeFolder && Directory.Exists(item.ItemPath))
+        var rootPath = item.GetItemPath();
+        if (removeFolder && Directory.Exists(rootPath))
         {
-            FileSystemService.DeleteDirectory(item.ItemPath);
+            FileSystemService.DeleteDirectory(rootPath);
         }
 
         Db.Remove(item.Id);
@@ -146,11 +147,12 @@ public class ItemRepository : RepositoryBase<Item>
 
         var settings = AvatarExplorerApp.Instance.RuntimeSettings;
 
-        var defaultExtractPath = string.IsNullOrEmpty(item.ItemPath) ? GetSafePath(item, settings.DataRootDirectory) : item.ItemPath;
+        var currentRootPath = item.GetItemPath();
+        var defaultExtractPath = string.IsNullOrEmpty(currentRootPath) ? GetSafePath(item, settings.DataRootDirectory) : currentRootPath;
         var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal);
         if (result.IsError) return Error.Failure(description: "Failed to extract item paths.");
 
-        if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(result.Value.ItemParentFolder);
+        if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(ItemUtils.GetRelativePath(result.Value.ItemParentFolder));
         item.UpdateItemPaths(result.Value.FolderPaths);
 
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
@@ -216,7 +218,7 @@ public class ItemRepository : RepositoryBase<Item>
         if (item == null) return [];
 
         var folders = new List<string>();
-        var root = item.ItemPath;
+        var root = item.GetItemPath();
 
         if (Directory.Exists(root))
         {
@@ -240,7 +242,7 @@ public class ItemRepository : RepositoryBase<Item>
 
         var files = new List<ItemFile>();
 
-        var root = item.ItemPath;
+        var root = item.GetItemPath();
         if (Directory.Exists(root))
         {
             foreach (var rootFile in FileSystemService.EnumerateFiles(root, isRecursive: false))

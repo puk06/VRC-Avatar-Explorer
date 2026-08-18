@@ -1,10 +1,11 @@
 using System.Text.Json.Nodes;
+using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.IO;
 
 public static class DatabaseMigrations
 {
-    public const int ItemVersion = 3;
+    public const int ItemVersion = 4;
     public const int CommonAvatarVersion = 1;
     public const int BulkImportPresetVersion = 1;
     public const int RuntimeSettingsVersion = 1;
@@ -21,6 +22,7 @@ public static class DatabaseMigrations
             1 => MigrateV1RenameThumbnailKey(items),
             2 => MigrateV2ItemTypeOffset(items),
             3 => MigrateV3ItemRefactor(items, dataRootDirectory),
+            4 => MigrateV4ConvertToRelativePath(items, dataRootDirectory),
             _ => false
         };
     }
@@ -106,6 +108,31 @@ public static class DatabaseMigrations
             if (MigrateAvatarReferences(item, "SupportedAvatars")) changed = true;
             if (MigrateAvatarReferences(item, "ImplementedAvatars")) changed = true;
             if (MigrateCategory(item)) changed = true;
+        }
+
+        return changed;
+    }
+
+    private static bool MigrateV4ConvertToRelativePath(JsonArray items, string? dataRootDirectory)
+    {
+        if (string.IsNullOrEmpty(dataRootDirectory)) return false;
+
+        var changed = false;
+
+        foreach (var itemNode in items)
+        {
+            if (itemNode is not JsonObject item) continue;
+
+            // Convert to relative => <root> prefix
+            if (!item.TryGetPropertyValue("ItemPath", out var pathNode) ||
+                pathNode is not JsonValue pathValue ||
+                !pathValue.TryGetValue(out string? path) ||
+                !path.StartsWith(dataRootDirectory))
+                continue;
+
+            var newPath = ItemUtils.GetRelativePath(path, dataRootDirectory);
+            item["ItemPath"] = JsonValue.Create(newPath);
+            changed = true;
         }
 
         return changed;

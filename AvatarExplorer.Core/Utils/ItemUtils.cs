@@ -1,9 +1,11 @@
 ﻿using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.Core.Utils;
 
 public static partial class ItemUtils
 {
+    public const string RootFolderPrefix = "<root>";
     internal static string GetTitleFromDictionary(Dictionary<string, string> itemTitleMaps, string itemId)
     {
         if (string.IsNullOrEmpty(itemId)) return string.Empty;
@@ -36,5 +38,27 @@ public static partial class ItemUtils
 
         return Directory.GetDirectories(itemPath, "*", SearchOption.TopDirectoryOnly)
             .Contains(path);
+    }
+
+    public static string GetFullPath(string itemPath, string? rootDirectory = null)
+    {
+        rootDirectory ??= AvatarExplorerApp.Instance.RuntimeSettings.DataRootDirectory;
+        if (string.IsNullOrEmpty(rootDirectory)) return itemPath;
+
+        if (itemPath.StartsWith(RootFolderPrefix))
+            return Path.Join(rootDirectory, itemPath.Replace(RootFolderPrefix, string.Empty));
+
+        return itemPath;
+    }
+
+    public static string GetRelativePath(string itemPath, string? rootDirectory = null)
+    {
+        rootDirectory ??= AvatarExplorerApp.Instance.RuntimeSettings.DataRootDirectory;
+        if (string.IsNullOrEmpty(rootDirectory)) return itemPath;
+
+        if (itemPath.StartsWith(rootDirectory))
+            return RootFolderPrefix + itemPath.Replace(rootDirectory, string.Empty);
+
+        return itemPath;
     }
 }

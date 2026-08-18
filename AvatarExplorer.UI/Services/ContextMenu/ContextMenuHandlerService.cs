@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.IO;
@@ -111,7 +112,8 @@ public static class ContextMenuHandlerService
         var item = GetByIdentifier(currentItem ?? string.Empty);
         if (item == null) return;
 
-        var isAppManaged = ItemUtils.IsAppManagedPath(item.ItemPath, path);
+        var rootPath = item.GetItemPath();
+        var isAppManaged = ItemUtils.IsAppManagedPath(rootPath, path);
         if (isAppManaged)
         {
             var removeFromDatabase = await InstanceRepository.MainWindow.ShowYesNoDialog(
@@ -407,11 +409,12 @@ public static class ContextMenuHandlerService
 
         bool removeDirectory = false;
 
-        if (!string.IsNullOrEmpty(item.ItemPath) && Directory.Exists(item.ItemPath))
+        var rootPath = item.GetItemPath();
+        if (!string.IsNullOrEmpty(rootPath) && Directory.Exists(rootPath))
         {
             removeDirectory = await InstanceRepository.MainWindow.ShowYesNoDialog(
                 Localizer.Instance[Loc.Dialog.Confirmation.Default],
-                Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveAssetData, item.ItemPath)
+                Localizer.Instance.Get(Loc.Dialog.Confirmation.RemoveAssetData, rootPath)
             );
         }
 

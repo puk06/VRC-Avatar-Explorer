@@ -9,6 +9,7 @@ using AvatarExplorer.Core.Models.External.V1;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Services.System.Repositories;
+using AvatarExplorer.Core.Utils;
 using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.IO;
@@ -87,15 +88,15 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
 
                 var sourcePaths = new List<string>
                 {
-                    GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateV1Path(v1Item.ItemPath))
+                    ItemUtils.GetFullPath(MigrateV1Path(v1Item.ItemPath), SystemPathV1.ItemsFolderPath(dataFolderPath))
                 };
 
                 if (!string.IsNullOrEmpty(v1Item.MaterialPath))
-                    sourcePaths.Add(GetItemPath(SystemPathV1.ItemsFolderPath(dataFolderPath), MigrateV1Path(v1Item.MaterialPath)));
+                    sourcePaths.Add(ItemUtils.GetFullPath(MigrateV1Path(v1Item.MaterialPath), SystemPathV1.ItemsFolderPath(dataFolderPath)));
 
                 await _items.AddPaths(item.Identifier, sourcePaths.Select(p => new ItemPathEntry { FileName = Path.GetFileName(p), Path = p }), !shouldCopyAsset, false);
 
-                var sourceThumbnailPath = GetItemPath(SystemPathV1.ItemThumbnailsPath(dataFolderPath), MigrateV1Path(v1Item.ImagePath));
+                var sourceThumbnailPath = ItemUtils.GetFullPath(MigrateV1Path(v1Item.ImagePath), SystemPathV1.ItemThumbnailsPath(dataFolderPath));
                 var destThumbnailPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
                 var thumbnailResult = await FileSystemService.CopyFileAsync(sourceThumbnailPath, destThumbnailPath);
                 item.UpdateThumbnailFileName(thumbnailResult.IsError ? string.Empty : item.Id);
@@ -176,9 +177,9 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
         if (path.StartsWith("./")) path = path[2..];
 
         if (path.StartsWith(V1ItemsFolderPrefix, StringComparison.Ordinal))
-            return path.Replace(V1ItemsFolderPrefix, "<sys>");
+            return path.Replace(V1ItemsFolderPrefix, ItemUtils.RootFolderPrefix);
         if (path.StartsWith(V1ThumbnailFolderPrefix, StringComparison.Ordinal))
-            return path.Replace(V1ThumbnailFolderPrefix, "<sys>");
+            return path.Replace(V1ThumbnailFolderPrefix, ItemUtils.RootFolderPrefix);
 
         return path;
     }
@@ -345,9 +346,10 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 if (sourceItem.BoothId == -1 || string.IsNullOrWhiteSpace(sourceItem.ImagePath)) continue;
                 if (sourceThumbnailMap.ContainsKey(sourceItem.BoothId)) continue;
 
-                var thumbnailPath = GetItemPath(
-                    SystemPathV1.ItemThumbnailsPath(dataFolderPath),
-                    MigrateV1Path(sourceItem.ImagePath));
+                var thumbnailPath = ItemUtils.GetFullPath(
+                    MigrateV1Path(sourceItem.ImagePath),
+                    SystemPathV1.ItemThumbnailsPath(dataFolderPath)
+                );
 
                 if (File.Exists(thumbnailPath))
                     sourceThumbnailMap[sourceItem.BoothId] = thumbnailPath;
@@ -438,12 +440,5 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, percent));
             }
         }
-    }
-
-    private static string GetItemPath(string parentFolder, string itemPath)
-    {
-        // <sys>で始まっていたら相対パスと認識して親フォルダに置き換える
-        // 始まっていないものはフルパスと認識してそのまま変えす
-        return itemPath.StartsWith("<sys>") ? Path.Join(parentFolder, itemPath.Replace("<sys>", string.Empty)) : itemPath;
     }
 }

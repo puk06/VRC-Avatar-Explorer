@@ -11,7 +11,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     [JsonInclude] public string Author { get; private set; } = string.Empty;
     [JsonInclude] public string AuthorId { get; private set; } = string.Empty;
     [JsonInclude] public int BoothId { get; private set; } = -1;
-    [JsonInclude] public string ItemPath { get; private set; } = string.Empty; // デフォルトの展開先
+    [JsonInclude] public string ItemPath { get; private set; } = string.Empty; // デフォルトの展開先（item.GetItemPath()でフルパスに変換する）
     [JsonInclude] public ImmutableArray<string> ItemPaths { get; private set; } = []; // フォルダー（フォルダーをそのまま使用する設定の時にここに追加される）
     [JsonInclude] public string ThumbnailFileName { get; private set; } = string.Empty;
     [JsonInclude] public ItemCategory Category { get; private set; } = new(ItemType.None);
