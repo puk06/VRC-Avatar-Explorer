@@ -50,6 +50,16 @@ public static class Loc
                 public const string Large = "Main.GridItemSize.Options.Large";
             }
         }
+        public const string SortOptions = "Main.SortOptions";
+        public static class ViewMode
+        {
+            public const string Title = "Main.ViewMode.Title";
+            public static class Options
+            {
+                public const string List = "Main.ViewMode.Options.List";
+                public const string Grid = "Main.ViewMode.Options.Grid";
+            }
+        }
     }
     public static class ItemCategory
     {

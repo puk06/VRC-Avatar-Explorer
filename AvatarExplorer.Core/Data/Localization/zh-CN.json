@@ -22,6 +22,10 @@
     "Main.GridItemSize.Options.Small": "小",
     "Main.GridItemSize.Options.Medium": "中",
     "Main.GridItemSize.Options.Large": "大",
+    "Main.SortOptions": "显示选项",
+    "Main.ViewMode.Title": "显示方式",
+    "Main.ViewMode.Options.List": "列表",
+    "Main.ViewMode.Options.Grid": "网格",
 
     "ItemCategory.Avatar": "头像",
     "ItemCategory.Clothing": "服装",

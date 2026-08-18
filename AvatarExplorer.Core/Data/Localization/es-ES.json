@@ -22,6 +22,10 @@
     "Main.GridItemSize.Options.Small": "Pequeño",
     "Main.GridItemSize.Options.Medium": "Mediano",
     "Main.GridItemSize.Options.Large": "Grande",
+    "Main.SortOptions": "Opciones de visualización",
+    "Main.ViewMode.Title": "Modo de visualización",
+    "Main.ViewMode.Options.List": "Lista",
+    "Main.ViewMode.Options.Grid": "Cuadrícula",
 
     "ItemCategory.Avatar": "Avatar",
     "ItemCategory.Clothing": "Ropa",
