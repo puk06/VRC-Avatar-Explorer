@@ -1,7 +1,8 @@
 .flatpak-builder
 
 publish
-builddir
+build-dir
 repo
 
 memo.md
+*.flatpak
