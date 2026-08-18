@@ -23,6 +23,8 @@ public partial class SettingsOverlay : UserControl
             RefreshComboBox(SortDirectionComboBox);
             RefreshComboBox(ThemeComboBox);
             RefreshComboBox(AntiAliasingComboBox);
+            RefreshComboBox(ViewModeComboBox);
+            RefreshComboBox(GridItemSizeComboBox);
             RefreshComboBox(UpdateChannelComboBox);
         });
     }

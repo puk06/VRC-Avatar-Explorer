@@ -20,6 +20,8 @@ public record UserPreferences
     public ItemSortOrder SortOrder { get; init; } = ItemSortOrder.UpdatedDate;
     public SortDirection SortDirection { get; init; } = SortDirection.Descending;
     public ImplementedSort ImplementedSort { get; init; } = ImplementedSort.None;
+    public MainItemViewMode MainViewMode { get; init; } = MainItemViewMode.List;
+    public GridItemSize GridItemSize { get; init; } = GridItemSize.Medium;
     public bool EnableSearchInFolder { get; init; } = false;
     public bool InitialSetupCompleted { get; init; } = false;
 }

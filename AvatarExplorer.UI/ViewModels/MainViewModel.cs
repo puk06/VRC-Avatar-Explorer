@@ -158,6 +158,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     public async Task Initialize()
     {
         UpdateSortSettings();
+        UpdateViewSettings();
         InitializeSubscriptions();
 
         Localizer.Instance.LanguageChanged += () =>
@@ -174,6 +175,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         {
             _sortOrderObservable?.Skip(1); // 最後にReflesh()が呼ばれるので、次のSortSettings()の更新は無視する
             UpdateSortSettings();
+            UpdateViewSettings();
             UpdateItemsPerPage();
             Refresh();
         };
@@ -338,6 +340,14 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         MainImplementedSort = -1;
         MainImplementedSort = (int)UserPreferences.ImplementedSort;
+    }
+
+    private void UpdateViewSettings()
+    {
+        MainViewMode = UserPreferences.MainViewMode;
+
+        MainGridItemSize = -1;
+        MainGridItemSize = (int)UserPreferences.GridItemSize;
     }
 
     private void Refresh(bool refreshLeftPanelItems = true)

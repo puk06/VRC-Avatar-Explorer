@@ -116,10 +116,10 @@
                                             <ColumnDefinition Width="Auto" SharedSizeGroup="ControlColumn"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding [Main.ViewMode.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding [Settings.ViewMode.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="12"/>
                                         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="10">
-                                            <RadioButton GroupName="MainViewMode" IsChecked="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.List}}" Content="{Binding [Main.ViewMode.Options.List], Source={x:Static loc:Localizer.Instance}}" FontSize="12" VerticalAlignment="Center"/>
-                                            <RadioButton GroupName="MainViewMode" IsChecked="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}" Content="{Binding [Main.ViewMode.Options.Grid], Source={x:Static loc:Localizer.Instance}}" FontSize="12" VerticalAlignment="Center"/>
+                                            <RadioButton GroupName="MainViewMode" IsChecked="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.List}}" Content="{Binding [Settings.ViewMode.Options.List], Source={x:Static loc:Localizer.Instance}}" FontSize="12" VerticalAlignment="Center"/>
+                                            <RadioButton GroupName="MainViewMode" IsChecked="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}" Content="{Binding [Settings.ViewMode.Options.Grid], Source={x:Static loc:Localizer.Instance}}" FontSize="12" VerticalAlignment="Center"/>
                                         </StackPanel>
 
                                         <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding [Settings.SortOrder.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="12"/>
@@ -143,11 +143,11 @@
                                             <ComboBoxItem Content="{Binding [Settings.ImplementedSort.Options.NotImplemented], Source={x:Static loc:Localizer.Instance}}"/>
                                         </ComboBox>
 
-                                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding [Main.GridItemSize.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="12" IsVisible="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}"/>
+                                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding [Settings.GridItemSize.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="12" IsVisible="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}"/>
                                         <ComboBox Grid.Row="4" Grid.Column="1" SelectedIndex="{Binding MainGridItemSize}" FontSize="12" Padding="8,4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsVisible="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}">
-                                            <ComboBoxItem Content="{Binding [Main.GridItemSize.Options.Small], Source={x:Static loc:Localizer.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding [Main.GridItemSize.Options.Medium], Source={x:Static loc:Localizer.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding [Main.GridItemSize.Options.Large], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.GridItemSize.Options.Small], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.GridItemSize.Options.Medium], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding [Settings.GridItemSize.Options.Large], Source={x:Static loc:Localizer.Instance}}"/>
                                         </ComboBox>
                                     </Grid>
                                 </StackPanel>

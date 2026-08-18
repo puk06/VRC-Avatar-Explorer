@@ -43,6 +43,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public double HoverIconSize { get; set; }
     [Reactive] public int SelectedAntiAliasing { get; set; }
     [Reactive] public string ItemsPerPage { get; set; } = string.Empty;
+    [Reactive] public int SelectedViewMode { get; set; }
+    [Reactive] public int SelectedGridItemSize { get; set; }
     [Reactive] public bool RemoveOriginal { get; set; }
     [Reactive] public bool LinkToOriginal { get; set; }
     [Reactive] public bool TreatEmptySupportedAvatarAsNone { get; set; }
@@ -162,6 +164,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SelectedSortOrder = (int)preferences.SortOrder;
         SelectedSortDirection = preferences.SortDirection;
         SelectedImplementedSort = (int)preferences.ImplementedSort;
+        SelectedViewMode = (int)preferences.MainViewMode;
+        SelectedGridItemSize = (int)preferences.GridItemSize;
 
         UpdateSchemeStatus();
 
@@ -454,6 +458,8 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             SortOrder = (ItemSortOrder)SelectedSortOrder,
             SortDirection = SelectedSortDirection,
             ImplementedSort = (ImplementedSort)SelectedImplementedSort,
+            MainViewMode = (MainItemViewMode)SelectedViewMode,
+            GridItemSize = (GridItemSize)SelectedGridItemSize,
             EnableSearchInFolder = EnableSearchInFolder,
         });
     }
