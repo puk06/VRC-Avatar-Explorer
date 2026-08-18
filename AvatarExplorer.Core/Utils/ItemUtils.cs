@@ -46,7 +46,7 @@ public static partial class ItemUtils
         if (string.IsNullOrEmpty(rootDirectory)) return itemPath;
 
         if (itemPath.StartsWith(RootFolderPrefix))
-            return Path.Join(rootDirectory, itemPath.Replace(RootFolderPrefix, string.Empty));
+            return Path.Join(rootDirectory, itemPath.AsSpan(RootFolderPrefix.Length));
 
         return itemPath;
     }
@@ -56,9 +56,8 @@ public static partial class ItemUtils
         rootDirectory ??= AvatarExplorerApp.Instance.RuntimeSettings.DataRootDirectory;
         if (string.IsNullOrEmpty(rootDirectory)) return itemPath;
 
-        if (itemPath.StartsWith(rootDirectory))
-            return RootFolderPrefix + itemPath.Replace(rootDirectory, string.Empty);
+        if (!itemPath.StartsWith(rootDirectory)) return itemPath;
 
-        return itemPath;
+        return RootFolderPrefix + Path.DirectorySeparatorChar + Path.GetRelativePath(rootDirectory, itemPath);
     }
 }
