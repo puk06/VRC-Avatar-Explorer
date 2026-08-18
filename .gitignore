@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # テスト用プロジェクト
 AvatarExplorer.Test/
+
+# Reina_Sakiria が vscode (vscodium) の設定を作っていて困るので入れさせていただきます。
+.vscode
