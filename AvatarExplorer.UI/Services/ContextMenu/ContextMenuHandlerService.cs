@@ -68,6 +68,8 @@ public static class ContextMenuHandlerService
         Register(ActionKey.RemoveTempAvatar, RemoveTempAvatar);
         Register(ActionKey.EditCustomCategoryName, EditCustomCategoryName);
         Register(ActionKey.MergeWithOtherCategory, MergeWithOtherCategory);
+        Register(ActionKey.HideItem, HideItem);
+        Register(ActionKey.ShowItem, ShowItem);
     }
 
     private static Item? GetByIdentifier(string identifier)
@@ -84,12 +86,12 @@ public static class ContextMenuHandlerService
 
         return item;
     }
-    private static async Task EditItemInternal(string identifier, ItemEditContext context)
+    private static async Task EditItemInternal(string identifier, ItemEditContext context, string? successMessage = null)
     {
         var result = await InstanceRepository.Items.Update(identifier, context);
         NotificationManager.Show(
             result ? Localizer.Instance[Loc.Success.Default] : Localizer.Instance[Loc.Error.Default],
-            result ? Localizer.Instance[Loc.Success.ItemEdit] : Localizer.Instance[Loc.Error.ItemEditFailed],
+            result ? Localizer.Instance[successMessage ?? Loc.Success.ItemEdit] : Localizer.Instance[Loc.Error.ItemEditFailed],
             result ? NotificationType.Success : NotificationType.Error
         );
     }
@@ -590,5 +592,19 @@ public static class ContextMenuHandlerService
     private static void MergeWithOtherCategory(string identifier)
     {
         InstanceRepository.MainWindow.MergeCategoryVM.Open(identifier);
+    }
+    private static async void HideItem(string identifier)
+    {
+        var item = GetByIdentifier(identifier);
+        if (item == null) return;
+
+        await EditItemInternal(identifier, new() { IsHidden = true }, Loc.Success.HideItem);
+    }
+    private static async void ShowItem(string identifier)
+    {
+        var item = GetByIdentifier(identifier);
+        if (item == null) return;
+
+        await EditItemInternal(identifier, new() { IsHidden = false }, Loc.Success.ShowItem);
     }
 }

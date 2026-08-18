@@ -30,6 +30,7 @@
     "ItemCategory.Tool": "Herramienta",
     "ItemCategory.Shader": "Shader",
     "ItemCategory.All": "Todo",
+    "ItemCategory.Hidden": "Oculto",
 
     "Button.Description.Item.Author": "Autor: {0}",
     "Button.Description.Item.Count": "{0} elementos",
@@ -130,6 +131,9 @@
     "ContextMenu.Item.Thumbnail.Change": "Cambiar miniatura",
     "ContextMenu.Item.Thumbnail.Fetch": "Obtener miniatura",
     "ContextMenu.Item.Remove": "Eliminar elemento",
+    "ContextMenu.Item.HideItem": "Ocultar elemento",
+    "ContextMenu.Item.ShowItem": "Mostrar elemento",
+    "ContextMenu.Item.Visibility": "Visibilidad",
     "ContextMenu.ItemFolder.OpenFolder": "Abrir carpeta",
     "ContextMenu.ItemFolder.ShowInExplorer": "Mostrar en el Explorador",
     "ContextMenu.ItemFolder.RemoveFolder": "Eliminar carpeta",
@@ -176,6 +180,8 @@
     "Success.ItemFolderAdd": "Agregado de carpeta de elemento completado",
     "Success.FetchAllItemThumbnails": "Obtención masiva de miniaturas completada ({0} correctos)",
     "Success.FetchAllVariationHashes": "Obtención masiva de hashes completada ({0} correctos)",
+    "Success.HideItem": "Elemento ocultado",
+    "Success.ShowItem": "Elemento visible",
 
     "VariationUpdate.UpdateAvailable": "Hay actualizaciones disponibles para el elemento",
     "VariationUpdate.NoUpdatesAvailable": "No hay actualizaciones disponibles",

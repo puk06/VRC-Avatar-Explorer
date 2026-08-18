@@ -16,6 +16,7 @@ public class ItemEditContext
     public string? ItemMemo { get; set; }
     public string? ItemPath { get; set; }
     public IEnumerable<string>? Tags { get; set; }
+    public bool? IsHidden { get; set; }
 
     public async Task<bool> FetchThumbnailAsync(string destPath, bool overwrite = false)
     {

@@ -41,4 +41,8 @@ public enum ItemType
     [NonSelectable]
     [LocalizationKey(Loc.ItemCategory.All)]
     All,
+
+    [NonSelectable]
+    [LocalizationKey(Loc.ItemCategory.Hidden)]
+    Hidden
 }

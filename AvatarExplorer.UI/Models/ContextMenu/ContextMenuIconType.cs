@@ -32,5 +32,11 @@ public enum ContextMenuIconType
     Link,
 
     [MaterialIcon(MaterialIconKind.Merge)]
-    Merge
+    Merge,
+
+    [MaterialIcon(MaterialIconKind.EyeOutline)]
+    Visible,
+
+    [MaterialIcon(MaterialIconKind.EyeOffOutline)]
+    Hidden
 }

@@ -54,6 +54,7 @@ public static class Loc
         public const string Tool = "ItemCategory.Tool";
         public const string Shader = "ItemCategory.Shader";
         public const string All = "ItemCategory.All";
+        public const string Hidden = "ItemCategory.Hidden";
     }
     public static class Button
     {
@@ -227,6 +228,9 @@ public static class Loc
                 public const string Fetch = "ContextMenu.Item.Thumbnail.Fetch";
             }
             public const string Remove = "ContextMenu.Item.Remove";
+            public const string HideItem = "ContextMenu.Item.HideItem";
+            public const string ShowItem = "ContextMenu.Item.ShowItem";
+            public const string Visibility = "ContextMenu.Item.Visibility";
         }
         public static class ItemFolder
         {
@@ -293,6 +297,8 @@ public static class Loc
         public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
         public const string RemoveFolder = "Success.RemoveFolder";
         public const string FetchAllVariationHashes = "Success.FetchAllVariationHashes";
+        public const string HideItem = "Success.HideItem";
+        public const string ShowItem = "Success.ShowItem";
     }
     public static class VariationUpdate
     {

@@ -30,6 +30,7 @@
     "ItemCategory.Tool": "Outil",
     "ItemCategory.Shader": "Shader",
     "ItemCategory.All": "Tous",
+    "ItemCategory.Hidden": "Caché",
 
     "Button.Description.Item.Author": "Auteur : {0}",
     "Button.Description.Item.Count": "{0} éléments",
@@ -130,6 +131,9 @@
     "ContextMenu.Item.Thumbnail.Change": "Modifier la vignette",
     "ContextMenu.Item.Thumbnail.Fetch": "Récupérer la vignette",
     "ContextMenu.Item.Remove": "Supprimer l'élément",
+    "ContextMenu.Item.HideItem": "Masquer l'élément",
+    "ContextMenu.Item.ShowItem": "Afficher l'élément",
+    "ContextMenu.Item.Visibility": "Visibilité",
     "ContextMenu.ItemFolder.OpenFolder": "Ouvrir le dossier",
     "ContextMenu.ItemFolder.ShowInExplorer": "Afficher dans l'Explorateur",
     "ContextMenu.ItemFolder.RemoveFolder": "Supprimer le dossier",
@@ -176,6 +180,8 @@
     "Success.ItemFolderAdd": "Ajout du dossier d'élément terminé",
     "Success.FetchAllItemThumbnails": "Récupération groupée des vignettes terminée ({0} réussies)",
     "Success.FetchAllVariationHashes": "Récupération groupée des hachages terminée ({0} réussies)",
+    "Success.HideItem": "Élément masqué",
+    "Success.ShowItem": "Élément affiché",
 
     "VariationUpdate.UpdateAvailable": "Des mises à jour d'éléments sont disponibles",
     "VariationUpdate.NoUpdatesAvailable": "Aucune mise à jour disponible",

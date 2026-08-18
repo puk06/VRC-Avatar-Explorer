@@ -38,5 +38,8 @@ public enum ActionKey
     RemoveTempAvatar,
 
     EditCustomCategoryName,
-    MergeWithOtherCategory
+    MergeWithOtherCategory,
+
+    HideItem,
+    ShowItem
 }

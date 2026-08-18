@@ -25,6 +25,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     [JsonInclude] public string ItemMemo { get; private set; } = string.Empty;
     [JsonInclude] public string CreatedDate { get; private set; } = string.Empty;
     [JsonInclude] public string UpdatedDate { get; private set; } = string.Empty;
+    [JsonInclude] public bool IsHidden { get; private set; } = false;
 
     public void UpdateMetadata(string title, string author, string authorId, int boothId, ItemCategory category, string itemMemo)
     {
@@ -55,6 +56,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
         UpdatedDate = updatedDate;
     }
     public void UpdateTimestamp(string updatedDate) => UpdatedDate = updatedDate;
+    public void UpdateIsHidden(bool isHidden) => IsHidden = isHidden;
 
     public string GetBoothLink(string languageCode)
     {

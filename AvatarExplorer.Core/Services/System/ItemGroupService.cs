@@ -54,7 +54,7 @@ public class ItemGroupService
         {
             QueryType.Avatar => GetAvatars(includeTempAvatar: true),
             QueryType.Author => GetAuthors(),
-            QueryType.Category => GetCategoryFolders(includeAllCategory: true),
+            QueryType.Category => GetCategoryFolders(includeAllCategory: true, includeHiddenCategory: true),
             _ => []
         };
     }
@@ -82,7 +82,7 @@ public class ItemGroupService
             .OrderBy(i => i.Name)
             .ToList<IIdentifiable>();
     }
-    public List<IIdentifiable> GetCategoryFolders(bool includeEmptyCategory = false, bool includeAllCategory = false)
+    public List<IIdentifiable> GetCategoryFolders(bool includeEmptyCategory = false, bool includeAllCategory = false, bool includeHiddenCategory = false)
     {
         var categories = new List<Folder>();
         
@@ -134,6 +134,21 @@ public class ItemGroupService
                 ItemCount = itemsByCustomCategory[i]
             };
         }));
+
+        if (includeHiddenCategory)
+        {
+            var hiddenCount = items.Count(i => i.IsHidden);
+            if (hiddenCount > 0)
+            {
+                var hiddenCategory = new ItemCategory(ItemType.Hidden);
+                categories.Add(new Folder(hiddenCategory.Identifier)
+                {
+                    Title = hiddenCategory.ToString(),
+                    TitleLocalizable = hiddenCategory.IsLocalizable,
+                    ItemCount = hiddenCount
+                });
+            }
+        }
 
         return categories.ToList<IIdentifiable>();
     }

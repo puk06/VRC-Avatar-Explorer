@@ -109,6 +109,7 @@ public class ItemRepository : RepositoryBase<Item>
         if (context.SupportedAvatars != null) item.UpdateSupportedAvatars(context.SupportedAvatars);
         if (context.ImplementedAvatars != null) item.UpdateImplementedAvatars(context.ImplementedAvatars);
         if (context.Tags != null) item.UpdateTags(context.Tags);
+        if (context.IsHidden != null) item.UpdateIsHidden(context.IsHidden.Value);
 
         if (context.ThumbnailUrl != null)
         {

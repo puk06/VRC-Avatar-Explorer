@@ -30,6 +30,7 @@
     "ItemCategory.Tool": "도구",
     "ItemCategory.Shader": "셰이더",
     "ItemCategory.All": "전체",
+    "ItemCategory.Hidden": "隐藏",
 
     "Button.Description.Item.Author": "작성자: {0}",
     "Button.Description.Item.Count": "{0}개 항목",
@@ -130,6 +131,9 @@
     "ContextMenu.Item.Thumbnail.Change": "썸네일 변경",
     "ContextMenu.Item.Thumbnail.Fetch": "썸네일 가져오기",
     "ContextMenu.Item.Remove": "아이템 삭제",
+    "ContextMenu.Item.HideItem": "아이템 숨기기",
+    "ContextMenu.Item.ShowItem": "아이템 표시",
+    "ContextMenu.Item.Visibility": "표시/숨기기",
     "ContextMenu.ItemFolder.OpenFolder": "폴더 열기",
     "ContextMenu.ItemFolder.ShowInExplorer": "탐색기에서 보기",
     "ContextMenu.ItemFolder.RemoveFolder": "폴더 삭제",
@@ -176,6 +180,8 @@
     "Success.ItemFolderAdd": "아이템 폴더 추가가 완료되었습니다",
     "Success.FetchAllItemThumbnails": "썸네일 일괄 가져오기가 완료되었습니다 ({0}개 성공)",
     "Success.FetchAllVariationHashes": "해시 일괄 가져오기가 완료되었습니다 ({0}개 성공)",
+    "Success.HideItem": "아이템이 숨겨졌습니다",
+    "Success.ShowItem": "아이템이 표시되었습니다",
 
     "VariationUpdate.UpdateAvailable": "아이템 업데이트를 사용할 수 있습니다",
     "VariationUpdate.NoUpdatesAvailable": "사용 가능한 업데이트 없음",

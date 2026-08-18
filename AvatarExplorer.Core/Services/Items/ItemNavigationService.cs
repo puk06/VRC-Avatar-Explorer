@@ -93,7 +93,13 @@ public class ItemNavigationService
     public IIdentifiable[] GetCurrentSelectionView()
     {
         var state = _state.Current?.Value;
-        if (state == null) return _items.ItemRepository.GetAll().ToArray<IIdentifiable>();
+        if (state == null)
+        {
+            return _items.ItemRepository.GetAll()
+                .Where(i => !i.IsHidden)
+                .ToArray<IIdentifiable>();
+        }
+
         if (!TryParseState(state, out var key, out _)) return [];
         return _handlers.TryGetValue(key, out var func) ? func(state) : [];
     }
@@ -110,8 +116,8 @@ public class ItemNavigationService
 
         if (items == null) return [];
 
-        var categolized = ItemRepository.CategorizeItems(items);
-        return categolized.Select(i =>
+        var categolized = ItemRepository.CategorizeItems(items)
+        .Select(i =>
         {
             var category = ItemCategory.FromIdentifier(i.Key);
             return new Folder(i.Key)
@@ -120,12 +126,24 @@ public class ItemNavigationService
                 TitleLocalizable = category.IsLocalizable,
                 ItemCount = i.Value.Count
             };
-        }).ToArray<IIdentifiable>();
+        }).ToList<IIdentifiable>();
+
+        // Hidden
+        if (items.Any(i => i.IsHidden))
+        {
+            var hiddenCategory = new ItemCategory(ItemType.Hidden);
+            categolized.Add(new Folder(hiddenCategory.Identifier)
+            {
+                Title = hiddenCategory.ToString(),
+                TitleLocalizable = hiddenCategory.IsLocalizable,
+                ItemCount = items.Count(i => i.IsHidden)
+            });
+        }
+
+        return categolized.ToArray();
     }
     private IIdentifiable[] HandleCategory(string state)
     {
-        if (!TryParseState(state, out var prefix, out var value)) return [];
-
         var root = _state.Root?.Value;
         if (root == null) return [];
 
@@ -138,9 +156,12 @@ public class ItemNavigationService
             items = _items.ItemRepository.GetAll();
 
         if (ItemCategory.FromIdentifier(state).Type == ItemType.All)
-            return items.ToArray();
+            return items.Where(i => !i.IsHidden).ToArray();
 
-        return items.Where(i => i.Category.Identifier == state).ToArray();
+        if (ItemCategory.FromIdentifier(state).Type == ItemType.Hidden)
+            return items.Where(i => i.IsHidden).ToArray();
+
+        return items.Where(i => i.Category.Identifier == state && !i.IsHidden).ToArray();
     }
     private IIdentifiable[] HandleItem(string state)
     {

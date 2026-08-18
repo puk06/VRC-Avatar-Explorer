@@ -30,6 +30,7 @@
     "ItemCategory.Tool": "ツール",
     "ItemCategory.Shader": "シェーダー",
     "ItemCategory.All": "すべて",
+    "ItemCategory.Hidden": "非表示",
 
     "Button.Description.Item.Author": "作者: {0}",
     "Button.Description.Item.Count": "{0}個の項目",
@@ -130,6 +131,9 @@
     "ContextMenu.Item.Thumbnail.Change": "サムネイルを変更する",
     "ContextMenu.Item.Thumbnail.Fetch": "サムネイルを取得する",
     "ContextMenu.Item.Remove": "アイテムを削除する",
+    "ContextMenu.Item.HideItem": "アイテムを非表示にする",
+    "ContextMenu.Item.ShowItem": "アイテムを表示する",
+    "ContextMenu.Item.Visibility": "表示/非表示",
     "ContextMenu.ItemFolder.OpenFolder": "フォルダを開く",
     "ContextMenu.ItemFolder.ShowInExplorer": "エクスプローラーで表示する",
     "ContextMenu.ItemFolder.RemoveFolder": "フォルダを削除する",
@@ -176,6 +180,8 @@
     "Success.FetchAllItemThumbnails": "サムネイル一括取得が完了しました ({0}件成功)",
     "Success.RemoveFolder": "フォルダの削除に成功しました",
     "Success.FetchAllVariationHashes": "ハッシュ一括取得が完了しました ({0}件成功)",
+    "Success.HideItem": "アイテムを非表示にしました",
+    "Success.ShowItem": "アイテムを非表示から解除しました",
 
     "VariationUpdate.UpdateAvailable": "アイテムの更新が利用可能です",
     "VariationUpdate.NoUpdatesAvailable": "更新はありませんでした",

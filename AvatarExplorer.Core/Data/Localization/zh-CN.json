@@ -30,6 +30,7 @@
     "ItemCategory.Tool": "工具",
     "ItemCategory.Shader": "着色器",
     "ItemCategory.All": "全部",
+    "ItemCategory.Hidden": "隐藏",
 
     "Button.Description.Item.Author": "作者: {0}",
     "Button.Description.Item.Count": "{0} 个项目",
@@ -130,6 +131,9 @@
     "ContextMenu.Item.Thumbnail.Change": "更改缩略图",
     "ContextMenu.Item.Thumbnail.Fetch": "获取缩略图",
     "ContextMenu.Item.Remove": "删除项目",
+    "ContextMenu.Item.HideItem": "隐藏项目",
+    "ContextMenu.Item.ShowItem": "显示项目",
+    "ContextMenu.Item.Visibility": "显示/隐藏",
     "ContextMenu.ItemFolder.OpenFolder": "打开文件夹",
     "ContextMenu.ItemFolder.ShowInExplorer": "在资源管理器中显示",
     "ContextMenu.ItemFolder.RemoveFolder": "删除文件夹",
@@ -176,6 +180,8 @@
     "Success.ItemFolderAdd": "项目文件夹添加完成",
     "Success.FetchAllItemThumbnails": "批量获取缩略图完成（成功 {0} 个）",
     "Success.FetchAllVariationHashes": "批量获取哈希完成（成功 {0} 个）",
+    "Success.HideItem": "项目已隐藏",
+    "Success.ShowItem": "项目已取消隐藏",
 
     "VariationUpdate.UpdateAvailable": "有可用的项目更新",
     "VariationUpdate.NoUpdatesAvailable": "没有更新",

@@ -30,6 +30,7 @@
     "ItemCategory.Tool": "工具",
     "ItemCategory.Shader": "著色器",
     "ItemCategory.All": "全部",
+    "ItemCategory.Hidden": "隱藏",
 
     "Button.Description.Item.Author": "作者: {0}",
     "Button.Description.Item.Count": "{0} 個項目",
@@ -130,6 +131,9 @@
     "ContextMenu.Item.Thumbnail.Change": "變更縮圖",
     "ContextMenu.Item.Thumbnail.Fetch": "取得縮圖",
     "ContextMenu.Item.Remove": "刪除項目",
+    "ContextMenu.Item.HideItem": "隱藏項目",
+    "ContextMenu.Item.ShowItem": "顯示項目",
+    "ContextMenu.Item.Visibility": "顯示/隱藏",
     "ContextMenu.ItemFolder.OpenFolder": "開啟資料夾",
     "ContextMenu.ItemFolder.ShowInExplorer": "在檔案總管中顯示",
     "ContextMenu.ItemFolder.RemoveFolder": "刪除資料夾",
@@ -176,6 +180,8 @@
     "Success.ItemFolderAdd": "項目資料夾新增完成",
     "Success.FetchAllItemThumbnails": "批次取得縮圖完成（成功 {0} 個）",
     "Success.FetchAllVariationHashes": "批次取得雜湊完成（成功 {0} 個）",
+    "Success.HideItem": "項目已隱藏",
+    "Success.ShowItem": "項目已取消隱藏",
 
     "VariationUpdate.UpdateAvailable": "有可用的項目更新",
     "VariationUpdate.NoUpdatesAvailable": "沒有更新",

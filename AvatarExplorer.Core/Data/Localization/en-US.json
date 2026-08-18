@@ -30,6 +30,7 @@
     "ItemCategory.Tool": "Tool",
     "ItemCategory.Shader": "Shader",
     "ItemCategory.All": "All",
+    "ItemCategory.Hidden": "Hidden",
 
     "Button.Description.Item.Author": "Author: {0}",
     "Button.Description.Item.Count": "{0} items",
@@ -130,6 +131,9 @@
     "ContextMenu.Item.Thumbnail.Change": "Change Thumbnail",
     "ContextMenu.Item.Thumbnail.Fetch": "Fetch Thumbnail",
     "ContextMenu.Item.Remove": "Remove Item",
+    "ContextMenu.Item.HideItem": "Hide Item",
+    "ContextMenu.Item.ShowItem": "Show Item",
+    "ContextMenu.Item.Visibility": "Visibility",
     "ContextMenu.ItemFolder.OpenFolder": "Open Folder",
     "ContextMenu.ItemFolder.ShowInExplorer": "Show in Explorer",
     "ContextMenu.ItemFolder.RemoveFolder": "Remove Folder",
@@ -176,6 +180,8 @@
     "Success.ItemFolderAdd": "Item folder addition completed",
     "Success.FetchAllItemThumbnails": "Bulk thumbnail fetch completed ({0} succeeded)",
     "Success.FetchAllVariationHashes": "Bulk hash fetch completed ({0} succeeded)",
+    "Success.HideItem": "Item has been hidden",
+    "Success.ShowItem": "Item has been unhidden",
 
     "VariationUpdate.UpdateAvailable": "Item updates are available",
     "VariationUpdate.NoUpdatesAvailable": "No updates available",
