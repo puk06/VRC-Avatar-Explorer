@@ -111,6 +111,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
     private readonly Guid _preLevel0StateGuid = Guid.NewGuid();
     private readonly Guid _preLevel1StateGuid = Guid.NewGuid();
+    private readonly Guid _initialWindowStateGuid = Guid.NewGuid();
     private bool _isPreviousScreenSearch = false;
 
     private static UserPreferences UserPreferences => InstanceRepository.UserPreferences;
@@ -696,7 +697,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         }
         else
         {
-            _stateCacheManager.SaveRightState(RightPageInfo);
+            var isInitial = _itemNavigationService.CurrentState == null;
+            _stateCacheManager.SaveRightState(RightPageInfo, isInitial ? _initialWindowStateGuid : null);
             _itemNavigationService.Select(item.Identifier);
         }
 
@@ -732,7 +734,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 }
                 else
                 {
-                    _stateCacheManager.RestoreRightState(RightPageInfo);
+                    var isInitial = _itemNavigationService.CurrentState == null;
+                    _stateCacheManager.RestoreRightState(RightPageInfo, isInitial ? _initialWindowStateGuid : null);
                 }
             }
             else
