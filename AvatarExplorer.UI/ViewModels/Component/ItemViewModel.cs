@@ -106,60 +106,7 @@ public class ItemViewModel : ViewModelBase, IDisposable
     {
         if (ViewModelType == ViewModelType.Item || ViewModelType == ViewModelType.Avatar)
         {
-            var blocks = new List<List<string>>();
-
-            var avatarTagLines = new List<string>();
-            var commonAvatarTag = Tags.FirstOrDefault(t => t.IsCommonAvatar);
-            var otherTags = Tags.Where(t => !t.IsCommonAvatar).ToArray();
-
-            if (commonAvatarTag != null)
-            {
-                avatarTagLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.CommonAvatar, commonAvatarTag.ValueRaw));
-            }
-
-            if (otherTags.Length > 0)
-            {
-                avatarTagLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.Tag, string.Join(", ", otherTags.Select(t => t.ValueRaw))));
-            }
-
-            if (avatarTagLines.Count > 0)
-            {
-                blocks.Add(avatarTagLines);
-            }
-
-            var dateLines = new List<string>();
-
-            if (!string.IsNullOrEmpty(UpdatedDate))
-            {
-                dateLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.UpdatedDate, DatetimeUtils.GetDateStringFromUnixTime(UpdatedDate)));
-            }
-
-            if (!string.IsNullOrEmpty(CreatedDate))
-            {
-                dateLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.CreatedDate, DatetimeUtils.GetDateStringFromUnixTime(CreatedDate)));
-            }
-
-            if (dateLines.Count > 0)
-            {
-                blocks.Add(dateLines);
-            }
-
-            if (!string.IsNullOrEmpty(ItemMemo))
-            {
-                blocks.Add([ItemMemo]);
-            }
-
-            var sb = new StringBuilder();
-            sb.Append(TitleRaw);
-
-            foreach (var block in blocks)
-            {
-                sb.AppendLine();
-                sb.AppendLine();
-                sb.Append(string.Join(Environment.NewLine, block));
-            }
-
-            return sb.ToString();
+            return GenerateToolTipFromItem();
         }
 
         if (ViewModelType == ViewModelType.TempAvatar)
@@ -173,6 +120,49 @@ public class ItemViewModel : ViewModelBase, IDisposable
         }
 
         return null;
+    }
+    private string GenerateToolTipFromItem()
+    {
+        var blocks = new List<List<string>>();
+
+            var avatarTagLines = new List<string>();
+            var commonAvatarTag = Tags.FirstOrDefault(t => t.IsCommonAvatar);
+            var otherTags = Tags.Where(t => !t.IsCommonAvatar).ToArray();
+
+            if (commonAvatarTag != null)
+                avatarTagLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.CommonAvatar, commonAvatarTag.ValueRaw));
+
+            if (otherTags.Length > 0)
+                avatarTagLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.Tag, string.Join(", ", otherTags.Select(t => t.ValueRaw))));
+
+            if (avatarTagLines.Count > 0)
+                blocks.Add(avatarTagLines);
+
+            var dateLines = new List<string>();
+
+            if (!string.IsNullOrEmpty(UpdatedDate))
+                dateLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.UpdatedDate, DatetimeUtils.GetDateStringFromUnixTime(UpdatedDate)));
+
+            if (!string.IsNullOrEmpty(CreatedDate))
+                dateLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.CreatedDate, DatetimeUtils.GetDateStringFromUnixTime(CreatedDate)));
+
+            if (dateLines.Count > 0)
+                blocks.Add(dateLines);
+
+            if (!string.IsNullOrEmpty(ItemMemo))
+                blocks.Add([ItemMemo]);
+
+            var sb = new StringBuilder();
+            sb.Append(TitleRaw);
+
+            foreach (var block in blocks)
+            {
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.Append(string.Join(Environment.NewLine, block));
+            }
+
+            return sb.ToString();
     }
 
     private void HandleMenuClick(ContextMenuAction action)
