@@ -216,19 +216,20 @@
 
                 <GridSplitter Grid.Column="1" Opacity="0"/>
 
-                <Grid RowDefinitions="Auto,*" RowSpacing="12" Grid.Column="2">
+                <Grid RowDefinitions="Auto,*" RowSpacing="10" Grid.Column="2">
                     <Border Grid.Row="0" Classes="panelbackground">
                         <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Left">
-                            <RadioButton GroupName="MainViewMode" IsChecked="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.List}}" Width="50" Height="35" Padding="0">
-                                <materialIcons:MaterialIcon Kind="FormatListBulleted" Width="20" Height="20" Margin="10,0,0,2"/>
+                            <RadioButton GroupName="MainViewMode" IsChecked="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.List}}" Width="50" Height="35">
+                                <materialIcons:MaterialIcon Kind="FormatListBulleted" Width="15" Height="15" Margin="10,0,0,2"/>
                             </RadioButton>
-                            <RadioButton GroupName="MainViewMode" IsChecked="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}" Width="50" Height="35" Padding="0">
-                                <materialIcons:MaterialIcon Kind="Grid" Width="20" Height="20" Margin="10,0,0,2" />
+
+                            <RadioButton GroupName="MainViewMode" IsChecked="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.Grid}}" Width="50" Height="35">
+                                <materialIcons:MaterialIcon Kind="Grid" Width="15" Height="15" Margin="10,0,0,2" />
                             </RadioButton>
 
                             <StackPanel Orientation="Vertical" Spacing="2">
                                 <TextBlock Text="{Binding [Settings.SortOrder.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="10" VerticalAlignment="Center"/>
-                                <ComboBox SelectedIndex="{Binding MainSortOrder}" Width="150" Height="20" FontSize="11" Padding="8,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                <ComboBox SelectedIndex="{Binding MainSortOrder}" Width="150" Height="12" FontSize="12" Padding="8,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Title], Source={x:Static loc:Localizer.Instance}}"/>
                                     <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Author], Source={x:Static loc:Localizer.Instance}}"/>
                                     <ComboBoxItem Content="{Binding [Settings.SortOrder.Options.Created], Source={x:Static loc:Localizer.Instance}}"/>
@@ -238,7 +239,7 @@
 
                             <StackPanel Orientation="Vertical" Spacing="2">
                                 <TextBlock Text="{Binding [Settings.SortDirection.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="10" VerticalAlignment="Center"/>
-                                <ComboBox SelectedIndex="{Binding MainSortDirection}" Width="150" Height="20" FontSize="11" Padding="8,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                <ComboBox SelectedIndex="{Binding MainSortDirection}" Width="150" Height="12" FontSize="12" Padding="8,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <ComboBoxItem Content="{Binding [Settings.SortDirection.Options.Ascending], Source={x:Static loc:Localizer.Instance}}"/>
                                     <ComboBoxItem Content="{Binding [Settings.SortDirection.Options.Descending], Source={x:Static loc:Localizer.Instance}}"/>
                                 </ComboBox>
@@ -246,7 +247,7 @@
 
                             <StackPanel Orientation="Vertical" Spacing="2">
                                 <TextBlock Text="{Binding [Settings.ImplementedSort.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="10" VerticalAlignment="Center"/>
-                                <ComboBox SelectedIndex="{Binding MainImplementedSort}" Width="150" Height="20" FontSize="11" Padding="8,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                <ComboBox SelectedIndex="{Binding MainImplementedSort}" Width="150" Height="12" FontSize="12" Padding="8,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <ComboBoxItem Content="{Binding [Settings.ImplementedSort.Options.None], Source={x:Static loc:Localizer.Instance}}"/>
                                     <ComboBoxItem Content="{Binding [Settings.ImplementedSort.Options.Implemented], Source={x:Static loc:Localizer.Instance}}"/>
                                     <ComboBoxItem Content="{Binding [Settings.ImplementedSort.Options.NotImplemented], Source={x:Static loc:Localizer.Instance}}"/>
