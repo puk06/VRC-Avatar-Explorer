@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=VRC Avatar Explorer (booth-library-manager)
+Comment=VRC Avatar Explorer URI Handler
+Exec=/app/bin/AvatarExplorer/AvatarExplorer %u
+Icon=com.github.puk06.vrc_avatar_explorer
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/booth-library-manager;

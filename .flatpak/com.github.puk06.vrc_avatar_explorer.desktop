@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=VRC-Avatar-Explorer
+Comment=Cross-Platform Asset Explorer For Avatar Modification
+Exec=/app/bin/AvatarExplorer/AvatarExplorer
+Icon=com.github.puk06.vrc_avatar_explorer
+Terminal=false
+Type=Application
