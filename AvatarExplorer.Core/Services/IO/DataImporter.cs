@@ -392,7 +392,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 var item = sourceItem.ToItem();
                 if (item.BoothId == -1 || sourceThumbnailMap.ContainsKey(item.BoothId)) continue;
 
-                var thumbnailPath = Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), sourceItem.Description.ImageFilename!);
+                var thumbnailPath = Path.Combine(KonoAssetPath.ThumbnailsPath(dataFolderPath), sourceItem.Description.ImageFilename);
                 if (File.Exists(thumbnailPath))
                     sourceThumbnailMap[item.BoothId] = thumbnailPath;
             }
