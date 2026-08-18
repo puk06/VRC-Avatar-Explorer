@@ -253,6 +253,15 @@
                                     <ComboBoxItem Content="{Binding [Settings.ImplementedSort.Options.NotImplemented], Source={x:Static loc:Localizer.Instance}}"/>
                                 </ComboBox>
                             </StackPanel>
+
+                            <StackPanel Orientation="Vertical" Spacing="2">
+                                <TextBlock Text="{Binding [Main.GridItemSize.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="10" VerticalAlignment="Center"/>
+                                <ComboBox SelectedIndex="{Binding MainGridItemSize}" Width="150" Height="12" FontSize="12" Padding="8,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                    <ComboBoxItem Content="{Binding [Main.GridItemSize.Options.Small], Source={x:Static loc:Localizer.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding [Main.GridItemSize.Options.Medium], Source={x:Static loc:Localizer.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding [Main.GridItemSize.Options.Large], Source={x:Static loc:Localizer.Instance}}"/>
+                                </ComboBox>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
 
@@ -358,7 +367,7 @@
                                                                             Unloaded="OnItemButtonUnloaded">
                                                                             <Grid RowDefinitions="Auto,Auto,Auto">
                                                                                 <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                                                                    <Image Source="{Binding Thumbnail}" Width="170" Height="170" Stretch="UniformToFill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>
+                                                                                    <Image Source="{Binding Thumbnail}" Width="{Binding $parent[views:MainView].GridItemImageSize}" Height="{Binding $parent[views:MainView].GridItemImageSize}" Stretch="UniformToFill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>
                                                                                 </Border>
 
                                                                                 <TextBlock Grid.Row="1" Text="{Binding Title}" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextAlignment="Left" Margin="0,10,0,0"/>

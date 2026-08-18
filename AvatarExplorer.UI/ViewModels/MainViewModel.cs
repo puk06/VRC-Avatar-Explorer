@@ -54,6 +54,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     [Reactive] public bool IsMainItemsEmpty { get; set; }
 
     [Reactive] public MainItemViewMode MainViewMode { get; set; } = MainItemViewMode.List;
+    [Reactive] public int MainGridItemSize { get; set; } = (int)GridItemSize.Medium;
     [Reactive] public int MainSortOrder { get; set; } = (int)ItemSortOrder.UpdatedDate;
     [Reactive] public int MainSortDirection { get; set; } = (int)SortDirection.Descending;
     [Reactive] public int MainImplementedSort { get; set; } = (int)ImplementedSort.None;
@@ -161,6 +162,10 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         Localizer.Instance.LanguageChanged += () =>
         {
+            var previousSize = MainGridItemSize;
+            MainGridItemSize = -1;
+            MainGridItemSize = previousSize; // For localization of grid item size
+
             _sortOrderObservable?.Skip(1); // 最後にRefleshAllItems()が呼ばれるので、次のSortSettings()の更新は無視する
             UpdateSortSettings(); // For localization of sort order and direction
             RefreshAllItems();

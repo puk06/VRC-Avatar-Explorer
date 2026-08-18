@@ -18,6 +18,11 @@
     "Main.Path.Placeholder": "Le chemin actuel s'affiche ici",
     "Main.Path.SearchResult": "Résultat de la recherche",
 
+    "Main.GridItemSize.Title": "Taille des éléments de la grille",
+    "Main.GridItemSize.Options.Small": "Petit",
+    "Main.GridItemSize.Options.Medium": "Moyen",
+    "Main.GridItemSize.Options.Large": "Grand",
+
     "ItemCategory.Avatar": "Avatar",
     "ItemCategory.Clothing": "Vêtement",
     "ItemCategory.Texture": "Texture",

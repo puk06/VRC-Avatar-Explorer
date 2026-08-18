@@ -23,12 +23,23 @@ namespace AvatarExplorer.UI.Views;
 
 public partial class MainView : UserControl
 {
-    private const int MinGridItemWidth = 190;
+    private static readonly double[] GridItemImageSizes = [130, 170, 210];
+    private static readonly double[] GridItemMinWidths = [150, 190, 230];
     private const int HoverOffset = 20;
+
+    public static readonly StyledProperty<double> GridItemImageSizeProperty =
+        AvaloniaProperty.Register<MainView, double>(nameof(GridItemImageSize), 170.0);
+
+    public double GridItemImageSize
+    {
+        get => GetValue(GridItemImageSizeProperty);
+        set => SetValue(GridItemImageSizeProperty, value);
+    }
 
     private readonly HoverThumbnailWindow _hoverWindow = new();
     private readonly ObservableCollection<GridRow> _gridRows = [];
     private int _gridColumns = 1;
+    private double _gridItemMinWidth = 190;
 
     public MainView()
     {
@@ -56,15 +67,36 @@ public partial class MainView : UserControl
 
     private void OnGridItemsPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(MainViewModel.MainItems))
+        switch (e.PropertyName)
         {
-            RebuildGridRows();
+            case nameof(MainViewModel.MainItems):
+                RebuildGridRows();
+                break;
+            case nameof(MainViewModel.MainGridItemSize):
+                UpdateGridItemSize();
+                break;
         }
+    }
+
+    private void UpdateGridItemSize()
+    {
+        if (DataContext is not MainViewModel vm) return;
+
+        var index = Math.Clamp(vm.MainGridItemSize, 0, GridItemImageSizes.Length - 1);
+        GridItemImageSize = GridItemImageSizes[index];
+        _gridItemMinWidth = GridItemMinWidths[index];
+        UpdateGridColumns(GridItemsControl.Bounds.Width);
+        RebuildGridRows();
     }
 
     private void OnGridItemsControlSizeChanged(object? sender, SizeChangedEventArgs e)
     {
-        var columns = Math.Max(1, (int)(e.NewSize.Width / MinGridItemWidth));
+        UpdateGridColumns(e.NewSize.Width);
+    }
+
+    private void UpdateGridColumns(double width)
+    {
+        var columns = Math.Max(1, (int)(width / _gridItemMinWidth));
         if (columns == _gridColumns) return;
         _gridColumns = columns;
         RebuildGridRows();

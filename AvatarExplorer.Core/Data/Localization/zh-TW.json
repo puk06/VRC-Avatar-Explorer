@@ -18,6 +18,11 @@
     "Main.Path.Placeholder": "目前路徑會顯示在這裡",
     "Main.Path.SearchResult": "搜尋結果",
 
+    "Main.GridItemSize.Title": "網格項目大小",
+    "Main.GridItemSize.Options.Small": "小",
+    "Main.GridItemSize.Options.Medium": "中",
+    "Main.GridItemSize.Options.Large": "大",
+
     "ItemCategory.Avatar": "頭像",
     "ItemCategory.Clothing": "服裝",
     "ItemCategory.Texture": "材質",

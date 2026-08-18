@@ -18,6 +18,11 @@
     "Main.Path.Placeholder": "ここには現在のパスが表示されます",
     "Main.Path.SearchResult": "検索結果",
 
+    "Main.GridItemSize.Title": "グリッドのアイテムサイズ",
+    "Main.GridItemSize.Options.Small": "小",
+    "Main.GridItemSize.Options.Medium": "中",
+    "Main.GridItemSize.Options.Large": "大",
+
     "ItemCategory.Avatar": "アバター",
     "ItemCategory.Clothing": "衣装",
     "ItemCategory.Texture": "テクスチャ",

@@ -18,6 +18,11 @@
     "Main.Path.Placeholder": "The current path is displayed here",
     "Main.Path.SearchResult": "Search Result",
 
+    "Main.GridItemSize.Title": "Grid Item Size",
+    "Main.GridItemSize.Options.Small": "Small",
+    "Main.GridItemSize.Options.Medium": "Medium",
+    "Main.GridItemSize.Options.Large": "Large",
+
     "ItemCategory.Avatar": "Avatar",
     "ItemCategory.Clothing": "Clothing",
     "ItemCategory.Texture": "Texture",

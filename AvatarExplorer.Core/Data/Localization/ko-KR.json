@@ -18,6 +18,11 @@
     "Main.Path.Placeholder": "현재 경로가 여기에 표시됩니다",
     "Main.Path.SearchResult": "검색 결과",
 
+    "Main.GridItemSize.Title": "그리드 아이템 크기",
+    "Main.GridItemSize.Options.Small": "작게",
+    "Main.GridItemSize.Options.Medium": "중간",
+    "Main.GridItemSize.Options.Large": "크게",
+
     "ItemCategory.Avatar": "아바타",
     "ItemCategory.Clothing": "의상",
     "ItemCategory.Texture": "텍스처",

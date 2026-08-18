@@ -18,6 +18,11 @@
     "Main.Path.Placeholder": "当前路径会显示在这里",
     "Main.Path.SearchResult": "搜索结果",
 
+    "Main.GridItemSize.Title": "网格项目大小",
+    "Main.GridItemSize.Options.Small": "小",
+    "Main.GridItemSize.Options.Medium": "中",
+    "Main.GridItemSize.Options.Large": "大",
+
     "ItemCategory.Avatar": "头像",
     "ItemCategory.Clothing": "服装",
     "ItemCategory.Texture": "纹理",
