@@ -474,7 +474,6 @@ public static class FileSystemService
 
         if (extractResult.IsError)
         {
-            ErrorManager.Instance.PostInternalError($"An error occurred while processing folder '{targetPath}'.", tag: extractResult.Errors.ToErrorString());
             lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(targetPath);
             return;
         }

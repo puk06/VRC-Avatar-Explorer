@@ -37,10 +37,9 @@ public static class BoothService
                 EstimatedCategory = new(SuggestItemType(boothItem.Title, boothItem.Category.Name)),
             };
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to retrieve booth item information: '{boothId}'.", ex);
-            return Error.Failure(description: "Failed to retrieve booth item information.");
+            return Error.Failure(description: $"Failed to retrieve booth item information: '{boothId}'.");
         }
     }
     private static async Task<ErrorOr<BoothItem>> GetItemWithVariations(string boothId)
@@ -57,10 +56,9 @@ public static class BoothService
 
             return boothItem;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to retrieve booth item information: '{boothId}'.", ex);
-            return Error.Failure(description: "Failed to retrieve booth item information.");
+            return Error.Failure(description: $"Failed to retrieve booth item information: '{boothId}'.");
         }
     }
     private static ItemType SuggestItemType(string title, string type)
