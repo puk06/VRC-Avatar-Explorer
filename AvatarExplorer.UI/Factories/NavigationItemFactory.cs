@@ -52,9 +52,10 @@ public static class NavigationItemFactory
         if (source is Folder folder)
         {
             var isCategory = ItemCategory.IsCategoryIdentifier(folder.Identifier);
+            var isHiddenCategory = isCategory && ItemCategory.FromIdentifier(folder.Identifier).Type == ItemType.Hidden;
             return new ItemViewModel
             {
-                ImageFileName = SystemIconKey.FolderIcon,
+                ImageFileName = isHiddenCategory ? SystemIconKey.HiddenFolderIcon : SystemIconKey.FolderIcon,
                 TitleRaw = folder.Title,
                 TitleLocalizable = folder.TitleLocalizable,
                 DescriptionRaw = new(Loc.Button.Description.Item.Count, [folder.ItemCount.ToString()]),

@@ -309,6 +309,7 @@ Assets/FileIcon.png: Document icons created by Neveraemje - Flaticon (https://ww
 Assets/GroupIcon.png: Group chat icons created by bsd - Flaticon (https://www.flaticon.com/free-icon/group-chat_9464022)
 Assets/AvatarIcon.png: User icons created by Saepul Nahwan - Flaticon (https://www.flaticon.com/free-icon/people_14643189)
 Assets/LinkIcon.png: Url icons created by Karacis - Flaticon (https://www.flaticon.com/free-icon/link_4906292)
+Assets/HiddenFolderIcon.png: Locked folder icons created by juicy_fish - Flaticon (https://www.flaticon.com/free-icon/visibility_6942809)
 
 - Noto Sans (https://fonts.google.com/noto/specimen/Noto+Sans)
 

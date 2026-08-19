@@ -41,6 +41,7 @@ internal static class ImageService
     {
         { SystemIconKey.None, null },
         { SystemIconKey.FolderIcon, Load(GetAssetUri("FolderIcon.png")) },
+        { SystemIconKey.HiddenFolderIcon, Load(GetAssetUri("HiddenFolderIcon.png")) },
         { SystemIconKey.FileIcon, Load(GetAssetUri("FileIcon.png")) },
         { SystemIconKey.UnknownFileIcon, Load(GetAssetUri("UnknownFileIcon.png")) },
         { SystemIconKey.GroupIcon, Load(GetAssetUri("GroupIcon.png")) },
