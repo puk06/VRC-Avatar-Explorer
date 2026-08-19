@@ -13,7 +13,6 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.System;
-using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -91,57 +90,15 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
             if (!itemPathCategoryEntries.Any(i => i.FilePath == selectedPath))
             {
-                var category = item.Category.IsLocalizable ? Localizer.Instance[item.Category.ToString()] : item.Category.ToString();
                 itemPathCategoryEntries.Add(new()
                 {
-                    CategoryDisplayName = category,
+                    CategoryDisplayName = UnitypackageService.GetCategoryDisplayName(item.Category),
                     FilePath = selectedPath
                 });
             }
         }
 
-        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Unitypackage.Status.Preparing]);
-        var importResult = await UnitypackageService.Import(
-            itemPathCategoryEntries,
-            onProgress: async (name, percent) =>
-            {
-                InstanceRepository.MainWindow.ProgressVM.Update(
-                    Localizer.Instance.Get(name, percent.ToString()),
-                    percent
-                );
-            }
-        );
-        InstanceRepository.MainWindow.ProgressVM.Close();
-
-        if (importResult.ContainsScripts)
-        {
-            NotificationManager.Show(
-                Localizer.Instance[Loc.Warning.Default],
-                Localizer.Instance[Loc.Warning.ScriptsFoundInUnitypackage],
-                NotificationType.Warning
-            );
-        }
-
-        if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
-        {
-            var result = await LauncherService.OpenFile(importResult.ModifiedUnitypackagePath);
-            if (result.IsError)
-            {
-                NotificationManager.Show(
-                    Localizer.Instance[Loc.Error.Default],
-                    Localizer.Instance[Loc.Error.OpenFileFailed],
-                    NotificationType.Error
-                );
-            }
-        }
-        else
-        {
-            NotificationManager.Show(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.BulkImportFailed],
-                NotificationType.Error
-            );
-        }
+        await UnitypackageService.ImportWithProgress(itemPathCategoryEntries, Loc.Error.BulkImportFailed);
     }
 
     private void Reset()

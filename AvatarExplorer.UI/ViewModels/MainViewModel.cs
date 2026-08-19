@@ -109,6 +109,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private string? _searchItemBaseState;
     private bool _hasSearchItem;
 
+    private readonly HashSet<string> _processingUnitypackages = [];
+
     private readonly Guid _preLevel0StateGuid = Guid.NewGuid();
     private readonly Guid _preLevel1StateGuid = Guid.NewGuid();
     private readonly Guid _initialWindowStateGuid = Guid.NewGuid();
@@ -240,74 +242,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     {
         if (PathUtils.IsUnitypackageFile(file))
         {
-            var itemId = _itemNavigationService.GetCurrentItemId();
-            if (itemId == null)
-            {
-                NotificationManager.Show(
-                    Localizer.Instance[Loc.Error.Default],
-                    Localizer.Instance[Loc.Error.FailedToGetCurrentItem],
-                    NotificationType.Error
-                );
-                return;
-            }
-
-            var item = InstanceRepository.Items.Get(itemId);
-            if (item == null)
-            {
-                NotificationManager.Show(
-                    Localizer.Instance[Loc.Error.Default],
-                    Localizer.Instance[Loc.Error.ItemNotFound],
-                    NotificationType.Error
-                );
-                return;
-            }
-
-            var category = item.Category;
-            var isLocalizable = category.IsLocalizable;
-            var displayName = isLocalizable ? Localizer.Instance[item.Category.ToString()] : item.Category.ToString();
-
-            InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Unitypackage.Status.Preparing]);
-            var importResult = await UnitypackageService.Import(
-                [ new() { FilePath = file, CategoryDisplayName = displayName } ],
-                onProgress: async (name, percent) =>
-                {
-                    InstanceRepository.MainWindow.ProgressVM.Update(
-                        Localizer.Instance.Get(name, percent.ToString()),
-                        percent
-                    );
-                }
-            );
-            InstanceRepository.MainWindow.ProgressVM.Close();
-
-            if (importResult.ContainsScripts)
-            {
-                NotificationManager.Show(
-                    Localizer.Instance[Loc.Warning.Default],
-                    Localizer.Instance[Loc.Warning.ScriptsFoundInUnitypackage],
-                    NotificationType.Warning
-                );
-            }
-
-            if (!importResult.IsError && !string.IsNullOrEmpty(importResult.ModifiedUnitypackagePath))
-            {
-                var result = await LauncherService.OpenFile(importResult.ModifiedUnitypackagePath);
-                if (result.IsError)
-                {
-                    NotificationManager.Show(
-                        Localizer.Instance[Loc.Error.Default],
-                        Localizer.Instance[Loc.Error.OpenFileFailed],
-                        NotificationType.Error
-                    );
-                }
-            }
-            else
-            {
-                NotificationManager.Show(
-                    Localizer.Instance[Loc.Error.Default],
-                    Localizer.Instance[Loc.Error.ImportUnitypackageFailed],
-                    NotificationType.Error
-                );
-            }
+            _ = HandleUnitypackage(file);
         }
         else
         {
@@ -320,6 +255,53 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                     NotificationType.Error
                 );
             }
+        }
+    }
+    private async Task HandleUnitypackage(string filePath)
+    {
+        if (_processingUnitypackages.Contains(filePath))
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.UnitypackageAlreadyProcessing],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        var itemId = _itemNavigationService.GetCurrentItemId();
+        if (itemId == null)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.FailedToGetCurrentItem],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        var item = InstanceRepository.Items.Get(itemId);
+        if (item == null)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.ItemNotFound],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        _processingUnitypackages.Add(filePath);
+        try
+        {
+            var displayName = UnitypackageService.GetCategoryDisplayName(item.Category);
+            await UnitypackageService.ImportWithProgress(
+                [new() { FilePath = filePath, CategoryDisplayName = displayName }]
+            );
+        }
+        finally
+        {
+            _processingUnitypackages.Remove(filePath);
         }
     }
     public void OpenSidePanel(int index) => _sidePanelManager.Open(index);

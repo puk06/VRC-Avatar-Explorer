@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.IO;
-using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Localization;
@@ -20,6 +20,7 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.ViewModels.Component;
 using DynamicData;
+using ErrorOr;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -404,12 +405,19 @@ public class ItemEditorViewModel : ViewModelBase
     }
     private async Task FetchBoothData()
     {
-        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Booth.Status.Fetching]);
-        InstanceRepository.MainWindow.ProgressVM.Update(0);
-        var fetchResult = await BoothService.Fetch(BoothUrl, waitCooldown: true);
-        InstanceRepository.MainWindow.ProgressVM.Close();
+        ErrorOr<BoothItem>? fetchResult = null;
+        await NotificationManager.ShowWithProgress(
+            Localizer.Instance[Loc.Processing.Booth.Title],
+            async progress =>
+            {
+                progress.Report(Localizer.Instance[Loc.Processing.Booth.Status.Fetching], 0);
+                fetchResult = await BoothService.Fetch(BoothUrl, waitCooldown: true);
+                progress.Report(Localizer.Instance[Loc.Processing.Booth.Status.Fetching], 100);
+                await Task.Delay(300); // To ensure the progress bar is visible for a short time
+            }
+        );
 
-        if (fetchResult.IsError)
+        if (fetchResult == null || fetchResult.Value.IsError)
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
@@ -419,13 +427,19 @@ public class ItemEditorViewModel : ViewModelBase
             return;
         }
 
-        var boothData = fetchResult.Value;
+        var boothData = fetchResult.Value.Value;
         Title = boothData.Title;
         Author = boothData.Shop.Name;
         SelectedCategoryIndex = GetCategoryIndex(boothData.EstimatedCategory);
         AuthorId = boothData.Shop.Id;
         BoothId = boothData.BoothId.ToString();
         ThumbnailUrl = boothData.ThumbnailUrl;
+
+        NotificationManager.Show(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.FetchBoothItemInfo],
+            NotificationType.Success
+        );
     }
 
     private void RemovePath(ItemPathViewModel pathModel) => ItemPaths.Remove(pathModel);

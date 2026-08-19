@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
-using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
@@ -11,6 +10,7 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
+using ErrorOr;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -78,22 +78,26 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
     {
         if (string.IsNullOrEmpty(FolderPath)) return;
 
-        async Task ProgressAction((string localizationKey, int progress) tuple)
-        {
-            await Dispatcher.UIThread.InvokeAsync(() =>
+        ErrorOr<Success>? result = null;
+        await NotificationManager.ShowWithProgress(
+            Localizer.Instance[Loc.Processing.Export.Title],
+            async progress =>
             {
-                InstanceRepository.MainWindow.ProgressVM.Update(
-                    Localizer.Instance.Get(tuple.localizationKey, tuple.progress.ToString()),
-                    tuple.progress
+                result = await InstanceRepository.ItemGroupService.Export(
+                    SelectedExportType,
+                    FolderPath,
+                    GetLocalizedType,
+                    IncludeCommonToSupported,
+                    tuple =>
+                    {
+                        progress.Report(Localizer.Instance.Get(tuple.Item1, tuple.Item2.ToString()), tuple.Item2);
+                        return Task.CompletedTask;
+                    }
                 );
-            });
-        }
+            }
+        );
 
-        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Export.Preparing]);
-        var result = await InstanceRepository.ItemGroupService.Export(SelectedExportType, FolderPath, GetLocalizedType, IncludeCommonToSupported, ProgressAction);
-        InstanceRepository.MainWindow.ProgressVM.Close();
-
-        if (result.IsError)
+        if (result == null || result.Value.IsError)
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],

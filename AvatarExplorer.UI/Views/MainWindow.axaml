@@ -82,10 +82,6 @@
             <overlays:PdfViewerOverlay/>
         </ContentControl>
 
-        <ContentControl IsVisible="{Binding ProgressVM.IsVisible}">
-            <overlays:ProgressOverlay/>
-        </ContentControl>
-
         <ContentControl IsVisible="{Binding IsTextDialogVisible}">
             <overlays:TextDialogOverlay/>
         </ContentControl>

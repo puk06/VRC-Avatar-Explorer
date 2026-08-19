@@ -48,7 +48,6 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public MergeCategoryViewModel MergeCategoryVM { get; } = new();
     public TagEditorViewModel TagEditorVM { get; } = new();
     public PdfViewerViewModel PdfViewerVM { get; } = new();
-    public ProgressViewModel ProgressVM { get; } = new();
     public ResolveTempAvatarViewModel ResolveTempAvatarVM { get; } = new();
     public SettingsViewModel SettingsVM { get; } = new();
     public UnitypackageViewerViewModel UnitypackageViewerVM { get; } = new();

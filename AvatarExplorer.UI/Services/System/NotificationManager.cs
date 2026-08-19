@@ -1,9 +1,15 @@
 using System;
+using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using Message.Avalonia;
 using Message.Avalonia.Models;
 
 namespace AvatarExplorer.UI.Services.System;
+
+public interface IProgressReporter
+{
+    void Report(string title, int progress);
+}
 
 public static class NotificationManager
 {
@@ -30,6 +36,42 @@ public static class NotificationManager
             case NotificationType.Error:
                 manager.ShowErrorMessage(content, messageOptions);
                 break;
+        }
+    }
+
+    public static Task ShowWithProgress(string title, Func<IProgressReporter, Task> progressAction)
+    {
+        var manager = MessageManager.Default;
+        var tcs = new TaskCompletionSource();
+
+        manager
+            .CreateProgress()
+            .WithTitle(title)
+            .WithProgress(async progress =>
+            {
+                try
+                {
+                    var reporter = new ProgressReporter(progress);
+                    await progressAction(reporter);
+                    tcs.TrySetResult();
+                }
+                catch (Exception ex)
+                {
+                    tcs.TrySetException(ex);
+                }
+            })
+            .ShowInfo();
+
+        return tcs.Task;
+    }
+
+    private sealed class ProgressReporter(MessageProgress progress) : IProgressReporter
+    {
+        private readonly MessageProgress _progress = progress;
+
+        public void Report(string title, int progress)
+        {
+            _progress.Report(title, progress);
         }
     }
 }

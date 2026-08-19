@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
-using Avalonia.Threading;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.UI.Interfaces;
@@ -11,6 +10,7 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
+using ErrorOr;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -97,30 +97,29 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
             Localizer.Instance[Loc.Dialog.Confirmation.CopyAssetData]
         );
 
-        async Task ProgressAction((string localizationKey, int progress) tuple)
-        {
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                InstanceRepository.MainWindow.ProgressVM.Update(
-                    Localizer.Instance.Get(tuple.localizationKey, tuple.progress.ToString()),
-                    tuple.progress
-                );
-            });
-        }
-
         var request = new ImportRequest
         {
             ImportType = type,
             DataFolderPath = FolderPath,
             CopyAssetData = copyAssetData,
-            ReportProgress = ProgressAction
+            ReportProgress = null
         };
 
-        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Import.Preparing]);
-        var result = await InstanceRepository.ItemGroupService.Import(request);
-        InstanceRepository.MainWindow.ProgressVM.Close();
+        ErrorOr<Success>? result = null;
+        await NotificationManager.ShowWithProgress(
+            Localizer.Instance[Loc.Processing.Import.Title],
+            async progress =>
+            {
+                request.ReportProgress = tuple =>
+                {
+                    progress.Report(Localizer.Instance.Get(tuple.Item1, tuple.Item2.ToString()), tuple.Item2);
+                    return Task.CompletedTask;
+                };
+                result = await InstanceRepository.ItemGroupService.Import(request);
+            }
+        );
 
-        if (result.IsError)
+        if (result == null || result.Value.IsError)
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],

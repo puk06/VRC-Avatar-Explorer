@@ -171,6 +171,7 @@ public static class Loc
         public const string AddContent = "Processing.AddContent";
         public static class Unitypackage
         {
+            public const string Title = "Processing.Unitypackage.Title";
             public static class Status
             {
                 public const string Preparing = "Processing.Unitypackage.Status.Preparing";
@@ -181,6 +182,7 @@ public static class Loc
         }
         public static class Booth
         {
+            public const string Title = "Processing.Booth.Title";
             public static class Status
             {
                 public const string Fetching = "Processing.Booth.Status.Fetching";
@@ -188,15 +190,18 @@ public static class Loc
         }
         public static class DirectoryCopy
         {
+            public const string Title = "Processing.DirectoryCopy.Title";
             public const string Copying = "Processing.DirectoryCopy.Copying";
         }
         public static class Import
         {
+            public const string Title = "Processing.Import.Title";
             public const string Preparing = "Processing.Import.Preparing";
             public const string Copying = "Processing.Import.Copying";
         }
         public static class Export
         {
+            public const string Title = "Processing.Export.Title";
             public const string Preparing = "Processing.Export.Preparing";
             public const string Copying = "Processing.Export.Copying";
         }
@@ -298,6 +303,7 @@ public static class Loc
         public const string RenameCustomCategory = "Success.RenameCustomCategory";
         public const string ClipboardSet = "Success.ClipboardSet";
         public const string FetchItemThumbnail = "Success.FetchItemThumbnail";
+        public const string FetchBoothItemInfo = "Success.FetchBoothItemInfo";
         public const string ItemFileAdd = "Success.ItemFileAdd";
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
         public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
@@ -346,6 +352,7 @@ public static class Loc
         public const string OpenUriFailed = "Error.OpenUriFailed";
         public const string FailedToGetCurrentItem = "Error.FailedToGetCurrentItem";
         public const string ImportUnitypackageFailed = "Error.ImportUnitypackageFailed";
+        public const string UnitypackageAlreadyProcessing = "Error.UnitypackageAlreadyProcessing";
         public const string RetrieveBoothItemFailed = "Error.RetrieveBoothItemFailed";
         public const string FetchItemThumbnailFailed = "Error.FetchItemThumbnailFailed";
         public const string FoundProcessingFailedPath = "Error.FoundProcessingFailedPath";
