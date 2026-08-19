@@ -102,6 +102,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;
         SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
         InstanceRepository.App.BackupManager.OnBackupRestored += OnBackupRestored;
+        ErrorManager.Instance.OnErrorOccured += OnErrorOccured;
 
         ApplyPreferenceSettings(InstanceRepository.UserPreferences);
         UpdateFontFamily();
@@ -121,6 +122,16 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     private void UpdateFontFamily()
     {
         FontFamily = FontUtils.GetFontFamily(Localizer.Instance[Loc.FontFamily]);
+    }
+    private void OnErrorOccured(string message, Exception? exception, string tag)
+    {
+        Dispatcher.UIThread.Post(() =>
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                message,
+                NotificationType.Error
+            )
+        );
     }
 
     private void OnBackupRestored()
@@ -260,7 +271,13 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     {
         try
         {
-            if (string.IsNullOrEmpty(path) || !File.Exists(path)) return;
+            if (string.IsNullOrEmpty(path)) return;
+
+            if (!File.Exists(path))
+            {
+                ErrorManager.Instance.PostError($"Background image file not found: '{path}'.");
+                return;
+            }
 
             var image = new ImageBrush()
             {
