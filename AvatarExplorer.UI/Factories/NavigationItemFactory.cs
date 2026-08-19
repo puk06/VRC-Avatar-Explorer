@@ -11,149 +11,129 @@ namespace AvatarExplorer.UI.Factories;
 
 public static class NavigationItemFactory
 {
-    public static ItemViewModel CreateFromNavigationable(IIdentifiable source)
+    public static ItemViewModel CreateFromNavigationable(IIdentifiable source) => source switch
     {
-        if (source is Avatar avatar)
-        {
-            return FromAvatar(avatar);
-        }
+        Avatar avatar => FromAvatar(avatar),
+        Item item => FromItem(item, source.Identifier),
+        Author author => FromAuthor(author, source.Identifier),
+        Folder folder => FromFolder(folder),
+        ItemFile file => FromItemFile(file),
+        _ => CreateEmpty()
+    };
 
-        if (source is Item item)
-        {
-            return new ItemViewModel
-            {
-                ImageFileName = item.ThumbnailFileName,
-                FallbackImageFileName = SystemIconKey.FileIcon,
-                TitleRaw = item.Title,
-                TitleLocalizable = false,
-                DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
-                Identifier = source.Identifier,
-                ViewModelType = ViewModelType.Item,
-                Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
-                CreatedDate = item.CreatedDate,
-                UpdatedDate = item.UpdatedDate,
-                ItemMemo = item.ItemMemo
-            };
-        }
+    private static ItemViewModel FromItem(Item item, string identifier) => new()
+    {
+        ImageFileName = item.ThumbnailFileName,
+        FallbackImageFileName = SystemIconKey.FileIcon,
+        TitleRaw = item.Title,
+        TitleLocalizable = false,
+        DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
+        Identifier = identifier,
+        ViewModelType = ViewModelType.Item,
+        Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
+        CreatedDate = item.CreatedDate,
+        UpdatedDate = item.UpdatedDate,
+        ItemMemo = item.ItemMemo
+    };
 
-        if (source is Author author)
-        {
-            return new ItemViewModel
-            {
-                ImageFileName = string.Empty,
-                TitleRaw = author.Name,
-                TitleLocalizable = false,
-                DescriptionRaw = new(Loc.Button.Description.Item.Count, [author.ItemCount.ToString()]),
-                Identifier = source.Identifier,
-                ViewModelType = ViewModelType.None
-            };
-        }
+    private static ItemViewModel FromAuthor(Author author, string identifier) => new()
+    {
+        ImageFileName = string.Empty,
+        TitleRaw = author.Name,
+        TitleLocalizable = false,
+        DescriptionRaw = new(Loc.Button.Description.Item.Count, [author.ItemCount.ToString()]),
+        Identifier = identifier,
+        ViewModelType = ViewModelType.None
+    };
 
-        if (source is Folder folder)
-        {
-            var isCategory = ItemCategory.IsCategoryIdentifier(folder.Identifier);
-            var isHiddenCategory = isCategory && ItemCategory.FromIdentifier(folder.Identifier).Type == ItemType.Hidden;
-            return new ItemViewModel
-            {
-                ImageFileName = isHiddenCategory ? SystemIconKey.HiddenFolderIcon : SystemIconKey.FolderIcon,
-                TitleRaw = folder.Title,
-                TitleLocalizable = folder.TitleLocalizable,
-                DescriptionRaw = new(Loc.Button.Description.Item.Count, [folder.ItemCount.ToString()]),
-                Identifier = folder.Identifier,
-                ViewModelType = isCategory ? ViewModelType.ItemCategory : ViewModelType.Folder,
-                ActualValue = folder.Path
-            };
-        }
-
-        if (source is ItemFile file)
-        {
-            var hasExtension = !string.IsNullOrEmpty(file.Extension);
-            var isImageFile = ImageService.IsImageFile(file.FilePath);
-
-            return new ItemViewModel
-            {
-                ImageFileName = SystemIconKey.FileIcon,
-                ThumbnailFilePath = isImageFile ? file.FilePath : null,
-                TitleRaw = file.FileName,
-                TitleLocalizable = false,
-                DescriptionRaw = new(hasExtension ? Loc.Button.Description.File.Extension : Loc.Button.Description.File.NoExtension, [file.Extension]),
-                Identifier = file.Identifier,
-                ViewModelType = ViewModelType.File,
-                ActualValue = file.FilePath
-            };
-        }
+    private static ItemViewModel FromFolder(Folder folder)
+    {
+        var isCategory = ItemCategory.IsCategoryIdentifier(folder.Identifier);
+        var isHiddenCategory = isCategory && ItemCategory.FromIdentifier(folder.Identifier).Type == ItemType.Hidden;
 
         return new ItemViewModel
         {
-            ImageFileName = SystemIconKey.None,
-            TitleRaw = string.Empty,
-            TitleLocalizable = false,
-            DescriptionRaw = new(string.Empty, []),
-            Identifier = string.Empty,
-            ViewModelType = ViewModelType.None
+            ImageFileName = isHiddenCategory ? SystemIconKey.HiddenFolderIcon : SystemIconKey.FolderIcon,
+            TitleRaw = folder.Title,
+            TitleLocalizable = folder.TitleLocalizable,
+            DescriptionRaw = new(Loc.Button.Description.Item.Count, [folder.ItemCount.ToString()]),
+            Identifier = folder.Identifier,
+            ViewModelType = isCategory ? ViewModelType.ItemCategory : ViewModelType.Folder,
+            ActualValue = folder.Path
         };
     }
 
-    private static ItemViewModel FromAvatar(Avatar avatar)
+    private static ItemViewModel FromItemFile(ItemFile file)
     {
-        if (avatar.Type == AvatarType.Item)
-        {
-            var item = (Item)avatar.Item;
-            return new ItemViewModel
-            {
-                ImageFileName = item.ThumbnailFileName,
-                FallbackImageFileName = SystemIconKey.FileIcon,
-                TitleRaw = item.Title,
-                TitleLocalizable = false,
-                DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
-                Identifier = avatar.Identifier,
-                ActualValue = item.Identifier,
-                ViewModelType = ViewModelType.Avatar,
-                Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
-                CreatedDate = item.CreatedDate,
-                UpdatedDate = item.UpdatedDate,
-                ItemMemo = item.ItemMemo
-            };
-        }
-        else if (avatar.Type == AvatarType.CommonAvatar)
-        {
-            var commonAvatar = (CommonAvatar)avatar.Item;
-
-            return new ItemViewModel
-            {
-                ImageFileName = SystemIconKey.GroupIcon,
-                TitleRaw = commonAvatar.GroupName,
-                TitleLocalizable = false,
-                DescriptionRaw = new(Loc.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]),
-                Identifier = avatar.Identifier,
-                ActualValue = commonAvatar.Identifier,
-                ViewModelType = ViewModelType.CommonAvatar
-            };
-        }
-        else if (avatar.Type == AvatarType.TempAvatar)
-        {
-            var tempAvatar = (TempAvatar)avatar.Item;
-
-            return new ItemViewModel
-            {
-                ImageFileName = SystemIconKey.AvatarIcon,
-                TitleRaw = tempAvatar.AvatarName,
-                TitleLocalizable = false,
-                DescriptionRaw = new(Loc.Button.Description.TempAvatar),
-                Identifier = avatar.Identifier,
-                ActualValue = tempAvatar.Identifier,
-                ViewModelType = ViewModelType.TempAvatar
-            };
-        }
+        var hasExtension = !string.IsNullOrEmpty(file.Extension);
+        var isImageFile = ImageService.IsImageFile(file.FilePath);
 
         return new ItemViewModel
         {
-            ImageFileName = SystemIconKey.None,
-            TitleRaw = string.Empty,
+            ImageFileName = SystemIconKey.FileIcon,
+            ThumbnailFilePath = isImageFile ? file.FilePath : null,
+            TitleRaw = file.FileName,
             TitleLocalizable = false,
-            DescriptionRaw = new(string.Empty, []),
-            Identifier = string.Empty,
-            ViewModelType = ViewModelType.None
+            DescriptionRaw = new(hasExtension ? Loc.Button.Description.File.Extension : Loc.Button.Description.File.NoExtension, [file.Extension]),
+            Identifier = file.Identifier,
+            ViewModelType = ViewModelType.File,
+            ActualValue = file.FilePath
         };
     }
+
+    private static ItemViewModel FromAvatar(Avatar avatar) => avatar.Type switch
+    {
+        AvatarType.Item => FromAvatarItem(avatar, (Item)avatar.Item),
+        AvatarType.CommonAvatar => FromCommonAvatar(avatar, (CommonAvatar)avatar.Item),
+        AvatarType.TempAvatar => FromTempAvatar(avatar, (TempAvatar)avatar.Item),
+        _ => CreateEmpty()
+    };
+
+    private static ItemViewModel FromAvatarItem(Avatar avatar, Item item) => new()
+    {
+        ImageFileName = item.ThumbnailFileName,
+        FallbackImageFileName = SystemIconKey.FileIcon,
+        TitleRaw = item.Title,
+        TitleLocalizable = false,
+        DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
+        Identifier = avatar.Identifier,
+        ActualValue = item.Identifier,
+        ViewModelType = ViewModelType.Avatar,
+        Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
+        CreatedDate = item.CreatedDate,
+        UpdatedDate = item.UpdatedDate,
+        ItemMemo = item.ItemMemo
+    };
+
+    private static ItemViewModel FromCommonAvatar(Avatar avatar, CommonAvatar commonAvatar) => new()
+    {
+        ImageFileName = SystemIconKey.GroupIcon,
+        TitleRaw = commonAvatar.GroupName,
+        TitleLocalizable = false,
+        DescriptionRaw = new(Loc.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]),
+        Identifier = avatar.Identifier,
+        ActualValue = commonAvatar.Identifier,
+        ViewModelType = ViewModelType.CommonAvatar
+    };
+
+    private static ItemViewModel FromTempAvatar(Avatar avatar, TempAvatar tempAvatar) => new()
+    {
+        ImageFileName = SystemIconKey.AvatarIcon,
+        TitleRaw = tempAvatar.AvatarName,
+        TitleLocalizable = false,
+        DescriptionRaw = new(Loc.Button.Description.TempAvatar),
+        Identifier = avatar.Identifier,
+        ActualValue = tempAvatar.Identifier,
+        ViewModelType = ViewModelType.TempAvatar
+    };
+
+    private static ItemViewModel CreateEmpty() => new()
+    {
+        ImageFileName = SystemIconKey.None,
+        TitleRaw = string.Empty,
+        TitleLocalizable = false,
+        DescriptionRaw = new(string.Empty, []),
+        Identifier = string.Empty,
+        ViewModelType = ViewModelType.None
+    };
 }
