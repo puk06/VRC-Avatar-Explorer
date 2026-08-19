@@ -709,8 +709,8 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             var popped = _itemNavigationService.Undo();
             if (popped != null)
             {
-                var currentState = _itemNavigationService.CurrentState?.Value;
-                if (_hasSearchItem && currentState != null && currentState == _searchItemBaseState)
+                var currentState = _itemNavigationService.CurrentState;
+                if (_hasSearchItem && currentState != null && currentState.Value == _searchItemBaseState)
                 {
                     // 検索アイテムがpopされた → 検索状態を復元
                     _searchManager.MarkAsRestoring();
@@ -719,8 +719,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 }
                 else
                 {
-                    var isInitial = _itemNavigationService.CurrentState == null;
-                    restoreGuid = isInitial ? _initialWindowStateGuid : null;
+                    restoreGuid = currentState?.Id ?? _initialWindowStateGuid;
                 }
             }
             else
