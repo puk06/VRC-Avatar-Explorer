@@ -112,7 +112,10 @@
     "Processing.Unitypackage.Status.Completed": "Unitypackage 建立完成 {0}%",
     "Processing.Booth.Status.Fetching": "正在取得項目資訊...",
     "Processing.DirectoryCopy.Copying": "正在複製資料夾... {0}%",
+    "Processing.Import.Preparing": "正在準備匯入...",
     "Processing.Import.Copying": "正在匯入資料... {0}%",
+    "Processing.Export.Preparing": "正在準備匯出...",
+    "Processing.Export.Copying": "正在複製資料... {0}%",
 
     "ContextMenu.Item.CheckForUpdate": "檢查項目更新",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "顯示此作者的其他項目",
@@ -485,6 +488,7 @@
     "ExportData.Description": "將目前資料庫匯出為檔案",
     "ExportData.ExportType": "匯出類型",
     "ExportData.ExportTypeOptions.Csv": "CSV",
+    "ExportData.ExportTypeOptions.KonoAsset": "KonoAsset",
     "ExportData.FolderPath.Title": "輸出資料夾",
     "ExportData.FolderPath.Browse": "瀏覽",
     "ExportData.IncludeCommonToSupported": "在支援頭像欄中包含共用基體頭像",

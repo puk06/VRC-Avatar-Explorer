@@ -112,7 +112,10 @@
     "Processing.Unitypackage.Status.Completed": "Unitypackage 생성이 완료되었습니다 {0}%",
     "Processing.Booth.Status.Fetching": "아이템 정보를 가져오는 중입니다...",
     "Processing.DirectoryCopy.Copying": "폴더를 복사하는 중입니다... {0}%",
+    "Processing.Import.Preparing": "가져오기 준비 중...",
     "Processing.Import.Copying": "데이터를 가져오는 중입니다... {0}%",
+    "Processing.Export.Preparing": "내보내기 준비 중...",
+    "Processing.Export.Copying": "데이터를 복사하는 중입니다... {0}%",
 
     "ContextMenu.Item.CheckForUpdate": "아이템 업데이트 확인",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "이 작성자의 다른 아이템 보기",
@@ -485,6 +488,7 @@
     "ExportData.Description": "현재 데이터베이스를 파일로 내보냅니다",
     "ExportData.ExportType": "내보내기 유형",
     "ExportData.ExportTypeOptions.Csv": "CSV",
+    "ExportData.ExportTypeOptions.KonoAsset": "KonoAsset",
     "ExportData.FolderPath.Title": "출력 폴더",
     "ExportData.FolderPath.Browse": "찾아보기",
     "ExportData.IncludeCommonToSupported": "대응 아바타 항목에 공통 바디 아바타 포함",

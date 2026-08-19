@@ -112,7 +112,10 @@
     "Processing.Unitypackage.Status.Completed": "Unitypackage creation completed {0}%",
     "Processing.Booth.Status.Fetching": "Fetching item information...",
     "Processing.DirectoryCopy.Copying": "Copying folder... {0}%",
+    "Processing.Import.Preparing": "Preparing import...",
     "Processing.Import.Copying": "Importing data... {0}%",
+    "Processing.Export.Preparing": "Preparing export...",
+    "Processing.Export.Copying": "Copying data... {0}%",
 
     "ContextMenu.Item.CheckForUpdate": "Check for Item Updates",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "Show Other Items by This Author",
@@ -485,6 +488,7 @@
     "ExportData.Description": "Export the current database to a file",
     "ExportData.ExportType": "Export Type",
     "ExportData.ExportTypeOptions.Csv": "CSV",
+    "ExportData.ExportTypeOptions.KonoAsset": "KonoAsset",
     "ExportData.FolderPath.Title": "Output Folder",
     "ExportData.FolderPath.Browse": "Browse",
     "ExportData.IncludeCommonToSupported": "Include common avatars in the supported avatar column",

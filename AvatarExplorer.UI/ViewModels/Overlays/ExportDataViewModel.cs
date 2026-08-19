@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
+using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
@@ -25,6 +26,7 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
     private List<(string LocKey, DataExportType Type)> ExportTypeOptions { get; } =
     [
         (Loc.ExportData.ExportTypeOptions.Csv, DataExportType.Csv),
+        (Loc.ExportData.ExportTypeOptions.KonoAsset, DataExportType.KonoAsset),
     ];
 
     public List<string> ExportTypeNames => ExportTypeOptions.ConvertAll(o => Localizer.Instance[o.LocKey]);
@@ -76,7 +78,20 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
     {
         if (string.IsNullOrEmpty(FolderPath)) return;
 
-        var result = await InstanceRepository.ItemGroupService.Export(SelectedExportType, FolderPath, GetLocalizedType, IncludeCommonToSupported);
+        async Task ProgressAction((string localizationKey, int progress) tuple)
+        {
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                InstanceRepository.MainWindow.ProgressVM.Update(
+                    Localizer.Instance.Get(tuple.localizationKey, tuple.progress.ToString()),
+                    tuple.progress
+                );
+            });
+        }
+
+        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Export.Preparing]);
+        var result = await InstanceRepository.ItemGroupService.Export(SelectedExportType, FolderPath, GetLocalizedType, IncludeCommonToSupported, ProgressAction);
+        InstanceRepository.MainWindow.ProgressVM.Close();
 
         if (result.IsError)
         {

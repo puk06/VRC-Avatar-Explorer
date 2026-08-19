@@ -192,7 +192,13 @@ public static class Loc
         }
         public static class Import
         {
+            public const string Preparing = "Processing.Import.Preparing";
             public const string Copying = "Processing.Import.Copying";
+        }
+        public static class Export
+        {
+            public const string Preparing = "Processing.Export.Preparing";
+            public const string Copying = "Processing.Export.Copying";
         }
     }
     public static class ContextMenu
@@ -805,6 +811,7 @@ public static class Loc
         public static class ExportTypeOptions
         {
             public const string Csv = "ExportData.ExportTypeOptions.Csv";
+            public const string KonoAsset = "ExportData.ExportTypeOptions.KonoAsset";
         }
         public static class FolderPath
         {

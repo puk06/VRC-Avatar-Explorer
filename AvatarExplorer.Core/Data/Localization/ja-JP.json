@@ -112,7 +112,10 @@
     "Processing.Unitypackage.Status.Completed": "Unitypackageの作成が完了しました {0}%",
     "Processing.Booth.Status.Fetching": "アイテム情報の取得中です...",
     "Processing.DirectoryCopy.Copying": "フォルダのコピー中です... {0}%",
+    "Processing.Import.Preparing": "インポートの準備中です...",
     "Processing.Import.Copying": "データの取り込み中です... {0}%",
+    "Processing.Export.Preparing": "エクスポートの準備中です...",
+    "Processing.Export.Copying": "データのコピー中です... {0}%",
 
     "ContextMenu.Item.CheckForUpdate": "アイテムの更新を確認",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "この作者の他のアイテムを表示",
@@ -485,6 +488,7 @@
     "ExportData.Description": "現在のデータベースをファイルにエクスポートします",
     "ExportData.ExportType": "出力タイプ",
     "ExportData.ExportTypeOptions.Csv": "CSV",
+    "ExportData.ExportTypeOptions.KonoAsset": "KonoAsset",
     "ExportData.FolderPath.Title": "出力先フォルダー",
     "ExportData.FolderPath.Browse": "参照",
     "ExportData.IncludeCommonToSupported": "対応アバターの欄に共通素体アバターを含める",

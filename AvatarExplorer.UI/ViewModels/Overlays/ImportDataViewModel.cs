@@ -116,7 +116,7 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
             ReportProgress = ProgressAction
         };
 
-        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Import.Copying]);
+        InstanceRepository.MainWindow.ProgressVM.Open(Localizer.Instance[Loc.Processing.Import.Preparing]);
         var result = await InstanceRepository.ItemGroupService.Import(request);
         InstanceRepository.MainWindow.ProgressVM.Close();
 

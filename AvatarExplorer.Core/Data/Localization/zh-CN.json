@@ -112,7 +112,10 @@
     "Processing.Unitypackage.Status.Completed": "Unitypackage 创建完成 {0}%",
     "Processing.Booth.Status.Fetching": "正在获取项目信息...",
     "Processing.DirectoryCopy.Copying": "正在复制文件夹... {0}%",
+    "Processing.Import.Preparing": "正在准备导入...",
     "Processing.Import.Copying": "正在导入数据... {0}%",
+    "Processing.Export.Preparing": "正在准备导出...",
+    "Processing.Export.Copying": "正在复制数据... {0}%",
 
     "ContextMenu.Item.CheckForUpdate": "检查项目更新",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "显示该作者的其他项目",
@@ -485,6 +488,7 @@
     "ExportData.Description": "将当前数据库导出为文件",
     "ExportData.ExportType": "导出类型",
     "ExportData.ExportTypeOptions.Csv": "CSV",
+    "ExportData.ExportTypeOptions.KonoAsset": "KonoAsset",
     "ExportData.FolderPath.Title": "输出文件夹",
     "ExportData.FolderPath.Browse": "浏览",
     "ExportData.IncludeCommonToSupported": "在支持头像栏中包含共用基体头像",

@@ -490,7 +490,7 @@ public class ItemGroupService
 
     #endregion
 
-    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string folderPath, Func<ItemType, ValueTask<string?>>? itemTypeLocalizer, bool includeCommonToSupported)
+    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string folderPath, Func<ItemType, ValueTask<string?>>? itemTypeLocalizer, bool includeCommonToSupported, Func<(string, int), Task>? reportProgress = null)
     {
         var exportContext = new ExportContext()
         {
@@ -505,7 +505,8 @@ public class ItemGroupService
         {
             ExportType = exportType,
             FolderPath = folderPath,
-            IncludeCommonToSupported = includeCommonToSupported
+            IncludeCommonToSupported = includeCommonToSupported,
+            ReportProgress = reportProgress
         };
 
         return await DataExporter.Export(exportContext, exportRequest);

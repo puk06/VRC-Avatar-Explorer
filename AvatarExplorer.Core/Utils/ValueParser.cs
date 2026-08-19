@@ -10,6 +10,12 @@ public static class ValueParser
         return int.TryParse(value, out int v) ? v : defaultValue;
     }
 
+    public static long Long(string? value, long defaultValue = 0)
+    {
+        if (string.IsNullOrEmpty(value)) return defaultValue;
+        return long.TryParse(value, out long v) ? v : defaultValue;
+    }
+
     public static double Double(string? value, double defaultValue = 0)
     {
         if (string.IsNullOrEmpty(value)) return defaultValue;

@@ -112,7 +112,10 @@
     "Processing.Unitypackage.Status.Completed": "Création du Unitypackage terminée {0}%",
     "Processing.Booth.Status.Fetching": "Récupération des informations de l'élément...",
     "Processing.DirectoryCopy.Copying": "Copie du dossier... {0}%",
+    "Processing.Import.Preparing": "Préparation de l'importation...",
     "Processing.Import.Copying": "Importation des données... {0}%",
+    "Processing.Export.Preparing": "Préparation de l'exportation...",
+    "Processing.Export.Copying": "Copie des données... {0}%",
 
     "ContextMenu.Item.CheckForUpdate": "Vérifier les mises à jour de l'élément",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "Afficher les autres éléments de cet auteur",
@@ -485,6 +488,7 @@
     "ExportData.Description": "Exporter la base de données actuelle vers un fichier",
     "ExportData.ExportType": "Type d'exportation",
     "ExportData.ExportTypeOptions.Csv": "CSV",
+    "ExportData.ExportTypeOptions.KonoAsset": "KonoAsset",
     "ExportData.FolderPath.Title": "Dossier de sortie",
     "ExportData.FolderPath.Browse": "Parcourir",
     "ExportData.IncludeCommonToSupported": "Inclure les avatars communs dans la colonne des avatars pris en charge",
