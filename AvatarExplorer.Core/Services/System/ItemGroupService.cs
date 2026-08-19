@@ -43,9 +43,9 @@ public class ItemGroupService
         _tempAvatars = tempAvatars;
         _runtimesettings = settings;
 
-        _items.OnUpdated += ItemUpdated;
-        _commonAvatars.OnUpdated += CommonAvatarUpdated;
-        _tempAvatars.OnUpdated += TempAvatarUpdated;
+        _items.OnUpdated += OnDatabaseUpdated;
+        _commonAvatars.OnUpdated += OnDatabaseUpdated;
+        _tempAvatars.OnUpdated += OnDatabaseUpdated;
     }
 
     public List<IIdentifiable> GetQueryFilters(QueryType type)
@@ -359,19 +359,19 @@ public class ItemGroupService
 
         if (types.HasFlag(SearchResultType.CommonAvatar))
         {
-            foreach (var commonAvatar in _commonAvatars.GetAll())
+            foreach (var commonAvatar in _commonAvatars.GetAll().Select(i => i.Identifier))
             {
-                if (_commonAvatarSearchIndices.TryGetValue(commonAvatar.Identifier, out var index) && MatchesQuery(index, query, locKeyProvider))
-                    result.Add(commonAvatar.Identifier);
+                if (_commonAvatarSearchIndices.TryGetValue(commonAvatar, out var index) && MatchesQuery(index, query, locKeyProvider))
+                    result.Add(commonAvatar);
             }
         }
 
         if (types.HasFlag(SearchResultType.TempAvatar))
         {
-            foreach (var tempAvatar in _tempAvatars.GetAll())
+            foreach (var tempAvatar in _tempAvatars.GetAll().Select(i => i.Identifier))
             {
-                if (_tempAvatarSearchIndices.TryGetValue(tempAvatar.Identifier, out var index) && MatchesQuery(index, query, locKeyProvider))
-                    result.Add(tempAvatar.Identifier);
+                if (_tempAvatarSearchIndices.TryGetValue(tempAvatar, out var index) && MatchesQuery(index, query, locKeyProvider))
+                    result.Add(tempAvatar);
             }
         }
 
@@ -446,19 +446,7 @@ public class ItemGroupService
             commonAvatarNames);
     }
 
-    private void ItemUpdated()
-    {
-        if (!_indicesBuilt) return;
-        RebuildIndices();
-    }
-
-    private void CommonAvatarUpdated()
-    {
-        if (!_indicesBuilt) return;
-        RebuildIndices();
-    }
-
-    private void TempAvatarUpdated()
+    private void OnDatabaseUpdated()
     {
         if (!_indicesBuilt) return;
         RebuildIndices();
@@ -471,22 +459,12 @@ public class ItemGroupService
 
     private static bool MatchesAll(ISearchIndex index, SearchQuery query, Func<string, string>? locKeyProvider)
     {
-        foreach (var token in query.Tokens)
-        {
-            if (!index.IsMatch(token, locKeyProvider)) return false;
-        }
-
-        return true;
+        return query.Tokens.All(token => index.IsMatch(token, locKeyProvider));
     }
 
     private static bool MatchesAny(ISearchIndex index, SearchQuery query, Func<string, string>? locKeyProvider)
     {
-        foreach (var token in query.Tokens)
-        {
-            if (index.IsMatch(token, locKeyProvider)) return true;
-        }
-
-        return false;
+        return query.Tokens.Any(token => index.IsMatch(token, locKeyProvider));
     }
 
     #endregion

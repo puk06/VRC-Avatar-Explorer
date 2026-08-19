@@ -262,8 +262,8 @@ public class ItemNavigationService
     {
         var itemFiles = _items.ItemRepository.EnumerateItemFiles(itemId);
 
-        foreach (var file in itemFiles)
-            _pathCache[PathUtils.ComputeHash(file.FilePath)] = file.FilePath;
+        foreach (var file in itemFiles.Select(i => i.FilePath))
+            _pathCache[PathUtils.ComputeHash(file)] = file;
 
         return itemFiles;
     }

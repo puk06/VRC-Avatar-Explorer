@@ -74,7 +74,7 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
 
     private static async Task<List<VariationData>?> FetchVariationData(string itemId)
     {
-        var result = await BoothService.GetItemWithVariations(itemId);
+        var result = await BoothService.Fetch(itemId, includeVariations: true);
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError(

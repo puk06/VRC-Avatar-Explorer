@@ -19,14 +19,15 @@ public static class BoothService
         if (pollingIntervalMs < 10) pollingIntervalMs = 10;
         while (IsApiCooldownNow) await Task.Delay(pollingIntervalMs, cancellationToken);
     }
-
-    private static async Task<ErrorOr<BoothItem>> GetItem(string boothId)
+    private static async Task<ErrorOr<BoothItem>> GetItemInternal(string boothId, bool includeVariations)
     {
         try
         {
             if (boothId.Any(c => !char.IsNumber(c))) return Error.Failure(description: "The BoothId contains characters other than numbers.");
 
-            var url = string.Format(BoothLink.ItemJsonURLFormat, boothId);
+            var url = includeVariations
+                ? string.Format(BoothLink.ItemWithVariationJsonURLFormat, boothId)
+                : string.Format(BoothLink.ItemJsonURLFormat, boothId);
             var response = await HttpService.Client.GetStringAsync(url);
 
             var boothItem = JsonManager.Deserialize<BoothItem>(response);
@@ -36,25 +37,6 @@ public static class BoothService
             {
                 EstimatedCategory = new(SuggestItemType(boothItem.Title, boothItem.Category.Name)),
             };
-        }
-        catch (Exception)
-        {
-            return Error.Failure(description: $"Failed to retrieve booth item information: '{boothId}'.");
-        }
-    }
-    private static async Task<ErrorOr<BoothItem>> GetItemWithVariations(string boothId)
-    {
-        try
-        {
-            if (boothId.Any(c => !char.IsNumber(c))) return Error.Failure(description: "The BoothId contains characters other than numbers.");
-
-            var url = string.Format(BoothLink.ItemWithVariationJsonURLFormat, boothId);
-            var response = await HttpService.Client.GetStringAsync(url);
-
-            var boothItem = JsonManager.Deserialize<BoothItem>(response);
-            if (boothItem == null) return Error.Failure(description: "Failed to deserialize data.");
-
-            return boothItem;
         }
         catch (Exception)
         {
@@ -73,7 +55,7 @@ public static class BoothService
         return titleSuggestedTypes.Any() ? titleSuggestedTypes.First() : categorySuggestedType;
     }
 
-    public static async Task<ErrorOr<BoothItem>> Fetch(string boothUrl, bool waitCooldown = true)
+    public static async Task<ErrorOr<BoothItem>> Fetch(string boothUrl, bool waitCooldown = true, bool includeVariations = false)
     {
         if (string.IsNullOrEmpty(boothUrl)) return Error.Failure(description: "Invalid Url.");
     
@@ -84,27 +66,7 @@ public static class BoothService
 
         _lastBoothApiGetTime = DateTime.Now;
 
-        var result = await GetItem(boothId);
-        if (result.IsError)
-        {
-            ErrorManager.Instance.PostInternalError("Failed to fetch booth item.", tag: result.Errors.ToErrorString());
-            return Error.Failure(description: "Failed to fetch booth item.");
-        }
-
-        return result.Value;
-    }
-    public static async Task<ErrorOr<BoothItem>> GetItemWithVariations(string boothUrl, bool waitCooldown = true)
-    {
-        if (string.IsNullOrEmpty(boothUrl)) return Error.Failure(description: "Invalid Url.");
-    
-        if (!waitCooldown && IsApiCooldownNow) return Error.Failure(description: "Booth API Cooldown Error.");
-        else await WaitForApiCooldownAsync();
-
-        var boothId = boothUrl.Split('/')[^1];
-
-        _lastBoothApiGetTime = DateTime.Now;
-
-        var result = await GetItemWithVariations(boothId);
+        var result = await GetItemInternal(boothId, includeVariations: includeVariations);
         if (result.IsError)
         {
             ErrorManager.Instance.PostInternalError("Failed to fetch booth item.", tag: result.Errors.ToErrorString());

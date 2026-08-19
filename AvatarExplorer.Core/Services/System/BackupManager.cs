@@ -28,7 +28,7 @@ public class BackupManager
         if (_backupTask != null) return;
 
         _backupCts = new CancellationTokenSource();
-        _backupTask = Task.Run(() => AutoBackupLoop(_backupCts.Token));
+        _backupTask = Task.Run(() => AutoBackupLoop(_backupCts.Token), cancellationToken: CancellationToken.None);
     }
 
     internal async Task StopAutoBackup()
@@ -146,7 +146,7 @@ public class BackupManager
     {
         if (!Directory.Exists(folderPath)) return;
 
-        await ExecuteBackup();
+        await ExecuteBackup(CancellationToken.None); // Backup current state before restoring
 
         foreach (var file in FileSystemService.EnumerateFiles(folderPath))
         {
