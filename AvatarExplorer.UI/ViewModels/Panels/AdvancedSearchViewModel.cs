@@ -19,6 +19,7 @@ public class AdvancedSearchViewModel : ViewModelBase, IInitializable
     [Reactive] public string Tag { get; set; } = string.Empty;
     [Reactive] public string CommonAvatar { get; set; } = string.Empty;
     [Reactive] public bool IsOr { get; set; }
+    [Reactive] public bool IncludeHidden { get; set; }
 
     public event Action? SearchPropertyChanged;
 

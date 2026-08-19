@@ -351,6 +351,7 @@ public class ItemGroupService
         {
             foreach (var item in _items.GetAll())
             {
+                if (!query.IncludeHidden && item.IsHidden) continue;
                 if (_itemSearchIndices.TryGetValue(item.Identifier, out var index) && MatchesQuery(index, query, locKeyProvider))
                     result.Add(item.Identifier);
             }

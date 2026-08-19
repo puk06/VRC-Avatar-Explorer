@@ -171,6 +171,7 @@
     "SearchFilter.SearchWord": "Mot de recherche : {0}",
     "SearchFilter.IsOrSearch": "Recherche OR globale",
     "SearchFilter.NegationPrefix": "(Exclure)",
+    "SearchFilter.IncludeHidden": "Inclure les éléments masqués",
 
     "Success.Default": "Succès",
     "Success.Import": "Importation des données réussie",
@@ -416,6 +417,7 @@
     "AdvancedSearch.NotImplementedAvatar": "Avatar non implémenté",
     "AdvancedSearch.Tag": "Étiquette",
     "AdvancedSearch.CommonAvatar": "Avatar commun",
+    "AdvancedSearch.IncludeHidden": "Inclure les éléments masqués",
 
     "BulkImport.Import": "Importation en masse",
     "BulkImport.Save": "Enregistrer",

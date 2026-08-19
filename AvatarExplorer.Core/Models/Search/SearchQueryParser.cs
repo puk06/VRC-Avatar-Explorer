@@ -12,6 +12,7 @@ public static class SearchQueryParser
         var rawTokens = TextParser.Parse(searchText);
         var tokens = new List<SearchQueryToken>(rawTokens.Length);
         var isOr = false;
+        var includeHidden = false;
 
         foreach (var rawToken in rawTokens)
         {
@@ -23,9 +24,15 @@ public static class SearchQueryParser
                 continue;
             }
 
+            if (rawToken.Equals("IncludeHidden=true", StringComparison.OrdinalIgnoreCase))
+            {
+                includeHidden = true;
+                continue;
+            }
+
             tokens.Add(SearchQueryToken.Parse(rawToken));
         }
 
-        return new SearchQuery(tokens, isOr);
+        return new SearchQuery(tokens, isOr, includeHidden);
     }
 }

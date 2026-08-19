@@ -171,6 +171,7 @@
     "SearchFilter.SearchWord": "検索語句: {0}",
     "SearchFilter.IsOrSearch": "全体OR検索",
     "SearchFilter.NegationPrefix": "(除外)",
+    "SearchFilter.IncludeHidden": "非表示アイテムを含む",
 
     "Success.Default": "成功",
     "Success.Import": "データのインポートに成功しました",
@@ -416,6 +417,7 @@
     "AdvancedSearch.NotImplementedAvatar": "未実装アバター",
     "AdvancedSearch.Tag": "タグ",
     "AdvancedSearch.CommonAvatar": "共通素体",
+    "AdvancedSearch.IncludeHidden": "非表示アイテムを含める",
 
     "BulkImport.Import": "一括インポート",
     "BulkImport.Save": "保存",

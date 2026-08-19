@@ -143,6 +143,9 @@ public class SearchManager
         if (advancedSearch.IsOr)
             parts.Add("OR=true");
 
+        if (advancedSearch.IncludeHidden)
+            parts.Add("IncludeHidden=true");
+
         return string.Join(" ", parts);
     }
 
@@ -205,6 +208,9 @@ public class SearchManager
 
         if (parsed.IsOr)
             result = $"({Localizer.Instance.Get(Loc.SearchFilter.IsOrSearch)}) {result}";
+
+        if (parsed.IncludeHidden)
+            result = $"({Localizer.Instance.Get(Loc.SearchFilter.IncludeHidden)}) {result}";
 
         return Localizer.Instance.Get(Loc.SearchFilter.Default, result);
     }

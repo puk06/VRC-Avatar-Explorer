@@ -1,9 +1,10 @@
 namespace AvatarExplorer.Core.Models.Search;
 
-public sealed class SearchQuery(IReadOnlyList<SearchQueryToken> tokens, bool isOr = false)
+public sealed class SearchQuery(IReadOnlyList<SearchQueryToken> tokens, bool isOr = false, bool includeHidden = false)
 {
     public IReadOnlyList<SearchQueryToken> Tokens { get; } = tokens;
     public bool IsOr { get; } = isOr;
+    public bool IncludeHidden { get; } = includeHidden;
 }
 
 public sealed class SearchQueryToken(string? field, string value, bool isNegation)
@@ -31,13 +32,12 @@ public sealed class SearchQueryToken(string? field, string value, bool isNegatio
             value = value[(separatorIndex + 1)..];
 
             // 前後の引用符を取り除く
-            if (value.Length >= 2)
+            if (
+                value.Length >= 2 &&
+                ((value[0] == '"' && value[^1] == '"') ||
+                (value[0] == '\'' && value[^1] == '\'')))
             {
-                if ((value[0] == '"' && value[^1] == '"') ||
-                    (value[0] == '\'' && value[^1] == '\''))
-                {
-                    value = value[1..^1];
-                }
+                value = value[1..^1];
             }
         }
 

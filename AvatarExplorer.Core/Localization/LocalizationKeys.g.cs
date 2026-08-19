@@ -289,6 +289,7 @@ public static class Loc
         public const string SearchWord = "SearchFilter.SearchWord";
         public const string IsOrSearch = "SearchFilter.IsOrSearch";
         public const string NegationPrefix = "SearchFilter.NegationPrefix";
+        public const string IncludeHidden = "SearchFilter.IncludeHidden";
     }
     public static class Success
     {
@@ -703,6 +704,7 @@ public static class Loc
         public const string NotImplementedAvatar = "AdvancedSearch.NotImplementedAvatar";
         public const string Tag = "AdvancedSearch.Tag";
         public const string CommonAvatar = "AdvancedSearch.CommonAvatar";
+        public const string IncludeHidden = "AdvancedSearch.IncludeHidden";
     }
     public static class BulkImport
     {

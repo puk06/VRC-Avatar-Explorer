@@ -171,6 +171,7 @@
     "SearchFilter.SearchWord": "검색어: {0}",
     "SearchFilter.IsOrSearch": "전체 OR 검색",
     "SearchFilter.NegationPrefix": "(제외)",
+    "SearchFilter.IncludeHidden": "숨겨진 항목 포함",
 
     "Success.Default": "성공",
     "Success.Import": "데이터 가져오기에 성공했습니다",
@@ -416,6 +417,7 @@
     "AdvancedSearch.NotImplementedAvatar": "미구현 아바타",
     "AdvancedSearch.Tag": "태그",
     "AdvancedSearch.CommonAvatar": "공통 바디",
+    "AdvancedSearch.IncludeHidden": "숨겨진 항목 포함",
 
     "BulkImport.Import": "일괄 가져오기",
     "BulkImport.Save": "저장",

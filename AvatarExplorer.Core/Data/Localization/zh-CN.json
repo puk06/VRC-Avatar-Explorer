@@ -171,6 +171,7 @@
     "SearchFilter.SearchWord": "搜索词: {0}",
     "SearchFilter.IsOrSearch": "全局 OR 搜索",
     "SearchFilter.NegationPrefix": "(排除)",
+    "SearchFilter.IncludeHidden": "包含隐藏项目",
 
     "Success.Default": "成功",
     "Success.Import": "数据导入成功",
@@ -416,6 +417,7 @@
     "AdvancedSearch.NotImplementedAvatar": "未实现头像",
     "AdvancedSearch.Tag": "标签",
     "AdvancedSearch.CommonAvatar": "共用基体",
+    "AdvancedSearch.IncludeHidden": "包含隐藏项目",
 
     "BulkImport.Import": "批量导入",
     "BulkImport.Save": "保存",
