@@ -5,16 +5,28 @@ using System.Linq;
 using Avalonia.Platform.Storage;
 using AvatarExplorer.UI.ViewModels.Panels;
 using AvatarExplorer.UI.Services;
+using System.Threading.Tasks;
+using AvatarExplorer.UI.Interfaces;
 
 namespace AvatarExplorer.UI.Views.Panels;
 
-public partial class BulkImport : UserControl
+public partial class BulkImport : UserControl, IInitializable
 {
     public BulkImport()
     {
         InitializeComponent();
         DataContext = InstanceRepository.MainView.BulkImportVM;
+
+        IInitializableRegistry.Register(0, this);
     }
+
+    public async Task Initialize()
+    {
+        if (DataContext is BulkImportViewModel vm)
+            vm.OnItemsAdded += ScrollToEnd;
+    }
+
+    private void ScrollToEnd() => ItemsScrollViewer.ScrollToEnd();
 
     private void OnDrop(object? sender, DragEventArgs e)
     {

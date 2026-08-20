@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
@@ -21,7 +22,7 @@ namespace AvatarExplorer.UI.ViewModels.Panels;
 
 public class BulkImportViewModel : ViewModelBase, IInitializable
 {
-    public event Action? OnItemsChanged;
+    public event Action? OnItemsAdded;
     [Reactive] public ObservableCollection<BulkImportItemViewModel> Items { get; set; } = [];
 
     public IReactiveCommand CopyCommand { get; }
@@ -45,7 +46,11 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
     {
         InstanceRepository.Items.OnUpdated += RefreshItems;
         InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ => OnUserPreferencesChanged();
-        Items.CollectionChanged += (s, e) => OnItemsChanged?.Invoke();
+        Items.CollectionChanged += (s, e) =>
+        {
+            if (e.Action is NotifyCollectionChangedAction.Add)
+                OnItemsAdded?.Invoke();
+        };
     }
 
     private void OnUserPreferencesChanged()
