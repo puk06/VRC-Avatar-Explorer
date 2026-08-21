@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<component type="desktop-application">
+  <id>com.github.puk06.vrc_avatar_explorer</id>
+
+  <name>VRC-Avatar-Explorer</name>
+  <summary>Cross-Platform Asset Explorer For Avatar Modification</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-only</project_license>
+
+  <description>
+    <p>
+      A simple yet powerful cross-platform asset management tool for VRChat users.
+    </p>
+    <p>
+      By linking asset files with Booth item information, Avatar Explorer can automatically organize and manage assets in an explorer-style interface.
+    </p>
+  </description>
+
+  <categories>
+    <category>Utility</category>
+    <category>Database</category>
+    <category>Viewer</category>
+    <category>FileManager</category>
+    <category>FileTools</category>
+  </categories>
+
+  <launchable
+        type="desktop-id"
+    >com.github.puk06.vrc_avatar_explorer.desktop</launchable>
+</component>
