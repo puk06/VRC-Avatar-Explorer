@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
-using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
