@@ -31,7 +31,7 @@ internal static class ImageService
     private static readonly Dictionary<string, CacheEntry> BitmapCache = [];
     private static readonly Lock BitmapCacheLock = new();
     private static int ThumbnailWarmupStarted = 0;
-    private static readonly int _compressedThumbnailMaxEdge = DefaultCompressedThumbnailMaxEdge;
+    private static int _compressedThumbnailMaxEdge = DefaultCompressedThumbnailMaxEdge;
 
     internal static event Action<bool>? ThumbnailCacheWarmupStateChanged;
 
@@ -203,5 +203,10 @@ internal static class ImageService
             ErrorManager.Instance.PostInternalError($"Failed to load or compress bitmap: {filePath}", ex);
             return null;
         }
+    }
+
+    public static void UpdateCompressedThumbnailMaxEdge(int maxEdge)
+    {
+        _compressedThumbnailMaxEdge = maxEdge;
     }
 }

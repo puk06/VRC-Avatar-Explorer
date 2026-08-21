@@ -22,6 +22,7 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Overlays;
 using ReactiveUI.Fody.Helpers;
+using AvatarExplorer.UI.Services.Utilities;
 
 namespace AvatarExplorer.UI.ViewModels;
 
@@ -92,6 +93,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         AppInitializer.InitializeContextMenu();
         AppInitializer.InitializeUserPreferences();
         AppInitializer.RegisterBackupFiles();
+        ImageService.UpdateCompressedThumbnailMaxEdge(InstanceRepository.UserPreferences.ThumbnailCompressionMaxEdge);
         AppInitializer.StartThumbnailCacheWarmup();
         AppInitializer.StartSingleInstanceService();
 
@@ -258,6 +260,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     private void ApplyPreferenceSettings(UserPreferences settings)
     {
         Localizer.Instance.SetLanguage(settings.Language);
+
+        ImageService.UpdateCompressedThumbnailMaxEdge(InstanceRepository.UserPreferences.ThumbnailCompressionMaxEdge);
 
         if (settings.UseBackgroundImage) SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
         else BackgroundImage = null;
