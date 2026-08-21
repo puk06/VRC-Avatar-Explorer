@@ -49,7 +49,7 @@ public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
             .Subscribe(UpdateNodeStatus);
     }
 
-    public async void Open(string unitypackagePath)
+    public async Task Open(string unitypackagePath)
     {
         IsVisible = true;
         await LoadAsync(unitypackagePath);
@@ -131,7 +131,7 @@ public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
 
     private async Task Export()
     {
-        if (UnitypackagePath == null || SelectedNode == null || !SelectedNode.IsFile)
+        if (SelectedNode?.IsFile is not true)
             return;
 
         var initialPath = Path.GetDirectoryName(UnitypackagePath);

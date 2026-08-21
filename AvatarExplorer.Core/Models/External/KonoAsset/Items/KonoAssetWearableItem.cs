@@ -11,7 +11,7 @@ public class KonoAssetWearableItem : AbstractKonoAssetItem
     public string Category { get; set; } = string.Empty;
 
     [JsonPropertyName("supportedAvatars")]
-    public List<string> SupportedAvatars { get; set; } = new List<string>();
+    public List<string> SupportedAvatars { get; set; } = [];
 
     public override Item ToItem()
     {

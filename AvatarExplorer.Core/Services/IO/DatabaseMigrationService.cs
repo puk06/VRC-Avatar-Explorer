@@ -32,7 +32,10 @@ public static class DatabaseMigrationService
                 items = arr;
                 appliedVersion = obj["Version"]?.GetValue<int>() ?? 0;
             }
-            else return;
+            else
+            {
+                return;
+            }
 
             var changed = RunMigrations(items, appliedVersion, currentVersion, applyMigration);
 

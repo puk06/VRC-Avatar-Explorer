@@ -14,7 +14,7 @@ public class KonoAssetDescription
     public string? ImageFilename { get; set; } = null;
 
     [JsonPropertyName("tags")]
-    public List<string> Tags { get; set; } = new List<string>();
+    public List<string> Tags { get; set; } = [];
 
     [JsonPropertyName("memo")]
     public string? Memo { get; set; } = null;
@@ -23,7 +23,7 @@ public class KonoAssetDescription
     public int? BoothItemId { get; set; } = null;
 
     [JsonPropertyName("dependencies")]
-    public List<string> Dependencies { get; set; } = new List<string>();
+    public List<string> Dependencies { get; set; } = [];
 
     [JsonPropertyName("createdAt")]
     public long CreatedAt { get; set; } = 0;

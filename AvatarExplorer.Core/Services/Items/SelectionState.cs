@@ -5,7 +5,7 @@ public record SelectionNode(Guid Id, string Value);
 internal class SelectionState
 {
     public event Action? SelectionChanged;
-    
+
     private readonly Stack<SelectionNode> _stack = new();
 
     public Guid Push(string value)
@@ -36,6 +36,6 @@ internal class SelectionState
 
     public SelectionNode? FirstOrDefault(string prefix) => _stack.FirstOrDefault(i => i.Value.StartsWith(prefix));
     public SelectionNode? LastOrDefault(string prefix) => _stack.LastOrDefault(i => i.Value.StartsWith(prefix));
-    
+
     public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _stack.Reverse();
 }

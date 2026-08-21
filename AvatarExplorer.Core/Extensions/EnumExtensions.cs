@@ -4,7 +4,7 @@ namespace AvatarExplorer.Core.Extensions;
 
 public static class EnumExtensions
 {
-    private static readonly char FilterSplitter = '|';
+    private const char FilterSplitter = '|';
     public static string? GetLocalizationKey(this Enum value) => value.GetAttribute<LocalizationKeyAttribute>()?.Key;
     public static string[]? GetExtensionFilters(this Enum value) => value.GetAttribute<ExtensionsFilterAttribute>()?.Filter.Split(FilterSplitter) ?? null;
     public static string[]? GetFileNameFilters(this Enum value) => value.GetAttribute<FileNamesFilterAttribute>()?.Filter.Split(FilterSplitter) ?? null;

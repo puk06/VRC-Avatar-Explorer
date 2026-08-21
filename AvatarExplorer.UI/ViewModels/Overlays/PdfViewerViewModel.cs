@@ -28,7 +28,7 @@ public class PdfViewerViewModel : ViewModelBase
         CloseCommand = ReactiveCommand.Create(Close);
     }
 
-    public async void Open(string filePath)
+    public async Task Open(string filePath)
     {
         Reset();
         _cts = new();
@@ -41,12 +41,12 @@ public class PdfViewerViewModel : ViewModelBase
     {
         Task.Run(async () =>
         {
-            using var pdfStream = File.OpenRead(filePath);
+            await using var pdfStream = File.OpenRead(filePath);
 
             #pragma warning disable CA1416
             var pageSizes = Conversion.GetPageSizes(pdfStream, leaveOpen: true);
             var pages = Enumerable.Range(0, pageSizes.Count);
-            var pdfBitmaps = Conversion.ToImagesAsync(pdfStream, pages, leaveOpen: true);
+            var pdfBitmaps = Conversion.ToImagesAsync(pdfStream, pages, leaveOpen: true, cancellationToken: ct);
             #pragma warning restore CA1416
 
             int index = 0;

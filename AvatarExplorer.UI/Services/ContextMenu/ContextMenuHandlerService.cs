@@ -123,7 +123,7 @@ public static class ContextMenuHandlerService
                 Localizer.Instance.Get(Localizer.Instance[Loc.Dialog.Confirmation.RemoveFolderFromApplicationManagedFolder], path)
             );
             if (!removeFromDatabase) return;
-            
+
             await InstanceRepository.Items.RemovePath(item.Identifier, path, true);
         }
         else if (item.ItemPaths.Contains(path))
@@ -150,7 +150,7 @@ public static class ContextMenuHandlerService
             );
             return;
         }
-        
+
         NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],
             Localizer.Instance[Loc.Success.RemoveFolder],
@@ -195,7 +195,7 @@ public static class ContextMenuHandlerService
             NotificationType.Information
         );
     }
-    
+
     private static async void CopyBoothLink(string identifier)
     {
         var link = GetByIdentifier(identifier)?.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
@@ -444,7 +444,7 @@ public static class ContextMenuHandlerService
     {
         var currentItem = InstanceRepository.NavigationService.GetCurrentItemId();
         if (string.IsNullOrEmpty(currentItem)) return;
-        
+
         var bulkVm = InstanceRepository.MainWindow.MainVM.BulkImportVM;
         bulkVm.AddItem(currentItem, path);
     }
@@ -454,7 +454,8 @@ public static class ContextMenuHandlerService
 
         try
         {
-            Process.Start("explorer.exe", "/select," + path);
+            var explorerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
+            Process.Start(explorerPath, $"/select,\"{path}\"");
         }
         catch (Exception ex)
         {
@@ -468,11 +469,11 @@ public static class ContextMenuHandlerService
     }
     private static void OpenUnitypackageViewer(string path)
     {
-        InstanceRepository.MainWindow.UnitypackageViewerVM.Open(path);
+        _ = InstanceRepository.MainWindow.UnitypackageViewerVM.Open(path);
     }
     private static void OpenPdfViewer(string path)
     {
-        InstanceRepository.MainWindow.PdfViewerVM.Open(path);
+        _ = InstanceRepository.MainWindow.PdfViewerVM.Open(path);
     }
     private static async void RemovePreset(string identifier)
     {

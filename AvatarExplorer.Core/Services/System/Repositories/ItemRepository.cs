@@ -226,12 +226,10 @@ public class ItemRepository : RepositoryBase<Item>
             if (Directory.GetFiles(root).Length > 0)
                 folders.Add(root);
 
-            foreach (var dir in Directory.GetDirectories(root))
-                folders.Add(dir);
+            folders.AddRange(Directory.GetDirectories(root));
         }
 
-        foreach (var path in item.ItemPaths)
-            folders.Add(path);
+        folders.AddRange(item.ItemPaths);
 
         return folders;
     }
@@ -250,13 +248,21 @@ public class ItemRepository : RepositoryBase<Item>
                 files.Add(new(root, rootFile));
 
             foreach (var rootFolder in Directory.GetDirectories(root))
+            {
                 foreach (var rootFolderFile in FileSystemService.EnumerateFiles(rootFolder, isRecursive: true))
+                {
                     files.Add(new(rootFolder, rootFolderFile));
+                }
+            }
         }
 
         foreach (var otherFolder in item.ItemPaths)
+        {
             foreach (var otherFile in FileSystemService.EnumerateFiles(otherFolder, isRecursive: true))
+            {
                 files.Add(new(otherFolder, otherFile));
+            }
+        }
 
         return files;
     }
@@ -329,9 +335,6 @@ public class ItemRepository : RepositoryBase<Item>
         if (!downloaded) return Error.Failure(description: "Failed to download thumbnail.");
 
         item.UpdateThumbnailFileName(item.Id);
-
-        // サムネイル取得は更新日時に影響を与えないようにする
-        // item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
 
         Save();
         InvokeUpdated();

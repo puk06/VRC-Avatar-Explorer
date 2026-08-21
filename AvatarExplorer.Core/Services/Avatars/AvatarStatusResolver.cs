@@ -18,7 +18,7 @@ public static class AvatarStatusResolver
             if (!id.StartsWith("commonavatar:")) continue;
 
             var group = commonAvatars.FirstOrDefault(g => g.Identifier == id);
-            if (group != null && group.Avatars.Contains(avatarId))
+            if (group?.Avatars.Contains(avatarId) is true)
             {
                 result.IsCommon = true;
                 result.CommonAvatarName = group.GroupName;

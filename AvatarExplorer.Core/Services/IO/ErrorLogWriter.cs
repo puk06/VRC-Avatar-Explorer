@@ -9,15 +9,14 @@ public class ErrorLogWriter : IDisposable
     private bool _disposed = false;
     private StreamWriter? _writer;
     private readonly Lock _syncLock = new();
-    private readonly string _logFilePath = Path.Combine(SystemPath.LogsFolderPath, DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-fff", CultureInfo.InvariantCulture) + ".log");
     public static readonly ErrorLogWriter Instance = new();
 
     private ErrorLogWriter()
     {
-        FileSystemService.PrepareFileDirectory(_logFilePath);
+        FileSystemService.PrepareFileDirectory(LogFilePath);
     }
 
-    public string LogFilePath => _logFilePath;
+    public string LogFilePath { get; } = Path.Combine(SystemPath.LogsFolderPath, DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-fff", CultureInfo.InvariantCulture) + ".log");
 
     public void Write(string title, Exception? exception, string tag)
     {
@@ -54,8 +53,8 @@ public class ErrorLogWriter : IDisposable
     private void InitializeWriter()
     {
         if (_writer != null) return;
-        
-        var stream = new FileStream(_logFilePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+
+        var stream = new FileStream(LogFilePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
         _writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
     }
 

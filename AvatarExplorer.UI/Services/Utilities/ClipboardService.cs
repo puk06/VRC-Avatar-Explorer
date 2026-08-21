@@ -22,7 +22,7 @@ internal static class ClipboardService
             {
                 return Error.Failure(description: "Failed to get clipboard provider.");
             }
-            
+
             await provider.SetTextAsync(text);
 
             return Result.Success;

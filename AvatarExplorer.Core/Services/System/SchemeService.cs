@@ -30,12 +30,8 @@ public static class SchemeService
                 var desktopPath = GetLinuxDesktopFilePath(protocol);
                 if (!File.Exists(desktopPath)) return null;
 
-                foreach (var line in File.ReadAllLines(desktopPath))
-                {
-                    if (line.StartsWith("Exec=", StringComparison.Ordinal))
-                        return line[5..].Trim();
-                }
-                return null;
+                var lines = File.ReadAllLines(desktopPath);
+                return lines.FirstOrDefault(line => line.StartsWith("Exec=", StringComparison.Ordinal))?[5..].Trim();
             }
 
             return null;
@@ -74,12 +70,9 @@ public static class SchemeService
                 if (File.Exists(desktopPath)) return true;
 
                 var localDir = GetLinuxApplicationsDirectory();
-                if (Directory.Exists(localDir))
+                if (Directory.Exists(localDir) && Directory.GetFiles(localDir, "*.desktop").Any(i => ContainsMimeType(i, protocol)))
                 {
-                    foreach (var file in Directory.GetFiles(localDir, "*.desktop"))
-                    {
-                        if (ContainsMimeType(file, protocol)) return true;
-                    }
+                    return true;
                 }
 
                 var systemDirs = new[]
@@ -90,9 +83,9 @@ public static class SchemeService
                 foreach (var dir in systemDirs)
                 {
                     if (!Directory.Exists(dir)) continue;
-                    foreach (var file in Directory.GetFiles(dir, "*.desktop"))
+                    if (Directory.GetFiles(dir, "*.desktop").Any(i => ContainsMimeType(i, protocol)))
                     {
-                        if (ContainsMimeType(file, protocol)) return true;
+                        return true;
                     }
                 }
 
@@ -268,7 +261,9 @@ public static class SchemeService
             {
                 if (line.StartsWith("MimeType=", StringComparison.Ordinal) &&
                     line.Contains(mimeType, StringComparison.OrdinalIgnoreCase))
+                {
                     return true;
+                }
             }
             return false;
         }

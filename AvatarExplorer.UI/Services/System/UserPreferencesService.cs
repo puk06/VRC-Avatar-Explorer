@@ -1,9 +1,8 @@
 namespace AvatarExplorer.UI.Services.System;
 
-public class UserPreferencesService
+public sealed class UserPreferencesService
 {
-    private static readonly UserPreferencesService _instance = new();
-    public static UserPreferencesService Instance => _instance;
+    public static UserPreferencesService Instance { get; } = new();
 
     public UserPreferencesRepository Repository { get; } = new();
 

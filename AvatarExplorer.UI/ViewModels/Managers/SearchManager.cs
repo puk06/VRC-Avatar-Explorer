@@ -101,7 +101,7 @@ public class SearchManager
 
     public IEnumerable<Item> SearchItems(string query)
     {
-        var identifiers = _itemGroupService.SearchItems(query, SearchResultType.Items, SearchUtils.ParseCategory);
+        var identifiers = _itemGroupService.SearchItems(query, SearchResultTypes.Items, SearchUtils.ParseCategory);
         return identifiers
             .Select(InstanceRepository.Items.Get)
             .Where(item => item != null)

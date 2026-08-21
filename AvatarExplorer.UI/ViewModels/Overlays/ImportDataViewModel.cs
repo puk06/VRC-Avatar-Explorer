@@ -41,13 +41,13 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
 
     public IReactiveCommand BrowseFolderCommand { get; }
     public IReactiveCommand ImportCommand { get; }
-    public IReactiveCommand CancelCommand { get; }
+    public IReactiveCommand CloseCommand { get; }
 
     public ImportDataViewModel()
     {
         BrowseFolderCommand = ReactiveCommand.CreateFromTask(BrowseFolder);
         ImportCommand = ReactiveCommand.CreateFromTask(Import);
-        CancelCommand = ReactiveCommand.Create(Cancel);
+        CloseCommand = ReactiveCommand.Create(Close);
 
         IInitializableRegistry.Register(0, this);
     }
@@ -119,24 +119,23 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
             }
         );
 
-        if (result == null || result.Value.IsError)
+        if (result?.IsError is false)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Success.Default],
+                Localizer.Instance[Loc.Success.Import],
+                NotificationType.Success
+            );
+        }
+        else
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.ImportFailed],
                 NotificationType.Error
             );
-            return;
         }
-
-        NotificationManager.Show(
-            Localizer.Instance[Loc.Success.Default],
-            Localizer.Instance[Loc.Success.Import],
-            NotificationType.Success
-        );
-
-        IsVisible = false;
     }
 
-    private void Cancel() => IsVisible = false;
+    private void Close() => IsVisible = false;
 }

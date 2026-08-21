@@ -10,9 +10,7 @@ public static class VersionReleaseExtensions
         try
         {
             SemanticVersioning.Range versionRange = new($">{AvatarExplorerApp.CurrentVersion}");
-            return versionReleases
-                .Where(i => updateChannel != UpdateChannel.Stable || !i.Version.Contains("beta"))
-                .Where(i => versionRange.IsSatisfied(i.Version, includePrerelease: true));
+            return versionReleases.Where(i => (updateChannel != UpdateChannel.Stable || !i.Version.Contains("beta")) && versionRange.IsSatisfied(i.Version, includePrerelease: true));
         }
         catch (Exception ex)
         {
@@ -36,7 +34,7 @@ public static class VersionReleaseExtensions
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to retrieve the latest update information. Please check if the version strings in the data source follow SemVer format.", ex);
+            ErrorManager.Instance.PostInternalError("Failed to retrieve the latest update information. Please check if the version strings in the data source follow SemVer format.", ex);
             return null;
         }
     }

@@ -74,7 +74,7 @@ public class BackupManager
         {
             var now = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
             var backupFolderPath = Path.Combine(_backupRootFolderPath, now);
-            
+
             try
             {
                 Directory.CreateDirectory(backupFolderPath);

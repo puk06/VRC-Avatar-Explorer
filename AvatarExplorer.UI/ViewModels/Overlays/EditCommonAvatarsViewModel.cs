@@ -106,7 +106,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
             );
             return;
         }
-        
+
         var newGroupName = await InstanceRepository.MainWindow.ShowTextDialog(
             Localizer.Instance[Loc.Dialog.Title.NewCommonAvatarGroupName],
             group.DisplayName
@@ -139,7 +139,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars]
         );
-        
+
         InstanceRepository.ItemGroupService.RemoveCommonAvatar(group.Identifier, replaceToAvatars);
         RefleshGroups();
 
@@ -162,7 +162,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         }
 
         var searchQuery = searchText + " OR=true";
-        var result = InstanceRepository.ItemGroupService.SearchItems(searchQuery, SearchResultType.Items | SearchResultType.TempAvatar);
+        var result = InstanceRepository.ItemGroupService.SearchItems(searchQuery, SearchResultTypes.Items | SearchResultTypes.TempAvatar);
         if (result == null)
         {
             Avatars = _allAvatars;
@@ -181,7 +181,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
             Localizer.Instance[Loc.Dialog.Confirmation.Default],
             Localizer.Instance[Loc.Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup]
         );
-        if (confirmationResult is false) return;
+        if (!confirmationResult) return;
 
         InstanceRepository.ItemGroupService.ReplaceSupportedAvatarsToCommonAvatarGroup(group.Identifier);
     }
@@ -229,7 +229,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
     {
         var group = SelectedGroup;
         if (group == null) return;
-        
+
         var commonAvatar = InstanceRepository.CommonAvatars.Get(group.Identifier);
         if (commonAvatar == null) return;
 

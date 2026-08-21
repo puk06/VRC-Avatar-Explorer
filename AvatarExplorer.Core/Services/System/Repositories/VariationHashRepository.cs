@@ -24,7 +24,7 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
         InvokeUpdated();
         return updates;
     }
-    
+
     public class VariationData
     {
         public string VariationId { get; init; } = string.Empty;

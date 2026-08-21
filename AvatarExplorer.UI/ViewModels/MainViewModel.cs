@@ -429,7 +429,9 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
         // TotalItems 設定後に復元する（0クランプによるページリセットを回避）
         if (restoreRightStateGuid != null)
+        {
             _stateCacheManager.RestoreRightState(RightPageInfo, restoreRightStateGuid);
+        }
         else if (_isPreviousScreenSearch)
         {
             if (_hasSearchItem)
@@ -544,7 +546,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 
             if (prefix == ItemNavigationService.AuthorPrefix)
                 return value;
-            
+
             if (prefix == ItemNavigationService.TypePrefix || prefix == ItemNavigationService.CustomPrefix)
             {
                 var category = ItemCategory.FromIdentifier(state);
@@ -577,7 +579,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 segments.Add(new PathSegment { DisplayName = Localizer.Instance[Loc.Main.Path.SearchResult] });
                 searchResultPrefixFlag = true;
             }
-            
+
             var displayName = FormatPathNode(stateList[i]);
             if (string.IsNullOrWhiteSpace(displayName)) continue;
 
@@ -619,9 +621,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         }
 
         DisposeItemViewModels(_allLeftItems);
-        _allLeftItems = queryItems
-            .Select(CreateItemViewModel)
-            .ToList();
+        _allLeftItems = queryItems.ConvertAll(CreateItemViewModel);
 
         LeftPageInfo.TotalItems = _allLeftItems.Count;
         RefreshLeftItems();

@@ -34,8 +34,8 @@ internal static class ContextMenuFactory
             {
                 if (onContextClick != null)
                 {
-                    EventHandler<RoutedEventArgs> handler = (_, _) => onContextClick(tagData);
-                    holder.AddClickHandler(item, handler);
+                    void Handler(object? _, RoutedEventArgs e) => onContextClick(tagData);
+                    holder.AddClickHandler(item, Handler);
                 }
             }
 
@@ -67,7 +67,7 @@ internal static class ContextMenuFactory
                     subMenus.Add(subItem);
                     if (subAction.AddSeparator) subMenus.Add(new Separator());
                 }
-                
+
                 menuItem.ItemsSource = subMenus;
             }
 

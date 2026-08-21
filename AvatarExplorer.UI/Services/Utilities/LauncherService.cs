@@ -41,7 +41,7 @@ internal static class LauncherService
 
             var folderInfo = new DirectoryInfo(folderPath);
             await launcher.LaunchDirectoryInfoAsync(folderInfo);
-            
+
             return Result.Success;
         }
         catch (Exception ex)

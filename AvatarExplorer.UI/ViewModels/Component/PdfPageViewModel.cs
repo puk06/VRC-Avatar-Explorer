@@ -7,6 +7,22 @@ public class PdfPageViewModel(Bitmap image, string title) : ViewModelBase, IDisp
 {
     public Bitmap Image { get; } = image;
     public string Title { get; } = title;
+    private bool disposed = false;
 
-    public void Dispose() => Image.Dispose();
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposed) return;
+        disposed = true;
+
+        if (disposing)
+        {
+            Image.Dispose();
+        }
+    }
 }

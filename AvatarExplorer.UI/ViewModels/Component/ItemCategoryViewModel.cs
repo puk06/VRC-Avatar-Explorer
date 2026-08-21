@@ -8,7 +8,7 @@ public class ItemCategoryViewModel(ItemCategory category) : ViewModelBase
 {
     [Reactive] public string DisplayName { get; set; } = string.Empty;
     public ItemCategory Category { get; } = new(category);
-    
+
     public ItemCategoryViewModel Update()
     {
         var isCustom = Category.Type == ItemType.Custom;

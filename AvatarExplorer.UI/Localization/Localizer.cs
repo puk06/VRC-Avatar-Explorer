@@ -11,13 +11,13 @@ using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.UI.Localization;
 
-public class Localizer : INotifyPropertyChanged
+public sealed class Localizer : INotifyPropertyChanged
 {
     private readonly List<Dictionary<string, string>> _map;
     private int _selectedLanguageIndex = -1;
     private bool IsValidIndex => _selectedLanguageIndex >= 0 && _selectedLanguageIndex < _map.Count;
 
-    public static Localizer Instance { get; private set; } = new Localizer();
+    public static Localizer Instance { get; } = new();
     public event Action? LanguageChanged;
 
     public int CurrentLanguageIndex

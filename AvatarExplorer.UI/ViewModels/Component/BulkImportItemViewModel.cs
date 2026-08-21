@@ -13,7 +13,7 @@ namespace AvatarExplorer.UI.ViewModels.Component;
 public class UnitypackageViewModel : ViewModelBase
 {
     [Reactive] public string Name { get; set; } = string.Empty;
-    [Reactive] public string ToolTipText { get; set; } = string.Empty;
+    [Reactive] public string ToolTipText { get; set; }
 
     public string ParentDirectory { get; set; } = string.Empty;
 
@@ -39,12 +39,12 @@ public class BulkImportItemViewModel : ViewModelBase
     public string TitleRaw { get; set; } = string.Empty;
     public bool TitleLocalizable { get; } = false;
 
-    public LoclizableField DescriptionRaw = new();
+    public LoclizableField DescriptionRaw { get; set; } = new();
 
     [Reactive] public IEnumerable<UnitypackageViewModel> UnitypackageViewModels { get; private set; } = [];
     [Reactive] public int SelectedUnitypackage { get; set; } = 0;
     public string SelectedUnitypackagePath => (SelectedUnitypackage >= 0 || SelectedUnitypackage < UnitypackageFullPaths.Length) ? UnitypackageFullPaths[SelectedUnitypackage] : string.Empty;
-    
+
     public string[] UnitypackageFullPaths { get; set; } = [];
 
     public string ItemId { get; set; } = string.Empty;

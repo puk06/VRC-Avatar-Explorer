@@ -21,10 +21,10 @@ public static partial class ItemUtils
     internal static Dictionary<string, string> GetItemTitleMaps(IEnumerable<Item> items, IEnumerable<TempAvatar> tempAvatars)
     {
         var itemTitleMaps = new Dictionary<string, string>();
-        
+
         foreach (var item in items)
             itemTitleMaps.Add(item.Identifier, item.Title);
-        
+
         foreach (var tempAvatar in tempAvatars)
             itemTitleMaps.Add(tempAvatar.Identifier, tempAvatar.AvatarName);
 

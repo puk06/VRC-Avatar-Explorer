@@ -293,7 +293,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         {
             var command = SchemeService.GetRegisteredCommand(protocol) ?? string.Empty;
             var applicationName = command.Split(" ").FirstOrDefault() ?? string.Empty;
-            
+
             // ユーザー名を*****にする
             var userName = Environment.UserName;
             var maskedUserName = new string('*', userName.Length);
@@ -393,13 +393,16 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         }
     }
 
-    private async Task OpenTwitter() => await LauncherService.OpenUri(DeveloperLink.TwitterURL);
-    private async Task OpenGithub() => await LauncherService.OpenUri(DeveloperLink.GithubURL);
-    private async Task OpenSourceCode() => await LauncherService.OpenUri(SoftwareLink.RepositoryURL);
+    private Task OpenTwitter() => LauncherService.OpenUri(DeveloperLink.TwitterURL);
+    private Task OpenGithub() => LauncherService.OpenUri(DeveloperLink.GithubURL);
+    private Task OpenSourceCode() => LauncherService.OpenUri(SoftwareLink.RepositoryURL);
     private async Task ViewLicense()
     {
         var licensePath = Path.Combine(AppContext.BaseDirectory, SystemFileName.License);
-        if (File.Exists(licensePath)) await LauncherService.OpenUri(licensePath);
+        if (File.Exists(licensePath))
+        {
+            await LauncherService.OpenUri(licensePath);
+        }
         else
         {
             NotificationManager.Show(
@@ -412,7 +415,10 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     private async Task ViewThirdPartyLicenses()
     {
         var licensePath = Path.Combine(AppContext.BaseDirectory, SystemFileName.ThirdPartyLicenses);
-        if (File.Exists(licensePath)) await LauncherService.OpenUri(licensePath);
+        if (File.Exists(licensePath))
+        {
+            await LauncherService.OpenUri(licensePath);
+        }
         else
         {
             NotificationManager.Show(
@@ -422,7 +428,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             );
         }
     }
-    
+
     public RuntimeSettings CreateRuntimeSettings()
     {
         return new RuntimeSettings

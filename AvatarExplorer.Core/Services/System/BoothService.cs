@@ -58,7 +58,7 @@ public static class BoothService
     public static async Task<ErrorOr<BoothItem>> Fetch(string boothUrl, bool waitCooldown = true, bool includeVariations = false)
     {
         if (string.IsNullOrEmpty(boothUrl)) return Error.Failure(description: "Invalid Url.");
-    
+
         if (!waitCooldown && IsApiCooldownNow) return Error.Failure(description: "Booth API Cooldown Error.");
         else await WaitForApiCooldownAsync();
 

@@ -7,12 +7,11 @@ using AvatarExplorer.Core.Services.System.Repositories;
 
 namespace AvatarExplorer.Core.Services.System;
 
-public class AvatarExplorerApp
+public sealed class AvatarExplorerApp
 {
     public static readonly string CurrentVersion = "2.8.0-beta.5";
 
-    private static readonly AvatarExplorerApp _instance = new();
-    public static AvatarExplorerApp Instance => _instance;
+    public static AvatarExplorerApp Instance { get; } = new();
 
     private bool _initialized = false;
 

@@ -10,5 +10,5 @@ public class KonoAssetDatabase<T>
     public int Version { get; set; } = 3;
 
     [JsonPropertyName("data")]
-    public List<T> Data { get; set; } = new List<T>();
+    public List<T> Data { get; set; } = [];
 }

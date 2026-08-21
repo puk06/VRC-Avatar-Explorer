@@ -20,7 +20,7 @@ public class ItemNavigationService
 
     private readonly ItemGroupService _items;
     private readonly SelectionState _state = new();
-    private readonly Dictionary<string, string> _pathCache = new();
+    private readonly Dictionary<string, string> _pathCache = [];
 
     private readonly Dictionary<string, Func<string, IIdentifiable[]>> _handlers;
 

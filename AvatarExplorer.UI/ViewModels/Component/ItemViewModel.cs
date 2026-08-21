@@ -168,7 +168,7 @@ public class ItemViewModel : ViewModelBase, IDisposable
             {
                 sb.AppendLine();
                 sb.AppendLine();
-                sb.Append(string.Join(Environment.NewLine, block));
+                sb.AppendJoin(Environment.NewLine, block);
             }
 
             return sb.ToString();

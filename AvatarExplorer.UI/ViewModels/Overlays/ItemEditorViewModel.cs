@@ -61,7 +61,7 @@ public class ItemEditorViewModel : ViewModelBase
     public IReactiveCommand SelectSupportedAvatarsCommand { get; }
     public IReactiveCommand EditItemMemoCommand { get; }
     public IReactiveCommand EditItemTagsCommand { get; }
-    
+
     public IReactiveCommand CancelCommand { get; }
     public IReactiveCommand ConfirmCommand { get; }
 
@@ -128,7 +128,7 @@ public class ItemEditorViewModel : ViewModelBase
         UpdateCountField();
         IsVisible = true;
     }
-    public async void Open(LaunchInfo launchInfo)
+    public async Task Open(LaunchInfo launchInfo)
     {
         if (IsVisible && BoothId == launchInfo.BoothId)
         {
@@ -149,7 +149,7 @@ public class ItemEditorViewModel : ViewModelBase
         await FetchBoothData();
     }
 
-    public async void Open(BLMImportItemInfo launchInfo)
+    public async Task Open(BLMImportItemInfo launchInfo)
     {
         if (IsVisible && BoothId == launchInfo.ItemID)
         {
@@ -198,21 +198,14 @@ public class ItemEditorViewModel : ViewModelBase
         var uniquePaths = new HashSet<string>();
         var pathsToRemove = new List<ItemPathViewModel>();
 
-        foreach (var path in ItemPaths)
-        {
-            if (!uniquePaths.Add(path.FullPath))
-            {
-                pathsToRemove.Add(path);
-            }
-        }
-
+        pathsToRemove.AddRange(ItemPaths.Where(i => uniquePaths.Add(i.FullPath)));
         foreach (var path in pathsToRemove)
         {
             ItemPaths.Remove(path);
         }
     }
 
-    public void Close()
+    private void Close()
     {
         ResetFields();
         IsVisible = false;
@@ -231,10 +224,7 @@ public class ItemEditorViewModel : ViewModelBase
         return 0; // Default = Avatar
     }
 
-    private void Cancel()
-    {
-        Close();
-    }
+    private void Cancel() => Close();
 
     private async Task Confirm()
     {
@@ -417,29 +407,29 @@ public class ItemEditorViewModel : ViewModelBase
             }
         );
 
-        if (fetchResult == null || fetchResult.Value.IsError)
+        if (fetchResult?.IsError is false && fetchResult.Value.Value is BoothItem boothData)
+        {
+            Title = boothData.Title;
+            Author = boothData.Shop.Name;
+            SelectedCategoryIndex = GetCategoryIndex(boothData.EstimatedCategory);
+            AuthorId = boothData.Shop.Id;
+            BoothId = boothData.BoothId.ToString();
+            ThumbnailUrl = boothData.ThumbnailUrl;
+
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Success.Default],
+                Localizer.Instance[Loc.Success.FetchBoothItemInfo],
+                NotificationType.Success
+            );
+        }
+        else
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
                 Localizer.Instance[Loc.Error.RetrieveBoothItemFailed],
                 NotificationType.Error
             );
-            return;
         }
-
-        var boothData = fetchResult.Value.Value;
-        Title = boothData.Title;
-        Author = boothData.Shop.Name;
-        SelectedCategoryIndex = GetCategoryIndex(boothData.EstimatedCategory);
-        AuthorId = boothData.Shop.Id;
-        BoothId = boothData.BoothId.ToString();
-        ThumbnailUrl = boothData.ThumbnailUrl;
-
-        NotificationManager.Show(
-            Localizer.Instance[Loc.Success.Default],
-            Localizer.Instance[Loc.Success.FetchBoothItemInfo],
-            NotificationType.Success
-        );
     }
 
     private void RemovePath(ItemPathViewModel pathModel) => ItemPaths.Remove(pathModel);
@@ -516,7 +506,7 @@ public class ItemEditorViewModel : ViewModelBase
             );
             return false;
         }
-        
+
         // Author
         if (string.IsNullOrWhiteSpace(Author))
         {

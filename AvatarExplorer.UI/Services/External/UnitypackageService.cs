@@ -20,9 +20,9 @@ internal static class UnitypackageService
 {
     internal static async Task<ModifiedUnitypackagesResult> Import(IReadOnlyList<UnitypackageImportEntry> entries, Func<string, int, Task>? onProgress = null)
     {
-        async Task progressAction((string localizationKey, int progress) tuple)
+        Task progressAction((string localizationKey, int progress) tuple)
         {
-            await Dispatcher.UIThread.InvokeAsync(async () =>
+            return Dispatcher.UIThread.InvokeAsync(async () =>
             {
                 if (onProgress != null)
                     await onProgress(tuple.localizationKey, tuple.progress);
@@ -36,7 +36,7 @@ internal static class UnitypackageService
     internal static ImmutableArray<string> GetUnitypackagePaths(IEnumerable<string> itemPaths)
     {
         var unitypackageFilePaths = ImmutableArray.CreateBuilder<string>();
-        
+
         foreach (var itemPath in itemPaths)
         {
             if (string.IsNullOrEmpty(itemPath)) continue;

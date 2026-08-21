@@ -22,8 +22,6 @@ public enum QueryType
 
 public class ItemGroupService
 {
-    private readonly ItemRepository _items;
-    private readonly CommonAvatarRepository _commonAvatars;
     private readonly TempAvatarRepository _tempAvatars;
     private readonly RuntimeSettingsRepository _runtimesettings;
 
@@ -33,18 +31,18 @@ public class ItemGroupService
     private bool _indicesBuilt;
     private readonly Lock _indicesLock = new();
 
-    internal ItemRepository ItemRepository => _items;
-    internal CommonAvatarRepository CommonAvatarRepository => _commonAvatars;
+    internal ItemRepository ItemRepository { get; }
+    internal CommonAvatarRepository CommonAvatarRepository { get; }
 
     public ItemGroupService(ItemRepository items, CommonAvatarRepository commonAvatars, TempAvatarRepository tempAvatars, RuntimeSettingsRepository settings)
     {
-        _items = items;
-        _commonAvatars = commonAvatars;
+        ItemRepository = items;
+        CommonAvatarRepository = commonAvatars;
         _tempAvatars = tempAvatars;
         _runtimesettings = settings;
 
-        _items.OnUpdated += OnDatabaseUpdated;
-        _commonAvatars.OnUpdated += OnDatabaseUpdated;
+        ItemRepository.OnUpdated += OnDatabaseUpdated;
+        CommonAvatarRepository.OnUpdated += OnDatabaseUpdated;
         _tempAvatars.OnUpdated += OnDatabaseUpdated;
     }
 
@@ -62,17 +60,15 @@ public class ItemGroupService
     {
         var avatars = new List<IIdentifiable>();
 
-        if (includeCommonAvatar) avatars.AddRange(_commonAvatars.GetAll());
-        avatars.AddRange(_items.GetAll().Where(i => i.Category.Type == ItemType.Avatar));
+        if (includeCommonAvatar) avatars.AddRange(CommonAvatarRepository.GetAll());
+        avatars.AddRange(ItemRepository.GetAll().Where(i => i.Category.Type == ItemType.Avatar));
         if (includeTempAvatar) avatars.AddRange(_tempAvatars.GetAll());
 
-        return avatars
-            .Select(i => new Avatar(i, rawIdentifier))
-            .ToList<IIdentifiable>();
+        return avatars.ConvertAll<IIdentifiable>(i => new Avatar(i, rawIdentifier));
     }
     public List<IIdentifiable> GetAuthors()
     {
-        return _items.GetAll()
+        return ItemRepository.GetAll()
             .GroupBy(i => i.Author)
             .Select(i => new Author()
             {
@@ -85,9 +81,9 @@ public class ItemGroupService
     public List<IIdentifiable> GetCategoryFolders(bool includeEmptyCategory = false, bool includeAllCategory = false, bool includeHiddenCategory = false)
     {
         var categories = new List<Folder>();
-        
-        var items = _items.GetAll();
-        
+
+        var items = ItemRepository.GetAll();
+
         if (includeAllCategory)
         {
             categories.Add(new Folder(new ItemCategory(ItemType.All).Identifier)
@@ -112,8 +108,7 @@ public class ItemGroupService
 
         categories.AddRange(
             Enum.GetValues<ItemType>()
-                .Where(i => i.IsSelectable())
-                .Where(i => includeEmptyCategory || existCategories.Contains(i))
+                .Where(i => i.IsSelectable() && (includeEmptyCategory || existCategories.Contains(i)))
                 .Select(i =>
                 {
                     return new Folder(new ItemCategory(i).Identifier)
@@ -154,8 +149,8 @@ public class ItemGroupService
     }
     public List<Item> GetItemsFromAvatar(string id)
     {
-        var items = _items.GetAll();
-        var commonAvatars = _commonAvatars.GetAll();
+        var items = ItemRepository.GetAll();
+        var commonAvatars = CommonAvatarRepository.GetAll();
         var treatEmptyAsNone = _runtimesettings.Settings.TreatEmptySupportedAvatarAsNone;
 
         return items
@@ -168,14 +163,14 @@ public class ItemGroupService
     }
     public List<Item> GetItemsFromAuthor(string author)
     {
-        return _items.GetAll()
+        return ItemRepository.GetAll()
             .Where(i => i.Author == author)
             .ToList();
     }
 
     public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
     {
-        _items.GetAll()
+        ItemRepository.GetAll()
             .ForEach(i =>
                 i.UpdateSupportedAvatars(
                     i.SupportedAvatars
@@ -183,18 +178,18 @@ public class ItemGroupService
                         .Distinct()
                 )
             );
-        
-        _items.MarkAsChanged();
-        _items.Save();
 
-        _commonAvatars.GetAll()
+        ItemRepository.MarkAsChanged();
+        ItemRepository.Save();
+
+        CommonAvatarRepository.GetAll()
             .ForEach(c => c.UpdateAvatars(
                 c.Avatars
                     .Select(i => i == tempAvatarId ? targetItemId : i)
                     .Distinct()
             ));
-        _commonAvatars.MarkAsChanged();
-        _commonAvatars.Save();
+        CommonAvatarRepository.MarkAsChanged();
+        CommonAvatarRepository.Save();
 
         _tempAvatars.Remove(tempAvatarId);
         _tempAvatars.Save();
@@ -202,7 +197,7 @@ public class ItemGroupService
 
     public string[] GetAllSupportedAvatarsIds(IEnumerable<string> avatars, bool includeCommonAvatarToSupported = false)
     {
-        return AvatarService.GetAllSupportedAvatarIds(avatars, _commonAvatars.GetAll(), includeCommonAvatarToSupported);
+        return AvatarService.GetAllSupportedAvatarIds(avatars, CommonAvatarRepository.GetAll(), includeCommonAvatarToSupported);
     }
 
     /// <summary>
@@ -210,7 +205,7 @@ public class ItemGroupService
     /// </summary>
     public void RemoveItem(string identifier, bool removeFolder = false)
     {
-        _items.GetAll()
+        ItemRepository.GetAll()
             .Where(i => i.Identifier != identifier)
             .ForEach(i =>
             {
@@ -222,18 +217,18 @@ public class ItemGroupService
                 if (updatedImplemented.Length != i.ImplementedAvatars.Length)
                     i.UpdateImplementedAvatars(updatedImplemented);
             });
-        _items.Remove(identifier, removeFolder);
-        _items.Save();
+        ItemRepository.Remove(identifier, removeFolder);
+        ItemRepository.Save();
 
-        _commonAvatars.GetAll()
+        CommonAvatarRepository.GetAll()
             .ForEach(c =>
             {
                 var updatedAvatars = c.Avatars.Where(a => a != identifier).ToArray();
                 if (updatedAvatars.Length != c.Avatars.Length)
                     c.UpdateAvatars(updatedAvatars);
             });
-        _commonAvatars.Save();
-        _commonAvatars.MarkAsChanged();
+        CommonAvatarRepository.Save();
+        CommonAvatarRepository.MarkAsChanged();
     }
 
     /// <summary>
@@ -241,25 +236,25 @@ public class ItemGroupService
     /// </summary>
     public void RemoveTempAvatar(string identifier)
     {
-        _items.GetAll()
+        ItemRepository.GetAll()
             .ForEach(i =>
             {
                 var updatedSupported = i.SupportedAvatars.Where(a => a != identifier).ToArray();
                 if (updatedSupported.Length != i.SupportedAvatars.Length)
                     i.UpdateSupportedAvatars(updatedSupported);
             });
-        _items.Save();
-        _items.MarkAsChanged();
+        ItemRepository.Save();
+        ItemRepository.MarkAsChanged();
 
-        _commonAvatars.GetAll()
+        CommonAvatarRepository.GetAll()
             .ForEach(c =>
             {
                 var updatedAvatars = c.Avatars.Where(a => a != identifier).ToArray();
                 if (updatedAvatars.Length != c.Avatars.Length)
                     c.UpdateAvatars(updatedAvatars);
             });
-        _commonAvatars.Save();
-        _commonAvatars.MarkAsChanged();
+        CommonAvatarRepository.Save();
+        CommonAvatarRepository.MarkAsChanged();
 
         _tempAvatars.Remove(identifier);
         _tempAvatars.Save();
@@ -270,12 +265,12 @@ public class ItemGroupService
     /// </summary>
     public void RemoveCommonAvatar(string identifier, bool replaceToAvatars)
     {
-        var group = _commonAvatars.Get(identifier);
+        var group = CommonAvatarRepository.Get(identifier);
         if (group == null) return;
 
         var itemsUpdated = false;
 
-        _items.GetAll()
+        ItemRepository.GetAll()
             .ForEach(i =>
             {
                 var containsGroup = i.SupportedAvatars.Contains(identifier);
@@ -291,28 +286,28 @@ public class ItemGroupService
 
         if (itemsUpdated)
         {
-            _items.Save();
-            _items.MarkAsChanged();
+            ItemRepository.Save();
+            ItemRepository.MarkAsChanged();
         }
 
-        _commonAvatars.Remove(identifier);
-        _commonAvatars.Save();
+        CommonAvatarRepository.Remove(identifier);
+        CommonAvatarRepository.Save();
     }
 
     public void ReplaceSupportedAvatarsToCommonAvatarGroup(string groupIdentifier)
     {
-        var commonAvatar = _commonAvatars.Get(groupIdentifier);
+        var commonAvatar = CommonAvatarRepository.Get(groupIdentifier);
         if (commonAvatar == null) return;
 
         var updatedIdentifiers = new List<string>();
-        foreach (var item in _items.GetAll().Where(i => i.Category.Type == ItemType.Clothing))
+        foreach (var item in ItemRepository.GetAll().Where(i => i.Category.Type == ItemType.Clothing))
         {
             item.UpdateSupportedAvatars(item.SupportedAvatars.Select(i => commonAvatar.Avatars.Contains(i) ? commonAvatar.Identifier : i).Distinct());
             updatedIdentifiers.Add(item.Identifier);
         }
 
-        _items.Save();
-        _items.MarkAsChanged();
+        ItemRepository.Save();
+        ItemRepository.MarkAsChanged();
     }
 
     #region Search
@@ -340,16 +335,16 @@ public class ItemGroupService
     /// <param name="types">検索対象のグループ。</param>
     /// <param name="locKeyProvider">カテゴリ検索時に表示名を LocalizationKey に変換する関数。</param>
     /// <returns>一致したアイテムなどの Identifier 一覧。</returns>
-    public string[] SearchItems(string searchString, SearchResultType types, Func<string, string>? locKeyProvider = null)
+    public string[] SearchItems(string searchString, SearchResultTypes types, Func<string, string>? locKeyProvider = null)
     {
         EnsureIndicesBuilt();
 
         var query = SearchQueryParser.Parse(searchString);
         var result = new List<string>();
 
-        if (types.HasFlag(SearchResultType.Items))
+        if (types.HasFlag(SearchResultTypes.Items))
         {
-            foreach (var item in _items.GetAll())
+            foreach (var item in ItemRepository.GetAll())
             {
                 if (!query.IncludeHidden && item.IsHidden) continue;
                 if (_itemSearchIndices.TryGetValue(item.Identifier, out var index) && MatchesQuery(index, query, locKeyProvider))
@@ -357,16 +352,16 @@ public class ItemGroupService
             }
         }
 
-        if (types.HasFlag(SearchResultType.CommonAvatar))
+        if (types.HasFlag(SearchResultTypes.CommonAvatar))
         {
-            foreach (var commonAvatar in _commonAvatars.GetAll().Select(i => i.Identifier))
+            foreach (var commonAvatar in CommonAvatarRepository.GetAll().Select(i => i.Identifier))
             {
                 if (_commonAvatarSearchIndices.TryGetValue(commonAvatar, out var index) && MatchesQuery(index, query, locKeyProvider))
                     result.Add(commonAvatar);
             }
         }
 
-        if (types.HasFlag(SearchResultType.TempAvatar))
+        if (types.HasFlag(SearchResultTypes.TempAvatar))
         {
             foreach (var tempAvatar in _tempAvatars.GetAll().Select(i => i.Identifier))
             {
@@ -391,15 +386,15 @@ public class ItemGroupService
 
     private void BuildAllIndices()
     {
-        var avatarTitleMap = ItemUtils.GetItemTitleMaps(_items.GetAll().Where(i => i.Category.Type == ItemType.Avatar), _tempAvatars.GetAll());
-        var commonAvatarList = _commonAvatars.GetAll().ToList();
+        var avatarTitleMap = ItemUtils.GetItemTitleMaps(ItemRepository.GetAll().Where(i => i.Category.Type == ItemType.Avatar), _tempAvatars.GetAll());
+        var commonAvatarList = CommonAvatarRepository.GetAll().ToList();
 
-        foreach (var item in _items.GetAll())
+        foreach (var item in ItemRepository.GetAll())
         {
             BuildItemIndex(item, avatarTitleMap, commonAvatarList);
         }
 
-        foreach (var commonAvatar in _commonAvatars.GetAll())
+        foreach (var commonAvatar in CommonAvatarRepository.GetAll())
         {
             var targetItemIndices = commonAvatar.Avatars
                 .Select(a => _itemSearchIndices.TryGetValue(a, out var index) ? index : null);
@@ -473,8 +468,8 @@ public class ItemGroupService
     {
         var exportContext = new ExportContext()
         {
-            Items = _items.GetAll(),
-            CommonAvatars = _commonAvatars.GetAll(),
+            Items = ItemRepository.GetAll(),
+            CommonAvatars = CommonAvatarRepository.GetAll(),
             TempAvatars = _tempAvatars.GetAll(),
             ItemTypeLocalizer = itemTypeLocalizer,
             RuntimeSettings = _runtimesettings.Settings
@@ -493,7 +488,7 @@ public class ItemGroupService
 
     public async Task<ErrorOr<Success>> Import(ImportRequest importRequest)
     {
-        var importer = new DataImporter(_items, _commonAvatars, _tempAvatars);
+        var importer = new DataImporter(ItemRepository, CommonAvatarRepository, _tempAvatars);
         return await importer.Import(importRequest);
     }
 }

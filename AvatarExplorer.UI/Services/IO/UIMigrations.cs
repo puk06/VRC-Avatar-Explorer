@@ -22,8 +22,7 @@ public static class UIMigrations
             return false;
 
         var runtimeJson = File.ReadAllText(runtimeSettingsFilePath);
-        var runtime = JsonNode.Parse(runtimeJson) as JsonObject;
-        if (runtime is null) return false;
+        if (JsonNode.Parse(runtimeJson) is not JsonObject runtime) return false;
 
         var hasItemSortOrder = runtime.ContainsKey("ItemSortOrder");
         var hasRemoveBrackets = runtime.ContainsKey("RemoveBrackets");

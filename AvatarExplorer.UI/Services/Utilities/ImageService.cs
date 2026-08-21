@@ -28,10 +28,10 @@ internal static class ImageService
         ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".webp", ".tiff", ".tif"
     };
 
-    private static readonly Dictionary<string, CacheEntry> BitmapCache = new();
+    private static readonly Dictionary<string, CacheEntry> BitmapCache = [];
     private static readonly Lock BitmapCacheLock = new();
     private static int ThumbnailWarmupStarted = 0;
-    private static int _compressedThumbnailMaxEdge = DefaultCompressedThumbnailMaxEdge;
+    private static readonly int _compressedThumbnailMaxEdge = DefaultCompressedThumbnailMaxEdge;
 
     internal static event Action<bool>? ThumbnailCacheWarmupStateChanged;
 
@@ -102,7 +102,7 @@ internal static class ImageService
             return null;
         }
     }
-    
+
     internal static void StartThumbnailCacheWarmupInBackground(IEnumerable<string> imageFileNames)
     {
         if (Interlocked.Exchange(ref ThumbnailWarmupStarted, 1) != 0) return;

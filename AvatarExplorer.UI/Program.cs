@@ -46,7 +46,7 @@ static class Program
             .WithDeveloperTools()
 #endif
             .WithInterFont()
-            .UseReactiveUI(exui => {})
+            .UseReactiveUI(_ => {})
             .RegisterReactiveUIViewsFromEntryAssembly()
             .LogToTrace();
 }

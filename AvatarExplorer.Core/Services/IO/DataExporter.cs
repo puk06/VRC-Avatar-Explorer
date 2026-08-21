@@ -25,7 +25,7 @@ internal static class DataExporter
             _ => Error.Unexpected(description: $"Unexpected export type: {exportRequest.ExportType}")
         };
     }
-    
+
     private static async Task<ErrorOr<Success>> ToCsv(ExportContext exportContext, ExportRequest exportRequest)
     {
         try
@@ -35,7 +35,7 @@ internal static class DataExporter
             var filePath = Path.Combine(exportRequest.FolderPath, $"AvatarExplorer_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
             FileSystemService.PrepareFileDirectory(filePath);
 
-            using StreamWriter sw = new(filePath, false, Encoding.UTF8);
+            await using StreamWriter sw = new(filePath, false, Encoding.UTF8);
             await sw.WriteLineAsync("Id,Title,AuthorName,ImagePath,Category,Memo,SupportedAvatars,ImplementedAvatars,BoothId,ItemPath,Tags");
 
             foreach (var item in exportContext.Items)

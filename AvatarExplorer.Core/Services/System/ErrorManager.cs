@@ -2,7 +2,7 @@ using AvatarExplorer.Core.Models.Common;
 
 namespace AvatarExplorer.Core.Services.System;
 
-public class ErrorManager
+public sealed class ErrorManager
 {
     public static ErrorManager Instance { get; } = new();
 

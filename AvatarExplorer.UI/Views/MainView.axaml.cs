@@ -256,7 +256,10 @@ public partial class MainView : UserControl
             _hoverWindow.Topmost = false;
             _hoverWindow.Topmost = true;
         }
-        else _hoverWindow.Hide();
+        else
+        {
+            _hoverWindow.Hide();
+        }
     }
 
     public void CloseHoverWindow() => _hoverWindow.Close();

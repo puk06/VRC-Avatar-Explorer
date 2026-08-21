@@ -8,7 +8,7 @@ public sealed class UnitypackagePathNodeViewModel(string name, string fullPath)
     public string Name { get; } = name;
     public string FullPath { get; } = NormalizePath(fullPath);
     public bool IsFile { get; private set; }
-    public List<UnitypackagePathNodeViewModel> Children { get; } = new();
+    public List<UnitypackagePathNodeViewModel> Children { get; } = [];
 
     private readonly Dictionary<string, UnitypackagePathNodeViewModel> _childMap = new(StringComparer.OrdinalIgnoreCase);
 
@@ -24,6 +24,6 @@ public sealed class UnitypackagePathNodeViewModel(string name, string fullPath)
     }
 
     public void MarkAsFile() => IsFile = true;
-    
+
     private static string NormalizePath(string path) => path.Replace('\\', '/');
 }

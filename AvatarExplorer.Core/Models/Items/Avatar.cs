@@ -12,7 +12,7 @@ public enum AvatarType
 
 public class Avatar : IIdentifiable
 {
-    public AvatarType Type { get; private set; } = AvatarType.None;
+    public AvatarType Type { get; } = AvatarType.None;
     public IIdentifiable Item { get; }
     public bool RawIdentifier { get; } // avatar:を付けるかどうかです
 

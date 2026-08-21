@@ -31,10 +31,12 @@ public static class FileCategorizer
         foreach (var category in candidates)
         {
             var extensions = category.GetExtensionFilters();
-            if (extensions != null && extensions.Contains(extension))
+            if (extensions?.Contains(extension) is true)
             {
                 var fileNames = category.GetFileNameFilters();
-                if (fileNames == null || fileNames.Any(n => fileName.Contains(n.ToLowerInvariant())))
+                if (fileNames == null) return category;
+
+                if (fileNames.Any(n => fileName.Contains(n, StringComparison.OrdinalIgnoreCase)))
                     return category;
             }
         }

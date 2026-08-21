@@ -189,12 +189,12 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
             uri.StartsWith(SchemeService.ProtocolVRCAE + "://item-import")) // VRCAE://item-importはBLMと互換 (AssetConnect)
         {
             var blmImportItemInfo = BLMImportItemService.GetBLMImportItemInfo(uri);
-            if (blmImportItemInfo != null) ItemEditorVM.Open(blmImportItemInfo);
+            if (blmImportItemInfo != null) _ = ItemEditorVM.Open(blmImportItemInfo);
         }
         else if (uri.StartsWith(SchemeService.ProtocolVRCAE + "://"))
         {
             var launchInfo = LaunchInfoService.GetLaunchInfo(uri);
-            if (launchInfo != null) ItemEditorVM.Open(launchInfo);
+            if (launchInfo != null) _ = ItemEditorVM.Open(launchInfo);
         }
     }
 

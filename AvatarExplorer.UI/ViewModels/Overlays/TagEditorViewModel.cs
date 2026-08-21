@@ -81,9 +81,14 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
 
         ExistTags = filtered;
 
-        SelectedTagIndex = previousTagName != null
-            ? Math.Max(0, filtered.IndexOf(previousTagName))
-            : (filtered.Count > 0 ? 0 : -1);
+        if (previousTagName != null)
+        {
+            SelectedTagIndex = Math.Max(0, filtered.IndexOf(previousTagName));
+        }
+        else
+        {
+            SelectedTagIndex = filtered.Count > 0 ? 0 : -1;
+        }
     }
 
     public async Task Rename()

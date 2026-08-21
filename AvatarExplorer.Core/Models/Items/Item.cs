@@ -11,7 +11,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     [JsonInclude] public string Author { get; private set; } = string.Empty;
     [JsonInclude] public string AuthorId { get; private set; } = string.Empty;
     [JsonInclude] public int BoothId { get; private set; } = -1;
-    
+
     /// <summary>
     /// アイテムのパスです。相対パスの可能性もあるため、フルパスを取得するには item.GetItemPath() を使用してください。
     /// </summary>
@@ -63,6 +63,6 @@ public class Item : AbstractDatabaseItem, IIdentifiable
         if (string.IsNullOrEmpty(AuthorId)) return string.Format(BoothLink.ItemURLWithoutAuthorFormat, languageCode, BoothId);
         else return string.Format(BoothLink.ItemURLFormat, AuthorId, BoothId);
     }
-    
+
     [JsonIgnore] public string Identifier => "item:" + Id;
 }

@@ -8,10 +8,9 @@ public class SettingsManager<T>(string filePath) where T : class, new()
     public event Action<T>? SettingsChanged;
 
     private T _settings = new();
-    private readonly string _filePath = filePath;
 
     public T Settings => _settings;
-    public string FilePath => _filePath;
+    public string FilePath { get; } = filePath;
     public int MigrationVersion { get; set; }
 
     public void Update(T newSettings)
@@ -22,7 +21,7 @@ public class SettingsManager<T>(string filePath) where T : class, new()
 
     public void Load()
     {
-        if (!File.Exists(_filePath))
+        if (!File.Exists(FilePath))
         {
             Update(new T());
             return;
@@ -30,7 +29,7 @@ public class SettingsManager<T>(string filePath) where T : class, new()
 
         try
         {
-            var json = File.ReadAllText(_filePath);
+            var json = File.ReadAllText(FilePath);
             var root = JsonNode.Parse(json);
 
             if (root is JsonObject obj)
@@ -42,7 +41,7 @@ public class SettingsManager<T>(string filePath) where T : class, new()
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to load settings: '{_filePath}'.", ex);
+            ErrorManager.Instance.PostInternalError($"Failed to load settings: '{FilePath}'.", ex);
             Update(new T());
         }
     }
@@ -51,7 +50,7 @@ public class SettingsManager<T>(string filePath) where T : class, new()
     {
         try
         {
-            FileSystemService.PrepareFileDirectory(_filePath);
+            FileSystemService.PrepareFileDirectory(FilePath);
             var json = JsonManager.Serialize(_settings);
             var root = JsonNode.Parse(json);
             if (root is JsonObject obj)
@@ -59,11 +58,11 @@ public class SettingsManager<T>(string filePath) where T : class, new()
                 obj["Version"] = MigrationVersion;
                 json = obj.ToJsonString(JsonManager.JsonSerializerOptions);
             }
-            File.WriteAllText(_filePath, json);
+            File.WriteAllText(FilePath, json);
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostInternalError($"Failed to save settings: '{_filePath}'.", ex);
+            ErrorManager.Instance.PostInternalError($"Failed to save settings: '{FilePath}'.", ex);
         }
     }
 }

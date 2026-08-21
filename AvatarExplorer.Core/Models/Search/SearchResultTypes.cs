@@ -1,7 +1,7 @@
 namespace AvatarExplorer.Core.Models.Search;
 
 [Flags]
-public enum SearchResultType
+public enum SearchResultTypes
 {
     None = 0,
     Items = 1,

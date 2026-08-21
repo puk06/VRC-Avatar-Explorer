@@ -20,7 +20,7 @@ public record CopyResult
 {
     public int SuccessCount { get; init; }
     public int TotalCount { get; init; }
-    public List<CopyFailure> Failures { get; init; } = new();
+    public List<CopyFailure> Failures { get; init; } = [];
 }
 public record CopyFailure
 {
@@ -32,16 +32,17 @@ public record CopyFailure
 public record ExtractResult
 {
     public string ItemParentFolder { get; set; } = string.Empty;
-    public List<string> FolderPaths { get; } = new();
-    public List<string> ProcessingFailedPaths { get; init; } = new();
+    public List<string> FolderPaths { get; } = [];
+    public List<string> ProcessingFailedPaths { get; init; } = [];
+    internal Lock SyncRoot { get; } = new();
 }
 
 public class ModifiedUnitypackagesResult
 {
     public bool IsError { get; set; } = true;
     public string? ModifiedUnitypackagePath { get; set; } = null;
-    public List<string> Success { get; } = new();
-    public List<string> Failed { get; } = new();
+    public List<string> Success { get; } = [];
+    public List<string> Failed { get; } = [];
     public bool ContainsScripts { get; set; }
 }
 
@@ -78,13 +79,11 @@ public static class FileSystemService
         try
         {
             if (!File.Exists(filePath)) return Error.NotFound(description: $"File not found: {filePath}");
-            
+
             var json = File.ReadAllText(filePath);
             var result = JsonManager.Deserialize<T>(json);
-            
-            if (result == null) return Error.Failure(description: "deserialization result is null.");
-            
-            return result;
+
+            return result ?? (ErrorOr<T>)Error.Failure(description: "deserialization result is null.");
         }
         catch (Exception ex)
         {
@@ -165,7 +164,7 @@ public static class FileSystemService
                     targetGroupFolder = GetUnitypackageTopLevelFolder(entry.Name);
                     return false; // 終わらせる
                 }
-                
+
                 return true;
             });
         }
@@ -361,7 +360,7 @@ public static class FileSystemService
                 if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Unitypackage.Status.Extracting, currentProgress));
                 lastProgress = currentProgress;
             }
-            
+
             return true;
         });
 
@@ -489,7 +488,6 @@ public static class FileSystemService
             if (shouldLinkToOriginal)
             {
                 lock (result.FolderPaths) result.FolderPaths.Add(targetPath);
-                return;
             }
             else
             {
@@ -507,7 +505,7 @@ public static class FileSystemService
                     copyResult.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError($"Failed to copy: {i.SourcePath}", tag: i.ErrorMessage));
                 }
 
-                lock (result.ItemParentFolder) result.ItemParentFolder = parentFolderPath;
+                lock (result.SyncRoot) result.ItemParentFolder = parentFolderPath;
             }
         }
     }
@@ -764,7 +762,7 @@ public static class FileSystemService
                 await using var outStream = File.Create(fullPath);
 
                 int read;
-                while ((read = await inStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                while ((read = await inStream.ReadAsync(buffer.AsMemory(0, buffer.Length))) > 0)
                 {
                     await outStream.WriteAsync(buffer.AsMemory(0, read));
                 }
@@ -805,7 +803,7 @@ public static class FileSystemService
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError("Failed to enumerate files.", ex);
-            return Error.Failure("Directory.Enumerate", $"Failed to enumerate files.");
+            return Error.Failure("Directory.Enumerate", "Failed to enumerate files.");
         }
 
         var fileList = allFiles.ToList();
@@ -829,7 +827,7 @@ public static class FileSystemService
 
                 // CopyFileAsyncの結果を確認
                 var copyResult = await CopyFileAsync(file, destPath);
-                
+
                 if (copyResult.IsError)
                 {
                     failures.Add(new CopyFailure
@@ -844,7 +842,7 @@ public static class FileSystemService
             {
                 int current = Interlocked.Increment(ref copiedFiles);
                 int percent = (int)(current / (double)totalFiles * 100);
-                
+
                 if (percent != Volatile.Read(ref lastReportedPercent) && reportProgress != null)
                 {
                     int previous = Interlocked.CompareExchange(ref lastReportedPercent, percent, lastReportedPercent);

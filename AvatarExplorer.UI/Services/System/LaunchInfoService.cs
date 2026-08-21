@@ -13,7 +13,7 @@ public static class LaunchInfoService
         {
             var uri = new Uri(url);
             var query = HttpUtility.ParseQueryString(uri.Query);
-            
+
             return new LaunchInfo
             {
                 AssetPaths = query.GetValues("dir") ?? [],

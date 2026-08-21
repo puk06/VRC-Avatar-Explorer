@@ -1,6 +1,6 @@
 namespace AvatarExplorer.Core.Interfaces;
 
-public interface IRepository<T> where T : class, IIdentifiable
+public interface IRepository<out T> where T : class, IIdentifiable
 {
     event Action? OnUpdated;
     IReadOnlyList<T> GetAll();

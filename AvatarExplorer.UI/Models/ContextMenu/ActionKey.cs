@@ -3,7 +3,7 @@ namespace AvatarExplorer.UI.Models.ContextMenu;
 public enum ActionKey
 {
     None,
-    
+
     CheckForUpdate,
     CopyBoothLink,
     OpenBoothLink,

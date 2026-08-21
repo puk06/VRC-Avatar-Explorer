@@ -97,20 +97,20 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
             }
         );
 
-        if (result == null || result.Value.IsError)
-        {
-            NotificationManager.Show(
-                Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.ExportFailed],
-                NotificationType.Error
-            );
-        }
-        else
+        if (result?.IsError is false)
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Success.Default],
                 Localizer.Instance[Loc.Success.Export],
                 NotificationType.Success
+            );
+        }
+        else
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.ExportFailed],
+                NotificationType.Error
             );
         }
     }

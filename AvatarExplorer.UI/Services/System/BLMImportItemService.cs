@@ -25,7 +25,7 @@ public static class BLMImportItemService
 
         var variationID = query.Get("variation_id");
         if (variationID == null) return null;
-    
+
         return new BLMImportItemInfo()
         {
             DownloadURL = dlURL,

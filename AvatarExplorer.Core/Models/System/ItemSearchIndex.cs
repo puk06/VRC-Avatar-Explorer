@@ -30,7 +30,7 @@ public record ItemSearchIndex : ISearchIndex
         var targets = GetTargets(token.Field);
         if (targets.Length == 0) return false;
 
-        var comparison = StringComparison.CurrentCultureIgnoreCase;
+        const StringComparison comparison = StringComparison.CurrentCultureIgnoreCase;
         return token.IsNegation
             ? targets.All(t => !t.Contains(comparisonValue, comparison))
             : targets.Any(t => t.Contains(comparisonValue, comparison));

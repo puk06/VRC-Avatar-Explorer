@@ -62,7 +62,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
         }
 
         Open();
-        ShowSchemeRegistrationDialog();
+        _ = ShowSchemeRegistrationDialog();
     }
 
     public void Open()
@@ -84,7 +84,7 @@ public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitial
     private static void MarkInitialSetupCompleted() =>
         InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with { InitialSetupCompleted = true });
 
-    private static async void ShowSchemeRegistrationDialog()
+    private static async Task ShowSchemeRegistrationDialog()
     {
         if (SchemeService.IsOwnSchemeRegistered(SchemeService.ProtocolVRCAE)) return;
 

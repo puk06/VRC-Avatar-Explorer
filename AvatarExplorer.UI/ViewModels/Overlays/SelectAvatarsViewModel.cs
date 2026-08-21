@@ -84,7 +84,7 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
         }
 
         var searchQuery = searchText + " OR=true";
-        var result = InstanceRepository.ItemGroupService.SearchItems(searchQuery, SearchResultType.All);
+        var result = InstanceRepository.ItemGroupService.SearchItems(searchQuery, SearchResultTypes.All);
         if (result == null)
         {
             Avatars = _allAvatars;

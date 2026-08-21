@@ -47,6 +47,7 @@ public static class DatabaseMigrations
 
     public static bool ApplyRuntimeSettingsMigration(JsonObject settings, int targetVersion)
     {
+        _ = settings;
         return targetVersion switch
         {
             1 => false, // Obsolete fields remain for UI-side UserPreferences migration
@@ -128,7 +129,9 @@ public static class DatabaseMigrations
                 pathNode is not JsonValue pathValue ||
                 !pathValue.TryGetValue(out string? path) ||
                 !path.StartsWith(dataRootDirectory))
+            {
                 continue;
+            }
 
             var newPath = ItemUtils.GetRelativePath(path, dataRootDirectory);
             item["ItemPath"] = JsonValue.Create(newPath);
@@ -146,7 +149,9 @@ public static class DatabaseMigrations
             pathNode is not JsonValue pathValue ||
             !pathValue.TryGetValue(out string? path) ||
             !path.StartsWith("<sys>"))
+        {
             return false;
+        }
 
         var newPath = Path.Join(dataRootDirectory, path.Replace("<sys>", string.Empty));
         item["ItemPath"] = JsonValue.Create(newPath);
@@ -157,7 +162,9 @@ public static class DatabaseMigrations
     {
         if (!item.TryGetPropertyValue(propertyName, out var arrayNode) ||
             arrayNode is not JsonArray avatars)
+        {
             return false;
+        }
 
         var changed = false;
         var newAvatars = new JsonArray();
@@ -246,11 +253,16 @@ public static class DatabaseMigrations
             if (presetNode is not JsonObject preset) continue;
             if (!preset.TryGetPropertyValue("Items", out var itemsNode) ||
                 itemsNode is not JsonArray presetItems)
+            {
                 continue;
+            }
 
             foreach (var presetItemNode in presetItems)
             {
-                if (presetItemNode is not JsonObject presetItem) continue;
+                if (presetItemNode is not JsonObject presetItem)
+                {
+                    continue;
+                }
 
                 if (presetItem.TryGetPropertyValue("ItemId", out var itemIdNode) &&
                     itemIdNode is JsonValue itemIdValue &&

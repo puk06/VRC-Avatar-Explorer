@@ -32,5 +32,5 @@ public class ErrorLogViewModel : ViewModelBase
 
     public void Open() => IsVisible = true;
     public void Close() => IsVisible = false;
-    public static async Task OpenLogFolder() => await LauncherService.OpenFolder(SystemPath.LogsFolderPath);
+    public static Task OpenLogFolder() => LauncherService.OpenFolder(SystemPath.LogsFolderPath);
 }

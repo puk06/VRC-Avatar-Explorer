@@ -63,7 +63,7 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
             userPreference.RemoveBrackets,
             rawIdentifier: true
         );
-        
+
         _allAvatars = sortedAvatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
             .Select(i => i.Update())
@@ -114,7 +114,7 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         }
 
         var searchQuery = searchText + " OR=true";
-        var result = InstanceRepository.ItemGroupService.SearchItems(searchQuery, SearchResultType.All);
+        var result = InstanceRepository.ItemGroupService.SearchItems(searchQuery, SearchResultTypes.All);
         if (result == null)
         {
             Avatars = _allAvatars;

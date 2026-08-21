@@ -31,7 +31,7 @@ public static class SingleInstanceService
         {
             while (true)
             {
-                using var server = new NamedPipeServerStream(PipeName, PipeDirection.In);
+                await using var server = new NamedPipeServerStream(PipeName, PipeDirection.In);
                 await server.WaitForConnectionAsync();
 
                 using var reader = new StreamReader(server);

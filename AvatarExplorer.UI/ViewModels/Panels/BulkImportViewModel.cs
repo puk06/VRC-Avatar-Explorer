@@ -123,7 +123,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
                 .ToArray()
         );
     }
-    
+
     public void OnBulkImportDropped(string value, bool isFile = false)
     {
         if (isFile)
