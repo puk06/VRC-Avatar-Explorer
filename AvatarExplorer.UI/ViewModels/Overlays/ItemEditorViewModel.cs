@@ -198,7 +198,7 @@ public class ItemEditorViewModel : ViewModelBase
         var uniquePaths = new HashSet<string>();
         var pathsToRemove = new List<ItemPathViewModel>();
 
-        pathsToRemove.AddRange(ItemPaths.Where(i => uniquePaths.Add(i.FullPath)));
+        pathsToRemove.AddRange(ItemPaths.Where(i => !uniquePaths.Add(i.FullPath)));
         foreach (var path in pathsToRemove)
         {
             ItemPaths.Remove(path);
