@@ -15,7 +15,7 @@ public sealed class Localizer : INotifyPropertyChanged
 {
     private readonly List<Dictionary<string, string>> _map;
     private int _selectedLanguageIndex = -1;
-    private bool IsValidIndex => _selectedLanguageIndex >= 0 && _selectedLanguageIndex < _map.Count;
+    private bool IsValidIndex => _map.IsValidIndex(_selectedLanguageIndex);
 
     public static Localizer Instance { get; } = new();
     public event Action? LanguageChanged;

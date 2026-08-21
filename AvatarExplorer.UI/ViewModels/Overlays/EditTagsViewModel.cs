@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Services;
 using ReactiveUI;
@@ -87,7 +88,7 @@ public class EditTagsViewModel : ViewModelBase, IInitializable
 
     public void OnExistTagSelectionChanged()
     {
-        if (SelectedIndex >= 0 && SelectedIndex < ExistTags.Count())
+        if (ExistTags.IsValidIndex(SelectedIndex))
         {
             var selectedTag = ExistTags.ElementAt(SelectedIndex);
             if (!Tags.Contains(selectedTag))

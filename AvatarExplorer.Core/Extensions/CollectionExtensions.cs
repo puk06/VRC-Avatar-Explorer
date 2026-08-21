@@ -17,4 +17,20 @@ public static class CollectionExtensions
             foreach (var value in collection) action(value);
         }
     }
+
+    public static bool IsValidIndex<T>(this IEnumerable<T> collection, int index)
+    {
+        if (collection is IReadOnlyCollection<T> list)
+        {
+            return index >= 0 && index < list.Count;
+        }
+        else if (collection is T[] array)
+        {
+            return index >= 0 && index < array.Length;
+        }
+        else
+        {
+            return index >= 0 && index < collection.Count();
+        }
+    }
 }

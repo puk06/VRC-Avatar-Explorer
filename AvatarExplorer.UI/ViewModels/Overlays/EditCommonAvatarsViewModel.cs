@@ -25,7 +25,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
 
     [Reactive] public ObservableCollection<CommonAvatarViewModel> Groups { get; set; } = [];
     [Reactive] public int SelectedGroupIndex { get; set; } = -1;
-    public CommonAvatarViewModel? SelectedGroup => SelectedGroupIndex >= 0 && SelectedGroupIndex < Groups.Count ? Groups[SelectedGroupIndex] : null;
+    public CommonAvatarViewModel? SelectedGroup => Groups.IsValidIndex(SelectedGroupIndex) ? Groups[SelectedGroupIndex] : null;
 
     [Reactive] public string SearchText { get; set; } = string.Empty;
     [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
@@ -202,7 +202,7 @@ public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         SelectedGroupIndex = -1;
 
         if (Groups.Count == 0) SelectedGroupIndex = -1;
-        else if (lastSelectedGroupIndex >= 0 && lastSelectedGroupIndex < Groups.Count) SelectedGroupIndex = lastSelectedGroupIndex;
+        else if (Groups.IsValidIndex(lastSelectedGroupIndex)) SelectedGroupIndex = lastSelectedGroupIndex;
         else SelectedGroupIndex = 0;
     }
     private void RefleshAvatars()

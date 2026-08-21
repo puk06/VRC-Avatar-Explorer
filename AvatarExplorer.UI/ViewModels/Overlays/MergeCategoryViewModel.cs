@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System.Repositories;
@@ -20,8 +21,8 @@ public class MergeCategoryViewModel : ViewModelBase
     [Reactive] public ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
     [Reactive] public int SelectedSourceCategoryIndex { get; set; } = 0;
     [Reactive] public int SelectedTargetCategoryIndex { get; set; } = 0;
-    public ItemCategoryViewModel? SelectedSourceCategory => Categories.Count > SelectedSourceCategoryIndex && SelectedSourceCategoryIndex >= 0 ? Categories[SelectedSourceCategoryIndex] : null;
-    public ItemCategoryViewModel? SelectedTargetCategory => Categories.Count > SelectedTargetCategoryIndex && SelectedTargetCategoryIndex >= 0 ? Categories[SelectedTargetCategoryIndex] : null;
+    public ItemCategoryViewModel? SelectedSourceCategory => Categories.IsValidIndex(SelectedSourceCategoryIndex) ? Categories[SelectedSourceCategoryIndex] : null;
+    public ItemCategoryViewModel? SelectedTargetCategory => Categories.IsValidIndex(SelectedTargetCategoryIndex) ? Categories[SelectedTargetCategoryIndex] : null;
 
     public IReactiveCommand CancelCommand { get; }
     public IReactiveCommand MergeCommand { get; }
@@ -42,10 +43,10 @@ public class MergeCategoryViewModel : ViewModelBase
         RefleshCategories();
 
         var sourceIndex = GetCategoryIndex(ItemCategory.FromIdentifier(state));
-        SelectedSourceCategoryIndex = sourceIndex >= 0 ? sourceIndex : 0;
+        SelectedSourceCategoryIndex = Categories.IsValidIndex(sourceIndex) ? sourceIndex : 0;
 
         var targetIndex = GetCategoryIndex(new(ItemType.Avatar));
-        SelectedTargetCategoryIndex = targetIndex >= 0 ? targetIndex : 0;
+        SelectedTargetCategoryIndex = Categories.IsValidIndex(targetIndex) ? targetIndex : 0;
 
         IsVisible = true;
     }

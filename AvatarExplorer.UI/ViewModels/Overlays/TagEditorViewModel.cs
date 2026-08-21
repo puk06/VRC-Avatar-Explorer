@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
@@ -75,7 +76,7 @@ public class TagEditorViewModel : ViewModelBase, IInitializable
             ? _allExistTags
             : _allExistTags.Where(t => t.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
 
-        var previousTagName = SelectedTagIndex >= 0 && SelectedTagIndex < ExistTags.Count()
+        var previousTagName = ExistTags.IsValidIndex(SelectedTagIndex)
             ? ExistTags.ElementAt(SelectedTagIndex)
             : null;
 

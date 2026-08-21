@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.UI.Interfaces;
@@ -35,7 +36,7 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
 
     public List<string> ImportSourceNames => ImportSourceOptions.ConvertAll(o => Localizer.Instance[o.LocKey]);
 
-    private DataImportType SelectedImportSource => (SelectedImportSourceIndex >= 0 && SelectedImportSourceIndex < ImportSourceOptions.Count)
+    private DataImportType SelectedImportSource => ImportSourceNames.IsValidIndex(SelectedImportSourceIndex)
         ? ImportSourceOptions[SelectedImportSourceIndex].Type
         : DataImportType.None;
 

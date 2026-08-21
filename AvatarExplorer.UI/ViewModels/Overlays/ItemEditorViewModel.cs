@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Data.Links;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
@@ -37,7 +38,7 @@ public class ItemEditorViewModel : ViewModelBase
     [Reactive] public string Title { get; set; } = string.Empty;
     [Reactive] public string Author { get; set; } = string.Empty;
     [Reactive] public int SelectedCategoryIndex { get; set; } = 0;
-    public ItemCategoryViewModel? SelectedCategory => (SelectedCategoryIndex > 0 && SelectedCategoryIndex < Categories.Count) ? Categories[SelectedCategoryIndex] : null;
+    public ItemCategoryViewModel? SelectedCategory => Categories.IsValidIndex(SelectedCategoryIndex) ? Categories[SelectedCategoryIndex] : null;
     [Reactive] public ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
 
     [Reactive] public string SupportedAvatarsText { get; set; } = string.Empty;

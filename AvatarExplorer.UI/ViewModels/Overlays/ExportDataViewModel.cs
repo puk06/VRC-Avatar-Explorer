@@ -31,7 +31,7 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
 
     public List<string> ExportTypeNames => ExportTypeOptions.ConvertAll(o => Localizer.Instance[o.LocKey]);
 
-    private DataExportType SelectedExportType => (SelectedExportTypeIndex >= 0 && SelectedExportTypeIndex < ExportTypeOptions.Count)
+    private DataExportType SelectedExportType => ExportTypeNames.IsValidIndex(SelectedExportTypeIndex)
         ? ExportTypeOptions[SelectedExportTypeIndex].Type
         : DataExportType.None;
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Avalonia.Media.Imaging;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
 using AvatarExplorer.UI.Services.Utilities;
@@ -43,7 +44,7 @@ public class BulkImportItemViewModel : ViewModelBase
 
     [Reactive] public IEnumerable<UnitypackageViewModel> UnitypackageViewModels { get; private set; } = [];
     [Reactive] public int SelectedUnitypackage { get; set; } = 0;
-    public string SelectedUnitypackagePath => (SelectedUnitypackage >= 0 || SelectedUnitypackage < UnitypackageFullPaths.Length) ? UnitypackageFullPaths[SelectedUnitypackage] : string.Empty;
+    public string SelectedUnitypackagePath => UnitypackageFullPaths.IsValidIndex(SelectedUnitypackage) ? UnitypackageFullPaths[SelectedUnitypackage] : string.Empty;
 
     public string[] UnitypackageFullPaths { get; set; } = [];
 
