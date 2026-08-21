@@ -227,7 +227,7 @@ public class ItemEditorViewModel : ViewModelBase
 
     private void Cancel() => Close();
 
-    private async Task Confirm()
+    public async Task Confirm()
     {
         var validationResult = ValidateFields();
         if (!validationResult) return;
@@ -394,7 +394,7 @@ public class ItemEditorViewModel : ViewModelBase
         ItemPaths.Add(new ItemPathViewModel(fileName, url, ItemPathType.URL));
         RemoveDuplicatePaths();
     }
-    private async Task FetchBoothData()
+    public async Task FetchBoothData()
     {
         ErrorOr<BoothItem>? fetchResult = null;
         await NotificationManager.ShowWithProgress(

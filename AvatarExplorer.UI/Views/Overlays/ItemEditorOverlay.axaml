@@ -5,7 +5,8 @@
     xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     x:Class="AvatarExplorer.UI.Views.Overlays.ItemEditorOverlay"
-    x:DataType="vm:ItemEditorViewModel">
+    x:DataType="vm:ItemEditorViewModel"
+    KeyDown="OnItemEditorKeyDown">
 
     <Border Classes="overlaybackground">
         <Border Classes="overlay" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30" CornerRadius="12">
@@ -74,7 +75,7 @@
                             <StackPanel Spacing="15">
                                 <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
                                     <TextBlock Grid.Column="0" Text="{Binding [ItemEditor.BoothUrl], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                    <TextBox Text="{Binding BoothUrl}" Grid.Column="1" PlaceholderText="{Binding [ItemEditor.BoothUrlPlaceholder], Source={x:Static loc:Localizer.Instance}}"/>
+                                    <TextBox Text="{Binding BoothUrl}" Grid.Column="1" PlaceholderText="{Binding [ItemEditor.BoothUrlPlaceholder], Source={x:Static loc:Localizer.Instance}}" KeyDown="OnBoothUrlKeyDown"/>
                                     <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [ItemEditor.FetchInfo], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding FetchBoothDataCommand}"/>
                                 </Grid>
 
