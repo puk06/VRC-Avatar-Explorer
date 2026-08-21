@@ -16,7 +16,7 @@ public sealed class UnitypackagePathNodeViewModel(string name, string fullPath)
     {
         if (_childMap.TryGetValue(childName, out UnitypackagePathNodeViewModel? existingNode)) return existingNode;
 
-        UnitypackagePathNodeViewModel createdNode = new(childName, $"{FullPath}/{childName}");
+        var createdNode = new UnitypackagePathNodeViewModel(childName, $"{FullPath}/{childName}");
         _childMap[childName] = createdNode;
         Children.Add(createdNode);
 
