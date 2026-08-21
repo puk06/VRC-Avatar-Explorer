@@ -166,7 +166,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
         var bulkVm = new BulkImportItemViewModel()
         {
-            ImageFileName = item.ThumbnailFileName,
+            ThumbnailSource = new() { Primary = item.ThumbnailFileName },
             TitleRaw = item.Title,
             DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
             UnitypackageFullPaths = unitypackagePaths.ToArray(),
@@ -194,7 +194,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
             var item = InstanceRepository.Items.Get(itemVm.ItemId);
             if (item == null) continue;
 
-            itemVm.ImageFileName = item.ThumbnailFileName;
+            itemVm.ThumbnailSource.Primary = item.ThumbnailFileName;
             itemVm.TitleRaw = item.Title;
             itemVm.DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]);
 

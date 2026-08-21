@@ -23,8 +23,7 @@ public static class NavigationItemFactory
 
     private static ItemViewModel FromItem(Item item, string identifier) => new()
     {
-        ImageFileName = item.ThumbnailFileName,
-        FallbackImageFileName = SystemIconKey.FileIcon,
+        ThumbnailSource = new() { Primary = item.ThumbnailFileName, Fallback = SystemIconKey.FileIcon },
         TitleRaw = item.Title,
         TitleLocalizable = false,
         DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
@@ -38,7 +37,7 @@ public static class NavigationItemFactory
 
     private static ItemViewModel FromAuthor(Author author, string identifier) => new()
     {
-        ImageFileName = string.Empty,
+        ThumbnailSource = new() { Primary = string.Empty },
         TitleRaw = author.Name,
         TitleLocalizable = false,
         DescriptionRaw = new(Loc.Button.Description.Item.Count, [author.ItemCount.ToString()]),
@@ -53,7 +52,7 @@ public static class NavigationItemFactory
 
         return new ItemViewModel
         {
-            ImageFileName = isHiddenCategory ? SystemIconKey.HiddenFolderIcon : SystemIconKey.FolderIcon,
+            ThumbnailSource = new() { Primary = isHiddenCategory ? SystemIconKey.HiddenFolderIcon : SystemIconKey.FolderIcon },
             TitleRaw = folder.Title,
             TitleLocalizable = folder.TitleLocalizable,
             DescriptionRaw = new(Loc.Button.Description.Item.Count, [folder.ItemCount.ToString()]),
@@ -70,8 +69,7 @@ public static class NavigationItemFactory
 
         return new ItemViewModel
         {
-            ImageFileName = SystemIconKey.FileIcon,
-            ThumbnailFilePath = isImageFile ? file.FilePath : null,
+            ThumbnailSource = new() { Primary = SystemIconKey.FileIcon, FilePath = isImageFile ? file.FilePath : null },
             TitleRaw = file.FileName,
             TitleLocalizable = false,
             DescriptionRaw = new(hasExtension ? Loc.Button.Description.File.Extension : Loc.Button.Description.File.NoExtension, [file.Extension]),
@@ -91,8 +89,7 @@ public static class NavigationItemFactory
 
     private static ItemViewModel FromAvatarItem(Avatar avatar, Item item) => new()
     {
-        ImageFileName = item.ThumbnailFileName,
-        FallbackImageFileName = SystemIconKey.FileIcon,
+        ThumbnailSource = new() { Primary = item.ThumbnailFileName, Fallback = SystemIconKey.FileIcon },
         TitleRaw = item.Title,
         TitleLocalizable = false,
         DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
@@ -107,7 +104,7 @@ public static class NavigationItemFactory
 
     private static ItemViewModel FromCommonAvatar(Avatar avatar, CommonAvatar commonAvatar) => new()
     {
-        ImageFileName = SystemIconKey.GroupIcon,
+        ThumbnailSource = new() { Primary = SystemIconKey.GroupIcon },
         TitleRaw = commonAvatar.GroupName,
         TitleLocalizable = false,
         DescriptionRaw = new(Loc.Button.Description.CommonAvatar.Count, [commonAvatar.Avatars.Length.ToString()]),
@@ -118,7 +115,7 @@ public static class NavigationItemFactory
 
     private static ItemViewModel FromTempAvatar(Avatar avatar, TempAvatar tempAvatar) => new()
     {
-        ImageFileName = SystemIconKey.AvatarIcon,
+        ThumbnailSource = new() { Primary = SystemIconKey.AvatarIcon },
         TitleRaw = tempAvatar.AvatarName,
         TitleLocalizable = false,
         DescriptionRaw = new(Loc.Button.Description.TempAvatar),
@@ -129,7 +126,7 @@ public static class NavigationItemFactory
 
     private static ItemViewModel CreateEmpty() => new()
     {
-        ImageFileName = SystemIconKey.None,
+        ThumbnailSource = new() { Primary = SystemIconKey.None },
         TitleRaw = string.Empty,
         TitleLocalizable = false,
         DescriptionRaw = new(string.Empty, []),

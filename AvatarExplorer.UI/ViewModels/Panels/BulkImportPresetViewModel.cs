@@ -43,7 +43,7 @@ public class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostIni
             .Select(i => {
                 var vm = new ItemViewModel()
                 {
-                    ImageFileName = SystemIconKey.FolderIcon,
+                    ThumbnailSource = new() { Primary = SystemIconKey.FolderIcon },
                     TitleRaw = i.PresetName,
                     TitleLocalizable = false,
                     DescriptionRaw = new(Loc.Button.Description.BulkImportPreset.Count, [i.Items.Length.ToString()]),

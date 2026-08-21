@@ -40,11 +40,7 @@ public class ItemViewModel : ViewModelBase, IDisposable
     [Reactive] public double Width { get; set; } = 0;
     [Reactive] public double Height { get; set; } = 0;
 
-    public string ImageFileName { get; set; } = string.Empty;
-    public string? FallbackImageFileName { get; set; } = null;
-    public string AppliedImageFileName { get; private set; } = string.Empty;
-
-    public string? ThumbnailFilePath { get; set; } = null;
+    public ThumbnailSource ThumbnailSource { get; set; } = new();
     public string TitleRaw { get; set; } = string.Empty;
     public bool TitleLocalizable { get; set; } = false;
 
@@ -73,20 +69,20 @@ public class ItemViewModel : ViewModelBase, IDisposable
         _thumbnailLoadCts?.Dispose();
         _thumbnailLoadCts = null;
 
-        AppliedImageFileName = ImageFileName;
-        var fallbackIcon = ImageService.Get(ImageFileName);
-        if (fallbackIcon == null && !string.IsNullOrEmpty(FallbackImageFileName))
+        ThumbnailSource.Applied = ThumbnailSource.Primary;
+        var defaultIcon = ImageService.Get(ThumbnailSource.Primary);
+        if (defaultIcon == null && !string.IsNullOrEmpty(ThumbnailSource.Fallback))
         {
-            fallbackIcon = ImageService.Get(FallbackImageFileName);
-            AppliedImageFileName = FallbackImageFileName;
+            defaultIcon = ImageService.Get(ThumbnailSource.Fallback);
+            ThumbnailSource.Applied = ThumbnailSource.Fallback;
         }
-        SetThumbnail(fallbackIcon, owned: false);
+        SetThumbnail(defaultIcon, owned: false);
 
-        if (!string.IsNullOrEmpty(ThumbnailFilePath))
+        if (!string.IsNullOrEmpty(ThumbnailSource.FilePath))
         {
             var cts = new CancellationTokenSource();
             _thumbnailLoadCts = cts;
-            _ = LoadThumbnailAsync(ThumbnailFilePath, cts.Token);
+            _ = LoadThumbnailAsync(ThumbnailSource.FilePath, cts.Token);
         }
 
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
@@ -201,6 +197,7 @@ public class ItemViewModel : ViewModelBase, IDisposable
                     return;
                 }
                 SetThumbnail(bitmap, owned: true);
+                ThumbnailSource.Applied = filePath;
             }, DispatcherPriority.Normal, ct);
         }
         catch (OperationCanceledException)

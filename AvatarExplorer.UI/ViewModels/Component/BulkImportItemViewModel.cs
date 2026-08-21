@@ -36,7 +36,7 @@ public class BulkImportItemViewModel : ViewModelBase
     [Reactive] public double Width { get; set; } = 0;
     [Reactive] public double Height { get; set; } = 0;
 
-    public string ImageFileName { get; set; } = string.Empty;
+    public ThumbnailSource ThumbnailSource { get; set; } = new();
     public string TitleRaw { get; set; } = string.Empty;
     public bool TitleLocalizable { get; } = false;
 
@@ -52,7 +52,7 @@ public class BulkImportItemViewModel : ViewModelBase
 
     public BulkImportItemViewModel Update(int iconSize = 80, bool removeBrackets = false)
     {
-        Thumbnail = ImageService.Get(ImageFileName);
+        Thumbnail = ImageService.Get(ThumbnailSource.Primary);
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
 
         Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
@@ -81,7 +81,7 @@ public class BulkImportItemViewModel : ViewModelBase
     {
         return new()
         {
-            ImageFileName = ImageFileName,
+            ThumbnailSource = ThumbnailSource,
             TitleRaw = TitleRaw,
             DescriptionRaw = DescriptionRaw,
             UnitypackageFullPaths = UnitypackageFullPaths,
