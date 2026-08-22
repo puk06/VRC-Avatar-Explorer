@@ -74,7 +74,7 @@ internal static class DataExporter
                 var supportedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, supportedAvatarNames));
                 var implementedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, implementedAvatarNames));
                 var boothId = CsvUtils.EscapeCsv(item.BoothId.ToString());
-                var itemPath = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.GetFolderPaths()));
+                var itemPath = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.GetFolderPaths().NaturalSort(i => Path.GetFileName(i))));
                 var tags = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.Tags));
 
                 await sw.WriteLineAsync($"{itemId},{itemTitle},{authorName},{imagePath},{category},{memo},{supportedAvatarsList},{implementedAvatarsList},{boothId},{itemPath},{tags}");
