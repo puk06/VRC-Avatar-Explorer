@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup Condition="'$(AvaloniaVersion)'=='Nightly'">
     <RestoreSources>
-      $(RestoreAdditionalProjectSources);https://nuget-feed-nightly.avaloniaui.net/v3/index.json;
+      $(RestoreAdditionalProjectSources);https://api.nuget.org/v3/index.json;https://nuget-feed-nightly.avaloniaui.net/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 </Project>
