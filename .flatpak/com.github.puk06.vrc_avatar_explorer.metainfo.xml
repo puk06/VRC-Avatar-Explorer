@@ -25,7 +25,5 @@
     <category>FileTools</category>
   </categories>
 
-  <launchable
-        type="desktop-id"
-    >com.github.puk06.vrc_avatar_explorer.desktop</launchable>
+  <launchable type="desktop-id">com.github.puk06.vrc_avatar_explorer.desktop</launchable>
 </component>
