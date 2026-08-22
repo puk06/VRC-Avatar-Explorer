@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
@@ -46,11 +45,6 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
     {
         InstanceRepository.Items.OnUpdated += RefreshItems;
         InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ => OnUserPreferencesChanged();
-        Items.CollectionChanged += (s, e) =>
-        {
-            if (e.Action is NotifyCollectionChangedAction.Add)
-                OnItemsAdded?.Invoke();
-        };
     }
 
     private void OnUserPreferencesChanged()
@@ -62,7 +56,11 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
         }
     }
 
-    private void CopyItem(BulkImportItemViewModel item) => Items.Add(item.Copy().Update());
+    private void CopyItem(BulkImportItemViewModel item)
+    {
+        Items.Add(item.Copy().Update());
+        OnItemsAdded?.Invoke();
+    }
     private void RemoveItem(BulkImportItemViewModel item) => Items.Remove(item);
 
     private async Task Import()
@@ -182,6 +180,7 @@ public class BulkImportViewModel : ViewModelBase, IInitializable
 
         var settings = InstanceRepository.UserPreferences;
         Items.Add(bulkVm.Update(settings.NormalIconSize, settings.RemoveBrackets));
+        OnItemsAdded?.Invoke();
     }
 
     private void RefreshItems()
