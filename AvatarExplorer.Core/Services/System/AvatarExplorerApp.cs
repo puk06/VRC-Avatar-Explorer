@@ -1,4 +1,5 @@
 using AvatarExplorer.Core.Data.Paths;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.System;
 using AvatarExplorer.Core.Services.IO;
@@ -91,5 +92,28 @@ public sealed class AvatarExplorerApp
         BackupManager.SetAutoBackupPath(runtimeSettings.AutoBackupRootDirectory);
     }
 
-    public static void ClearTemp() => FileSystemService.DeleteDirectory(SystemPath.TempFolderPath);
+    public static void ClearTemp()
+    {
+        if (!Directory.Exists(SystemPath.TempFolderPath)) return;
+
+        try
+        {
+            var failures = 0;
+            Directory.GetDirectories(SystemPath.TempFolderPath)
+                .ForEach(dir =>
+                {
+                    try { Directory.Delete(dir, true); }
+                    catch { failures++; }
+                });
+
+            if (failures > 0)
+            {
+                ErrorManager.Instance.PostInternalError($"Failed to delete {failures} temp directories.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("Failed to clear temp folder.", ex);
+        }
+    }
 }
