@@ -12,6 +12,7 @@ public partial class SettingsOverlay : UserControl
         InitializeComponent();
         DataContext = InstanceRepository.MainWindow.SettingsVM;
         Localizer.Instance.LanguageChanged += OnLanguageChanged;
+
 #if FLATPAK
         RegisterSchemeVRCAE.IsEnabled = false;
         RegisterSchemeVRCAE.Opacity = 0.5f;
