@@ -25,9 +25,6 @@ jobs:
         with:
           dotnet-version: '10.0.x'
   
-      - name: Dotnet Restore
-        run: dotnet restore
-  
       - name: Dotnet Build
         run: dotnet publish "./AvatarExplorer.UI/AvatarExplorer.UI.csproj" -c Release -o ./.flatpak/publish -p:BuildTargetIsFlatpak=true -p:AvaloniaVersion=Nightly
 
