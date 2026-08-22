@@ -240,6 +240,7 @@
     "Error.FetchAllVariationHashesFailed": "ハッシュ一括取得が完了しました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件\n詳細はエラーログを確認してください。",
     "Error.UnitypackageNotFound": "Unitypackageが見つかりませんでした",
     "Error.InvalidUrl": "無効なURLです",
+    "Error.InvalidReleaseUrl": "無効なリリースURLです",
     "Error.ItemPathNotFound": "アイテムパスが見つかりませんでした",
 
     "Settings.Basic": "基本",

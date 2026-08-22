@@ -117,6 +117,18 @@ public static class UpdateChecker
         return true;
     }
 
+    public static bool IsReleaseUrlSafe(string url, out Uri? uri)
+    {
+        uri = null;
+        if (string.IsNullOrWhiteSpace(url)) return false;
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var parsed)) return false;
+        if (parsed.Scheme != Uri.UriSchemeHttps) return false;
+        if (!parsed.Host.Equals(AllowedDownloadHost, StringComparison.OrdinalIgnoreCase)) return false;
+
+        uri = parsed;
+        return true;
+    }
+
     private static string? GetCurrentPlatformDownloadKey(bool isFlatpak)
     {
         var arch = RuntimeInformation.OSArchitecture;

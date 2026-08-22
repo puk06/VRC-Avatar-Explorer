@@ -240,6 +240,7 @@
     "Error.FetchAllVariationHashesFailed": "La récupération groupée des hachages est terminée. Réussies : {0} / Échouées : {1} / Total : {2}\nConsultez le journal d'erreurs pour plus de détails.",
     "Error.UnitypackageNotFound": "Aucun Unitypackage trouvé",
     "Error.InvalidUrl": "URL invalide",
+    "Error.InvalidReleaseUrl": "URL de version invalide",
     "Error.ItemPathNotFound": "Chemin de l'élément introuvable",
 
     "Settings.Basic": "Général",

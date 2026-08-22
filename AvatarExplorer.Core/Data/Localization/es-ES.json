@@ -240,6 +240,7 @@
     "Error.FetchAllVariationHashesFailed": "La obtención masiva de hashes se completó. Correctos: {0} / Fallidos: {1} / Total: {2}\nConsulta el registro de errores para más detalles.",
     "Error.UnitypackageNotFound": "No se encontró ningún Unitypackage",
     "Error.InvalidUrl": "URL inválida",
+    "Error.InvalidReleaseUrl": "URL de versión inválida",
     "Error.ItemPathNotFound": "Ruta del elemento no encontrada",
 
     "Settings.Basic": "Básico",

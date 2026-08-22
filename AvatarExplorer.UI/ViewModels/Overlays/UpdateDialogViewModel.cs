@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.Core.Services.IO;
@@ -40,7 +41,7 @@ public class UpdateDialogViewModel : ViewModelBase
     {
         LaterCommand = ReactiveCommand.Create(OnLater);
         UpdateNowCommand = ReactiveCommand.CreateFromTask(UpdateNow);
-        OpenReleasePageCommand = ReactiveCommand.CreateFromTask(OpenReleasePage);
+        OpenReleasePageCommand = ReactiveCommand.CreateFromTask(OpenReleasePageInBrowser);
     }
 
     public void Open(string currentVersion, VersionRelease latestRelease)
@@ -66,18 +67,12 @@ public class UpdateDialogViewModel : ViewModelBase
         IsVisible = false;
     }
 
-    private async Task OpenReleasePage()
-    {
-        await LauncherService.OpenUri(ReleaseUrl);
-        IsVisible = false;
-    }
-
     private async Task UpdateNow()
     {
         // When there is no resolved release, fall back to the release page.
         if (LatestRelease == null)
         {
-            await LauncherService.OpenUri(ReleaseUrl);
+            await OpenReleasePageInBrowser();
             IsVisible = false;
             return;
         }
@@ -93,7 +88,7 @@ public class UpdateDialogViewModel : ViewModelBase
         // No matching asset for this platform, or the URL failed safety validation -> fall back to the release page.
         if (asset == null || !UpdateChecker.IsDownloadUrlSafe(asset.Url, out var downloadUri) || downloadUri == null)
         {
-            await LauncherService.OpenUri(ReleaseUrl);
+            await OpenReleasePageInBrowser();
             IsVisible = false;
             return;
         }
@@ -132,6 +127,21 @@ public class UpdateDialogViewModel : ViewModelBase
             // ErrorManager.PostError surfaces the message to the user via the notification manager.
             ErrorManager.Instance.PostError(Localizer.Instance[Loc.UpdateDialog.DownloadFailed], ex);
         }
+    }
+
+    private async Task OpenReleasePageInBrowser()
+    {
+        if (!UpdateChecker.IsReleaseUrlSafe(ReleaseUrl, out var _))
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.InvalidReleaseUrl],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        await LauncherService.OpenUri(ReleaseUrl);
     }
 
     /// <summary>

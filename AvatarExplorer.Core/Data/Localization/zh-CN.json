@@ -240,6 +240,7 @@
     "Error.FetchAllVariationHashesFailed": "批量获取哈希完成。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个\n请查看错误日志了解详情。",
     "Error.UnitypackageNotFound": "未找到Unitypackage",
     "Error.InvalidUrl": "无效的URL",
+    "Error.InvalidReleaseUrl": "无效的发布URL",
     "Error.ItemPathNotFound": "找不到项目路径",
 
     "Settings.Basic": "基本",

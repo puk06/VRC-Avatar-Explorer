@@ -240,6 +240,7 @@
     "Error.FetchAllVariationHashesFailed": "해시 일괄 가져오기가 완료되었습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개\n자세한 내용은 오류 로그를 확인해 주세요.",
     "Error.UnitypackageNotFound": "Unitypackage를 찾을 수 없습니다",
     "Error.InvalidUrl": "유효하지 않은 URL입니다",
+    "Error.InvalidReleaseUrl": "유효하지 않은 릴리스 URL입니다",
     "Error.ItemPathNotFound": "아이템 경로를 찾을 수 없습니다",
 
     "Settings.Basic": "기본",

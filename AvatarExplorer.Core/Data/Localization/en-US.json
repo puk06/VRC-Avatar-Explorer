@@ -240,6 +240,7 @@
     "Error.FetchAllVariationHashesFailed": "Bulk hash fetch completed. Success: {0} / Failed: {1} / Total: {2}\nCheck the error log for details.",
     "Error.UnitypackageNotFound": "No Unitypackage found",
     "Error.InvalidUrl": "Invalid URL",
+    "Error.InvalidReleaseUrl": "Invalid release URL",
     "Error.ItemPathNotFound": "Item path not found",
 
     "Settings.Basic": "Basic",

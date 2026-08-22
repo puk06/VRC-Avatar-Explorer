@@ -369,6 +369,7 @@ public static class Loc
         public const string FetchAllVariationHashesFailed = "Error.FetchAllVariationHashesFailed";
         public const string UnitypackageNotFound = "Error.UnitypackageNotFound";
         public const string InvalidUrl = "Error.InvalidUrl";
+        public const string InvalidReleaseUrl = "Error.InvalidReleaseUrl";
         public const string ItemPathNotFound = "Error.ItemPathNotFound";
     }
     public static class Settings
