@@ -76,14 +76,16 @@ public static class UpdateChecker
 
     /// <summary>
     /// Resolves the download asset (URL + SHA256) that matches the currently running platform/architecture.
-    /// Returns null when no matching asset is available (e.g. Flatpak builds or unsupported architectures),
+    /// Returns null when no matching asset is available (e.g. unsupported architectures),
     /// in which case the caller should fall back to opening the release page.
     /// </summary>
-    public static DownloadAsset? GetCurrentPlatformDownloadAsset(VersionRelease release)
+    /// <param name="release">The version release containing download URLs.</param>
+    /// <param name="isFlatpak">True if the application is running as a Flatpak package.</param>
+    public static DownloadAsset? GetCurrentPlatformDownloadAsset(VersionRelease release, bool isFlatpak = false)
     {
         if (release.DownloadUrls == null || release.DownloadUrls.Count == 0) return null;
 
-        var key = GetCurrentPlatformDownloadKey();
+        var key = GetCurrentPlatformDownloadKey(isFlatpak);
         if (key == null) return null;
 
         return release.DownloadUrls.TryGetValue(key, out var asset) ? asset : null;
@@ -115,19 +117,21 @@ public static class UpdateChecker
         return true;
     }
 
-    private static string? GetCurrentPlatformDownloadKey()
+    private static string? GetCurrentPlatformDownloadKey(bool isFlatpak)
     {
         var arch = RuntimeInformation.OSArchitecture;
 
-#if FLATPAK
         // Flatpak builds are distributed as installable bundles (.flatpak).
-        return arch switch
+        if (isFlatpak)
         {
-            Architecture.Arm64 => "flatpak-aarch64",
-            Architecture.X64 => "flatpak-x86_64",
-            _ => null
-        };
-#else
+            return arch switch
+            {
+                Architecture.Arm64 => "flatpak-aarch64",
+                Architecture.X64 => "flatpak-x86_64",
+                _ => null
+            };
+        }
+
         if (OperatingSystem.IsWindows())
             return arch == Architecture.Arm64 ? "win-arm64" : "win-x64";
 
@@ -148,7 +152,6 @@ public static class UpdateChecker
         }
 
         return null;
-#endif
     }
 
     private static bool IsMusl()

@@ -81,7 +81,13 @@ public class UpdateDialogViewModel : ViewModelBase
             return;
         }
 
-        var asset = UpdateChecker.GetCurrentPlatformDownloadAsset(LatestRelease);
+        var asset = UpdateChecker.GetCurrentPlatformDownloadAsset(LatestRelease,
+#if FLATPAK
+            isFlatpak: true
+#else
+            isFlatpak: false
+#endif
+        );
 
         // No matching asset for this platform, or the URL failed safety validation -> fall back to the release page.
         if (asset == null || !UpdateChecker.IsDownloadUrlSafe(asset.Url, out var downloadUri) || downloadUri == null)
