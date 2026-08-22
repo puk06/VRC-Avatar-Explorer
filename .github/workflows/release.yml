@@ -109,3 +109,46 @@ jobs:
           files: ${{ env.ASSET_PATH }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-flatpak:
+    needs: create-release
+    runs-on: ${{ matrix.variant.runner }}
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        variant:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Dotnet Build
+        run: dotnet publish "./AvatarExplorer.UI/AvatarExplorer.UI.csproj" -c Release -o ./.flatpak/publish -p:BuildTargetIsFlatpak=true -p:AvaloniaVersion=Nightly
+
+      - name: Build Flatpak Bundle
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: com.github.puk06.vrc_avatar_explorer-${{ matrix.variant.arch }}.flatpak
+          manifest-path: .flatpak/com.github.puk06.vrc_avatar_explorer.yaml
+          cache-key: flatpak-builder-${{ github.sha }}
+          arch: ${{ matrix.variant.arch }}
+
+      - name: Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: com.github.puk06.vrc_avatar_explorer-${{ matrix.variant.arch }}.flatpak
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
