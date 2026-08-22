@@ -28,12 +28,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-  
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
-  
+
       - name: Dotnet Build
         run: dotnet publish "./AvatarExplorer.UI/AvatarExplorer.UI.csproj" -c Release -o ./.flatpak/publish -p:BuildTargetIsFlatpak=true -p:AvaloniaVersion=Nightly
 
