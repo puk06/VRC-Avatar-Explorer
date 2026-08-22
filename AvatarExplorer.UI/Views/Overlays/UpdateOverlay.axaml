@@ -6,7 +6,7 @@
     x:DataType="vm:UpdateDialogViewModel">
 
     <Border Classes="overlaybackground">
-        <Border Classes="overlay" Width="500" Padding="20">
+        <Border Classes="overlay" Width="650" Padding="20">
             <StackPanel Spacing="15">
 
                 <!-- タイトル + バージョンテキスト -->
@@ -19,17 +19,17 @@
 
                 <!-- 更新履歴 -->
                 <TextBlock Text="{Binding [UpdateDialog.ChangeLogs], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
-                <Border Classes="panelbackground" Height="200" Background="{DynamicResource Background.Surface}">
+                <Border Classes="panelbackground" Height="300" Background="{DynamicResource Background.Surface}">
                     <ScrollViewer>
                         <TextBlock Text="{Binding Content}" FontSize="14" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
                     </ScrollViewer>
                 </Border>
 
                 <!-- 下のボタン -->
-                <Grid ColumnDefinitions="Auto,*,120,10,120">
+                <Grid ColumnDefinitions="Auto,*,Auto,10,Auto">
                     <Button Grid.Column="0" Classes="button" Content="{Binding [UpdateDialog.OpenReleasePage], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding OpenReleasePageCommand}"/>
-                    <Button Grid.Column="2" Classes="button" Content="{Binding [UpdateDialog.Later], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding LaterCommand}"/>
-                    <Button Grid.Column="4" Classes="accentbutton" Content="{Binding [UpdateDialog.UpdateNow], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding UpdateNowCommand}"/>
+                    <Button Grid.Column="2" Classes="button" Content="{Binding [UpdateDialog.Later], Source={x:Static loc:Localizer.Instance}}" MinWidth="120" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding LaterCommand}"/>
+                    <Button Grid.Column="4" Classes="accentbutton" Content="{Binding [UpdateDialog.UpdateNow], Source={x:Static loc:Localizer.Instance}}" MinWidth="120" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding UpdateNowCommand}"/>
                 </Grid>
             </StackPanel>
         </Border>
