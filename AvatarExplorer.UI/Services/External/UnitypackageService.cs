@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
@@ -33,22 +35,22 @@ internal static class UnitypackageService
         return result;
     }
 
-    internal static ImmutableArray<string> GetUnitypackagePaths(IEnumerable<string> itemPaths)
+    internal static string[] GetUnitypackagePaths(IEnumerable<string> itemPaths)
     {
-        var unitypackageFilePaths = ImmutableArray.CreateBuilder<string>();
+        var unitypackageFilePaths = new List<string>();
 
         foreach (var itemPath in itemPaths)
         {
             if (string.IsNullOrEmpty(itemPath)) continue;
 
-            foreach (var filePath in FileSystemService.EnumerateFiles(itemPath).SortByFileName())
+            foreach (var filePath in FileSystemService.EnumerateFiles(itemPath))
             {
                 if (!PathUtils.IsUnitypackageFile(filePath)) continue;
                 unitypackageFilePaths.Add(filePath);
             }
         }
 
-        return unitypackageFilePaths.ToImmutable();
+        return unitypackageFilePaths.NaturalSort(i => Path.GetFileName(i)).ToArray();
     }
 
     public static string GetCategoryDisplayName(ItemCategory category)

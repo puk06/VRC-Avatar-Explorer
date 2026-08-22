@@ -14,7 +14,7 @@ public static class ItemExtensions
 
         folderList.AddRange(item.ItemPaths.Where(Directory.Exists));
 
-        return folderList.SortByFileName();
+        return folderList;
     }
 
     public static string GetItemPath(this Item item) => ItemUtils.GetFullPath(item.ItemPath);

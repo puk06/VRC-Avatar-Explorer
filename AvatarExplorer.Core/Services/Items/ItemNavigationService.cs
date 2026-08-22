@@ -171,16 +171,19 @@ public class ItemNavigationService
         foreach (var folder in allFolders)
             _pathCache[PathUtils.ComputeHash(folder)] = folder;
 
-        return allFolders.Select(folder =>
-        {
-            var hash = PathUtils.ComputeHash(folder);
-            return new Folder(GetPrefix(FolderPrefix, hash), folder)
+        return allFolders
+            .NaturalSort(i => Path.GetFileName(i))
+            .Select(folder =>
             {
-                Title = Path.GetFileName(folder),
-                TitleLocalizable = false,
-                ItemCount = itemFiles.Count(f => f.ParentFolderPath == folder)
-            };
-        }).ToArray<IIdentifiable>();
+                var hash = PathUtils.ComputeHash(folder);
+                return new Folder(GetPrefix(FolderPrefix, hash), folder)
+                {
+                    Title = Path.GetFileName(folder),
+                    TitleLocalizable = false,
+                    ItemCount = itemFiles.Count(f => f.ParentFolderPath == folder)
+                };
+            })
+            .ToArray<IIdentifiable>();
     }
     private IIdentifiable[] HandleFolder(string state)
     {
@@ -227,7 +230,7 @@ public class ItemNavigationService
         var categolized = FileCategorizer.Categorize(files);
 
         return categolized.TryGetValue((ItemFileCategoryType)categoryIndex, out var categorizedFiles)
-            ? categorizedFiles.ToArray()
+            ? categorizedFiles.NaturalSort(i => i.FileName).ToArray()
             : [];
     }
     private void HandleFile(string hash)
@@ -252,6 +255,7 @@ public class ItemNavigationService
         var searchResults = _items.ItemRepository.SearchItemFiles(itemId, query);
 
         return searchResults
+            .NaturalSort(i => i.FileName)
             .Select(f => itemFiles.FirstOrDefault(i => i.FilePath == f.FilePath))
             .Where(f => f != null)
             .Cast<IIdentifiable>()
