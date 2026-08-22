@@ -18,46 +18,72 @@ public sealed partial class NaturalStringComparer : IComparer<string>
 
     private static readonly Regex NumberRegex = NatualSortNumberRegex();
 
+    private readonly record struct Segment
+    {
+        public bool IsText { get; init; }
+        public bool IsNumber { get; init; }
+        public string Text { get; init; }
+        public long Number { get; init; }
+
+        public static Segment CreateText(string text) => new() { IsText = true, Text = text };
+        public static Segment CreateNumber(long number) => new() { IsNumber = true, Number = number, Text = number.ToString() };
+    }
+
     public int Compare(string? x, string? y)
     {
         if (ReferenceEquals(x, y)) return 0;
         if (x is null) return -1;
         if (y is null) return 1;
 
-        var xMatches = NumberRegex.Matches(x);
-        var yMatches = NumberRegex.Matches(y);
+        var xSegments = SplitIntoSegments(x);
+        var ySegments = SplitIntoSegments(y);
 
-        var max = Math.Max(xMatches.Count, yMatches.Count);
-        var lastXEnd = 0;
-        var lastYEnd = 0;
+        return CompareSegments(xSegments, ySegments);
+    }
 
-        for (var i = 0; i < max; i++)
+    private static List<Segment> SplitIntoSegments(string value)
+    {
+        var segments = new List<Segment>();
+        var lastEnd = 0;
+
+        foreach (Match match in NumberRegex.Matches(value))
         {
-            var xMatch = i < xMatches.Count ? xMatches[i] : null;
-            var yMatch = i < yMatches.Count ? yMatches[i] : null;
+            if (match.Index > lastEnd)
+                segments.Add(Segment.CreateText(value[lastEnd..match.Index]));
 
-            var xStart = xMatch?.Index ?? x.Length;
-            var yStart = yMatch?.Index ?? y.Length;
-
-            var xText = x[lastXEnd..xStart];
-            var yText = y[lastYEnd..yStart];
-            var textCmp = string.Compare(xText, yText, StringComparison.OrdinalIgnoreCase);
-            if (textCmp != 0) return textCmp;
-
-            if (xMatch is null) return -1;
-            if (yMatch is null) return 1;
-
-            var xNum = long.Parse(xMatch.Value);
-            var yNum = long.Parse(yMatch.Value);
-            if (xNum != yNum) return xNum.CompareTo(yNum);
-
-            lastXEnd = xMatch.Index + xMatch.Length;
-            lastYEnd = yMatch.Index + yMatch.Length;
+            segments.Add(Segment.CreateNumber(long.Parse(match.Value)));
+            lastEnd = match.Index + match.Length;
         }
 
-        var xTail = x[lastXEnd..];
-        var yTail = y[lastYEnd..];
-        return string.Compare(xTail, yTail, StringComparison.OrdinalIgnoreCase);
+        if (lastEnd < value.Length)
+            segments.Add(Segment.CreateText(value[lastEnd..]));
+
+        return segments;
+    }
+
+    private static int CompareSegments(List<Segment> x, List<Segment> y)
+    {
+        var max = Math.Max(x.Count, y.Count);
+        for (var i = 0; i < max; i++)
+        {
+            if (i >= x.Count) return -1;
+            if (i >= y.Count) return 1;
+
+            var cmp = CompareSegment(x[i], y[i]);
+            if (cmp != 0) return cmp;
+        }
+        return 0;
+    }
+
+    private static int CompareSegment(Segment x, Segment y)
+    {
+        if (x.IsText && y.IsText)
+            return string.Compare(x.Text, y.Text, StringComparison.OrdinalIgnoreCase);
+
+        if (x.IsNumber && y.IsNumber)
+            return x.Number.CompareTo(y.Number);
+
+        return string.Compare(x.Text, y.Text, StringComparison.OrdinalIgnoreCase);
     }
 
     [GeneratedRegex(@"\d+", RegexOptions.Compiled)]
