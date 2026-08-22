@@ -53,6 +53,6 @@
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(BuildTargetIsFlatpak)'=='true'">
-  		<DefineConstants>$(DefineConstants);FLATPAK</DefineConstants>
+		<DefineConstants>$(DefineConstants);FLATPAK</DefineConstants>
 	</PropertyGroup>
 </Project>
