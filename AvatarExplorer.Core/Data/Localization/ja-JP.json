@@ -546,6 +546,9 @@
     "UpdateDialog.ChangeLogs": "更新内容:",
     "UpdateDialog.Later": "後で通知",
     "UpdateDialog.UpdateNow": "今すぐ更新",
+    "UpdateDialog.OpenReleasePage": "リリースページを開く",
+    "UpdateDialog.Downloading": "更新プログラムをダウンロードしています",
+    "UpdateDialog.DownloadFailed": "更新プログラムのダウンロードに失敗しました。",
     "UpdateDialog.NoUpdateAvailableTitle": "アップデートはありません",
     "UpdateDialog.NoUpdateAvailable": "現在、最新バージョン (v{0}) をご利用中です。新しい更新プログラムは提供されていません。\n\n※ ベータ版をご利用の場合、設定に関わらず、次に新しい安定版が出るまで現在のバージョンが最新として維持されます。",
 

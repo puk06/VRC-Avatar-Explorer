@@ -6,4 +6,5 @@ public class VersionRelease
     public string ReleaseDate { get; set; } = string.Empty;
     public string ReleaseUrl { get; set; } = string.Empty;
     public ChangeLog ChangeLogs { get; set; } = new();
+    public Dictionary<string, DownloadAsset> DownloadUrls { get; set; } = [];
 }

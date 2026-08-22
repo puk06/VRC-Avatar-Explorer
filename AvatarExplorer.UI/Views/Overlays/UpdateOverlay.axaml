@@ -26,7 +26,8 @@
                 </Border>
 
                 <!-- 下のボタン -->
-                <Grid ColumnDefinitions="*,10,120,10,120">
+                <Grid ColumnDefinitions="Auto,*,120,10,120">
+                    <Button Grid.Column="0" Classes="button" Content="{Binding [UpdateDialog.OpenReleasePage], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding OpenReleasePageCommand}"/>
                     <Button Grid.Column="2" Classes="button" Content="{Binding [UpdateDialog.Later], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding LaterCommand}"/>
                     <Button Grid.Column="4" Classes="accentbutton" Content="{Binding [UpdateDialog.UpdateNow], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding UpdateNowCommand}"/>
                 </Grid>

@@ -546,6 +546,9 @@
     "UpdateDialog.ChangeLogs": "업데이트 내용:",
     "UpdateDialog.Later": "나중에 알림",
     "UpdateDialog.UpdateNow": "지금 업데이트",
+    "UpdateDialog.OpenReleasePage": "릴리스 페이지 열기",
+    "UpdateDialog.Downloading": "업데이트를 다운로드하는 중",
+    "UpdateDialog.DownloadFailed": "업데이트 다운로드에 실패했습니다.",
     "UpdateDialog.NoUpdateAvailableTitle": "업데이트 없음",
     "UpdateDialog.NoUpdateAvailable": "현재 최신 버전(v{0})을 사용 중입니다. 새로운 업데이트는 제공되지 않았습니다.\n\n※ 베타 버전을 사용하는 경우, 설정과 관계없이 다음 안정판이 나올 때까지 현재 버전이 최신으로 유지됩니다.",
 

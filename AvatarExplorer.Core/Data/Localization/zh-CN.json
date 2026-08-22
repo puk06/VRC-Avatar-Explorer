@@ -546,6 +546,9 @@
     "UpdateDialog.ChangeLogs": "更新内容:",
     "UpdateDialog.Later": "稍后提醒",
     "UpdateDialog.UpdateNow": "立即更新",
+    "UpdateDialog.OpenReleasePage": "打开发布页面",
+    "UpdateDialog.Downloading": "正在下载更新",
+    "UpdateDialog.DownloadFailed": "下载更新失败。",
     "UpdateDialog.NoUpdateAvailableTitle": "没有可用更新",
     "UpdateDialog.NoUpdateAvailable": "当前正在使用最新版本 (v{0})。没有新的更新可用。\n\n※ 如果使用的是测试版，无论设置如何，当前版本都会一直保持为最新，直到下一个稳定版发布。",
 

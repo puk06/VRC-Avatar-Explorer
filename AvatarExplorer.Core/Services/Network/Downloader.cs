@@ -3,11 +3,11 @@ using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.Core.Services.Network;
 
-internal static class Downloader
+public static class Downloader
 {
     private const int BufferSize = 81920;
 
-    internal static async Task<bool> Fetch(string url, string filePath, bool overwrite = false, IProgress<(long downloaded, long? total)>? progress = null, CancellationToken ct = default)
+    public static async Task<bool> Fetch(string url, string filePath, bool overwrite = false, IProgress<(long downloaded, long? total)>? progress = null, CancellationToken ct = default)
     {
         if (string.IsNullOrEmpty(filePath)) return false;
 

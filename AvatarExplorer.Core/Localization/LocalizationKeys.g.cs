@@ -887,6 +887,9 @@ public static class Loc
         public const string ChangeLogs = "UpdateDialog.ChangeLogs";
         public const string Later = "UpdateDialog.Later";
         public const string UpdateNow = "UpdateDialog.UpdateNow";
+        public const string OpenReleasePage = "UpdateDialog.OpenReleasePage";
+        public const string Downloading = "UpdateDialog.Downloading";
+        public const string DownloadFailed = "UpdateDialog.DownloadFailed";
         public const string NoUpdateAvailableTitle = "UpdateDialog.NoUpdateAvailableTitle";
         public const string NoUpdateAvailable = "UpdateDialog.NoUpdateAvailable";
     }

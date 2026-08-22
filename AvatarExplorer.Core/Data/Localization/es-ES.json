@@ -546,6 +546,9 @@
     "UpdateDialog.ChangeLogs": "Registro de cambios:",
     "UpdateDialog.Later": "Recordármelo más tarde",
     "UpdateDialog.UpdateNow": "Actualizar ahora",
+    "UpdateDialog.OpenReleasePage": "Abrir página de versiones",
+    "UpdateDialog.Downloading": "Descargando actualización",
+    "UpdateDialog.DownloadFailed": "Error al descargar la actualización.",
     "UpdateDialog.NoUpdateAvailableTitle": "No hay actualizaciones disponibles",
     "UpdateDialog.NoUpdateAvailable": "Actualmente estás usando la versión más reciente (v{0}). No hay nuevas actualizaciones disponibles.\n\n※ Si usas la versión beta, la versión actual permanecerá como la más reciente hasta el siguiente lanzamiento estable, independientemente de la configuración.",
 

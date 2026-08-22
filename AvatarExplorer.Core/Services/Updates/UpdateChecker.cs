@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Updates;
@@ -9,6 +10,10 @@ namespace AvatarExplorer.Core.Services.Updates;
 
 public static class UpdateChecker
 {
+    // Security: only allow download URLs that point to the official repository's release assets over HTTPS.
+    private const string AllowedDownloadHost = "github.com";
+    private const string AllowedDownloadPathPrefix = "/puk06/VRC-Avatar-Explorer/releases/download/";
+
     public static event Action<VersionRelease>? UpdateAvailable;
 
     public static async Task<bool> CheckForUpdate(UpdateChannel updateChannel)
@@ -51,7 +56,8 @@ public static class UpdateChecker
             {
                 Version = latestVersion.Version,
                 ReleaseDate = latestVersion.ReleaseDate,
-                ReleaseUrl = latestVersion.ReleaseUrl
+                ReleaseUrl = latestVersion.ReleaseUrl,
+                DownloadUrls = latestVersion.DownloadUrls
             };
 
             foreach (var pendingRelease in pendingReleases)
@@ -66,5 +72,87 @@ public static class UpdateChecker
             ErrorManager.Instance.PostInternalError("Failed to retrieve latest update information.", ex);
             return null;
         }
+    }
+
+    /// <summary>
+    /// Resolves the download asset (URL + SHA256) that matches the currently running platform/architecture.
+    /// Returns null when no matching asset is available (e.g. Flatpak builds or unsupported architectures),
+    /// in which case the caller should fall back to opening the release page.
+    /// </summary>
+    public static DownloadAsset? GetCurrentPlatformDownloadAsset(VersionRelease release)
+    {
+        if (release.DownloadUrls == null || release.DownloadUrls.Count == 0) return null;
+
+        var key = GetCurrentPlatformDownloadKey();
+        if (key == null) return null;
+
+        return release.DownloadUrls.TryGetValue(key, out var asset) ? asset : null;
+    }
+
+    /// <summary>
+    /// Validates that a download URL is safe to fetch and execute: it must be HTTPS, point to the
+    /// official repository's release assets, and have a recognizable installer/archive extension.
+    /// This prevents loading/executing arbitrary URLs even if the update manifest is tampered with.
+    /// </summary>
+    public static bool IsDownloadUrlSafe(string url, out Uri? uri)
+    {
+        uri = null;
+        if (string.IsNullOrWhiteSpace(url)) return false;
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var parsed)) return false;
+        if (parsed.Scheme != Uri.UriSchemeHttps) return false;
+        if (!parsed.Host.Equals(AllowedDownloadHost, StringComparison.OrdinalIgnoreCase)) return false;
+        if (!parsed.AbsolutePath.StartsWith(AllowedDownloadPathPrefix, StringComparison.Ordinal)) return false;
+
+        var fileName = Path.GetFileName(parsed.AbsolutePath);
+        if (string.IsNullOrWhiteSpace(fileName)) return false;
+        if (fileName.IndexOfAny(['/', '\\']) >= 0) return false;
+
+        var extension = Path.GetExtension(fileName).ToLowerInvariant();
+        if (extension is not (".exe" or ".zip" or ".gz" or ".flatpak"))
+            return false;
+
+        uri = parsed;
+        return true;
+    }
+
+    private static string? GetCurrentPlatformDownloadKey()
+    {
+        var arch = RuntimeInformation.OSArchitecture;
+
+#if FLATPAK
+        // Flatpak builds are distributed as installable bundles (.flatpak).
+        return arch switch
+        {
+            Architecture.Arm64 => "flatpak-aarch64",
+            Architecture.X64 => "flatpak-x86_64",
+            _ => null
+        };
+#else
+        if (OperatingSystem.IsWindows())
+            return arch == Architecture.Arm64 ? "win-arm64" : "win-x64";
+
+        if (OperatingSystem.IsMacOS())
+            return arch == Architecture.Arm64 ? "osx-arm64" : null;
+
+        if (OperatingSystem.IsLinux())
+        {
+            if (IsMusl())
+                return arch == Architecture.X64 ? "linux-musl-x64" : null;
+
+            return arch switch
+            {
+                Architecture.X64 => "linux-x64",
+                Architecture.Arm64 => "linux-arm64",
+                _ => null
+            };
+        }
+
+        return null;
+#endif
+    }
+
+    private static bool IsMusl()
+    {
+        return RuntimeInformation.RuntimeIdentifier?.Contains("musl") is true;
     }
 }
