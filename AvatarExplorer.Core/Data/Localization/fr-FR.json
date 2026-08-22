@@ -121,6 +121,7 @@
     "Processing.Export.Title": "Exportation des données",
     "Processing.Export.Preparing": "Préparation de l'exportation...",
     "Processing.Export.Copying": "Copie des données... {0}%",
+    "Processing.Downloading": "Téléchargement de la mise à jour",
 
     "ContextMenu.Item.CheckForUpdate": "Vérifier les mises à jour de l'élément",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "Afficher les autres éléments de cet auteur",
@@ -241,6 +242,7 @@
     "Error.UnitypackageNotFound": "Aucun Unitypackage trouvé",
     "Error.InvalidUrl": "URL invalide",
     "Error.InvalidReleaseUrl": "URL de version invalide",
+    "Error.DownloadFailed": "Échec du téléchargement",
     "Error.ItemPathNotFound": "Chemin de l'élément introuvable",
 
     "Settings.Basic": "Général",
@@ -548,8 +550,6 @@
     "UpdateDialog.Later": "Me le rappeler plus tard",
     "UpdateDialog.UpdateNow": "Mettre à jour maintenant",
     "UpdateDialog.OpenReleasePage": "Ouvrir la page des versions",
-    "UpdateDialog.Downloading": "Téléchargement de la mise à jour",
-    "UpdateDialog.DownloadFailed": "Échec du téléchargement de la mise à jour.",
     "UpdateDialog.NoUpdateAvailableTitle": "Aucune mise à jour disponible",
     "UpdateDialog.NoUpdateAvailable": "Vous utilisez actuellement la dernière version (v{0}). Aucune nouvelle mise à jour n'est disponible.\n\n※ Si vous utilisez la version bêta, la version actuelle restera la dernière jusqu'à la prochaine version stable, quels que soient les paramètres.",
 

@@ -7,7 +7,7 @@ public static class Downloader
 {
     private const int BufferSize = 81920;
 
-    public static async Task<bool> Fetch(string url, string filePath, bool overwrite = false, IProgress<(long downloaded, long? total)>? progress = null, CancellationToken ct = default)
+    public static async Task<bool> Fetch(string url, string filePath, bool overwrite = false, Func<int, Task>? reportProgress = null, CancellationToken ct = default)
     {
         if (string.IsNullOrEmpty(filePath)) return false;
 
@@ -26,6 +26,9 @@ public static class Downloader
             var buffer = new byte[BufferSize];
             long totalBytes = response.Content.Headers.ContentLength ?? -1;
             long totalRead = 0;
+            int lastPercent = -1;
+
+            if (reportProgress != null) await reportProgress.Invoke(0);
 
             while (true)
             {
@@ -34,14 +37,24 @@ public static class Downloader
 
                 await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), ct);
                 totalRead += bytesRead;
-                progress?.Report((totalRead, totalBytes >= 0 ? totalBytes : (long?)null));
+
+                if (totalBytes > 0)
+                {
+                    var percent = (int)Math.Round((double)totalRead / totalBytes * 100);
+                    if (percent != lastPercent && percent is >= 0 and <= 100)
+                    {
+                        lastPercent = percent;
+                        if (reportProgress != null) await reportProgress.Invoke(percent);
+                    }
+                }
             }
+
+            if (reportProgress != null) await reportProgress.Invoke(100);
 
             return true;
         }
         catch (OperationCanceledException)
         {
-            // Download was canceled, return false to indicate failure
             return false;
         }
         catch (Exception ex)

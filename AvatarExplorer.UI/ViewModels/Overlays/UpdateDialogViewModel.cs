@@ -108,7 +108,7 @@ public class UpdateDialogViewModel : ViewModelBase
         try
         {
             await NotificationManager.ShowWithProgress(
-                Localizer.Instance[Loc.UpdateDialog.Downloading],
+                Localizer.Instance[Loc.Processing.Downloading],
                 async progress =>
                 {
                     var downloadPath = await DownloadToFileAsync(downloadUri, asset.Sha256, progress);
@@ -125,7 +125,7 @@ public class UpdateDialogViewModel : ViewModelBase
         catch (Exception ex)
         {
             // ErrorManager.PostError surfaces the message to the user via the notification manager.
-            ErrorManager.Instance.PostError(Localizer.Instance[Loc.UpdateDialog.DownloadFailed], ex);
+            ErrorManager.Instance.PostError(Localizer.Instance[Loc.Error.DownloadFailed], ex);
         }
     }
 
@@ -161,29 +161,23 @@ public class UpdateDialogViewModel : ViewModelBase
         var targetDir = FileSystemService.GetNewTempFolder();
         var targetPath = Path.Combine(targetDir, fileName);
 
-        var downloadingText = Localizer.Instance[Loc.UpdateDialog.Downloading];
-        int lastReported = -1;
-
-        var progress = new Progress<(long downloaded, long? total)>(value =>
-        {
-            if (value.total > 0)
+        var success = await Downloader.Fetch(
+            downloadUri.AbsoluteUri,
+            targetPath,
+            overwrite: true,
+            reportProgress: async (pct) =>
             {
-                var pct = (int)Math.Round((double)value.downloaded / value.total.Value * 100);
-                if (pct != lastReported && pct is >= 0 and <= 100)
-                {
-                    lastReported = pct;
-                    reporter.Report($"{downloadingText} ({pct}%)", pct);
-                }
+                reporter.Report($"{Localizer.Instance[Loc.Processing.Downloading]} ({pct}%)", pct);
+                await Task.CompletedTask;
             }
-        });
+        );
 
-        var success = await Downloader.Fetch(downloadUri.AbsoluteUri, targetPath, overwrite: true, progress: progress);
         if (!success)
         {
             throw new InvalidOperationException("Download failed.");
         }
 
-        reporter.Report(downloadingText, 100);
+        reporter.Report(Localizer.Instance[Loc.Processing.Downloading], 100);
 
         // Validate the SHA256 hash of the downloaded file.
         if (string.IsNullOrWhiteSpace(expectedSha256) || expectedSha256.Length != 64 || !expectedSha256.All(Uri.IsHexDigit))
