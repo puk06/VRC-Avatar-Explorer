@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
@@ -174,18 +175,21 @@ public class UpdateDialogViewModel : ViewModelBase
 
         reporter.Report(downloadingText, 100);
 
-        // Security: verify the SHA256 hash before allowing execution.
-        if (!string.IsNullOrWhiteSpace(expectedSha256))
+        // Validate the SHA256 hash of the downloaded file.
+        if (string.IsNullOrWhiteSpace(expectedSha256) || expectedSha256.Length != 64 || !expectedSha256.All(Uri.IsHexDigit))
         {
-            await using var verifyStream = File.OpenRead(targetPath);
-            var hashBytes = await SHA256.HashDataAsync(verifyStream);
-            var actualHash = Convert.ToHexString(hashBytes);
+            throw new InvalidDataException("SHA256 hash missing or malformed; refusing to execute.");
+        }
 
-            if (!actualHash.Equals(expectedSha256, StringComparison.OrdinalIgnoreCase))
-            {
-                try { File.Delete(targetPath); } catch { /* best effort */ }
-                throw new InvalidDataException($"SHA256 verification failed. Expected '{expectedSha256}', got '{actualHash}'.");
-            }
+        // Security: verify the SHA256 hash before allowing execution.
+        await using var verifyStream = File.OpenRead(targetPath);
+        var hashBytes = await SHA256.HashDataAsync(verifyStream);
+        var actualHash = Convert.ToHexString(hashBytes);
+
+        if (!actualHash.Equals(expectedSha256, StringComparison.OrdinalIgnoreCase))
+        {
+            try { File.Delete(targetPath); } catch { /* best effort */ }
+            throw new InvalidDataException($"SHA256 verification failed. Expected '{expectedSha256}', got '{actualHash}'.");
         }
 
         return targetPath;
