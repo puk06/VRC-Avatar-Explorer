@@ -51,4 +51,8 @@
 		<AvaloniaResource Include="Assets\Fonts\**\*.ttf" />
 		<AvaloniaResource Include="Assets\Fonts\**\*.otf" />
 	</ItemGroup>
+
+	<PropertyGroup Condition="'$(BuildTargetIsFlatpak)'=='true'">
+  		<DefineConstants>$(DefineConstants);FLATPAK</DefineConstants>
+	</PropertyGroup>
 </Project>

@@ -12,6 +12,12 @@ public partial class SettingsOverlay : UserControl
         InitializeComponent();
         DataContext = InstanceRepository.MainWindow.SettingsVM;
         Localizer.Instance.LanguageChanged += OnLanguageChanged;
+#if FLATPAK
+        RegisterSchemeVRCAE.IsEnabled = false;
+        RegisterSchemeVRCAE.Opacity = 0.5f;
+        RegisterSchemeBLM.IsEnabled = false;
+        RegisterSchemeBLM.Opacity = 0.5f;
+#endif
     }
 
     private void OnLanguageChanged()
@@ -36,4 +42,3 @@ public partial class SettingsOverlay : UserControl
         comboBox.SelectedIndex = selectedIndex;
     }
 }
-

@@ -480,7 +480,7 @@
                                         </Grid>
                                     </Grid>
 
-                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" x:Name="RegisterSchemeVRCAE">
                                         <Grid Grid.Column="0" RowDefinitions="Auto,Auto,*" RowSpacing="5">
                                             <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RegisterScheme.VRCAE.Title], Source={x:Static loc:Localizer.Instance}}"/>
                                             <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RegisterScheme.VRCAE.Description], Source={x:Static loc:Localizer.Instance}}"/>
@@ -493,7 +493,7 @@
                                         </Grid>
                                     </Grid>
 
-                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" x:Name="RegisterSchemeBLM">
                                         <Grid Grid.Column="0" RowDefinitions="Auto,Auto,*" RowSpacing="5">
                                             <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.RegisterScheme.BLM.Title], Source={x:Static loc:Localizer.Instance}}"/>
                                             <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.RegisterScheme.BLM.Description], Source={x:Static loc:Localizer.Instance}}"/>
