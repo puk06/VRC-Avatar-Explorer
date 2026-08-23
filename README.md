@@ -47,6 +47,12 @@ Boothからの自動アイテム取得機能に対応していますが、本ア
 リリースに関する注意事項は [RELEASE_NOTICES.md](RELEASE_NOTICES.md) を参照してください。
 貢献や PR の運用ルールは [CONTRIBUTING.md](CONTRIBUTING.md) にまとめています。
 
+## ライセンス
+
+本ソフトウェアは **GNU Affero General Public License v3.0（AGPL-3.0）** の下で配布されています。ライセンス全文は [LICENSE.txt](LICENSE.txt) を参照してください。
+
+使用しているサードパーティ製ライブラリのライセンスについては、[THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) を参照してください。
+
 ---
 
 ## 開発環境

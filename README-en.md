@@ -47,6 +47,12 @@ This application supports automatic item retrieval from Booth, but it was develo
 For release-related notices, see [RELEASE_NOTICES.md](RELEASE_NOTICES.md).
 Contribution and PR rules are summarized in [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## License
+
+This software is distributed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. See [LICENSE.txt](LICENSE.txt) for the full license text.
+
+For the licenses of third-party libraries used, see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+
 ## Development Environment
 
 - Development uses the **.NET 10.0 SDK**.
