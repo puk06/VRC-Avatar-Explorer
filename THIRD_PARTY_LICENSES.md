@@ -1309,9 +1309,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
 # Noto Sans Japanese, Noto Sans Korean, Noto Sans, Noto Sans Simplified Chinese, Noto Sans Traditional Chinese
 
-**Repository(Japanese):** https://fonts.google.com/noto/specimen/Noto+Sans+JP
-**Repository(Korean):** https://fonts.google.com/noto/specimen/Noto+Sans+KR
-**Repository(Simplified Chinese):** https://fonts.google.com/noto/specimen/Noto+Sans+SC
+**Repository(Japanese):** https://fonts.google.com/noto/specimen/Noto+Sans+JP  
+**Repository(Korean):** https://fonts.google.com/noto/specimen/Noto+Sans+KR  
+**Repository(Simplified Chinese):** https://fonts.google.com/noto/specimen/Noto+Sans+SC  
 **Repository(Traditional Chinese):** https://fonts.google.com/noto/specimen/Noto+Sans+TC
 
 ### License
