@@ -14,8 +14,8 @@
 		<PackageReference Include="SemanticVersioning" Version="3.0.0" />
 		<PackageReference Include="SharpCompress" Version="0.49.1" />
 
-		<Content Include="../THIRD_PARTY_LICENSES.txt">
-			<Link>THIRD_PARTY_LICENSES.txt</Link>
+		<Content Include="../THIRD_PARTY_LICENSES.md">
+			<Link>THIRD_PARTY_LICENSES.md</Link>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
 		</Content>

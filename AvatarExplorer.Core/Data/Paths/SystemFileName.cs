@@ -17,5 +17,5 @@ public static class SystemFileName
     }
 
     public const string License = "LICENSE.txt";
-    public const string ThirdPartyLicenses = "THIRD_PARTY_LICENSES.txt";
+    public const string ThirdPartyLicenses = "THIRD_PARTY_LICENSES.md";
 }
