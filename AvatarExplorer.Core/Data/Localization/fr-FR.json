@@ -400,7 +400,7 @@
     "Settings.AboutProject.ViewRepository": "Voir le dépôt",
     "Settings.AboutLicense.Title": "Licence",
     "Settings.AboutLicense.Type": "Licence AGPL-3.0",
-    "Settings.AboutLicense.Description": "Ce logiciel est fourni sous la licence GNU Affero General Public License v3.0. Voir LICENSE.txt pour plus de détails.",
+    "Settings.AboutLicense.Description": "Ce logiciel est fourni sous la licence GNU Affero General Public License v3.0. Voir LICENSE pour plus de détails.",
     "Settings.AboutLicense.ViewLicense": "Voir la licence",
     "Settings.AboutLicense.ViewThirdParty": "Voir les licences de tiers",
 

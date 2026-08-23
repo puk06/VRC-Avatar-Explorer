@@ -20,8 +20,8 @@
 			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
 		</Content>
 
-		<Content Include="../LICENSE.txt">
-			<Link>LICENSE.txt</Link>
+		<Content Include="../LICENSE">
+			<Link>LICENSE</Link>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
 		</Content>

@@ -16,6 +16,6 @@ public static class SystemFileName
         public const string Runtime = "runtimeSettings.json";
     }
 
-    public const string License = "LICENSE.txt";
+    public const string License = "LICENSE";
     public const string ThirdPartyLicenses = "THIRD_PARTY_LICENSES.md";
 }

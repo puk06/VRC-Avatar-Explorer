@@ -49,7 +49,7 @@ Boothからの自動アイテム取得機能に対応していますが、本ア
 
 ## ライセンス
 
-本ソフトウェアは **GNU Affero General Public License v3.0（AGPL-3.0）** の下で配布されています。ライセンス全文は [LICENSE.txt](LICENSE.txt) を参照してください。
+本ソフトウェアは **GNU Affero General Public License v3.0（AGPL-3.0）** の下で配布されています。ライセンス全文は [LICENSE](LICENSE) を参照してください。
 
 使用しているサードパーティ製ライブラリのライセンスについては、[THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) を参照してください。
 

@@ -400,7 +400,7 @@
     "Settings.AboutProject.ViewRepository": "查看仓库",
     "Settings.AboutLicense.Title": "许可证",
     "Settings.AboutLicense.Type": "AGPL-3.0 许可证",
-    "Settings.AboutLicense.Description": "本软件依据 GNU Affero General Public License v3.0 提供。详见 LICENSE.txt。",
+    "Settings.AboutLicense.Description": "本软件依据 GNU Affero General Public License v3.0 提供。详见 LICENSE。",
     "Settings.AboutLicense.ViewLicense": "查看许可证",
     "Settings.AboutLicense.ViewThirdParty": "查看第三方许可证",
 
