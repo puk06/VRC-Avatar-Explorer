@@ -228,7 +228,10 @@ public class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task RestoreFromBackup()
     {
-        var folders = await StorageService.OpenFolderDialog(Localizer.Instance[Loc.Dialog.SelectFolderPath]);
+        var folders = await StorageService.OpenFolderDialog(
+            Localizer.Instance[Loc.Dialog.SelectFolderPath],
+            initialPath: InstanceRepository.RuntimeSettings.AutoBackupRootDirectory
+        );
         if (folders == null || folders.Length == 0) return;
 
         var selectedBackupPath = folders[0];
