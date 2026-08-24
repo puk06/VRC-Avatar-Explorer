@@ -398,6 +398,7 @@
     "Settings.AboutProject.Title": "專案",
     "Settings.AboutProject.SourceCodeDescription": "在 GitHub 上檢視原始碼",
     "Settings.AboutProject.ViewRepository": "檢視倉庫",
+    "Settings.AboutProject.ReportIssue": "回報錯誤與功能建議",
     "Settings.AboutLicense.Title": "授權",
     "Settings.AboutLicense.Type": "AGPL-3.0 授權",
     "Settings.AboutLicense.Description": "本軟體依據 GNU Affero General Public License v3.0 提供。詳見 LICENSE。",

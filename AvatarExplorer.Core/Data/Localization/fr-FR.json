@@ -398,6 +398,7 @@
     "Settings.AboutProject.Title": "Projet",
     "Settings.AboutProject.SourceCodeDescription": "Voir le code source sur GitHub",
     "Settings.AboutProject.ViewRepository": "Voir le dépôt",
+    "Settings.AboutProject.ReportIssue": "Signaler bugs et demandes",
     "Settings.AboutLicense.Title": "Licence",
     "Settings.AboutLicense.Type": "Licence AGPL-3.0",
     "Settings.AboutLicense.Description": "Ce logiciel est fourni sous la licence GNU Affero General Public License v3.0. Voir LICENSE pour plus de détails.",
