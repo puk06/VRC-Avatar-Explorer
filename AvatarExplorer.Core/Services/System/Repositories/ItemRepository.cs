@@ -396,7 +396,7 @@ public class ItemRepository : RepositoryBase<Item>
             if (unknownCategoryExists) offset = (int)items.Max(i => i.Category.Type) - (int)ItemType.Custom;
             foreach (var item in items)
             {
-                item.UpdateCategory(new(item.Category.Type - offset));
+                item.UpdateCategory(new(item.Category.Type - offset, item.Category.CustomCategory));
             }
 
             Save();
