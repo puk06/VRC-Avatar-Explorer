@@ -83,6 +83,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     public IReactiveCommand OpenTwitterCommand { get; }
     public IReactiveCommand OpenGithubCommand { get; }
     public IReactiveCommand OpenSourceCodeCommand { get; }
+    public IReactiveCommand OpenIssuesCommand { get; }
     public IReactiveCommand ViewLicenseCommand { get; }
     public IReactiveCommand ViewThirdPartyLicensesCommand { get; }
 
@@ -112,6 +113,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         OpenTwitterCommand = ReactiveCommand.CreateFromTask(OpenTwitter);
         OpenGithubCommand = ReactiveCommand.CreateFromTask(OpenGithub);
         OpenSourceCodeCommand = ReactiveCommand.CreateFromTask(OpenSourceCode);
+        OpenIssuesCommand = ReactiveCommand.CreateFromTask(OpenIssues);
         ViewLicenseCommand = ReactiveCommand.CreateFromTask(ViewLicense);
         ViewThirdPartyLicensesCommand = ReactiveCommand.CreateFromTask(ViewThirdPartyLicenses);
         CloseCommand = ReactiveCommand.Create(Close);
@@ -399,6 +401,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     private Task OpenTwitter() => LauncherService.OpenUri(DeveloperLink.TwitterURL);
     private Task OpenGithub() => LauncherService.OpenUri(DeveloperLink.GithubURL);
     private Task OpenSourceCode() => LauncherService.OpenUri(SoftwareLink.RepositoryURL);
+    private Task OpenIssues() => LauncherService.OpenUri(SoftwareLink.IssuesURL);
     private async Task ViewLicense()
     {
         var licensePath = Path.Combine(AppContext.BaseDirectory, SystemFileName.License);

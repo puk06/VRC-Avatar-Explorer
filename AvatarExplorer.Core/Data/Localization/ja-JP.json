@@ -398,6 +398,7 @@
     "Settings.AboutProject.Title": "プロジェクト",
     "Settings.AboutProject.SourceCodeDescription": "GitHubでソースコードを表示",
     "Settings.AboutProject.ViewRepository": "リポジトリを表示",
+    "Settings.AboutProject.ReportIssue": "バグ報告・機能要望",
     "Settings.AboutLicense.Title": "ライセンス",
     "Settings.AboutLicense.Type": "AGPL-3.0 ライセンス",
     "Settings.AboutLicense.Description": "このソフトウェアはGNU Affero General Public License v3.0の下で提供されています。詳細はLICENSEを参照してください。",

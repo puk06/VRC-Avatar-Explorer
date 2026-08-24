@@ -621,6 +621,9 @@
                                                         <TextBlock Text="{Binding [Settings.AboutProject.ViewRepository], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
                                                     </StackPanel>
                                                 </Button>
+                                                <Button Classes="button" Padding="10,6" CornerRadius="6" Command="{Binding OpenIssuesCommand}">
+                                                    <TextBlock Text="{Binding [Settings.AboutProject.ReportIssue], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="13" Foreground="{DynamicResource Text.Primary}"/>
+                                                </Button>
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>

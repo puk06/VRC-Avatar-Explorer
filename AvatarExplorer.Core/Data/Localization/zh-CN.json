@@ -398,6 +398,7 @@
     "Settings.AboutProject.Title": "项目",
     "Settings.AboutProject.SourceCodeDescription": "在 GitHub 上查看源代码",
     "Settings.AboutProject.ViewRepository": "查看仓库",
+    "Settings.AboutProject.ReportIssue": "报告错误与功能建议",
     "Settings.AboutLicense.Title": "许可证",
     "Settings.AboutLicense.Type": "AGPL-3.0 许可证",
     "Settings.AboutLicense.Description": "本软件依据 GNU Affero General Public License v3.0 提供。详见 LICENSE。",

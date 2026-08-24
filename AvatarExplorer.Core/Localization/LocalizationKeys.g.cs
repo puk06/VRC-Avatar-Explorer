@@ -677,6 +677,7 @@ public static class Loc
             public const string Title = "Settings.AboutProject.Title";
             public const string SourceCodeDescription = "Settings.AboutProject.SourceCodeDescription";
             public const string ViewRepository = "Settings.AboutProject.ViewRepository";
+            public const string ReportIssue = "Settings.AboutProject.ReportIssue";
         }
         public static class AboutLicense
         {
