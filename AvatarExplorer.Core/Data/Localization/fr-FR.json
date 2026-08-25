@@ -311,7 +311,7 @@
     "Settings.RemoveOriginal.Title": "Supprimer le fichier d'origine à l'importation",
     "Settings.RemoveOriginal.Description": "Supprimer automatiquement le fichier d'origine lors de l'importation d'un élément",
     "Settings.LinkToOriginal.Title": "Utiliser le dossier tel quel",
-    "Settings.LinkToOriginal.Description": "Lorsque le premier chemin fourni lors de l'ajout d'un élément est un dossier, utiliser ce dossier directement sans le copier",
+    "Settings.LinkToOriginal.Description": "Lors de l'ajout d'un dossier, l'utiliser directement sans le copier",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Traiter les avatars pris en charge vides comme aucun",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "Lorsqu'aucun avatar pris en charge n'est configuré pour un élément, le traiter comme non pris en charge plutôt que comme pris en charge par tous les avatars.",
     "Settings.TagEditor.Title": "Éditer les tags",

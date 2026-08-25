@@ -311,7 +311,7 @@
     "Settings.RemoveOriginal.Title": "インポート時に元ファイルを削除する",
     "Settings.RemoveOriginal.Description": "アイテムをインポートした時に、元ファイルを自動で削除するかどうかの設定です",
     "Settings.LinkToOriginal.Title": "フォルダをそのまま使用する",
-    "Settings.LinkToOriginal.Description": "アイテム追加時に渡された最初のパスがフォルダの場合、そのフォルダをコピーせずにそのまま使用します",
+    "Settings.LinkToOriginal.Description": "フォルダ追加時、そのフォルダをコピーせずにそのまま使用します",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "対応アバター未設定を未対応として扱う",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "アイテムの対応アバターが一つも設定されていない場合、全てのアバターに対応しているのではなく、どのアバターにも対応していないとみなすようになります。",
     "Settings.TagEditor.Title": "タグの編集",
