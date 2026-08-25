@@ -311,7 +311,7 @@
     "Settings.RemoveOriginal.Title": "가져오기 시 원본 파일 삭제",
     "Settings.RemoveOriginal.Description": "아이템을 가져올 때 원본 파일을 자동으로 삭제할지 여부를 설정합니다",
     "Settings.LinkToOriginal.Title": "폴더를 그대로 사용",
-    "Settings.LinkToOriginal.Description": "아이템 추가 시 전달된 첫 번째 경로가 폴더인 경우, 해당 폴더를 복사하지 않고 그대로 사용합니다",
+    "Settings.LinkToOriginal.Description": "폴더를 추가할 때, 복사하지 않고 그대로 사용합니다",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "대응 아바타 미설정을 미대응으로 처리",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "아이템에 대응 아바타가 하나도 설정되지 않은 경우, 모든 아바타에 대응하는 것이 아니라 어느 아바타에도 대응하지 않는 것으로 간주합니다.",
     "Settings.TagEditor.Title": "태그 편집",

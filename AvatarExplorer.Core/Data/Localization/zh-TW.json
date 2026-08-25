@@ -311,7 +311,7 @@
     "Settings.RemoveOriginal.Title": "匯入時刪除原始檔案",
     "Settings.RemoveOriginal.Description": "匯入項目時是否自動刪除原始檔案",
     "Settings.LinkToOriginal.Title": "直接使用資料夾",
-    "Settings.LinkToOriginal.Description": "當新增項目時傳入的第一個路徑是資料夾時，不複製而直接使用該資料夾",
+    "Settings.LinkToOriginal.Description": "當新增資料夾時，直接使用該資料夾而不進行複製",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "將未設定支援頭像視為不支援",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "當項目沒有設定任何支援頭像時，不將其視為支援所有頭像，而是視為不支援任何頭像。",
     "Settings.TagEditor.Title": "標籤編輯",

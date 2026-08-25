@@ -311,7 +311,7 @@
     "Settings.RemoveOriginal.Title": "Delete Original File on Import",
     "Settings.RemoveOriginal.Description": "Whether to automatically delete the original file when importing an item",
     "Settings.LinkToOriginal.Title": "Use Folder As-Is",
-    "Settings.LinkToOriginal.Description": "When the first path provided while adding an item is a folder, use that folder directly without copying it",
+    "Settings.LinkToOriginal.Description": "When adding a folder, use it directly without copying",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Treat Empty Supported Avatars as None",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "When no supported avatars are configured for an item, treat it as unsupported rather than supported by all avatars.",
     "Settings.TagEditor.Title": "Edit Tags",

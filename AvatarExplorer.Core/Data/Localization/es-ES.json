@@ -311,7 +311,7 @@
     "Settings.RemoveOriginal.Title": "Eliminar archivo original al importar",
     "Settings.RemoveOriginal.Description": "Si eliminar automáticamente el archivo original al importar un elemento",
     "Settings.LinkToOriginal.Title": "Usar carpeta tal cual",
-    "Settings.LinkToOriginal.Description": "Cuando la primera ruta proporcionada al agregar un elemento es una carpeta, usar esa carpeta directamente sin copiarla",
+    "Settings.LinkToOriginal.Description": "Al agregar una carpeta, usarla directamente sin copiarla",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Tratar avatares compatibles vacíos como ninguno",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "Cuando un elemento no tiene avatares compatibles configurados, tratarlo como no compatible en lugar de compatible con todos los avatares.",
     "Settings.TagEditor.Title": "Editar etiquetas",

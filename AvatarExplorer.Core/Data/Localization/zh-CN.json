@@ -311,7 +311,7 @@
     "Settings.RemoveOriginal.Title": "导入时删除原始文件",
     "Settings.RemoveOriginal.Description": "导入项目时是否自动删除原始文件",
     "Settings.LinkToOriginal.Title": "直接使用文件夹",
-    "Settings.LinkToOriginal.Description": "当添加项目时传入的第一个路径是文件夹时，不复制而直接使用该文件夹",
+    "Settings.LinkToOriginal.Description": "添加文件夹时，直接使用该文件夹而不进行复制",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "将未设置支持头像视为不支持",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "当项目没有设置任何支持头像时，不将其视为支持所有头像，而是视为不支持任何头像。",
     "Settings.TagEditor.Title": "标签编辑",
