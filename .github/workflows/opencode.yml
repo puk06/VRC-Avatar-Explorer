@@ -17,17 +17,52 @@ jobs:
     permissions:
       id-token: write
       contents: read
-      pull-requests: read
-      issues: read
+      pull-requests: write
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
           persist-credentials: false
 
-      - name: Run opencode
+      - name: Run opencode (Repository Owner)
+        if: github.actor == github.repository_owner
+        uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        with:
+          model: opencode-go/qwen3.7-plus
+          prompt: |
+            Review this pull request and provide feedback.
+            Reference the following files for guidelines:
+            - .github/agents/code-reviewer.agent.md
+            - .github/agents/commit-message-advisor.agent.md
+            - .github/agents/pr-contributor.agent.md
+            - CONTRIBUTING.md
+            
+            When creating or reviewing PRs:
+            - Follow the commit message format specified in commit-message-advisor.agent.md
+            - Apply code review standards from code-reviewer.agent.md
+            - Ensure PR title and description follow pr-contributor.agent.md guidelines
+            - Adhere to CONTRIBUTING.md for overall contribution standards
+
+      - name: Run opencode (Other Contributors)
+        if: github.actor != github.repository_owner
         uses: anomalyco/opencode/github@latest
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
           model: opencode/big-pickle
+          prompt: |
+            Review this pull request and provide feedback.
+            Reference the following files for guidelines:
+            - .github/agents/code-reviewer.agent.md
+            - .github/agents/commit-message-advisor.agent.md
+            - .github/agents/pr-contributor.agent.md
+            - CONTRIBUTING.md
+            
+            When creating or reviewing PRs:
+            - Follow the commit message format specified in commit-message-advisor.agent.md
+            - Apply code review standards from code-reviewer.agent.md
+            - Ensure PR title and description follow pr-contributor.agent.md guidelines
+            - Adhere to CONTRIBUTING.md for overall contribution standards
