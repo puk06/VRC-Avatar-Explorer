@@ -58,6 +58,10 @@ public static class Loc
     }
     public static class Button
     {
+        public static class Title
+        {
+            public const string CommonAvatar = "Button.Title.CommonAvatar";
+        }
         public static class Description
         {
             public static class Item

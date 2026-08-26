@@ -32,6 +32,8 @@
     "ItemCategory.All": "전체",
     "ItemCategory.Hidden": "隐藏",
 
+    "Button.Title.CommonAvatar": "공통 바디: {0}",
+
     "Button.Description.Item.Author": "작성자: {0}",
     "Button.Description.Item.Count": "{0}개 항목",
     "Button.Description.File.Extension": "{0} 파일",
