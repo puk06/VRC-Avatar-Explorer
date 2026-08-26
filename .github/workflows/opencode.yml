@@ -31,7 +31,7 @@ jobs:
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
-          model: deepseek-v4-flash
+          model: opencode-go/qwen3.7-plus
           prompt: |
             Review this pull request and provide feedback.
             Reference the following files for guidelines:
