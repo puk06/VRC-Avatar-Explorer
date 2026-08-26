@@ -32,6 +32,8 @@
     "ItemCategory.All": "全部",
     "ItemCategory.Hidden": "隱藏",
 
+    "Button.Title.CommonAvatar": "共用基體: {0}",
+
     "Button.Description.Item.Author": "作者: {0}",
     "Button.Description.Item.Count": "{0} 個項目",
     "Button.Description.File.Extension": "{0} 檔案",

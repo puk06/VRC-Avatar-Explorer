@@ -102,6 +102,12 @@ public class ItemViewModel : ViewModelBase, IDisposable
             Title = TextBracketsUtils.RemoveBrackets(TitleRaw);
         }
 
+        if (ViewModelType == ViewModelType.CommonAvatar)
+        {
+            // Prefixを追加する (共通素体: XXX)
+            Title = Localizer.Instance.Get(Loc.Button.Title.CommonAvatar, Title);
+        }
+
         ToolTip = GenerateToolTipText();
 
         return this;

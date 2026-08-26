@@ -32,6 +32,8 @@
     "ItemCategory.All": "Tous",
     "ItemCategory.Hidden": "Caché",
 
+    "Button.Title.CommonAvatar": "Avatar commun : {0}",
+
     "Button.Description.Item.Author": "Auteur : {0}",
     "Button.Description.Item.Count": "{0} éléments",
     "Button.Description.File.Extension": "{0} fichier",
