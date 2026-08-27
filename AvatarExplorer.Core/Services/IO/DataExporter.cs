@@ -65,7 +65,7 @@ internal static class DataExporter
 
                 string categoryName;
                 if (item.Category.Type == ItemType.Custom) categoryName = item.Category.CustomCategory;
-                else if (exportContext.ItemTypeLocalizer is { } localizer)
+                else if (exportRequest.ItemTypeLocalizer is { } localizer)
                     categoryName = await localizer(item.Category.Type) ?? item.Category.Type.ToString();
                 else categoryName = item.Category.Type.ToString();
 
@@ -118,7 +118,7 @@ internal static class DataExporter
             for (int i = 0; i < items.Count; i++)
             {
                 var item = items[i];
-                var konoAssetItem = await CreateKonoAssetItem(item, avatarTitleMaps, exportRequest.IncludeCommonToSupported, exportContext.CommonAvatars, exportContext.ItemTypeLocalizer);
+                var konoAssetItem = await CreateKonoAssetItem(item, avatarTitleMaps, exportRequest.IncludeCommonToSupported, exportContext.CommonAvatars, exportRequest.ItemTypeLocalizer);
 
                 switch (konoAssetItem)
                 {

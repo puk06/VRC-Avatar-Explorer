@@ -83,17 +83,18 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
             Localizer.Instance[Loc.Processing.Export.Title],
             async progress =>
             {
-                result = await InstanceRepository.ItemGroupService.Export(
-                    SelectedExportType,
-                    FolderPath,
-                    GetLocalizedType,
-                    IncludeCommonToSupported,
-                    tuple =>
+                result = await InstanceRepository.ItemGroupService.Export(new ExportRequest
+                {
+                    ExportType = SelectedExportType,
+                    FolderPath = FolderPath,
+                    ItemTypeLocalizer = GetLocalizedType,
+                    IncludeCommonToSupported = IncludeCommonToSupported,
+                    ReportProgress = tuple =>
                     {
                         progress.Report(Localizer.Instance.Get(tuple.Item1, tuple.Item2.ToString()), tuple.Item2);
                         return Task.CompletedTask;
                     }
-                );
+                });
             }
         );
 
