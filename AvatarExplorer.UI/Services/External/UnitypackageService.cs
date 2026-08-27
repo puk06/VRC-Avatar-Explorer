@@ -21,16 +21,20 @@ internal static class UnitypackageService
 {
     internal static async Task<ModifiedUnitypackagesResult> Import(IReadOnlyList<UnitypackageImportEntry> entries, Func<string, int, Task>? onProgress = null)
     {
-        Task progressAction((string localizationKey, int progress) tuple)
+        Task progressAction((string Message, int Percent) p)
         {
             return Dispatcher.UIThread.InvokeAsync(async () =>
             {
                 if (onProgress != null)
-                    await onProgress(tuple.localizationKey, tuple.progress);
+                    await onProgress(p.Message, p.Percent);
             });
         }
 
-        var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(entries, reportProgress: progressAction);
+        var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+        {
+            Entries = entries,
+            ReportProgress = progressAction
+        });
         return result;
     }
 

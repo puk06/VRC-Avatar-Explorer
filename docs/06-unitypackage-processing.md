@@ -31,7 +31,10 @@ var entries = new List<UnitypackageImportEntry>
     }
 };
 
-var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(entries);
+var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+{
+    Entries = entries
+});
 
 if (result.IsError)
 {
@@ -40,6 +43,17 @@ if (result.IsError)
 else
 {
     Console.WriteLine($"新しいUnitypackage: {result.ModifiedUnitypackagePath}");
+}
+```
+
+### UnitypackageModifyRequest
+
+```csharp
+public class UnitypackageModifyRequest
+{
+    public required IReadOnlyList<UnitypackageImportEntry> Entries { get; init; }
+    public bool? ChangeUnitypackagePath { get; init; }                    // パスを変更するか（nullの場合はRuntimeSettingsから取得）
+    public Func<(string Message, int Percent), Task>? ReportProgress { get; init; } // 進捗報告コールバック
 }
 ```
 
@@ -56,14 +70,16 @@ public class UnitypackageImportEntry
 ### パラメータ
 
 ```csharp
-var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(
-    entries,
-    changeUnitypackagePath: true,  // パスを変更するか（nullの場合はRuntimeSettingsから取得）
-    reportProgress: async (status, progress) =>
+var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+{
+    Entries = entries,
+    ChangeUnitypackagePath = true,  // パスを変更するか（nullの場合はRuntimeSettingsから取得）
+    ReportProgress = p =>
     {
-        Console.WriteLine($"{status}: {progress}%");
+        Console.WriteLine($"{p.Message}: {p.Percent}%");
+        return Task.CompletedTask;
     }
-);
+});
 ```
 
 ### ModifiedUnitypackagesResult
@@ -100,10 +116,11 @@ var entries = new List<UnitypackageImportEntry>
     }
 };
 
-var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(
-    entries,
-    changeUnitypackagePath: false  // パス変更を無効化
-);
+var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+{
+    Entries = entries,
+    ChangeUnitypackagePath = false  // パス変更を無効化
+});
 
 // 2つのUnitypackageが1つにまとめられる
 Console.WriteLine($"統合されたパッケージ: {result.ModifiedUnitypackagePath}");
@@ -125,7 +142,10 @@ Console.WriteLine($"統合されたパッケージ: {result.ModifiedUnitypackage
 UnitypackageにC#スクリプト（.csファイル）が含まれている場合、`ContainsScripts`が`true`になります。
 
 ```csharp
-var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(entries);
+var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+{
+    Entries = entries
+});
 
 if (result.ContainsScripts)
 {
@@ -215,7 +235,10 @@ var entries = new List<UnitypackageImportEntry>
     }
 };
 
-var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(entries);
+var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+{
+    Entries = entries
+});
 
 if (!result.IsError && result.ModifiedUnitypackagePath != null)
 {
@@ -263,13 +286,15 @@ foreach (var viewItem in viewItems)
 
 if (entries.Count > 0)
 {
-    var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(
-        entries,
-        reportProgress: async (status, progress) =>
+    var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+    {
+        Entries = entries,
+        ReportProgress = p =>
         {
-            Console.Write($"\r{status}: {progress}%");
+            Console.Write($"\r{p.Message}: {p.Percent}%");
+            return Task.CompletedTask;
         }
-    );
+    });
 
     Console.WriteLine();
 
@@ -296,10 +321,11 @@ var entries = new List<UnitypackageImportEntry>
     new UnitypackageImportEntry { FilePath = path3, CategoryDisplayName = "" }
 };
 
-var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(
-    entries,
-    changeUnitypackagePath: false
-);
+var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+{
+    Entries = entries,
+    ChangeUnitypackagePath = false
+});
 
 if (!result.IsError)
 {
@@ -313,10 +339,11 @@ if (!result.IsError)
 
 ```csharp
 // RuntimeSettingsの設定に従う
-var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(
-    entries,
-    changeUnitypackagePath: null  // RuntimeSettingsから取得
-);
+var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+{
+    Entries = entries,
+    ChangeUnitypackagePath = null  // RuntimeSettingsから取得
+});
 ```
 
 ## 次のステップ

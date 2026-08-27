@@ -217,12 +217,15 @@ public static class FileSystemService
         return separatorIndex >= 0 ? normalizedEntryName[..separatorIndex] : normalizedEntryName;
     }
 
-    public static async Task<ModifiedUnitypackagesResult> ModifyUnitypackageFilePathsAsync(IReadOnlyList<UnitypackageImportEntry> entries, bool? changeUnitypackagePath = null, Func<(string, int), Task>? reportProgress = null)
+    public static async Task<ModifiedUnitypackagesResult> ModifyUnitypackageFilePathsAsync(UnitypackageModifyRequest request)
     {
         var result = new ModifiedUnitypackagesResult();
 
-        changeUnitypackagePath ??= AvatarExplorerApp.Instance.RuntimeSettings.AutoChangeUnitypackagePath;
-        if (entries.Count == 1 && !changeUnitypackagePath.Value)
+        var entries = request.Entries;
+        var changeUnitypackagePath = request.ChangeUnitypackagePath ?? AvatarExplorerApp.Instance.RuntimeSettings.AutoChangeUnitypackagePath;
+        var reportProgress = request.ReportProgress;
+
+        if (entries.Count == 1 && !changeUnitypackagePath)
         {
             // 処理したとしても元のUnitypackageと同じのため、そのまま返してあげる
             result.ModifiedUnitypackagePath = entries[0].FilePath;
@@ -260,7 +263,7 @@ public static class FileSystemService
             {
                 try
                 {
-                    var (ProcessedEntries, ContainsScripts) = await ExtractUnitypackageToFolderAsync(entry.FilePath, saveFolderPath, entry.CategoryDisplayName, changeUnitypackagePath.Value, totalEntries, currentProcessedEntries, reportProgress);
+                    var (ProcessedEntries, ContainsScripts) = await ExtractUnitypackageToFolderAsync(entry.FilePath, saveFolderPath, entry.CategoryDisplayName, changeUnitypackagePath, totalEntries, currentProcessedEntries, reportProgress);
                     currentProcessedEntries = ProcessedEntries;
                     if (ContainsScripts) result.ContainsScripts = true;
                     result.Success.Add(entry.FilePath);
@@ -318,7 +321,7 @@ public static class FileSystemService
         await TarGzReader(tarGzFilePath, _ => count++);
         return count;
     }
-    private static async Task<(int ProcessedEntries, bool ContainsScripts)> ExtractUnitypackageToFolderAsync(string tarGzFilePath, string saveFilePath, string category, bool changeUnitypackagePath, int totalEntries, int currentProcessedEntries = 0, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<(int ProcessedEntries, bool ContainsScripts)> ExtractUnitypackageToFolderAsync(string tarGzFilePath, string saveFilePath, string category, bool changeUnitypackagePath, int totalEntries, int currentProcessedEntries = 0, Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         int processedEntries = currentProcessedEntries;
         bool containsScripts = false;
@@ -785,7 +788,7 @@ public static class FileSystemService
     #endregion
 
     #region Copy
-    public async static Task<ErrorOr<CopyResult>> CopyDirectoryAsync(string sourceDirectory, string destinationDirectory, int maxDegreeOfParallelism, Func<(string LocalizationKey, int), Task>? reportProgress = null)
+    public async static Task<ErrorOr<CopyResult>> CopyDirectoryAsync(string sourceDirectory, string destinationDirectory, int maxDegreeOfParallelism, Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         if (sourceDirectory == destinationDirectory)
             return Error.Conflict("Directory.Copy", "Source and destination are the same.");
