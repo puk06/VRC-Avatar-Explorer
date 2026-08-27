@@ -39,11 +39,12 @@ public record ExtractResult
 
 public class ModifiedUnitypackagesResult
 {
-    public bool IsError { get; set; } = true;
+    public bool IsError { get; set; } = false;
     public string? ModifiedUnitypackagePath { get; set; } = null;
     public List<string> Success { get; } = [];
     public List<string> Failed { get; } = [];
     public bool ContainsScripts { get; set; }
+    public bool IsNotModified { get; set; } = false;
 }
 
 public class ItemPathEntry
@@ -216,9 +217,19 @@ public static class FileSystemService
         return separatorIndex >= 0 ? normalizedEntryName[..separatorIndex] : normalizedEntryName;
     }
 
-    public static async Task<ModifiedUnitypackagesResult> ModifyUnitypackageFilePathsAsync(IReadOnlyList<UnitypackageImportEntry> entries, Func<(string, int), Task>? reportProgress = null)
+    public static async Task<ModifiedUnitypackagesResult> ModifyUnitypackageFilePathsAsync(IReadOnlyList<UnitypackageImportEntry> entries, bool? changeUnitypackagePath = null, Func<(string, int), Task>? reportProgress = null)
     {
         var result = new ModifiedUnitypackagesResult();
+
+        changeUnitypackagePath ??= AvatarExplorerApp.Instance.RuntimeSettings.AutoChangeUnitypackagePath;
+        if (entries.Count == 1 && !changeUnitypackagePath.Value)
+        {
+            // 処理したとしても元のUnitypackageと同じのため、そのまま返してあげる
+            result.ModifiedUnitypackagePath = entries[0].FilePath;
+            result.Success.Add(entries[0].FilePath);
+            result.IsNotModified = true;
+            return result;
+        }
 
         try
         {
@@ -249,7 +260,7 @@ public static class FileSystemService
             {
                 try
                 {
-                    var (ProcessedEntries, ContainsScripts) = await ExtractUnitypackageToFolderAsync(entry.FilePath, saveFolderPath, entry.CategoryDisplayName, totalEntries, currentProcessedEntries, reportProgress);
+                    var (ProcessedEntries, ContainsScripts) = await ExtractUnitypackageToFolderAsync(entry.FilePath, saveFolderPath, entry.CategoryDisplayName, changeUnitypackagePath.Value, totalEntries, currentProcessedEntries, reportProgress);
                     currentProcessedEntries = ProcessedEntries;
                     if (ContainsScripts) result.ContainsScripts = true;
                     result.Success.Add(entry.FilePath);
@@ -272,9 +283,7 @@ public static class FileSystemService
 
             if (File.Exists(unitypackagePath))
             {
-                result.IsError = false;
                 result.ModifiedUnitypackagePath = unitypackagePath;
-
                 return result;
             }
 
@@ -309,7 +318,7 @@ public static class FileSystemService
         await TarGzReader(tarGzFilePath, _ => count++);
         return count;
     }
-    private static async Task<(int ProcessedEntries, bool ContainsScripts)> ExtractUnitypackageToFolderAsync(string tarGzFilePath, string saveFilePath, string category, int totalEntries, int currentProcessedEntries = 0, Func<(string, int), Task>? reportProgress = null)
+    private static async Task<(int ProcessedEntries, bool ContainsScripts)> ExtractUnitypackageToFolderAsync(string tarGzFilePath, string saveFilePath, string category, bool changeUnitypackagePath, int totalEntries, int currentProcessedEntries = 0, Func<(string, int), Task>? reportProgress = null)
     {
         int processedEntries = currentProcessedEntries;
         bool containsScripts = false;
@@ -320,7 +329,7 @@ public static class FileSystemService
         {
             try
             {
-                if (Path.GetFileName(entry.Name) == "pathname" && entry.DataStream != null)
+                if (changeUnitypackagePath && Path.GetFileName(entry.Name) == "pathname" && entry.DataStream != null)
                 {
                     using StreamReader reader = new(entry.DataStream);
                     string assetPath = await reader.ReadToEndAsync();

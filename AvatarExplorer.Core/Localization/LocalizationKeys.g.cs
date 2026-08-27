@@ -507,6 +507,11 @@ public static class Loc
             public const string Description = "Settings.ThumbnailCompressionMaxSize.Description";
         }
         public const string Item = "Settings.Item";
+        public static class AutoChangeUnitypackagePath
+        {
+            public const string Title = "Settings.AutoChangeUnitypackagePath.Title";
+            public const string Description = "Settings.AutoChangeUnitypackagePath.Description";
+        }
         public static class RemoveOriginal
         {
             public const string Title = "Settings.RemoveOriginal.Title";

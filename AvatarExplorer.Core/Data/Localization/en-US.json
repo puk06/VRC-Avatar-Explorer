@@ -310,6 +310,8 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "Maximum edge size (px) for compression, applied to newly generated images",
 
     "Settings.Item": "Item",
+    "Settings.AutoChangeUnitypackagePath.Title": "Auto Change Unitypackage Path",
+    "Settings.AutoChangeUnitypackagePath.Description": "When importing a Unitypackage, automatically changes the asset destination to \"Assets/{Category}/Original Path\". Only paths under \"Assets\" are affected. Multiple Unitypackages can also be merged into one. You can also import normally from the right-click menu",
     "Settings.RemoveOriginal.Title": "Delete Original File on Import",
     "Settings.RemoveOriginal.Description": "Whether to automatically delete the original file when importing an item",
     "Settings.LinkToOriginal.Title": "Use Folder As-Is",

@@ -310,6 +310,8 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "Tamaño máximo de borde (px) para compresión, aplicado a las imágenes recién generadas",
 
     "Settings.Item": "Elemento",
+    "Settings.AutoChangeUnitypackagePath.Title": "Cambiar auto. ruta del Unitypackage",
+    "Settings.AutoChangeUnitypackagePath.Description": "Al importar un Unitypackage, cambia automáticamente la ubicación de los assets a \"Assets/{Categoría}/Ruta original\". Solo se modifican las rutas bajo \"Assets\". También se pueden fusionar varios Unitypackages en uno. También puedes importar normalmente desde el menú contextual",
     "Settings.RemoveOriginal.Title": "Eliminar archivo original al importar",
     "Settings.RemoveOriginal.Description": "Si eliminar automáticamente el archivo original al importar un elemento",
     "Settings.LinkToOriginal.Title": "Usar carpeta tal cual",

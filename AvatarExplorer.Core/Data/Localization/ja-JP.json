@@ -310,6 +310,8 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "新しく生成する画像に適用される、最大辺の圧縮サイズ(px)です",
 
     "Settings.Item": "アイテム",
+    "Settings.AutoChangeUnitypackagePath.Title": "Unitypackageのパスを自動で変更する",
+    "Settings.AutoChangeUnitypackagePath.Description": "Unitypackageのインポート時、アセットの配置先を\"Assets/{カテゴリ名}/元のパス\"に自動で変更します。\"Assets\"以下のパスのみが対象です。複数のUnitypackageを1つにまとめることも可能です。右クリックメニューからは通常通りインポートすることもできます",
     "Settings.RemoveOriginal.Title": "インポート時に元ファイルを削除する",
     "Settings.RemoveOriginal.Description": "アイテムをインポートした時に、元ファイルを自動で削除するかどうかの設定です",
     "Settings.LinkToOriginal.Title": "フォルダをそのまま使用する",

@@ -310,6 +310,8 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "套用於新產生圖片的最大邊長壓縮尺寸(px)",
 
     "Settings.Item": "項目",
+    "Settings.AutoChangeUnitypackagePath.Title": "自動變更Unitypackage路徑",
+    "Settings.AutoChangeUnitypackagePath.Description": "匯入Unitypackage時，自動將資產的放置路徑變更為\"Assets/{分類名}/原始路徑\"。僅\"Assets\"下的路徑會被修改。多個Unitypackage也可以合併為一個。也可以從右鍵選單正常匯入",
     "Settings.RemoveOriginal.Title": "匯入時刪除原始檔案",
     "Settings.RemoveOriginal.Description": "匯入項目時是否自動刪除原始檔案",
     "Settings.LinkToOriginal.Title": "直接使用資料夾",

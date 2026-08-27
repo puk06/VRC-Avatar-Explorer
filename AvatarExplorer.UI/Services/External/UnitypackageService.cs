@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ internal static class UnitypackageService
             });
         }
 
-        var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(entries, progressAction);
+        var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(entries, reportProgress: progressAction);
         return result;
     }
 
@@ -64,6 +63,12 @@ internal static class UnitypackageService
         IReadOnlyList<UnitypackageImportEntry> entries,
         string errorKey = Loc.Error.ImportUnitypackageFailed)
     {
+        if (entries.Count == 1 && !InstanceRepository.RuntimeSettings.AutoChangeUnitypackagePath)
+        {
+            await OpenModifiedUnitypackage(entries[0].FilePath);
+            return;
+        }
+
         ModifiedUnitypackagesResult? importResult = null;
 
         await NotificationManager.ShowWithProgress(
