@@ -12,6 +12,7 @@ public record RuntimeSettings
     public int AutoBackupInterval { get; init; } = 5;
     public bool TreatEmptySupportedAvatarAsNone { get; init; } = false;
     public int MaxDegreeOfParallelism { get; init; } = 4;
+    public bool AutoChangeUnitypackagePath { get; init; } = true;
     public bool CheckForUpdate { get; init; } = true;
     public UpdateChannel UpdateChannel { get; init; } = UpdateChannel.Stable;
 }

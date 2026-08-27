@@ -45,6 +45,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public string ItemsPerPage { get; set; } = string.Empty;
     [Reactive] public int SelectedViewMode { get; set; }
     [Reactive] public int SelectedGridItemSize { get; set; }
+    [Reactive] public bool AutoChangeUnitypackagePath { get; set; }
     [Reactive] public bool RemoveOriginal { get; set; }
     [Reactive] public bool LinkToOriginal { get; set; }
     [Reactive] public bool TreatEmptySupportedAvatarAsNone { get; set; }
@@ -150,6 +151,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         HoverIconSize = preferences.HoverIconSize;
         SelectedAntiAliasing = (int)preferences.AntiAliasingMode;
         ItemsPerPage = preferences.ItemsPerPage.ToString();
+        AutoChangeUnitypackagePath = runtimeSettings.AutoChangeUnitypackagePath;
         RemoveOriginal = runtimeSettings.RemoveOriginal;
         LinkToOriginal = runtimeSettings.ShouldLinkToOriginal;
         TreatEmptySupportedAvatarAsNone = runtimeSettings.TreatEmptySupportedAvatarAsNone;
@@ -446,6 +448,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             AutoBackupInterval = ValueParser.Int(AutoBackupInterval, 5),
             TreatEmptySupportedAvatarAsNone = TreatEmptySupportedAvatarAsNone,
             MaxDegreeOfParallelism = ValueParser.Int(MaxDegreeOfParallelism, 4),
+            AutoChangeUnitypackagePath = AutoChangeUnitypackagePath,
             CheckForUpdate = CheckForUpdate,
             UpdateChannel = (UpdateChannel)SelectedUpdateChannel
         };

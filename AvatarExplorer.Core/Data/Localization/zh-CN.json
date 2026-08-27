@@ -310,6 +310,8 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "应用于新生成图像的最大边长压缩尺寸(px)",
 
     "Settings.Item": "项目",
+    "Settings.AutoChangeUnitypackagePath.Title": "自动更改Unitypackage路径",
+    "Settings.AutoChangeUnitypackagePath.Description": "导入Unitypackage时，自动将资产的放置路径更改为\"Assets/{分类名}/原始路径\"。仅\"Assets\"下的路径会被修改。多个Unitypackage也可以合并为一个。也可以从右键菜单正常导入",
     "Settings.RemoveOriginal.Title": "导入时删除原始文件",
     "Settings.RemoveOriginal.Description": "导入项目时是否自动删除原始文件",
     "Settings.LinkToOriginal.Title": "直接使用文件夹",
