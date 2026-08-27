@@ -456,10 +456,15 @@ class ItemManager
 
         Console.WriteLine($"{entries.Count}個のUnitypackageを処理中...");
 
-        var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(
-            entries,
-            reportProgress: async progress => Console.Write($"\r{progress.Item1}: {progress.Item2}%")
-        );
+        var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+        {
+            Entries = entries,
+            ReportProgress = p =>
+            {
+                Console.Write($"\r{p.Message}: {p.Percent}%");
+                return Task.CompletedTask;
+            }
+        });
 
         Console.WriteLine();
 

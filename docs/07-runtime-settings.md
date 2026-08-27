@@ -205,11 +205,12 @@ var result = await app.ItemRepository.AddPaths(
 ### ModifyUnitypackageFilePathsAsyncでの使用
 
 ```csharp
-// changeUnitypackagePathをnullにすると、RuntimeSettingsから取得
-var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(
-    entries,
-    changeUnitypackagePath: null  // RuntimeSettings.AutoChangeUnitypackagePathが使用される
-);
+// ChangeUnitypackagePathをnullにすると、RuntimeSettingsから取得
+var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new UnitypackageModifyRequest
+{
+    Entries = entries,
+    ChangeUnitypackagePath = null  // RuntimeSettings.AutoChangeUnitypackagePathが使用される
+});
 ```
 
 ### GetItemsFromAvatarでの使用

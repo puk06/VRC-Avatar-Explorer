@@ -111,9 +111,9 @@ public class ImportDataViewModel : ViewModelBase, IInitializable
             Localizer.Instance[Loc.Processing.Import.Title],
             async progress =>
             {
-                request.ReportProgress = tuple =>
+                request.ReportProgress = p =>
                 {
-                    progress.Report(Localizer.Instance.Get(tuple.Item1, tuple.Item2.ToString()), tuple.Item2);
+                    progress.Report(Localizer.Instance.Get(p.Message, p.Percent.ToString()), p.Percent);
                     return Task.CompletedTask;
                 };
                 result = await InstanceRepository.ItemGroupService.Import(request);

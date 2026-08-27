@@ -89,9 +89,9 @@ public class ExportDataViewModel : ViewModelBase, IInitializable
                     FolderPath = FolderPath,
                     ItemTypeLocalizer = GetLocalizedType,
                     IncludeCommonToSupported = IncludeCommonToSupported,
-                    ReportProgress = tuple =>
+                    ReportProgress = p =>
                     {
-                        progress.Report(Localizer.Instance.Get(tuple.Item1, tuple.Item2.ToString()), tuple.Item2);
+                        progress.Report(Localizer.Instance.Get(p.Message, p.Percent.ToString()), p.Percent);
                         return Task.CompletedTask;
                     }
                 });

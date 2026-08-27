@@ -8,5 +8,5 @@ public class ExportRequest
     public string FolderPath { get; set; } = string.Empty;
     public bool IncludeCommonToSupported { get; set; }
     public Func<ItemType, ValueTask<string?>>? ItemTypeLocalizer { get; set; }
-    public Func<(string, int), Task>? ReportProgress { get; set; }
+    public Func<(string Message, int Percent), Task>? ReportProgress { get; set; }
 }

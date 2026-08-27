@@ -329,7 +329,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
     private async Task<ErrorOr<Success>> FromV1Thumbnail(
         IEnumerable<Item> currentItems,
         string dataFolderPath,
-        Func<(string, int), Task>? reportProgress = null)
+        Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         try
         {
@@ -370,7 +370,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
     private async Task<ErrorOr<Success>> FromKonoAssetThumbnail(
         IEnumerable<Item> currentItems,
         string dataFolderPath,
-        Func<(string, int), Task>? reportProgress = null)
+        Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         try
         {
@@ -412,7 +412,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
     private static async Task ApplyThumbnailMap(
         IEnumerable<Item> currentItems,
         Dictionary<int, string> sourceThumbnailMap,
-        Func<(string, int), Task>? reportProgress = null)
+        Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         var targets = currentItems.Where(i => i.BoothId != -1).ToArray();
         if (targets.Length == 0)

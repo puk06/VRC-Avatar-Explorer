@@ -15,7 +15,11 @@ var request = new ExportRequest
     FolderPath = @"C:\export\destination",
     ItemTypeLocalizer = type => new ValueTask<string?>(type.ToString()),  // カテゴリ名のローカライズ関数
     IncludeCommonToSupported = true,                                       // 共通素体を含めるか
-    ReportProgress = async progress => Console.WriteLine($"{progress.Item1}: {progress.Item2}%")
+    ReportProgress = p =>
+    {
+        Console.WriteLine($"{p.Message}: {p.Percent}%");
+        return Task.CompletedTask;
+    }
 };
 
 var result = await app.ItemGroupService.Export(request);
@@ -50,9 +54,8 @@ public class ExportRequest
     public string FolderPath { get; set; }
     public bool IncludeCommonToSupported { get; set; }
     public Func<ItemType, ValueTask<string?>>? ItemTypeLocalizer { get; set; }
-    public Func<(string, int), Task>? ReportProgress { get; set; }
+    public Func<(string Message, int Percent), Task>? ReportProgress { get; set; }
 }
-```
 
 ### パラメータ詳細
 
@@ -62,7 +65,7 @@ public class ExportRequest
 | `FolderPath` | `string` | 出力先フォルダ |
 | `IncludeCommonToSupported` | `bool` | 共通素体を対応アバターに展開するか |
 | `ItemTypeLocalizer` | `Func<ItemType, ValueTask<string?>>?` | カテゴリ名をローカライズする関数 |
-| `ReportProgress` | `Func<(string, int), Task>?` | 進捗報告コールバック |
+| `ReportProgress` | `Func<(string Message, int Percent), Task>?` | 進捗報告コールバック |
 
 ## インポート
 
@@ -76,7 +79,11 @@ var request = new ImportRequest
     ImportType = DataImportType.V1 | DataImportType.Items,
     DataFolderPath = @"C:\import\source",
     CopyAssetData = true,
-    ReportProgress = async progress => Console.WriteLine($"{progress.Item1}: {progress.Item2}%");
+    ReportProgress = p =>
+    {
+        Console.WriteLine($"{p.Message}: {p.Percent}%");
+        return Task.CompletedTask;
+    }
 };
 
 var result = await app.ItemGroupService.Import(request);
@@ -115,7 +122,7 @@ public class ImportRequest
     public DataImportType ImportType { get; set; }      // インポートタイプ
     public string DataFolderPath { get; set; }          // データフォルダのパス
     public bool CopyAssetData { get; set; }             // アセットデータをコピーするか
-    public Func<(string, int), Task>? ReportProgress { get; set; }  // 進捗報告
+    public Func<(string Message, int Percent), Task>? ReportProgress { get; set; }  // 進捗報告
 }
 ```
 
@@ -179,9 +186,10 @@ var request = new ExportRequest
     FolderPath = @"C:\export",
     ItemTypeLocalizer = LocalizeItemType,
     IncludeCommonToSupported = true,
-    ReportProgress = async (status, progress) =>
+    ReportProgress = p =>
     {
-        Console.Write($"\r{status}: {progress}%");
+        Console.Write($"\r{p.Message}: {p.Percent}%");
+        return Task.CompletedTask;
     }
 };
 
@@ -203,9 +211,10 @@ var request = new ImportRequest
     ImportType = DataImportType.KonoAsset | DataImportType.Items | DataImportType.Thumbnails,
     DataFolderPath = @"C:\Users\username\AppData\Local\KonoAsset\data",
     CopyAssetData = true,
-    ReportProgress = async (status, progress) =>
+    ReportProgress = p =>
     {
-        Console.WriteLine($"[{progress}%] {status}");
+        Console.WriteLine($"[{p.Percent}%] {p.Message}");
+        return Task.CompletedTask;
     }
 };
 
@@ -234,9 +243,10 @@ var request = new ImportRequest
     ImportType = DataImportType.V1 | DataImportType.Items | DataImportType.Thumbnails,
     DataFolderPath = @"C:\AvatarExplorer\v1\data",
     CopyAssetData = true,
-    ReportProgress = async (status, progress) =>
+    ReportProgress = p =>
     {
-        Console.Write($"\rマイグレーション中... {progress}%");
+        Console.Write($"\rマイグレーション中... {p.Percent}%");
+        return Task.CompletedTask;
     }
 };
 
