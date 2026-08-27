@@ -101,7 +101,7 @@ foreach (var item in allItems)
 var item = itemRepo.Get("item:e10abf3d-cca7-4117-a5e9-52926a4f8990");
 
 // またはIDのみで
-var itemById = itemRepo.Get("e10abf3d-cca7-4117-a5e9-52926a4f8990");
+var itemById = itemRepo.GetAll().Where(i => i.Id == "e10abf3d-cca7-4117-a5e9-52926a4f8990");
 
 if (item != null)
 {
@@ -429,7 +429,7 @@ foreach (var item in items)
     {
         Tags = item.Tags.Append("新タグ").ToArray()
     };
-    
+
     await app.ItemRepository.Update(item.Identifier, editContext);
 }
 ```
