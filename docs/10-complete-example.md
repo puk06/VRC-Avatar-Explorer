@@ -43,7 +43,7 @@ class Program
         // メインループ
         while (true)
         {
-            await DisplayCurrentView(navigation, app);
+            await DisplayCurrentView(navigation);
 
             Console.Write("\nコマンド (番号, u=戻る, c=クリア, s=検索, q=終了): ");
             var input = Console.ReadLine()?.Trim();
@@ -73,7 +73,7 @@ class Program
         }
     }
 
-    static Task DisplayCurrentView(ItemNavigationService navigation, AvatarExplorerApp app)
+    static Task DisplayCurrentView(ItemNavigationService navigation)
     {
         // パンくずリストの表示
         var nodes = navigation.GetCurrentSelectionNodes().ToList();
@@ -95,7 +95,7 @@ class Program
         for (int i = 0; i < viewItems.Length && i < 20; i++)
         {
             var item = viewItems[i];
-            DisplayItem(item, i + 1, app);
+            DisplayItem(item, i + 1);
         }
 
         if (viewItems.Length > 20)
@@ -106,7 +106,7 @@ class Program
         return Task.CompletedTask;
     }
 
-    static void DisplayItem(IIdentifiable item, int index, AvatarExplorerApp app)
+    static void DisplayItem(IIdentifiable item, int index)
     {
         switch (item)
         {
