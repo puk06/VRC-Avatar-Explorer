@@ -464,23 +464,14 @@ public class ItemGroupService
 
     #endregion
 
-    public async Task<ErrorOr<Success>> Export(DataExportType exportType, string folderPath, Func<ItemType, ValueTask<string?>>? itemTypeLocalizer, bool includeCommonToSupported, Func<(string, int), Task>? reportProgress = null)
+    public async Task<ErrorOr<Success>> Export(ExportRequest exportRequest)
     {
         var exportContext = new ExportContext()
         {
             Items = ItemRepository.GetAll(),
             CommonAvatars = CommonAvatarRepository.GetAll(),
             TempAvatars = _tempAvatars.GetAll(),
-            ItemTypeLocalizer = itemTypeLocalizer,
             RuntimeSettings = _runtimesettings.Settings
-        };
-
-        var exportRequest = new ExportRequest()
-        {
-            ExportType = exportType,
-            FolderPath = folderPath,
-            IncludeCommonToSupported = includeCommonToSupported,
-            ReportProgress = reportProgress
         };
 
         return await DataExporter.Export(exportContext, exportRequest);

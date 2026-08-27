@@ -9,13 +9,16 @@
 ```csharp
 using AvatarExplorer.Core.Models.External;
 
-var result = await app.ItemGroupService.Export(
-    exportType: DataExportType.Csv,
-    folderPath: @"C:\export\destination",
-    itemTypeLocalizer: type => type.ToString(),  // カテゴリ名のローカライズ関数
-    includeCommonToSupported: true,              // 共通素体を含めるか
-    reportProgress: async progress => Console.WriteLine($"{progress.Item1}: {progress.Item2}%");
-);
+var request = new ExportRequest
+{
+    ExportType = DataExportType.Csv,
+    FolderPath = @"C:\export\destination",
+    ItemTypeLocalizer = type => new ValueTask<string?>(type.ToString()),  // カテゴリ名のローカライズ関数
+    IncludeCommonToSupported = true,                                       // 共通素体を含めるか
+    ReportProgress = async progress => Console.WriteLine($"{progress.Item1}: {progress.Item2}%")
+};
+
+var result = await app.ItemGroupService.Export(request);
 
 if (result.IsError)
 {
@@ -38,15 +41,28 @@ public enum DataExportType
 }
 ```
 
+### ExportRequest
+
+```csharp
+public class ExportRequest
+{
+    public DataExportType ExportType { get; set; }
+    public string FolderPath { get; set; }
+    public bool IncludeCommonToSupported { get; set; }
+    public Func<ItemType, ValueTask<string?>>? ItemTypeLocalizer { get; set; }
+    public Func<(string, int), Task>? ReportProgress { get; set; }
+}
+```
+
 ### パラメータ詳細
 
-| パラメータ | 型 | 説明 |
+| プロパティ | 型 | 説明 |
 |---|---|---|
-| `exportType` | `DataExportType` | エクスポート形式 |
-| `folderPath` | `string` | 出力先フォルダ |
-| `itemTypeLocalizer` | `Func<ItemType, ValueTask<string?>>` | カテゴリ名をローカライズする関数 |
-| `includeCommonToSupported` | `bool` | 共通素体を対応アバターに展開するか |
-| `reportProgress` | `Func<(string, int), Task>?` | 進捗報告コールバック |
+| `ExportType` | `DataExportType` | エクスポート形式 |
+| `FolderPath` | `string` | 出力先フォルダ |
+| `IncludeCommonToSupported` | `bool` | 共通素体を対応アバターに展開するか |
+| `ItemTypeLocalizer` | `Func<ItemType, ValueTask<string?>>?` | カテゴリ名をローカライズする関数 |
+| `ReportProgress` | `Func<(string, int), Task>?` | 進捗報告コールバック |
 
 ## インポート
 
@@ -157,16 +173,19 @@ ValueTask<string?> LocalizeItemType(ItemType type)
     return new ValueTask<string?>(localized);
 }
 
-var result = await app.ItemGroupService.Export(
-    exportType: DataExportType.Csv,
-    folderPath: @"C:\export",
-    itemTypeLocalizer: LocalizeItemType,
-    includeCommonToSupported: true,
-    reportProgress: async (status, progress) =>
+var request = new ExportRequest
+{
+    ExportType = DataExportType.Csv,
+    FolderPath = @"C:\export",
+    ItemTypeLocalizer = LocalizeItemType,
+    IncludeCommonToSupported = true,
+    ReportProgress = async (status, progress) =>
     {
         Console.Write($"\r{status}: {progress}%");
     }
-);
+};
+
+var result = await app.ItemGroupService.Export(request);
 
 Console.WriteLine();
 
@@ -270,26 +289,15 @@ if (!result.IsError)
 
 ### ExportContext
 
+内部でエクスポート処理に渡されるデータコンテキストです。
+
 ```csharp
 public class ExportContext
 {
-    public IEnumerable<Item> Items { get; init; }
-    public IEnumerable<CommonAvatar> CommonAvatars { get; init; }
-    public IEnumerable<TempAvatar> TempAvatars { get; init; }
-    public Func<ItemType, ValueTask<string?>>? ItemTypeLocalizer { get; init; }
-    public RuntimeSettings RuntimeSettings { get; init; }
-}
-```
-
-### ExportRequest
-
-```csharp
-public class ExportRequest
-{
-    public DataExportType ExportType { get; init; }
-    public string FolderPath { get; init; }
-    public bool IncludeCommonToSupported { get; init; }
-    public Func<(string, int), Task>? ReportProgress { get; init; }
+    public required IEnumerable<Item> Items { get; init; }
+    public required IEnumerable<CommonAvatar> CommonAvatars { get; init; }
+    public required IEnumerable<TempAvatar> TempAvatars { get; init; }
+    public required RuntimeSettings RuntimeSettings { get; init; }
 }
 ```
 
