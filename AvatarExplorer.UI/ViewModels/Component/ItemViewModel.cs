@@ -44,7 +44,7 @@ public class ItemViewModel : ViewModelBase, IDisposable
     public string TitleRaw { get; set; } = string.Empty;
     public bool TitleLocalizable { get; set; } = false;
 
-    public LoclizableField DescriptionRaw { get; set; } = new();
+    public LocalizableField DescriptionRaw { get; set; } = new();
 
     public string CreatedDate { get; set; } = string.Empty;
     public string UpdatedDate { get; set; } = string.Empty;
