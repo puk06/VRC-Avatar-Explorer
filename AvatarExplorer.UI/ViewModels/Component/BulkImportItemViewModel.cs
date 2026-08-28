@@ -40,7 +40,7 @@ public class BulkImportItemViewModel : ViewModelBase
     public string TitleRaw { get; set; } = string.Empty;
     public bool TitleLocalizable { get; } = false;
 
-    public LoclizableField DescriptionRaw { get; set; } = new();
+    public LocalizableField DescriptionRaw { get; set; } = new();
 
     [Reactive] public IEnumerable<UnitypackageViewModel> UnitypackageViewModels { get; private set; } = [];
     [Reactive] public int SelectedUnitypackage { get; set; } = 0;
