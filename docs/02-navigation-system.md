@@ -76,7 +76,7 @@ Identifierを指定して選択を行います。
 navigation.Select("avatar:item:e10abf3d-cca7-4117-a5e9-52926a4f8990");
 
 // カテゴリを選択
-navigation.Select("type:2"); // Clothing
+navigation.Select("type:2"); // = new ItemCategory(ItemType.Clothing).Identifier
 
 // アイテムを選択
 navigation.Select("item:91517db1-eaf3-4137-914f-551cf3669692");
@@ -85,7 +85,7 @@ navigation.Select("item:91517db1-eaf3-4137-914f-551cf3669692");
 navigation.Select("folder:850F5169");
 
 // 拡張子を選択
-navigation.Select("extension:3"); // .unitypackage
+navigation.Select("extension:2"); // .unitypackage (数字の部分は、(int)ItemFileCategoryType.Unitypackageと同じです)
 
 // ファイルを選択（イベントが発火）
 navigation.Select("file:a1b2c3d4...");
@@ -94,6 +94,8 @@ navigation.Select("file:a1b2c3d4...");
 ### Select()の戻り値
 
 `Select()`は`Guid?`を返します。ファイル選択の場合は`null`が返ります。
+
+この`Guid`は、AvatarExplorer.UIではナビゲーション時のページやスクロール位置の保存に使用されています。
 
 ```csharp
 var result = navigation.Select("item:xxxxx");
