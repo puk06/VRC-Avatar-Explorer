@@ -1,7 +1,7 @@
 namespace AvatarExplorer.Core.Data.Links;
 
 /// <summary>
-/// 開発者（pukonya）の SNS 等へのリンク定数を提供します。
+/// 開発者の SNS 等へのリンク定数を提供します。
 /// </summary>
 public static class DeveloperLink
 {
