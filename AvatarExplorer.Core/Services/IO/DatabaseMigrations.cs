@@ -3,11 +3,18 @@ using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.IO;
 
+/// <summary>
+/// データベースの JSON データに対して、スキーマバージョンに応じたマイグレーション（互換性維持のための変換）を行う静的クラスです。
+/// </summary>
 public static class DatabaseMigrations
 {
+    /// <summary>アイテムデータベースの現在のスキーマバージョン。</summary>
     public const int ItemVersion = 4;
+    /// <summary>共通素体データベースの現在のスキーマバージョン。</summary>
     public const int CommonAvatarVersion = 1;
+    /// <summary>一括インポートプリセットデータベースの現在のスキーマバージョン。</summary>
     public const int BulkImportPresetVersion = 1;
+    /// <summary>ランタイム設定の現在のスキーマバージョン。</summary>
     public const int RuntimeSettingsVersion = 1;
 
     private const string LegacyThumbnailKey = "ThumbnmailFileName";
@@ -15,6 +22,13 @@ public static class DatabaseMigrations
 
     private const int ItemTypeOffset = 1;
 
+    /// <summary>
+    /// アイテムの JSON 配列に対して、指定したターゲットバージョンまでのマイグレーションを適用します。
+    /// </summary>
+    /// <param name="items">マイグレーション対象のアイテム JSON 配列。</param>
+    /// <param name="targetVersion">適用するスキーマバージョン。</param>
+    /// <param name="dataRootDirectory">データのルートディレクトリ（相対パス化などの処理で使用）。省略可能。</param>
+    /// <returns>いずれかのマイグレーションで内容が変更された場合は <see langword="true"/>、それ以外は <see langword="false"/>。</returns>
     public static bool ApplyItemMigration(JsonArray items, int targetVersion, string? dataRootDirectory = null)
     {
         return targetVersion switch
@@ -27,6 +41,12 @@ public static class DatabaseMigrations
         };
     }
 
+    /// <summary>
+    /// 共通素体の JSON 配列に対して、指定したターゲットバージョンまでのマイグレーションを適用します。
+    /// </summary>
+    /// <param name="items">マイグレーション対象の共通素体 JSON 配列。</param>
+    /// <param name="targetVersion">適用するスキーマバージョン。</param>
+    /// <returns>内容が変更された場合は <see langword="true"/>、それ以外は <see langword="false"/>。</returns>
     public static bool ApplyCommonAvatarMigration(JsonArray items, int targetVersion)
     {
         return targetVersion switch
@@ -36,6 +56,12 @@ public static class DatabaseMigrations
         };
     }
 
+    /// <summary>
+    /// 一括インポートプリセットの JSON 配列に対して、指定したターゲットバージョンまでのマイグレーションを適用します。
+    /// </summary>
+    /// <param name="items">マイグレーション対象のプリセット JSON 配列。</param>
+    /// <param name="targetVersion">適用するスキーマバージョン。</param>
+    /// <returns>内容が変更された場合は <see langword="true"/>、それ以外は <see langword="false"/>。</returns>
     public static bool ApplyBulkImportPresetMigration(JsonArray items, int targetVersion)
     {
         return targetVersion switch
@@ -45,6 +71,12 @@ public static class DatabaseMigrations
         };
     }
 
+    /// <summary>
+    /// ランタイム設定の JSON オブジェクトに対して、指定したターゲットバージョンまでのマイグレーションを適用します。
+    /// </summary>
+    /// <param name="settings">マイグレーション対象の設定 JSON オブジェクト。</param>
+    /// <param name="targetVersion">適用するスキーマバージョン。</param>
+    /// <returns>内容が変更された場合は <see langword="true"/>、それ以外は <see langword="false"/>。</returns>
     public static bool ApplyRuntimeSettingsMigration(JsonObject settings, int targetVersion)
     {
         _ = settings;

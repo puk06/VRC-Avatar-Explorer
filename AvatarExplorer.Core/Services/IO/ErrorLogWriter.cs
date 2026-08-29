@@ -4,11 +4,15 @@ using AvatarExplorer.Core.Data.Paths;
 
 namespace AvatarExplorer.Core.Services.IO;
 
+/// <summary>
+/// エラー情報をログファイルに書き込むためのクラスです。スレッドセーフな書き込みと、通常エラー・内部エラーの区別に対応します。
+/// </summary>
 public class ErrorLogWriter : IDisposable
 {
     private bool _disposed = false;
     private StreamWriter? _writer;
     private readonly Lock _syncLock = new();
+    /// <summary>アプリケーション全体で共有される <see cref="ErrorLogWriter"/> のシングルトンインスタンスを取得します。</summary>
     public static readonly ErrorLogWriter Instance = new();
 
     private ErrorLogWriter()
@@ -16,18 +20,34 @@ public class ErrorLogWriter : IDisposable
         FileSystemService.PrepareFileDirectory(LogFilePath);
     }
 
+    /// <summary>ログの書き出し先となるファイルパスを取得します。</summary>
     public string LogFilePath { get; } = Path.Combine(SystemPath.LogsFolderPath, DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-fff", CultureInfo.InvariantCulture) + ".log");
 
+    /// <summary>
+    /// ユーザー向けのエラーとしてログを書き込みます。
+    /// </summary>
+    /// <param name="title">エラーのタイトル（概要）。</param>
+    /// <param name="exception">関連する例外。省略可能です。</param>
+    /// <param name="tag">補足メッセージ（エラーの詳細タグ）。</param>
     public void Write(string title, Exception? exception, string tag)
     {
         WriteCore("Error", title, exception, tag);
     }
 
+    /// <summary>
+    /// 内部エラーとしてログを書き込みます（通常は予期しない例外や内部不具合の記録に使用します）。
+    /// </summary>
+    /// <param name="title">エラーのタイトル（概要）。</param>
+    /// <param name="exception">関連する例外。省略可能です。</param>
+    /// <param name="tag">補足メッセージ（エラーの詳細タグ）。</param>
     public void InternalWrite(string title, Exception? exception, string tag)
     {
         WriteCore("Internal Error", title, exception, tag);
     }
 
+    /// <summary>
+    /// ログ書き込み用のリソースを解放します。複数回呼び出しても安全です。
+    /// </summary>
     public void Dispose()
     {
         Dispose(true);

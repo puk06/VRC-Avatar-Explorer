@@ -14,6 +14,12 @@ using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.IO;
 
+/// <summary>
+/// 外部形式（AvatarExplorer V1・KonoAsset・フォルダ）からアイテム・共通素体・仮アバターなどのデータをインポートするためのクラスです。
+/// </summary>
+/// <param name="items">インポート先となるアイテムのリポジトリ。</param>
+/// <param name="commonAvatars">インポート先となる共通素体のリポジトリ。</param>
+/// <param name="tempAvatars">インポート先となる仮アバターのリポジトリ。</param>
 public class DataImporter(ItemRepository items, CommonAvatarRepository commonAvatars, TempAvatarRepository tempAvatars)
 {
     private const string V1DatasFolderName = "Datas";
@@ -24,6 +30,11 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
     private readonly CommonAvatarRepository _commonAvatars = commonAvatars;
     private readonly TempAvatarRepository _tempAvatars = tempAvatars;
 
+    /// <summary>
+    /// リクエストの内容に従って、外部ソースからアイテム・サムネイルなどのデータをインポートします。
+    /// </summary>
+    /// <param name="importRequest">インポート元の種類・データフォルダ・コピー方法・進捗コールバックなどを指定するリクエスト。</param>
+    /// <returns>成功した場合は <see cref="Success"/>、ソースが指定されていない・失敗した場合はエラーを返します。</returns>
     public async Task<ErrorOr<Success>> Import(ImportRequest importRequest)
     {
         var type = importRequest.ImportType;

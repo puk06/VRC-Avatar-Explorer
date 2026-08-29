@@ -7,14 +7,23 @@ using Microsoft.Win32;
 namespace AvatarExplorer.Core.Services.System;
 
 #pragma warning disable CA1416
+/// <summary>
+/// Windows と Linux での URL スキーム（プロトコルハンドラ）の登録・解除・状態確認を管理するサービス。
+/// 自身のプロセスをハンドラとして登録し、既存の登録はバックアップから復元できます。
+/// </summary>
 public static class SchemeService
 {
+    /// <summary>AvatarExplorer 用の URL スキーム名 ("vrcae")。</summary>
     public const string ProtocolVRCAE = "vrcae";
+    /// <summary>Booth Library Manager 用の URL スキーム名 ("booth-library-manager")。</summary>
     public const string ProtocolBLM = "booth-library-manager";
 
     private const string AppName = "VRC Avatar Explorer";
     private const string AppNameShort = "vrc-avatar-explorer";
 
+    /// <summary>指定したプロトコルに登録されているコマンド（実行パス）を取得します。未登録やエラー時は <see langword="null"/> を返します。</summary>
+    /// <param name="protocol">確認する URL スキーム名。</param>
+    /// <returns>登録されているコマンド文字列。存在しない場合は <see langword="null"/>。</returns>
     public static string? GetRegisteredCommand(string protocol)
     {
         try
@@ -43,6 +52,9 @@ public static class SchemeService
         }
     }
 
+    /// <summary>指定したプロトコルが、現在のプロセス（自身のアプリ）をハンドラとして登録されているかどうかを判定します。</summary>
+    /// <param name="protocol">確認する URL スキーム名。</param>
+    /// <returns>自身のプロセスが登録されていれば <see langword="true"/>。</returns>
     public static bool IsOwnSchemeRegistered(string protocol)
     {
         var registered = GetRegisteredCommand(protocol);
@@ -54,6 +66,9 @@ public static class SchemeService
         return registered.Contains(processPath, StringComparison.OrdinalIgnoreCase);
     }
 
+    /// <summary>指定したプロトコルが、何らかのハンドラとして登録されているかどうか（自アプリ以外でも可）を判定します。</summary>
+    /// <param name="protocol">確認する URL スキーム名。</param>
+    /// <returns>いずれかのハンドラが登録されていれば <see langword="true"/>。</returns>
     public static bool IsAnySchemeRegistered(string protocol)
     {
         try
@@ -101,6 +116,9 @@ public static class SchemeService
         }
     }
 
+    /// <summary>指定したプロトコルの登録前バックアップが存在するかどうかを判定します。</summary>
+    /// <param name="protocol">確認する URL スキーム名。</param>
+    /// <returns>バックアップが存在すれば <see langword="true"/>。</returns>
     public static bool HasBackup(string protocol)
     {
         try
@@ -115,6 +133,11 @@ public static class SchemeService
         }
     }
 
+    /// <summary>
+    /// 指定したプロトコルを、現在のプロセスをハンドラとして登録します。
+    /// 既存の登録（自アプリ以外）がある場合はバックアップを保存します。Windows では管理者権限が必要です。
+    /// </summary>
+    /// <param name="protocol">登録する URL スキーム名。</param>
     public static void RegisterScheme(string protocol)
     {
         try
@@ -155,6 +178,11 @@ public static class SchemeService
         }
     }
 
+    /// <summary>
+    /// 指定したプロトコルの登録を解除します。バックアップが存在する場合は元のコマンドを復元し、
+    /// それ以外の場合はレジストリ（Windows）または .desktop ファイル（Linux）から削除します。
+    /// </summary>
+    /// <param name="protocol">解除する URL スキーム名。</param>
     public static void UnregisterScheme(string protocol)
     {
         try
@@ -194,6 +222,8 @@ public static class SchemeService
         }
     }
 
+    /// <summary>現在のプロセスが管理者権限（Windows の場合は Administrator ロール）で実行されているかどうかを判定します。Linux では常に <see langword="false"/> を返します。</summary>
+    /// <returns>管理者権限で実行されていれば <see langword="true"/>。</returns>
     public static bool IsRunAsAdmin()
     {
         if (!ProcessUtils.IsWindows()) return false;
@@ -203,6 +233,7 @@ public static class SchemeService
         return principal.IsInRole(WindowsBuiltInRole.Administrator);
     }
 
+    /// <summary>現在のプロセスを管理者権限（Windows の "runas"）で再起動します。再起動後は現在のプロセスを終了します。Linux では何もしません。</summary>
     public static void RestartAsAdmin()
     {
         try

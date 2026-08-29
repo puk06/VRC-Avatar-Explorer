@@ -7,14 +7,19 @@ namespace AvatarExplorer.Core.Services.System.Repositories;
 
 public class VariationHashRepository : RepositoryBase<VariationHash>
 {
+    /// <summary>Boothバリエーションのハッシュデータのリポジトリを初期化します。</summary>
     public VariationHashRepository() : base(SystemPath.VariationHashDatabasePath) { }
 
+    /// <summary>バリエーションハッシュデータベースを読み込みます。</summary>
     public override void Load()
     {
         Db.Load();
         InvokeUpdated();
     }
 
+    /// <summary>指定したアイテムのBoothバリエーションを確認し、変更があればデータベースを更新して変更情報を返します。</summary>
+    /// <param name="itemId">確認対象のアイテム（Booth商品）ID。</param>
+    /// <returns>変更があったバリエーションの更新情報の読み取り専用リスト。変更がない場合は空のリスト。</returns>
     public async Task<IReadOnlyList<VariationUpdateInfo>> CheckVariationAndNotify(string itemId)
     {
         var updates = await CheckAndUpdate(itemId);
@@ -25,13 +30,20 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
         return updates;
     }
 
+    /// <summary>Boothから取得した1つのバリエーションのデータを表します。</summary>
     public class VariationData
     {
+        /// <summary>バリエーションのID。</summary>
         public string VariationId { get; init; } = string.Empty;
+        /// <summary>バリエーション名。</summary>
         public string VariationName { get; init; } = string.Empty;
+        /// <summary>バリエーションに含まれるダウンロード可能ファイルのリスト。</summary>
         public List<DownloadableFile> Files { get; init; } = [];
     }
 
+    /// <summary>指定したアイテムのバリエーションハッシュを確実に存在させ（必要に応じて取得・保存し）、以降の差分チェックを可能にします。</summary>
+    /// <param name="itemId">対象のアイテム（Booth商品）ID。</param>
+    /// <returns>常にtrueを返します。</returns>
     public async Task<bool> EnsureVariationHash(string itemId)
     {
         await CheckAndUpdate(itemId);

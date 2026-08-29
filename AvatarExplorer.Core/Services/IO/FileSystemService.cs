@@ -16,49 +16,92 @@ using SharpCompress.Writers.Tar;
 
 namespace AvatarExplorer.Core.Services.IO;
 
+/// <summary>
+/// ディレクトリのコピー処理の結果を保持するレコードです。
+/// </summary>
 public record CopyResult
 {
+    /// <summary>コピーに成功したファイルの数を取得します。</summary>
     public int SuccessCount { get; init; }
+    /// <summary>コピー対象となったファイルの総数を取得します。</summary>
     public int TotalCount { get; init; }
+    /// <summary>コピーに失敗したファイルの情報一覧を取得します。</summary>
     public List<CopyFailure> Failures { get; init; } = [];
 }
+/// <summary>
+/// コピーに失敗した個々のファイルの情報を保持するレコードです。
+/// </summary>
 public record CopyFailure
 {
+    /// <summary>コピー元のファイルパスを取得します。</summary>
     public string SourcePath { get; init; } = string.Empty;
+    /// <summary>コピー先のファイルパスを取得します。</summary>
     public string DestinationPath { get; init; } = string.Empty;
+    /// <summary>失敗の原因となったエラーメッセージを取得します。</summary>
     public string ErrorMessage { get; init; } = string.Empty;
 }
 
+/// <summary>
+/// アイテムのパス（ファイル・フォルダ・URL）を展開・抽出した結果を保持するレコードです。
+/// </summary>
 public record ExtractResult
 {
+    /// <summary>展開されたアイテムの親フォルダパスを取得します。未展開の場合は空文字列です。</summary>
     public string ItemParentFolder { get; set; } = string.Empty;
+    /// <summary>リンクとしてそのまま追加された（展開されなかった）フォルダパス一覧を取得します。</summary>
     public List<string> FolderPaths { get; } = [];
+    /// <summary>処理に失敗したパス一覧を取得します。</summary>
     public List<string> ProcessingFailedPaths { get; init; } = [];
     internal Lock SyncRoot { get; } = new();
 }
 
+/// <summary>
+/// Unitypackageのパス変更・複数統合処理の結果を保持するクラスです。
+/// </summary>
 public class ModifiedUnitypackagesResult
 {
+    /// <summary>処理中にエラーが発生したかどうかを取得または設定します。</summary>
     public bool IsError { get; set; } = false;
+    /// <summary>作成された（変更・統合後の）Unitypackageのパスを取得または設定します。失敗時は null です。</summary>
     public string? ModifiedUnitypackagePath { get; set; } = null;
+    /// <summary>処理に成功した入力ファイル（Unitypackage）のパス一覧を取得します。</summary>
     public List<string> Success { get; } = [];
+    /// <summary>処理に失敗した入力ファイル（Unitypackage）のパス一覧を取得します。</summary>
     public List<string> Failed { get; } = [];
+    /// <summary>パッケージ内に C# スクリプト (.cs) が含まれているかどうかを取得または設定します。</summary>
     public bool ContainsScripts { get; set; }
+    /// <summary>元のファイルと同一で変更が行われなかったかどうかを取得または設定します。</summary>
     public bool IsNotModified { get; set; } = false;
 }
 
+/// <summary>
+/// アイテムに追加するファイルまたはフォルダのパス情報を保持するクラスです。
+/// </summary>
 public class ItemPathEntry
 {
+    /// <summary>ファイルまたはフォルダの名前を取得または設定します。</summary>
     public string FileName { get; set; } = string.Empty;
+    /// <summary>ファイルまたはフォルダのパスを取得または設定します。リモートの場合は URL を指定します。</summary>
     public string Path { get; set; } = string.Empty;
+    /// <summary><see cref="Path"/> が URL（リモート）かどうかを取得または設定します。</summary>
     public bool IsUrl { get; set; } = false;
 }
 
+/// <summary>
+/// ファイルシステム関連のユーティリティを提供する静的クラスです。JSON のシリアライズ、Unitypackage のパス変更・抽出、アーカイブの展開、ディレクトリ・ファイルのコピーなどを行います。
+/// </summary>
 public static class FileSystemService
 {
     private const int BufferSize = 1024 * 1024;
 
     #region Serialize / Deserialize
+    /// <summary>
+    /// 指定したオブジェクトを JSON にシリアライズし、指定したファイルパスに書き込みます。
+    /// </summary>
+    /// <typeparam name="T">シリアライズするオブジェクトの型（参照型）。</typeparam>
+    /// <param name="value">シリアライズするオブジェクト。</param>
+    /// <param name="filePath">書き込み先のファイルパス。</param>
+    /// <returns>成功した場合は <see cref="Success"/>、失敗した場合はエラーを返します。</returns>
     public static ErrorOr<Success> SerializeClass<T>(T value, string filePath) where T : class
     {
         try
@@ -75,6 +118,12 @@ public static class FileSystemService
             return Error.Failure(description: "Failed to serialize class.");
         }
     }
+    /// <summary>
+    /// 指定した JSON ファイルを読み込み、型 <typeparamref name="T"/> のオブジェクトにデシリアライズします。
+    /// </summary>
+    /// <typeparam name="T">デシリアライズ先の型（参照型）。</typeparam>
+    /// <param name="filePath">読み込む JSON ファイルのパス。</param>
+    /// <returns>成功した場合はデシリアライズされたオブジェクト、ファイルが存在しない・失敗した場合はエラーを返します。</returns>
     public static ErrorOr<T> DeserializeClass<T>(string filePath) where T : class
     {
         try
@@ -95,6 +144,11 @@ public static class FileSystemService
     #endregion
 
     #region Unitypackage Modifier
+    /// <summary>
+    /// 指定した Unitypackage に含まれる pathname エントリ（アセットのインポートパス）の一覧を取得します。
+    /// </summary>
+    /// <param name="unitypackagePath">対象の Unitypackage ファイルのパス。</param>
+    /// <returns>pathname の一覧。ファイルが存在しない・失敗した場合はエラーを返します。</returns>
     public static async Task<ErrorOr<List<string>>> GetUnitypackagePathnamesAsync(string unitypackagePath)
     {
         if (string.IsNullOrWhiteSpace(unitypackagePath))
@@ -134,6 +188,13 @@ public static class FileSystemService
         }
     }
 
+    /// <summary>
+    /// 指定した Unitypackage から、特定の pathname に対応するアセット（ファイル）を抽出し、指定したフォルダに展開します。
+    /// </summary>
+    /// <param name="unitypackagePath">対象の Unitypackage ファイルのパス。</param>
+    /// <param name="pathname">抽出対象のアセットの pathname（Assets/... 形式）。</param>
+    /// <param name="destinationFolderPath">抽出先のフォルダパス。</param>
+    /// <returns>抽出されたファイルのフルパス。該当エントリが見つからない・失敗した場合はエラーを返します。</returns>
     public static async Task<ErrorOr<string>> ExtractUnitypackageAssetAsync(string unitypackagePath, string pathname, string destinationFolderPath)
     {
         if (string.IsNullOrWhiteSpace(unitypackagePath))
@@ -217,6 +278,11 @@ public static class FileSystemService
         return separatorIndex >= 0 ? normalizedEntryName[..separatorIndex] : normalizedEntryName;
     }
 
+    /// <summary>
+    /// Unitypackage のインポートパスを変更（カテゴリ名の挿入）する、または複数の Unitypackage を1つに統合する処理を行い、新しい Unitypackage を作成します。
+    /// </summary>
+    /// <param name="request">処理内容（入力エントリ・パス変更の有無・進捗コールバックなど）を指定するリクエスト。</param>
+    /// <returns>処理結果（作成されたパッケージのパスや成功・失敗一覧など）を保持する <see cref="ModifiedUnitypackagesResult"/>。</returns>
     public static async Task<ModifiedUnitypackagesResult> ModifyUnitypackageFilePathsAsync(UnitypackageModifyRequest request)
     {
         var result = new ModifiedUnitypackagesResult();
@@ -307,6 +373,10 @@ public static class FileSystemService
 
         return saveFolderPath;
     }
+    /// <summary>
+    /// 一時フォルダ内に新しいユニークなフォルダを作成し、そのパスを返します。
+    /// </summary>
+    /// <returns>新しく作成された一時フォルダのパス。</returns>
     public static string GetNewTempFolder()
     {
         int i = 1;
@@ -788,6 +858,14 @@ public static class FileSystemService
     #endregion
 
     #region Copy
+    /// <summary>
+    /// ディレクトリを再帰的にコピーします。並列処理による高速化と、進捗報告のコールバックをサポートします。
+    /// </summary>
+    /// <param name="sourceDirectory">コピー元のディレクトリパス。</param>
+    /// <param name="destinationDirectory">コピー先のディレクトリパス。</param>
+    /// <param name="maxDegreeOfParallelism">並列コピーの最大同時実行数。</param>
+    /// <param name="reportProgress">進捗を報告するコールバック（任意）。</param>
+    /// <returns>コピー結果（成功数・失敗一覧など）を保持する <see cref="CopyResult"/>。引数が無効な場合はエラーを返します。</returns>
     public async static Task<ErrorOr<CopyResult>> CopyDirectoryAsync(string sourceDirectory, string destinationDirectory, int maxDegreeOfParallelism, Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         if (sourceDirectory == destinationDirectory)
@@ -885,6 +963,12 @@ public static class FileSystemService
         };
     }
 
+    /// <summary>
+    /// 単一のファイルをコピー元からコピー先へコピーします。
+    /// </summary>
+    /// <param name="sourceFile">コピー元のファイルパス。</param>
+    /// <param name="destinationFile">コピー先のファイルパス。</param>
+    /// <returns>成功した場合は <see cref="Success"/>、引数が無効・失敗した場合はエラーを返します。</returns>
     public static async Task<ErrorOr<Success>> CopyFileAsync(string sourceFile, string destinationFile)
     {
         try
@@ -909,12 +993,22 @@ public static class FileSystemService
     }
     #endregion
 
+    /// <summary>
+    /// 指定したファイルパスの親ディレクトリが存在しない場合に作成します。
+    /// </summary>
+    /// <param name="filePath">ディレクトリを確保する対象のファイルパス。</param>
     public static void PrepareFileDirectory(string filePath)
     {
         var directory = Path.GetDirectoryName(filePath) ?? filePath;
         Directory.CreateDirectory(directory);
     }
 
+    /// <summary>
+    /// 指定したルートディレクトリ配下のファイルを列挙します（既定で再帰的に走査します）。
+    /// </summary>
+    /// <param name="rootDirectory">列挙を開始するルートディレクトリのパス。</param>
+    /// <param name="isRecursive"><see langword="true"/> の場合はサブディレクトリも再帰的に走査します。既定は <see langword="true"/> です。</param>
+    /// <returns>見つかったファイルのパスを列挙する列挙可能オブジェクト。</returns>
     public static IEnumerable<string> EnumerateFiles(string rootDirectory, bool isRecursive = true)
     {
         if (!Directory.Exists(rootDirectory))
@@ -969,6 +1063,13 @@ public static class FileSystemService
         }
     }
 
+    /// <summary>
+    /// 指定したディレクトリ内で既存のファイル・フォルダと衝突しないユニークなパスを取得します。衝突する場合は名前にインデックスを付与します。
+    /// </summary>
+    /// <param name="directory">確認対象のディレクトリパス。</param>
+    /// <param name="fileName">確認対象のファイル名またはフォルダ名。</param>
+    /// <param name="isDirectory"><see langword="true"/> の場合はフォルダとして判定します。既定は <see langword="false"/> です。</param>
+    /// <returns>衝突しないユニークなパス。</returns>
     public static string GetUniquePath(string directory, string fileName, bool isDirectory = false)
     {
         var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
@@ -991,6 +1092,12 @@ public static class FileSystemService
         }
     }
 
+    /// <summary>
+    /// 指定したディレクトリを削除します。存在しない場合や削除に失敗した場合は <see langword="false"/> を返します。
+    /// </summary>
+    /// <param name="path">削除するディレクトリのパス。</param>
+    /// <param name="recursive"><see langword="true"/> の場合は配下の内容も含めて再帰的に削除します。既定は <see langword="true"/> です。</param>
+    /// <returns>削除に成功した、または対象が存在しなかった場合は <see langword="true"/>、それ以外は <see langword="false"/>。</returns>
     public static bool DeleteDirectory(string path, bool recursive = true)
     {
         try

@@ -13,13 +13,20 @@ using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
 
+/// <summary>ナビゲーション用のサイドパネルフィルタとして取得する対象の種別。</summary>
 public enum QueryType
 {
+    /// <summary>アバター一覧（共通素体・仮アバターを含む）。</summary>
     Avatar,
+    /// <summary>作者一覧。</summary>
     Author,
+    /// <summary>カテゴリ一覧。</summary>
     Category
 }
 
+/// <summary>
+/// アイテム・共通素体・仮アバターにまたがる横断的な操作（検索・削除・インポート/エクスポート・フィルタ取得など）を提供するサービス。
+/// </summary>
 public class ItemGroupService
 {
     private readonly TempAvatarRepository _tempAvatars;
@@ -34,6 +41,13 @@ public class ItemGroupService
     internal ItemRepository ItemRepository { get; }
     internal CommonAvatarRepository CommonAvatarRepository { get; }
 
+    /// <summary>
+    /// <see cref="ItemGroupService"/> を初期化します。各リポジトリを保持し、データベース更新時に検索インデックスを再構築するよう購読します。
+    /// </summary>
+    /// <param name="items">アイテムリポジトリ。</param>
+    /// <param name="commonAvatars">共通素体リポジトリ。</param>
+    /// <param name="tempAvatars">仮アバターリポジトリ。</param>
+    /// <param name="settings">設定リポジトリ。</param>
     public ItemGroupService(ItemRepository items, CommonAvatarRepository commonAvatars, TempAvatarRepository tempAvatars, RuntimeSettingsRepository settings)
     {
         ItemRepository = items;
@@ -46,6 +60,9 @@ public class ItemGroupService
         _tempAvatars.OnUpdated += OnDatabaseUpdated;
     }
 
+    /// <summary>指定した種別 (<see cref="QueryType"/>) に応じたサイドパネル用フィルタ一覧（アバター・作者・カテゴリ）を取得します。</summary>
+    /// <param name="type">取得するフィルタの種別。</param>
+    /// <returns>フィルタを表す識別可能オブジェクトのリスト。</returns>
     public List<IIdentifiable> GetQueryFilters(QueryType type)
     {
         return type switch
@@ -56,6 +73,14 @@ public class ItemGroupService
             _ => []
         };
     }
+    /// <summary>
+    /// アバター一覧を取得します。<paramref name="includeCommonAvatar"/> で共通素体、<paramref name="includeTempAvatar"/> で仮アバターを含めるか指定できます。
+    /// <paramref name="rawIdentifier"/> が false の場合は "avatar:" プレフィックス付きの識別子で返されます。
+    /// </summary>
+    /// <param name="includeCommonAvatar">共通素体グループを含めるかどうか。</param>
+    /// <param name="includeTempAvatar">仮アバターを含めるかどうか。</param>
+    /// <param name="rawIdentifier"><see langword="true"/> の場合は "avatar:" プレフィックスを付けずに返します。</param>
+    /// <returns>アバターを表す <see cref="IIdentifiable"/> のリスト。</returns>
     public List<IIdentifiable> GetAvatars(bool includeCommonAvatar = false, bool includeTempAvatar = false, bool rawIdentifier = false)
     {
         var avatars = new List<IIdentifiable>();
@@ -66,6 +91,8 @@ public class ItemGroupService
 
         return avatars.ConvertAll<IIdentifiable>(i => new Avatar(i, rawIdentifier));
     }
+    /// <summary>全アイテムを作者名でグループ化し、作者一覧を取得します。各作者のアイテム数も含まれます。</summary>
+    /// <returns>作者名とアイテム数を持つ <see cref="IIdentifiable"/> のリスト。</returns>
     public List<IIdentifiable> GetAuthors()
     {
         return ItemRepository.GetAll()
@@ -78,6 +105,13 @@ public class ItemGroupService
             .OrderBy(i => i.Name)
             .ToList<IIdentifiable>();
     }
+    /// <summary>
+    /// カテゴリ別のフォルダ一覧を取得します。組み込みカテゴリ、カスタムカテゴリ、およびオプションで「すべて」「非表示」カテゴリを含めることができます。
+    /// </summary>
+    /// <param name="includeEmptyCategory">アイテムが存在しないカテゴリも含めるかどうか。</param>
+    /// <param name="includeAllCategory">「すべて」カテゴリを含めるかどうか。</param>
+    /// <param name="includeHiddenCategory">非表示アイテム用のカテゴリを含めるかどうか。</param>
+    /// <returns>カテゴリを表すフォルダのリスト。</returns>
     public List<IIdentifiable> GetCategoryFolders(bool includeEmptyCategory = false, bool includeAllCategory = false, bool includeHiddenCategory = false)
     {
         var categories = new List<Folder>();
@@ -147,6 +181,12 @@ public class ItemGroupService
 
         return categories.ToList<IIdentifiable>();
     }
+    /// <summary>
+    /// 指定したアバター ID（通常アバター・共通素体・仮アバターのいずれも可）に対応するアイテム一覧を取得します。
+    /// 共通素体グループの場合は、グループ内のアバターのいずれかに対応するアイテムも含まれます。
+    /// </summary>
+    /// <param name="id">対象のアバター識別子。</param>
+    /// <returns>対応するアイテムのリスト。</returns>
     public List<Item> GetItemsFromAvatar(string id)
     {
         var items = ItemRepository.GetAll();
@@ -161,6 +201,9 @@ public class ItemGroupService
             })
             .ToList();
     }
+    /// <summary>指定した作者が作成したアイテム一覧を取得します。</summary>
+    /// <param name="author">作者名。</param>
+    /// <returns>該当するアイテムのリスト。</returns>
     public List<Item> GetItemsFromAuthor(string author)
     {
         return ItemRepository.GetAll()
@@ -168,6 +211,12 @@ public class ItemGroupService
             .ToList();
     }
 
+    /// <summary>
+    /// 仮アバターを正式なアバターに解決（置換）します。全アイテムの対応アバター・共通素体グループ内のアバターから
+    /// 仮アバター ID を正式なアバター ID に置き換えた後、仮アバターを削除します。
+    /// </summary>
+    /// <param name="tempAvatarId">置換元の仮アバター識別子。</param>
+    /// <param name="targetItemId">置換先の正式なアバター識別子。</param>
     public void ResolveTempAvatar(string tempAvatarId, string targetItemId)
     {
         ItemRepository.GetAll()
@@ -195,6 +244,13 @@ public class ItemGroupService
         _tempAvatars.Save();
     }
 
+    /// <summary>
+    /// アバター ID の一覧を展開し、共通素体グループを構成する個別のアバター ID に変換します。
+    /// <paramref name="includeCommonAvatarToSupported"/> が true の場合、共通素体自体も結果に含まれます。
+    /// </summary>
+    /// <param name="avatars">展開対象のアバター識別子一覧（共通素体を含む）。</param>
+    /// <param name="includeCommonAvatarToSupported">共通素体グループ自体を展開後の一覧に含めるかどうか。</param>
+    /// <returns>展開された全アバター識別子の配列。</returns>
     public string[] GetAllSupportedAvatarsIds(IEnumerable<string> avatars, bool includeCommonAvatarToSupported = false)
     {
         return AvatarService.GetAllSupportedAvatarIds(avatars, CommonAvatarRepository.GetAll(), includeCommonAvatarToSupported);
@@ -294,6 +350,10 @@ public class ItemGroupService
         CommonAvatarRepository.Save();
     }
 
+    /// <summary>
+    /// 衣装アイテムの対応アバターのうち、指定した共通素体グループに含まれるアバターを、共通素体グループ自体の識別子に置換します。
+    /// </summary>
+    /// <param name="groupIdentifier">対象の共通素体グループ識別子。</param>
     public void ReplaceSupportedAvatarsToCommonAvatarGroup(string groupIdentifier)
     {
         var commonAvatar = CommonAvatarRepository.Get(groupIdentifier);
@@ -464,6 +524,9 @@ public class ItemGroupService
 
     #endregion
 
+    /// <summary>指定したリクエストに従って、アイテム・共通素体・仮アバターのデータを CSV または KonoAsset 形式でエクスポートします。</summary>
+    /// <param name="exportRequest">エクスポートの形式・出力先・進捗コールバックなどを指定するリクエスト。</param>
+    /// <returns>成功した場合は <see cref="Success"/>、失敗した場合はエラー情報。</returns>
     public async Task<ErrorOr<Success>> Export(ExportRequest exportRequest)
     {
         var exportContext = new ExportContext()
@@ -477,6 +540,9 @@ public class ItemGroupService
         return await DataExporter.Export(exportContext, exportRequest);
     }
 
+    /// <summary>指定したリクエストに従って、外部データ（V1・KonoAsset・フォルダ）からアイテムとサムネイルをインポートします。</summary>
+    /// <param name="importRequest">インポート元の種別・データフォルダ・コピー動作・進捗コールバックなどを指定するリクエスト。</param>
+    /// <returns>成功した場合は <see cref="Success"/>、失敗した場合はエラー情報。</returns>
     public async Task<ErrorOr<Success>> Import(ImportRequest importRequest)
     {
         var importer = new DataImporter(ItemRepository, CommonAvatarRepository, _tempAvatars);

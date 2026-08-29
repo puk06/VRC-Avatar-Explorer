@@ -9,9 +9,14 @@ using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
 
+/// <summary>
+/// Booth の商品情報を取得するサービス。商品タイトルとカテゴリからアイテムタイプを推定し、
+/// 3秒の API クールダウンを管理します。
+/// </summary>
 public static class BoothService
 {
     private static DateTime _lastBoothApiGetTime;
+    /// <summary>Booth API のクールダウン（前回取得から3秒以内）中かどうかを示す値。クールダウン中は <see langword="true"/> を返します。</summary>
     public static bool IsApiCooldownNow => _lastBoothApiGetTime.AddSeconds(3) > DateTime.Now;
 
     private static async Task WaitForApiCooldownAsync(int pollingIntervalMs = 100, CancellationToken cancellationToken = default)
@@ -55,6 +60,14 @@ public static class BoothService
         return titleSuggestedTypes.Any() ? titleSuggestedTypes.First() : categorySuggestedType;
     }
 
+    /// <summary>
+    /// Booth の商品情報を取得し、アイテムタイプを推定した <see cref="BoothItem"/> を返します。
+    /// <paramref name="waitCooldown"/> が true の場合は API クールダウンを自動待機し、false の場合はクールダウン中はエラーを返します。
+    /// </summary>
+    /// <param name="boothUrl">Booth 商品ページの URL または商品 ID。</param>
+    /// <param name="waitCooldown">API クールダウンを待機するかどうか。</param>
+    /// <param name="includeVariations">バリエーション情報を含めるかどうか。</param>
+    /// <returns>成功した場合は推定カテゴリ付きの <see cref="BoothItem"/>、失敗した場合はエラー情報。</returns>
     public static async Task<ErrorOr<BoothItem>> Fetch(string boothUrl, bool waitCooldown = true, bool includeVariations = false)
     {
         if (string.IsNullOrEmpty(boothUrl)) return Error.Failure(description: "Invalid Url.");
