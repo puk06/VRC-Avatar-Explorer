@@ -236,14 +236,19 @@ var paths = new List<ItemPathEntry>
 var result = await itemRepo.AddPaths(
     "item:xxxxx",
     paths,
-    shouldLinkToOriginal: false,  // true: 元ファイルへのリンク、false: コピー
-    removeOriginal: true          // true: 元のファイルを削除
+    shouldLinkToOriginal: false,  // true: フォルダだった場合は元フォルダへリンク、false: コピー
+    removeOriginal: true          // true: アーカイブだった場合は展開後に元のファイルを削除
 );
 
 if (!result.IsError)
 {
     Console.WriteLine("パスの追加成功");
+
+    // アーカイブ展開 or フォルダコピーが発生した場合にパスが設定される
     Console.WriteLine($"展開先: {result.Value.ItemParentFolder}");
+
+    // shouldLinkToOriginalがtrueで、パスがフォルダーだった場合はここに入ります
+    Console.WriteLine($"展開されずにそのまま追加されたフォルダー: {string.Join(", ", result.Value.FolderPaths)}");
 }
 ```
 
@@ -373,7 +378,11 @@ foreach (var file in results)
 
 データベースの整合性を保つために、ItemTypeを自動修正します。
 
+> [!WARNING]
+> CoreのVersionがv2.8.0より前は、カスタムカテゴリが移行されずに破壊されます。最新のmainブランチでは修正されています。
+
 ```csharp
+// avatarExist: ユーザーがアバターを追加したことがあるかどうか（= ItemTypeが壊れていないかの判定に使用）
 itemRepo.ValidateAndAutoFixItemType(avatarExist: true);
 ```
 
