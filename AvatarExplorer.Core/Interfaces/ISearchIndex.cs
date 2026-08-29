@@ -9,4 +9,6 @@ namespace AvatarExplorer.Core.Interfaces;
 public interface ISearchIndex
 {
     bool IsMatch(SearchQueryToken token, Func<string, string>? locKeyProvider = null);
+
+    int CountMatches(IReadOnlyList<SearchQueryToken> tokens, Func<string, string>? locKeyProvider = null);
 }

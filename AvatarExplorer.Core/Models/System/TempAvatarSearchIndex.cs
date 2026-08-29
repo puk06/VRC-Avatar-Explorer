@@ -36,6 +36,11 @@ public record TempAvatarSearchIndex : ISearchIndex
             : targets.Any(t => t.Contains(token.Value, comparison));
     }
 
+    public int CountMatches(IReadOnlyList<SearchQueryToken> tokens, Func<string, string>? locKeyProvider = null)
+    {
+        return tokens.Count(i => IsMatch(i, locKeyProvider));
+    }
+
     private string[] GetTargets(string? field)
     {
         return field?.ToLowerInvariant() switch
