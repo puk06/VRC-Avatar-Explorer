@@ -8,14 +8,23 @@ using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.Core.Services.Updates;
 
+/// <summary>
+/// アプリの更新の確認や、ダウンロード URL の安全性検証を行うユーティリティを提供します。
+/// </summary>
 public static class UpdateChecker
 {
     // Security: only allow download URLs that point to the official repository's release assets over HTTPS.
     private const string AllowedDownloadHost = "github.com";
     private const string AllowedDownloadPathPrefix = "/puk06/VRC-Avatar-Explorer/releases/download/";
 
+    /// <summary>更新が利用可能になったときに発生するイベント。</summary>
     public static event Action<VersionRelease>? UpdateAvailable;
 
+    /// <summary>
+    /// 指定したチャンネルについて更新の有無を確認し、利用可能な場合は <see cref="UpdateAvailable"/> イベントを発行します。
+    /// </summary>
+    /// <param name="updateChannel">確認対象の更新チャンネル。</param>
+    /// <returns>更新が利用可能な場合は true、それ以外は false。</returns>
     public static async Task<bool> CheckForUpdate(UpdateChannel updateChannel)
     {
         var latestRelease = await GetLatestUpdateReleaseInfo(updateChannel);
@@ -25,6 +34,10 @@ public static class UpdateChecker
         return true;
     }
 
+    /// <summary>
+    /// 更新情報のマニフェストをリモートから取得します。
+    /// </summary>
+    /// <returns>取得した <see cref="UpdateManifest"/>。失敗時は null。</returns>
     public async static Task<UpdateManifest?> GetUpdateManifest()
     {
         try
@@ -39,6 +52,11 @@ public static class UpdateChecker
         }
     }
 
+    /// <summary>
+    /// 指定したチャンネル向けの、適用可能な最新の更新リリース情報（変更履歴を統合済み）を取得します。
+    /// </summary>
+    /// <param name="updateChannel">対象の更新チャンネル。</param>
+    /// <returns>最新の更新リリース情報。該当がない、または失敗時は null。</returns>
     public static async Task<VersionRelease?> GetLatestUpdateReleaseInfo(UpdateChannel updateChannel)
     {
         try
@@ -117,6 +135,12 @@ public static class UpdateChecker
         return true;
     }
 
+    /// <summary>
+    /// リリースページの URL が安全（HTTPS かつ公式リポジトリのホスト）かどうかを検証します。
+    /// </summary>
+    /// <param name="url">検証する URL。</param>
+    /// <param name="uri">検証に成功した場合は解析済み URI、それ以外は null。</param>
+    /// <returns>安全な URL の場合は true。</returns>
     public static bool IsReleaseUrlSafe(string url, out Uri? uri)
     {
         uri = null;

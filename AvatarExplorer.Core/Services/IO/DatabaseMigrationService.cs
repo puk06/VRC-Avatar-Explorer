@@ -3,8 +3,17 @@ using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.Core.Services.IO;
 
+/// <summary>
+/// データベースファイル（JSON）に対して、現在のバージョンまでのマイグレーションを実行し、バックアップを作成する静的クラスです。
+/// </summary>
 public static class DatabaseMigrationService
 {
+    /// <summary>
+    /// 指定したデータベースファイルを読み込み、現在のバージョンまでマイグレーションを適用して保存します。
+    /// </summary>
+    /// <param name="filePath">マイグレーション対象のデータベースファイルのパス。</param>
+    /// <param name="currentVersion">適用する最新のスキーマバージョン。</param>
+    /// <param name="applyMigration">個々のバージョン番号に対してマイグレーションを実行するコールバック。</param>
     public static void MigrateDatabase(string filePath, int currentVersion, Func<JsonArray, int, bool> applyMigration)
     {
         try
@@ -50,6 +59,12 @@ public static class DatabaseMigrationService
         }
     }
 
+    /// <summary>
+    /// 指定した設定ファイル（JSON）を読み込み、現在のバージョンまでマイグレーションを適用して保存します。
+    /// </summary>
+    /// <param name="filePath">マイグレーション対象の設定ファイルのパス。</param>
+    /// <param name="currentVersion">適用する最新のスキーマバージョン。</param>
+    /// <param name="applyMigration">個々のバージョン番号に対してマイグレーションを実行するコールバック。</param>
     public static void MigrateSettings(string filePath, int currentVersion, Func<JsonObject, int, bool> applyMigration)
     {
         try

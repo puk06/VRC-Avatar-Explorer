@@ -3,6 +3,9 @@ using System.Text;
 
 namespace AvatarExplorer.Core.Utils;
 
+/// <summary>
+/// ファイル名として安全に使用できる文字列を生成するユーティリティを提供します。
+/// </summary>
 public static class FileNameUtils
 {
     private static readonly HashSet<char> InvalidCharsCommon = Path.GetInvalidFileNameChars()
@@ -16,6 +19,13 @@ public static class FileNameUtils
         "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
     };
 
+    /// <summary>
+    /// アイテム名から、ファイル名やフォルダ名として安全に使用できる文字列を取得します。
+    /// 不正な文字はアンダースコアに置換され、前後の空白や不要な文字が除去されます。Windows の予約名も回避されます。
+    /// </summary>
+    /// <param name="itemTitle">元となるアイテム名。</param>
+    /// <param name="maxLength">最大文字数（ルーン単位）。0 以下の場合は null を返します。</param>
+    /// <returns>安全なファイル名文字列。入力が空/null、または結果が空の場合は null。</returns>
     public static string? GetSafeTitle(string itemTitle, int maxLength = 100)
     {
         if (string.IsNullOrWhiteSpace(itemTitle)) return null;

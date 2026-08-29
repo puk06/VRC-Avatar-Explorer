@@ -4,11 +4,27 @@ using AvatarExplorer.Core.Models.Search;
 
 namespace AvatarExplorer.Core.Models.System;
 
+/// <summary>
+/// 仮アバターの検索インデックス。アバター名およびフリーワードで検索できます。
+/// </summary>
 public record TempAvatarSearchIndex : ISearchIndex
 {
+    /// <summary>
+    /// 仮アバターの名前。
+    /// </summary>
     public required string AvatarName { get; init; }
+
+    /// <summary>
+    /// フリーワード検索用文字列（アバター名の小文字表現）。
+    /// </summary>
     public required string FreeWord { get; init; }
 
+    /// <summary>
+    /// 指定されたトークンがこのインデックスに一致するかどうかを判定します。
+    /// </summary>
+    /// <param name="token">判定対象の検索トークン。</param>
+    /// <param name="locKeyProvider">ローカライズキー変換関数（仮アバターでは使用されません）。</param>
+    /// <returns>一致する場合は true。</returns>
     public bool IsMatch(SearchQueryToken token, Func<string, string>? locKeyProvider = null)
     {
         var targets = GetTargets(token.Field);
@@ -30,6 +46,11 @@ public record TempAvatarSearchIndex : ISearchIndex
         };
     }
 
+    /// <summary>
+    /// 仮アバターからこの検索インデックスを構築します。
+    /// </summary>
+    /// <param name="tempAvatar">対象の仮アバター。</param>
+    /// <returns>構築された TempAvatarSearchIndex。</returns>
     public static TempAvatarSearchIndex Build(TempAvatar tempAvatar)
     {
         return new TempAvatarSearchIndex

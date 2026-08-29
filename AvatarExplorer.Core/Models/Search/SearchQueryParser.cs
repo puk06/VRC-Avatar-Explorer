@@ -2,8 +2,16 @@ using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Models.Search;
 
+/// <summary>
+/// 検索文字列を <see cref="SearchQuery"/> に解析するユーティリティ。
+/// </summary>
 public static class SearchQueryParser
 {
+    /// <summary>
+    /// 検索文字列を解析して <see cref="SearchQuery"/> を生成します。OR=true / IncludeHidden=true 等特殊トークンにも対応します。
+    /// </summary>
+    /// <param name="searchText">検索文字列。</param>
+    /// <returns>解析された SearchQuery。空文字の場合は空のクエリを返します。</returns>
     public static SearchQuery Parse(string searchText)
     {
         if (string.IsNullOrWhiteSpace(searchText))

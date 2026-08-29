@@ -3,8 +3,16 @@ using AvatarExplorer.Core.Models.Items;
 
 namespace AvatarExplorer.Core.Services.Items;
 
+/// <summary>
+/// アイテム内のファイルを、拡張子などのルールに基づいて <see cref="ItemFileCategoryType"/> ごとに分類するためのユーティリティクラスです。
+/// </summary>
 public static class FileCategorizer
 {
+    /// <summary>
+    /// 指定したファイルの列挙可能なコレクションを、カテゴリ種別（<see cref="ItemFileCategoryType"/>）ごとのリストに分類します。
+    /// </summary>
+    /// <param name="files">分類対象のファイル一覧。</param>
+    /// <returns>カテゴリ種別をキーとし、該当するファイルのリストを値とする辞書。</returns>
     public static Dictionary<ItemFileCategoryType, List<ItemFile>> Categorize(IEnumerable<ItemFile> files)
     {
         var result = new Dictionary<ItemFileCategoryType, List<ItemFile>>();

@@ -1,5 +1,10 @@
 namespace AvatarExplorer.Core.Services.Items;
 
+/// <summary>
+/// ナビゲーションの選択履歴において1つの選択状態（ノード）を表すレコードです。
+/// </summary>
+/// <param name="Id">ノードを一意に識別するID。</param>
+/// <param name="Value">選択されたIdentifier文字列。</param>
 public record SelectionNode(Guid Id, string Value);
 
 internal class SelectionState

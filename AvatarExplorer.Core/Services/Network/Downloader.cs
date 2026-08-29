@@ -3,10 +3,22 @@ using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.Core.Services.Network;
 
+/// <summary>
+/// HTTP 経由でファイルをダウンロードするユーティリティを提供します。
+/// </summary>
 public static class Downloader
 {
     private const int BufferSize = 81920;
 
+    /// <summary>
+    /// 指定した URL からファイルをダウンロードし、指定パスに保存します。進捗は 0〜100 のパーセントで報告されます。
+    /// </summary>
+    /// <param name="url">ダウンロード元の URL。</param>
+    /// <param name="filePath">保存先のファイルパス。</param>
+    /// <param name="overwrite">既存ファイルを上書きするかどうか。false の場合、既存ファイルがあればそのまま成功とみなします。</param>
+    /// <param name="reportProgress">進捗（パーセント）を報告するコールバック。省略可。</param>
+    /// <param name="ct">キャンセルトークン。</param>
+    /// <returns>ダウンロードに成功した、または既存ファイルを再利用した場合は true。失敗またはキャンセル時は false。</returns>
     public static async Task<bool> Fetch(string url, string filePath, bool overwrite = false, Func<int, Task>? reportProgress = null, CancellationToken ct = default)
     {
         if (string.IsNullOrEmpty(filePath)) return false;

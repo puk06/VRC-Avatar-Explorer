@@ -6,12 +6,18 @@ using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
 
+/// <summary>データベースファイルなどのバックアップ対象を管理し、自動バックアップと復元を行うマネージャー。</summary>
 public class BackupManager
 {
+    /// <summary>バックアップから復元が完了したときに発生するイベント。</summary>
     public event Action? OnBackupRestored;
 
     private readonly HashSet<string> BackupFiles = [];
+    /// <summary>バックアップ対象のファイルを1件追加します。</summary>
+    /// <param name="path">バックアップ対象とするファイルのパス。</param>
     public void AddTargetFile(string path) => BackupFiles.Add(path);
+    /// <summary>バックアップ対象のファイルを複数追加します。</summary>
+    /// <param name="paths">バックアップ対象とするファイルのパス一覧。</param>
     public void AddTargetFiles(string[] paths) => BackupFiles.UnionWith(paths);
 
     private int _backupInterval = TimeUtils.MinToMs(5);
@@ -68,6 +74,12 @@ public class BackupManager
         }
     }
 
+    /// <summary>
+    /// 登録されたバックアップ対象ファイルを、タイムスタンプ付きのフォルダにコピーしてバックアップを作成します。
+    /// キャンセルされた場合や一部でも失敗した場合は不完全なフォルダを削除し、エラーを返します。
+    /// </summary>
+    /// <param name="token">バックアップのキャンセルに使用するキャンセルトークン。</param>
+    /// <returns>成功した場合は <see cref="Success"/>、失敗した場合はエラー情報。</returns>
     public async Task<ErrorOr<Success>> ExecuteBackup(CancellationToken token = default)
     {
         try
@@ -142,6 +154,11 @@ public class BackupManager
         }
     }
 
+    /// <summary>
+    /// 指定したフォルダからバックアップを復元します。復元前に現在の状態を自動バックアップし、
+    /// 対象ファイルを元の保存先に上書きコピーした後、<see cref="OnBackupRestored"/> イベントを発火します。
+    /// </summary>
+    /// <param name="folderPath">復元元となるバックアップフォルダのパス。</param>
     public async Task RestoreBackup(string folderPath)
     {
         if (!Directory.Exists(folderPath)) return;

@@ -7,15 +7,27 @@ using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.Items;
 
+/// <summary>
+/// アイテム・フォルダ・ファイルの階層をIdentifierベースで選択（ナビゲーション）するためのサービスです。
+/// アバター→カテゴリ→アイテム→フォルダ→拡張子→ファイルの順に選択状態を管理します。
+/// </summary>
 public class ItemNavigationService
 {
+    /// <summary>アバターを表すIdentifierのプレフィックス（"avatar"）です。</summary>
     public const string AvatarPrefix = "avatar";
+    /// <summary>作者を表すIdentifierのプレフィックス（"author"）です。</summary>
     public const string AuthorPrefix = "author";
+    /// <summary>組み込みのタイプカテゴリを表すIdentifierのプレフィックス（"type"）です。</summary>
     public const string TypePrefix = "type";
+    /// <summary>カスタムカテゴリを表すIdentifierのプレフィックス（"custom"）です。</summary>
     public const string CustomPrefix = "custom";
+    /// <summary>アイテムを表すIdentifierのプレフィックス（"item"）です。</summary>
     public const string ItemPrefix = "item";
+    /// <summary>フォルダを表すIdentifierのプレフィックス（"folder"）です。</summary>
     public const string FolderPrefix = "folder";
+    /// <summary>ファイルの拡張子を表すIdentifierのプレフィックス（"extension"）です。</summary>
     public const string ExtensionPrefix = "extension";
+    /// <summary>ファイルを表すIdentifierのプレフィックス（"file"）です。</summary>
     public const string FilePrefix = "file";
 
     private readonly ItemGroupService _items;
@@ -24,8 +36,18 @@ public class ItemNavigationService
 
     private readonly Dictionary<string, Func<string, IIdentifiable[]>> _handlers;
 
+    /// <summary>
+    /// ファイル（<c>file:</c> プレフィックスのIdentifier）が選択されたときに発火するイベントです。
+    /// 引数には選択されたファイルのフルパスが渡されます。
+    /// </summary>
     public event Action<string>? FileOpenRequested = null;
 
+    /// <summary>
+    /// プレフィックスと値から <c>"プレフィックス:値"</c> 形式のIdentifierを生成します。
+    /// </summary>
+    /// <param name="prefix">プレフィックス（<see cref="AvatarPrefix"/> 等）。</param>
+    /// <param name="value">値となる文字列。</param>
+    /// <returns><c>"プレフィックス:値"</c> 形式のIdentifier。</returns>
     public static string GetPrefix(string prefix, string value) => $"{prefix}:{value}";
 
     internal ItemNavigationService(ItemGroupService itemGroupService)
@@ -44,6 +66,15 @@ public class ItemNavigationService
         _items = itemGroupService;
     }
 
+    /// <summary>
+    /// 指定したIdentifierを選択（ナビゲーション状態にプッシュ）します。
+    /// ファイル（<c>file:</c>）を選択した場合は <see cref="FileOpenRequested"/> イベントが発火し、<c>null</c> を返します。
+    /// </summary>
+    /// <param name="state">選択する対象のIdentifier（<c>avatar:</c>, <c>type:</c>, <c>item:</c>, <c>folder:</c>, <c>extension:</c>, <c>file:</c> 等）。</param>
+    /// <returns>
+    /// ファイル選択以外の場合は新しく作成された選択ノードのID（<see cref="Guid"/>）。
+    /// ファイル選択の場合、または解析に失敗した場合は <c>null</c>。
+    /// </returns>
     public Guid? Select(string state)
     {
         if (!TryParseState(state, out var prefix, out var value)) return null;
@@ -56,12 +87,23 @@ public class ItemNavigationService
 
         return _state.Push(state);
     }
+    /// <summary>
+    /// 選択状態を一つ前に戻します（最後にプッシュしたノードをポップします）。
+    /// </summary>
+    /// <returns>ポップされた選択ノード。これ以上戻せない場合は <c>null</c>。</returns>
     public SelectionNode? Undo() => _state.Pop();
+    /// <summary>
+    /// すべての選択状態を解除し、ルート（初期状態）に戻します。パスのキャッシュもクリアされます。
+    /// </summary>
     public void Clear()
     {
         _state.Clear();
         _pathCache.Clear();
     }
+    /// <summary>
+    /// 指定したIdentifierの状態まで選択履歴を一気に戻します。
+    /// </summary>
+    /// <param name="targetState">戻り先のIdentifier。履歴に存在しない場合は何もしません。</param>
     public void PopToState(string targetState)
     {
         var nodes = _state.GetCurrentSelectionNodes().ToList();
@@ -73,9 +115,14 @@ public class ItemNavigationService
         }
     }
 
+    /// <summary>現在の選択状態（最後にプッシュされたノード）を取得します。何も選択されていない場合は <c>null</c>。</summary>
     public SelectionNode? CurrentState => _state.Current;
+    /// <summary>現在の選択履歴（ルートから現在までの全ノード）を取得します。</summary>
+    /// <returns>ルートから現在の順に並んだ選択ノードの列挙可能なコレクション。</returns>
     public IEnumerable<SelectionNode> GetCurrentSelectionNodes() => _state.GetCurrentSelectionNodes();
 
+    /// <summary>現在選択されているアバター（<c>avatar:</c>）のID部分を取得します。</summary>
+    /// <returns>アバターID。アバターが選択されていない場合は <c>null</c>。</returns>
     public string? GetCurrentAvatarId()
     {
         var avatarNode = _state.LastOrDefault(AvatarPrefix);
@@ -85,11 +132,24 @@ public class ItemNavigationService
 
         return avatarId;
     }
+    /// <summary>現在選択されているアイテム（<c>item:</c>）のID部分を取得します。</summary>
+    /// <returns>アイテムID。アイテムが選択されていない場合は <c>null</c>。</returns>
     public string? GetCurrentItemId() => _state.FirstOrDefault(ItemPrefix)?.Value;
 
+    /// <summary>
+    /// 指定したIdentifier（フォルダまたはファイル）のハッシュから元のフルパスを解決します。
+    /// 選択操作によりパスキャッシュが構築された後にのみ有効です。
+    /// </summary>
+    /// <param name="state">フォルダまたはファイルのIdentifier。</param>
+    /// <returns>解決されたフルパス。見つからない場合は <c>null</c>。</returns>
     public string? ResolvePath(string state) => TryParseState(state, out _, out var hash) ? ResolvePathInternal(hash) : null;
     private string? ResolvePathInternal(string hash) => _pathCache.TryGetValue(hash, out var path) ? path : null;
 
+    /// <summary>
+    /// 現在の選択状態に応じて表示可能なオブジェクト一覧を取得します。
+    /// 初期状態では全アイテム（非表示除く）、それ以降はカテゴリ別フォルダやアイテム内のフォルダ・ファイル等が返されます。
+    /// </summary>
+    /// <returns>現在のビューに対応する <see cref="IIdentifiable"/> オブジェクトの配列。</returns>
     public IIdentifiable[] GetCurrentSelectionView()
     {
         var state = _state.Current?.Value;
@@ -246,6 +306,11 @@ public class ItemNavigationService
         FileOpenRequested?.Invoke(file);
     }
 
+    /// <summary>
+    /// 現在選択されているアイテム内のファイルを検索します。アイテムが選択されていない場合は空の配列を返します。
+    /// </summary>
+    /// <param name="query">検索クエリ（ファイル名の一部や拡張子など）。</param>
+    /// <returns>条件に一致した <see cref="ItemFile"/> を <see cref="IIdentifiable"/> として格納した配列。</returns>
     public IIdentifiable[] SearchFilesForCurrentItem(string query)
     {
         var itemId = GetCurrentItemId();
@@ -272,6 +337,13 @@ public class ItemNavigationService
         return itemFiles;
     }
 
+    /// <summary>
+    /// Identifier文字列をプレフィックス（<c>:</c> より前）と値（<c>:</c> より後）に分割します。
+    /// </summary>
+    /// <param name="rawState">解析対象のIdentifier文字列。</param>
+    /// <param name="key">分割されたプレフィックス（キー）。失敗時は空文字列。</param>
+    /// <param name="value">分割された値。失敗時は空文字列。</param>
+    /// <returns>分割に成功した場合は <c>true</c>、<c>:</c> が含まれていない場合は <c>false</c>。</returns>
     public static bool TryParseState(string rawState, out string key, out string value)
     {
         key = string.Empty;

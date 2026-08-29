@@ -5,11 +5,21 @@ using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Models.External.KonoAsset.Items;
 
+/// <summary>
+/// KonoAsset のワールドアイテムを表します。
+/// </summary>
 public class KonoAssetWorldItem : AbstractKonoAssetItem
 {
+    /// <summary>
+    /// KonoAsset 側のカテゴリ名。空の場合は既定の "Worlds (KonoAsset)" として扱われます。
+    /// </summary>
     [JsonPropertyName("category")]
     public string Category { get; set; } = string.Empty;
 
+    /// <summary>
+    /// この KonoAsset ワールドアイテムを AvatarExplorer の Item に変換します。
+    /// </summary>
+    /// <returns>変換された Item。</returns>
     public override Item ToItem()
     {
         var migratedItem = ItemCreator.FromKonoAssetDescription(Description);

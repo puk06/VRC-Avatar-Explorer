@@ -3,8 +3,14 @@ using AvatarExplorer.Core.Services.System;
 
 namespace AvatarExplorer.Core.Utils;
 
+/// <summary>
+/// アイテムのパス変換やファイル名の安全性チェックなど、アイテム関連のユーティリティを提供します。
+/// </summary>
 public static partial class ItemUtils
 {
+    /// <summary>
+    /// データルートディレクトリを表す特殊なプレフィックス（&lt;root&gt;）です。
+    /// </summary>
     public const string RootFolderPrefix = "<root>";
     internal static string GetTitleFromDictionary(Dictionary<string, string> itemTitleMaps, string itemId)
     {
@@ -12,6 +18,11 @@ public static partial class ItemUtils
         return itemTitleMaps.TryGetValue(itemId, out string? avatarName) ? avatarName : string.Empty;
     }
 
+    /// <summary>
+    /// アイテム名からファイル名として安全な文字列を取得します。内部で <see cref="FileNameUtils.GetSafeTitle(string, int)"/> を呼び出します。
+    /// </summary>
+    /// <param name="itemTitle">元となるアイテム名。</param>
+    /// <returns>安全なファイル名文字列。取得できない場合は null。</returns>
     public static string? GetSafeTitle(string itemTitle)
     {
         // パスに使用しても大丈夫な文字だけ残す
@@ -31,6 +42,12 @@ public static partial class ItemUtils
         return itemTitleMaps;
     }
 
+    /// <summary>
+    /// 指定したパスが、アプリが管理しているアイテムフォルダ配下の直下サブディレクトリかどうかを判定します。
+    /// </summary>
+    /// <param name="itemPath">アプリが管理しているアイテムのルートパス。</param>
+    /// <param name="path">判定対象のパス。</param>
+    /// <returns>管理されているパスの場合は true。itemPath が空/null または存在しない場合は false。</returns>
     public static bool IsAppManagedPath(string itemPath, string path)
     {
         if (string.IsNullOrEmpty(itemPath) || !Directory.Exists(itemPath))
@@ -40,6 +57,12 @@ public static partial class ItemUtils
             .Contains(path);
     }
 
+    /// <summary>
+    /// アイテムの相対パス（&lt;root&gt; プレフィックス付き）を、実際のフルパスに変換します。
+    /// </summary>
+    /// <param name="itemPath">アイテムのパス文字列。</param>
+    /// <param name="rootDirectory">データルートディレクトリ。省略時はランタイム設定の値を使用します。</param>
+    /// <returns>変換後のフルパス。変換できない場合は元の itemPath をそのまま返します。</returns>
     public static string GetFullPath(string itemPath, string? rootDirectory = null)
     {
         rootDirectory ??= AvatarExplorerApp.Instance.RuntimeSettings.DataRootDirectory;
@@ -51,6 +74,12 @@ public static partial class ItemUtils
         return itemPath;
     }
 
+    /// <summary>
+    /// アイテムのフルパスを、&lt;root&gt; プレフィックスを使った相対パスに変換します。
+    /// </summary>
+    /// <param name="itemPath">アイテムのフルパス文字列。</param>
+    /// <param name="rootDirectory">データルートディレクトリ。省略時はランタイム設定の値を使用します。</param>
+    /// <returns>変換後の相対パス。ルート配下でない場合は元の itemPath をそのまま返します。</returns>
     public static string GetRelativePath(string itemPath, string? rootDirectory = null)
     {
         rootDirectory ??= AvatarExplorerApp.Instance.RuntimeSettings.DataRootDirectory;
