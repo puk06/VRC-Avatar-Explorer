@@ -404,48 +404,50 @@ public class ItemGroupService
 
         if (types.HasFlag(SearchResultTypes.Items))
         {
-            foreach (var item in ItemRepository.GetAll())
-            {
-                if (!query.IncludeHidden && item.IsHidden) continue;
-                if (_itemSearchIndices.TryGetValue(item.Identifier, out var index))
-                {
-                    var score = index.CountMatches(query.Tokens, locKeyProvider);
-                    if (query.IsOr ? score > 0 : score == query.Tokens.Count)
-                        results.Add((item.Identifier, score));
-                }
-            }
+            var itemIds = ItemRepository.GetAll()
+                .Where(i => query.IncludeHidden || !i.IsHidden)
+                .Select(i => i.Identifier);
+            CollectMatches(itemIds, _itemSearchIndices, query, locKeyProvider, results);
         }
 
         if (types.HasFlag(SearchResultTypes.CommonAvatar))
         {
-            foreach (var commonAvatar in CommonAvatarRepository.GetAll().Select(i => i.Identifier))
-            {
-                if (_commonAvatarSearchIndices.TryGetValue(commonAvatar, out var index))
-                {
-                    var score = index.CountMatches(query.Tokens, locKeyProvider);
-                    if (query.IsOr ? score > 0 : score == query.Tokens.Count)
-                        results.Add((commonAvatar, score));
-                }
-            }
+            CollectMatches(
+                CommonAvatarRepository.GetAll().Select(i => i.Identifier),
+                _commonAvatarSearchIndices, query, locKeyProvider, results);
         }
 
         if (types.HasFlag(SearchResultTypes.TempAvatar))
         {
-            foreach (var tempAvatar in _tempAvatars.GetAll().Select(i => i.Identifier))
-            {
-                if (_tempAvatarSearchIndices.TryGetValue(tempAvatar, out var index))
-                {
-                    var score = index.CountMatches(query.Tokens, locKeyProvider);
-                    if (query.IsOr ? score > 0 : score == query.Tokens.Count)
-                        results.Add((tempAvatar, score));
-                }
-            }
+            CollectMatches(
+                _tempAvatars.GetAll().Select(i => i.Identifier),
+                _tempAvatarSearchIndices, query, locKeyProvider, results);
         }
 
         return results
             .OrderByDescending(r => r.Score)
             .Select(r => r.Identifier)
             .ToArray();
+    }
+
+    private static bool TryGetScore(ISearchIndex index, SearchQuery query, Func<string, string>? locKeyProvider, out int score)
+    {
+        score = index.CountMatches(query.Tokens, locKeyProvider);
+        return query.IsOr ? score > 0 : score == query.Tokens.Count;
+    }
+
+    private static void CollectMatches<TIndex>(
+        IEnumerable<string> identifiers,
+        IReadOnlyDictionary<string, TIndex> indices,
+        SearchQuery query,
+        Func<string, string>? locKeyProvider,
+        List<(string Identifier, int Score)> results) where TIndex : ISearchIndex
+    {
+        foreach (var id in identifiers)
+        {
+            if (indices.TryGetValue(id, out var index) && TryGetScore(index, query, locKeyProvider, out var score))
+                results.Add((id, score));
+        }
     }
 
     private void EnsureIndicesBuilt()
