@@ -177,7 +177,7 @@ var context = new ItemCreationContext
     Tags = Array.Empty<string>(),
     ItemMemo = "",
     IsHidden = false,                    // 非表示フラグ（任意）
-    SkipIndirectCommonAvatarCheck = false // 共通素体チェックから除外するか（任意）
+    SkipIndirectCommonAvatarCheck = false // 間接的な共通素体チェックから除外するか（任意）
 };
 
 // 3. アイテムの作成
