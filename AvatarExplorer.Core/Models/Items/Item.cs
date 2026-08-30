@@ -43,7 +43,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     [JsonInclude] public string UpdatedDate { get; private set; } = string.Empty;
     /// <summary>非表示フラグです。true の場合は一覧などに表示されません。</summary>
     [JsonInclude] public bool IsHidden { get; private set; } = false;
-    /// <summary>アイテムを共通素体チェックから外すかどうかのフラグです。trueの場合、対応アバターでのみ判定され、共通素体経由での対応判定がされなくなります。</summary>
+    /// <summary>アイテムを共通素体チェックから外すかどうかのフラグです。trueの場合、間接的な共通素体グループ経由の対応判定がされなくなります。対応アバターに共通素体グループが直接設定されている場合は、このフラグに関わらず判定されます。</summary>
     [JsonInclude] public bool ExcludeFromCommonAvatarCheck { get; private set; } = false;
 
     /// <summary>アイテムの基本メタデータ（タイトル・作者・カテゴリ・メモ等）を一括で更新します。</summary>
