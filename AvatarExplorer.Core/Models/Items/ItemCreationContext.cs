@@ -30,7 +30,7 @@ public class ItemCreationContext
     /// <summary>非表示フラグです。true の場合は一覧などに表示されません。</summary>
     public bool IsHidden { get; set; } = false;
     /// <summary>アイテムを共通素体チェックから外すかどうかのフラグです。trueの場合、間接的な共通素体グループ経由の対応判定がされなくなります。対応アバターに共通素体グループが直接設定されている場合は、このフラグに関わらず判定されます。</summary>
-    public bool ExcludeFromCommonAvatarCheck { get; set; } = false;
+    public bool SkipIndirectCommonAvatarCheck { get; set; } = false;
 
     /// <summary>指定した宛先にサムネイル画像をダウンロードします。</summary>
     /// <param name="destPath">ダウンロード先のファイルパス。</param>

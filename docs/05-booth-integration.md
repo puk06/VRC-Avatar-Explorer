@@ -177,7 +177,7 @@ var context = new ItemCreationContext
     Tags = Array.Empty<string>(),
     ItemMemo = "",
     IsHidden = false,                    // 非表示フラグ（任意）
-    ExcludeFromCommonAvatarCheck = false // 共通素体チェックから除外するか（任意）
+    SkipIndirectCommonAvatarCheck = false // 共通素体チェックから除外するか（任意）
 };
 
 // 3. アイテムの作成
@@ -289,7 +289,7 @@ foreach (var url in boothUrls)
         ItemType = boothItem.EstimatedCategory.Type,
         ThumbnailUrl = boothItem.ThumbnailUrl,
         IsHidden = false,
-        ExcludeFromCommonAvatarCheck = false
+        SkipIndirectCommonAvatarCheck = false
     };
 
     var newItem = await app.ItemRepository.Create(context);
@@ -354,7 +354,7 @@ var context = new ItemCreationContext
     ItemType = ItemType.Tool,  // 手動で指定
     ThumbnailUrl = boothItem.ThumbnailUrl,
     IsHidden = false,
-    ExcludeFromCommonAvatarCheck = false
+    SkipIndirectCommonAvatarCheck = false
 };
 ```
 

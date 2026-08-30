@@ -124,8 +124,8 @@
                                         </StackPanel>
                                     </UniformGrid>
 
-                                    <CheckBox IsChecked="{Binding ExcludeFromCommonAvatarCheck}" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding [ItemEditor.ExcludeFromCommonAvatarCheck], Source={x:Static loc:Localizer.Instance}}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
+                                    <CheckBox IsChecked="{Binding SkipIndirectCommonAvatarCheck}" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding [ItemEditor.SkipIndirectCommonAvatarCheck], Source={x:Static loc:Localizer.Instance}}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
                                     </CheckBox>
 
                                     <CheckBox IsChecked="{Binding IsHidden}" VerticalAlignment="Center">

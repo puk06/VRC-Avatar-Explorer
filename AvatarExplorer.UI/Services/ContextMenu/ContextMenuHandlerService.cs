@@ -71,7 +71,7 @@ public static class ContextMenuHandlerService
         Register(ActionKey.HideItem, HideItem);
         Register(ActionKey.ShowItem, ShowItem);
         Register(ActionKey.IncludeInCommonAvatarCheck, IncludeInCommonAvatarCheck);
-        Register(ActionKey.ExcludeFromCommonAvatarCheck, ExcludeFromCommonAvatarCheck);
+        Register(ActionKey.SkipIndirectCommonAvatarCheck, SkipIndirectCommonAvatarCheck);
     }
 
     private static Item? GetByIdentifier(string identifier)
@@ -615,13 +615,13 @@ public static class ContextMenuHandlerService
         var item = GetByIdentifier(identifier);
         if (item == null) return;
 
-        await EditItemInternal(identifier, new() { ExcludeFromCommonAvatarCheck = false }, Loc.Success.IncludeInCommonAvatarCheck);
+        await EditItemInternal(identifier, new() { SkipIndirectCommonAvatarCheck = false }, Loc.Success.IncludeInCommonAvatarCheck);
     }
-    private static async void ExcludeFromCommonAvatarCheck(string identifier)
+    private static async void SkipIndirectCommonAvatarCheck(string identifier)
     {
         var item = GetByIdentifier(identifier);
         if (item == null) return;
 
-        await EditItemInternal(identifier, new() { ExcludeFromCommonAvatarCheck = true }, Loc.Success.ExcludeFromCommonAvatarCheck);
+        await EditItemInternal(identifier, new() { SkipIndirectCommonAvatarCheck = true }, Loc.Success.SkipIndirectCommonAvatarCheck);
     }
 }

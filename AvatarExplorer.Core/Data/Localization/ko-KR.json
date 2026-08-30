@@ -146,8 +146,8 @@
     "ContextMenu.Item.ShowItem": "아이템 표시",
     "ContextMenu.Item.Visibility": "표시/숨기기",
     "ContextMenu.Item.CommonAvatarCheck": "공통 아바타 확인",
-    "ContextMenu.Item.IncludeInCommonAvatarCheck": "공통 아바타 확인에 포함",
-    "ContextMenu.Item.ExcludeFromCommonAvatarCheck": "공통 아바타 확인에서 제외",
+    "ContextMenu.Item.IncludeInCommonAvatarCheck": "간접적인 공통 아바타 확인 건너뛰지 않기",
+    "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인 건너뛰기",
     "ContextMenu.ItemFolder.OpenFolder": "폴더 열기",
     "ContextMenu.ItemFolder.ShowInExplorer": "탐색기에서 보기",
     "ContextMenu.ItemFolder.RemoveFolder": "폴더 삭제",
@@ -199,7 +199,7 @@
     "Success.HideItem": "아이템이 숨겨졌습니다",
     "Success.ShowItem": "아이템이 표시되었습니다",
     "Success.IncludeInCommonAvatarCheck": "아이템이 공통 아바타 확인에 포함되었습니다",
-    "Success.ExcludeFromCommonAvatarCheck": "아이템이 공통 아바타 확인에서 제외되었습니다",
+    "Success.SkipIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인을 건너뛰도록 설정되었습니다",
 
     "VariationUpdate.UpdateAvailable": "아이템 업데이트를 사용할 수 있습니다",
     "VariationUpdate.NoUpdatesAvailable": "사용 가능한 업데이트 없음",
@@ -462,7 +462,7 @@
     "ItemEditor.LinkToOriginal.Title": "폴더를 그대로 사용",
     "ItemEditor.LinkToOriginal.Description": "폴더는 복사되지 않습니다",
     "ItemEditor.RemoveFolder": "삭제",
-    "ItemEditor.ExcludeFromCommonAvatarCheck": "공통 아바타 확인에서 제외",
+    "ItemEditor.SkipIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인 건너뛰기",
     "ItemEditor.IsHidden": "숨김으로 표시",
 
     "SelectAvatars.Title.SupportedAvatars": "대응 아바타 선택",

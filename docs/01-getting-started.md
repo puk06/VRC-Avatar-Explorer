@@ -199,7 +199,7 @@ public class Item : IIdentifiable
 
     // 状態
     public bool IsHidden { get; }          // 非表示フラグ
-    public bool ExcludeFromCommonAvatarCheck { get; }  // 共通素体チェックから除外するフラグ
+    public bool SkipIndirectCommonAvatarCheck { get; }  // 共通素体チェックから除外するフラグ
 
     // 識別子
     public string Identifier { get; }      // "item:" + Id

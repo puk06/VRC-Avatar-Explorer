@@ -52,7 +52,7 @@ public class ItemEditorViewModel : ViewModelBase
     [Reactive] public string AuthorId { get; set; } = string.Empty;
     [Reactive] public string BoothId { get; set; } = string.Empty;
     [Reactive] public string ThumbnailUrl { get; set; } = string.Empty;
-    [Reactive] public bool ExcludeFromCommonAvatarCheck { get; set; } = false;
+    [Reactive] public bool SkipIndirectCommonAvatarCheck { get; set; } = false;
     [Reactive] public bool IsHidden { get; set; } = false;
 
     public IReactiveCommand AddFolderCommand { get; }
@@ -97,7 +97,7 @@ public class ItemEditorViewModel : ViewModelBase
         Memo = string.Empty;
         SupportedAvatars = [];
         Tags = [];
-        ExcludeFromCommonAvatarCheck = false;
+        SkipIndirectCommonAvatarCheck = false;
         IsHidden = false;
     }
 
@@ -120,7 +120,7 @@ public class ItemEditorViewModel : ViewModelBase
                 Memo = item.ItemMemo;
                 SupportedAvatars = item.SupportedAvatars;
                 Tags = item.Tags;
-                ExcludeFromCommonAvatarCheck = item.ExcludeFromCommonAvatarCheck;
+                SkipIndirectCommonAvatarCheck = item.SkipIndirectCommonAvatarCheck;
                 IsHidden = item.IsHidden;
                 SelectedCategoryIndex = GetCategoryIndex(item.Category);
             }
@@ -269,7 +269,7 @@ public class ItemEditorViewModel : ViewModelBase
             ItemMemo = Memo,
             Tags = Tags,
             IsHidden = IsHidden,
-            ExcludeFromCommonAvatarCheck = ExcludeFromCommonAvatarCheck
+            SkipIndirectCommonAvatarCheck = SkipIndirectCommonAvatarCheck
         };
 
         bool updateResult = await InstanceRepository.Items.Update(identifier, editContext);
@@ -295,7 +295,7 @@ public class ItemEditorViewModel : ViewModelBase
             ItemMemo = Memo,
             Tags = Tags,
             IsHidden = IsHidden,
-            ExcludeFromCommonAvatarCheck = ExcludeFromCommonAvatarCheck
+            SkipIndirectCommonAvatarCheck = SkipIndirectCommonAvatarCheck
         };
 
         if (creationContext.BoothId != -1)

@@ -146,8 +146,8 @@
     "ContextMenu.Item.ShowItem": "アイテムを表示する",
     "ContextMenu.Item.Visibility": "表示/非表示",
     "ContextMenu.Item.CommonAvatarCheck": "共通素体チェック",
-    "ContextMenu.Item.IncludeInCommonAvatarCheck": "共通素体チェックに含める",
-    "ContextMenu.Item.ExcludeFromCommonAvatarCheck": "共通素体チェックに含めない",
+    "ContextMenu.Item.IncludeInCommonAvatarCheck": "間接的な共通素体チェックをスキップしない",
+    "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "間接的な共通素体チェックをスキップ",
     "ContextMenu.ItemFolder.OpenFolder": "フォルダを開く",
     "ContextMenu.ItemFolder.ShowInExplorer": "エクスプローラーで表示する",
     "ContextMenu.ItemFolder.RemoveFolder": "フォルダを削除する",
@@ -199,7 +199,7 @@
     "Success.HideItem": "アイテムを非表示にしました",
     "Success.ShowItem": "アイテムを非表示から解除しました",
     "Success.IncludeInCommonAvatarCheck": "アイテムを共通素体チェックに含めました",
-    "Success.ExcludeFromCommonAvatarCheck": "アイテムを共通素体チェックから除外しました",
+    "Success.SkipIndirectCommonAvatarCheck": "間接的な共通素体チェックをスキップするように設定しました",
 
     "VariationUpdate.UpdateAvailable": "アイテムの更新が利用可能です",
     "VariationUpdate.NoUpdatesAvailable": "更新はありませんでした",
@@ -462,7 +462,7 @@
     "ItemEditor.LinkToOriginal.Title": "フォルダをそのまま使用する",
     "ItemEditor.LinkToOriginal.Description": "フォルダの場合はコピーが発生しません",
     "ItemEditor.RemoveFolder": "削除",
-    "ItemEditor.ExcludeFromCommonAvatarCheck": "共通素体チェックから除外する",
+    "ItemEditor.SkipIndirectCommonAvatarCheck": "間接的な共通素体チェックをスキップ",
     "ItemEditor.IsHidden": "非表示としてマークする",
 
     "SelectAvatars.Title.SupportedAvatars": "対応アバターの選択",

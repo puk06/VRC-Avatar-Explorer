@@ -11,7 +11,7 @@ public static class AvatarStatusResolver
     /// アイテムが指定したアバターに対応しているかを判定します。
     /// 対応アバターにアバターIDが直接含まれる場合は <see cref="AvatarStatus.IsSupported"/> が、
     /// 共通素体グループを通じて間接的に対応する場合は <see cref="AvatarStatus.IsCommon"/> が <c>true</c> になります。
-    /// <see cref="Item.ExcludeFromCommonAvatarCheck"/> が <c>true</c> の場合、間接的な共通素体グループ経由の判定のみがスキップされます。
+    /// <see cref="Item.SkipIndirectCommonAvatarCheck"/> が <c>true</c> の場合、間接的な共通素体グループ経由の判定のみがスキップされます。
     /// 対応アバターに共通素体グループが直接設定されている場合は、このフラグに関わらず判定されます。
     /// </summary>
     /// <param name="item">判定対象のアイテム。</param>
@@ -45,7 +45,7 @@ public static class AvatarStatusResolver
 
         // 共通素体チェックを無効化する設定がされている場合はここで終了。
         // 対応アバターへの直接登録は既に判定済みのため、間接的な共通素体グループ経由の判定のみがスキップされる。
-        if (item.ExcludeFromCommonAvatarCheck) return result;
+        if (item.SkipIndirectCommonAvatarCheck) return result;
 
         var groupsForPath = commonAvatars.Where(x => x.Avatars.Contains(avatarId));
         if (!groupsForPath.Any()) return result;

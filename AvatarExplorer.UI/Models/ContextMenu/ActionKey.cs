@@ -44,5 +44,5 @@ public enum ActionKey
     ShowItem,
 
     IncludeInCommonAvatarCheck,
-    ExcludeFromCommonAvatarCheck
+    SkipIndirectCommonAvatarCheck
 }

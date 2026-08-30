@@ -206,12 +206,12 @@ var status = AvatarStatusResolver.Resolve(item, avatarId, commonAvatars);
    - アイテムの`SupportedAvatars`に`commonavatar:xxxxx`が含まれている場合
    - そのグループ内に現在表示中のアバターが含まれていれば`IsCommon = true`
 
-2. **現在表示中のアバターが共通素体グループに属している場合**（`ExcludeFromCommonAvatarCheck`が`true`の場合はスキップ）
+2. **現在表示中のアバターが共通素体グループに属している場合**（`SkipIndirectCommonAvatarCheck`が`true`の場合はスキップ）
    - 現在表示中のアバターが属する共通素体グループを検索
    - そのグループ内にアイテムの対応アバターのいずれかが含まれていれば`IsCommon = true`
 
 > [!NOTE]
-> `ExcludeFromCommonAvatarCheck`を有効にすると、2段階目の間接的な判定のみがスキップされます。1段階目の`commonavatar:xxxxx`を直接設定した場合の判定は常に実行されます。
+> `SkipIndirectCommonAvatarCheck`を有効にすると、2段階目の間接的な判定のみがスキップされます。1段階目の`commonavatar:xxxxx`を直接設定した場合の判定は常に実行されます。
 
 ## Avatarモデル
 

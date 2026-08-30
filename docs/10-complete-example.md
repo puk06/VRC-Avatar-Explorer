@@ -256,7 +256,7 @@ class BoothClient
             ItemType = boothItem.EstimatedCategory.Type,
             ThumbnailUrl = boothItem.ThumbnailUrl,
             IsHidden = false,
-            ExcludeFromCommonAvatarCheck = false
+            SkipIndirectCommonAvatarCheck = false
         };
 
         var newItem = await _app.ItemRepository.Create(context);
@@ -303,7 +303,7 @@ class BoothClient
                     ItemType = boothItem.EstimatedCategory.Type,
                     ThumbnailUrl = boothItem.ThumbnailUrl,
                     IsHidden = false,
-                    ExcludeFromCommonAvatarCheck = false
+                    SkipIndirectCommonAvatarCheck = false
                 };
 
                 await _app.ItemRepository.Create(context);

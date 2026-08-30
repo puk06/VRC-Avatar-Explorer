@@ -69,7 +69,7 @@ public class ItemRepository : RepositoryBase<Item>
         item.UpdateSupportedAvatars(context.SupportedAvatars);
         item.UpdateTags(context.Tags);
         item.UpdateIsHidden(context.IsHidden);
-        item.UpdateExcludeFromCommonAvatarCheck(context.ExcludeFromCommonAvatarCheck);
+        item.UpdateSkipIndirectCommonAvatarCheck(context.SkipIndirectCommonAvatarCheck);
 
         var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
         var downloaded = await context.FetchThumbnailAsync(destPath, overwrite: true);
@@ -126,7 +126,7 @@ public class ItemRepository : RepositoryBase<Item>
         if (context.ImplementedAvatars != null) item.UpdateImplementedAvatars(context.ImplementedAvatars);
         if (context.Tags != null) item.UpdateTags(context.Tags);
         if (context.IsHidden != null) item.UpdateIsHidden(context.IsHidden.Value);
-        if (context.ExcludeFromCommonAvatarCheck != null) item.UpdateExcludeFromCommonAvatarCheck(context.ExcludeFromCommonAvatarCheck.Value);
+        if (context.SkipIndirectCommonAvatarCheck != null) item.UpdateSkipIndirectCommonAvatarCheck(context.SkipIndirectCommonAvatarCheck.Value);
 
         if (context.ThumbnailUrl != null)
         {

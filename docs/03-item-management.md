@@ -37,7 +37,7 @@ var context = new ItemCreationContext
     ItemMemo = "アイテムの説明",
     ThumbnailUrl = "https://example.com/thumb.png",  // サムネイルURL（任意）
     IsHidden = false,                    // 非表示フラグ（任意）
-    ExcludeFromCommonAvatarCheck = false // 共通素体チェックから除外するか（任意）
+    SkipIndirectCommonAvatarCheck = false // 共通素体チェックから除外するか（任意）
 };
 ```
 
@@ -135,7 +135,7 @@ var editContext = new ItemEditContext
     ImplementedAvatars = new[] { "item:implemented-id" },
     Tags = new[] { "新しいタグ" },
     IsHidden = false,
-    ExcludeFromCommonAvatarCheck = false, // 共通素体チェックから除外するか（nullの場合は変更なし）
+    SkipIndirectCommonAvatarCheck = false, // 共通素体チェックから除外するか（nullの場合は変更なし）
     ThumbnailUrl = "https://new-thumbnail.url"  // 新しいサムネイル
 };
 ```
@@ -424,7 +424,7 @@ var context = new ItemCreationContext
     SupportedAvatars = Array.Empty<string>(),
     Tags = Array.Empty<string>(),
     IsHidden = false,
-    ExcludeFromCommonAvatarCheck = false
+    SkipIndirectCommonAvatarCheck = false
 };
 
 // アイテムの作成
