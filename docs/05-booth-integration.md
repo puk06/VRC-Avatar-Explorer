@@ -175,7 +175,9 @@ var context = new ItemCreationContext
     ThumbnailUrl = boothItem.ThumbnailUrl,
     SupportedAvatars = Array.Empty<string>(),
     Tags = Array.Empty<string>(),
-    ItemMemo = ""
+    ItemMemo = "",
+    IsHidden = false,                    // 非表示フラグ（任意）
+    SkipIndirectCommonAvatarCheck = false // 間接的な共通素体チェックから除外するか（任意）
 };
 
 // 3. アイテムの作成
@@ -285,7 +287,9 @@ foreach (var url in boothUrls)
         AuthorId = boothItem.Shop.Id,
         BoothId = boothItem.BoothId,
         ItemType = boothItem.EstimatedCategory.Type,
-        ThumbnailUrl = boothItem.ThumbnailUrl
+        ThumbnailUrl = boothItem.ThumbnailUrl,
+        IsHidden = false,
+        SkipIndirectCommonAvatarCheck = false
     };
 
     var newItem = await app.ItemRepository.Create(context);
@@ -348,7 +352,9 @@ var context = new ItemCreationContext
     Author = boothItem.Shop.Name,
     BoothId = boothItem.BoothId,
     ItemType = ItemType.Tool,  // 手動で指定
-    ThumbnailUrl = boothItem.ThumbnailUrl
+    ThumbnailUrl = boothItem.ThumbnailUrl,
+    IsHidden = false,
+    SkipIndirectCommonAvatarCheck = false
 };
 ```
 

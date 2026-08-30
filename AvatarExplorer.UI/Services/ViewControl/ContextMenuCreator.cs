@@ -83,6 +83,15 @@ internal static class ContextMenuCreator
                 }
             },
 
+            new(Loc.ContextMenu.Item.CommonAvatarCheck, ActionKey.None, ContextMenuIconType.CommonAvatar, addSeparator: true)
+            {
+                SubMenuItems =
+                {
+                    new(Loc.ContextMenu.Item.SkipIndirectCommonAvatarCheck, ActionKey.SkipIndirectCommonAvatarCheck, ContextMenuIconType.ExcludeCommonAvatarCheck),
+                    new(Loc.ContextMenu.Item.EnableIndirectCommonAvatarCheck, ActionKey.EnableIndirectCommonAvatarCheck, ContextMenuIconType.IncludeCommonAvatarCheck)
+                }
+            },
+
             new(Loc.ContextMenu.Item.Remove, ActionKey.RemoveItem, ContextMenuIconType.Delete)
         ];
 

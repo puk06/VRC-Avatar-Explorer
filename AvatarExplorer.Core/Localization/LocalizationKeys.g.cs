@@ -247,6 +247,9 @@ public static class Loc
             public const string HideItem = "ContextMenu.Item.HideItem";
             public const string ShowItem = "ContextMenu.Item.ShowItem";
             public const string Visibility = "ContextMenu.Item.Visibility";
+            public const string CommonAvatarCheck = "ContextMenu.Item.CommonAvatarCheck";
+            public const string EnableIndirectCommonAvatarCheck = "ContextMenu.Item.EnableIndirectCommonAvatarCheck";
+            public const string SkipIndirectCommonAvatarCheck = "ContextMenu.Item.SkipIndirectCommonAvatarCheck";
         }
         public static class ItemFolder
         {
@@ -317,6 +320,8 @@ public static class Loc
         public const string FetchAllVariationHashes = "Success.FetchAllVariationHashes";
         public const string HideItem = "Success.HideItem";
         public const string ShowItem = "Success.ShowItem";
+        public const string EnableIndirectCommonAvatarCheck = "Success.EnableIndirectCommonAvatarCheck";
+        public const string SkipIndirectCommonAvatarCheck = "Success.SkipIndirectCommonAvatarCheck";
     }
     public static class VariationUpdate
     {
@@ -756,6 +761,8 @@ public static class Loc
             public const string Description = "ItemEditor.LinkToOriginal.Description";
         }
         public const string RemoveFolder = "ItemEditor.RemoveFolder";
+        public const string SkipIndirectCommonAvatarCheck = "ItemEditor.SkipIndirectCommonAvatarCheck";
+        public const string IsHidden = "ItemEditor.IsHidden";
     }
     public static class SelectAvatars
     {

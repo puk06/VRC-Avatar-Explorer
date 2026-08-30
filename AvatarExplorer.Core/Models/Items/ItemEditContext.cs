@@ -33,6 +33,8 @@ public class ItemEditContext
     public IEnumerable<string>? Tags { get; set; }
     /// <summary>新しい非表示フラグ。null の場合は変更されません。</summary>
     public bool? IsHidden { get; set; }
+    /// <summary>新しい共通素体チェック除外フラグ。null の場合は変更されません。</summary>
+    public bool? SkipIndirectCommonAvatarCheck { get; set; }
 
     /// <summary>指定した宛先にサムネイル画像をダウンロードします。</summary>
     /// <param name="destPath">ダウンロード先のファイルパス。</param>

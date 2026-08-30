@@ -11,6 +11,8 @@ public static class AvatarStatusResolver
     /// アイテムが指定したアバターに対応しているかを判定します。
     /// 対応アバターにアバターIDが直接含まれる場合は <see cref="AvatarStatus.IsSupported"/> が、
     /// 共通素体グループを通じて間接的に対応する場合は <see cref="AvatarStatus.IsCommon"/> が <c>true</c> になります。
+    /// <see cref="Item.SkipIndirectCommonAvatarCheck"/> が <c>true</c> の場合、間接的な共通素体グループ経由の判定のみがスキップされます。
+    /// 対応アバターに共通素体グループが直接設定されている場合は、このフラグに関わらず判定されます。
     /// </summary>
     /// <param name="item">判定対象のアイテム。</param>
     /// <param name="avatarId">現在表示中のアバターID。空の場合は未対応として扱います。</param>
@@ -24,10 +26,24 @@ public static class AvatarStatusResolver
         var result = new AvatarStatus();
         if (string.IsNullOrEmpty(avatarId)) return result;
 
+        CheckDirectSupport(item, avatarId, treatEmptySupportedAvatarAsNone, result);
+        CheckDirectCommonAvatarGroup(item, avatarId, commonAvatars, result);
+
+        if (item.SkipIndirectCommonAvatarCheck) return result;
+
+        CheckIndirectCommonAvatar(item, avatarId, commonAvatars, result);
+
+        return result;
+    }
+
+    private static void CheckDirectSupport(Item item, string avatarId, bool treatEmptySupportedAvatarAsNone, AvatarStatus result)
+    {
         if ((!treatEmptySupportedAvatarAsNone && !item.SupportedAvatars.Any()) || item.SupportedAvatars.Contains(avatarId))
             result.IsSupported = true;
+    }
 
-        // アイテムの対応アバターが共通素体グループで登録されていた時用の処理
+    private static void CheckDirectCommonAvatarGroup(Item item, string avatarId, IEnumerable<CommonAvatar> commonAvatars, AvatarStatus result)
+    {
         foreach (var id in item.SupportedAvatars)
         {
             if (!id.StartsWith("commonavatar:")) continue;
@@ -37,12 +53,15 @@ public static class AvatarStatusResolver
             {
                 result.IsCommon = true;
                 result.CommonAvatarName = group.GroupName;
-                return result;
+                return;
             }
         }
+    }
 
+    private static void CheckIndirectCommonAvatar(Item item, string avatarId, IEnumerable<CommonAvatar> commonAvatars, AvatarStatus result)
+    {
         var groupsForPath = commonAvatars.Where(x => x.Avatars.Contains(avatarId));
-        if (!groupsForPath.Any()) return result;
+        if (!groupsForPath.Any()) return;
 
         foreach (var supportedAvatar in item.SupportedAvatars)
         {
@@ -51,10 +70,8 @@ public static class AvatarStatusResolver
             {
                 result.IsCommon = true;
                 result.CommonAvatarName = group.GroupName;
-                return result;
+                return;
             }
         }
-
-        return result;
     }
 }

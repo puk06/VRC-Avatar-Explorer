@@ -145,6 +145,9 @@
     "ContextMenu.Item.HideItem": "Ocultar elemento",
     "ContextMenu.Item.ShowItem": "Mostrar elemento",
     "ContextMenu.Item.Visibility": "Visibilidad",
+    "ContextMenu.Item.CommonAvatarCheck": "Comprobación de avatar común",
+    "ContextMenu.Item.EnableIndirectCommonAvatarCheck": "Habilitar comprobación indirecta de avatar común",
+    "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "Omitir comprobación indirecta de avatar común",
     "ContextMenu.ItemFolder.OpenFolder": "Abrir carpeta",
     "ContextMenu.ItemFolder.ShowInExplorer": "Mostrar en el Explorador",
     "ContextMenu.ItemFolder.RemoveFolder": "Eliminar carpeta",
@@ -195,6 +198,8 @@
     "Success.FetchAllVariationHashes": "Obtención masiva de hashes completada ({0} correctos)",
     "Success.HideItem": "Elemento ocultado",
     "Success.ShowItem": "Elemento visible",
+    "Success.EnableIndirectCommonAvatarCheck": "Comprobación indirecta de avatar común habilitada",
+    "Success.SkipIndirectCommonAvatarCheck": "Se omitió la comprobación indirecta de avatar común",
 
     "VariationUpdate.UpdateAvailable": "Hay actualizaciones disponibles para el elemento",
     "VariationUpdate.NoUpdatesAvailable": "No hay actualizaciones disponibles",
@@ -457,6 +462,8 @@
     "ItemEditor.LinkToOriginal.Title": "Usar carpeta tal cual",
     "ItemEditor.LinkToOriginal.Description": "No se copia la carpeta",
     "ItemEditor.RemoveFolder": "Eliminar",
+    "ItemEditor.SkipIndirectCommonAvatarCheck": "Omitir comprobación indirecta de avatar común",
+    "ItemEditor.IsHidden": "Marcar como oculto",
 
     "SelectAvatars.Title.SupportedAvatars": "Seleccionar avatares compatibles",
     "SelectAvatars.Title.ImplementedAvatars": "Seleccionar avatares implementados",

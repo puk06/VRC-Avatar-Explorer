@@ -38,5 +38,14 @@ public enum ContextMenuIconType
     Visible,
 
     [MaterialIcon(MaterialIconKind.EyeOffOutline)]
-    Hidden
+    Hidden,
+
+    [MaterialIcon(MaterialIconKind.AccountMultiple)]
+    CommonAvatar,
+
+    [MaterialIcon(MaterialIconKind.AccountMultipleCheck)]
+    IncludeCommonAvatarCheck,
+
+    [MaterialIcon(MaterialIconKind.AccountMultipleRemove)]
+    ExcludeCommonAvatarCheck,
 }

@@ -145,6 +145,9 @@
     "ContextMenu.Item.HideItem": "아이템 숨기기",
     "ContextMenu.Item.ShowItem": "아이템 표시",
     "ContextMenu.Item.Visibility": "표시/숨기기",
+    "ContextMenu.Item.CommonAvatarCheck": "공통 아바타 확인",
+    "ContextMenu.Item.EnableIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인 활성화",
+    "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인 건너뛰기",
     "ContextMenu.ItemFolder.OpenFolder": "폴더 열기",
     "ContextMenu.ItemFolder.ShowInExplorer": "탐색기에서 보기",
     "ContextMenu.ItemFolder.RemoveFolder": "폴더 삭제",
@@ -195,6 +198,8 @@
     "Success.FetchAllVariationHashes": "해시 일괄 가져오기가 완료되었습니다 ({0}개 성공)",
     "Success.HideItem": "아이템이 숨겨졌습니다",
     "Success.ShowItem": "아이템이 표시되었습니다",
+    "Success.EnableIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인이 활성화되었습니다",
+    "Success.SkipIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인을 건너뛰도록 설정되었습니다",
 
     "VariationUpdate.UpdateAvailable": "아이템 업데이트를 사용할 수 있습니다",
     "VariationUpdate.NoUpdatesAvailable": "사용 가능한 업데이트 없음",
@@ -457,6 +462,8 @@
     "ItemEditor.LinkToOriginal.Title": "폴더를 그대로 사용",
     "ItemEditor.LinkToOriginal.Description": "폴더는 복사되지 않습니다",
     "ItemEditor.RemoveFolder": "삭제",
+    "ItemEditor.SkipIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인 건너뛰기",
+    "ItemEditor.IsHidden": "숨김으로 표시",
 
     "SelectAvatars.Title.SupportedAvatars": "대응 아바타 선택",
     "SelectAvatars.Title.ImplementedAvatars": "구현 아바타 선택",

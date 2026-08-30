@@ -41,5 +41,8 @@ public enum ActionKey
     MergeWithOtherCategory,
 
     HideItem,
-    ShowItem
+    ShowItem,
+
+    EnableIndirectCommonAvatarCheck,
+    SkipIndirectCommonAvatarCheck
 }

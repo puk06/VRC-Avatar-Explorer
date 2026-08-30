@@ -43,6 +43,8 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     [JsonInclude] public string UpdatedDate { get; private set; } = string.Empty;
     /// <summary>非表示フラグです。true の場合は一覧などに表示されません。</summary>
     [JsonInclude] public bool IsHidden { get; private set; } = false;
+    /// <summary>アイテムを共通素体チェックから外すかどうかのフラグです。trueの場合、間接的な共通素体グループ経由の対応判定がされなくなります。対応アバターに共通素体グループが直接設定されている場合は、このフラグに関わらず判定されます。</summary>
+    [JsonInclude] public bool SkipIndirectCommonAvatarCheck { get; private set; } = false;
 
     /// <summary>アイテムの基本メタデータ（タイトル・作者・カテゴリ・メモ等）を一括で更新します。</summary>
     /// <param name="title">新しいタイトル。</param>
@@ -112,6 +114,9 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     /// <summary>非表示フラグを更新します。</summary>
     /// <param name="isHidden">非表示にする場合は true。</param>
     public void UpdateIsHidden(bool isHidden) => IsHidden = isHidden;
+    /// <summary>共通素体チェック除外フラグを更新します。</summary>
+    /// <param name="exclude">共通素体チェックから外す場合は true。</param>
+    public void UpdateSkipIndirectCommonAvatarCheck(bool exclude) => SkipIndirectCommonAvatarCheck = exclude;
 
     /// <summary>指定した言語コードを用いて、このアイテムのBooth商品ページへのリンクを生成して返します。</summary>
     /// <param name="languageCode">Boothリンクに使用する言語コード（例: "ja"）。</param>
