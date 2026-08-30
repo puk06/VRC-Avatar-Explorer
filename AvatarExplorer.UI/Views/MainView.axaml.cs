@@ -334,7 +334,7 @@ public partial class MainView : UserControl
 
         var workingArea = screen.WorkingArea;
         var size = (int)(InstanceRepository.UserPreferences.HoverIconSize * screen.Scaling);
-        var y = position.Y > workingArea.Y + workingArea.Height / 2
+        var y = position.Y > workingArea.Y + (workingArea.Height / 2)
             ? Math.Max(workingArea.Y, position.Y - size - HoverOffset)
             : position.Y + HoverOffset;
 
