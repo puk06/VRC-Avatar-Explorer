@@ -254,7 +254,9 @@ class BoothClient
             AuthorId = boothItem.Shop.Id,
             BoothId = boothItem.BoothId,
             ItemType = boothItem.EstimatedCategory.Type,
-            ThumbnailUrl = boothItem.ThumbnailUrl
+            ThumbnailUrl = boothItem.ThumbnailUrl,
+            IsHidden = false,
+            ExcludeFromCommonAvatarCheck = false
         };
 
         var newItem = await _app.ItemRepository.Create(context);
@@ -299,7 +301,9 @@ class BoothClient
                     AuthorId = boothItem.Shop.Id,
                     BoothId = boothItem.BoothId,
                     ItemType = boothItem.EstimatedCategory.Type,
-                    ThumbnailUrl = boothItem.ThumbnailUrl
+                    ThumbnailUrl = boothItem.ThumbnailUrl,
+                    IsHidden = false,
+                    ExcludeFromCommonAvatarCheck = false
                 };
 
                 await _app.ItemRepository.Create(context);
