@@ -114,26 +114,9 @@ public class ItemRepository : RepositoryBase<Item>
         var item = Get(identifier);
         if (item == null) return false;
 
-        if (context.Title != null) item.UpdateTitle(context.Title);
-        if (context.Author != null) item.UpdateAuthor(context.Author);
-        if (context.AuthorId != null) item.UpdateAuthorId(context.AuthorId);
-        if (context.BoothId != null) item.UpdateBoothId(context.BoothId.Value);
-        if (context.ItemType != null) item.UpdateCategory(new ItemCategory(context.ItemType.Value, context.CustomCategory ?? item.Category.CustomCategory));
-        if (context.ItemMemo != null) item.UpdateMemo(context.ItemMemo);
-        if (context.ItemPath != null) item.UpdateItemPath(context.ItemPath);
-
-        if (context.SupportedAvatars != null) item.UpdateSupportedAvatars(context.SupportedAvatars);
-        if (context.ImplementedAvatars != null) item.UpdateImplementedAvatars(context.ImplementedAvatars);
-        if (context.Tags != null) item.UpdateTags(context.Tags);
-        if (context.IsHidden != null) item.UpdateIsHidden(context.IsHidden.Value);
-        if (context.SkipIndirectCommonAvatarCheck != null) item.UpdateSkipIndirectCommonAvatarCheck(context.SkipIndirectCommonAvatarCheck.Value);
-
-        if (context.ThumbnailUrl != null)
-        {
-            var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
-            var downloaded = await context.FetchThumbnailAsync(destPath, overwrite: true);
-            if (downloaded) item.UpdateThumbnailFileName(item.Id);
-        }
+        ApplyMetadataUpdates(item, context);
+        ApplyCollectionUpdates(item, context);
+        await UpdateThumbnailIfNeeded(item, context);
 
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
 
@@ -141,6 +124,35 @@ public class ItemRepository : RepositoryBase<Item>
         InvokeUpdated();
 
         return true;
+    }
+
+    private static void ApplyMetadataUpdates(Item item, ItemEditContext context)
+    {
+        if (context.Title != null) item.UpdateTitle(context.Title);
+        if (context.Author != null) item.UpdateAuthor(context.Author);
+        if (context.AuthorId != null) item.UpdateAuthorId(context.AuthorId);
+        if (context.BoothId != null) item.UpdateBoothId(context.BoothId.Value);
+        if (context.ItemType != null) item.UpdateCategory(new ItemCategory(context.ItemType.Value, context.CustomCategory ?? item.Category.CustomCategory));
+        if (context.ItemMemo != null) item.UpdateMemo(context.ItemMemo);
+        if (context.ItemPath != null) item.UpdateItemPath(context.ItemPath);
+        if (context.IsHidden != null) item.UpdateIsHidden(context.IsHidden.Value);
+        if (context.SkipIndirectCommonAvatarCheck != null) item.UpdateSkipIndirectCommonAvatarCheck(context.SkipIndirectCommonAvatarCheck.Value);
+    }
+
+    private static void ApplyCollectionUpdates(Item item, ItemEditContext context)
+    {
+        if (context.SupportedAvatars != null) item.UpdateSupportedAvatars(context.SupportedAvatars);
+        if (context.ImplementedAvatars != null) item.UpdateImplementedAvatars(context.ImplementedAvatars);
+        if (context.Tags != null) item.UpdateTags(context.Tags);
+    }
+
+    private static async Task UpdateThumbnailIfNeeded(Item item, ItemEditContext context)
+    {
+        if (context.ThumbnailUrl == null) return;
+
+        var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
+        var downloaded = await context.FetchThumbnailAsync(destPath, overwrite: true);
+        if (downloaded) item.UpdateThumbnailFileName(item.Id);
     }
 
     /// <summary>アイテムにファイル・フォルダのパスを追加（展開または元フォルダへのリンク）し、データベースを更新します。</summary>

@@ -26,10 +26,24 @@ public static class AvatarStatusResolver
         var result = new AvatarStatus();
         if (string.IsNullOrEmpty(avatarId)) return result;
 
+        CheckDirectSupport(item, avatarId, treatEmptySupportedAvatarAsNone, result);
+        CheckDirectCommonAvatarGroup(item, avatarId, commonAvatars, result);
+
+        if (item.SkipIndirectCommonAvatarCheck) return result;
+
+        CheckIndirectCommonAvatar(item, avatarId, commonAvatars, result);
+
+        return result;
+    }
+
+    private static void CheckDirectSupport(Item item, string avatarId, bool treatEmptySupportedAvatarAsNone, AvatarStatus result)
+    {
         if ((!treatEmptySupportedAvatarAsNone && !item.SupportedAvatars.Any()) || item.SupportedAvatars.Contains(avatarId))
             result.IsSupported = true;
+    }
 
-        // アイテムの対応アバターが共通素体グループで登録されていた時用の処理
+    private static void CheckDirectCommonAvatarGroup(Item item, string avatarId, IEnumerable<CommonAvatar> commonAvatars, AvatarStatus result)
+    {
         foreach (var id in item.SupportedAvatars)
         {
             if (!id.StartsWith("commonavatar:")) continue;
@@ -39,16 +53,15 @@ public static class AvatarStatusResolver
             {
                 result.IsCommon = true;
                 result.CommonAvatarName = group.GroupName;
-                return result;
+                return;
             }
         }
+    }
 
-        // 共通素体チェックを無効化する設定がされている場合はここで終了。
-        // 対応アバターへの直接登録は既に判定済みのため、間接的な共通素体グループ経由の判定のみがスキップされる。
-        if (item.SkipIndirectCommonAvatarCheck) return result;
-
+    private static void CheckIndirectCommonAvatar(Item item, string avatarId, IEnumerable<CommonAvatar> commonAvatars, AvatarStatus result)
+    {
         var groupsForPath = commonAvatars.Where(x => x.Avatars.Contains(avatarId));
-        if (!groupsForPath.Any()) return result;
+        if (!groupsForPath.Any()) return;
 
         foreach (var supportedAvatar in item.SupportedAvatars)
         {
@@ -57,10 +70,8 @@ public static class AvatarStatusResolver
             {
                 result.IsCommon = true;
                 result.CommonAvatarName = group.GroupName;
-                return result;
+                return;
             }
         }
-
-        return result;
     }
 }
