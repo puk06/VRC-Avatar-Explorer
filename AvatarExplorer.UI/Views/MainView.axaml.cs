@@ -389,7 +389,8 @@ public partial class MainView : UserControl
     }
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        if ((e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control && e.Key == Key.F)
+        var controlPressed = (e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control;
+        if (controlPressed && e.Key == Key.F)
         {
             SearchTextBox.Focus();
         }
