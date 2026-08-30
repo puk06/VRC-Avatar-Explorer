@@ -87,8 +87,8 @@ internal static class ContextMenuCreator
             {
                 SubMenuItems =
                 {
-                    new(Loc.ContextMenu.Item.EnableIndirectCommonAvatarCheck, ActionKey.EnableIndirectCommonAvatarCheck, ContextMenuIconType.IncludeCommonAvatarCheck),
-                    new(Loc.ContextMenu.Item.SkipIndirectCommonAvatarCheck, ActionKey.SkipIndirectCommonAvatarCheck, ContextMenuIconType.ExcludeCommonAvatarCheck)
+                    new(Loc.ContextMenu.Item.SkipIndirectCommonAvatarCheck, ActionKey.SkipIndirectCommonAvatarCheck, ContextMenuIconType.ExcludeCommonAvatarCheck),
+                    new(Loc.ContextMenu.Item.EnableIndirectCommonAvatarCheck, ActionKey.EnableIndirectCommonAvatarCheck, ContextMenuIconType.IncludeCommonAvatarCheck)
                 }
             },
 
