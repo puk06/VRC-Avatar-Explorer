@@ -70,6 +70,8 @@ public static class ContextMenuHandlerService
         Register(ActionKey.MergeWithOtherCategory, MergeWithOtherCategory);
         Register(ActionKey.HideItem, HideItem);
         Register(ActionKey.ShowItem, ShowItem);
+        Register(ActionKey.IncludeInCommonAvatarCheck, IncludeInCommonAvatarCheck);
+        Register(ActionKey.ExcludeFromCommonAvatarCheck, ExcludeFromCommonAvatarCheck);
     }
 
     private static Item? GetByIdentifier(string identifier)
@@ -607,5 +609,19 @@ public static class ContextMenuHandlerService
         if (item == null) return;
 
         await EditItemInternal(identifier, new() { IsHidden = false }, Loc.Success.ShowItem);
+    }
+    private static async void IncludeInCommonAvatarCheck(string identifier)
+    {
+        var item = GetByIdentifier(identifier);
+        if (item == null) return;
+
+        await EditItemInternal(identifier, new() { ExcludeFromCommonAvatarCheck = false }, Loc.Success.IncludeInCommonAvatarCheck);
+    }
+    private static async void ExcludeFromCommonAvatarCheck(string identifier)
+    {
+        var item = GetByIdentifier(identifier);
+        if (item == null) return;
+
+        await EditItemInternal(identifier, new() { ExcludeFromCommonAvatarCheck = true }, Loc.Success.ExcludeFromCommonAvatarCheck);
     }
 }

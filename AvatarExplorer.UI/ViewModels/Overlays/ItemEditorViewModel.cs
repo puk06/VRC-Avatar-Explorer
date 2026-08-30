@@ -52,6 +52,8 @@ public class ItemEditorViewModel : ViewModelBase
     [Reactive] public string AuthorId { get; set; } = string.Empty;
     [Reactive] public string BoothId { get; set; } = string.Empty;
     [Reactive] public string ThumbnailUrl { get; set; } = string.Empty;
+    [Reactive] public bool ExcludeFromCommonAvatarCheck { get; set; } = false;
+    [Reactive] public bool IsHidden { get; set; } = false;
 
     public IReactiveCommand AddFolderCommand { get; }
     public IReactiveCommand AddFileCommand { get; }
@@ -95,6 +97,8 @@ public class ItemEditorViewModel : ViewModelBase
         Memo = string.Empty;
         SupportedAvatars = [];
         Tags = [];
+        ExcludeFromCommonAvatarCheck = false;
+        IsHidden = false;
     }
 
     public void Open(string? itemId = null)
@@ -116,6 +120,8 @@ public class ItemEditorViewModel : ViewModelBase
                 Memo = item.ItemMemo;
                 SupportedAvatars = item.SupportedAvatars;
                 Tags = item.Tags;
+                ExcludeFromCommonAvatarCheck = item.ExcludeFromCommonAvatarCheck;
+                IsHidden = item.IsHidden;
                 SelectedCategoryIndex = GetCategoryIndex(item.Category);
             }
         }
@@ -261,7 +267,9 @@ public class ItemEditorViewModel : ViewModelBase
             ThumbnailUrl = ThumbnailUrl,
             SupportedAvatars = SupportedAvatars,
             ItemMemo = Memo,
-            Tags = Tags
+            Tags = Tags,
+            IsHidden = IsHidden,
+            ExcludeFromCommonAvatarCheck = ExcludeFromCommonAvatarCheck
         };
 
         bool updateResult = await InstanceRepository.Items.Update(identifier, editContext);
@@ -285,7 +293,9 @@ public class ItemEditorViewModel : ViewModelBase
             ThumbnailUrl = ThumbnailUrl,
             SupportedAvatars = SupportedAvatars,
             ItemMemo = Memo,
-            Tags = Tags
+            Tags = Tags,
+            IsHidden = IsHidden,
+            ExcludeFromCommonAvatarCheck = ExcludeFromCommonAvatarCheck
         };
 
         if (creationContext.BoothId != -1)

@@ -145,6 +145,9 @@
     "ContextMenu.Item.HideItem": "Masquer l'élément",
     "ContextMenu.Item.ShowItem": "Afficher l'élément",
     "ContextMenu.Item.Visibility": "Visibilité",
+    "ContextMenu.Item.CommonAvatarCheck": "Vérification de l'avatar commun",
+    "ContextMenu.Item.IncludeInCommonAvatarCheck": "Inclure dans la vérification de l'avatar commun",
+    "ContextMenu.Item.ExcludeFromCommonAvatarCheck": "Exclure de la vérification de l'avatar commun",
     "ContextMenu.ItemFolder.OpenFolder": "Ouvrir le dossier",
     "ContextMenu.ItemFolder.ShowInExplorer": "Afficher dans l'Explorateur",
     "ContextMenu.ItemFolder.RemoveFolder": "Supprimer le dossier",
@@ -195,6 +198,8 @@
     "Success.FetchAllVariationHashes": "Récupération groupée des hachages terminée ({0} réussies)",
     "Success.HideItem": "Élément masqué",
     "Success.ShowItem": "Élément affiché",
+    "Success.IncludeInCommonAvatarCheck": "Élément inclus dans la vérification de l'avatar commun",
+    "Success.ExcludeFromCommonAvatarCheck": "Élément exclu de la vérification de l'avatar commun",
 
     "VariationUpdate.UpdateAvailable": "Des mises à jour d'éléments sont disponibles",
     "VariationUpdate.NoUpdatesAvailable": "Aucune mise à jour disponible",
@@ -457,6 +462,8 @@
     "ItemEditor.LinkToOriginal.Title": "Utiliser le dossier tel quel",
     "ItemEditor.LinkToOriginal.Description": "Pas de copie pour les dossiers",
     "ItemEditor.RemoveFolder": "Supprimer",
+    "ItemEditor.ExcludeFromCommonAvatarCheck": "Exclure de la vérification de l'avatar commun",
+    "ItemEditor.IsHidden": "Marquer comme masqué",
 
     "SelectAvatars.Title.SupportedAvatars": "Sélectionner les avatars pris en charge",
     "SelectAvatars.Title.ImplementedAvatars": "Sélectionner les avatars implémentés",

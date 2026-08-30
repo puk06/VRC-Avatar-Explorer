@@ -27,6 +27,9 @@ public static class AvatarStatusResolver
         if ((!treatEmptySupportedAvatarAsNone && !item.SupportedAvatars.Any()) || item.SupportedAvatars.Contains(avatarId))
             result.IsSupported = true;
 
+        // 共通素体チェックを無効化する設定がされている場合はここで終了。対応しているかどうかの判定は IsSupported のみで行う。
+        if (item.ExcludeFromCommonAvatarCheck) return result;
+
         // アイテムの対応アバターが共通素体グループで登録されていた時用の処理
         foreach (var id in item.SupportedAvatars)
         {

@@ -145,6 +145,9 @@
     "ContextMenu.Item.HideItem": "隱藏項目",
     "ContextMenu.Item.ShowItem": "顯示項目",
     "ContextMenu.Item.Visibility": "顯示/隱藏",
+    "ContextMenu.Item.CommonAvatarCheck": "公共頭像檢查",
+    "ContextMenu.Item.IncludeInCommonAvatarCheck": "包含在公共頭像檢查中",
+    "ContextMenu.Item.ExcludeFromCommonAvatarCheck": "從公共頭像檢查中排除",
     "ContextMenu.ItemFolder.OpenFolder": "開啟資料夾",
     "ContextMenu.ItemFolder.ShowInExplorer": "在檔案總管中顯示",
     "ContextMenu.ItemFolder.RemoveFolder": "刪除資料夾",
@@ -195,6 +198,8 @@
     "Success.FetchAllVariationHashes": "批次取得雜湊完成（成功 {0} 個）",
     "Success.HideItem": "項目已隱藏",
     "Success.ShowItem": "項目已取消隱藏",
+    "Success.IncludeInCommonAvatarCheck": "項目已包含在公共頭像檢查中",
+    "Success.ExcludeFromCommonAvatarCheck": "項目已從公共頭像檢查中排除",
 
     "VariationUpdate.UpdateAvailable": "有可用的項目更新",
     "VariationUpdate.NoUpdatesAvailable": "沒有更新",
@@ -457,6 +462,8 @@
     "ItemEditor.LinkToOriginal.Title": "直接使用資料夾",
     "ItemEditor.LinkToOriginal.Description": "資料夾不會被複製",
     "ItemEditor.RemoveFolder": "刪除",
+    "ItemEditor.ExcludeFromCommonAvatarCheck": "從公共頭像檢查中排除",
+    "ItemEditor.IsHidden": "標記為隱藏",
 
     "SelectAvatars.Title.SupportedAvatars": "選擇支援頭像",
     "SelectAvatars.Title.ImplementedAvatars": "選擇已實現頭像",

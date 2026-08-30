@@ -145,6 +145,9 @@
     "ContextMenu.Item.HideItem": "Hide Item",
     "ContextMenu.Item.ShowItem": "Show Item",
     "ContextMenu.Item.Visibility": "Visibility",
+    "ContextMenu.Item.CommonAvatarCheck": "Common Avatar Check",
+    "ContextMenu.Item.IncludeInCommonAvatarCheck": "Include in Common Avatar Check",
+    "ContextMenu.Item.ExcludeFromCommonAvatarCheck": "Exclude from Common Avatar Check",
     "ContextMenu.ItemFolder.OpenFolder": "Open Folder",
     "ContextMenu.ItemFolder.ShowInExplorer": "Show in Explorer",
     "ContextMenu.ItemFolder.RemoveFolder": "Remove Folder",
@@ -195,6 +198,8 @@
     "Success.FetchAllVariationHashes": "Bulk hash fetch completed ({0} succeeded)",
     "Success.HideItem": "Item has been hidden",
     "Success.ShowItem": "Item has been unhidden",
+    "Success.IncludeInCommonAvatarCheck": "Item included in common avatar check",
+    "Success.ExcludeFromCommonAvatarCheck": "Item excluded from common avatar check",
 
     "VariationUpdate.UpdateAvailable": "Item updates are available",
     "VariationUpdate.NoUpdatesAvailable": "No updates available",
@@ -457,6 +462,8 @@
     "ItemEditor.LinkToOriginal.Title": "Use Folder As-Is",
     "ItemEditor.LinkToOriginal.Description": "No copy operation for folders",
     "ItemEditor.RemoveFolder": "Remove",
+    "ItemEditor.ExcludeFromCommonAvatarCheck": "Exclude from Common Avatar Check",
+    "ItemEditor.IsHidden": "Mark as Hidden",
 
     "SelectAvatars.Title.SupportedAvatars": "Select Supported Avatars",
     "SelectAvatars.Title.ImplementedAvatars": "Select Implemented Avatars",

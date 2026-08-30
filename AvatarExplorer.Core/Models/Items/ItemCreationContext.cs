@@ -27,6 +27,10 @@ public class ItemCreationContext
     public string ItemMemo { get; set; } = string.Empty;
     /// <summary>タグの一覧です。</summary>
     public IEnumerable<string> Tags { get; set; } = [];
+    /// <summary>非表示フラグです。true の場合は一覧などに表示されません。</summary>
+    public bool IsHidden { get; set; } = false;
+    /// <summary>アイテムを共通素体チェックから外すかどうかのフラグです。trueの場合、対応アバターでのみ判定され、共通素体経由での対応判定がされなくなります。</summary>
+    public bool ExcludeFromCommonAvatarCheck { get; set; } = false;
 
     /// <summary>指定した宛先にサムネイル画像をダウンロードします。</summary>
     /// <param name="destPath">ダウンロード先のファイルパス。</param>

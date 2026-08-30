@@ -111,7 +111,7 @@
                             <StackPanel Spacing="10">
                                 <CheckBox Content="{Binding [ItemEditor.ShowAdvancedSettings], Source={x:Static loc:Localizer.Instance}}" FontSize="13" x:Name="ShowAdvancedSettingsCheckBox"/>
 
-                                <StackPanel IsVisible="{Binding #ShowAdvancedSettingsCheckBox.IsChecked}">
+                                <StackPanel IsVisible="{Binding #ShowAdvancedSettingsCheckBox.IsChecked}" Spacing="8">
                                     <UniformGrid Columns="2">
                                         <StackPanel Spacing="8" Margin="0,0,0,0">
                                             <TextBlock Text="{Binding [ItemEditor.ItemMemo], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
@@ -123,6 +123,14 @@
                                             <Button Content="{Binding TagsText}" Classes="button" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding EditItemTagsCommand}"/>
                                         </StackPanel>
                                     </UniformGrid>
+
+                                    <CheckBox IsChecked="{Binding ExcludeFromCommonAvatarCheck}" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding [ItemEditor.ExcludeFromCommonAvatarCheck], Source={x:Static loc:Localizer.Instance}}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
+                                    </CheckBox>
+
+                                    <CheckBox IsChecked="{Binding IsHidden}" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding [ItemEditor.IsHidden], Source={x:Static loc:Localizer.Instance}}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
+                                    </CheckBox>
                                 </StackPanel>
                             </StackPanel>
 

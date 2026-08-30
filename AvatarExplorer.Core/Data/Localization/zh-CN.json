@@ -145,6 +145,9 @@
     "ContextMenu.Item.HideItem": "隐藏项目",
     "ContextMenu.Item.ShowItem": "显示项目",
     "ContextMenu.Item.Visibility": "显示/隐藏",
+    "ContextMenu.Item.CommonAvatarCheck": "公共头像检查",
+    "ContextMenu.Item.IncludeInCommonAvatarCheck": "包含在公共头像检查中",
+    "ContextMenu.Item.ExcludeFromCommonAvatarCheck": "从公共头像检查中排除",
     "ContextMenu.ItemFolder.OpenFolder": "打开文件夹",
     "ContextMenu.ItemFolder.ShowInExplorer": "在资源管理器中显示",
     "ContextMenu.ItemFolder.RemoveFolder": "删除文件夹",
@@ -195,6 +198,8 @@
     "Success.FetchAllVariationHashes": "批量获取哈希完成（成功 {0} 个）",
     "Success.HideItem": "项目已隐藏",
     "Success.ShowItem": "项目已取消隐藏",
+    "Success.IncludeInCommonAvatarCheck": "项目已包含在公共头像检查中",
+    "Success.ExcludeFromCommonAvatarCheck": "项目已从公共头像检查中排除",
 
     "VariationUpdate.UpdateAvailable": "有可用的项目更新",
     "VariationUpdate.NoUpdatesAvailable": "没有更新",
@@ -457,6 +462,8 @@
     "ItemEditor.LinkToOriginal.Title": "直接使用文件夹",
     "ItemEditor.LinkToOriginal.Description": "文件夹不会被复制",
     "ItemEditor.RemoveFolder": "删除",
+    "ItemEditor.ExcludeFromCommonAvatarCheck": "从公共头像检查中排除",
+    "ItemEditor.IsHidden": "标记为隐藏",
 
     "SelectAvatars.Title.SupportedAvatars": "选择支持头像",
     "SelectAvatars.Title.ImplementedAvatars": "选择已实现头像",
