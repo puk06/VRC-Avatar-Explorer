@@ -174,7 +174,7 @@ public class ItemRepository : RepositoryBase<Item>
         if (result.IsError) return Error.Failure(description: "Failed to extract item paths.");
 
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(ItemUtils.GetRelativePath(result.Value.ItemParentFolder));
-        item.UpdateItemPaths(result.Value.FolderPaths);
+        item.UpdateItemPaths(item.ItemPaths.Concat(result.Value.FolderPaths));
 
         item.UpdateTimestamp(DatetimeUtils.GetCurrentUnixTime());
 
