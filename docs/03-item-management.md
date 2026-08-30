@@ -37,7 +37,7 @@ var context = new ItemCreationContext
     ItemMemo = "アイテムの説明",
     ThumbnailUrl = "https://example.com/thumb.png",  // サムネイルURL（任意）
     IsHidden = false,                    // 非表示フラグ（任意）
-    SkipIndirectCommonAvatarCheck = false // 共通素体チェックから除外するか（任意）
+    SkipIndirectCommonAvatarCheck = false // 間接的な共通素体チェックから除外するか（任意）
 };
 ```
 
@@ -55,7 +55,7 @@ Console.WriteLine($"ID: {newItem.Id}");
 1. 新しい`Item`インスタンスの作成
 2. メタデータの設定
 3. タイムスタンプの設定（作成日時・更新日時）
-4. 対応アバター・タグ・非表示フラグ・共通素体チェック除外フラグの設定
+4. 対応アバター・タグ・非表示フラグ・間接的な共通素体チェック除外フラグの設定
 5. サムネイルのダウンロード（`ThumbnailUrl`が指定されている場合）
 6. データベースへの保存
 7. BoothIdが指定されている場合、バックグラウンドでVariationHashをシード
@@ -135,7 +135,7 @@ var editContext = new ItemEditContext
     ImplementedAvatars = new[] { "item:implemented-id" },
     Tags = new[] { "新しいタグ" },
     IsHidden = false,
-    SkipIndirectCommonAvatarCheck = false, // 共通素体チェックから除外するか（nullの場合は変更なし）
+    SkipIndirectCommonAvatarCheck = false, // 間接的な共通素体チェックから除外するか（nullの場合は変更なし）
     ThumbnailUrl = "https://new-thumbnail.url"  // 新しいサムネイル
 };
 ```
