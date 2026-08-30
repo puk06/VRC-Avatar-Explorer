@@ -14,6 +14,7 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Services;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels;
@@ -323,12 +324,21 @@ public partial class MainView : UserControl
         vm.UpdateHoverThumbnailPosition(GetScreenPosition(e));
     }
 
-    private PixelPoint GetScreenPosition(PointerEventArgs e)
+    private static PixelPoint GetScreenPosition(PointerEventArgs e)
     {
-        var topLevel = TopLevel.GetTopLevel(this);
-        if (topLevel is not Window window) return default;
+        if (TopLevelProvider.Current is not Window window) return default;
         var position = window.PointToScreen(e.GetPosition(window));
-        return new PixelPoint(position.X + HoverOffset, position.Y + HoverOffset);
+
+        var screen = window.Screens?.ScreenFromPoint(position);
+        if (screen is null) return new PixelPoint(position.X + HoverOffset, position.Y + HoverOffset);
+
+        var workingArea = screen.WorkingArea;
+        var size = (int)(InstanceRepository.UserPreferences.HoverIconSize * screen.Scaling);
+        var y = position.Y > workingArea.Y + (workingArea.Height / 2)
+            ? Math.Max(workingArea.Y, position.Y - size - HoverOffset)
+            : position.Y + HoverOffset;
+
+        return new PixelPoint(position.X + HoverOffset, y);
     }
 
     private async void OnItemButtonPointerPressed(object? sender, PointerPressedEventArgs e)
