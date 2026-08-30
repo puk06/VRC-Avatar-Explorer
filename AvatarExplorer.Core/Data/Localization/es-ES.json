@@ -146,7 +146,7 @@
     "ContextMenu.Item.ShowItem": "Mostrar elemento",
     "ContextMenu.Item.Visibility": "Visibilidad",
     "ContextMenu.Item.CommonAvatarCheck": "Comprobación de avatar común",
-    "ContextMenu.Item.IncludeInCommonAvatarCheck": "No omitir comprobación indirecta de avatar común",
+    "ContextMenu.Item.EnableIndirectCommonAvatarCheck": "Habilitar comprobación indirecta de avatar común",
     "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "Omitir comprobación indirecta de avatar común",
     "ContextMenu.ItemFolder.OpenFolder": "Abrir carpeta",
     "ContextMenu.ItemFolder.ShowInExplorer": "Mostrar en el Explorador",
@@ -198,7 +198,7 @@
     "Success.FetchAllVariationHashes": "Obtención masiva de hashes completada ({0} correctos)",
     "Success.HideItem": "Elemento ocultado",
     "Success.ShowItem": "Elemento visible",
-    "Success.IncludeInCommonAvatarCheck": "Elemento incluido en la comprobación de avatar común",
+    "Success.EnableIndirectCommonAvatarCheck": "Comprobación indirecta de avatar común habilitada",
     "Success.SkipIndirectCommonAvatarCheck": "Se omitió la comprobación indirecta de avatar común",
 
     "VariationUpdate.UpdateAvailable": "Hay actualizaciones disponibles para el elemento",

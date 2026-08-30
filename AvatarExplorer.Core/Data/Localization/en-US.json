@@ -146,7 +146,7 @@
     "ContextMenu.Item.ShowItem": "Show Item",
     "ContextMenu.Item.Visibility": "Visibility",
     "ContextMenu.Item.CommonAvatarCheck": "Common Avatar Check",
-    "ContextMenu.Item.IncludeInCommonAvatarCheck": "Don't Skip Indirect Common Avatar Check",
+    "ContextMenu.Item.EnableIndirectCommonAvatarCheck": "Enable Indirect Common Avatar Check",
     "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "Skip Indirect Common Avatar Check",
     "ContextMenu.ItemFolder.OpenFolder": "Open Folder",
     "ContextMenu.ItemFolder.ShowInExplorer": "Show in Explorer",
@@ -198,7 +198,7 @@
     "Success.FetchAllVariationHashes": "Bulk hash fetch completed ({0} succeeded)",
     "Success.HideItem": "Item has been hidden",
     "Success.ShowItem": "Item has been unhidden",
-    "Success.IncludeInCommonAvatarCheck": "Item included in common avatar check",
+    "Success.EnableIndirectCommonAvatarCheck": "Indirect common avatar check has been enabled",
     "Success.SkipIndirectCommonAvatarCheck": "Indirect common avatar check has been skipped",
 
     "VariationUpdate.UpdateAvailable": "Item updates are available",

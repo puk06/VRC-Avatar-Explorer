@@ -146,7 +146,7 @@
     "ContextMenu.Item.ShowItem": "アイテムを表示する",
     "ContextMenu.Item.Visibility": "表示/非表示",
     "ContextMenu.Item.CommonAvatarCheck": "共通素体チェック",
-    "ContextMenu.Item.IncludeInCommonAvatarCheck": "間接的な共通素体チェックをスキップしない",
+    "ContextMenu.Item.EnableIndirectCommonAvatarCheck": "間接的な共通素体チェックを有効にする",
     "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "間接的な共通素体チェックをスキップ",
     "ContextMenu.ItemFolder.OpenFolder": "フォルダを開く",
     "ContextMenu.ItemFolder.ShowInExplorer": "エクスプローラーで表示する",
@@ -198,7 +198,7 @@
     "Success.FetchAllVariationHashes": "ハッシュ一括取得が完了しました ({0}件成功)",
     "Success.HideItem": "アイテムを非表示にしました",
     "Success.ShowItem": "アイテムを非表示から解除しました",
-    "Success.IncludeInCommonAvatarCheck": "アイテムを共通素体チェックに含めました",
+    "Success.EnableIndirectCommonAvatarCheck": "間接的な共通素体チェックを有効にしました",
     "Success.SkipIndirectCommonAvatarCheck": "間接的な共通素体チェックをスキップするように設定しました",
 
     "VariationUpdate.UpdateAvailable": "アイテムの更新が利用可能です",

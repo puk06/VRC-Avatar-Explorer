@@ -146,7 +146,7 @@
     "ContextMenu.Item.ShowItem": "顯示項目",
     "ContextMenu.Item.Visibility": "顯示/隱藏",
     "ContextMenu.Item.CommonAvatarCheck": "公共頭像檢查",
-    "ContextMenu.Item.IncludeInCommonAvatarCheck": "包含在公共頭像檢查中",
+    "ContextMenu.Item.EnableIndirectCommonAvatarCheck": "啟用間接公共頭像檢查",
     "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "從公共頭像檢查中排除",
     "ContextMenu.ItemFolder.OpenFolder": "開啟資料夾",
     "ContextMenu.ItemFolder.ShowInExplorer": "在檔案總管中顯示",
@@ -198,7 +198,7 @@
     "Success.FetchAllVariationHashes": "批次取得雜湊完成（成功 {0} 個）",
     "Success.HideItem": "項目已隱藏",
     "Success.ShowItem": "項目已取消隱藏",
-    "Success.IncludeInCommonAvatarCheck": "項目已包含在公共頭像檢查中",
+    "Success.EnableIndirectCommonAvatarCheck": "間接公共頭像檢查已啟用",
     "Success.SkipIndirectCommonAvatarCheck": "已設定跳過間接公共頭像檢查",
 
     "VariationUpdate.UpdateAvailable": "有可用的項目更新",

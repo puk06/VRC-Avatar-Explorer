@@ -146,7 +146,7 @@
     "ContextMenu.Item.ShowItem": "Afficher l'élément",
     "ContextMenu.Item.Visibility": "Visibilité",
     "ContextMenu.Item.CommonAvatarCheck": "Vérification de l'avatar commun",
-    "ContextMenu.Item.IncludeInCommonAvatarCheck": "Ne pas ignorer la vérification indirecte de l'avatar commun",
+    "ContextMenu.Item.EnableIndirectCommonAvatarCheck": "Activer la vérification indirecte de l'avatar commun",
     "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "Ignorer la vérification indirecte de l'avatar commun",
     "ContextMenu.ItemFolder.OpenFolder": "Ouvrir le dossier",
     "ContextMenu.ItemFolder.ShowInExplorer": "Afficher dans l'Explorateur",
@@ -198,7 +198,7 @@
     "Success.FetchAllVariationHashes": "Récupération groupée des hachages terminée ({0} réussies)",
     "Success.HideItem": "Élément masqué",
     "Success.ShowItem": "Élément affiché",
-    "Success.IncludeInCommonAvatarCheck": "Élément inclus dans la vérification de l'avatar commun",
+    "Success.EnableIndirectCommonAvatarCheck": "La vérification indirecte de l'avatar commun a été activée",
     "Success.SkipIndirectCommonAvatarCheck": "La vérification indirecte de l'avatar commun a été ignorée",
 
     "VariationUpdate.UpdateAvailable": "Des mises à jour d'éléments sont disponibles",

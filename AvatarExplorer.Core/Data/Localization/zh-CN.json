@@ -146,7 +146,7 @@
     "ContextMenu.Item.ShowItem": "显示项目",
     "ContextMenu.Item.Visibility": "显示/隐藏",
     "ContextMenu.Item.CommonAvatarCheck": "公共头像检查",
-    "ContextMenu.Item.IncludeInCommonAvatarCheck": "包含在公共头像检查中",
+    "ContextMenu.Item.EnableIndirectCommonAvatarCheck": "启用间接公共头像检查",
     "ContextMenu.Item.SkipIndirectCommonAvatarCheck": "从公共头像检查中排除",
     "ContextMenu.ItemFolder.OpenFolder": "打开文件夹",
     "ContextMenu.ItemFolder.ShowInExplorer": "在资源管理器中显示",
@@ -198,7 +198,7 @@
     "Success.FetchAllVariationHashes": "批量获取哈希完成（成功 {0} 个）",
     "Success.HideItem": "项目已隐藏",
     "Success.ShowItem": "项目已取消隐藏",
-    "Success.IncludeInCommonAvatarCheck": "项目已包含在公共头像检查中",
+    "Success.EnableIndirectCommonAvatarCheck": "间接公共头像检查已启用",
     "Success.SkipIndirectCommonAvatarCheck": "已设置跳过间接公共头像检查",
 
     "VariationUpdate.UpdateAvailable": "有可用的项目更新",

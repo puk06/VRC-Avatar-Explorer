@@ -43,6 +43,6 @@ public enum ActionKey
     HideItem,
     ShowItem,
 
-    IncludeInCommonAvatarCheck,
+    EnableIndirectCommonAvatarCheck,
     SkipIndirectCommonAvatarCheck
 }
