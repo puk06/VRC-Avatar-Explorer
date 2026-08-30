@@ -11,7 +11,8 @@
     xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
     x:Class="AvatarExplorer.UI.Views.MainView"
     x:DataType="vm:MainViewModel"
-    PointerPressed="OnMainPointerPressed">
+    PointerPressed="OnMainPointerPressed"
+    KeyDown="OnKeyDown">
 
     <UserControl.Styles>
         <Style Selector="Button.PathSegment">
@@ -93,7 +94,7 @@
                     </Border>
                     
                     <materialIcons:MaterialIcon Grid.Column="3" Kind="Magnify" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    <TextBox Text="{Binding SearchText}" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Search.Placeholder], Source={x:Static loc:Localizer.Instance}}" FontSize="14" CornerRadius="8"/>
+                    <TextBox x:Name="SearchTextBox" Text="{Binding SearchText}" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" PlaceholderText="{Binding [Main.Search.Placeholder], Source={x:Static loc:Localizer.Instance}}" FontSize="14" CornerRadius="8"/>
                     
                     <Button Classes="accentbutton" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" CornerRadius="8" Margin="5,0,0,0" Command="{Binding AddItemCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="5">

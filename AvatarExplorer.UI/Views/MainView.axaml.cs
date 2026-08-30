@@ -387,4 +387,12 @@ public partial class MainView : UserControl
             vm.Undo();
         }
     }
+    private void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        var controlPressed = (e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control;
+        if (controlPressed && e.Key == Key.F)
+        {
+            SearchTextBox.Focus();
+        }
+    }
 }
