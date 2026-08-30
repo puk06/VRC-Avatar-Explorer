@@ -324,7 +324,7 @@ public partial class MainView : UserControl
         vm.UpdateHoverThumbnailPosition(GetScreenPosition(e));
     }
 
-    private PixelPoint GetScreenPosition(PointerEventArgs e)
+    private static PixelPoint GetScreenPosition(PointerEventArgs e)
     {
         if (TopLevelProvider.Current is not Window window) return default;
         var position = window.PointToScreen(e.GetPosition(window));
