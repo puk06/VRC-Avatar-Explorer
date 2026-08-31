@@ -123,7 +123,9 @@
     "Processing.Export.Title": "データのエクスポート",
     "Processing.Export.Preparing": "エクスポートの準備中です...",
     "Processing.Export.Copying": "データのコピー中です... {0}%",
-    "Processing.Downloading": "更新プログラムをダウンロードしています",
+    "Processing.SoftwareUpdate.Title": "ソフトのアップデート",
+    "Processing.SoftwareUpdate.Status.Downloading": "ダウンロード中です... {0}%",
+    "Processing.SoftwareUpdate.Status.Validating": "整合性チェック中です...",
 
     "ContextMenu.Item.CheckForUpdate": "アイテムの更新を確認",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "この作者の他のアイテムを表示",

@@ -123,7 +123,9 @@
     "Processing.Export.Title": "导出数据",
     "Processing.Export.Preparing": "正在准备导出...",
     "Processing.Export.Copying": "正在复制数据... {0}%",
-    "Processing.Downloading": "正在下载更新",
+    "Processing.SoftwareUpdate.Title": "软件更新",
+    "Processing.SoftwareUpdate.Status.Downloading": "正在下载... {0}%",
+    "Processing.SoftwareUpdate.Status.Validating": "正在检查完整性...",
 
     "ContextMenu.Item.CheckForUpdate": "检查项目更新",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "显示该作者的其他项目",

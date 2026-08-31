@@ -108,7 +108,7 @@ public class UpdateDialogViewModel : ViewModelBase
         try
         {
             await NotificationManager.ShowWithProgress(
-                Localizer.Instance[Loc.Processing.Downloading],
+                Localizer.Instance[Loc.Processing.SoftwareUpdate.Title],
                 async progress =>
                 {
                     var downloadPath = await DownloadToFileAsync(downloadUri, asset.Sha256, progress);
@@ -167,7 +167,8 @@ public class UpdateDialogViewModel : ViewModelBase
             overwrite: true,
             reportProgress: async (pct) =>
             {
-                reporter.Report($"{Localizer.Instance[Loc.Processing.Downloading]} ({pct}%)", pct);
+                var progress = (int)(pct * 0.9f);
+                reporter.Report(Localizer.Instance.Get(Loc.Processing.SoftwareUpdate.Status.Downloading, progress.ToString()), progress);
                 await Task.CompletedTask;
             }
         );
@@ -177,7 +178,7 @@ public class UpdateDialogViewModel : ViewModelBase
             throw new InvalidOperationException("Download failed.");
         }
 
-        reporter.Report(Localizer.Instance[Loc.Processing.Downloading], 100);
+        reporter.Report(Localizer.Instance[Loc.Processing.SoftwareUpdate.Status.Validating], 90);
 
         // Validate the SHA256 hash of the downloaded file.
         if (string.IsNullOrWhiteSpace(expectedSha256) || expectedSha256.Length != 64 || !expectedSha256.All(Uri.IsHexDigit))
@@ -195,6 +196,8 @@ public class UpdateDialogViewModel : ViewModelBase
             try { File.Delete(targetPath); } catch { /* best effort */ }
             throw new InvalidDataException($"SHA256 verification failed. Expected '{expectedSha256}', got '{actualHash}'.");
         }
+
+        reporter.Report(Localizer.Instance[Loc.Processing.SoftwareUpdate.Status.Validating], 100);
 
         return targetPath;
     }

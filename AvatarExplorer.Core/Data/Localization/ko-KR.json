@@ -123,7 +123,9 @@
     "Processing.Export.Title": "데이터 내보내기",
     "Processing.Export.Preparing": "내보내기 준비 중...",
     "Processing.Export.Copying": "데이터를 복사하는 중입니다... {0}%",
-    "Processing.Downloading": "업데이트를 다운로드하는 중",
+    "Processing.SoftwareUpdate.Title": "소프트웨어 업데이트",
+    "Processing.SoftwareUpdate.Status.Downloading": "다운로드 중... {0}%",
+    "Processing.SoftwareUpdate.Status.Validating": "무결성 확인 중...",
 
     "ContextMenu.Item.CheckForUpdate": "아이템 업데이트 확인",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "이 작성자의 다른 아이템 보기",
