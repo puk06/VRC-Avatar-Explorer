@@ -547,7 +547,13 @@ public class ItemGroupService
     /// <returns>成功した場合は <see cref="Success"/>、失敗した場合はエラー情報。</returns>
     public async Task<ErrorOr<Success>> Import(ImportRequest importRequest)
     {
-        var importer = new DataImporter(ItemRepository, CommonAvatarRepository, _tempAvatars);
-        return await importer.Import(importRequest);
+        var importContext = new ImportContext()
+        {
+            Items = ItemRepository,
+            CommonAvatars = CommonAvatarRepository,
+            TempAvatars = _tempAvatars
+        };
+
+        return await DataImporter.Import(importContext, importRequest);
     }
 }

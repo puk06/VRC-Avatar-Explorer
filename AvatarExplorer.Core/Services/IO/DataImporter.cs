@@ -8,34 +8,18 @@ using AvatarExplorer.Core.Models.External.KonoAsset.Items;
 using AvatarExplorer.Core.Models.External.V1;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.Core.Services.System.Repositories;
 using AvatarExplorer.Core.Utils;
 using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.IO;
 
-/// <summary>
-/// 外部形式（AvatarExplorer V1・KonoAsset・フォルダ）からアイテム・共通素体・仮アバターなどのデータをインポートするためのクラスです。
-/// </summary>
-/// <param name="items">インポート先となるアイテムのリポジトリ。</param>
-/// <param name="commonAvatars">インポート先となる共通素体のリポジトリ。</param>
-/// <param name="tempAvatars">インポート先となる仮アバターのリポジトリ。</param>
-public class DataImporter(ItemRepository items, CommonAvatarRepository commonAvatars, TempAvatarRepository tempAvatars)
+internal static class DataImporter
 {
     private const string V1DatasFolderName = "Datas";
     private static readonly string V1ItemsFolderPrefix = $"{V1DatasFolderName}\\Items\\";
     private static readonly string V1ThumbnailFolderPrefix = $"{V1DatasFolderName}\\Thumbnail\\";
 
-    private readonly ItemRepository _items = items;
-    private readonly CommonAvatarRepository _commonAvatars = commonAvatars;
-    private readonly TempAvatarRepository _tempAvatars = tempAvatars;
-
-    /// <summary>
-    /// リクエストの内容に従って、外部ソースからアイテム・サムネイルなどのデータをインポートします。
-    /// </summary>
-    /// <param name="importRequest">インポート元の種類・データフォルダ・コピー方法・進捗コールバックなどを指定するリクエスト。</param>
-    /// <returns>成功した場合は <see cref="Success"/>、ソースが指定されていない・失敗した場合はエラーを返します。</returns>
-    public async Task<ErrorOr<Success>> Import(ImportRequest importRequest)
+    internal static async Task<ErrorOr<Success>> Import(ImportContext importContext, ImportRequest importRequest)
     {
         var type = importRequest.ImportType;
         var source = type & DataImportType.SourceMask;
@@ -47,9 +31,9 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
         {
             var result = source switch
             {
-                DataImportType.V1 => await FromV1(importRequest),
-                DataImportType.KonoAsset => await FromKonoAsset(importRequest),
-                DataImportType.Folder => await FromFolder(importRequest),
+                DataImportType.V1 => await FromV1(importContext, importRequest),
+                DataImportType.KonoAsset => await FromKonoAsset(importContext, importRequest),
+                DataImportType.Folder => await FromFolder(importContext, importRequest),
                 _ => Error.Unexpected(description: $"Unexpected import source: {source}")
             };
             if (result.IsError) return result;
@@ -59,8 +43,8 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
         {
             var result = source switch
             {
-                DataImportType.V1 => await FromV1Thumbnail(_items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
-                DataImportType.KonoAsset => await FromKonoAssetThumbnail(_items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
+                DataImportType.V1 => await FromV1Thumbnail(importContext, importContext.Items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
+                DataImportType.KonoAsset => await FromKonoAssetThumbnail(importContext, importContext.Items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
                 DataImportType.Folder => Result.Success, // Folders do not have thumbnails to import
                 _ => Error.Unexpected(description: $"Unexpected import source: {source}")
             };
@@ -70,10 +54,12 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
         return Result.Success;
     }
 
-    private async Task<ErrorOr<Success>> FromV1(ImportRequest importRequest)
+    private static async Task<ErrorOr<Success>> FromV1(ImportContext importContext, ImportRequest importRequest)
     {
         try
         {
+            var items = importContext.Items;
+            var commonAvatars = importContext.CommonAvatars;
             var reportProgress = importRequest.ReportProgress;
             var shouldCopyAsset = importRequest.CopyAssetData;
             var dataFolderPath = importRequest.DataFolderPath;
@@ -95,7 +81,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 var previousItemPath = v1Item.ItemPath;
 
                 var item = CreateItemFromItemV1(v1Item);
-                _items.Add(item);
+                items.Add(item);
 
                 var sourcePaths = new List<string>
                 {
@@ -105,7 +91,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 if (!string.IsNullOrEmpty(v1Item.MaterialPath))
                     sourcePaths.Add(ItemUtils.GetFullPath(MigrateV1Path(v1Item.MaterialPath), SystemPathV1.ItemsFolderPath(dataFolderPath)));
 
-                await _items.AddPaths(item.Identifier, sourcePaths.Select(p => new ItemPathEntry { FileName = Path.GetFileName(p), Path = p }), !shouldCopyAsset, false);
+                await items.AddPaths(item.Identifier, sourcePaths.Select(p => new ItemPathEntry { FileName = Path.GetFileName(p), Path = p }), !shouldCopyAsset, false);
 
                 var sourceThumbnailPath = ItemUtils.GetFullPath(MigrateV1Path(v1Item.ImagePath), SystemPathV1.ItemThumbnailsPath(dataFolderPath));
                 var destThumbnailPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
@@ -124,7 +110,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
 
             foreach (var newItemId in pathMapping.Values)
             {
-                var item = _items.Get(newItemId);
+                var item = items.Get(newItemId);
                 if (item == null) continue;
 
                 var supportedAvatars = item.SupportedAvatars.Select(a => pathMapping.TryGetValue(a, out var mapped) ? mapped : a);
@@ -139,15 +125,15 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 var commonAvatar = CreateCommonAvatarFromV1(v1CommonAvatar);
                 var avatarPaths = commonAvatar.Avatars.Select(a => pathMapping.TryGetValue(a, out var mapped) ? mapped : a);
                 commonAvatar.UpdateAvatars(avatarPaths);
-                _commonAvatars.Add(commonAvatar);
+                commonAvatars.Add(commonAvatar);
             }
 
             if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 100));
 
-            _items.Save();
-            _items.MarkAsChanged();
-            _commonAvatars.Save();
-            _commonAvatars.MarkAsChanged();
+            items.Save();
+            items.MarkAsChanged();
+            commonAvatars.Save();
+            commonAvatars.MarkAsChanged();
 
             return Result.Success;
         }
@@ -195,10 +181,12 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
         return path;
     }
 
-    private async Task<ErrorOr<Success>> FromKonoAsset(ImportRequest importRequest)
+    private static async Task<ErrorOr<Success>> FromKonoAsset(ImportContext importContext, ImportRequest importRequest)
     {
         try
         {
+            var items = importContext.Items;
+            var tempAvatars = importContext.TempAvatars;
             var reportProgress = importRequest.ReportProgress;
             var shouldCopyAsset = importRequest.CopyAssetData;
             var dataFolderPath = importRequest.DataFolderPath;
@@ -220,7 +208,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
 
                 var tempAvatar = new TempAvatar(avatarName);
                 avatarNameMap.Add(avatarName, tempAvatar.Identifier);
-                _tempAvatars.Add(tempAvatar);
+                tempAvatars.Add(tempAvatar);
             }
 
             var lastPercent = -1;
@@ -229,7 +217,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                 var konoAssetItem = konoAssetItems[i];
                 var item = konoAssetItem.ToItem();
                 item.UpdateItemPath(string.Empty);
-                _items.Add(item);
+                items.Add(item);
 
                 var sourcePath = Path.Combine(KonoAssetPath.DataPath(dataFolderPath), konoAssetItem.Id);
 
@@ -244,7 +232,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                     .ToList();
 
                 // 移行時は絶対にOriginalを消さないようにする
-                await _items.AddPaths(item.Identifier, targetPaths, !shouldCopyAsset, false);
+                await items.AddPaths(item.Identifier, targetPaths, !shouldCopyAsset, false);
 
                 if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename))
                 {
@@ -266,11 +254,11 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
 
             if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 100));
 
-            _items.Save();
-            _items.MarkAsChanged();
+            items.Save();
+            items.MarkAsChanged();
 
-            _tempAvatars.Save();
-            _tempAvatars.MarkAsChanged();
+            tempAvatars.Save();
+            tempAvatars.MarkAsChanged();
 
             return Result.Success;
         }
@@ -281,10 +269,11 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
         }
     }
 
-    private async Task<ErrorOr<Success>> FromFolder(ImportRequest importRequest)
+    private static async Task<ErrorOr<Success>> FromFolder(ImportContext importContext, ImportRequest importRequest)
     {
         try
         {
+            var items = importContext.Items;
             var folderPath = importRequest.DataFolderPath;
             if (!Directory.Exists(folderPath))
                 return Error.Unexpected(description: $"Folder not found: {folderPath}");
@@ -313,8 +302,8 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
                     CustomCategory = "Folder",
                 };
 
-                var item = await _items.Create(creationContext);
-                await _items.AddPaths(item.Identifier, [new ItemPathEntry { FileName = folderName, Path = subfolder }], !shouldCopyAsset, false);
+                var item = await items.Create(creationContext);
+                await items.AddPaths(item.Identifier, [new ItemPathEntry { FileName = folderName, Path = subfolder }], !shouldCopyAsset, false);
 
                 int percent = (int)(100.0 * i / subfolders.Length);
                 if (percent != lastPercent)
@@ -326,8 +315,8 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
 
             if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 100));
 
-            _items.Save();
-            _items.MarkAsChanged();
+            items.Save();
+            items.MarkAsChanged();
 
             return Result.Success;
         }
@@ -337,7 +326,8 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
             return Error.Failure(description: "Failed to import data from folder.");
         }
     }
-    private async Task<ErrorOr<Success>> FromV1Thumbnail(
+    private static async Task<ErrorOr<Success>> FromV1Thumbnail(
+        ImportContext importContext,
         IEnumerable<Item> currentItems,
         string dataFolderPath,
         Func<(string Message, int Percent), Task>? reportProgress = null)
@@ -367,7 +357,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
             }
 
             await ApplyThumbnailMap(currentItems, sourceThumbnailMap, reportProgress);
-            _items.Save();
+            importContext.Items.Save();
 
             return Result.Success;
         }
@@ -378,7 +368,8 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
         }
     }
 
-    private async Task<ErrorOr<Success>> FromKonoAssetThumbnail(
+    private static async Task<ErrorOr<Success>> FromKonoAssetThumbnail(
+        ImportContext importContext,
         IEnumerable<Item> currentItems,
         string dataFolderPath,
         Func<(string Message, int Percent), Task>? reportProgress = null)
@@ -409,7 +400,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
             }
 
             await ApplyThumbnailMap(currentItems, sourceThumbnailMap, reportProgress);
-            _items.Save();
+            importContext.Items.Save();
 
             return Result.Success;
         }
