@@ -438,7 +438,7 @@ foreach (var token in query.Tokens)
 
 ## SearchFilesForCurrentItem()
 
-アイテム内のファイルを検索：
+アイテム内のファイルを検索します。フォルダが選択されている場合はそのフォルダ内で、選択されていない場合はアイテム全体から検索します。
 
 ```csharp
 var navigation = app.ItemNavigationService;

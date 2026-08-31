@@ -307,7 +307,9 @@ public class ItemNavigationService
     }
 
     /// <summary>
-    /// 現在選択されているアイテム内のファイルを検索します。アイテムが選択されていない場合は空の配列を返します。
+    /// 現在選択されているアイテム内のファイルを検索します。
+    /// フォルダが選択されている場合はそのフォルダ内で、フォルダが選択されていない場合はアイテム全体で検索を行います。
+    /// アイテムが選択されていない場合は空の配列を返します。
     /// </summary>
     /// <param name="query">検索クエリ（ファイル名の一部や拡張子など）。</param>
     /// <returns>条件に一致した <see cref="ItemFile"/> を <see cref="IIdentifiable"/> として格納した配列。</returns>
@@ -316,10 +318,17 @@ public class ItemNavigationService
         var itemId = GetCurrentItemId();
         if (itemId == null) return [];
 
+        // フォルダーが選択されていたら、そのフォルダー内で検索をかける
+        var folderState = _state.FirstOrDefault(FolderPrefix)?.Value;
+        var folderPath = folderState != null && TryParseState(folderState, out _, out var folderHash)
+            ? ResolvePathInternal(folderHash)
+            : null;
+
         var itemFiles = PopulatePathCache(itemId);
         var searchResults = _items.ItemRepository.SearchItemFiles(itemId, query);
 
         return searchResults
+            .Where(i => folderPath == null || i.ParentFolderPath == folderPath)
             .NaturalSort(i => i.FileName)
             .Select(f => itemFiles.FirstOrDefault(i => i.FilePath == f.FilePath))
             .Where(f => f != null)
