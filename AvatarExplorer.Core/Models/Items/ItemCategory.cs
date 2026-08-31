@@ -67,18 +67,6 @@ public record ItemCategory : IIdentifiable
     }
     #endregion
 
-    /// <summary>
-    /// 指定したカテゴリをコピーして新しいカテゴリを初期化します。
-    /// </summary>
-    /// <param name="category">コピー元のカテゴリ。</param>
-    /// <returns>コピーされた新しいカテゴリ。</returns>
-    public static ItemCategory Copy(ItemCategory category)
-    {
-        if (category.Type != ItemType.Custom)
-            return GetFromType(category.Type);
-        return new ItemCategory(category.CustomCategory);
-    }
-
     /// <summary>指定した組み込みタイプ（および任意のカスタムカテゴリ名）を持つカテゴリを初期化します。customCategory が空でない場合は <see cref="ItemType.Custom"/> として扱われます。</summary>
     /// <param name="type">組み込みカテゴリタイプ。</param>
     /// <param name="customCategory">カスタムカテゴリ名。空の場合は type がそのまま使用されます。</param>
