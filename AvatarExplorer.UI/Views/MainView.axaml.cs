@@ -53,6 +53,24 @@ public partial class MainView : UserControl
         RegisterHoverThumbnailEvent();
         RegisterWindowClosingEvent();
         RegisterGridResizeEvent();
+        RegisterKeyDownEvent();
+    }
+
+    private void RegisterKeyDownEvent()
+    {
+        InstanceRepository.MainWindow.KeyDown += HandleKeyDown;
+    }
+
+    private void HandleKeyDown(KeyEventArgs e)
+    {
+        if (InstanceRepository.MainWindow.IsAnyOverlayVisible) return;
+
+        var controlPressed = (e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control;
+        if (controlPressed && e.Key == Key.F)
+        {
+            SearchTextBox.Focus();
+            e.Handled = true;
+        }
     }
 
     private void RegisterGridResizeEvent()
@@ -395,14 +413,6 @@ public partial class MainView : UserControl
         if (sideButtonPressed && DataContext is MainViewModel vm)
         {
             vm.Undo();
-        }
-    }
-    private void OnKeyDown(object? sender, KeyEventArgs e)
-    {
-        var controlPressed = (e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control;
-        if (controlPressed && e.Key == Key.F)
-        {
-            SearchTextBox.Focus();
         }
     }
 }

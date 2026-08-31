@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.Notifications;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
@@ -23,6 +25,7 @@ using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Overlays;
 using ReactiveUI.Fody.Helpers;
 using AvatarExplorer.UI.Services.Utilities;
+using ReactiveUI;
 
 namespace AvatarExplorer.UI.ViewModels;
 
@@ -32,6 +35,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     [Reactive] public ImageBrush? BackgroundImage { get; set; } = null;
     [Reactive] public IBrush? Background { get; set; } = null;
     [Reactive] public FontFamily FontFamily { get; set; } = FontUtils.GetFontFamily(null);
+    [Reactive] public bool IsAnyOverlayVisible { get; set; }
 
     public static MainWindowViewModel Instance { get; private set; } = null!;
     public string? LastDragDropPath { get; set; } = null;
@@ -75,6 +79,7 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     [Reactive] public bool IsArchivePasswordDialogVisible { get; set; }
 
     public event Action? WindowClosing;
+    public event Action<KeyEventArgs>? KeyDown;
 
     public string[] ApplicationArgs { get; private set; } = [];
 
@@ -88,6 +93,8 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
 
     public async Task Initialize()
     {
+        InitializeObservable();
+
         AppInitializer.InitializeApp();
         AppInitializer.InitializeLocalization(Path.Combine(AppContext.BaseDirectory, "locales"));
         AppInitializer.InitializeContextMenu();
@@ -108,6 +115,37 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
         ApplyPreferenceSettings(InstanceRepository.UserPreferences);
         UpdateFontFamily();
         UpdateWindowTitle();
+    }
+    private void InitializeObservable()
+    {
+        var overlayVisibilityChanges = new[]
+        {
+            this.WhenAnyValue(x => x.SettingsVM.IsVisible),
+            this.WhenAnyValue(x => x.ItemEditorVM.IsVisible),
+            this.WhenAnyValue(x => x.SelectAvatarsVisible),
+            this.WhenAnyValue(x => x.ResolveTempAvatarVM.IsVisible),
+            this.WhenAnyValue(x => x.EditCommonAvatarsVM.IsVisible),
+            this.WhenAnyValue(x => x.IsEditMemoVisible),
+            this.WhenAnyValue(x => x.IsEditTagsVisible),
+            this.WhenAnyValue(x => x.ImportDataVM.IsVisible),
+            this.WhenAnyValue(x => x.ResetDatabaseVM.IsVisible),
+            this.WhenAnyValue(x => x.ExportDataVM.IsVisible),
+            this.WhenAnyValue(x => x.FetchAllThumbnailsVM.IsVisible),
+            this.WhenAnyValue(x => x.FetchAllVariationHashesVM.IsVisible),
+            this.WhenAnyValue(x => x.UnitypackageViewerVM.IsVisible),
+            this.WhenAnyValue(x => x.PdfViewerVM.IsVisible),
+            this.WhenAnyValue(x => x.IsTextDialogVisible),
+            this.WhenAnyValue(x => x.IsArchivePasswordDialogVisible),
+            this.WhenAnyValue(x => x.IsUpdateDialogVisible),
+            this.WhenAnyValue(x => x.MergeCategoryVM.IsVisible),
+            this.WhenAnyValue(x => x.TagEditorVM.IsVisible),
+            this.WhenAnyValue(x => x.IsYesNoDialogVisible),
+            this.WhenAnyValue(x => x.InitialSetupVM.IsVisible),
+            this.WhenAnyValue(x => x.ErrorLogVM.IsVisible)
+        };
+
+        Observable.Merge(overlayVisibilityChanges)
+            .Subscribe(_ => IsAnyOverlayVisible = CheckAnyOverlayVisible());
     }
     public async Task OnInitialized()
     {
@@ -312,5 +350,36 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     {
         WindowClosing?.Invoke();
         AvatarExplorerApp.ClearTemp();
+    }
+
+    public void OnKeyDown(KeyEventArgs e)
+    {
+        KeyDown?.Invoke(e);
+    }
+
+    private bool CheckAnyOverlayVisible()
+    {
+        return SettingsVM.IsVisible
+            || ItemEditorVM.IsVisible
+            || SelectAvatarsVisible
+            || ResolveTempAvatarVM.IsVisible
+            || EditCommonAvatarsVM.IsVisible
+            || IsEditMemoVisible
+            || IsEditTagsVisible
+            || ImportDataVM.IsVisible
+            || ResetDatabaseVM.IsVisible
+            || ExportDataVM.IsVisible
+            || FetchAllThumbnailsVM.IsVisible
+            || FetchAllVariationHashesVM.IsVisible
+            || UnitypackageViewerVM.IsVisible
+            || PdfViewerVM.IsVisible
+            || IsTextDialogVisible
+            || IsArchivePasswordDialogVisible
+            || IsUpdateDialogVisible
+            || MergeCategoryVM.IsVisible
+            || TagEditorVM.IsVisible
+            || IsYesNoDialogVisible
+            || InitialSetupVM.IsVisible
+            || ErrorLogVM.IsVisible;
     }
 }

@@ -11,8 +11,7 @@
     xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
     x:Class="AvatarExplorer.UI.Views.MainView"
     x:DataType="vm:MainViewModel"
-    PointerPressed="OnMainPointerPressed"
-    KeyDown="OnKeyDown">
+    PointerPressed="OnMainPointerPressed">
 
     <UserControl.Styles>
         <Style Selector="Button.PathSegment">

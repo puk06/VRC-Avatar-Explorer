@@ -16,7 +16,8 @@
         DragDrop.AllowDrop="True"
         DragDrop.DragOver="OnDragDropOver"
         DragDrop.Drop="OnDragDrop"
-        Closing="OnWindowClosing">
+        Closing="OnWindowClosing"
+        KeyDown="OnKeyDown">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>
