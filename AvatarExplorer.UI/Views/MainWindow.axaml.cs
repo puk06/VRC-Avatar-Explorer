@@ -64,4 +64,10 @@ public partial class MainWindow : Window
         if (DataContext is MainWindowViewModel vm)
             vm.OnWindowClosing();
     }
+
+    private void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (DataContext is MainWindowViewModel vm)
+            vm.OnKeyDown(e);
+    }
 }
