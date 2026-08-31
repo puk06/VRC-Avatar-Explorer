@@ -7,7 +7,7 @@ namespace AvatarExplorer.UI.ViewModels.Component;
 public class ItemCategoryViewModel(ItemCategory category) : ViewModelBase
 {
     [Reactive] public string DisplayName { get; set; } = string.Empty;
-    public ItemCategory Category { get; } = ItemCategory.Copy(category);
+    public ItemCategory Category { get; } = category;
 
     public ItemCategoryViewModel Update()
     {

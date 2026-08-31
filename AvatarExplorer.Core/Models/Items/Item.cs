@@ -59,7 +59,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
         Author = author;
         AuthorId = authorId;
         BoothId = boothId;
-        Category = ItemCategory.Copy(category);
+        Category = category;
         ItemMemo = itemMemo;
     }
 
