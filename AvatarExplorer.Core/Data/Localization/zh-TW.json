@@ -123,7 +123,9 @@
     "Processing.Export.Title": "匯出資料",
     "Processing.Export.Preparing": "正在準備匯出...",
     "Processing.Export.Copying": "正在複製資料... {0}%",
-    "Processing.Downloading": "正在下載更新",
+    "Processing.SoftwareUpdate.Title": "軟體更新",
+    "Processing.SoftwareUpdate.Status.Downloading": "正在下載... {0}%",
+    "Processing.SoftwareUpdate.Status.Validating": "正在檢查完整性...",
 
     "ContextMenu.Item.CheckForUpdate": "檢查項目更新",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "顯示此作者的其他項目",

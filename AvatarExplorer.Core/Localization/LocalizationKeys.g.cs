@@ -209,7 +209,15 @@ public static class Loc
             public const string Preparing = "Processing.Export.Preparing";
             public const string Copying = "Processing.Export.Copying";
         }
-        public const string Downloading = "Processing.Downloading";
+        public static class SoftwareUpdate
+        {
+            public const string Title = "Processing.SoftwareUpdate.Title";
+            public static class Status
+            {
+                public const string Downloading = "Processing.SoftwareUpdate.Status.Downloading";
+                public const string Validating = "Processing.SoftwareUpdate.Status.Validating";
+            }
+        }
     }
     public static class ContextMenu
     {

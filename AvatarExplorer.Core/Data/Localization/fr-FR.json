@@ -123,7 +123,9 @@
     "Processing.Export.Title": "Exportation des données",
     "Processing.Export.Preparing": "Préparation de l'exportation...",
     "Processing.Export.Copying": "Copie des données... {0}%",
-    "Processing.Downloading": "Téléchargement de la mise à jour",
+    "Processing.SoftwareUpdate.Title": "Mise à jour du logiciel",
+    "Processing.SoftwareUpdate.Status.Downloading": "Téléchargement... {0}%",
+    "Processing.SoftwareUpdate.Status.Validating": "Vérification de l'intégrité...",
 
     "ContextMenu.Item.CheckForUpdate": "Vérifier les mises à jour de l'élément",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "Afficher les autres éléments de cet auteur",
