@@ -28,7 +28,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     /// <summary>サムネイル画像のファイル名です。</summary>
     [JsonInclude] public string ThumbnailFileName { get; private set; } = string.Empty;
     /// <summary>アイテムのカテゴリ（組み込みタイプとカスタムカテゴリ）です。</summary>
-    [JsonInclude] public ItemCategory Category { get; private set; } = new(ItemType.None);
+    [JsonInclude] public ItemCategory Category { get; private set; } = ItemCategory.Get(ItemType.None);
     /// <summary>対応アバターの識別子（Identifier）一覧です。</summary>
     [JsonInclude] public ImmutableArray<string> SupportedAvatars { get; private set; } = [];
     /// <summary>実装済みアバターの識別子（Identifier）一覧です。</summary>
@@ -59,7 +59,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
         Author = author;
         AuthorId = authorId;
         BoothId = boothId;
-        Category = new ItemCategory(category);
+        Category = ItemCategory.Copy(category);
         ItemMemo = itemMemo;
     }
 
@@ -77,7 +77,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     public void UpdateBoothId(int boothId) => BoothId = boothId;
     /// <summary>カテゴリを更新します。</summary>
     /// <param name="category">新しいカテゴリ。</param>
-    public void UpdateCategory(ItemCategory category) => Category = new ItemCategory(category);
+    public void UpdateCategory(ItemCategory category) => Category = category;
     /// <summary>メモを更新します。</summary>
     /// <param name="memo">新しいメモ。</param>
     public void UpdateMemo(string memo) => ItemMemo = memo;

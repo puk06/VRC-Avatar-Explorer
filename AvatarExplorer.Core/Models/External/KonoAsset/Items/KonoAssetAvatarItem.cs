@@ -16,7 +16,7 @@ public class KonoAssetAvatarItem : AbstractKonoAssetItem
     {
         Item migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.UpdateItemPath($"<sys>{Id}");
-        migratedItem.UpdateCategory(new ItemCategory(ItemType.Avatar));
+        migratedItem.UpdateCategory(ItemCategory.Get(ItemType.Avatar));
 
         return migratedItem;
     }

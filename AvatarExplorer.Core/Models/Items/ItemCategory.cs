@@ -36,14 +36,14 @@ public record ItemCategory : IIdentifiable
     {
         if (identifier.StartsWith(CustomCategoryPrefix))
         {
-            return new ItemCategory(identifier[CustomCategoryPrefix.Length..]);
+            return Get(identifier[CustomCategoryPrefix.Length..]);
         }
         else if (identifier.StartsWith(TypeCategoryPrefix))
         {
             var typeString = identifier[TypeCategoryPrefix.Length..];
             if (int.TryParse(typeString, out int typeValue) && Enum.IsDefined(typeof(ItemType), typeValue))
             {
-                return new ItemCategory((ItemType)typeValue);
+                return GetFromType((ItemType)typeValue);
             }
         }
 
@@ -51,36 +51,52 @@ public record ItemCategory : IIdentifiable
     }
 
     #region Constructor
-    /// <summary><see cref="ItemType.None"/> を持つ空のカテゴリを初期化します。</summary>
-    public ItemCategory()
+    [JsonConstructor]
+    private ItemCategory()
     {
     }
-
-    /// <summary>既存の <see cref="ItemCategory"/> をコピーして新しいカテゴリを初期化します。</summary>
-    /// <param name="category">コピー元のカテゴリ。</param>
-    public ItemCategory(ItemCategory category)
-    {
-        Type = category.Type;
-        CustomCategory = category.CustomCategory;
-    }
-
-    /// <summary>指定した組み込みタイプ（および任意のカスタムカテゴリ名）を持つカテゴリを初期化します。customCategory が空でない場合は <see cref="ItemType.Custom"/> として扱われます。</summary>
-    /// <param name="type">組み込みカテゴリタイプ。</param>
-    /// <param name="customCategory">カスタムカテゴリ名。空の場合は type がそのまま使用されます。</param>
-    public ItemCategory(ItemType type, string customCategory = "")
+    private ItemCategory(ItemType type, string customCategory = "")
     {
         Type = string.IsNullOrEmpty(customCategory) ? type : ItemType.Custom;
         CustomCategory = customCategory;
     }
-
-    /// <summary>指定したカスタムカテゴリ名を持つカテゴリ（<see cref="ItemType.Custom"/>）を初期化します。</summary>
-    /// <param name="customCategory">カスタムカテゴリ名。</param>
-    public ItemCategory(string customCategory)
+    private ItemCategory(string customCategory)
     {
         Type = ItemType.Custom;
         CustomCategory = customCategory;
     }
     #endregion
+
+    /// <summary>
+    /// 指定したカテゴリをコピーして新しいカテゴリを初期化します。
+    /// </summary>
+    /// <param name="category">コピー元のカテゴリ。</param>
+    /// <returns>コピーされた新しいカテゴリ。</returns>
+    public static ItemCategory Copy(ItemCategory category)
+    {
+        if (category.Type != ItemType.Custom)
+            return GetFromType(category.Type);
+        return new ItemCategory(category.CustomCategory);
+    }
+
+    /// <summary>指定した組み込みタイプ（および任意のカスタムカテゴリ名）を持つカテゴリを初期化します。customCategory が空でない場合は <see cref="ItemType.Custom"/> として扱われます。</summary>
+    /// <param name="type">組み込みカテゴリタイプ。</param>
+    /// <param name="customCategory">カスタムカテゴリ名。空の場合は type がそのまま使用されます。</param>
+    public static ItemCategory Get(ItemType type = ItemType.None, string customCategory = "")
+    {
+        if (string.IsNullOrEmpty(customCategory))
+        {
+            return GetFromType(type);
+        }
+        else
+        {
+            return Get(customCategory);
+        }
+    }
+    public static ItemCategory Get(string customCategory)
+    {
+        return new ItemCategory(customCategory);
+    }
 
     /// <summary>カテゴリの表示名を返します。カスタムカテゴリの場合はその名前、それ以外はローカライズキー（または enum 名）になります。</summary>
     /// <returns>カテゴリの表示名。</returns>
@@ -91,16 +107,36 @@ public record ItemCategory : IIdentifiable
         (CustomCategoryPrefix + CustomCategory) :
         (TypeCategoryPrefix + (int)Type);
 
-    [JsonIgnore] public static readonly ItemCategory None = new(ItemType.None);
-    [JsonIgnore] public static readonly ItemCategory Avatar = new(ItemType.Avatar);
-    [JsonIgnore] public static readonly ItemCategory Clothing = new(ItemType.Clothing);
-    [JsonIgnore] public static readonly ItemCategory Texture = new(ItemType.Texture);
-    [JsonIgnore] public static readonly ItemCategory Gimmick = new(ItemType.Gimmick);
-    [JsonIgnore] public static readonly ItemCategory Accessory = new(ItemType.Accessory);
-    [JsonIgnore] public static readonly ItemCategory HairStyle = new(ItemType.HairStyle);
-    [JsonIgnore] public static readonly ItemCategory Animation = new(ItemType.Animation);
-    [JsonIgnore] public static readonly ItemCategory Tool = new(ItemType.Tool);
-    [JsonIgnore] public static readonly ItemCategory Shader = new(ItemType.Shader);
-    [JsonIgnore] public static readonly ItemCategory All = new(ItemType.All);
-    [JsonIgnore] public static readonly ItemCategory Hidden = new(ItemType.Hidden);
+    [JsonIgnore] private static readonly ItemCategory None = new(ItemType.None);
+    [JsonIgnore] private static readonly ItemCategory Avatar = new(ItemType.Avatar);
+    [JsonIgnore] private static readonly ItemCategory Clothing = new(ItemType.Clothing);
+    [JsonIgnore] private static readonly ItemCategory Texture = new(ItemType.Texture);
+    [JsonIgnore] private static readonly ItemCategory Gimmick = new(ItemType.Gimmick);
+    [JsonIgnore] private static readonly ItemCategory Accessory = new(ItemType.Accessory);
+    [JsonIgnore] private static readonly ItemCategory HairStyle = new(ItemType.HairStyle);
+    [JsonIgnore] private static readonly ItemCategory Animation = new(ItemType.Animation);
+    [JsonIgnore] private static readonly ItemCategory Tool = new(ItemType.Tool);
+    [JsonIgnore] private static readonly ItemCategory Shader = new(ItemType.Shader);
+    [JsonIgnore] private static readonly ItemCategory All = new(ItemType.All);
+    [JsonIgnore] private static readonly ItemCategory Hidden = new(ItemType.Hidden);
+
+    private static ItemCategory GetFromType(ItemType type)
+    {
+        return type switch
+        {
+            ItemType.None => None,
+            ItemType.Avatar => Avatar,
+            ItemType.Clothing => Clothing,
+            ItemType.Texture => Texture,
+            ItemType.Gimmick => Gimmick,
+            ItemType.Accessory => Accessory,
+            ItemType.HairStyle => HairStyle,
+            ItemType.Animation => Animation,
+            ItemType.Tool => Tool,
+            ItemType.Shader => Shader,
+            ItemType.All => All,
+            ItemType.Hidden => Hidden,
+            _ => new ItemCategory(type)
+        };
+    }
 }

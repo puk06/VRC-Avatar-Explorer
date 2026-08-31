@@ -45,7 +45,7 @@ public class MergeCategoryViewModel : ViewModelBase
         var sourceIndex = GetCategoryIndex(ItemCategory.FromIdentifier(state));
         SelectedSourceCategoryIndex = Categories.IsValidIndex(sourceIndex) ? sourceIndex : 0;
 
-        var targetIndex = GetCategoryIndex(new(ItemType.Avatar));
+        var targetIndex = GetCategoryIndex(ItemCategory.Get(ItemType.Avatar));
         SelectedTargetCategoryIndex = Categories.IsValidIndex(targetIndex) ? targetIndex : 0;
 
         IsVisible = true;

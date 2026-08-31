@@ -76,7 +76,7 @@ Identifierを指定して選択を行います。
 navigation.Select("avatar:item:e10abf3d-cca7-4117-a5e9-52926a4f8990");
 
 // カテゴリを選択
-navigation.Select("type:2"); // = new ItemCategory(ItemType.Clothing).Identifier
+navigation.Select("type:2"); // = ItemCategory.Get(ItemType.Clothing).Identifier
 
 // アイテムを選択
 navigation.Select("item:91517db1-eaf3-4137-914f-551cf3669692");

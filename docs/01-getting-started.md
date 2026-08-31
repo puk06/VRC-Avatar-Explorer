@@ -238,11 +238,11 @@ var category2 = ItemCategory.FromIdentifier("custom:マイカテゴリ"); // Cus
 var category3 = ItemCategory.FromIdentifier("invalid");            // ItemType.None
 
 // 表示名を取得
-var category = new ItemCategory(ItemType.Clothing);
+var category = ItemCategory.Get(ItemType.Clothing);
 Console.WriteLine(category.ToString());        // "ItemCategory.Clothing" (LocalizationKey)
 Console.WriteLine(category.Identifier);        // "type:2"
 
-var customCategory = new ItemCategory("オリジナル");
+var customCategory = ItemCategory.Get("オリジナル");
 Console.WriteLine(customCategory.ToString());  // "オリジナル"
 Console.WriteLine(customCategory.Identifier);  // "custom:オリジナル"
 ```

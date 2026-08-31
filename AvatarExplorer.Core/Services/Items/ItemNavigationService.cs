@@ -191,16 +191,17 @@ public class ItemNavigationService
         // アバター選択時にアバターカテゴリを非表示にする設定が有効な場合、アバターカテゴリを除外する
         if (prefix == AvatarPrefix && AvatarExplorerApp.Instance.RuntimeSettings.HideAvatarCategoryWhenAvatarSelected)
         {
-            categolized.RemoveAll(f => f.Identifier == ItemCategory.Avatar.Identifier);
+            categolized.RemoveAll(f => f.Identifier == ItemCategory.Get(ItemType.Avatar).Identifier);
         }
 
         // Hidden
         if (items.Any(i => i.IsHidden))
         {
-            categolized.Add(new Folder(ItemCategory.Hidden.Identifier)
+            var hiddenCategory = ItemCategory.Get(ItemType.Hidden);
+            categolized.Add(new Folder(hiddenCategory.Identifier)
             {
-                Title = ItemCategory.Hidden.ToString(),
-                TitleLocalizable = ItemCategory.Hidden.IsLocalizable,
+                Title = hiddenCategory.ToString(),
+                TitleLocalizable = hiddenCategory.IsLocalizable,
                 ItemCount = items.Count(i => i.IsHidden)
             });
         }
