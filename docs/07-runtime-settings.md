@@ -40,6 +40,9 @@ public record RuntimeSettings
     // 対応アバターが空の場合に「なし」として扱うか
     public bool TreatEmptySupportedAvatarAsNone { get; init; }
 
+    // アバター選択時にアバターカテゴリを非表示にするか
+    public bool HideAvatarCategoryWhenAvatarSelected { get; init; }
+
     // 最大並列処理数
     public int MaxDegreeOfParallelism { get; init; }
 

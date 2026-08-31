@@ -188,14 +188,19 @@ public class ItemNavigationService
             };
         }).ToList<IIdentifiable>();
 
+        // アバター選択時にアバターカテゴリを非表示にする設定が有効な場合、アバターカテゴリを除外する
+        if (prefix == AvatarPrefix && AvatarExplorerApp.Instance.RuntimeSettings.HideAvatarCategoryWhenAvatarSelected)
+        {
+            categolized.RemoveAll(f => f.Identifier == ItemCategory.Avatar.Identifier);
+        }
+
         // Hidden
         if (items.Any(i => i.IsHidden))
         {
-            var hiddenCategory = new ItemCategory(ItemType.Hidden);
-            categolized.Add(new Folder(hiddenCategory.Identifier)
+            categolized.Add(new Folder(ItemCategory.Hidden.Identifier)
             {
-                Title = hiddenCategory.ToString(),
-                TitleLocalizable = hiddenCategory.IsLocalizable,
+                Title = ItemCategory.Hidden.ToString(),
+                TitleLocalizable = ItemCategory.Hidden.IsLocalizable,
                 ItemCount = items.Count(i => i.IsHidden)
             });
         }

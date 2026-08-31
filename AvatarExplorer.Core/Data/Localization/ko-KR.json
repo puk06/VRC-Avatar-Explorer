@@ -325,6 +325,8 @@
     "Settings.LinkToOriginal.Description": "폴더를 추가할 때, 복사하지 않고 그대로 사용합니다",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "대응 아바타 미설정을 미대응으로 처리",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "아이템에 대응 아바타가 하나도 설정되지 않은 경우, 모든 아바타에 대응하는 것이 아니라 어느 아바타에도 대응하지 않는 것으로 간주합니다.",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Title": "아바타 선택 시 아바타 카테고리 숨기기",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Description": "아바타에서 아이템을 선택할 때, 카테고리 목록에서 아바타 카테고리를 제외하여 표시합니다.",
     "Settings.TagEditor.Title": "태그 편집",
     "Settings.TagEditor.Description": "기존 태그를 편집할 수 있습니다",
     "Settings.TagEditor.Open": "열기",

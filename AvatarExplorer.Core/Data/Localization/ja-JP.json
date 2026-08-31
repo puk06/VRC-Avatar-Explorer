@@ -325,6 +325,8 @@
     "Settings.LinkToOriginal.Description": "フォルダ追加時、そのフォルダをコピーせずにそのまま使用します",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "対応アバター未設定を未対応として扱う",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "アイテムの対応アバターが一つも設定されていない場合、全てのアバターに対応しているのではなく、どのアバターにも対応していないとみなすようになります。",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Title": "アバター選択時はアバターカテゴリを非表示にする",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Description": "アバターからアイテムを選択する時、カテゴリ一覧からアバターカテゴリは除外して表示します。",
     "Settings.TagEditor.Title": "タグの編集",
     "Settings.TagEditor.Description": "既存タグの編集ができます",
     "Settings.TagEditor.Open": "開く",

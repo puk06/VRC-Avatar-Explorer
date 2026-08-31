@@ -325,6 +325,8 @@
     "Settings.LinkToOriginal.Description": "添加文件夹时，直接使用该文件夹而不进行复制",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "将未设置支持头像视为不支持",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "当项目没有设置任何支持头像时，不将其视为支持所有头像，而是视为不支持任何头像。",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Title": "选择头像时隐藏头像分类",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Description": "从头像选择项目时，从分类列表中排除头像分类进行显示。",
     "Settings.TagEditor.Title": "标签编辑",
     "Settings.TagEditor.Description": "可以编辑现有标签",
     "Settings.TagEditor.Open": "打开",

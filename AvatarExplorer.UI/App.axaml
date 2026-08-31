@@ -522,6 +522,7 @@
         <Style Selector="TextBlock.settingslabel.title">
             <Setter Property="FontSize" Value="17"/>
             <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
         </Style>
 

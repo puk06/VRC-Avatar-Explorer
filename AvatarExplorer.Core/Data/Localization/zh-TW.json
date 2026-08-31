@@ -325,6 +325,8 @@
     "Settings.LinkToOriginal.Description": "當新增資料夾時，直接使用該資料夾而不進行複製",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "將未設定支援頭像視為不支援",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "當項目沒有設定任何支援頭像時，不將其視為支援所有頭像，而是視為不支援任何頭像。",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Title": "選擇頭像時隱藏頭像分類",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Description": "從頭像選擇項目時，從分類列表中排除頭像分類進行顯示。",
     "Settings.TagEditor.Title": "標籤編輯",
     "Settings.TagEditor.Description": "可以編輯現有標籤",
     "Settings.TagEditor.Open": "開啟",

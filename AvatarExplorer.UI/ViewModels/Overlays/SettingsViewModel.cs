@@ -49,6 +49,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public bool RemoveOriginal { get; set; }
     [Reactive] public bool LinkToOriginal { get; set; }
     [Reactive] public bool TreatEmptySupportedAvatarAsNone { get; set; }
+    [Reactive] public bool HideAvatarCategoryWhenAvatarSelected { get; set; }
     [Reactive] public double ThumbnailCompressionMaxSize { get; set; }
     [Reactive] public bool UseBackgroundImage { get; set; }
     [Reactive] public string BackgroundImagePath { get; set; } = string.Empty;
@@ -155,6 +156,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         RemoveOriginal = runtimeSettings.RemoveOriginal;
         LinkToOriginal = runtimeSettings.ShouldLinkToOriginal;
         TreatEmptySupportedAvatarAsNone = runtimeSettings.TreatEmptySupportedAvatarAsNone;
+        HideAvatarCategoryWhenAvatarSelected = runtimeSettings.HideAvatarCategoryWhenAvatarSelected;
         ThumbnailCompressionMaxSize = preferences.ThumbnailCompressionMaxEdge;
         UseBackgroundImage = preferences.UseBackgroundImage;
         BackgroundImagePath = preferences.BackgroundImage;
@@ -447,6 +449,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
             ShouldLinkToOriginal = LinkToOriginal,
             AutoBackupInterval = ValueParser.Int(AutoBackupInterval, 5),
             TreatEmptySupportedAvatarAsNone = TreatEmptySupportedAvatarAsNone,
+            HideAvatarCategoryWhenAvatarSelected = HideAvatarCategoryWhenAvatarSelected,
             MaxDegreeOfParallelism = ValueParser.Int(MaxDegreeOfParallelism, 4),
             AutoChangeUnitypackagePath = AutoChangeUnitypackagePath,
             CheckForUpdate = CheckForUpdate,
