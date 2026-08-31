@@ -302,6 +302,7 @@ public partial class MainView : UserControl
         image.PointerEntered -= OnItemImagePointerEntered;
         image.PointerExited -= OnItemImagePointerExited;
         image.PointerMoved -= OnItemImagePointerMoved;
+        if (DataContext is MainViewModel vm) vm.HideHoverThumbnail();
     }
 
     private void OnItemButtonLoaded(object? sender, RoutedEventArgs e)
