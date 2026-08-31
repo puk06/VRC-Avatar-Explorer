@@ -47,7 +47,7 @@ public record BoothItem
     /// 商品名とカテゴリから推定された AvatarExplorer のアイテムカテゴリ。
     /// </summary>
     [JsonIgnore]
-    public ItemCategory EstimatedCategory { get; init; } = new(ItemType.None);
+    public ItemCategory EstimatedCategory { get; init; } = ItemCategory.Get(ItemType.None);
 
     /// <summary>
     /// サムネイル画像のうち最初の画像の URL。画像が存在しない場合は空文字列。

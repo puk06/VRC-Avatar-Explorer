@@ -40,7 +40,7 @@ public static class BoothService
 
             return boothItem with
             {
-                EstimatedCategory = new(SuggestItemType(boothItem.Title, boothItem.Category.Name)),
+                EstimatedCategory = ItemCategory.Get(SuggestItemType(boothItem.Title, boothItem.Category.Name)),
             };
         }
         catch (Exception)

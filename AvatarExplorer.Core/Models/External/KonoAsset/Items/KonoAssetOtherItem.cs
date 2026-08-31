@@ -24,7 +24,7 @@ public class KonoAssetOtherItem : AbstractKonoAssetItem
     {
         var migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.UpdateItemPath(ItemUtils.RootFolderPrefix + Id);
-        migratedItem.UpdateCategory(new ItemCategory(string.IsNullOrEmpty(Category) ? "Others (KonoAsset)" : $"{Category} (KonoAsset)" ));
+        migratedItem.UpdateCategory(ItemCategory.Get(string.IsNullOrEmpty(Category) ? "Others (KonoAsset)" : $"{Category} (KonoAsset)" ));
 
         return migratedItem;
     }

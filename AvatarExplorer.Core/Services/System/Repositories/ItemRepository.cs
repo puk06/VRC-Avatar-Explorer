@@ -61,7 +61,7 @@ public class ItemRepository : RepositoryBase<Item>
             context.Author,
             context.AuthorId,
             context.BoothId,
-            new ItemCategory(context.ItemType, context.CustomCategory),
+            ItemCategory.Get(context.ItemType, context.CustomCategory),
             context.ItemMemo
         );
         var now = DatetimeUtils.GetCurrentUnixTime();
@@ -132,7 +132,7 @@ public class ItemRepository : RepositoryBase<Item>
         if (context.Author != null) item.UpdateAuthor(context.Author);
         if (context.AuthorId != null) item.UpdateAuthorId(context.AuthorId);
         if (context.BoothId != null) item.UpdateBoothId(context.BoothId.Value);
-        if (context.ItemType != null) item.UpdateCategory(new ItemCategory(context.ItemType.Value, context.CustomCategory ?? item.Category.CustomCategory));
+        if (context.ItemType != null) item.UpdateCategory(ItemCategory.Get(context.ItemType.Value, context.CustomCategory ?? item.Category.CustomCategory));
         if (context.ItemMemo != null) item.UpdateMemo(context.ItemMemo);
         if (context.ItemPath != null) item.UpdateItemPath(context.ItemPath);
         if (context.IsHidden != null) item.UpdateIsHidden(context.IsHidden.Value);
@@ -363,7 +363,7 @@ public class ItemRepository : RepositoryBase<Item>
     /// <param name="newName">変更後のカスタムカテゴリ名。</param>
     public void RenameCustomCategory(string oldname, string newName)
     {
-        var newCategory = new ItemCategory(newName);
+        var newCategory = ItemCategory.Get(newName);
 
         GetAll()
             .Where(i => i.Category.Type == ItemType.Custom && i.Category.CustomCategory == oldname)
@@ -464,7 +464,7 @@ public class ItemRepository : RepositoryBase<Item>
             if (unknownCategoryExists) offset = (int)items.Max(i => i.Category.Type) - (int)ItemType.Custom;
             foreach (var item in items)
             {
-                item.UpdateCategory(new(item.Category.Type - offset, item.Category.CustomCategory));
+                item.UpdateCategory(ItemCategory.Get(item.Category.Type - offset, item.Category.CustomCategory));
             }
 
             Save();

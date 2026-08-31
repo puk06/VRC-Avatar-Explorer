@@ -30,7 +30,7 @@ public class KonoAssetWearableItem : AbstractKonoAssetItem
     {
         var migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.UpdateItemPath(ItemUtils.RootFolderPrefix + Id);
-        migratedItem.UpdateCategory(new ItemCategory(string.IsNullOrEmpty(Category) ? "Wearables (KonoAsset)" : $"{Category} (KonoAsset)" ));
+        migratedItem.UpdateCategory(ItemCategory.Get(string.IsNullOrEmpty(Category) ? "Wearables (KonoAsset)" : $"{Category} (KonoAsset)" ));
         migratedItem.UpdateSupportedAvatars(SupportedAvatars);
 
         return migratedItem;

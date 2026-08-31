@@ -166,7 +166,7 @@ public class DataImporter(ItemRepository items, CommonAvatarRepository commonAva
             v1Item.AuthorName,
             v1Item.AuthorId,
             v1Item.BoothId,
-            new ItemCategory((ItemType)(v1Item.Type + 1), v1Item.CustomCategory),
+            ItemCategory.Get((ItemType)(v1Item.Type + 1), v1Item.CustomCategory),
             v1Item.ItemMemo
         );
         item.SetCreationDates(v1Item.CreatedDate, v1Item.UpdatedDate);

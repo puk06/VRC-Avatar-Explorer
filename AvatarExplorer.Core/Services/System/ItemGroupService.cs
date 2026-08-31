@@ -120,7 +120,7 @@ public class ItemGroupService
 
         if (includeAllCategory)
         {
-            categories.Add(new Folder(new ItemCategory(ItemType.All).Identifier)
+            categories.Add(new Folder(ItemCategory.Get(ItemType.All).Identifier)
             {
                 Title = ItemType.All.GetLocalizationKey() ?? string.Empty,
                 TitleLocalizable = true,
@@ -145,7 +145,7 @@ public class ItemGroupService
                 .Where(i => i.IsSelectable() && (includeEmptyCategory || existCategories.Contains(i)))
                 .Select(i =>
                 {
-                    return new Folder(new ItemCategory(i).Identifier)
+                    return new Folder(ItemCategory.Get(i).Identifier)
                     {
                         Title = i.GetLocalizationKey() ?? string.Empty,
                         TitleLocalizable = true,
@@ -156,7 +156,7 @@ public class ItemGroupService
 
         categories.AddRange(existCustomCategories.Select(i =>
         {
-            return new Folder(new ItemCategory(i).Identifier)
+            return new Folder(ItemCategory.Get(i).Identifier)
             {
                 Title = i,
                 TitleLocalizable = false,
@@ -169,7 +169,7 @@ public class ItemGroupService
             var hiddenCount = items.Count(i => i.IsHidden);
             if (hiddenCount > 0)
             {
-                var hiddenCategory = new ItemCategory(ItemType.Hidden);
+                var hiddenCategory = ItemCategory.Get(ItemType.Hidden);
                 categories.Add(new Folder(hiddenCategory.Identifier)
                 {
                     Title = hiddenCategory.ToString(),

@@ -328,8 +328,8 @@ itemRepo.RenameCustomCategory("旧カテゴリ名", "新カテゴリ名");
 ### MergeCategory() - カテゴリのマージ
 
 ```csharp
-var sourceCategory = new ItemCategory(ItemType.Texture);
-var targetCategory = new ItemCategory(ItemType.Clothing);
+var sourceCategory = ItemCategory.Get(ItemType.Texture);
+var targetCategory = ItemCategory.Get(ItemType.Clothing);
 
 itemRepo.MergeCategory(sourceCategory, targetCategory);
 // Textureカテゴリのアイテムが全てClothingカテゴリに移動

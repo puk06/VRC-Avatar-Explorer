@@ -460,7 +460,7 @@ public class ItemEditorViewModel : ViewModelBase
         var newCategory = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddCustomCategory]);
         if (string.IsNullOrEmpty(newCategory)) return;
 
-        Categories.Add(new ItemCategoryViewModel(new ItemCategory(newCategory)).Update());
+        Categories.Add(new ItemCategoryViewModel(ItemCategory.Get(newCategory)).Update());
         SelectedCategoryIndex = Categories.Count - 1;
     }
 
