@@ -39,6 +39,11 @@ public record RuntimeSettings
     public bool TreatEmptySupportedAvatarAsNone { get; init; } = false;
 
     /// <summary>
+    /// アバター選択時にアバターカテゴリを非表示にするかどうか。
+    /// </summary>
+    public bool HideAvatarCategoryWhenAvatarSelected { get; init; } = false;
+
+    /// <summary>
     /// 処理の最大並列数。
     /// </summary>
     public int MaxDegreeOfParallelism { get; init; } = 4;

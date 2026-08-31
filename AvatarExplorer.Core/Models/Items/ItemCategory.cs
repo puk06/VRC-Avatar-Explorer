@@ -11,11 +11,13 @@ public record ItemCategory : IIdentifiable
 {
     /// <summary>組み込みのカテゴリタイプです。カスタムカテゴリの場合は <see cref="ItemType.Custom"/> になります。</summary>
     public ItemType Type { get; init; } = ItemType.None;
+
     /// <summary>カスタムカテゴリ名です。組み込みタイプの場合は空文字になります。</summary>
     public string CustomCategory { get; init; } = string.Empty;
 
     /// <summary>カスタムカテゴリの識別子プレフィックス（"custom:"）です。</summary>
     public const string CustomCategoryPrefix = "custom:";
+
     /// <summary>組み込みタイプカテゴリの識別子プレフィックス（"type:"）です。</summary>
     public const string TypeCategoryPrefix = "type:";
 
@@ -26,6 +28,7 @@ public record ItemCategory : IIdentifiable
     /// <param name="identifier">判定対象の識別子。</param>
     /// <returns>カテゴリ識別子の場合は true、それ以外は false。</returns>
     public static bool IsCategoryIdentifier(string identifier) => identifier.StartsWith(CustomCategoryPrefix) || identifier.StartsWith(TypeCategoryPrefix);
+
     /// <summary>識別子から対応する <see cref="ItemCategory"/> を生成します。解析できない場合は <see cref="ItemType.None"/> のカテゴリを返します。</summary>
     /// <param name="identifier">"type:{数値}" または "custom:{名前}" 形式の識別子。</param>
     /// <returns>生成された <see cref="ItemCategory"/>。</returns>
@@ -44,7 +47,7 @@ public record ItemCategory : IIdentifiable
             }
         }
 
-        return new ItemCategory(ItemType.None);
+        return None;
     }
 
     #region Constructor
@@ -87,4 +90,17 @@ public record ItemCategory : IIdentifiable
     [JsonIgnore] public string Identifier => Type == ItemType.Custom ?
         (CustomCategoryPrefix + CustomCategory) :
         (TypeCategoryPrefix + (int)Type);
+
+    [JsonIgnore] public static readonly ItemCategory None = new(ItemType.None);
+    [JsonIgnore] public static readonly ItemCategory Avatar = new(ItemType.Avatar);
+    [JsonIgnore] public static readonly ItemCategory Clothing = new(ItemType.Clothing);
+    [JsonIgnore] public static readonly ItemCategory Texture = new(ItemType.Texture);
+    [JsonIgnore] public static readonly ItemCategory Gimmick = new(ItemType.Gimmick);
+    [JsonIgnore] public static readonly ItemCategory Accessory = new(ItemType.Accessory);
+    [JsonIgnore] public static readonly ItemCategory HairStyle = new(ItemType.HairStyle);
+    [JsonIgnore] public static readonly ItemCategory Animation = new(ItemType.Animation);
+    [JsonIgnore] public static readonly ItemCategory Tool = new(ItemType.Tool);
+    [JsonIgnore] public static readonly ItemCategory Shader = new(ItemType.Shader);
+    [JsonIgnore] public static readonly ItemCategory All = new(ItemType.All);
+    [JsonIgnore] public static readonly ItemCategory Hidden = new(ItemType.Hidden);
 }

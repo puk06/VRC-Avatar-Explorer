@@ -325,6 +325,8 @@
     "Settings.LinkToOriginal.Description": "Lors de l'ajout d'un dossier, l'utiliser directement sans le copier",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Traiter les avatars pris en charge vides comme aucun",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "Lorsqu'aucun avatar pris en charge n'est configuré pour un élément, le traiter comme non pris en charge plutôt que comme pris en charge par tous les avatars.",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Title": "Masquer la catégorie d'avatar lorsque un avatar est sélectionné",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Description": "Lors de la sélection d'éléments à partir d'un avatar, excluez la catégorie d'avatar de la liste des catégories.",
     "Settings.TagEditor.Title": "Éditer les tags",
     "Settings.TagEditor.Description": "Modifier les tags existants",
     "Settings.TagEditor.Open": "Ouvrir",

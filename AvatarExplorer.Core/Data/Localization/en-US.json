@@ -325,6 +325,8 @@
     "Settings.LinkToOriginal.Description": "When adding a folder, use it directly without copying",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Treat Empty Supported Avatars as None",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "When no supported avatars are configured for an item, treat it as unsupported rather than supported by all avatars.",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Title": "Hide Avatar Category When Avatar Selected",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Description": "When selecting items from an avatar, exclude the avatar category from the category list.",
     "Settings.TagEditor.Title": "Edit Tags",
     "Settings.TagEditor.Description": "Edit existing tags",
     "Settings.TagEditor.Open": "Open",

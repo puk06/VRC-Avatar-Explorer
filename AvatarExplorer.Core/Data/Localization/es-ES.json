@@ -325,6 +325,8 @@
     "Settings.LinkToOriginal.Description": "Al agregar una carpeta, usarla directamente sin copiarla",
     "Settings.TreatEmptySupportedAvatarAsNone.Title": "Tratar avatares compatibles vacíos como ninguno",
     "Settings.TreatEmptySupportedAvatarAsNone.Description": "Cuando un elemento no tiene avatares compatibles configurados, tratarlo como no compatible en lugar de compatible con todos los avatares.",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Title": "Ocultar la categoría de avatar cuando se selecciona un avatar",
+    "Settings.HideAvatarCategoryWhenAvatarSelected.Description": "Al seleccionar elementos desde un avatar, excluya la categoría de avatar de la lista de categorías.",
     "Settings.TagEditor.Title": "Editar etiquetas",
     "Settings.TagEditor.Description": "Editar etiquetas existentes",
     "Settings.TagEditor.Open": "Abrir",

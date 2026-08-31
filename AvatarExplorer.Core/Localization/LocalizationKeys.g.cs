@@ -540,6 +540,11 @@ public static class Loc
             public const string Title = "Settings.TreatEmptySupportedAvatarAsNone.Title";
             public const string Description = "Settings.TreatEmptySupportedAvatarAsNone.Description";
         }
+        public static class HideAvatarCategoryWhenAvatarSelected
+        {
+            public const string Title = "Settings.HideAvatarCategoryWhenAvatarSelected.Title";
+            public const string Description = "Settings.HideAvatarCategoryWhenAvatarSelected.Description";
+        }
         public static class TagEditor
         {
             public const string Title = "Settings.TagEditor.Title";
