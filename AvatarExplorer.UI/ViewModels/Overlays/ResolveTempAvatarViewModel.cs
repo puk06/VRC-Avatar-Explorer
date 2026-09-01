@@ -102,6 +102,13 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         if (!resolveConfirmationResult) return;
 
         InstanceRepository.ItemGroupService.ResolveTempAvatar(SelectedAvatar, item.Identifier);
+
+        NotificationManager.Show(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.ResolveTempAvatar],
+            NotificationType.Success
+        );
+
         IsVisible = false;
     }
 

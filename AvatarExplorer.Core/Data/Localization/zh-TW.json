@@ -73,6 +73,7 @@
     "Dialog.Confirmation.RemoveTag": "要刪除標籤「{0}」嗎？\n※刪除後，該標籤將從所有項目中移除。",
     "Dialog.Confirmation.RenameTagAlreadyExist": "標籤「{0}」已存在。繼續的話，將被識別為同一標籤。要繼續嗎？",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "要為此暫時頭像設定 Booth ID 嗎？\n\n※設定 Booth ID 後，可透過 ID 搜尋或從 Booth 新增項目時進行連結。",
+    "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "找到了 Booth ID 一致的暫時頭像「{0}」。\n要將此暫時頭像連結為正式項目嗎？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要將包含共用基體群組頭像的項目的支援頭像替換為共用基體群組嗎？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要將將共用基體群組設定為支援頭像的項目的支援頭像替換為個別頭像嗎？",
@@ -205,6 +206,8 @@
     "Success.ShowItem": "項目已取消隱藏",
     "Success.EnableIndirectCommonAvatarCheck": "間接公共頭像檢查已啟用",
     "Success.SkipIndirectCommonAvatarCheck": "已設定跳過間接公共頭像檢查",
+    "Success.CreateTempAvatar": "暫時頭像已建立",
+    "Success.ResolveTempAvatar": "暫時頭像已連結為正式項目",
 
     "VariationUpdate.UpdateAvailable": "有可用的項目更新",
     "VariationUpdate.NoUpdatesAvailable": "沒有更新",

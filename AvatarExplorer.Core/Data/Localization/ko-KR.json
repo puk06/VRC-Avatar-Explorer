@@ -73,6 +73,7 @@
     "Dialog.Confirmation.RemoveTag": "태그 \"{0}\"을(를) 삭제하시겠습니까?\n※삭제하면 모든 아이템에서 이 태그가 제거됩니다.",
     "Dialog.Confirmation.RenameTagAlreadyExist": "태그 \"{0}\"은(는) 이미 존재합니다. 계속하면 같은 태그로 인식됩니다. 계속하시겠습니까?",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "이 임시 아바타에 Booth ID를 설정하시겠습니까?\n\n※Booth ID를 설정하면 ID 검색이나 Booth에서 항목 추가 시 연결에 이용됩니다.",
+    "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Booth ID가 일치하는 임시 아바타 \"{0}\"를 찾았습니다.\n이 임시 아바타를 정식 아이템으로 연결하시겠습니까?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "공통 바디 그룹에 포함된 아바타가 들어 있는 아이템의 대응 아바타를 공통 바디 그룹으로 바꾸시겠습니까?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "공통 바디 그룹이 대응 아바타로 설정된 아이템의 대응 아바타를 개별 아바타로 바꾸시겠습니까?",
@@ -205,6 +206,8 @@
     "Success.ShowItem": "아이템이 표시되었습니다",
     "Success.EnableIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인이 활성화되었습니다",
     "Success.SkipIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인을 건너뛰도록 설정되었습니다",
+    "Success.CreateTempAvatar": "임시 아바타가 생성되었습니다",
+    "Success.ResolveTempAvatar": "임시 아바타가 정식 아이템으로 연결되었습니다",
 
     "VariationUpdate.UpdateAvailable": "아이템 업데이트를 사용할 수 있습니다",
     "VariationUpdate.NoUpdatesAvailable": "사용 가능한 업데이트 없음",

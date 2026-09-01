@@ -73,6 +73,7 @@
     "Dialog.Confirmation.RemoveTag": "タグ「{0}」を削除しますか？\n※削除すると、全てのアイテムからこのタグが削除されます。",
     "Dialog.Confirmation.RenameTagAlreadyExist": "タグ「{0}」は既に存在します。続行すると、同じタグとして認識されるようになります。続行しますか？",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "仮アバターにBooth IDを設定しますか？\n\n※Booth IDを設定すると、ID検索や該当アイテム追加時に自動で紐付けされるようになります。",
+    "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Booth IDが一致する仮アバター「{0}」が見つかりました。\nこの仮アバターを正式アイテムとして紐付けますか？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "共通素体グループ内のアバターが含まれているアイテムの対応アバターを共通素体グループに置き換えますか？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "共通素体グループが対応アバターとして設定されているアイテムの対応アバターを、個別のアバターに置き換えますか？",
@@ -205,6 +206,8 @@
     "Success.ShowItem": "アイテムを非表示から解除しました",
     "Success.EnableIndirectCommonAvatarCheck": "間接的な共通素体チェックを有効にしました",
     "Success.SkipIndirectCommonAvatarCheck": "間接的な共通素体チェックをスキップするように設定しました",
+    "Success.CreateTempAvatar": "仮アバターを作成しました",
+    "Success.ResolveTempAvatar": "仮アバターを正式アイテムとして紐付けました",
 
     "VariationUpdate.UpdateAvailable": "アイテムの更新が利用可能です",
     "VariationUpdate.NoUpdatesAvailable": "更新はありませんでした",

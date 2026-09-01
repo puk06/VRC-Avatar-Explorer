@@ -129,6 +129,7 @@ public static class Loc
             public const string RemoveTag = "Dialog.Confirmation.RemoveTag";
             public const string RenameTagAlreadyExist = "Dialog.Confirmation.RenameTagAlreadyExist";
             public const string SetBoothIdForTempAvatar = "Dialog.Confirmation.SetBoothIdForTempAvatar";
+            public const string ResolveSameBoothIdTempAvatar = "Dialog.Confirmation.ResolveSameBoothIdTempAvatar";
             public static class EditCommonAvatars
             {
                 public const string ReplaceAvatarsToGroup = "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup";
@@ -333,6 +334,8 @@ public static class Loc
         public const string ShowItem = "Success.ShowItem";
         public const string EnableIndirectCommonAvatarCheck = "Success.EnableIndirectCommonAvatarCheck";
         public const string SkipIndirectCommonAvatarCheck = "Success.SkipIndirectCommonAvatarCheck";
+        public const string CreateTempAvatar = "Success.CreateTempAvatar";
+        public const string ResolveTempAvatar = "Success.ResolveTempAvatar";
     }
     public static class VariationUpdate
     {

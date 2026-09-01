@@ -150,6 +150,13 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
         }
 
         InstanceRepository.TempAvatars.Create(newTempAvatarName, boothId);
+
+        NotificationManager.Show(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.CreateTempAvatar],
+            NotificationType.Success
+        );
+
         RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
         ApplySearchResult(SearchText);
     }

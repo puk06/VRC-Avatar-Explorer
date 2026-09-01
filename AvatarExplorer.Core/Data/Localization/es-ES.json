@@ -73,6 +73,7 @@
     "Dialog.Confirmation.RemoveTag": "¿Eliminar la etiqueta «{0}»?\n※Al eliminar, se eliminará esta etiqueta de todos los elementos.",
     "Dialog.Confirmation.RenameTagAlreadyExist": "La etiqueta \"{0}\" ya existe. Si continúas, se reconocerá como la misma etiqueta. ¿Deseas continuar?",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "¿Establecer Booth ID para este avatar temporal?\n\n※Establecer un Booth ID permite la vinculación al agregar elementos mediante búsqueda de ID o desde Booth.",
+    "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Se encontró un avatar temporal \"{0}\" con un Booth ID coincidente.\n¿Desea vincular este avatar temporal como un elemento permanente?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "¿Reemplazar los avatares compatibles de los elementos que contienen avatares en el grupo de avatares comunes por el grupo de avatares comunes?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "¿Reemplazar los avatares compatibles de los elementos que tienen el grupo de avatares comunes configurado como avatares compatibles por avatares individuales?",
@@ -205,6 +206,8 @@
     "Success.ShowItem": "Elemento visible",
     "Success.EnableIndirectCommonAvatarCheck": "Comprobación indirecta de avatar común habilitada",
     "Success.SkipIndirectCommonAvatarCheck": "Se omitió la comprobación indirecta de avatar común",
+    "Success.CreateTempAvatar": "Avatar temporal creado",
+    "Success.ResolveTempAvatar": "Avatar temporal vinculado como elemento permanente",
 
     "VariationUpdate.UpdateAvailable": "Hay actualizaciones disponibles para el elemento",
     "VariationUpdate.NoUpdatesAvailable": "No hay actualizaciones disponibles",
