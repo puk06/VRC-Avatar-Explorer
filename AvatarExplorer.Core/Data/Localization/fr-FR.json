@@ -72,6 +72,8 @@
     "Dialog.Confirmation.RenameTag": "Renommer le tag « {0} » en « {1} » ?",
     "Dialog.Confirmation.Remove": "Supprimer le tag « {0} » ?\n※La suppression entraînera la suppression de ce tag de tous les éléments.",
     "Dialog.Confirmation.RemoveTag": "Supprimer le tag « {0} » ?\n※La suppression entraînera la suppression de ce tag de tous les éléments.",
+    "Dialog.Confirmation.SetBoothIdForTempAvatar": "Définir l'ID Booth pour cet avatar temporaire ?\n\n※Définir un ID Booth permet la liaison lors de l'ajout d'éléments par recherche ID ou depuis Booth.",
+    "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Un avatar temporaire « {0} » avec un ID Booth correspondant a été trouvé.\nVoulez-vous lier cet avatar temporaire en tant qu'élément permanent ?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Remplacer les avatars pris en charge des éléments contenant des avatars du groupe d'avatars communs par le groupe d'avatars communs ?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Remplacer les avatars pris en charge des éléments dont les avatars pris en charge sont définis sur le groupe d'avatars communs par des avatars individuels ?",
@@ -87,6 +89,7 @@
     "Dialog.Title.NewTempAvatarName": "Nouveau nom d'avatar temporaire",
     "Dialog.Title.NewCustomCategoryName": "Nouveau nom de catégorie personnalisée",
     "Dialog.Title.AddUrl": "Entrez l'URL de téléchargement",
+    "Dialog.Title.SetBoothIdForTempAvatar": "Définir l'ID Booth pour l'avatar temporaire (lien accepté)",
 
     "Dialog.SelectSaveFolderPath": "Veuillez sélectionner le dossier d'enregistrement",
     "Dialog.SelectFolderPath": "Veuillez sélectionner un dossier",
@@ -160,6 +163,7 @@
     "ContextMenu.ItemFile.OpenPdfViewer": "Ouvrir avec PDF Viewer",
     "ContextMenu.BulkImportPreset.RemovePreset": "Supprimer le préréglage",
     "ContextMenu.TempAvatar.EditTempAvatarName": "Modifier le nom de l'avatar temporaire",
+    "ContextMenu.TempAvatar.EditBoothId": "Modifier l'ID Booth",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "Lier à l'élément permanent",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "Supprimer l'avatar temporaire",
     "ContextMenu.ItemCategory.EditCustomCategoryName": "Modifier le nom de la catégorie personnalisée",
@@ -202,6 +206,8 @@
     "Success.ShowItem": "Élément affiché",
     "Success.EnableIndirectCommonAvatarCheck": "La vérification indirecte de l'avatar commun a été activée",
     "Success.SkipIndirectCommonAvatarCheck": "La vérification indirecte de l'avatar commun a été ignorée",
+    "Success.CreateTempAvatar": "Avatar temporaire créé",
+    "Success.ResolveTempAvatar": "Avatar temporaire lié en tant qu'élément permanent",
 
     "VariationUpdate.UpdateAvailable": "Des mises à jour d'éléments sont disponibles",
     "VariationUpdate.NoUpdatesAvailable": "Aucune mise à jour disponible",
@@ -215,6 +221,7 @@
     "Warning.RunningInAdministratorMode": "En mode administrateur, certaines opérations comme le glisser-déposer peuvent ne pas être disponibles.",
     "Warning.FetchAllItemThumbnailsCancelled": "La récupération groupée des vignettes a été annulée. Réussies : {0} / Échouées : {1} / Total : {2}",
     "Warning.FetchAllVariationHashesCancelled": "La récupération groupée des hachages a été annulée. Réussies : {0} / Échouées : {1} / Total : {2}",
+    "Warning.InvalidBoothId": "ID Booth invalide. L'ID Booth a été effacé.",
 
     "Error.Default": "Erreur",
     "Error.Nothing": "Aucun élément trouvé !",

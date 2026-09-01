@@ -72,6 +72,8 @@
     "Dialog.Confirmation.RenameTag": "要将标签「{0}」更改为「{1}」吗？",
     "Dialog.Confirmation.RemoveTag": "要删除标签「{0}」吗？\n※删除后，该标签将从所有项目中移除。",
     "Dialog.Confirmation.RenameTagAlreadyExist": "标签「{0}」已存在。继续的话，将被识别为同一标签。要继续吗？",
+    "Dialog.Confirmation.SetBoothIdForTempAvatar": "要为此临时头像设置 Booth ID 吗？\n\n※设置 Booth ID 后，可通过 ID 搜索或从 Booth 添加项目时进行关联。",
+    "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "找到了 Booth ID 一致的临时头像「{0}」。\n要将此临时头像关联为正式项目吗？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要将包含共用基体组头像的项目的支持头像替换为共用基体组吗？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要将将共用基体组设置为支持头像的项目的支持头像替换为单独头像吗？",
@@ -87,6 +89,7 @@
     "Dialog.Title.NewTempAvatarName": "新建临时头像名称",
     "Dialog.Title.NewCustomCategoryName": "新建自定义类别名称",
     "Dialog.Title.AddUrl": "输入下载 URL",
+    "Dialog.Title.SetBoothIdForTempAvatar": "设置临时头像的 Booth ID（也可输入链接）",
 
     "Dialog.SelectSaveFolderPath": "请选择要保存的文件夹",
     "Dialog.SelectFolderPath": "请选择文件夹",
@@ -160,6 +163,7 @@
     "ContextMenu.ItemFile.OpenPdfViewer": "使用 PDF Viewer 打开",
     "ContextMenu.BulkImportPreset.RemovePreset": "删除预设",
     "ContextMenu.TempAvatar.EditTempAvatarName": "编辑临时头像名称",
+    "ContextMenu.TempAvatar.EditBoothId": "编辑 Booth ID",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "关联到正式项目",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "删除临时头像",
     "ContextMenu.ItemCategory.EditCustomCategoryName": "编辑自定义类别名称",
@@ -202,6 +206,8 @@
     "Success.ShowItem": "项目已取消隐藏",
     "Success.EnableIndirectCommonAvatarCheck": "间接公共头像检查已启用",
     "Success.SkipIndirectCommonAvatarCheck": "已设置跳过间接公共头像检查",
+    "Success.CreateTempAvatar": "临时头像已创建",
+    "Success.ResolveTempAvatar": "临时头像已关联为正式项目",
 
     "VariationUpdate.UpdateAvailable": "有可用的项目更新",
     "VariationUpdate.NoUpdatesAvailable": "没有更新",
@@ -215,6 +221,7 @@
     "Warning.RunningInAdministratorMode": "在管理员模式下，拖放等部分操作可能不可用。",
     "Warning.FetchAllItemThumbnailsCancelled": "批量获取缩略图已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",
     "Warning.FetchAllVariationHashesCancelled": "批量获取哈希已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",
+    "Warning.InvalidBoothId": "Booth ID 无效，已清除 Booth ID。",
 
     "Error.Default": "错误",
     "Error.Nothing": "没有找到项目！",

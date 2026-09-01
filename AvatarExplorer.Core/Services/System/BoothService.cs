@@ -5,6 +5,7 @@ using AvatarExplorer.Core.Models.External.Booth;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Network;
+using AvatarExplorer.Core.Utils;
 using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.System;
@@ -75,7 +76,7 @@ public static class BoothService
         if (!waitCooldown && IsApiCooldownNow) return Error.Failure(description: "Booth API Cooldown Error.");
         else await WaitForApiCooldownAsync();
 
-        var boothId = boothUrl.Split('/')[^1];
+        var boothId = BoothUtils.ExtractBoothIdFromUrl(boothUrl);
 
         _lastBoothApiGetTime = DateTime.Now;
 

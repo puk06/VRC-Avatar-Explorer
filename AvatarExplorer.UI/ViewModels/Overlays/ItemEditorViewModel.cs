@@ -250,6 +250,8 @@ public class ItemEditorViewModel : ViewModelBase
 
         Close();
 
+        await CheckTempAvatarBoothId(identifier);
+
         if (itemPaths.Count == 0) return;
         _ = AddPathsInBackground(identifier, itemPaths, shouldLinkToOriginal);
     }
@@ -319,6 +321,31 @@ public class ItemEditorViewModel : ViewModelBase
             NotificationType.Success
         );
         return item.Identifier;
+    }
+
+    private async static Task CheckTempAvatarBoothId(string identidier)
+    {
+        var boothId = InstanceRepository.Items.Get(identidier)?.BoothId ?? -1;
+        if (boothId == -1) return;
+
+        var sameIdAvatar = InstanceRepository.TempAvatars.GetAll()
+            .Where(i => i.BoothId != -1)
+            .FirstOrDefault(i => i.BoothId == boothId);
+        if (sameIdAvatar == null) return;
+
+        var resolveTempAvatar = await InstanceRepository.MainWindow.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.ResolveSameBoothIdTempAvatar, sameIdAvatar.AvatarName)
+        );
+        if (!resolveTempAvatar) return;
+
+        InstanceRepository.ItemGroupService.ResolveTempAvatar(sameIdAvatar.Identifier, identidier);
+
+        NotificationManager.Show(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.ResolveTempAvatar],
+            NotificationType.Success
+        );
     }
 
     private static async Task AddPathsInBackground(string identifier, List<ItemPathEntry> itemPaths, bool shouldLinkToOriginal)

@@ -229,6 +229,34 @@ if (item != null)
 }
 ```
 
+## BoothUtils
+
+Booth URLから商品IDを抽出するユーティリティクラスです。
+
+```csharp
+using AvatarExplorer.Core.Utils;
+
+// URLからBooth IDを抽出
+var boothId = BoothUtils.ExtractBoothIdFromUrl("https://booth.pm/ja/items/12345678");
+// boothId: "12345678"
+
+// リンク形式でも抽出可能
+var boothId2 = BoothUtils.ExtractBoothIdFromUrl("https://xxx.booth.pm/items/12345678");
+// boothId2: "12345678"
+```
+
+### 仮アバターへのBooth ID設定
+
+仮アバターにBooth IDを設定すると、Boothからアイテムを追加した際に紐付けに利用できます。
+
+```csharp
+// 仮アバターにBooth IDを設定
+app.TempAvatarRepository.UpdateBoothId("tempavatar:xxxxx", 12345678);
+
+// 作成時にBooth IDを指定
+app.TempAvatarRepository.Create("新しい仮アバター", boothId: 12345678);
+```
+
 ## サムネイルの取得
 
 ### Boothからサムネイルを再取得

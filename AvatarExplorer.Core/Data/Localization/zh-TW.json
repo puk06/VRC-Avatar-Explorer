@@ -72,6 +72,8 @@
     "Dialog.Confirmation.RenameTag": "要將標籤「{0}」變更為「{1}」嗎？",
     "Dialog.Confirmation.RemoveTag": "要刪除標籤「{0}」嗎？\n※刪除後，該標籤將從所有項目中移除。",
     "Dialog.Confirmation.RenameTagAlreadyExist": "標籤「{0}」已存在。繼續的話，將被識別為同一標籤。要繼續嗎？",
+    "Dialog.Confirmation.SetBoothIdForTempAvatar": "要為此暫時頭像設定 Booth ID 嗎？\n\n※設定 Booth ID 後，可透過 ID 搜尋或從 Booth 新增項目時進行連結。",
+    "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "找到了 Booth ID 一致的暫時頭像「{0}」。\n要將此暫時頭像連結為正式項目嗎？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要將包含共用基體群組頭像的項目的支援頭像替換為共用基體群組嗎？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要將將共用基體群組設定為支援頭像的項目的支援頭像替換為個別頭像嗎？",
@@ -87,6 +89,7 @@
     "Dialog.Title.NewTempAvatarName": "新暫時頭像名稱",
     "Dialog.Title.NewCustomCategoryName": "新自訂類別名稱",
     "Dialog.Title.AddUrl": "輸入下載 URL",
+    "Dialog.Title.SetBoothIdForTempAvatar": "設定暫時頭像的 Booth ID（也可輸入連結）",
 
     "Dialog.SelectSaveFolderPath": "請選擇要儲存的資料夾",
     "Dialog.SelectFolderPath": "請選擇資料夾",
@@ -160,6 +163,7 @@
     "ContextMenu.ItemFile.OpenPdfViewer": "使用 PDF Viewer 開啟",
     "ContextMenu.BulkImportPreset.RemovePreset": "刪除預設",
     "ContextMenu.TempAvatar.EditTempAvatarName": "編輯暫時頭像名稱",
+    "ContextMenu.TempAvatar.EditBoothId": "編輯 Booth ID",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "連結到正式項目",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "刪除暫時頭像",
     "ContextMenu.ItemCategory.EditCustomCategoryName": "編輯自訂類別名稱",
@@ -202,6 +206,8 @@
     "Success.ShowItem": "項目已取消隱藏",
     "Success.EnableIndirectCommonAvatarCheck": "間接公共頭像檢查已啟用",
     "Success.SkipIndirectCommonAvatarCheck": "已設定跳過間接公共頭像檢查",
+    "Success.CreateTempAvatar": "暫時頭像已建立",
+    "Success.ResolveTempAvatar": "暫時頭像已連結為正式項目",
 
     "VariationUpdate.UpdateAvailable": "有可用的項目更新",
     "VariationUpdate.NoUpdatesAvailable": "沒有更新",
@@ -215,6 +221,7 @@
     "Warning.RunningInAdministratorMode": "在管理員模式下，拖放等部分操作可能無法使用。",
     "Warning.FetchAllItemThumbnailsCancelled": "批次取得縮圖已取消。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個",
     "Warning.FetchAllVariationHashesCancelled": "批次取得雜湊已取消。成功: {0} 個 / 失敗: {1} 個 / 總計: {2} 個",
+    "Warning.InvalidBoothId": "Booth ID 無效，已清除 Booth ID。",
 
     "Error.Default": "錯誤",
     "Error.Nothing": "找不到項目！",

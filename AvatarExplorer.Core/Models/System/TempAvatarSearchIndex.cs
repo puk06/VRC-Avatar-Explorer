@@ -15,6 +15,11 @@ public record TempAvatarSearchIndex : ISearchIndex
     public required string AvatarName { get; init; }
 
     /// <summary>
+    /// 仮アバターのBooth 商品 ID（文字列）。
+    /// </summary>
+    public required string BoothId { get; init; }
+
+    /// <summary>
     /// フリーワード検索用文字列（アバター名の小文字表現）。
     /// </summary>
     public required string FreeWord { get; init; }
@@ -46,6 +51,7 @@ public record TempAvatarSearchIndex : ISearchIndex
         return field?.ToLowerInvariant() switch
         {
             "title" => [AvatarName],
+            "boothid" or "booth" => [BoothId],
             null => [FreeWord],
             _ => []
         };
@@ -58,10 +64,16 @@ public record TempAvatarSearchIndex : ISearchIndex
     /// <returns>構築された TempAvatarSearchIndex。</returns>
     public static TempAvatarSearchIndex Build(TempAvatar tempAvatar)
     {
+        var freeWord = string.Join("\n",
+            tempAvatar.AvatarName,
+            tempAvatar.BoothId.ToString()
+        ).ToLowerInvariant();
+
         return new TempAvatarSearchIndex
         {
             AvatarName = tempAvatar.AvatarName,
-            FreeWord = tempAvatar.AvatarName.ToLowerInvariant()
+            BoothId = tempAvatar.BoothId.ToString(),
+            FreeWord = freeWord
         };
     }
 }

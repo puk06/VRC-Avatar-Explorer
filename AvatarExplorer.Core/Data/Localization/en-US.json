@@ -72,6 +72,8 @@
     "Dialog.Confirmation.RenameTag": "Rename tag \"{0}\" to \"{1}\"?",
     "Dialog.Confirmation.RemoveTag": "Remove tag \"{0}\"?\n※Removing will delete this tag from all items.",
     "Dialog.Confirmation.RenameTagAlreadyExist": "Tag \"{0}\" already exists. If you continue, it will be recognized as the same tag. Do you want to continue?",
+    "Dialog.Confirmation.SetBoothIdForTempAvatar": "Set Booth ID for this temporary avatar?\n\n※Setting a Booth ID enables linking when adding items via ID search or from Booth.",
+    "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "A temporary avatar \"{0}\" with a matching Booth ID was found.\nWould you like to link this temporary avatar as a permanent item?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Replace the supported avatars of items containing avatars in the common avatar group with the common avatar group?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Replace the supported avatars of items that have the common avatar group set as supported avatars with individual avatars?",
@@ -87,6 +89,7 @@
     "Dialog.Title.NewTempAvatarName": "New Temporary Avatar Name",
     "Dialog.Title.NewCustomCategoryName": "New Custom Category Name",
     "Dialog.Title.AddUrl": "Enter Download URL",
+    "Dialog.Title.SetBoothIdForTempAvatar": "Set Booth ID for Temporary Avatar (link accepted)",
 
     "Dialog.SelectSaveFolderPath": "Please select the folder to save to",
     "Dialog.SelectFolderPath": "Please select a folder",
@@ -160,6 +163,7 @@
     "ContextMenu.ItemFile.OpenPdfViewer": "Open PDF Viewer",
     "ContextMenu.BulkImportPreset.RemovePreset": "Remove Preset",
     "ContextMenu.TempAvatar.EditTempAvatarName": "Edit Temporary Avatar Name",
+    "ContextMenu.TempAvatar.EditBoothId": "Edit Booth ID",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "Link to Permanent Item",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "Remove Temporary Avatar",
     "ContextMenu.ItemCategory.EditCustomCategoryName": "Edit Custom Category Name",
@@ -202,6 +206,8 @@
     "Success.ShowItem": "Item has been unhidden",
     "Success.EnableIndirectCommonAvatarCheck": "Indirect common avatar check has been enabled",
     "Success.SkipIndirectCommonAvatarCheck": "Indirect common avatar check has been skipped",
+    "Success.CreateTempAvatar": "Temporary avatar created",
+    "Success.ResolveTempAvatar": "Temporary avatar linked as a permanent item",
 
     "VariationUpdate.UpdateAvailable": "Item updates are available",
     "VariationUpdate.NoUpdatesAvailable": "No updates available",
@@ -215,6 +221,7 @@
     "Warning.RunningInAdministratorMode": "In administrator mode, some operations like drag & drop may not be available.",
     "Warning.FetchAllItemThumbnailsCancelled": "Bulk thumbnail fetch was cancelled. Success: {0} / Failed: {1} / Total: {2}",
     "Warning.FetchAllVariationHashesCancelled": "Bulk hash fetch was cancelled. Success: {0} / Failed: {1} / Total: {2}",
+    "Warning.InvalidBoothId": "Invalid Booth ID. The Booth ID has been cleared.",
 
     "Error.Default": "Error",
     "Error.Nothing": "No items found!",

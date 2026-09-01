@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Search;
+using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.Sort;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -119,7 +122,41 @@ public class SelectAvatarsViewModel : ViewModelBase, IInitializable
         var newTempAvatarName = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewTempAvatarName]);
         if (string.IsNullOrEmpty(newTempAvatarName)) return;
 
-        InstanceRepository.TempAvatars.Create(newTempAvatarName);
+        // BoothIdを指定するかどうか
+        var setBoothId = await InstanceRepository.MainWindow.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.SetBoothIdForTempAvatar]
+        );
+
+        var boothId = -1;
+        var parseBoothIdFailed = false;
+        if (setBoothId)
+        {
+            var boothIdInput = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.SetBoothIdForTempAvatar]);
+            if (boothIdInput != null)
+            {
+                boothId = ValueParser.Int(BoothUtils.ExtractBoothIdFromUrl(boothIdInput), -1);
+                if (boothId < 0) parseBoothIdFailed = true;
+            }
+        }
+
+        if (parseBoothIdFailed)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Warning.Default],
+                Localizer.Instance[Loc.Warning.InvalidBoothId],
+                NotificationType.Warning
+            );
+        }
+
+        InstanceRepository.TempAvatars.Create(newTempAvatarName, boothId);
+
+        NotificationManager.Show(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.CreateTempAvatar],
+            NotificationType.Success
+        );
+
         RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
         ApplySearchResult(SearchText);
     }

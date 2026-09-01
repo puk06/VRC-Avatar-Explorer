@@ -64,6 +64,7 @@ public static class ContextMenuHandlerService
         Register(ActionKey.OpenPdfViewer, OpenPdfViewer);
         Register(ActionKey.RemovePreset, RemovePreset);
         Register(ActionKey.EditTempAvatarName, EditTempAvatarName);
+        Register(ActionKey.EditBoothId, EditBoothId);
         Register(ActionKey.ResolveTempAvatar, ResolveTempAvatar);
         Register(ActionKey.RemoveTempAvatar, RemoveTempAvatar);
         Register(ActionKey.EditCustomCategoryName, EditCustomCategoryName);
@@ -524,6 +525,43 @@ public static class ContextMenuHandlerService
         if (string.IsNullOrEmpty(newName)) return;
 
         InstanceRepository.TempAvatars.RenameAvatar(tempAvatar.Identifier, newName);
+
+        NotificationManager.Show(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Success.ItemEdit],
+            NotificationType.Success
+        );
+    }
+    private static async void EditBoothId(string identifier)
+    {
+        var tempAvatar = InstanceRepository.TempAvatars.Get(identifier);
+        if (tempAvatar == null)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.TempAvatarNotFound],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        var newBoothId = await InstanceRepository.MainWindow.ShowTextDialog(
+            Localizer.Instance[Loc.Dialog.Title.SetBoothIdForTempAvatar],
+            tempAvatar.BoothId == -1 ? string.Empty : tempAvatar.BoothId.ToString()
+        );
+        if (string.IsNullOrEmpty(newBoothId)) return;
+
+        var boothId = ValueParser.Int(BoothUtils.ExtractBoothIdFromUrl(newBoothId), -1);
+        if (boothId == -1)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Warning.Default],
+                Localizer.Instance[Loc.Warning.InvalidBoothId],
+                NotificationType.Warning
+            );
+        }
+
+        InstanceRepository.TempAvatars.UpdateBoothId(tempAvatar.Identifier, boothId);
 
         NotificationManager.Show(
             Localizer.Instance[Loc.Success.Default],

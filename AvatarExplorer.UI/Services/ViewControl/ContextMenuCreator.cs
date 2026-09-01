@@ -158,6 +158,7 @@ internal static class ContextMenuCreator
         List<ContextMenuAction> contextMenuActions =
         [
             new(Loc.ContextMenu.TempAvatar.EditTempAvatarName, ActionKey.EditTempAvatarName, ContextMenuIconType.Edit),
+            new(Loc.ContextMenu.TempAvatar.EditBoothId, ActionKey.EditBoothId, ContextMenuIconType.Edit),
             new(Loc.ContextMenu.TempAvatar.ResolveTempAvatar, ActionKey.ResolveTempAvatar, ContextMenuIconType.Link, addSeparator: true),
             new(Loc.ContextMenu.TempAvatar.RemoveTempAvatar, ActionKey.RemoveTempAvatar, ContextMenuIconType.Delete),
         ];

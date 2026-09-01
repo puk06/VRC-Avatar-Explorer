@@ -113,16 +113,26 @@ public static class NavigationItemFactory
         ViewModelType = ViewModelType.CommonAvatar
     };
 
-    private static ItemViewModel FromTempAvatar(Avatar avatar, TempAvatar tempAvatar) => new()
+    private static ItemViewModel FromTempAvatar(Avatar avatar, TempAvatar tempAvatar)
     {
-        ThumbnailSource = new() { Primary = SystemIconKey.AvatarIcon },
-        TitleRaw = tempAvatar.AvatarName,
-        TitleLocalizable = false,
-        DescriptionRaw = new(Loc.Button.Description.TempAvatar),
-        Identifier = avatar.Identifier,
-        ActualValue = tempAvatar.Identifier,
-        ViewModelType = ViewModelType.TempAvatar
-    };
+        var vm = new ItemViewModel()
+        {
+            ThumbnailSource = new() { Primary = SystemIconKey.AvatarIcon },
+            TitleRaw = tempAvatar.AvatarName,
+            TitleLocalizable = false,
+            DescriptionRaw = new(Loc.Button.Description.TempAvatar),
+            Identifier = avatar.Identifier,
+            ActualValue = tempAvatar.Identifier,
+            ViewModelType = ViewModelType.TempAvatar
+        };
+
+        if (tempAvatar.BoothId != -1)
+        {
+            vm.Tags = [new() { ValueRaw = tempAvatar.BoothId.ToString() }];
+        }
+
+        return vm;
+    }
 
     private static ItemViewModel CreateEmpty() => new()
     {

@@ -34,6 +34,7 @@ public enum ActionKey
     RemovePreset,
 
     EditTempAvatarName,
+    EditBoothId,
     ResolveTempAvatar,
     RemoveTempAvatar,
 
