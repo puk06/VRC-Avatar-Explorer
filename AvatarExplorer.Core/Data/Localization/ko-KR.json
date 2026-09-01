@@ -72,6 +72,7 @@
     "Dialog.Confirmation.RenameTag": "태그 \"{0}\"을(를) \"{1}\"(으)로 변경하시겠습니까?",
     "Dialog.Confirmation.RemoveTag": "태그 \"{0}\"을(를) 삭제하시겠습니까?\n※삭제하면 모든 아이템에서 이 태그가 제거됩니다.",
     "Dialog.Confirmation.RenameTagAlreadyExist": "태그 \"{0}\"은(는) 이미 존재합니다. 계속하면 같은 태그로 인식됩니다. 계속하시겠습니까?",
+    "Dialog.Confirmation.SetBoothIdForTempAvatar": "이 임시 아바타에 Booth ID를 설정하시겠습니까?\n\n※Booth ID를 설정하면 ID 검색이나 Booth에서 항목 추가 시 연결에 이용됩니다.",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "공통 바디 그룹에 포함된 아바타가 들어 있는 아이템의 대응 아바타를 공통 바디 그룹으로 바꾸시겠습니까?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "공통 바디 그룹이 대응 아바타로 설정된 아이템의 대응 아바타를 개별 아바타로 바꾸시겠습니까?",
@@ -87,6 +88,7 @@
     "Dialog.Title.NewTempAvatarName": "새 임시 아바타 이름",
     "Dialog.Title.NewCustomCategoryName": "새 사용자 지정 카테고리 이름",
     "Dialog.Title.AddUrl": "다운로드 URL 입력",
+    "Dialog.Title.SetBoothIdForTempAvatar": "임시 아바타의 Booth ID 설정 (링크 입력 가능)",
 
     "Dialog.SelectSaveFolderPath": "저장할 폴더를 선택해 주세요",
     "Dialog.SelectFolderPath": "폴더를 선택해 주세요",
@@ -160,6 +162,7 @@
     "ContextMenu.ItemFile.OpenPdfViewer": "PDF Viewer로 열기",
     "ContextMenu.BulkImportPreset.RemovePreset": "프리셋 삭제",
     "ContextMenu.TempAvatar.EditTempAvatarName": "임시 아바타 이름 편집",
+    "ContextMenu.TempAvatar.EditBoothId": "Booth ID 편집",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "정식 아이템과 연결",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "임시 아바타 삭제",
     "ContextMenu.ItemCategory.EditCustomCategoryName": "사용자 지정 카테고리 이름 편집",
@@ -215,6 +218,7 @@
     "Warning.RunningInAdministratorMode": "관리자 모드에서는 드래그 앤 드롭 등 일부 작업을 사용할 수 없습니다.",
     "Warning.FetchAllItemThumbnailsCancelled": "썸네일 일괄 가져오기를 취소했습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개",
     "Warning.FetchAllVariationHashesCancelled": "해시 일괄 가져오기를 취소했습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개",
+    "Warning.InvalidBoothId": "Booth ID가 유효하지 않습니다. Booth ID가 초기화되었습니다.",
 
     "Error.Default": "오류",
     "Error.Nothing": "아이템을 찾을 수 없어요!",

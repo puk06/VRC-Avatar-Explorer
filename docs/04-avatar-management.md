@@ -106,6 +106,8 @@ public class CommonAvatar : IIdentifiable
 
 仮アバターは、まだ正式に登録されていないアバターを一時的に識別するための機能です。後で正式なアバターに「解決」することができます。
 
+仮アバターにはBooth IDを設定でき、Boothからアイテムを追加した際に紐付けに利用できます。
+
 ## TempAvatarRepository
 
 ### 取得
@@ -117,8 +119,13 @@ var tempAvatarRepo = app.TempAvatarRepository;
 ### Create() - 仮アバターの作成
 
 ```csharp
+// Booth IDなしで作成
 var tempAvatar = tempAvatarRepo.Create("仮アバター名");
 Console.WriteLine($"作成された仮アバター: {tempAvatar.Identifier}");
+
+// Booth IDを指定して作成
+var tempAvatarWithBooth = tempAvatarRepo.Create("仮アバター名", boothId: 12345678);
+Console.WriteLine($"Booth ID: {tempAvatarWithBooth.BoothId}");
 ```
 
 ### GetAll() - 全仮アバターの取得
@@ -137,6 +144,19 @@ foreach (var temp in allTempAvatars)
 ```csharp
 var temp = tempAvatarRepo.Get("tempavatar:xxxxx");
 ```
+
+### UpdateBoothId() - 仮アバターのBooth IDを変更
+
+```csharp
+// Booth IDを設定
+tempAvatarRepo.UpdateBoothId("tempavatar:xxxxx", 12345678);
+
+// Booth IDをクリア
+tempAvatarRepo.UpdateBoothId("tempavatar:xxxxx", -1);
+```
+
+> [!NOTE]
+> Booth IDを設定すると、Boothからアイテムを追加した際に仮アバターとの紐付けに利用できます。
 
 ### Remove() - 仮アバターの削除
 
@@ -168,6 +188,7 @@ app.ItemGroupService.ResolveTempAvatar(
 public class TempAvatar : IIdentifiable
 {
     public string AvatarName { get; }  // アバター名
+    public int BoothId { get; }        // Booth商品ID（未設定の場合は-1）
     public string Identifier { get; }  // "tempavatar:" + Id
 }
 ```

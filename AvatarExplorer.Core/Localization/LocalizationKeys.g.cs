@@ -128,6 +128,7 @@ public static class Loc
             public const string RenameTag = "Dialog.Confirmation.RenameTag";
             public const string RemoveTag = "Dialog.Confirmation.RemoveTag";
             public const string RenameTagAlreadyExist = "Dialog.Confirmation.RenameTagAlreadyExist";
+            public const string SetBoothIdForTempAvatar = "Dialog.Confirmation.SetBoothIdForTempAvatar";
             public static class EditCommonAvatars
             {
                 public const string ReplaceAvatarsToGroup = "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup";
@@ -146,6 +147,7 @@ public static class Loc
             public const string NewTempAvatarName = "Dialog.Title.NewTempAvatarName";
             public const string NewCustomCategoryName = "Dialog.Title.NewCustomCategoryName";
             public const string AddUrl = "Dialog.Title.AddUrl";
+            public const string SetBoothIdForTempAvatar = "Dialog.Title.SetBoothIdForTempAvatar";
         }
         public const string SelectSaveFolderPath = "Dialog.SelectSaveFolderPath";
         public const string SelectFolderPath = "Dialog.SelectFolderPath";
@@ -280,6 +282,7 @@ public static class Loc
         public static class TempAvatar
         {
             public const string EditTempAvatarName = "ContextMenu.TempAvatar.EditTempAvatarName";
+            public const string EditBoothId = "ContextMenu.TempAvatar.EditBoothId";
             public const string ResolveTempAvatar = "ContextMenu.TempAvatar.ResolveTempAvatar";
             public const string RemoveTempAvatar = "ContextMenu.TempAvatar.RemoveTempAvatar";
         }
@@ -347,6 +350,7 @@ public static class Loc
         public const string RunningInAdministratorMode = "Warning.RunningInAdministratorMode";
         public const string FetchAllItemThumbnailsCancelled = "Warning.FetchAllItemThumbnailsCancelled";
         public const string FetchAllVariationHashesCancelled = "Warning.FetchAllVariationHashesCancelled";
+        public const string InvalidBoothId = "Warning.InvalidBoothId";
     }
     public static class Error
     {

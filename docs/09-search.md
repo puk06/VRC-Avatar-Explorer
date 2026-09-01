@@ -201,6 +201,7 @@ foreach (var item in viewItems)
 | `implemented` | 実装済みアバター名 |
 | `notimplemented` | 未実装アバター名 |
 | `commonavatar` | 共通素体グループ名 |
+| `boothid` / `booth` | 仮アバターのBooth商品ID |
 
 ## SearchResultTypes
 

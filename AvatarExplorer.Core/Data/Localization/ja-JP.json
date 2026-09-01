@@ -72,6 +72,7 @@
     "Dialog.Confirmation.RenameTag": "タグ「{0}」を「{1}」に変更しますか？",
     "Dialog.Confirmation.RemoveTag": "タグ「{0}」を削除しますか？\n※削除すると、全てのアイテムからこのタグが削除されます。",
     "Dialog.Confirmation.RenameTagAlreadyExist": "タグ「{0}」は既に存在します。続行すると、同じタグとして認識されるようになります。続行しますか？",
+    "Dialog.Confirmation.SetBoothIdForTempAvatar": "仮アバターにBooth IDを設定しますか？\n\n※Booth IDを設定すると、ID検索や該当アイテム追加時に自動で紐付けされるようになります。",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "共通素体グループ内のアバターが含まれているアイテムの対応アバターを共通素体グループに置き換えますか？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "共通素体グループが対応アバターとして設定されているアイテムの対応アバターを、個別のアバターに置き換えますか？",
@@ -87,6 +88,7 @@
     "Dialog.Title.NewTempAvatarName": "新しい仮アバター名",
     "Dialog.Title.NewCustomCategoryName": "新しいカスタムカテゴリ名",
     "Dialog.Title.AddUrl": "ダウンロードURLを入力",
+    "Dialog.Title.SetBoothIdForTempAvatar": "仮アバターのBooth IDを設定（リンクでも可）",
 
     "Dialog.SelectSaveFolderPath": "保存先フォルダを選択してください",
     "Dialog.SelectFolderPath": "フォルダを選択してください",
@@ -160,6 +162,7 @@
     "ContextMenu.ItemFile.OpenPdfViewer": "PDF Viewerで開く",
     "ContextMenu.BulkImportPreset.RemovePreset": "プリセットを削除する",
     "ContextMenu.TempAvatar.EditTempAvatarName": "仮アバター名を編集する",
+    "ContextMenu.TempAvatar.EditBoothId": "Booth IDを編集する",
     "ContextMenu.TempAvatar.ResolveTempAvatar": "正式なアイテムと紐付ける",
     "ContextMenu.TempAvatar.RemoveTempAvatar": "仮アバターを削除する",
     "ContextMenu.ItemCategory.EditCustomCategoryName": "カスタムカテゴリ名を編集する",
@@ -215,6 +218,7 @@
     "Warning.RunningInAdministratorMode": "管理者モードでは、ドラッグ＆ドロップなど一部の操作が利用できなくなります。",
     "Warning.FetchAllItemThumbnailsCancelled": "サムネイル一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",
     "Warning.FetchAllVariationHashesCancelled": "ハッシュ一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",
+    "Warning.InvalidBoothId": "無効なBooth IDだったため、空のBooth IDが設定されました。",
 
     "Error.Default": "エラー",
     "Error.Nothing": "アイテムが見つからないよっ！",
