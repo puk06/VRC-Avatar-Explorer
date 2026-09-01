@@ -170,6 +170,7 @@ public class SettingsViewModel : ViewModelBase, IInitializable
         SelectedSortOrder = (int)preferences.SortOrder;
         SelectedSortDirection = preferences.SortDirection;
         SelectedImplementedSort = (int)preferences.ImplementedSort;
+        EnableSearchInFolder = preferences.EnableSearchInFolder;
         SelectedViewMode = (int)preferences.MainViewMode;
         SelectedGridItemSize = (int)preferences.GridItemSize;
 
