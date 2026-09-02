@@ -43,6 +43,7 @@
     "Button.Description.TempAvatar": "임시 아바타",
 
     "Button.Tag.CommonAvatar": "공통 바디: {0}",
+    "Button.Tag.BoothId": "Booth: {0}",
 
     "Button.ToolTip.CommonAvatar": "공통 바디: {0}",
     "Button.ToolTip.Tag": "태그: {0}",

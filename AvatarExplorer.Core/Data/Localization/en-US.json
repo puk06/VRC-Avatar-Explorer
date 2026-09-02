@@ -43,6 +43,7 @@
     "Button.Description.TempAvatar": "Temporary Avatar",
 
     "Button.Tag.CommonAvatar": "Common Avatar: {0}",
+    "Button.Tag.BoothId": "Booth: {0}",
 
     "Button.ToolTip.CommonAvatar": "Common Avatar: {0}",
     "Button.ToolTip.Tag": "Tag: {0}",

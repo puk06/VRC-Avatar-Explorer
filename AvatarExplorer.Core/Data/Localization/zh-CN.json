@@ -43,6 +43,7 @@
     "Button.Description.TempAvatar": "临时头像",
 
     "Button.Tag.CommonAvatar": "共用基体: {0}",
+    "Button.Tag.BoothId": "Booth: {0}",
 
     "Button.ToolTip.CommonAvatar": "共用基体: {0}",
     "Button.ToolTip.Tag": "标签: {0}",
