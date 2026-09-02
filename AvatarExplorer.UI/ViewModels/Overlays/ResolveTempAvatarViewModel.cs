@@ -54,7 +54,7 @@ public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
 
     private void RefreshAvatars()
     {
-        var avatars = InstanceRepository.ItemGroupService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: true, rawIdentifier: true);
+        var avatars = InstanceRepository.ItemGroupService.GetAvatars(includeCommonAvatar: false, includeTempAvatar: false, rawIdentifier: true);
         var userPreference = InstanceRepository.UserPreferences;
         var sortedAvatars = ItemSortService.SortAvatars(
             avatars,
