@@ -160,8 +160,9 @@ public class ItemRepository : RepositoryBase<Item>
     /// <param name="paths">追加するパス情報の列挙可能なコレクション。</param>
     /// <param name="shouldLinkToOriginal">パスがフォルダの場合に、コピーせず元フォルダへリンクするかどうか。</param>
     /// <param name="removeOriginal">アーカイブの場合に展開後に元ファイルを削除するかどうか。nullの場合はRuntimeSettingsの値が使用されます。</param>
+    /// <param name="reportProgress">進捗（ローカライズキーとパーセント）を報告するコールバック。省略可。どのスレッドからも呼び出される可能性があります。</param>
     /// <returns>展開結果（展開先フォルダ等）を含むErrorOr。アイテムが見つからない場合はNotFoundエラー。</returns>
-    public async Task<ErrorOr<ExtractResult>> AddPaths(string identifier, IEnumerable<ItemPathEntry> paths, bool shouldLinkToOriginal, bool? removeOriginal = null)
+    public async Task<ErrorOr<ExtractResult>> AddPaths(string identifier, IEnumerable<ItemPathEntry> paths, bool shouldLinkToOriginal, bool? removeOriginal = null, Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         static string GetSafePath(Item item, string dataRootDirectory)
         {
@@ -185,7 +186,7 @@ public class ItemRepository : RepositoryBase<Item>
 
         var currentRootPath = item.GetItemPath();
         var defaultExtractPath = string.IsNullOrEmpty(currentRootPath) ? GetSafePath(item, settings.DataRootDirectory) : currentRootPath;
-        var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal);
+        var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal, reportProgress);
         if (result.IsError) return Error.Failure(description: "Failed to extract item paths.");
 
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(ItemUtils.GetRelativePath(result.Value.ItemParentFolder));

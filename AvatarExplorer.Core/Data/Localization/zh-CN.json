@@ -110,7 +110,9 @@
     "FileCategory.Unknown": "未知",
 
     "Processing.Default": "处理中...",
-    "Processing.AddContent": "正在准备内容...",
+    "Processing.AddContent.Title": "添加内容",
+    "Processing.AddContent.Status.Preparing": "正在准备内容...",
+    "Processing.AddContent.Status.Processing": "正在添加内容... {0}%",
     "Processing.Unitypackage.Title": "Unitypackage处理",
     "Processing.Unitypackage.Status.Preparing": "正在准备文件... {0}%",
     "Processing.Unitypackage.Status.Extracting": "正在解压文件... {0}%",

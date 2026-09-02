@@ -110,7 +110,9 @@
     "FileCategory.Unknown": "Desconocido",
 
     "Processing.Default": "Procesando...",
-    "Processing.AddContent": "Preparando contenido...",
+    "Processing.AddContent.Title": "Añadiendo contenido",
+    "Processing.AddContent.Status.Preparing": "Preparando contenido...",
+    "Processing.AddContent.Status.Processing": "Añadiendo contenido... {0}%",
     "Processing.Unitypackage.Title": "Procesamiento de Unitypackage",
     "Processing.Unitypackage.Status.Preparing": "Preparando archivos... {0}%",
     "Processing.Unitypackage.Status.Extracting": "Extrayendo archivos... {0}%",

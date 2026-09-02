@@ -350,17 +350,32 @@ public class ItemEditorViewModel : ViewModelBase
 
     private static async Task AddPathsInBackground(string identifier, List<ItemPathEntry> itemPaths, bool shouldLinkToOriginal)
     {
-        NotificationManager.Show(
-            Localizer.Instance[Loc.Processing.Default],
-            Localizer.Instance[Loc.Processing.AddContent],
-            NotificationType.Information
-        );
-
         try
         {
-            var result = await InstanceRepository.Items.AddPaths(identifier, itemPaths, shouldLinkToOriginal);
+            ErrorOr<ExtractResult>? result = null;
 
-            if (result.IsError)
+            await NotificationManager.ShowWithProgress(
+                Localizer.Instance[Loc.Processing.AddContent.Title],
+                async progress =>
+                {
+                    progress.Report(Localizer.Instance[Loc.Processing.AddContent.Status.Preparing], 0);
+
+                    result = await InstanceRepository.Items.AddPaths(
+                        identifier,
+                        itemPaths,
+                        shouldLinkToOriginal,
+                        reportProgress: p =>
+                        {
+                            progress.Report(Localizer.Instance.Get(p.Message, p.Percent.ToString()), p.Percent);
+                            return Task.CompletedTask;
+                        }
+                    );
+                }
+            );
+
+            if (result == null) return;
+
+            if (result.Value.IsError)
             {
                 NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
@@ -368,11 +383,11 @@ public class ItemEditorViewModel : ViewModelBase
                     NotificationType.Error
                 );
             }
-            else if (result.Value.ProcessingFailedPaths.Count > 0)
+            else if (result.Value.Value.ProcessingFailedPaths.Count > 0)
             {
                 NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
-                    Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.ProcessingFailedPaths.Count.ToString()),
+                    Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.Value.ProcessingFailedPaths.Count.ToString()),
                     NotificationType.Error
                 );
             }

@@ -498,7 +498,7 @@ public static class FileSystemService
         if (delay > TimeSpan.Zero) await Task.Delay(delay, ct);
     }
 
-    internal static async Task<ErrorOr<ExtractResult>> ExtractItemPaths(string parentFolderPath, IEnumerable<ItemPathEntry> itemPaths, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false)
+    internal static async Task<ErrorOr<ExtractResult>> ExtractItemPaths(string parentFolderPath, IEnumerable<ItemPathEntry> itemPaths, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false, Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         var result = new ExtractResult();
 
@@ -510,15 +510,26 @@ public static class FileSystemService
             else fileEntries.Add(entry);
         }
 
-        var urlTask = ProcessUrlEntriesAsync(result, urlEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
-        var fileTask = ProcessFileEntriesAsync(result, fileEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+        // URLエントリとファイルエントリは並行処理されるため、進捗カウンタはInterlockedで保護する
+        var totalCount = urlEntries.Count + fileEntries.Count;
+        var processedCount = 0;
+
+        async Task ReportEntryProgressAsync()
+        {
+            if (reportProgress == null || totalCount == 0) return;
+            var percent = (int)(100.0 * Interlocked.Increment(ref processedCount) / totalCount);
+            await reportProgress.Invoke((Loc.Processing.AddContent.Status.Processing, percent));
+        }
+
+        var urlTask = ProcessUrlEntriesAsync(result, urlEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism, ReportEntryProgressAsync);
+        var fileTask = ProcessFileEntriesAsync(result, fileEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism, ReportEntryProgressAsync);
 
         await Task.WhenAll(urlTask, fileTask);
 
         return result;
     }
 
-    private static async Task ProcessUrlEntriesAsync(ExtractResult result, List<ItemPathEntry> urlEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism)
+    private static async Task ProcessUrlEntriesAsync(ExtractResult result, List<ItemPathEntry> urlEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
     {
         foreach (var entry in urlEntries)
         {
@@ -534,18 +545,23 @@ public static class FileSystemService
                 var host = Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri.Host : "unknown";
                 ErrorManager.Instance.PostInternalError($"Failed to download file from '{host}'.");
                 lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(downloadedPath);
-                continue;
+            }
+            else
+            {
+                await ProcessExtractedPath(result, downloadedPath, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
             }
 
-            await ProcessExtractedPath(result, downloadedPath, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+            if (reportEntryProgress != null) await reportEntryProgress.Invoke();
         }
     }
 
-    private static async Task ProcessFileEntriesAsync(ExtractResult result, List<ItemPathEntry> fileEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism)
+    private static async Task ProcessFileEntriesAsync(ExtractResult result, List<ItemPathEntry> fileEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
     {
         foreach (var entry in fileEntries)
         {
             await ProcessExtractedPath(result, entry.Path, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+
+            if (reportEntryProgress != null) await reportEntryProgress.Invoke();
         }
     }
 

@@ -397,12 +397,21 @@ class ItemManager
             IsUrl = p.StartsWith("http")
         }).ToList();
 
+        Console.WriteLine($"{paths.Count}個のパスを追加中...");
+
         var result = await _app.ItemRepository.AddPaths(
             itemId,
             paths,
             shouldLinkToOriginal: _app.RuntimeSettings.ShouldLinkToOriginal,
-            removeOriginal: _app.RuntimeSettings.RemoveOriginal
+            removeOriginal: _app.RuntimeSettings.RemoveOriginal,
+            reportProgress: p =>
+            {
+                Console.Write($"\r{p.Message}: {p.Percent}%");
+                return Task.CompletedTask;
+            }
         );
+
+        Console.WriteLine();
 
         if (result.IsError)
         {
