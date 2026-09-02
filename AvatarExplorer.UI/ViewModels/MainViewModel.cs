@@ -114,6 +114,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
     private readonly Guid _preLevel0StateGuid = Guid.NewGuid();
     private readonly Guid _preLevel1StateGuid = Guid.NewGuid();
     private readonly Guid _initialWindowStateGuid = Guid.NewGuid();
+    private const string _initialWindowState = "initial_window_state";
     private bool _isPreviousScreenSearch = false;
 
     private static UserPreferences UserPreferences => InstanceRepository.UserPreferences;
@@ -670,7 +671,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
                 _stateCacheManager.SaveRightState(RightPageInfo);
             }
 
-            _searchItemBaseState = _itemNavigationService.CurrentState?.Value;
+            _searchItemBaseState = GetCurrentWindowStateOrDefault(_itemNavigationService.CurrentState);
             _searchManager.SuspendQuery(RightPageInfo);
             _itemNavigationService.Select(item.Identifier);
             _hasSearchItem = true;
@@ -710,7 +711,7 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
             if (popped != null)
             {
                 var currentState = _itemNavigationService.CurrentState;
-                if (_hasSearchItem && currentState != null && currentState.Value == _searchItemBaseState)
+                if (_hasSearchItem && GetCurrentWindowStateOrDefault(currentState) == _searchItemBaseState)
                 {
                     // 検索アイテムがpopされた → 検索状態を復元
                     _searchManager.MarkAsRestoring();
@@ -730,6 +731,11 @@ public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
         }
 
         Refresh(false, restoreGuid);
+    }
+
+    private static string GetCurrentWindowStateOrDefault(SelectionNode? state)
+    {
+        return state?.Value ?? _initialWindowState;
     }
 
     private void GoHome()
