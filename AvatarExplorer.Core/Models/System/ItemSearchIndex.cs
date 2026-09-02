@@ -128,7 +128,7 @@ public record ItemSearchIndex : ISearchIndex
             item.Title,
             item.Author,
             item.ItemMemo,
-            item.BoothId.ToString(),
+            item.BoothId >= 0 ? item.BoothId.ToString() : string.Empty,
             string.Join("\n", item.Tags),
             string.Join("\n", supportedAvatarNames),
             string.Join("\n", implementedAvatarNames),
@@ -139,7 +139,7 @@ public record ItemSearchIndex : ISearchIndex
         {
             Title = item.Title,
             Author = item.Author,
-            BoothId = item.BoothId.ToString(),
+            BoothId = item.BoothId >= 0 ? item.BoothId.ToString() : string.Empty,
             SupportedAvatars = supportedAvatarNames,
             Category = category,
             Memo = item.ItemMemo,
