@@ -241,7 +241,12 @@ var result = await itemRepo.AddPaths(
     "item:xxxxx",
     paths,
     shouldLinkToOriginal: false,  // true: フォルダだった場合は元フォルダへリンク、false: コピー
-    removeOriginal: true          // true: アーカイブだった場合は展開後に元のファイルを削除
+    removeOriginal: true,         // true: アーカイブだった場合は展開後に元のファイルを削除
+    reportProgress: p =>          // 進捗報告コールバック（省略可）
+    {
+        Console.WriteLine($"{p.Message}: {p.Percent}%");
+        return Task.CompletedTask;
+    }
 );
 
 if (!result.IsError)
@@ -255,6 +260,16 @@ if (!result.IsError)
     Console.WriteLine($"展開されずにそのまま追加されたフォルダー: {string.Join(", ", result.Value.FolderPaths)}");
 }
 ```
+
+#### 進捗報告について (reportProgress)
+
+| 引数 | 型 | 説明 |
+|---|---|---|
+| `reportProgress` | `Func<(string Message, int Percent), Task>?` | 進捗報告コールバック。省略時は進捗を報告しない |
+
+- 進捗はエントリ（追加するファイル・フォルダ・URL）単位で、処理の完了ごとに0〜100のパーセントで報告されます
+- `Message`はローカライズキー（例: `Processing.AddContent.Status.Processing`）なので、表示する場合は`Localizer`等で翻訳してください
+- URLとファイルのエントリは並行処理されるため、コールバックは複数のスレッドから呼び出される可能性があります
 
 ### RemovePath() - パスの削除
 

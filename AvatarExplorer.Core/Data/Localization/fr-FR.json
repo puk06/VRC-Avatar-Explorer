@@ -110,7 +110,9 @@
     "FileCategory.Unknown": "Inconnu",
 
     "Processing.Default": "Traitement en cours...",
-    "Processing.AddContent": "Préparation du contenu...",
+    "Processing.AddContent.Title": "Ajout de contenu",
+    "Processing.AddContent.Status.Preparing": "Préparation du contenu...",
+    "Processing.AddContent.Status.Processing": "Ajout du contenu... {0}%",
     "Processing.Unitypackage.Title": "Traitement Unitypackage",
     "Processing.Unitypackage.Status.Preparing": "Préparation des fichiers... {0}%",
     "Processing.Unitypackage.Status.Extracting": "Extraction des fichiers... {0}%",

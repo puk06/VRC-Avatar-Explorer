@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
+using Avalonia.Threading;
 using Message.Avalonia;
 using Message.Avalonia.Models;
 
@@ -8,6 +9,7 @@ namespace AvatarExplorer.UI.Services.System;
 
 public interface IProgressReporter
 {
+    /// <summary>進捗を報告します。どのスレッドから呼び出しても安全で、UIスレッドへマーシャリングされます。</summary>
     void Report(string title, int progress);
 }
 
@@ -71,7 +73,7 @@ public static class NotificationManager
 
         public void Report(string title, int progress)
         {
-            _progress.Report(title, progress);
+            Dispatcher.UIThread.Post(() => _progress.Report(title, progress));
         }
     }
 }

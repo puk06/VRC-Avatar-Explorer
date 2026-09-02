@@ -175,7 +175,15 @@ public static class Loc
     public static class Processing
     {
         public const string Default = "Processing.Default";
-        public const string AddContent = "Processing.AddContent";
+        public static class AddContent
+        {
+            public const string Title = "Processing.AddContent.Title";
+            public static class Status
+            {
+                public const string Preparing = "Processing.AddContent.Status.Preparing";
+                public const string Processing = "Processing.AddContent.Status.Processing";
+            }
+        }
         public static class Unitypackage
         {
             public const string Title = "Processing.Unitypackage.Title";

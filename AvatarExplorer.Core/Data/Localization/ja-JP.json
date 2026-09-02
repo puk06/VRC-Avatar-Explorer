@@ -110,7 +110,9 @@
     "FileCategory.Unknown": "不明",
 
     "Processing.Default": "処理中です...",
-    "Processing.AddContent": "コンテンツを準備中です...",
+    "Processing.AddContent.Title": "コンテンツの追加",
+    "Processing.AddContent.Status.Preparing": "コンテンツを準備中です...",
+    "Processing.AddContent.Status.Processing": "コンテンツを追加中です... {0}%",
     "Processing.Unitypackage.Title": "Unitypackageの処理",
     "Processing.Unitypackage.Status.Preparing": "ファイルの準備中です... {0}%",
     "Processing.Unitypackage.Status.Extracting": "ファイルの展開中です... {0}%",
