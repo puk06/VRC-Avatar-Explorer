@@ -66,13 +66,13 @@ public record TempAvatarSearchIndex : ISearchIndex
     {
         var freeWord = string.Join("\n",
             tempAvatar.AvatarName,
-            tempAvatar.BoothId > 0 ? tempAvatar.BoothId.ToString() : string.Empty
+            tempAvatar.BoothId >= 0 ? tempAvatar.BoothId.ToString() : string.Empty
         ).ToLowerInvariant();
 
         return new TempAvatarSearchIndex
         {
             AvatarName = tempAvatar.AvatarName,
-            BoothId = tempAvatar.BoothId > 0 ? tempAvatar.BoothId.ToString() : string.Empty,
+            BoothId = tempAvatar.BoothId >= 0 ? tempAvatar.BoothId.ToString() : string.Empty,
             FreeWord = freeWord
         };
     }
