@@ -128,7 +128,7 @@ public static class NavigationItemFactory
 
         if (tempAvatar.BoothId != -1)
         {
-            vm.Tags = [new() { ValueRaw = tempAvatar.BoothId.ToString() }];
+            vm.Tags = [new() { ValueRaw = tempAvatar.BoothId.ToString(), IsBoothId = true }];
         }
 
         return vm;

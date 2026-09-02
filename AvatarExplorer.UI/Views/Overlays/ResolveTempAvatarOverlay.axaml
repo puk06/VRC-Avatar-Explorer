@@ -37,6 +37,21 @@
                                             <Grid Grid.Column="1" RowDefinitions="Auto,Auto,5,*">
                                                 <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                                <ItemsControl Grid.Row="3" ItemsSource="{Binding Tags}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Grid.Row="3" Orientation="Horizontal" ItemSpacing="5" LineSpacing="5"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate x:DataType="vmcomponent:TagViewModel">
+                                                            <Border CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}">
+                                                                <TextBlock Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="8,5" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}" FontWeight="Bold"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
                                             </Grid>
                                         </Grid>
                                     </Button>

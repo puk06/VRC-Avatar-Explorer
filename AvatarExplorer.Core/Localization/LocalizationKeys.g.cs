@@ -87,6 +87,7 @@ public static class Loc
         public static class Tag
         {
             public const string CommonAvatar = "Button.Tag.CommonAvatar";
+            public const string BoothId = "Button.Tag.BoothId";
         }
         public static class ToolTip
         {
