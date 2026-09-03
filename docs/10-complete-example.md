@@ -388,22 +388,28 @@ class ItemManager
         Console.WriteLine($"作成完了: {item.Identifier}");
     }
 
-    public async Task AddFilesToItem(string itemId, IEnumerable<string> filePaths)
+    /// <summary>
+    /// アイテムにコンテンツ（ファイル・フォルダ・URL）を追加します。
+    /// ローカルファイルはコピー、アーカイブは自動展開、URLはダウンロード後に処理されます。
+    /// </summary>
+    public async Task AddContentsToItem(string itemId, IEnumerable<string> filePaths)
     {
-        var paths = filePaths.Select(p => new ItemPathEntry
+        // パスの種類（ファイル/フォルダ/URL）に応じてItemContentEntryを作成
+        var contents = filePaths.Select(p => new ItemContentEntry
         {
             FileName = Path.GetFileName(p),
             Path = p,
-            IsUrl = p.StartsWith("http")
+            IsUrl = p.StartsWith("http")  // URLの場合はtrue
         }).ToList();
 
-        Console.WriteLine($"{paths.Count}個のパスを追加中...");
+        Console.WriteLine($"{contents.Count}個のコンテンツを追加中...");
 
-        var result = await _app.ItemRepository.AddPaths(
+        // AddContents: ファイルコピー、アーカイブ展開、URLダウンロードをまとめて処理
+        var result = await _app.ItemRepository.AddContents(
             itemId,
-            paths,
-            shouldLinkToOriginal: _app.RuntimeSettings.ShouldLinkToOriginal,
-            removeOriginal: _app.RuntimeSettings.RemoveOriginal,
+            contents,
+            shouldLinkToOriginal: _app.RuntimeSettings.ShouldLinkToOriginal,  // フォルダをリンクするか
+            removeOriginal: _app.RuntimeSettings.RemoveOriginal,              // 展開後に元ファイルを削除するか
             reportProgress: p =>
             {
                 Console.Write($"\r{p.Message}: {p.Percent}%");
@@ -419,7 +425,7 @@ class ItemManager
         }
         else
         {
-            Console.WriteLine($"ファイル追加完了: {result.Value.FolderPaths.Count}フォルダ");
+            Console.WriteLine($"コンテンツ追加完了（アイテムフォルダ: {result.Value.ItemParentFolder}）");
         }
     }
 

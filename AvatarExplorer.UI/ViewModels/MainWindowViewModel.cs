@@ -240,7 +240,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
         // ソフト内からD&Dしたアイテムはスキップするように
         if (filePaths.Length == 1 && filePaths[0] == LastDragDropPath) return;
 
-        ItemEditorVM.AddPaths(filePaths);
+        ItemEditorVM.AddContents(filePaths);
     }
 
     public async Task<string?> ShowEditMemoDialog(string memo)

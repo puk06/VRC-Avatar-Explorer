@@ -155,14 +155,18 @@ public class ItemRepository : RepositoryBase<Item>
         if (downloaded) item.UpdateThumbnailFileName(item.Id);
     }
 
-    /// <summary>アイテムにファイル・フォルダのパスを追加（展開または元フォルダへのリンク）し、データベースを更新します。</summary>
+    /// <summary>アイテムにコンテンツ（ファイル・フォルダ・URL）を追加します。</summary>
+    /// <remarks>
+    /// <para>ローカルファイル/フォルダはアイテムフォルダへコピー（またはリンク）されます。アーカイブファイルは自動的に展開されます。</para>
+    /// <para>URL はダウンロード後に展開処理が行われます。</para>
+    /// </remarks>
     /// <param name="identifier">対象のアイテムのIdentifier。</param>
-    /// <param name="paths">追加するパス情報の列挙可能なコレクション。</param>
-    /// <param name="shouldLinkToOriginal">パスがフォルダの場合に、コピーせず元フォルダへリンクするかどうか。</param>
-    /// <param name="removeOriginal">アーカイブの場合に展開後に元ファイルを削除するかどうか。nullの場合はRuntimeSettingsの値が使用されます。</param>
-    /// <param name="reportProgress">進捗（ローカライズキーとパーセント）を報告するコールバック。省略可。どのスレッドからも呼び出される可能性があります。</param>
-    /// <returns>展開結果（展開先フォルダ等）を含むErrorOr。アイテムが見つからない場合はNotFoundエラー。</returns>
-    public async Task<ErrorOr<ExtractResult>> AddPaths(string identifier, IEnumerable<ItemPathEntry> paths, bool shouldLinkToOriginal, bool? removeOriginal = null, Func<(string Message, int Percent), Task>? reportProgress = null)
+    /// <param name="contents">追加するコンテンツのコレクション。</param>
+    /// <param name="shouldLinkToOriginal"><see langword="true"/> の場合、フォルダはコピーせず元フォルダへのリンクとなります。</param>
+    /// <param name="removeOriginal">アーカイブ展開後に元ファイルを削除するかどうか。<see langword="null"/> の場合は <c>RuntimeSettings</c> の値が使用されます。</param>
+    /// <param name="reportProgress">進捗を報告するコールバック（省略可）。どのスレッドからも呼び出される可能性があります。</param>
+    /// <returns>展開結果を含む <see cref="ErrorOr{ExtractResult}"/>。アイテムが見つからない場合は NotFound エラー。</returns>
+    public async Task<ErrorOr<ExtractResult>> AddContents(string identifier, IEnumerable<ItemContentEntry> contents, bool shouldLinkToOriginal, bool? removeOriginal = null, Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         static string GetSafePath(Item item, string dataRootDirectory)
         {
@@ -186,7 +190,7 @@ public class ItemRepository : RepositoryBase<Item>
 
         var currentRootPath = item.GetItemPath();
         var defaultExtractPath = string.IsNullOrEmpty(currentRootPath) ? GetSafePath(item, settings.DataRootDirectory) : currentRootPath;
-        var result = await FileSystemService.ExtractItemPaths(defaultExtractPath, paths, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal, reportProgress);
+        var result = await FileSystemService.ExtractItemContents(defaultExtractPath, contents, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal, reportProgress);
         if (result.IsError) return Error.Failure(description: "Failed to extract item paths.");
 
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(ItemUtils.GetRelativePath(result.Value.ItemParentFolder));

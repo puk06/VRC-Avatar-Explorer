@@ -91,7 +91,7 @@ internal static class DataImporter
                 if (!string.IsNullOrEmpty(v1Item.MaterialPath))
                     sourcePaths.Add(ItemUtils.GetFullPath(MigrateV1Path(v1Item.MaterialPath), SystemPathV1.ItemsFolderPath(dataFolderPath)));
 
-                await items.AddPaths(item.Identifier, sourcePaths.Select(p => new ItemPathEntry { FileName = Path.GetFileName(p), Path = p }), !shouldCopyAsset, false);
+                await items.AddContents(item.Identifier, sourcePaths.Select(p => new ItemContentEntry { FileName = Path.GetFileName(p), Path = p }), !shouldCopyAsset, false);
 
                 var sourceThumbnailPath = ItemUtils.GetFullPath(MigrateV1Path(v1Item.ImagePath), SystemPathV1.ItemThumbnailsPath(dataFolderPath));
                 var destThumbnailPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
@@ -228,11 +228,11 @@ internal static class DataImporter
                 }
 
                 var targetPaths = Directory.GetDirectories(sourcePath).Concat(Directory.GetFiles(sourcePath))
-                    .Select(p => new ItemPathEntry { FileName = Path.GetFileName(p), Path = p })
+                    .Select(p => new ItemContentEntry { FileName = Path.GetFileName(p), Path = p })
                     .ToList();
 
                 // 移行時は絶対にOriginalを消さないようにする
-                await items.AddPaths(item.Identifier, targetPaths, !shouldCopyAsset, false);
+                await items.AddContents(item.Identifier, targetPaths, !shouldCopyAsset, false);
 
                 if (!string.IsNullOrEmpty(konoAssetItem.Description.ImageFilename))
                 {
@@ -303,7 +303,7 @@ internal static class DataImporter
                 };
 
                 var item = await items.Create(creationContext);
-                await items.AddPaths(item.Identifier, [new ItemPathEntry { FileName = folderName, Path = subfolder }], !shouldCopyAsset, false);
+                await items.AddContents(item.Identifier, [new ItemContentEntry { FileName = folderName, Path = subfolder }], !shouldCopyAsset, false);
 
                 int percent = (int)(100.0 * i / subfolders.Length);
                 if (percent != lastPercent)

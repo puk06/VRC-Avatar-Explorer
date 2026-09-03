@@ -193,17 +193,27 @@ public enum UpdateChannel
 
 ## 設定の使用例
 
-### FileSystemServiceでの使用
+### AddContents()での使用
+
+`AddContents()`では、`removeOriginal`を`null`にすると`RuntimeSettings`の値が自動的に参照されます。
 
 ```csharp
-// AddPaths()でRuntimeSettingsが参照される
-var result = await app.ItemRepository.AddPaths(
+// removeOriginalをnullにすると、RuntimeSettingsから自動取得される
+var result = await app.ItemRepository.AddContents(
     "item:xxxxx",
-    paths,
-    shouldLinkToOriginal: app.RuntimeSettings.ShouldLinkToOriginal,
-    removeOriginal: app.RuntimeSettings.RemoveOriginal
+    contents,
+    shouldLinkToOriginal: app.RuntimeSettings.ShouldLinkToOriginal,  // 明示的に指定
+    removeOriginal: null  // RuntimeSettings.RemoveOriginalが使用される
 );
 ```
+
+#### 参照される設定
+
+| 設定 | 説明 |
+|------|------|
+| `ShouldLinkToOriginal` | `true`の場合、フォルダはコピーせず元フォルダへのリンクとなる |
+| `RemoveOriginal` | `true`の場合、アーカイブ展開後に元ファイルを削除する |
+| `MaxDegreeOfParallelism` | ファイルコピー・URLダウンロードの並行処理数（既定値: 4） |
 
 ### ModifyUnitypackageFilePathsAsyncでの使用
 

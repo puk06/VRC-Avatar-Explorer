@@ -13,14 +13,14 @@ public enum ItemPathType
     URL
 }
 
-public partial class ItemPathViewModel : ViewModelBase
+public partial class ItemContentViewModel : ViewModelBase
 {
     [Reactive] public partial Bitmap? IconImage { get; set; } = null;
     [Reactive] public partial string FileName { get; set; }
     [Reactive] public partial string FullPath { get; set; }
     [Reactive] public partial bool IsUrl { get; set; } = false;
 
-    public ItemPathViewModel(string fileName, string path, ItemPathType type)
+    public ItemContentViewModel(string fileName, string path, ItemPathType type)
     {
         FileName = fileName;
         FullPath = path;
