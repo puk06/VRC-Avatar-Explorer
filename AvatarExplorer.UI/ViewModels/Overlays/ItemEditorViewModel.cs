@@ -155,7 +155,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     {
         if (IsVisible && BoothId == launchInfo.ItemID)
         {
-            ItemContents.Add(new ItemContentViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
+            ItemContents.Add(new ItemContentViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemContentType.URL));
             RemoveDuplicatePaths();
             return;
         }
@@ -169,7 +169,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         UpdateCountField();
         IsVisible = true;
 
-        ItemContents.Add(new ItemContentViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
+        ItemContents.Add(new ItemContentViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemContentType.URL));
         RemoveDuplicatePaths();
 
         await FetchBoothData();
@@ -180,12 +180,12 @@ public partial class ItemEditorViewModel : ViewModelBase
         if (!IsVisible) Open();
         ItemContents.AddRange(contents.Select(i =>
         {
-            var itemPathType = ItemPathType.Unknown;
-            if (i.StartsWith("http")) itemPathType = ItemPathType.URL;
-            else if (File.Exists(i)) itemPathType = ItemPathType.File;
-            else if (Directory.Exists(i)) itemPathType = ItemPathType.Folder;
+            var itemPathType = ItemContentType.Unknown;
+            if (i.StartsWith("http")) itemPathType = ItemContentType.URL;
+            else if (File.Exists(i)) itemPathType = ItemContentType.File;
+            else if (Directory.Exists(i)) itemPathType = ItemContentType.Folder;
 
-            var fileName = itemPathType == ItemPathType.URL && UriUtils.TryParse(i, out var uri)
+            var fileName = itemPathType == ItemContentType.URL && UriUtils.TryParse(i, out var uri)
                 ? Path.GetFileName(uri.GetLeftPart(UriPartial.Path))
                 : Path.GetFileName(i);
 
@@ -408,7 +408,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         );
         if (folders == null || folders.Length == 0) return;
 
-        ItemContents.AddRange(folders.Select(i => new ItemContentViewModel(Path.GetFileName(i), i, ItemPathType.Folder)));
+        ItemContents.AddRange(folders.Select(i => new ItemContentViewModel(Path.GetFileName(i), i, ItemContentType.Folder)));
         RemoveDuplicatePaths();
     }
     private async Task SelectAndAddFiles()
@@ -419,7 +419,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         );
         if (files == null || files.Length == 0) return;
 
-        ItemContents.AddRange(files.Select(i => new ItemContentViewModel(Path.GetFileName(i), i, ItemPathType.File)));
+        ItemContents.AddRange(files.Select(i => new ItemContentViewModel(Path.GetFileName(i), i, ItemContentType.File)));
         RemoveDuplicatePaths();
     }
     private async Task AddUrl()
@@ -444,7 +444,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         );
         if (string.IsNullOrEmpty(newFileName)) return;
 
-        ItemContents.Add(new ItemContentViewModel(newFileName, url, ItemPathType.URL));
+        ItemContents.Add(new ItemContentViewModel(newFileName, url, ItemContentType.URL));
         RemoveDuplicatePaths();
     }
     public async Task FetchBoothData()
