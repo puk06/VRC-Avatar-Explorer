@@ -1,4 +1,5 @@
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
@@ -47,9 +48,23 @@ public class BulkImportItemViewModel : ViewModelBase
 
     public string ItemId { get; set; } = string.Empty;
 
+    private CancellationTokenSource? _thumbnailLoadCts;
+
     public BulkImportItemViewModel Update(int iconSize = 80, bool removeBrackets = false)
     {
-        Thumbnail = ImageService.Get(ThumbnailSource.Primary);
+        _thumbnailLoadCts?.Cancel();
+        _thumbnailLoadCts?.Dispose();
+        var cts = new CancellationTokenSource();
+        _thumbnailLoadCts = cts;
+
+        // UIスレッドではファイルI/Oを行わず、キャッシュ済みの画像のみ即時表示する
+        Thumbnail = ImageService.Peek(ThumbnailSource.Primary);
+
+        if (!string.IsNullOrEmpty(ThumbnailSource.Primary) && !ImageService.IsSystemIcon(ThumbnailSource.Primary))
+        {
+            _ = ApplyThumbnailAsync(ImageService.GetAsync(ThumbnailSource.Primary), iconSize, cts.Token);
+        }
+
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
 
         Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
@@ -72,6 +87,26 @@ public class BulkImportItemViewModel : ViewModelBase
             SelectedUnitypackage = previousSelectedPackage;
 
         return this;
+    }
+
+    private async Task ApplyThumbnailAsync(Task<Bitmap?> loadTask, int iconSize, CancellationToken ct)
+    {
+        try
+        {
+            var bitmap = await loadTask.ConfigureAwait(false);
+            if (bitmap == null || ct.IsCancellationRequested) return;
+
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                if (ct.IsCancellationRequested) return;
+                Thumbnail = bitmap;
+                Width = Height = iconSize;
+            }, DispatcherPriority.Normal, ct);
+        }
+        catch (OperationCanceledException)
+        {
+            // キャンセルされた場合は何もしない
+        }
     }
 
     public BulkImportItemViewModel Copy()

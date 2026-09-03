@@ -32,7 +32,8 @@ public static class AppInitializer
     {
         var thumbnailFileNames = InstanceRepository.Items.GetAll()
             .Select(i => i.ThumbnailFileName)
-            .Where(p => !string.IsNullOrEmpty(p));
+            .Where(p => !string.IsNullOrEmpty(p))
+            .ToArray();
         ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
     }
 

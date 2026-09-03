@@ -60,37 +60,58 @@ public class ItemViewModel : ViewModelBase, IDisposable
 
     public ItemViewModel Update(int iconSize = 80, bool removeBrackets = false)
     {
-        _thumbnailLoadCts?.Cancel();
-        _thumbnailLoadCts?.Dispose();
-        _thumbnailLoadCts = null;
+        UpdateThumbnail(iconSize);
+        UpdateTexts(removeBrackets);
+        UpdateContextMenu();
+        UpdateSize(iconSize);
+        UpdateTags();
+        UpdateToolTip();
 
+        return this;
+    }
+
+    private void UpdateThumbnail(int iconSize)
+    {
+        var cts = ResetThumbnailLoading();
+
+        // UIスレッドではファイルI/Oを行わず、キャッシュ済み (またはシステムアイコン) の画像のみ即時表示する
         ThumbnailSource.Applied = ThumbnailSource.Primary;
-        var defaultIcon = ImageService.Get(ThumbnailSource.Primary);
-        if (defaultIcon == null && !string.IsNullOrEmpty(ThumbnailSource.Fallback))
+        SetThumbnail(ResolveImmediateThumbnail(), owned: false);
+
+        // 実ファイルのサムネイルはバックグラウンドで読み込んで後から差し替える (鮮度チェックも兼ねる)
+        if (!string.IsNullOrEmpty(ThumbnailSource.Primary) && !ImageService.IsSystemIcon(ThumbnailSource.Primary))
         {
-            defaultIcon = ImageService.Get(ThumbnailSource.Fallback);
-            ThumbnailSource.Applied = ThumbnailSource.Fallback;
+            _ = ApplyThumbnailAsync(ImageService.GetAsync(ThumbnailSource.Primary), ThumbnailSource.Primary, iconSize, owned: false, cts.Token);
         }
-        SetThumbnail(defaultIcon, owned: false);
 
         if (!string.IsNullOrEmpty(ThumbnailSource.FilePath))
         {
-            var cts = new CancellationTokenSource();
-            _thumbnailLoadCts = cts;
-            _ = LoadThumbnailAsync(ThumbnailSource.FilePath, cts.Token);
+            _ = ApplyThumbnailAsync(GetFromFileAsync(ThumbnailSource.FilePath, cts.Token), ThumbnailSource.FilePath, iconSize, owned: true, cts.Token);
         }
+    }
 
+    private Bitmap? ResolveImmediateThumbnail()
+    {
+        var icon = ImageService.Peek(ThumbnailSource.Primary);
+        if (icon != null || string.IsNullOrEmpty(ThumbnailSource.Fallback)) return icon;
+
+        ThumbnailSource.Applied = ThumbnailSource.Fallback;
+        return ImageService.Peek(ThumbnailSource.Fallback);
+    }
+
+    private CancellationTokenSource ResetThumbnailLoading()
+    {
+        _thumbnailLoadCts?.Cancel();
+        _thumbnailLoadCts?.Dispose();
+        var cts = new CancellationTokenSource();
+        _thumbnailLoadCts = cts;
+        return cts;
+    }
+
+    private void UpdateTexts(bool removeBrackets)
+    {
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
         Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
-
-        // 古い ContextMenu のイベントハンドラーを解放してから再生成する
-        _contextMenuHolder?.Dispose();
-        var holder = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
-        _contextMenuHolder = holder;
-        ContextMenu = holder.Menu;
-
-        Width = Height = (Thumbnail != null) ? iconSize : 0;
-        Tags.ForEach(i => i.Update());
 
         if (removeBrackets && (ViewModelType == ViewModelType.Item || ViewModelType == ViewModelType.Avatar))
         {
@@ -102,10 +123,29 @@ public class ItemViewModel : ViewModelBase, IDisposable
             // Prefixを追加する (共通素体: XXX)
             Title = Localizer.Instance.Get(Loc.Button.Title.CommonAvatar, Title);
         }
+    }
 
+    private void UpdateContextMenu()
+    {
+        // 古い ContextMenu のイベントハンドラーを解放してから再生成する
+        _contextMenuHolder?.Dispose();
+        _contextMenuHolder = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
+        ContextMenu = _contextMenuHolder.Menu;
+    }
+
+    private void UpdateSize(int iconSize)
+    {
+        Width = Height = (Thumbnail != null) ? iconSize : 0;
+    }
+
+    private void UpdateTags()
+    {
+        Tags.ForEach(i => i.Update());
+    }
+
+    private void UpdateToolTip()
+    {
         ToolTip = GenerateToolTipText();
-
-        return this;
     }
 
     private string? GenerateToolTipText()
@@ -176,17 +216,20 @@ public class ItemViewModel : ViewModelBase, IDisposable
         ContextMenuHandlerService.Handle(action.ActionKey, ActualValue ?? Identifier);
     }
 
-    private async Task LoadThumbnailAsync(string filePath, CancellationToken ct)
+    private static Task<Bitmap?> GetFromFileAsync(string filePath, CancellationToken ct)
+    {
+        return Task.Run(() => ImageService.GetFromFileSystem(filePath), ct);
+    }
+
+    private async Task ApplyThumbnailAsync(Task<Bitmap?> loadTask, string appliedSource, int iconSize, bool owned, CancellationToken ct)
     {
         try
         {
-            var bitmap = await Task.Run(() => ImageService.GetFromFileSystem(filePath), ct);
+            var bitmap = await loadTask.ConfigureAwait(false);
 
-            if (bitmap == null) return;
-
-            if (ct.IsCancellationRequested)
+            if (bitmap == null || ct.IsCancellationRequested)
             {
-                bitmap.Dispose();
+                if (owned) bitmap?.Dispose();
                 return;
             }
 
@@ -194,11 +237,12 @@ public class ItemViewModel : ViewModelBase, IDisposable
             {
                 if (ct.IsCancellationRequested)
                 {
-                    bitmap.Dispose();
+                    if (owned) bitmap.Dispose();
                     return;
                 }
-                SetThumbnail(bitmap, owned: true);
-                ThumbnailSource.Applied = filePath;
+                SetThumbnail(bitmap, owned);
+                ThumbnailSource.Applied = appliedSource;
+                Width = Height = iconSize;
             }, DispatcherPriority.Normal, ct);
         }
         catch (OperationCanceledException)
@@ -207,7 +251,7 @@ public class ItemViewModel : ViewModelBase, IDisposable
         }
         catch (Exception ex)
         {
-            ErrorManager.Instance.PostError($"Failed to load thumbnail from {filePath}: {ex.Message}");
+            ErrorManager.Instance.PostError($"Failed to load thumbnail from {appliedSource}: {ex.Message}");
         }
     }
 

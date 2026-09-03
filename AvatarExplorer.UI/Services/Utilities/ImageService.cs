@@ -23,12 +23,13 @@ internal static class ImageService
         ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".webp", ".tiff", ".tif"
     };
 
+    // UIスレッドからは Peek のみを呼び出すこと (Peek はファイルI/Oを行わない)。
+    // 読み込みは必ず GetAsync / GetFromFileSystem をバックグラウンドで行い、結果を BitmapCache に反映する。
     private static readonly Dictionary<string, CacheEntry> BitmapCache = [];
+    private static readonly Dictionary<string, Task<Bitmap?>> InFlightLoads = [];
     private static readonly Lock BitmapCacheLock = new();
     private static int ThumbnailWarmupStarted = 0;
     private static int _compressedThumbnailMaxEdge = DefaultCompressedThumbnailMaxEdge;
-
-    internal static event Action<bool>? ThumbnailCacheWarmupStateChanged;
 
     private const string ResourceRootPath = "avares://AvatarExplorer/Assets/Internal/";
     private static Uri GetAssetUri(string fileName) => new(ResourceRootPath + fileName);
@@ -52,6 +53,48 @@ internal static class ImageService
         return !string.IsNullOrEmpty(ext) && SupportedImageExtensions.Contains(ext);
     }
 
+    /// <summary>
+    /// キャッシュ (またはシステムアイコン) から即時に取得する。ファイルI/Oを行わないためUIスレッドから呼び出せる。
+    /// キャッシュに無い場合は null を返すので、呼び出し側はフォールバック表示 + GetAsync での後読みを行う。
+    /// </summary>
+    internal static Bitmap? Peek(string fileName)
+    {
+        if (IsSystemIcon(fileName)) return SystemIconsDictionary.GetValueOrDefault(fileName);
+
+        var filePath = Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName);
+        lock (BitmapCacheLock)
+        {
+            return BitmapCache.TryGetValue(filePath, out var entry) ? entry.Bitmap : null;
+        }
+    }
+
+    /// <summary>
+    /// サムネイルをバックグラウンドで取得する。読み込みはファイル単位で重複排除され、結果はキャッシュされる。
+    /// 返される Bitmap はキャッシュ所有 (共有) のため、呼び出し側で Dispose してはいけない。
+    /// </summary>
+    internal static Task<Bitmap?> GetAsync(string fileName)
+    {
+        try
+        {
+            if (IsSystemIcon(fileName)) return Task.FromResult(SystemIconsDictionary.GetValueOrDefault(fileName));
+
+            var filePath = Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName);
+            lock (BitmapCacheLock)
+            {
+                if (InFlightLoads.TryGetValue(filePath, out var inFlight)) return inFlight;
+
+                var loadTask = Task.Run(() => LoadItemThumbnailAsync(filePath));
+                InFlightLoads[filePath] = loadTask;
+                return loadTask;
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to get image for file: {fileName}", ex);
+            return Task.FromResult<Bitmap?>(null);
+        }
+    }
+
     internal static Bitmap? GetFromFileSystem(string filePath)
     {
         try
@@ -62,22 +105,6 @@ internal static class ImageService
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError($"Failed to get image from file system: {filePath}", ex);
-            return null;
-        }
-    }
-
-    internal static Bitmap? Get(string fileName)
-    {
-        try
-        {
-            if (IsSystemIcon(fileName)) return SystemIconsDictionary[fileName];
-
-            var filePath = Path.Join(SystemPath.ItemThumbnailsFolderPath, fileName);
-            return GetFromFileCache(filePath, compressThumbnail: true);
-        }
-        catch (Exception ex)
-        {
-            ErrorManager.Instance.PostInternalError($"Failed to get image for file: {fileName}", ex);
             return null;
         }
     }
@@ -98,73 +125,81 @@ internal static class ImageService
         }
     }
 
+    /// <summary>
+    /// 全サムネイルのキャッシュをバックグラウンドで順次構築する。
+    /// GetAsync と同じ経路を通るため、表示中アイテムの読み込みと重複することはない。
+    /// </summary>
     internal static void StartThumbnailCacheWarmupInBackground(IEnumerable<string> imageFileNames)
     {
         if (Interlocked.Exchange(ref ThumbnailWarmupStarted, 1) != 0) return;
 
-        ThumbnailCacheWarmupStateChanged?.Invoke(true);
-
-        _ = Task.Run(() =>
+        _ = Task.Run(async () =>
         {
             try
             {
                 if (!Directory.Exists(SystemPath.ItemThumbnailsFolderPath)) return;
 
-                foreach (var filePath in imageFileNames)
+                foreach (var fileName in imageFileNames.Where(n => !string.IsNullOrEmpty(n) && !IsSystemIcon(n)))
                 {
-                    _ = GetFromFileCache(Path.Join(SystemPath.ItemThumbnailsFolderPath, filePath), compressThumbnail: true);
+                    await GetAsync(fileName).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
                 ErrorManager.Instance.PostInternalError("Failed to warmup thumbnail cache in background.", ex);
             }
-            finally
-            {
-                ThumbnailCacheWarmupStateChanged?.Invoke(false);
-            }
         });
     }
 
-    private static Bitmap? GetFromFileCache(string filePath, bool compressThumbnail)
+    private static async Task<Bitmap?> LoadItemThumbnailAsync(string filePath)
     {
-        var exists = File.Exists(filePath);
-        var lastWriteTimeUtc = DateTime.MinValue;
-        if (exists)
+        try
         {
-            try
-            {
-                lastWriteTimeUtc = File.GetLastWriteTimeUtc(filePath);
-            }
-            catch (Exception ex)
-            {
-                ErrorManager.Instance.PostInternalError($"Failed to get last write time for file: {filePath}", ex);
-                return null;
-            }
-        }
+            var (exists, lastWriteTimeUtc) = GetFileState(filePath);
 
-        lock (BitmapCacheLock)
-        {
-            if (BitmapCache.TryGetValue(filePath, out var cacheEntry) && cacheEntry.Exists == exists && cacheEntry.LastWriteTimeUtc == lastWriteTimeUtc)
+            lock (BitmapCacheLock)
             {
-                return cacheEntry.Bitmap;
+                if (BitmapCache.TryGetValue(filePath, out var entry) && entry.Exists == exists && entry.LastWriteTimeUtc == lastWriteTimeUtc)
+                {
+                    return entry.Bitmap;
+                }
             }
 
-            var bitmap = exists ? LoadBitmap(filePath, compressThumbnail) : null;
+            var bitmap = exists ? LoadBitmap(filePath, compressThumbnail: true) : null;
 
-            if (cacheEntry?.Bitmap != null && !ReferenceEquals(cacheEntry.Bitmap, bitmap))
+            lock (BitmapCacheLock)
             {
-                cacheEntry.Bitmap.Dispose();
+                // 差し替え前の Bitmap は描画中のViewModelから参照されている可能性があるため Dispose しない (GCに回収を委ねる)
+                BitmapCache[filePath] = new()
+                {
+                    Bitmap = bitmap,
+                    LastWriteTimeUtc = lastWriteTimeUtc,
+                    Exists = exists,
+                };
             }
-
-            BitmapCache[filePath] = new()
-            {
-                Bitmap = bitmap,
-                LastWriteTimeUtc = lastWriteTimeUtc,
-                Exists = exists,
-            };
 
             return bitmap;
+        }
+        finally
+        {
+            lock (BitmapCacheLock)
+            {
+                InFlightLoads.Remove(filePath);
+            }
+        }
+    }
+
+    private static (bool Exists, DateTime LastWriteTimeUtc) GetFileState(string filePath)
+    {
+        try
+        {
+            if (!File.Exists(filePath)) return (false, DateTime.MinValue);
+            return (true, File.GetLastWriteTimeUtc(filePath));
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to get last write time for file: {filePath}", ex);
+            return (false, DateTime.MinValue);
         }
     }
 
