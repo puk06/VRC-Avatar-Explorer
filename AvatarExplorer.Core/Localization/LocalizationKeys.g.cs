@@ -240,8 +240,10 @@ public static class Loc
             public static class Add
             {
                 public const string BulkImportList = "ContextMenu.Item.Add.BulkImportList";
+                public const string Content = "ContextMenu.Item.Add.Content";
                 public const string File = "ContextMenu.Item.Add.File";
                 public const string Folder = "ContextMenu.Item.Add.Folder";
+                public const string Url = "ContextMenu.Item.Add.Url";
             }
             public static class Booth
             {
@@ -394,9 +396,7 @@ public static class Loc
         public const string RetrieveBoothItemFailed = "Error.RetrieveBoothItemFailed";
         public const string FetchItemThumbnailFailed = "Error.FetchItemThumbnailFailed";
         public const string FoundProcessingFailedPath = "Error.FoundProcessingFailedPath";
-        public const string AddItemFileFailed = "Error.AddItemFileFailed";
         public const string AddContentFailed = "Error.AddContentFailed";
-        public const string AddItemFolderFailed = "Error.AddItemFolderFailed";
         public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
         public const string LicenseFileNotFound = "Error.LicenseFileNotFound";
         public const string ThirdPartyLicenseFileNotFound = "Error.ThirdPartyLicenseFileNotFound";

@@ -45,12 +45,13 @@ internal static class ContextMenuCreator
             new(Loc.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, addSeparator: true),
 
             new(Loc.ContextMenu.Item.Add.BulkImportList, ActionKey.AddToBulkImportList, ContextMenuIconType.Add),
-            new(Loc.ContextMenu.Item.Add.File, ActionKey.None, ContextMenuIconType.Add, addSeparator: true)
+            new(Loc.ContextMenu.Item.Add.Content, ActionKey.None, ContextMenuIconType.Add, addSeparator: true)
             {
                 SubMenuItems =
                 {
-                    new(Loc.ContextMenu.Item.Add.File, ActionKey.AddItemFile, ContextMenuIconType.Add),
-                    new(Loc.ContextMenu.Item.Add.Folder, ActionKey.AddItemFolder, ContextMenuIconType.Add)
+                    new(Loc.ContextMenu.Item.Add.File, ActionKey.AddItemFile, ContextMenuIconType.AddFile),
+                    new(Loc.ContextMenu.Item.Add.Folder, ActionKey.AddItemFolder, ContextMenuIconType.AddFolder),
+                    new(Loc.ContextMenu.Item.Add.Url, ActionKey.AddItemUrl, ContextMenuIconType.AddUrl),
                 }
             },
             new(Loc.ContextMenu.Item.Booth.Open, ActionKey.OpenBoothLink, ContextMenuIconType.Open),
@@ -58,10 +59,10 @@ internal static class ContextMenuCreator
 
             new(Loc.ContextMenu.Item.CopyItemInfo, ActionKey.CopyItemInfo, ContextMenuIconType.Copy, addSeparator: true),
 
-            new(Loc.ContextMenu.Item.Edit.Tag, ActionKey.EditItemTag, ContextMenuIconType.Edit),
-            new(Loc.ContextMenu.Item.Edit.Memo, ActionKey.EditItemMemo, ContextMenuIconType.Edit),
+            new(Loc.ContextMenu.Item.Edit.Tag, ActionKey.EditItemTag, ContextMenuIconType.Tag),
+            new(Loc.ContextMenu.Item.Edit.Memo, ActionKey.EditItemMemo, ContextMenuIconType.NoteEdit),
 
-            new(Loc.ContextMenu.Item.Edit.Implemented, ActionKey.None, ContextMenuIconType.Edit, addSeparator: true)
+            new(Loc.ContextMenu.Item.Edit.Implemented, ActionKey.None, ContextMenuIconType.Avatars, addSeparator: true)
             {
                 SubMenuItems =
                 {

@@ -48,6 +48,7 @@ public static class ContextMenuHandlerService
         Register(ActionKey.AddToBulkImportList, AddToBulkImportList);
         Register(ActionKey.AddItemFile, AddItemFile);
         Register(ActionKey.AddItemFolder, AddItemFolder);
+        Register(ActionKey.AddItemUrl, AddItemUrl);
         Register(ActionKey.MarkItemAsImplemented, i => _ = ChangeImplementedStatusForCurrentAvatar(i, true));
         Register(ActionKey.MarkItemAsNotImplemented, i => _ = ChangeImplementedStatusForCurrentAvatar(i, false));
         Register(ActionKey.ManageImplementedAvatars, ManageImplementedAvatars);
@@ -304,8 +305,7 @@ public static class ContextMenuHandlerService
 
         await AddPathsInternal(
             identifier,
-            files.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i }),
-            isFile: true
+            files.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i })
         );
     }
     private static async void AddItemFolder(string identifier)
@@ -318,11 +318,31 @@ public static class ContextMenuHandlerService
 
         await AddPathsInternal(
             identifier,
-            folders.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i }),
-            isFile: false
+            folders.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i })
         );
     }
-    private static async Task AddPathsInternal(string identifier, IEnumerable<ItemPathEntry> paths, bool isFile)
+    private static async void AddItemUrl(string identifier)
+    {
+        var url = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.AddUrl]);
+        if (string.IsNullOrEmpty(url)) return;
+
+        if (!UriUtils.TryParse(url, out var uri))
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.InvalidUrl],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        var fileName = Path.GetFileName(uri.GetLeftPart(UriPartial.Path));
+        await AddPathsInternal(
+            identifier,
+            [new() { FileName = fileName, Path = url, IsUrl = true }]
+        );
+    }
+    private static async Task AddPathsInternal(string identifier, IEnumerable<ItemPathEntry> paths)
     {
         var extractResult = await InstanceRepository.Items.AddPaths(identifier, paths, InstanceRepository.RuntimeSettings.ShouldLinkToOriginal);
 
@@ -330,7 +350,7 @@ public static class ContextMenuHandlerService
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
-                isFile ? Localizer.Instance[Loc.Error.AddItemFileFailed] : Localizer.Instance[Loc.Error.AddItemFolderFailed],
+                Localizer.Instance[Loc.Error.AddContentFailed],
                 NotificationType.Error
             );
         }
@@ -349,7 +369,7 @@ public static class ContextMenuHandlerService
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Success.Default],
-                isFile ? Localizer.Instance[Loc.Success.ItemFileAdd] : Localizer.Instance[Loc.Success.ItemFolderAdd],
+                Localizer.Instance[Loc.Success.ContentAdd],
                 NotificationType.Success
             );
         }
