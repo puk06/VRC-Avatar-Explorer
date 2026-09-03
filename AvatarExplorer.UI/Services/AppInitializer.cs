@@ -1,4 +1,3 @@
-using System.Linq;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Data.Paths;
 using AvatarExplorer.UI.Localization;

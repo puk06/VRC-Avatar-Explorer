@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Avalonia.Interactivity;
 using AvaloniaContextMenu = Avalonia.Controls.ContextMenu;
 using AvaloniaMenuItem = Avalonia.Controls.MenuItem;

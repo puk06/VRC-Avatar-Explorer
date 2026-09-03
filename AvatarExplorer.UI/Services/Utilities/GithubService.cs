@@ -1,7 +1,4 @@
-using System;
-using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using AvatarExplorer.Core.Data.Links;
 using AvatarExplorer.Core.Services.Network;

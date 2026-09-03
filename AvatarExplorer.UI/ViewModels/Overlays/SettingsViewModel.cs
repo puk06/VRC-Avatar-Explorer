@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
 using AvatarExplorer.Core.Data.Links;

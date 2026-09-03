@@ -1,9 +1,5 @@
-using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Updates;

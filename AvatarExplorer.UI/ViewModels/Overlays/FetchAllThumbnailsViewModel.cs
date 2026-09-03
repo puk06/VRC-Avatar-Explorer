@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;

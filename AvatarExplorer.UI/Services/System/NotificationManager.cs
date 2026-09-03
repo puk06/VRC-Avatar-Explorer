@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
 using Message.Avalonia;

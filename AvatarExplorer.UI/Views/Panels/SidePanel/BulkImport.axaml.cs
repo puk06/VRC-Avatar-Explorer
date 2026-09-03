@@ -1,11 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using System;
-using System.Linq;
 using Avalonia.Platform.Storage;
 using AvatarExplorer.UI.ViewModels.Panels;
 using AvatarExplorer.UI.Services;
-using System.Threading.Tasks;
 using AvatarExplorer.UI.Interfaces;
 
 namespace AvatarExplorer.UI.Views.Panels;

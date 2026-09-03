@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.UI.Data.Paths;

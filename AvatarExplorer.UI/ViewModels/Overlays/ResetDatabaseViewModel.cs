@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;

@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Models.Common;
