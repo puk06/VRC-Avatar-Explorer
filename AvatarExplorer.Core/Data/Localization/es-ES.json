@@ -147,6 +147,9 @@
     "ContextMenu.Item.Edit.Memo": "Editar nota del elemento",
     "ContextMenu.Item.Edit.DefaultPath": "Cambiar la ruta predeterminada",
     "ContextMenu.Item.Edit.Implemented": "Implementado / No implementado",
+    "ContextMenu.Item.Edit.MarkItemAsImplemented": "Marcar como implementado",
+    "ContextMenu.Item.Edit.MarkItemAsNotImplemented": "Marcar como no implementado",
+    "ContextMenu.Item.Edit.ManageImplementedAvatars": "Gestionar avatares implementados",
     "ContextMenu.Item.Thumbnail.Change": "Cambiar miniatura",
     "ContextMenu.Item.Thumbnail.Fetch": "Obtener miniatura",
     "ContextMenu.Item.Remove": "Eliminar elemento",
@@ -263,6 +266,7 @@
     "Error.InvalidReleaseUrl": "URL de versión inválida",
     "Error.DownloadFailed": "Error al descargar",
     "Error.ItemPathNotFound": "Ruta del elemento no encontrada",
+    "Error.AvatarNotFound": "Avatar no encontrado",
 
     "Settings.Basic": "Básico",
     "Settings.Language.Title": "Idioma",

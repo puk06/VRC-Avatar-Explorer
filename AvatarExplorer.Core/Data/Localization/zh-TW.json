@@ -147,6 +147,9 @@
     "ContextMenu.Item.Edit.Memo": "編輯項目備註",
     "ContextMenu.Item.Edit.DefaultPath": "更改預設路徑",
     "ContextMenu.Item.Edit.Implemented": "已實現 / 未實現",
+    "ContextMenu.Item.Edit.MarkItemAsImplemented": "標記為已實現",
+    "ContextMenu.Item.Edit.MarkItemAsNotImplemented": "標記為未實現",
+    "ContextMenu.Item.Edit.ManageImplementedAvatars": "管理已實現的頭像",
     "ContextMenu.Item.Thumbnail.Change": "變更縮圖",
     "ContextMenu.Item.Thumbnail.Fetch": "取得縮圖",
     "ContextMenu.Item.Remove": "刪除項目",
@@ -263,6 +266,7 @@
     "Error.InvalidReleaseUrl": "無效的發布URL",
     "Error.DownloadFailed": "下載失敗",
     "Error.ItemPathNotFound": "找不到項目路徑",
+    "Error.AvatarNotFound": "找不到頭像",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "語言",

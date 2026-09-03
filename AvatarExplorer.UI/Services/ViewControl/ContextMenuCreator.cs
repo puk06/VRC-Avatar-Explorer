@@ -60,7 +60,17 @@ internal static class ContextMenuCreator
 
             new(Loc.ContextMenu.Item.Edit.Tag, ActionKey.EditItemTag, ContextMenuIconType.Edit),
             new(Loc.ContextMenu.Item.Edit.Memo, ActionKey.EditItemMemo, ContextMenuIconType.Edit),
-            new(Loc.ContextMenu.Item.Edit.Implemented, ActionKey.EditImplementedAvatar, ContextMenuIconType.Edit, addSeparator: true),
+
+            new(Loc.ContextMenu.Item.Edit.Implemented, ActionKey.None, ContextMenuIconType.Edit, addSeparator: true)
+            {
+                SubMenuItems =
+                {
+                    new(Loc.ContextMenu.Item.Edit.MarkItemAsImplemented, ActionKey.MarkItemAsImplemented, ContextMenuIconType.Implemented),
+                    new(Loc.ContextMenu.Item.Edit.MarkItemAsNotImplemented, ActionKey.MarkItemAsNotImplemented, ContextMenuIconType.NotImplemented, addSeparator: true),
+                    new(Loc.ContextMenu.Item.Edit.ManageImplementedAvatars, ActionKey.ManageImplementedAvatars, ContextMenuIconType.Avatars)
+                }
+            },
+
             new(Loc.ContextMenu.Item.Edit.Default, ActionKey.None, ContextMenuIconType.Edit, addSeparator: true)
             {
                 SubMenuItems =
@@ -82,7 +92,7 @@ internal static class ContextMenuCreator
                 }
             },
 
-            new(Loc.ContextMenu.Item.CommonAvatarCheck, ActionKey.None, ContextMenuIconType.CommonAvatar, addSeparator: true)
+            new(Loc.ContextMenu.Item.CommonAvatarCheck, ActionKey.None, ContextMenuIconType.Avatars, addSeparator: true)
             {
                 SubMenuItems =
                 {

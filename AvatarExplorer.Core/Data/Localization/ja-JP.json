@@ -147,6 +147,9 @@
     "ContextMenu.Item.Edit.Memo": "アイテムメモを編集する",
     "ContextMenu.Item.Edit.DefaultPath": "デフォルトパスを変更する",
     "ContextMenu.Item.Edit.Implemented": "実装 / 未実装",
+    "ContextMenu.Item.Edit.MarkItemAsImplemented": "実装済みにする",
+    "ContextMenu.Item.Edit.MarkItemAsNotImplemented": "未実装にする",
+    "ContextMenu.Item.Edit.ManageImplementedAvatars": "実装済みアバターの管理",
     "ContextMenu.Item.Thumbnail.Change": "サムネイルを変更する",
     "ContextMenu.Item.Thumbnail.Fetch": "サムネイルを取得する",
     "ContextMenu.Item.Remove": "アイテムを削除する",
@@ -263,6 +266,7 @@
     "Error.InvalidReleaseUrl": "無効なリリースURLです",
     "Error.DownloadFailed": "ダウンロードに失敗しました",
     "Error.ItemPathNotFound": "アイテムパスが見つかりませんでした",
+    "Error.AvatarNotFound": "アバターが見つかりませんでした",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "言語",

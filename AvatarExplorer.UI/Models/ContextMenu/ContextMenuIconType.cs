@@ -41,11 +41,17 @@ public enum ContextMenuIconType
     Hidden,
 
     [MaterialIcon(MaterialIconKind.AccountMultiple)]
-    CommonAvatar,
+    Avatars,
 
     [MaterialIcon(MaterialIconKind.AccountMultipleCheck)]
     IncludeCommonAvatarCheck,
 
     [MaterialIcon(MaterialIconKind.AccountMultipleRemove)]
     ExcludeCommonAvatarCheck,
+
+    [MaterialIcon(MaterialIconKind.AccountCheck)]
+    Implemented,
+
+    [MaterialIcon(MaterialIconKind.AccountRemove)]
+    NotImplemented
 }

@@ -147,6 +147,9 @@
     "ContextMenu.Item.Edit.Memo": "아이템 메모 편집",
     "ContextMenu.Item.Edit.DefaultPath": "기본 경로 변更",
     "ContextMenu.Item.Edit.Implemented": "구현됨 / 미구현",
+    "ContextMenu.Item.Edit.MarkItemAsImplemented": "구현됨으로 표시",
+    "ContextMenu.Item.Edit.MarkItemAsNotImplemented": "미구현으로 표시",
+    "ContextMenu.Item.Edit.ManageImplementedAvatars": "구현된 아바타 관리",
     "ContextMenu.Item.Thumbnail.Change": "썸네일 변경",
     "ContextMenu.Item.Thumbnail.Fetch": "썸네일 가져오기",
     "ContextMenu.Item.Remove": "아이템 삭제",
@@ -263,6 +266,7 @@
     "Error.InvalidReleaseUrl": "유효하지 않은 릴리스 URL입니다",
     "Error.DownloadFailed": "다운로드에 실패했습니다",
     "Error.ItemPathNotFound": "아이템 경로를 찾을 수 없습니다",
+    "Error.AvatarNotFound": "아바타를 찾을 수 없습니다",
 
     "Settings.Basic": "기본",
     "Settings.Language.Title": "언어",
