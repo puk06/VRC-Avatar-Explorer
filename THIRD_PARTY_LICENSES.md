@@ -61,6 +61,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
 ---
 
 ## AvaloniaUI.DiagnosticsSupport
@@ -205,7 +206,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 **Repository:** https://github.com/AvaloniaUI/Avalonia.BuildServices
 
-**Referenced by:** Avalonia, Avalonia.Controls.DataGrid, Avalonia.Desktop, Avalonia.Fonts.Inter, Avalonia.FreeDesktop, Avalonia.FreeDesktop.AtSpi, Avalonia.HarfBuzz, Avalonia.Native, Avalonia.Skia, Avalonia.Themes.Fluent, Avalonia.Win32, Avalonia.X11, AvatarExplorer.UI, Material.Icons.Avalonia, Message.Avalonia, ReactiveUI.Avalonia
+**Referenced by:** Avalonia, Avalonia.Controls.DataGrid, Avalonia.Desktop, Avalonia.Fonts.Inter, Avalonia.FreeDesktop, Avalonia.FreeDesktop.AtSpi, Avalonia.HarfBuzz, Avalonia.Native, Avalonia.Skia, Avalonia.Themes.Fluent, Avalonia.Win32, Avalonia.X11, AvatarExplorer.UI, Material.Icons.Avalonia, Message.Avalonia, ReactiveUI.Avalonia, ReactiveUI.Primitives.Avalonia
 
 ### License
 
@@ -274,7 +275,7 @@ SOFTWARE.
 
 **Repository:** https://github.com/AvaloniaUI/Avalonia/
 
-**Referenced by:** Avalonia, Avalonia.Controls.DataGrid, Avalonia.Desktop, Avalonia.Fonts.Inter, Avalonia.FreeDesktop, Avalonia.FreeDesktop.AtSpi, Avalonia.HarfBuzz, Avalonia.Native, Avalonia.Skia, Avalonia.Themes.Fluent, Avalonia.Win32, Avalonia.X11, AvatarExplorer.UI, Material.Icons.Avalonia, Message.Avalonia, ReactiveUI.Avalonia
+**Referenced by:** Avalonia, Avalonia.Controls.DataGrid, Avalonia.Desktop, Avalonia.Fonts.Inter, Avalonia.FreeDesktop, Avalonia.FreeDesktop.AtSpi, Avalonia.HarfBuzz, Avalonia.Native, Avalonia.Skia, Avalonia.Themes.Fluent, Avalonia.Win32, Avalonia.X11, AvatarExplorer.UI, Material.Icons.Avalonia, Message.Avalonia, ReactiveUI.Avalonia, ReactiveUI.Primitives.Avalonia
 
 ### License
 
@@ -708,7 +709,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 **Repository:** https://github.com/dotnet/reactive
 
-**Referenced by:** AvatarExplorer.UI, DynamicData, ReactiveUI, ReactiveUI.Avalonia, ReactiveUI.Fody
+**Referenced by:** AvatarExplorer.UI, DynamicData
 
 ### License
 
@@ -798,53 +799,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ---
 
-## Fody
-
-**Repository:** https://github.com/Fody/Fody
-
-**Referenced by:** AvatarExplorer.UI, ReactiveUI.Fody
-
-### License
-
-```
-MIT License
-SPDX identifier
-MIT
-License text
-
-MIT License
-
-Copyright (c) The Fody Team and contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-SPDX web page
-https://spdx.org/licenses/MIT.html
-```
-
----
-
 ## MicroCom.Runtime
 
 **Repository:** https://github.com/kekekeks/MicroCom
 
-**Referenced by:** Avalonia, Avalonia.Controls.DataGrid, Avalonia.Desktop, Avalonia.Fonts.Inter, Avalonia.FreeDesktop, Avalonia.FreeDesktop.AtSpi, Avalonia.HarfBuzz, Avalonia.Native, Avalonia.Skia, Avalonia.Themes.Fluent, Avalonia.Win32, Avalonia.X11, AvatarExplorer.UI, Material.Icons.Avalonia, Message.Avalonia, ReactiveUI.Avalonia
+**Referenced by:** Avalonia, Avalonia.Controls.DataGrid, Avalonia.Desktop, Avalonia.Fonts.Inter, Avalonia.FreeDesktop, Avalonia.FreeDesktop.AtSpi, Avalonia.HarfBuzz, Avalonia.Native, Avalonia.Skia, Avalonia.Themes.Fluent, Avalonia.Win32, Avalonia.X11, AvatarExplorer.UI, Material.Icons.Avalonia, Message.Avalonia, ReactiveUI.Avalonia, ReactiveUI.Primitives.Avalonia
 
 ### License
 
@@ -912,7 +871,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 
 **Repository:** https://github.com/reactiveui/DynamicData
 
-**Referenced by:** AvatarExplorer.UI, ReactiveUI, ReactiveUI.Avalonia, ReactiveUI.Fody
+**Referenced by:** AvatarExplorer.UI
 
 ### License
 
@@ -944,11 +903,45 @@ SOFTWARE.
 
 ---
 
-## ReactiveUI, ReactiveUI.Avalonia, ReactiveUI.Fody
+## ReactiveUI.Disposables, ReactiveUI.Primitives, ReactiveUI.Primitives.Avalonia, ReactiveUI.Primitives.Core
+
+**Repository:** https://github.com/reactiveui/Primitives
+
+**Referenced by:** AvatarExplorer.UI, ReactiveUI, ReactiveUI.Avalonia, ReactiveUI.Core, ReactiveUI.Primitives, ReactiveUI.Primitives.Avalonia, ReactiveUI.Primitives.Core, Splat, Splat.Builder, Splat.Core, Splat.Logging
+
+### License
+
+```
+MIT License
+
+Copyright (c) 2019-2026 ReactiveUI Association Incorporated
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## ReactiveUI, ReactiveUI.Core
 
 **Repository:** https://github.com/reactiveui/reactiveui
 
-**Referenced by:** AvatarExplorer.UI, ReactiveUI.Avalonia, ReactiveUI.Fody
+**Referenced by:** AvatarExplorer.UI, ReactiveUI, ReactiveUI.Avalonia
 
 ### License
 
@@ -980,11 +973,117 @@ SOFTWARE.
 
 ---
 
+## ReactiveUI.Avalonia
+
+**Repository:** https://github.com/reactiveui/ReactiveUI.Avalonia
+
+**Referenced by:** AvatarExplorer.UI
+
+### License
+
+```
+MIT License
+
+Copyright (c) 2019-2026 ReactiveUI and Avalonia Teams, and Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## ReactiveUI.SourceGenerators, ReactiveUI.SourceGenerators.Analyzers.CodeFixes
+
+**Repository:** https://github.com/reactiveui/reactiveui.sourcegenerators
+
+**Referenced by:** AvatarExplorer.UI, ReactiveUI.SourceGenerators
+
+### License
+
+```
+MIT License
+
+Copyright (c) ReactiveUI and contributors 2023-2026
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Portions of the code are licensed
+# .NET Community Toolkit
+
+Copyright © .NET Foundation and Contributors
+
+All rights reserved.
+
+## MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# PolySharp license:
+MIT License
+
+Copyright (c) 2022 Sergio Pedri
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
 ## Splat, Splat.Builder, Splat.Core, Splat.Logging
 
 **Repository:** https://github.com/reactiveui/splat
 
-**Referenced by:** AvatarExplorer.UI, ReactiveUI, ReactiveUI.Avalonia, ReactiveUI.Fody, Splat, Splat.Builder, Splat.Logging
+**Referenced by:** AvatarExplorer.UI, ReactiveUI, ReactiveUI.Avalonia, ReactiveUI.Core, Splat, Splat.Builder, Splat.Logging
 
 ### License
 
@@ -1076,6 +1175,7 @@ licenses or are distributed under the Apache 2.0 license.
 # Code: MIT (https://opensource.org/licenses/MIT)
 The MIT license applies to all non-font and non-icon files.
 ```
+
 
 ---
 
