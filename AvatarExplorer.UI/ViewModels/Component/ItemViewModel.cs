@@ -60,20 +60,23 @@ public class ItemViewModel : ViewModelBase, IDisposable
 
     public ItemViewModel Update(int iconSize = 80, bool removeBrackets = false)
     {
-        _thumbnailLoadCts?.Cancel();
-        _thumbnailLoadCts?.Dispose();
-        var cts = new CancellationTokenSource();
-        _thumbnailLoadCts = cts;
+        UpdateThumbnail(iconSize);
+        UpdateTexts(removeBrackets);
+        UpdateContextMenu();
+        UpdateSize(iconSize);
+        UpdateTags();
+        UpdateToolTip();
+
+        return this;
+    }
+
+    private void UpdateThumbnail(int iconSize)
+    {
+        var cts = ResetThumbnailLoading();
 
         // UIスレッドではファイルI/Oを行わず、キャッシュ済み (またはシステムアイコン) の画像のみ即時表示する
         ThumbnailSource.Applied = ThumbnailSource.Primary;
-        var defaultIcon = ImageService.Peek(ThumbnailSource.Primary);
-        if (defaultIcon == null && !string.IsNullOrEmpty(ThumbnailSource.Fallback))
-        {
-            defaultIcon = ImageService.Peek(ThumbnailSource.Fallback);
-            ThumbnailSource.Applied = ThumbnailSource.Fallback;
-        }
-        SetThumbnail(defaultIcon, owned: false);
+        SetThumbnail(ResolveImmediateThumbnail(), owned: false);
 
         // 実ファイルのサムネイルはバックグラウンドで読み込んで後から差し替える (鮮度チェックも兼ねる)
         if (!string.IsNullOrEmpty(ThumbnailSource.Primary) && !ImageService.IsSystemIcon(ThumbnailSource.Primary))
@@ -85,18 +88,30 @@ public class ItemViewModel : ViewModelBase, IDisposable
         {
             _ = ApplyThumbnailAsync(GetFromFileAsync(ThumbnailSource.FilePath, cts.Token), ThumbnailSource.FilePath, iconSize, owned: true, cts.Token);
         }
+    }
 
+    private Bitmap? ResolveImmediateThumbnail()
+    {
+        var icon = ImageService.Peek(ThumbnailSource.Primary);
+        if (icon != null || string.IsNullOrEmpty(ThumbnailSource.Fallback)) return icon;
+
+        ThumbnailSource.Applied = ThumbnailSource.Fallback;
+        return ImageService.Peek(ThumbnailSource.Fallback);
+    }
+
+    private CancellationTokenSource ResetThumbnailLoading()
+    {
+        _thumbnailLoadCts?.Cancel();
+        _thumbnailLoadCts?.Dispose();
+        var cts = new CancellationTokenSource();
+        _thumbnailLoadCts = cts;
+        return cts;
+    }
+
+    private void UpdateTexts(bool removeBrackets)
+    {
         Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
         Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
-
-        // 古い ContextMenu のイベントハンドラーを解放してから再生成する
-        _contextMenuHolder?.Dispose();
-        var holder = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
-        _contextMenuHolder = holder;
-        ContextMenu = holder.Menu;
-
-        Width = Height = (Thumbnail != null) ? iconSize : 0;
-        Tags.ForEach(i => i.Update());
 
         if (removeBrackets && (ViewModelType == ViewModelType.Item || ViewModelType == ViewModelType.Avatar))
         {
@@ -108,10 +123,29 @@ public class ItemViewModel : ViewModelBase, IDisposable
             // Prefixを追加する (共通素体: XXX)
             Title = Localizer.Instance.Get(Loc.Button.Title.CommonAvatar, Title);
         }
+    }
 
+    private void UpdateContextMenu()
+    {
+        // 古い ContextMenu のイベントハンドラーを解放してから再生成する
+        _contextMenuHolder?.Dispose();
+        _contextMenuHolder = ContextMenuFactory.GetContextMenu(Actions, HandleMenuClick);
+        ContextMenu = _contextMenuHolder.Menu;
+    }
+
+    private void UpdateSize(int iconSize)
+    {
+        Width = Height = (Thumbnail != null) ? iconSize : 0;
+    }
+
+    private void UpdateTags()
+    {
+        Tags.ForEach(i => i.Update());
+    }
+
+    private void UpdateToolTip()
+    {
         ToolTip = GenerateToolTipText();
-
-        return this;
     }
 
     private string? GenerateToolTipText()
