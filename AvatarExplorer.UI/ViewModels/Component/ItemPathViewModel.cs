@@ -27,20 +27,20 @@ public class ItemPathViewModel : ViewModelBase
 
         if (type == ItemPathType.Unknown)
         {
-            IconImage = ImageService.Get(SystemIconKey.UnknownFileIcon);
+            IconImage = ImageService.Peek(SystemIconKey.UnknownFileIcon);
         }
         else if (type == ItemPathType.URL)
         {
-            IconImage = ImageService.Get(SystemIconKey.LinkIcon);
+            IconImage = ImageService.Peek(SystemIconKey.LinkIcon);
             IsUrl = true;
         }
         else if (type == ItemPathType.File)
         {
-            IconImage = ImageService.Get(SystemIconKey.FileIcon);
+            IconImage = ImageService.Peek(SystemIconKey.FileIcon);
         }
         else if (type == ItemPathType.Folder)
         {
-            IconImage = ImageService.Get(SystemIconKey.FolderIcon);
+            IconImage = ImageService.Peek(SystemIconKey.FolderIcon);
         }
     }
 }
