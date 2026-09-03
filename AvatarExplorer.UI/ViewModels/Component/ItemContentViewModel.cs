@@ -5,7 +5,7 @@ using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
-public enum ItemPathType
+public enum ItemContentType
 {
     Unknown,
     File,
@@ -20,25 +20,25 @@ public partial class ItemContentViewModel : ViewModelBase
     [Reactive] public partial string FullPath { get; set; }
     [Reactive] public partial bool IsUrl { get; set; } = false;
 
-    public ItemContentViewModel(string fileName, string path, ItemPathType type)
+    public ItemContentViewModel(string fileName, string path, ItemContentType type)
     {
         FileName = fileName;
         FullPath = path;
 
-        if (type == ItemPathType.Unknown)
+        if (type == ItemContentType.Unknown)
         {
             IconImage = ImageService.Peek(SystemIconKey.UnknownFileIcon);
         }
-        else if (type == ItemPathType.URL)
+        else if (type == ItemContentType.URL)
         {
             IconImage = ImageService.Peek(SystemIconKey.LinkIcon);
             IsUrl = true;
         }
-        else if (type == ItemPathType.File)
+        else if (type == ItemContentType.File)
         {
             IconImage = ImageService.Peek(SystemIconKey.FileIcon);
         }
-        else if (type == ItemPathType.Folder)
+        else if (type == ItemContentType.Folder)
         {
             IconImage = ImageService.Peek(SystemIconKey.FolderIcon);
         }
