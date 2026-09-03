@@ -90,6 +90,7 @@
     "Dialog.Title.NewTempAvatarName": "Nuevo nombre de avatar temporal",
     "Dialog.Title.NewCustomCategoryName": "Nuevo nombre de categoría personalizada",
     "Dialog.Title.AddUrl": "Introducir URL de descarga",
+    "Dialog.Title.EditDownloadFileName": "Editar nombre del archivo a descargar",
     "Dialog.Title.SetBoothIdForTempAvatar": "Establecer Booth ID para Avatar Temporal (también acepta enlace)",
 
     "Dialog.SelectSaveFolderPath": "Selecciona la carpeta donde guardar",

@@ -149,6 +149,7 @@ public static class Loc
             public const string NewTempAvatarName = "Dialog.Title.NewTempAvatarName";
             public const string NewCustomCategoryName = "Dialog.Title.NewCustomCategoryName";
             public const string AddUrl = "Dialog.Title.AddUrl";
+            public const string EditDownloadFileName = "Dialog.Title.EditDownloadFileName";
             public const string SetBoothIdForTempAvatar = "Dialog.Title.SetBoothIdForTempAvatar";
         }
         public const string SelectSaveFolderPath = "Dialog.SelectSaveFolderPath";

@@ -90,6 +90,7 @@
     "Dialog.Title.NewTempAvatarName": "新暫時頭像名稱",
     "Dialog.Title.NewCustomCategoryName": "新自訂類別名稱",
     "Dialog.Title.AddUrl": "輸入下載 URL",
+    "Dialog.Title.EditDownloadFileName": "編輯下載的檔案名稱",
     "Dialog.Title.SetBoothIdForTempAvatar": "設定暫時頭像的 Booth ID（也可輸入連結）",
 
     "Dialog.SelectSaveFolderPath": "請選擇要儲存的資料夾",
