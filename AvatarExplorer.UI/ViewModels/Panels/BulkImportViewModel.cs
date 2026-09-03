@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
