@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace AvatarExplorer.UI.ViewModels.Component;
 
 public sealed class UnitypackagePathNodeViewModel(string name, string fullPath)

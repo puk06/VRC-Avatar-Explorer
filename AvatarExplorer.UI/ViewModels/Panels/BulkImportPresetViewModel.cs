@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Data;
 using AvatarExplorer.UI.Interfaces;

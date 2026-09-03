@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Media.Imaging;
 
 namespace AvatarExplorer.UI.ViewModels.Component;

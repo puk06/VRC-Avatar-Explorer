@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Avalonia;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Localization;

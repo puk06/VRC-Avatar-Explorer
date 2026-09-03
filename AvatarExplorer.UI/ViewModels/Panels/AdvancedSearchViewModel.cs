@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using AvatarExplorer.UI.Interfaces;
 using DynamicData.Binding;
 using ReactiveUI.Fody.Helpers;

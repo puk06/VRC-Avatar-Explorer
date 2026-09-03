@@ -1,4 +1,3 @@
-using System;
 using Avalonia;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;

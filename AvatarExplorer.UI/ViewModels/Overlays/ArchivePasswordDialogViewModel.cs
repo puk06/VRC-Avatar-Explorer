@@ -1,5 +1,3 @@
-using System.IO;
-using System.Threading.Tasks;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.UI.Localization;

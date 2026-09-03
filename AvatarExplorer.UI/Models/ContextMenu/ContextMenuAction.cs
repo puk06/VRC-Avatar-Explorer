@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AvatarExplorer.UI.Models.ContextMenu;
 
 public class ContextMenuAction(string name, ActionKey actionKey = ActionKey.None, ContextMenuIconType contextMenuIconType = ContextMenuIconType.None, bool addSeparator = false, bool isEnabled = true)

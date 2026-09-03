@@ -1,4 +1,3 @@
-using System;
 using Material.Icons;
 
 namespace AvatarExplorer.UI.Attributes;
