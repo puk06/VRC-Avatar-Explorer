@@ -11,7 +11,7 @@ namespace AvatarExplorer.Core.Services.System;
 public sealed class AvatarExplorerApp
 {
     /// <summary>現在の AvatarExplorer.Core のバージョン文字列。</summary>
-    public static readonly string CurrentVersion = "2.9.0-beta.3";
+    public static readonly string CurrentVersion = "2.9.0-beta.4";
 
     /// <summary>アプリケーションのシングルトンインスタンス。どこからでも同じインスタンスが返されます。</summary>
     public static AvatarExplorerApp Instance { get; } = new();
