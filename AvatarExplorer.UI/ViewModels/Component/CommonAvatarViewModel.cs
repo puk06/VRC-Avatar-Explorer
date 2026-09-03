@@ -1,9 +1,9 @@
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
-public class CommonAvatarViewModel : ViewModelBase
+public partial class CommonAvatarViewModel : ViewModelBase
 {
-    [Reactive] public string DisplayName { get; set; } = string.Empty;
-    [Reactive] public string Identifier { get; set; } = string.Empty;
+    [Reactive] public partial string DisplayName { get; set; } = string.Empty;
+    [Reactive] public partial string Identifier { get; set; } = string.Empty;
 }

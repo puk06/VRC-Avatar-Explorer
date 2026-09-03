@@ -5,14 +5,14 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.UI.ViewModels.Component;
 using PDFtoImage;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using SkiaSharp;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class PdfViewerViewModel : ViewModelBase
+public partial class PdfViewerViewModel : ViewModelBase
 {
-    [Reactive] public bool IsVisible { get; set; }
+    [Reactive] public partial bool IsVisible { get; set; }
     public ObservableCollection<PdfPageViewModel> Pages { get; set; } = [];
 
     public IReactiveCommand CloseCommand { get; }

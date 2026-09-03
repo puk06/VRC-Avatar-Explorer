@@ -11,14 +11,14 @@ using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Panels;
 
-public class BulkImportViewModel : ViewModelBase, IInitializable
+public partial class BulkImportViewModel : ViewModelBase, IInitializable
 {
     public event Action? OnItemsAdded;
-    [Reactive] public ObservableCollection<BulkImportItemViewModel> Items { get; set; } = [];
+    [Reactive] public partial ObservableCollection<BulkImportItemViewModel> Items { get; set; } = [];
 
     public IReactiveCommand CopyCommand { get; }
     public IReactiveCommand RemoveCommand { get; }

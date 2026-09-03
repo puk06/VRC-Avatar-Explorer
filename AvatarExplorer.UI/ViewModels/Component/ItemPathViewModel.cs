@@ -1,7 +1,7 @@
 using Avalonia.Media.Imaging;
 using AvatarExplorer.UI.Data;
 using AvatarExplorer.UI.Services.Utilities;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
@@ -13,12 +13,12 @@ public enum ItemPathType
     URL
 }
 
-public class ItemPathViewModel : ViewModelBase
+public partial class ItemPathViewModel : ViewModelBase
 {
-    [Reactive] public Bitmap? IconImage { get; set; } = null;
-    [Reactive] public string FileName { get; set; }
-    [Reactive] public string FullPath { get; set; }
-    [Reactive] public bool IsUrl { get; set; } = false;
+    [Reactive] public partial Bitmap? IconImage { get; set; } = null;
+    [Reactive] public partial string FileName { get; set; }
+    [Reactive] public partial string FullPath { get; set; }
+    [Reactive] public partial bool IsUrl { get; set; } = false;
 
     public ItemPathViewModel(string fileName, string path, ItemPathType type)
     {

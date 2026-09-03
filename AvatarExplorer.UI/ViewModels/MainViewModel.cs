@@ -29,44 +29,44 @@ using AvatarExplorer.UI.ViewModels.Component;
 using AvatarExplorer.UI.ViewModels.Managers;
 using AvatarExplorer.UI.ViewModels.Panels;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels;
 
-public class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
+public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
     #region Properties
     public AdvancedSearchViewModel AdvancedSearchVM { get; } = new();
     public BulkImportViewModel BulkImportVM { get; } = new();
     public BulkImportPresetViewModel BulkImportPresetVM { get; } = new();
 
-    [Reactive] public ObservableCollection<PathSegment> PathSegments { get; set; } = [];
-    [Reactive] public bool HasOverflow { get; set; }
-    [Reactive] public string SearchText { get; set; } = string.Empty;
+    [Reactive] public partial ObservableCollection<PathSegment> PathSegments { get; set; } = [];
+    [Reactive] public partial bool HasOverflow { get; set; }
+    [Reactive] public partial string SearchText { get; set; } = string.Empty;
 
-    [Reactive] public int SelectedCategory { get; set; } = 0;
-    [Reactive] public IEnumerable<ItemViewModel> LeftItems { get; set; } = [];
-    [Reactive] public IEnumerable<ItemViewModel> MainItems { get; set; } = [];
-    [Reactive] public bool IsMainItemsEmpty { get; set; }
+    [Reactive] public partial int SelectedCategory { get; set; } = 0;
+    [Reactive] public partial IEnumerable<ItemViewModel> LeftItems { get; set; } = [];
+    [Reactive] public partial IEnumerable<ItemViewModel> MainItems { get; set; } = [];
+    [Reactive] public partial bool IsMainItemsEmpty { get; set; }
 
-    [Reactive] public MainItemViewMode MainViewMode { get; set; } = MainItemViewMode.List;
-    [Reactive] public int MainGridItemSize { get; set; } = (int)GridItemSize.Medium;
-    [Reactive] public int MainSortOrder { get; set; } = (int)ItemSortOrder.UpdatedDate;
-    [Reactive] public int MainSortDirection { get; set; } = (int)SortDirection.Descending;
-    [Reactive] public int MainImplementedSort { get; set; } = (int)ImplementedSort.None;
+    [Reactive] public partial MainItemViewMode MainViewMode { get; set; } = MainItemViewMode.List;
+    [Reactive] public partial int MainGridItemSize { get; set; } = (int)GridItemSize.Medium;
+    [Reactive] public partial int MainSortOrder { get; set; } = (int)ItemSortOrder.UpdatedDate;
+    [Reactive] public partial int MainSortDirection { get; set; } = (int)SortDirection.Descending;
+    [Reactive] public partial int MainImplementedSort { get; set; } = (int)ImplementedSort.None;
 
-    [Reactive] public PanelPageInfo LeftPageInfo { get; set; } = new();
-    [Reactive] public PanelPageInfo RightPageInfo { get; set; } = new();
+    [Reactive] public partial PanelPageInfo LeftPageInfo { get; set; } = new();
+    [Reactive] public partial PanelPageInfo RightPageInfo { get; set; } = new();
 
-    [Reactive] public bool IsSidePanelVisible { get; set; }
-    [Reactive] public int SelectedSidePanelTab { get; set; }
-    [Reactive] public double SidePanelMinWidth { get; set; } = 50;
-    [Reactive] public double SidePanelMaxWidth { get; set; } = 50;
-    [Reactive] public GridLength SidePanelWidth { get; set; } = new(50);
+    [Reactive] public partial bool IsSidePanelVisible { get; set; }
+    [Reactive] public partial int SelectedSidePanelTab { get; set; }
+    [Reactive] public partial double SidePanelMinWidth { get; set; } = 50;
+    [Reactive] public partial double SidePanelMaxWidth { get; set; } = 50;
+    [Reactive] public partial GridLength SidePanelWidth { get; set; } = new(50);
 
-    [Reactive] public Bitmap? HoverThumbnailImage { get; set; }
-    [Reactive] public bool IsHoverThumbnailVisible { get; set; }
-    [Reactive] public PixelPoint HoverThumbnailPosition { get; set; }
+    [Reactive] public partial Bitmap? HoverThumbnailImage { get; set; }
+    [Reactive] public partial bool IsHoverThumbnailVisible { get; set; }
+    [Reactive] public partial PixelPoint HoverThumbnailPosition { get; set; }
     #endregion
 
     #region Commands

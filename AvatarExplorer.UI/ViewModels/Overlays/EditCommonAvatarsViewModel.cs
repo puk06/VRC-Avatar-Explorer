@@ -11,20 +11,20 @@ using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
+public partial class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public bool IsVisible { get; set; }
+    [Reactive] public partial bool IsVisible { get; set; }
 
-    [Reactive] public ObservableCollection<CommonAvatarViewModel> Groups { get; set; } = [];
-    [Reactive] public int SelectedGroupIndex { get; set; } = -1;
+    [Reactive] public partial ObservableCollection<CommonAvatarViewModel> Groups { get; set; } = [];
+    [Reactive] public partial int SelectedGroupIndex { get; set; } = -1;
     public CommonAvatarViewModel? SelectedGroup => Groups.IsValidIndex(SelectedGroupIndex) ? Groups[SelectedGroupIndex] : null;
 
-    [Reactive] public string SearchText { get; set; } = string.Empty;
-    [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
+    [Reactive] public partial string SearchText { get; set; } = string.Empty;
+    [Reactive] public partial IEnumerable<ItemViewModel> Avatars { get; set; } = [];
     private IEnumerable<ItemViewModel> _allAvatars = [];
 
     public IReactiveCommand SelectItemCommand { get; }

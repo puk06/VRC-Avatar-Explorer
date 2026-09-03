@@ -1,11 +1,11 @@
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class EditMemoViewModel : ViewModelBase
+public partial class EditMemoViewModel : ViewModelBase
 {
-    [Reactive] public string Memo { get; set; } = string.Empty;
+    [Reactive] public partial string Memo { get; set; } = string.Empty;
     private TaskCompletionSource<string?> _tcs = new();
 
     public IReactiveCommand ConfirmCommand { get; }

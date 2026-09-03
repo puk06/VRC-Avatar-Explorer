@@ -2,19 +2,19 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.UI.Localization;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ArchivePasswordDialogViewModel : ViewModelBase
+public partial class ArchivePasswordDialogViewModel : ViewModelBase
 {
     public string FileName { get; set; } = string.Empty;
     public int CurrentAttempt { get; set; } = 0;
     public int MaxAttempt { get; set; } = 3;
 
-    [Reactive] public string FileNameText { get; set; } = string.Empty;
-    [Reactive] public string AttemptInfoText { get; set; } = string.Empty;
-    [Reactive] public string Password { get; set; } = string.Empty;
+    [Reactive] public partial string FileNameText { get; set; } = string.Empty;
+    [Reactive] public partial string AttemptInfoText { get; set; } = string.Empty;
+    [Reactive] public partial string Password { get; set; } = string.Empty;
     private TaskCompletionSource<string?> _tcs = new();
 
     public IReactiveCommand ConfirmCommand { get; }

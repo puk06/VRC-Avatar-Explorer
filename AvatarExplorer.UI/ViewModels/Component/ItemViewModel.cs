@@ -14,26 +14,26 @@ using AvatarExplorer.UI.Services.ContextMenu;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.Utils;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
-public class ItemViewModel : ViewModelBase, IDisposable
+public partial class ItemViewModel : ViewModelBase, IDisposable
 {
-    [Reactive] public bool IsVisible { get; set; } = true;
-    [Reactive] public bool IsSelected { get; set; } = false;
-    [Reactive] public bool IsImplemented { get; set; } = false;
-    [Reactive] public bool IsNotImplemented { get; set; } = false;
+    [Reactive] public partial bool IsVisible { get; set; } = true;
+    [Reactive] public partial bool IsSelected { get; set; } = false;
+    [Reactive] public partial bool IsImplemented { get; set; } = false;
+    [Reactive] public partial bool IsNotImplemented { get; set; } = false;
 
-    [Reactive] public Bitmap? Thumbnail { get; set; } = null;
-    [Reactive] public string Title { get; private set; } = string.Empty;
-    [Reactive] public string Description { get; private set; } = string.Empty;
-    [Reactive] public TagViewModel[] Tags { get; set; } = [];
-    [Reactive] public ContextMenu? ContextMenu { get; set; } = null;
-    [Reactive] public string? ToolTip { get; set; } = null;
+    [Reactive] public partial Bitmap? Thumbnail { get; set; } = null;
+    [Reactive] public partial string Title { get; private set; } = string.Empty;
+    [Reactive] public partial string Description { get; private set; } = string.Empty;
+    [Reactive] public partial TagViewModel[] Tags { get; set; } = [];
+    [Reactive] public partial ContextMenu? ContextMenu { get; set; } = null;
+    [Reactive] public partial string? ToolTip { get; set; } = null;
 
-    [Reactive] public double Width { get; set; } = 0;
-    [Reactive] public double Height { get; set; } = 0;
+    [Reactive] public partial double Width { get; set; } = 0;
+    [Reactive] public partial double Height { get; set; } = 0;
 
     public ThumbnailSource ThumbnailSource { get; set; } = new();
     public string TitleRaw { get; set; } = string.Empty;

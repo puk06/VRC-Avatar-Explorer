@@ -6,20 +6,20 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class FetchAllThumbnailsViewModel : ViewModelBase
+public partial class FetchAllThumbnailsViewModel : ViewModelBase
 {
-    [Reactive] public bool IsVisible { get; set; }
-    [Reactive] public string Status { get; set; } = string.Empty;
-    [Reactive] public string Count { get; set; } = string.Empty;
-    [Reactive] public string Eta { get; set; } = string.Empty;
-    [Reactive] public string CurrentItem { get; set; } = string.Empty;
-    [Reactive] public int Progress { get; set; } = 0;
-    [Reactive] public bool IsCancelable { get; set; } = false;
-    [Reactive] public bool IsStartable { get; set; } = true;
+    [Reactive] public partial bool IsVisible { get; set; }
+    [Reactive] public partial string Status { get; set; } = string.Empty;
+    [Reactive] public partial string Count { get; set; } = string.Empty;
+    [Reactive] public partial string Eta { get; set; } = string.Empty;
+    [Reactive] public partial string CurrentItem { get; set; } = string.Empty;
+    [Reactive] public partial int Progress { get; set; } = 0;
+    [Reactive] public partial bool IsCancelable { get; set; } = false;
+    [Reactive] public partial bool IsStartable { get; set; } = true;
 
     public IReactiveCommand StartCommand { get; }
     public IReactiveCommand CancelCommand { get; }

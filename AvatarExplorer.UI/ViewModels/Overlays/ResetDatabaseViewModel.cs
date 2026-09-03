@@ -2,19 +2,19 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ResetDatabaseViewModel : ViewModelBase
+public partial class ResetDatabaseViewModel : ViewModelBase
 {
-    [Reactive] public bool IsVisible { get; set; }
+    [Reactive] public partial bool IsVisible { get; set; }
 
-    [Reactive] public bool ResetItems { get; set; } = true;
-    [Reactive] public bool ResetTempAvatars { get; set; } = true;
-    [Reactive] public bool ResetCommonAvatars { get; set; } = true;
-    [Reactive] public bool ResetBulkImportPresets { get; set; } = true;
-    [Reactive] public bool ResetVariationHashes { get; set; } = true;
+    [Reactive] public partial bool ResetItems { get; set; } = true;
+    [Reactive] public partial bool ResetTempAvatars { get; set; } = true;
+    [Reactive] public partial bool ResetCommonAvatars { get; set; } = true;
+    [Reactive] public partial bool ResetBulkImportPresets { get; set; } = true;
+    [Reactive] public partial bool ResetVariationHashes { get; set; } = true;
 
     public IReactiveCommand ResetCommand { get; }
     public IReactiveCommand CancelCommand { get; }

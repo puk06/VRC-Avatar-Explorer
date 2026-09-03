@@ -12,13 +12,13 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class UpdateDialogViewModel : ViewModelBase
+public partial class UpdateDialogViewModel : ViewModelBase
 {
-    [Reactive] public bool IsVisible { get; set; }
+    [Reactive] public partial bool IsVisible { get; set; }
 
     private string CurrentVersion { get; set; } = string.Empty;
     private string LatestVersion { get; set; } = string.Empty;
@@ -26,8 +26,8 @@ public class UpdateDialogViewModel : ViewModelBase
     private string ReleaseUrl { get; set; } = string.Empty;
     private VersionRelease? LatestRelease { get; set; }
 
-    [Reactive] public string VersionText { get; set; } = string.Empty;
-    [Reactive] public string Content { get; set; } = string.Empty;
+    [Reactive] public partial string VersionText { get; set; } = string.Empty;
+    [Reactive] public partial string Content { get; set; } = string.Empty;
 
     public IReactiveCommand LaterCommand { get; }
     public IReactiveCommand UpdateNowCommand { get; }
