@@ -9,23 +9,23 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class UnitypackageViewerViewModel : ViewModelBase, IInitializable
+public partial class UnitypackageViewerViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public bool IsVisible { get; set; }
+    [Reactive] public partial bool IsVisible { get; set; }
 
     public string UnitypackagePath { get; set; } = string.Empty;
 
-    [Reactive] public IEnumerable<UnitypackagePathNodeViewModel> Nodes { get; set; } = [];
-    [Reactive] public string FileName { get; set; } = string.Empty;
-    [Reactive] public string Status { get; set; } = string.Empty;
+    [Reactive] public partial IEnumerable<UnitypackagePathNodeViewModel> Nodes { get; set; } = [];
+    [Reactive] public partial string FileName { get; set; } = string.Empty;
+    [Reactive] public partial string Status { get; set; } = string.Empty;
 
-    [Reactive] public UnitypackagePathNodeViewModel? SelectedNode { get; set; } = null;
-    [Reactive] public string SelectedPath { get; set; } = string.Empty;
-    [Reactive] public bool IsExportable { get; set; } = false; // ISFILE
+    [Reactive] public partial UnitypackagePathNodeViewModel? SelectedNode { get; set; } = null;
+    [Reactive] public partial string SelectedPath { get; set; } = string.Empty;
+    [Reactive] public partial bool IsExportable { get; set; } = false; // ISFILE
 
     public IReactiveCommand ExportCommand { get; }
     public IReactiveCommand CloseCommand { get; }

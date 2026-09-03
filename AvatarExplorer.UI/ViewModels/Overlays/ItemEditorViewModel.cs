@@ -18,37 +18,37 @@ using AvatarExplorer.UI.ViewModels.Component;
 using DynamicData;
 using ErrorOr;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ItemEditorViewModel : ViewModelBase
+public partial class ItemEditorViewModel : ViewModelBase
 {
-    [Reactive] public bool IsVisible { get; set; } = false;
+    [Reactive] public partial bool IsVisible { get; set; } = false;
     public string? Identifier { get; set; } = null;
     public ObservableCollection<ItemPathViewModel> ItemPaths { get; set; } = [];
-    [Reactive] public bool ShouldLinkToOriginal { get; set; } = false;
+    [Reactive] public partial bool ShouldLinkToOriginal { get; set; } = false;
 
-    [Reactive] public string BoothUrl { get; set; } = string.Empty;
-    [Reactive] public string Title { get; set; } = string.Empty;
-    [Reactive] public string Author { get; set; } = string.Empty;
-    [Reactive] public int SelectedCategoryIndex { get; set; } = 0;
+    [Reactive] public partial string BoothUrl { get; set; } = string.Empty;
+    [Reactive] public partial string Title { get; set; } = string.Empty;
+    [Reactive] public partial string Author { get; set; } = string.Empty;
+    [Reactive] public partial int SelectedCategoryIndex { get; set; } = 0;
     public ItemCategoryViewModel? SelectedCategory => Categories.IsValidIndex(SelectedCategoryIndex) ? Categories[SelectedCategoryIndex] : null;
-    [Reactive] public ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
+    [Reactive] public partial ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
 
-    [Reactive] public string SupportedAvatarsText { get; set; } = string.Empty;
+    [Reactive] public partial string SupportedAvatarsText { get; set; } = string.Empty;
     public IEnumerable<string> SupportedAvatars { get; set; } = []; // 変更時、もしくはLocalizerの言語変更時にテキストを更新する
 
     public string Memo { get; set; } = string.Empty;
 
-    [Reactive] public string TagsText { get; set; } = string.Empty;
+    [Reactive] public partial string TagsText { get; set; } = string.Empty;
     public IEnumerable<string> Tags { get; set; } = []; // 変更時、もしくはLocalizerの言語変更時にテキストを更新する
 
-    [Reactive] public string AuthorId { get; set; } = string.Empty;
-    [Reactive] public string BoothId { get; set; } = string.Empty;
-    [Reactive] public string ThumbnailUrl { get; set; } = string.Empty;
-    [Reactive] public bool SkipIndirectCommonAvatarCheck { get; set; } = false;
-    [Reactive] public bool IsHidden { get; set; } = false;
+    [Reactive] public partial string AuthorId { get; set; } = string.Empty;
+    [Reactive] public partial string BoothId { get; set; } = string.Empty;
+    [Reactive] public partial string ThumbnailUrl { get; set; } = string.Empty;
+    [Reactive] public partial bool SkipIndirectCommonAvatarCheck { get; set; } = false;
+    [Reactive] public partial bool IsHidden { get; set; } = false;
 
     public IReactiveCommand AddFolderCommand { get; }
     public IReactiveCommand AddFileCommand { get; }

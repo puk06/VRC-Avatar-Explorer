@@ -5,14 +5,14 @@ using AvatarExplorer.Core.Models.Common;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ErrorLogViewModel : ViewModelBase
+public partial class ErrorLogViewModel : ViewModelBase
 {
     public ObservableCollection<ErrorContext> ErrorContexts { get; } = [];
-    [Reactive] public bool IsVisible { get; set; }
+    [Reactive] public partial bool IsVisible { get; set; }
     public IReactiveCommand CloseCommand { get; }
     public IReactiveCommand OpenFolderCommand { get; }
 

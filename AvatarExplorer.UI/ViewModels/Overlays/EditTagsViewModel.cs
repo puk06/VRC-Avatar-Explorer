@@ -4,23 +4,23 @@ using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Services;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class EditTagsViewModel : ViewModelBase, IInitializable
+public partial class EditTagsViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public ObservableCollection<string> Tags { get; set; } = [];
+    [Reactive] public partial ObservableCollection<string> Tags { get; set; } = [];
     private TaskCompletionSource<string[]?> _tcs = new();
 
-    [Reactive] public string NewTag { get; set; } = string.Empty;
+    [Reactive] public partial string NewTag { get; set; } = string.Empty;
     public IReactiveCommand CreateTagCommand { get; }
     public IReactiveCommand ClearNewTagCommand { get; }
 
-    [Reactive] public int SelectedIndex { get; set; } = -1;
+    [Reactive] public partial int SelectedIndex { get; set; } = -1;
 
-    [Reactive] public string SearchText { get; set; } = string.Empty;
-    [Reactive] public IEnumerable<string> ExistTags { get; set; } = [];
+    [Reactive] public partial string SearchText { get; set; } = string.Empty;
+    [Reactive] public partial IEnumerable<string> ExistTags { get; set; } = [];
     private List<string> _allExistTags = [];
 
     public IReactiveCommand ConfirmCommand { get; }

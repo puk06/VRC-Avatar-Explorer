@@ -20,19 +20,19 @@ using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Utils;
 using AvatarExplorer.UI.ViewModels.Overlays;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
 
 namespace AvatarExplorer.UI.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializable
+public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
-    [Reactive] public string WindowTitle { get; set; } = string.Empty;
-    [Reactive] public ImageBrush? BackgroundImage { get; set; } = null;
-    [Reactive] public IBrush? Background { get; set; } = null;
-    [Reactive] public FontFamily FontFamily { get; set; } = FontUtils.GetFontFamily(null);
-    [Reactive] public bool IsAnyOverlayVisible { get; set; }
+    [Reactive] public partial string WindowTitle { get; set; } = string.Empty;
+    [Reactive] public partial ImageBrush? BackgroundImage { get; set; } = null;
+    [Reactive] public partial IBrush? Background { get; set; } = null;
+    [Reactive] public partial FontFamily FontFamily { get; set; } = FontUtils.GetFontFamily(null);
+    [Reactive] public partial bool IsAnyOverlayVisible { get; set; }
 
     public static MainWindowViewModel Instance { get; private set; } = null!;
     public string? LastDragDropPath { get; set; } = null;
@@ -55,25 +55,25 @@ public class MainWindowViewModel : ViewModelBase, IInitializable, IPostInitializ
     public UnitypackageViewerViewModel UnitypackageViewerVM { get; } = new();
 
     public TextDialogViewModel TextDialogVM { get; } = new();
-    [Reactive] public bool IsTextDialogVisible { get; set; }
+    [Reactive] public partial bool IsTextDialogVisible { get; set; }
 
     public SelectAvatarsViewModel SelectAvatarsVM { get; } = new();
-    [Reactive] public bool SelectAvatarsVisible { get; set; }
+    [Reactive] public partial bool SelectAvatarsVisible { get; set; }
 
     public EditMemoViewModel EditMemoVM { get; } = new();
-    [Reactive] public bool IsEditMemoVisible { get; set; }
+    [Reactive] public partial bool IsEditMemoVisible { get; set; }
 
     public EditTagsViewModel EditTagsVM { get; } = new();
-    [Reactive] public bool IsEditTagsVisible { get; set; }
+    [Reactive] public partial bool IsEditTagsVisible { get; set; }
 
     public UpdateDialogViewModel UpdateDialogVM { get; } = new();
-    [Reactive] public bool IsUpdateDialogVisible { get; set; }
+    [Reactive] public partial bool IsUpdateDialogVisible { get; set; }
 
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
-    [Reactive] public bool IsYesNoDialogVisible { get; set; }
+    [Reactive] public partial bool IsYesNoDialogVisible { get; set; }
 
     public ArchivePasswordDialogViewModel ArchivePasswordDialogVM { get; } = new();
-    [Reactive] public bool IsArchivePasswordDialogVisible { get; set; }
+    [Reactive] public partial bool IsArchivePasswordDialogVisible { get; set; }
 
     public event Action? WindowClosing;
     public event Action<KeyEventArgs>? KeyDown;

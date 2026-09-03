@@ -3,23 +3,23 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Utils;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
-public class PanelPageInfo : ViewModelBase
+public partial class PanelPageInfo : ViewModelBase
 {
-    [Reactive] public int CurrentPage { get; set; }
-    [Reactive] public int TotalItems { get; set; }
-    [Reactive] public int PageSize { get; set; } = 30;
-    [Reactive] public int TotalPages { get; private set; } = 1;
-    [Reactive] public string PageDisplay { get; private set; } = "1 / 1";
-    [Reactive] public string ItemRangeDisplay { get; private set; } = "1 - 0 / 0";
-    [Reactive] public bool CanGoFirst { get; private set; }
-    [Reactive] public bool CanGoPrev { get; private set; }
-    [Reactive] public bool CanGoNext { get; private set; }
-    [Reactive] public bool CanGoLast { get; private set; }
-    [Reactive] public Vector ScrollOffset { get; set; } = AvaloniaVectorUtils.MinValue;
+    [Reactive] public partial int CurrentPage { get; set; }
+    [Reactive] public partial int TotalItems { get; set; }
+    [Reactive] public partial int PageSize { get; set; } = 30;
+    [Reactive] public partial int TotalPages { get; private set; } = 1;
+    [Reactive] public partial string PageDisplay { get; private set; } = "1 / 1";
+    [Reactive] public partial string ItemRangeDisplay { get; private set; } = "1 - 0 / 0";
+    [Reactive] public partial bool CanGoFirst { get; private set; }
+    [Reactive] public partial bool CanGoPrev { get; private set; }
+    [Reactive] public partial bool CanGoNext { get; private set; }
+    [Reactive] public partial bool CanGoLast { get; private set; }
+    [Reactive] public partial Vector ScrollOffset { get; set; } = AvaloniaVectorUtils.MinValue;
 
     private Vector _restoreScrollOffset = AvaloniaVectorUtils.MinValue;
     public Vector RestoreScrollOffset

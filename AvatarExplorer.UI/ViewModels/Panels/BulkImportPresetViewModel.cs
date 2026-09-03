@@ -6,13 +6,13 @@ using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Panels;
 
-public class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostInitializable
+public partial class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
-    [Reactive] public IEnumerable<ItemViewModel> Items { get; set; } = [];
+    [Reactive] public partial IEnumerable<ItemViewModel> Items { get; set; } = [];
 
     public IReactiveCommand SelectItemCommand { get; }
 

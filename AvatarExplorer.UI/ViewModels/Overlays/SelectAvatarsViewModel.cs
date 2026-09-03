@@ -11,16 +11,16 @@ using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class SelectAvatarsViewModel : ViewModelBase, IInitializable
+public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public string Title { get; set; } = string.Empty;
-    [Reactive] public bool AllowTempAvatarCreation { get; set; } = false;
-    [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
-    [Reactive] public string SearchText { get; set; } = string.Empty;
+    [Reactive] public partial string Title { get; set; } = string.Empty;
+    [Reactive] public partial bool AllowTempAvatarCreation { get; set; } = false;
+    [Reactive] public partial IEnumerable<ItemViewModel> Avatars { get; set; } = [];
+    [Reactive] public partial string SearchText { get; set; } = string.Empty;
     private TaskCompletionSource<string[]?> _tcs = new();
     private List<ItemViewModel> _allAvatars = [];
 

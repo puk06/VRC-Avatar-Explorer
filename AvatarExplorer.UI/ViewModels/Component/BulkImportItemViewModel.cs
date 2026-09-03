@@ -5,14 +5,14 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Items;
 using AvatarExplorer.UI.Services.Utilities;
 using AvatarExplorer.UI.Utils;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
-public class UnitypackageViewModel : ViewModelBase
+public partial class UnitypackageViewModel : ViewModelBase
 {
-    [Reactive] public string Name { get; set; } = string.Empty;
-    [Reactive] public string ToolTipText { get; set; }
+    [Reactive] public partial string Name { get; set; } = string.Empty;
+    [Reactive] public partial string ToolTipText { get; set; }
 
     public string ParentDirectory { get; set; } = string.Empty;
 
@@ -25,14 +25,14 @@ public class UnitypackageViewModel : ViewModelBase
     }
 }
 
-public class BulkImportItemViewModel : ViewModelBase
+public partial class BulkImportItemViewModel : ViewModelBase
 {
-    [Reactive] public Bitmap? Thumbnail { get; set; } = null;
-    [Reactive] public string Title { get; private set; } = string.Empty;
-    [Reactive] public string Description { get; private set; } = string.Empty;
+    [Reactive] public partial Bitmap? Thumbnail { get; set; } = null;
+    [Reactive] public partial string Title { get; private set; } = string.Empty;
+    [Reactive] public partial string Description { get; private set; } = string.Empty;
 
-    [Reactive] public double Width { get; set; } = 0;
-    [Reactive] public double Height { get; set; } = 0;
+    [Reactive] public partial double Width { get; set; } = 0;
+    [Reactive] public partial double Height { get; set; } = 0;
 
     public ThumbnailSource ThumbnailSource { get; set; } = new();
     public string TitleRaw { get; set; } = string.Empty;
@@ -40,8 +40,8 @@ public class BulkImportItemViewModel : ViewModelBase
 
     public LocalizableField DescriptionRaw { get; set; } = new();
 
-    [Reactive] public IEnumerable<UnitypackageViewModel> UnitypackageViewModels { get; private set; } = [];
-    [Reactive] public int SelectedUnitypackage { get; set; } = 0;
+    [Reactive] public partial IEnumerable<UnitypackageViewModel> UnitypackageViewModels { get; private set; } = [];
+    [Reactive] public partial int SelectedUnitypackage { get; set; } = 0;
     public string SelectedUnitypackagePath => UnitypackageFullPaths.IsValidIndex(SelectedUnitypackage) ? UnitypackageFullPaths[SelectedUnitypackage] : string.Empty;
 
     public string[] UnitypackageFullPaths { get; set; } = [];

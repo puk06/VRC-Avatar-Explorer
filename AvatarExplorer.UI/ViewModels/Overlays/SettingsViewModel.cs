@@ -17,47 +17,47 @@ using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class SettingsViewModel : ViewModelBase, IInitializable
+public partial class SettingsViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public bool IsVisible { get; set; }
-    [Reactive] public IEnumerable<string> Languages { get; set; } = [];
-    [Reactive] public int SelectedLanguage { get; set; }
+    [Reactive] public partial bool IsVisible { get; set; }
+    [Reactive] public partial IEnumerable<string> Languages { get; set; } = [];
+    [Reactive] public partial int SelectedLanguage { get; set; }
 
-    [Reactive] public int SelectedSortOrder { get; set; }
-    [Reactive] public SortDirection SelectedSortDirection { get; set; }
-    [Reactive] public int SelectedImplementedSort { get; set; }
-    [Reactive] public bool EnableSearchInFolder { get; set; }
-    [Reactive] public int SelectedTheme { get; set; }
-    [Reactive] public bool RemoveBrackets { get; set; }
-    [Reactive] public double NormalIconSize { get; set; }
-    [Reactive] public bool EnableHoverIconSize { get; set; }
-    [Reactive] public double HoverIconSize { get; set; }
-    [Reactive] public int SelectedAntiAliasing { get; set; }
-    [Reactive] public string ItemsPerPage { get; set; } = string.Empty;
-    [Reactive] public int SelectedViewMode { get; set; }
-    [Reactive] public int SelectedGridItemSize { get; set; }
-    [Reactive] public bool AutoChangeUnitypackagePath { get; set; }
-    [Reactive] public bool RemoveOriginal { get; set; }
-    [Reactive] public bool LinkToOriginal { get; set; }
-    [Reactive] public bool TreatEmptySupportedAvatarAsNone { get; set; }
-    [Reactive] public bool HideAvatarCategoryWhenAvatarSelected { get; set; }
-    [Reactive] public double ThumbnailCompressionMaxSize { get; set; }
-    [Reactive] public bool UseBackgroundImage { get; set; }
-    [Reactive] public string BackgroundImagePath { get; set; } = string.Empty;
-    [Reactive] public double BackgroundImageOpacity { get; set; }
-    [Reactive] public string ItemsFolderPath { get; set; } = string.Empty;
-    [Reactive] public string AutoBackupFolderPath { get; set; } = string.Empty;
-    [Reactive] public string AutoBackupInterval { get; set; } = string.Empty;
-    [Reactive] public string MaxDegreeOfParallelism { get; set; } = string.Empty;
-    [Reactive] public bool CheckForUpdate { get; set; }
-    [Reactive] public int SelectedUpdateChannel { get; set; }
-    [Reactive] public Bitmap? GithubUserImage { get; set; } = null;
-    [Reactive] public string VRCAESchemeStatusText { get; set; } = string.Empty;
-    [Reactive] public string BLMSchemeStatusText { get; set; } = string.Empty;
+    [Reactive] public partial int SelectedSortOrder { get; set; }
+    [Reactive] public partial SortDirection SelectedSortDirection { get; set; }
+    [Reactive] public partial int SelectedImplementedSort { get; set; }
+    [Reactive] public partial bool EnableSearchInFolder { get; set; }
+    [Reactive] public partial int SelectedTheme { get; set; }
+    [Reactive] public partial bool RemoveBrackets { get; set; }
+    [Reactive] public partial double NormalIconSize { get; set; }
+    [Reactive] public partial bool EnableHoverIconSize { get; set; }
+    [Reactive] public partial double HoverIconSize { get; set; }
+    [Reactive] public partial int SelectedAntiAliasing { get; set; }
+    [Reactive] public partial string ItemsPerPage { get; set; } = string.Empty;
+    [Reactive] public partial int SelectedViewMode { get; set; }
+    [Reactive] public partial int SelectedGridItemSize { get; set; }
+    [Reactive] public partial bool AutoChangeUnitypackagePath { get; set; }
+    [Reactive] public partial bool RemoveOriginal { get; set; }
+    [Reactive] public partial bool LinkToOriginal { get; set; }
+    [Reactive] public partial bool TreatEmptySupportedAvatarAsNone { get; set; }
+    [Reactive] public partial bool HideAvatarCategoryWhenAvatarSelected { get; set; }
+    [Reactive] public partial double ThumbnailCompressionMaxSize { get; set; }
+    [Reactive] public partial bool UseBackgroundImage { get; set; }
+    [Reactive] public partial string BackgroundImagePath { get; set; } = string.Empty;
+    [Reactive] public partial double BackgroundImageOpacity { get; set; }
+    [Reactive] public partial string ItemsFolderPath { get; set; } = string.Empty;
+    [Reactive] public partial string AutoBackupFolderPath { get; set; } = string.Empty;
+    [Reactive] public partial string AutoBackupInterval { get; set; } = string.Empty;
+    [Reactive] public partial string MaxDegreeOfParallelism { get; set; } = string.Empty;
+    [Reactive] public partial bool CheckForUpdate { get; set; }
+    [Reactive] public partial int SelectedUpdateChannel { get; set; }
+    [Reactive] public partial Bitmap? GithubUserImage { get; set; } = null;
+    [Reactive] public partial string VRCAESchemeStatusText { get; set; } = string.Empty;
+    [Reactive] public partial string BLMSchemeStatusText { get; set; } = string.Empty;
 
     public IReactiveCommand OpenTagEditorCommand { get; }
     public IReactiveCommand OpenBackgroundImageCommand { get; }

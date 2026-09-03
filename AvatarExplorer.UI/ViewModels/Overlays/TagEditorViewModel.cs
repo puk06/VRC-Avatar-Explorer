@@ -4,17 +4,17 @@ using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class TagEditorViewModel : ViewModelBase, IInitializable
+public partial class TagEditorViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public bool IsVisible { get; set; }
-    [Reactive] public IEnumerable<string> ExistTags { get; set; } = [];
-    [Reactive] public int SelectedTagIndex { get; set; } = -1;
-    [Reactive] public string NewTagName { get; set; } = string.Empty;
-    [Reactive] public string SearchText { get; set; } = string.Empty;
+    [Reactive] public partial bool IsVisible { get; set; }
+    [Reactive] public partial IEnumerable<string> ExistTags { get; set; } = [];
+    [Reactive] public partial int SelectedTagIndex { get; set; } = -1;
+    [Reactive] public partial string NewTagName { get; set; } = string.Empty;
+    [Reactive] public partial string SearchText { get; set; } = string.Empty;
 
     private List<string> _allExistTags = [];
 

@@ -10,19 +10,19 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ErrorOr;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ImportDataViewModel : ViewModelBase, IInitializable
+public partial class ImportDataViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public bool IsVisible { get; set; }
-    [Reactive] public int SelectedImportSourceIndex { get; set; }
-    [Reactive] public string FolderPath { get; set; } = string.Empty;
+    [Reactive] public partial bool IsVisible { get; set; }
+    [Reactive] public partial int SelectedImportSourceIndex { get; set; }
+    [Reactive] public partial string FolderPath { get; set; } = string.Empty;
 
-    [Reactive] public bool ImportItems { get; set; } = true;
-    [Reactive] public bool ImportThumbnails { get; set; } = true;
-    [Reactive] public bool CanImportThumbnails { get; set; } = true;
+    [Reactive] public partial bool ImportItems { get; set; } = true;
+    [Reactive] public partial bool ImportThumbnails { get; set; } = true;
+    [Reactive] public partial bool CanImportThumbnails { get; set; } = true;
 
     private List<(string LocKey, DataImportType Type)> ImportSourceOptions { get; } =
     [

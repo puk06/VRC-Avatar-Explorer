@@ -8,17 +8,17 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitializable
+public partial class InitialSetupViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
-    [Reactive] public bool IsVisible { get; set; }
+    [Reactive] public partial bool IsVisible { get; set; }
 
-    [Reactive] public IEnumerable<string> Languages { get; set; } = [];
-    [Reactive] public int SelectedLanguage { get; set; }
-    [Reactive] public string ItemsFolder { get; set; } = string.Empty;
+    [Reactive] public partial IEnumerable<string> Languages { get; set; } = [];
+    [Reactive] public partial int SelectedLanguage { get; set; }
+    [Reactive] public partial string ItemsFolder { get; set; } = string.Empty;
 
     public IReactiveCommand CloseCommand { get; }
 

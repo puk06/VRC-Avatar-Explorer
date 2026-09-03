@@ -10,16 +10,16 @@ using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.Utilities;
 using ErrorOr;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ExportDataViewModel : ViewModelBase, IInitializable
+public partial class ExportDataViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public bool IsVisible { get; set; }
-    [Reactive] public int SelectedExportTypeIndex { get; set; }
-    [Reactive] public string FolderPath { get; set; } = string.Empty;
-    [Reactive] public bool IncludeCommonToSupported { get; set; } = true;
+    [Reactive] public partial bool IsVisible { get; set; }
+    [Reactive] public partial int SelectedExportTypeIndex { get; set; }
+    [Reactive] public partial string FolderPath { get; set; } = string.Empty;
+    [Reactive] public partial bool IncludeCommonToSupported { get; set; } = true;
 
     private List<(string LocKey, DataExportType Type)> ExportTypeOptions { get; } =
     [

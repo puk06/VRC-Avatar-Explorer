@@ -8,16 +8,16 @@ using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.ViewModels.Component;
 using DynamicData;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class MergeCategoryViewModel : ViewModelBase
+public partial class MergeCategoryViewModel : ViewModelBase
 {
-    [Reactive] public bool IsVisible { get; set; }
-    [Reactive] public ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
-    [Reactive] public int SelectedSourceCategoryIndex { get; set; } = 0;
-    [Reactive] public int SelectedTargetCategoryIndex { get; set; } = 0;
+    [Reactive] public partial bool IsVisible { get; set; }
+    [Reactive] public partial ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
+    [Reactive] public partial int SelectedSourceCategoryIndex { get; set; } = 0;
+    [Reactive] public partial int SelectedTargetCategoryIndex { get; set; } = 0;
     public ItemCategoryViewModel? SelectedSourceCategory => Categories.IsValidIndex(SelectedSourceCategoryIndex) ? Categories[SelectedSourceCategoryIndex] : null;
     public ItemCategoryViewModel? SelectedTargetCategory => Categories.IsValidIndex(SelectedTargetCategoryIndex) ? Categories[SelectedTargetCategoryIndex] : null;
 

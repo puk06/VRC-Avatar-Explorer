@@ -1,12 +1,12 @@
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class TextDialogViewModel : ViewModelBase
+public partial class TextDialogViewModel : ViewModelBase
 {
-    [Reactive] public string Title { get; set; } = string.Empty;
-    [Reactive] public string Content { get; set; } = string.Empty;
+    [Reactive] public partial string Title { get; set; } = string.Empty;
+    [Reactive] public partial string Content { get; set; } = string.Empty;
     private TaskCompletionSource<string?> _tcs = new();
 
     public IReactiveCommand ConfirmCommand { get; }

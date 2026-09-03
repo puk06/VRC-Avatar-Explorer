@@ -9,15 +9,15 @@ using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Overlays;
 
-public class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
+public partial class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
 {
-    [Reactive] public bool IsVisible { get; set; }
-    [Reactive] public string SearchText { get; set; } = string.Empty;
-    [Reactive] public IEnumerable<ItemViewModel> Avatars { get; set; } = [];
+    [Reactive] public partial bool IsVisible { get; set; }
+    [Reactive] public partial string SearchText { get; set; } = string.Empty;
+    [Reactive] public partial IEnumerable<ItemViewModel> Avatars { get; set; } = [];
     private List<ItemViewModel> _allAvatars = [];
 
     public IReactiveCommand SelectItemCommand { get; }
