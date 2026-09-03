@@ -26,7 +26,7 @@ public partial class ItemEditorViewModel : ViewModelBase
 {
     [Reactive] public partial bool IsVisible { get; set; } = false;
     public string? Identifier { get; set; } = null;
-    public ObservableCollection<ItemPathViewModel> ItemPaths { get; set; } = [];
+    public ObservableCollection<ItemContentViewModel> ItemContents { get; set; } = [];
     [Reactive] public partial bool ShouldLinkToOriginal { get; set; } = false;
 
     [Reactive] public partial string BoothUrl { get; set; } = string.Empty;
@@ -53,7 +53,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     public IReactiveCommand AddFolderCommand { get; }
     public IReactiveCommand AddFileCommand { get; }
     public IReactiveCommand AddUrlCommand { get; }
-    public IReactiveCommand RemovePathCommand { get; }
+    public IReactiveCommand RemoveContentCommand { get; }
     public IReactiveCommand FetchBoothDataCommand { get; }
     public IReactiveCommand AddCustomCategoryCommand { get; }
     public IReactiveCommand SelectSupportedAvatarsCommand { get; }
@@ -68,7 +68,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         AddFolderCommand = ReactiveCommand.CreateFromTask(SelectAndAddFolders);
         AddFileCommand = ReactiveCommand.CreateFromTask(SelectAndAddFiles);
         AddUrlCommand = ReactiveCommand.CreateFromTask(AddUrl);
-        RemovePathCommand = ReactiveCommand.Create<ItemPathViewModel>(RemovePath);
+        RemoveContentCommand = ReactiveCommand.Create<ItemContentViewModel>(RemoveContent);
         FetchBoothDataCommand = ReactiveCommand.CreateFromTask(FetchBoothData);
         AddCustomCategoryCommand = ReactiveCommand.CreateFromTask(AddCustomCategory);
         SelectSupportedAvatarsCommand = ReactiveCommand.CreateFromTask(SelectSupportedAvatars);
@@ -81,7 +81,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     private void ResetFields()
     {
         Identifier = null;
-        ItemPaths.Clear();
+        ItemContents.Clear();
         BoothUrl = string.Empty;
         Title = string.Empty;
         Author = string.Empty;
@@ -134,7 +134,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     {
         if (IsVisible && BoothId == launchInfo.BoothId)
         {
-            AddPaths(launchInfo.AssetPaths);
+            AddContents(launchInfo.AssetPaths);
             return;
         }
 
@@ -147,7 +147,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         UpdateCountField();
         IsVisible = true;
 
-        AddPaths(launchInfo.AssetPaths);
+        AddContents(launchInfo.AssetPaths);
         await FetchBoothData();
     }
 
@@ -155,7 +155,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     {
         if (IsVisible && BoothId == launchInfo.ItemID)
         {
-            ItemPaths.Add(new ItemPathViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
+            ItemContents.Add(new ItemContentViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
             RemoveDuplicatePaths();
             return;
         }
@@ -169,16 +169,16 @@ public partial class ItemEditorViewModel : ViewModelBase
         UpdateCountField();
         IsVisible = true;
 
-        ItemPaths.Add(new ItemPathViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
+        ItemContents.Add(new ItemContentViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemPathType.URL));
         RemoveDuplicatePaths();
 
         await FetchBoothData();
     }
 
-    public void AddPaths(string[] paths)
+    public void AddContents(string[] contents)
     {
         if (!IsVisible) Open();
-        ItemPaths.AddRange(paths.Select(i =>
+        ItemContents.AddRange(contents.Select(i =>
         {
             var itemPathType = ItemPathType.Unknown;
             if (i.StartsWith("http")) itemPathType = ItemPathType.URL;
@@ -189,7 +189,7 @@ public partial class ItemEditorViewModel : ViewModelBase
                 ? Path.GetFileName(uri.GetLeftPart(UriPartial.Path))
                 : Path.GetFileName(i);
 
-            return new ItemPathViewModel(fileName, i, itemPathType);
+            return new ItemContentViewModel(fileName, i, itemPathType);
         }));
 
         RemoveDuplicatePaths();
@@ -197,13 +197,13 @@ public partial class ItemEditorViewModel : ViewModelBase
 
     private void RemoveDuplicatePaths()
     {
-        var uniquePaths = new HashSet<string>();
-        var pathsToRemove = new List<ItemPathViewModel>();
+        var uniqueContents = new HashSet<string>();
+        var contentsToRemove = new List<ItemContentViewModel>();
 
-        pathsToRemove.AddRange(ItemPaths.Where(i => !uniquePaths.Add(i.FullPath)));
-        foreach (var path in pathsToRemove)
+        contentsToRemove.AddRange(ItemContents.Where(i => !uniqueContents.Add(i.FullPath)));
+        foreach (var content in contentsToRemove)
         {
-            ItemPaths.Remove(path);
+            ItemContents.Remove(content);
         }
     }
 
@@ -235,7 +235,7 @@ public partial class ItemEditorViewModel : ViewModelBase
 
         var identifier = Identifier != null ? await ConfirmEdit(Identifier) : await ConfirmCreate();
 
-        var itemPaths = ItemPaths.Select(i => new ItemPathEntry
+        var itemContents = ItemContents.Select(i => new ItemContentEntry
         {
             FileName = i.FileName,
             Path = i.FullPath,
@@ -247,8 +247,8 @@ public partial class ItemEditorViewModel : ViewModelBase
 
         await CheckTempAvatarBoothId(identifier);
 
-        if (itemPaths.Count == 0) return;
-        _ = AddPathsInBackground(identifier, itemPaths, shouldLinkToOriginal);
+        if (itemContents.Count == 0) return;
+        _ = AddContentsInBackground(identifier, itemContents, shouldLinkToOriginal);
     }
 
     private async Task<string> ConfirmEdit(string identifier)
@@ -343,7 +343,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         );
     }
 
-    private static async Task AddPathsInBackground(string identifier, List<ItemPathEntry> itemPaths, bool shouldLinkToOriginal)
+    private static async Task AddContentsInBackground(string identifier, List<ItemContentEntry> itemContents, bool shouldLinkToOriginal)
     {
         try
         {
@@ -355,9 +355,9 @@ public partial class ItemEditorViewModel : ViewModelBase
                 {
                     progress.Report(Localizer.Instance[Loc.Processing.AddContent.Status.Preparing], 0);
 
-                    result = await InstanceRepository.Items.AddPaths(
+                    result = await InstanceRepository.Items.AddContents(
                         identifier,
-                        itemPaths,
+                        itemContents,
                         shouldLinkToOriginal,
                         reportProgress: p =>
                         {
@@ -408,7 +408,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         );
         if (folders == null || folders.Length == 0) return;
 
-        ItemPaths.AddRange(folders.Select(i => new ItemPathViewModel(Path.GetFileName(i), i, ItemPathType.Folder)));
+        ItemContents.AddRange(folders.Select(i => new ItemContentViewModel(Path.GetFileName(i), i, ItemPathType.Folder)));
         RemoveDuplicatePaths();
     }
     private async Task SelectAndAddFiles()
@@ -419,7 +419,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         );
         if (files == null || files.Length == 0) return;
 
-        ItemPaths.AddRange(files.Select(i => new ItemPathViewModel(Path.GetFileName(i), i, ItemPathType.File)));
+        ItemContents.AddRange(files.Select(i => new ItemContentViewModel(Path.GetFileName(i), i, ItemPathType.File)));
         RemoveDuplicatePaths();
     }
     private async Task AddUrl()
@@ -438,7 +438,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         }
 
         var fileName = Path.GetFileName(uri.GetLeftPart(UriPartial.Path));
-        ItemPaths.Add(new ItemPathViewModel(fileName, url, ItemPathType.URL));
+        ItemContents.Add(new ItemContentViewModel(fileName, url, ItemPathType.URL));
         RemoveDuplicatePaths();
     }
     public async Task FetchBoothData()
@@ -480,7 +480,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         }
     }
 
-    private void RemovePath(ItemPathViewModel pathModel) => ItemPaths.Remove(pathModel);
+    private void RemoveContent(ItemContentViewModel contentModel) => ItemContents.Remove(contentModel);
 
     private void RefleshCategories()
     {

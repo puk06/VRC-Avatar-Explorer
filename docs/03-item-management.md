@@ -214,22 +214,91 @@ var fullPath = item.GetItemPath();
 Console.WriteLine($"フルパス: {fullPath}");
 ```
 
-### AddPaths() - パスの追加
+### AddContents() - コンテンツの追加
 
-アイテムにファイル・フォルダパスを追加します。
+アイテムにコンテンツ（ファイル・フォルダ・URL）を追加します。ローカルファイル/フォルダの**コピー**、アーカイブの**自動展開**、URLの**ダウンロード**をまとめて処理できる、アイテム管理の中核となるメソッドです。
+
+#### 対応するコンテンツの種類
+
+| 種類 | `IsUrl` | 動作 |
+|------|---------|------|
+| **ローカルファイル** | `false` | アイテムフォルダへコピーされます |
+| **ローカルフォルダ** | `false` | `shouldLinkToOriginal` の値に応じて、コピー or 元フォルダへのリンク |
+| **URL（HTTP/HTTPS）** | `true` | ダウンロード後、アーカイブの場合は自動展開されます |
+
+#### 処理の流れ
+
+```
+AddContents() 呼び出し
+    │
+    ├─ アイテムフォルダが存在しない場合
+    │   └─ 新規フォルダを作成（BoothIdとTitleから自動命名）
+    │
+    ├─ ローカルファイル/フォルダ
+    │   ├─ アーカイブ（.zip等）→ 展開
+    │   ├─ 通常ファイル → コピー
+    │   └─ フォルダ → shouldLinkToOriginal に応じて分岐
+    │       ├─ true  → 元フォルダへのリンク（コピーしない）
+    │       └─ false → フォルダごとコピー
+    │
+    └─ URL
+        └─ ダウンロード → アーカイブなら展開 → アイテムフォルダへ配置
+```
+
+#### シグネチャ
+
+```csharp
+public async Task<ErrorOr<ExtractResult>> AddContents(
+    string identifier,
+    IEnumerable<ItemContentEntry> contents,
+    bool shouldLinkToOriginal,
+    bool? removeOriginal = null,
+    Func<(string Message, int Percent), Task>? reportProgress = null
+)
+```
+
+#### パラメータ
+
+| パラメータ | 型 | 説明 |
+|------------|-----|------|
+| `identifier` | `string` | 対象アイテムのIdentifier |
+| `contents` | `IEnumerable<ItemContentEntry>` | 追加するコンテンツのコレクション |
+| `shouldLinkToOriginal` | `bool` | `true`: フォルダをコピーせず元フォルダへリンク / `false`: コピー |
+| `removeOriginal` | `bool?` | アーカイブ展開後に元ファイルを削除するか。`null` で `RuntimeSettings.RemoveOriginal` を使用 |
+| `reportProgress` | `Func<(string, int), Task>?` | 進捗報告コールバック（省略可） |
+
+#### ItemContentEntry
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `FileName` | `string` | コンテンツの表示名 |
+| `Path` | `string` | ローカルパス or URL |
+| `IsUrl` | `bool` | `Path` が URL の場合は `true` |
+
+#### 使用例
 
 ```csharp
 using AvatarExplorer.Core.Services.IO;
 
-var paths = new List<ItemPathEntry>
+// コンテンツの準備
+var contents = new List<ItemContentEntry>
 {
-    new ItemPathEntry
+    // ローカルファイル
+    new ItemContentEntry
     {
         FileName = "package.zip",
         Path = @"C:\Downloads\package.zip",
         IsUrl = false
     },
-    new ItemPathEntry
+    // ローカルフォルダ
+    new ItemContentEntry
+    {
+        FileName = "textures",
+        Path = @"D:\Assets\textures",
+        IsUrl = false
+    },
+    // URL（リモート）
+    new ItemContentEntry
     {
         FileName = "online_asset",
         Path = "https://example.com/asset.zip",
@@ -237,39 +306,69 @@ var paths = new List<ItemPathEntry>
     }
 };
 
-var result = await itemRepo.AddPaths(
+// 追加実行
+var result = await itemRepo.AddContents(
     "item:xxxxx",
-    paths,
-    shouldLinkToOriginal: false,  // true: フォルダだった場合は元フォルダへリンク、false: コピー
-    removeOriginal: true,         // true: アーカイブだった場合は展開後に元のファイルを削除
-    reportProgress: p =>          // 進捗報告コールバック（省略可）
+    contents,
+    shouldLinkToOriginal: false,  // フォルダはコピーする
+    removeOriginal: true,         // アーカイブは展開後に元ファイルを削除
+    reportProgress: p =>          // 進捗報告（省略可）
     {
         Console.WriteLine($"{p.Message}: {p.Percent}%");
         return Task.CompletedTask;
     }
 );
 
-if (!result.IsError)
+// 結果の処理
+if (result.IsError)
 {
-    Console.WriteLine("パスの追加成功");
-
-    // アーカイブ展開 or フォルダコピーが発生した場合にパスが設定される
-    Console.WriteLine($"展開先: {result.Value.ItemParentFolder}");
-
-    // shouldLinkToOriginalがtrueで、パスがフォルダーだった場合はここに入ります
-    Console.WriteLine($"展開されずにそのまま追加されたフォルダー: {string.Join(", ", result.Value.FolderPaths)}");
+    Console.WriteLine($"エラー: {result.Errors}");
+    return;
 }
+
+Console.WriteLine("コンテンツの追加に成功しました");
+
+// 展開先フォルダ（新規作成 or 既存のアイテムフォルダ）
+Console.WriteLine($"アイテムフォルダ: {result.Value.ItemParentFolder}");
+
+// shouldLinkToOriginal=true の場合、フォルダはコピーされずここにパスが記録される
+Console.WriteLine($"リンクされたフォルダ: {string.Join(", ", result.Value.FolderPaths)}");
 ```
+
+#### 戻り値 (ExtractResult)
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `ItemParentFolder` | `string?` | コンテンツが配置されたアイテムフォルダのパス |
+| `FolderPaths` | `List<string>` | `shouldLinkToOriginal=true` の場合にリンクされたフォルダパス一覧 |
+
+#### エラーケース
+
+| エラー | 原因 |
+|--------|------|
+| `NotFound` | 指定されたIdentifierのアイテムが存在しない |
+| `Failure` | ファイルシステム操作（コピー・展開等）に失敗 |
 
 #### 進捗報告について (reportProgress)
 
 | 引数 | 型 | 説明 |
-|---|---|---|
-| `reportProgress` | `Func<(string Message, int Percent), Task>?` | 進捗報告コールバック。省略時は進捗を報告しない |
+|------|-----|------|
+| `Message` | `string` | ローカライズキー（例: `Processing.AddContent.Status.Processing`） |
+| `Percent` | `int` | 0〜100 の完了パーセント |
 
-- 進捗はエントリ（追加するファイル・フォルダ・URL）単位で、処理の完了ごとに0〜100のパーセントで報告されます
-- `Message`はローカライズキー（例: `Processing.AddContent.Status.Processing`）なので、表示する場合は`Localizer`等で翻訳してください
-- URLとファイルのエントリは並行処理されるため、コールバックは複数のスレッドから呼び出される可能性があります
+- 進捗はエントリ単位で、処理完了ごとに報告されます
+- `Message` はローカライズキーなので、表示する場合は `Localizer` 等で翻訳してください
+- URLとファイルは並行処理されるため、コールバックは**複数スレッドから呼び出される可能性**があります
+
+#### 関連する設定 (RuntimeSettings)
+
+`removeOriginal` を `null` にすると、以下の `RuntimeSettings` が参照されます：
+
+| 設定 | 説明 |
+|------|------|
+| `ShouldLinkToOriginal` | フォルダをリンクとして追加するかどうか |
+| `RemoveOriginal` | アーカイブ展開後に元ファイルを削除するかどうか |
+| `MaxDegreeOfParallelism` | 並行処理の最大数（既定値: 4） |
 
 ### RemovePath() - パスの削除
 

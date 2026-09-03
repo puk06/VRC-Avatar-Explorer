@@ -26,7 +26,7 @@
 
                     <Border Grid.Row="1" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
                         <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding ItemPaths}">
+                            <ItemsControl ItemsSource="{Binding ItemContents}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
@@ -34,7 +34,7 @@
                                 </ItemsControl.ItemsPanel>
 
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vmcomponent:ItemPathViewModel">
+                                    <DataTemplate x:DataType="vmcomponent:ItemContentViewModel">
                                         <Border Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" ToolTip.Tip="{Binding FileName}">
                                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
                                                 <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -47,7 +47,7 @@
                                                     <TextBlock IsVisible="{Binding IsUrl}" Grid.Row="1" Text="{Binding [ItemEditor.DownloadURL], Source={x:Static loc:Localizer.Instance}}" FontSize="13" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Text.Secondary}"/>
                                                 </Grid>
 
-                                                <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [ItemEditor.RemoveFolder], Source={x:Static loc:Localizer.Instance}}" FontSize="14" BorderThickness="1" Padding="10,4" Command="{Binding $parent[UserControl].DataContext.RemovePathCommand}" CommandParameter="{Binding}"/>
+                                                <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [ItemEditor.RemoveFolder], Source={x:Static loc:Localizer.Instance}}" FontSize="14" BorderThickness="1" Padding="10,4" Command="{Binding $parent[UserControl].DataContext.RemoveContentCommand}" CommandParameter="{Binding}"/>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>

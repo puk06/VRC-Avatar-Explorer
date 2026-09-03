@@ -75,9 +75,9 @@ public class ModifiedUnitypackagesResult
 }
 
 /// <summary>
-/// アイテムに追加するファイルまたはフォルダのパス情報を保持するクラスです。
+/// アイテムに追加するコンテンツ（ファイル、フォルダ、URL）のエントリを表します。
 /// </summary>
-public class ItemPathEntry
+public class ItemContentEntry
 {
     /// <summary>ファイルまたはフォルダの名前を取得または設定します。</summary>
     public string FileName { get; set; } = string.Empty;
@@ -498,13 +498,13 @@ public static class FileSystemService
         if (delay > TimeSpan.Zero) await Task.Delay(delay, ct);
     }
 
-    internal static async Task<ErrorOr<ExtractResult>> ExtractItemPaths(string parentFolderPath, IEnumerable<ItemPathEntry> itemPaths, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false, Func<(string Message, int Percent), Task>? reportProgress = null)
+    internal static async Task<ErrorOr<ExtractResult>> ExtractItemContents(string parentFolderPath, IEnumerable<ItemContentEntry> itemContents, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false, Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         var result = new ExtractResult();
 
-        var urlEntries = new List<ItemPathEntry>();
-        var fileEntries = new List<ItemPathEntry>();
-        foreach (var entry in itemPaths)
+        var urlEntries = new List<ItemContentEntry>();
+        var fileEntries = new List<ItemContentEntry>();
+        foreach (var entry in itemContents)
         {
             if (entry.IsUrl) urlEntries.Add(entry);
             else fileEntries.Add(entry);
@@ -529,7 +529,7 @@ public static class FileSystemService
         return result;
     }
 
-    private static async Task ProcessUrlEntriesAsync(ExtractResult result, List<ItemPathEntry> urlEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
+    private static async Task ProcessUrlEntriesAsync(ExtractResult result, List<ItemContentEntry> urlEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
     {
         foreach (var entry in urlEntries)
         {
@@ -555,7 +555,7 @@ public static class FileSystemService
         }
     }
 
-    private static async Task ProcessFileEntriesAsync(ExtractResult result, List<ItemPathEntry> fileEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
+    private static async Task ProcessFileEntriesAsync(ExtractResult result, List<ItemContentEntry> fileEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
     {
         foreach (var entry in fileEntries)
         {

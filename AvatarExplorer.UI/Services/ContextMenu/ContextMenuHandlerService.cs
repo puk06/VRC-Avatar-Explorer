@@ -303,9 +303,9 @@ public static class ContextMenuHandlerService
         );
         if (files == null || files.Length == 0) return;
 
-        await AddPathsInternal(
+        await AddContentsInternal(
             identifier,
-            files.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i })
+            files.Select(i => new ItemContentEntry() { FileName = Path.GetFileName(i), Path = i })
         );
     }
     private static async void AddItemFolder(string identifier)
@@ -316,9 +316,9 @@ public static class ContextMenuHandlerService
         );
         if (folders == null || folders.Length == 0) return;
 
-        await AddPathsInternal(
+        await AddContentsInternal(
             identifier,
-            folders.Select(i => new ItemPathEntry() { FileName = Path.GetFileName(i), Path = i })
+            folders.Select(i => new ItemContentEntry() { FileName = Path.GetFileName(i), Path = i })
         );
     }
     private static async void AddItemUrl(string identifier)
@@ -337,14 +337,14 @@ public static class ContextMenuHandlerService
         }
 
         var fileName = Path.GetFileName(uri.GetLeftPart(UriPartial.Path));
-        await AddPathsInternal(
+        await AddContentsInternal(
             identifier,
             [new() { FileName = fileName, Path = url, IsUrl = true }]
         );
     }
-    private static async Task AddPathsInternal(string identifier, IEnumerable<ItemPathEntry> paths)
+    private static async Task AddContentsInternal(string identifier, IEnumerable<ItemContentEntry> paths)
     {
-        var extractResult = await InstanceRepository.Items.AddPaths(identifier, paths, InstanceRepository.RuntimeSettings.ShouldLinkToOriginal);
+        var extractResult = await InstanceRepository.Items.AddContents(identifier, paths, InstanceRepository.RuntimeSettings.ShouldLinkToOriginal);
 
         if (extractResult.IsError)
         {
