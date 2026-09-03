@@ -17,6 +17,7 @@ public enum ActionKey
     AddToBulkImportList,
     AddItemFile,
     AddItemFolder,
+    AddItemUrl,
     MarkItemAsImplemented,
     MarkItemAsNotImplemented,
     ManageImplementedAvatars,

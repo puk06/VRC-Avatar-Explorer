@@ -53,5 +53,20 @@ public enum ContextMenuIconType
     Implemented,
 
     [MaterialIcon(MaterialIconKind.AccountRemove)]
-    NotImplemented
+    NotImplemented,
+
+    [MaterialIcon(MaterialIconKind.Tag)]
+    Tag,
+
+    [MaterialIcon(MaterialIconKind.NoteEdit)]
+    NoteEdit,
+
+    [MaterialIcon(MaterialIconKind.FilePlus)]
+    AddFile,
+
+    [MaterialIcon(MaterialIconKind.FolderPlus)]
+    AddFolder,
+
+    [MaterialIcon(MaterialIconKind.LinkPlus)]
+    AddUrl
 }
