@@ -437,8 +437,14 @@ public partial class ItemEditorViewModel : ViewModelBase
             return;
         }
 
-        var fileName = Path.GetFileName(uri.GetLeftPart(UriPartial.Path));
-        ItemContents.Add(new ItemContentViewModel(fileName, url, ItemPathType.URL));
+        var fileName = FileNameUtils.GetSafeFileName(Path.GetFileName(uri.GetLeftPart(UriPartial.Path))) ?? "downloaded_file";
+        var newFileName = await InstanceRepository.MainWindow.ShowTextDialog(
+            Localizer.Instance[Loc.Dialog.Title.EditDownloadFileName],
+            fileName
+        );
+        if (string.IsNullOrEmpty(newFileName)) return;
+
+        ItemContents.Add(new ItemContentViewModel(newFileName, url, ItemPathType.URL));
         RemoveDuplicatePaths();
     }
     public async Task FetchBoothData()

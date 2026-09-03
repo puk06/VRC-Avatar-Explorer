@@ -90,6 +90,7 @@
     "Dialog.Title.NewTempAvatarName": "新しい仮アバター名",
     "Dialog.Title.NewCustomCategoryName": "新しいカスタムカテゴリ名",
     "Dialog.Title.AddUrl": "ダウンロードURLを入力",
+    "Dialog.Title.EditDownloadFileName": "ダウンロードするファイル名を編集",
     "Dialog.Title.SetBoothIdForTempAvatar": "仮アバターのBooth IDを設定（リンクでも可）",
 
     "Dialog.SelectSaveFolderPath": "保存先フォルダを選択してください",

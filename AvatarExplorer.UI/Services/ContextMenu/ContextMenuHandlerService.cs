@@ -336,10 +336,16 @@ public static class ContextMenuHandlerService
             return;
         }
 
-        var fileName = Path.GetFileName(uri.GetLeftPart(UriPartial.Path));
+        var fileName = FileNameUtils.GetSafeFileName(Path.GetFileName(uri.GetLeftPart(UriPartial.Path))) ?? "downloaded_file";
+        var newFileName = await InstanceRepository.MainWindow.ShowTextDialog(
+            Localizer.Instance[Loc.Dialog.Title.EditDownloadFileName],
+            fileName
+        );
+        if (string.IsNullOrEmpty(newFileName)) return;
+
         await AddContentsInternal(
             identifier,
-            [new() { FileName = fileName, Path = url, IsUrl = true }]
+            [new() { FileName = newFileName, Path = url, IsUrl = true }]
         );
     }
     private static async Task AddContentsInternal(string identifier, IEnumerable<ItemContentEntry> paths)

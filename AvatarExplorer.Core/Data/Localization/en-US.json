@@ -90,6 +90,7 @@
     "Dialog.Title.NewTempAvatarName": "New Temporary Avatar Name",
     "Dialog.Title.NewCustomCategoryName": "New Custom Category Name",
     "Dialog.Title.AddUrl": "Enter Download URL",
+    "Dialog.Title.EditDownloadFileName": "Edit Download File Name",
     "Dialog.Title.SetBoothIdForTempAvatar": "Set Booth ID for Temporary Avatar (link accepted)",
 
     "Dialog.SelectSaveFolderPath": "Please select the folder to save to",

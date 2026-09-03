@@ -90,6 +90,7 @@
     "Dialog.Title.NewTempAvatarName": "새 임시 아바타 이름",
     "Dialog.Title.NewCustomCategoryName": "새 사용자 지정 카테고리 이름",
     "Dialog.Title.AddUrl": "다운로드 URL 입력",
+    "Dialog.Title.EditDownloadFileName": "다운로드할 파일 이름 편집",
     "Dialog.Title.SetBoothIdForTempAvatar": "임시 아바타의 Booth ID 설정 (링크 입력 가능)",
 
     "Dialog.SelectSaveFolderPath": "저장할 폴더를 선택해 주세요",
