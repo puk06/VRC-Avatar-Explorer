@@ -8,6 +8,7 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Services.System;
+using AvatarExplorer.Core.Utils;
 using ErrorOr;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Tar;
@@ -536,7 +537,7 @@ public static class FileSystemService
             await WaitForUrlCooldownAsync();
 
             var url = entry.Path;
-            var downloadedPath = Path.Combine(GetNewTempFolder(), Path.GetFileName(entry.FileName));
+            var downloadedPath = Path.Combine(GetNewTempFolder(), FileNameUtils.GetSafeFileName(Path.GetFileName(entry.FileName)) ?? "downloaded_file");
 
             _lastUrlFetchTime = DateTime.Now;
             var downloadResult = await Downloader.Fetch(url, downloadedPath);

@@ -20,23 +20,23 @@ public static class FileNameUtils
     };
 
     /// <summary>
-    /// アイテム名から、ファイル名やフォルダ名として安全に使用できる文字列を取得します。
+    /// 指定した文字列を、ファイル名として安全に使用できる形式に変換します。
     /// 不正な文字はアンダースコアに置換され、前後の空白や不要な文字が除去されます。Windows の予約名も回避されます。
     /// </summary>
-    /// <param name="itemTitle">元となるアイテム名。</param>
+    /// <param name="originalFileName">元となる文字列。</param>
     /// <param name="maxLength">最大文字数（ルーン単位）。0 以下の場合は null を返します。</param>
     /// <returns>安全なファイル名文字列。入力が空/null、または結果が空の場合は null。</returns>
-    public static string? GetSafeTitle(string itemTitle, int maxLength = 100)
+    public static string? GetSafeFileName(string? originalFileName, int maxLength = 100)
     {
-        if (string.IsNullOrWhiteSpace(itemTitle)) return null;
+        if (string.IsNullOrWhiteSpace(originalFileName)) return null;
         if (maxLength <= 0) return null;
 
-        itemTitle = itemTitle.Normalize(NormalizationForm.FormC);
+        originalFileName = originalFileName.Normalize(NormalizationForm.FormC);
 
         var builder = new StringBuilder();
         int runeCount = 0;
 
-        foreach (var rune in itemTitle.EnumerateRunes())
+        foreach (var rune in originalFileName.EnumerateRunes())
         {
             if (runeCount >= maxLength) break;
 

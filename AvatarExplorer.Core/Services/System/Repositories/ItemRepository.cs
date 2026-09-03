@@ -171,7 +171,7 @@ public class ItemRepository : RepositoryBase<Item>
         static string GetSafePath(Item item, string dataRootDirectory)
         {
             var defaultFolderName = item.BoothId != -1 ? $"{item.BoothId} - {item.Title}" : item.Title;
-            var folderName = ItemUtils.GetSafeTitle(defaultFolderName);
+            var folderName = FileNameUtils.GetSafeFileName(defaultFolderName);
             if (string.IsNullOrEmpty(folderName))
             {
                 if (item.BoothId != -1)

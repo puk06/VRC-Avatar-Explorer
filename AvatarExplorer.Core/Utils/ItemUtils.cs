@@ -18,17 +18,6 @@ public static partial class ItemUtils
         return itemTitleMaps.TryGetValue(itemId, out string? avatarName) ? avatarName : string.Empty;
     }
 
-    /// <summary>
-    /// アイテム名からファイル名として安全な文字列を取得します。内部で <see cref="FileNameUtils.GetSafeTitle(string, int)"/> を呼び出します。
-    /// </summary>
-    /// <param name="itemTitle">元となるアイテム名。</param>
-    /// <returns>安全なファイル名文字列。取得できない場合は null。</returns>
-    public static string? GetSafeTitle(string itemTitle)
-    {
-        // パスに使用しても大丈夫な文字だけ残す
-        return FileNameUtils.GetSafeTitle(itemTitle);
-    }
-
     internal static Dictionary<string, string> GetItemTitleMaps(IEnumerable<Item> items, IEnumerable<TempAvatar> tempAvatars)
     {
         var itemTitleMaps = new Dictionary<string, string>();
