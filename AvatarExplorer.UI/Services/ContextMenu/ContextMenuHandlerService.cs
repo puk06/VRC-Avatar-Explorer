@@ -48,7 +48,9 @@ public static class ContextMenuHandlerService
         Register(ActionKey.AddToBulkImportList, AddToBulkImportList);
         Register(ActionKey.AddItemFile, AddItemFile);
         Register(ActionKey.AddItemFolder, AddItemFolder);
-        Register(ActionKey.EditImplementedAvatar, EditImplementedAvatar);
+        Register(ActionKey.MarkItemAsImplemented, i => _ = ChangeImplementedStatusForCurrentAvatar(i, true));
+        Register(ActionKey.MarkItemAsNotImplemented, i => _ = ChangeImplementedStatusForCurrentAvatar(i, false));
+        Register(ActionKey.ManageImplementedAvatars, ManageImplementedAvatars);
         Register(ActionKey.EditItemDefaultPath, EditItemDefaultPath);
         Register(ActionKey.EditItemTag, EditItemTag);
         Register(ActionKey.RemoveItem, RemoveItem);
@@ -352,7 +354,31 @@ public static class ContextMenuHandlerService
             );
         }
     }
-    private static async void EditImplementedAvatar(string identifier)
+    private static async Task ChangeImplementedStatusForCurrentAvatar(string identifier, bool status)
+    {
+        var avatar = InstanceRepository.NavigationService.GetCurrentAvatarId(); // item:XXXが返ってくる
+        if (string.IsNullOrEmpty(avatar))
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.AvatarNotFound],
+                NotificationType.Error
+            );
+            return;
+        }
+
+        var item = GetByIdentifier(identifier);
+        if (item == null) return;
+
+        var newAvatars = item.ImplementedAvatars.ToList();
+
+        // trueが実装、falseが未実装
+        if (status) newAvatars.Add(avatar);
+        else newAvatars.RemoveAll(i => i == avatar);
+
+        await EditItemInternal(identifier, new() { ImplementedAvatars = newAvatars });
+    }
+    private static async void ManageImplementedAvatars(string identifier)
     {
         var item = GetByIdentifier(identifier);
         if (item == null) return;

@@ -147,6 +147,9 @@
     "ContextMenu.Item.Edit.Memo": "编辑项目备注",
     "ContextMenu.Item.Edit.DefaultPath": "更改默认路径",
     "ContextMenu.Item.Edit.Implemented": "已实现 / 未实现",
+    "ContextMenu.Item.Edit.MarkItemAsImplemented": "标记为已实现",
+    "ContextMenu.Item.Edit.MarkItemAsNotImplemented": "标记为未实现",
+    "ContextMenu.Item.Edit.ManageImplementedAvatars": "管理已实现的头像",
     "ContextMenu.Item.Thumbnail.Change": "更改缩略图",
     "ContextMenu.Item.Thumbnail.Fetch": "获取缩略图",
     "ContextMenu.Item.Remove": "删除项目",
@@ -263,6 +266,7 @@
     "Error.InvalidReleaseUrl": "无效的发布URL",
     "Error.DownloadFailed": "下载失败",
     "Error.ItemPathNotFound": "找不到项目路径",
+    "Error.AvatarNotFound": "找不到头像",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "语言",

@@ -257,6 +257,9 @@ public static class Loc
                 public const string Memo = "ContextMenu.Item.Edit.Memo";
                 public const string DefaultPath = "ContextMenu.Item.Edit.DefaultPath";
                 public const string Implemented = "ContextMenu.Item.Edit.Implemented";
+                public const string MarkItemAsImplemented = "ContextMenu.Item.Edit.MarkItemAsImplemented";
+                public const string MarkItemAsNotImplemented = "ContextMenu.Item.Edit.MarkItemAsNotImplemented";
+                public const string ManageImplementedAvatars = "ContextMenu.Item.Edit.ManageImplementedAvatars";
             }
             public static class Thumbnail
             {
@@ -406,6 +409,7 @@ public static class Loc
         public const string InvalidReleaseUrl = "Error.InvalidReleaseUrl";
         public const string DownloadFailed = "Error.DownloadFailed";
         public const string ItemPathNotFound = "Error.ItemPathNotFound";
+        public const string AvatarNotFound = "Error.AvatarNotFound";
     }
     public static class Settings
     {

@@ -147,6 +147,9 @@
     "ContextMenu.Item.Edit.Memo": "Modifier la note de l'élément",
     "ContextMenu.Item.Edit.DefaultPath": "Modifier le chemin par défaut",
     "ContextMenu.Item.Edit.Implemented": "Implémenté / Non implémenté",
+    "ContextMenu.Item.Edit.MarkItemAsImplemented": "Marquer comme implémenté",
+    "ContextMenu.Item.Edit.MarkItemAsNotImplemented": "Marquer comme non implémenté",
+    "ContextMenu.Item.Edit.ManageImplementedAvatars": "Gérer les avatars implémentés",
     "ContextMenu.Item.Thumbnail.Change": "Modifier la vignette",
     "ContextMenu.Item.Thumbnail.Fetch": "Récupérer la vignette",
     "ContextMenu.Item.Remove": "Supprimer l'élément",
@@ -263,6 +266,7 @@
     "Error.InvalidReleaseUrl": "URL de version invalide",
     "Error.DownloadFailed": "Échec du téléchargement",
     "Error.ItemPathNotFound": "Chemin de l'élément introuvable",
+    "Error.AvatarNotFound": "Avatar introuvable",
 
     "Settings.Basic": "Général",
     "Settings.Language.Title": "Langue",

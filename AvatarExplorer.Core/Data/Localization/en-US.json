@@ -147,6 +147,9 @@
     "ContextMenu.Item.Edit.Memo": "Edit Item Memo",
     "ContextMenu.Item.Edit.DefaultPath": "Change Default Path",
     "ContextMenu.Item.Edit.Implemented": "Implemented / Not Implemented",
+    "ContextMenu.Item.Edit.MarkItemAsImplemented": "Mark as Implemented",
+    "ContextMenu.Item.Edit.MarkItemAsNotImplemented": "Mark as Not Implemented",
+    "ContextMenu.Item.Edit.ManageImplementedAvatars": "Manage Implemented Avatars",
     "ContextMenu.Item.Thumbnail.Change": "Change Thumbnail",
     "ContextMenu.Item.Thumbnail.Fetch": "Fetch Thumbnail",
     "ContextMenu.Item.Remove": "Remove Item",
@@ -263,6 +266,7 @@
     "Error.InvalidReleaseUrl": "Invalid release URL",
     "Error.DownloadFailed": "Download failed",
     "Error.ItemPathNotFound": "Item path not found",
+    "Error.AvatarNotFound": "Avatar not found",
 
     "Settings.Basic": "Basic",
     "Settings.Language.Title": "Language",
