@@ -40,16 +40,7 @@ public partial class BulkImportViewModel : ViewModelBase, IInitializable
     public async Task Initialize()
     {
         InstanceRepository.Items.OnUpdated += RefreshItems;
-        InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ => OnUserPreferencesChanged();
-    }
-
-    private void OnUserPreferencesChanged()
-    {
-        var settings = InstanceRepository.UserPreferences;
-        foreach (var item in Items)
-        {
-            item.Update(settings.NormalIconSize, settings.RemoveBrackets);
-        }
+        InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ => UpdateAllItems();
     }
 
     private void CopyItem(BulkImportItemViewModel item)
@@ -183,7 +174,6 @@ public partial class BulkImportViewModel : ViewModelBase, IInitializable
     {
         var newItems = new List<BulkImportItemViewModel>();
 
-        var settings = InstanceRepository.UserPreferences;
         foreach (var itemVm in Items)
         {
             var item = InstanceRepository.Items.Get(itemVm.ItemId);
@@ -193,9 +183,16 @@ public partial class BulkImportViewModel : ViewModelBase, IInitializable
             itemVm.TitleRaw = item.Title;
             itemVm.DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]);
 
-            newItems.Add(itemVm.Update(settings.NormalIconSize, settings.RemoveBrackets));
+            newItems.Add(itemVm);
         }
 
-        Items = new ObservableCollection<BulkImportItemViewModel>(newItems);
+        Items = new(newItems);
+        UpdateAllItems();
+    }
+
+    private void UpdateAllItems()
+    {
+        var settings = InstanceRepository.UserPreferences;
+        Items.ForEach(vm => vm.Update(settings.NormalIconSize, settings.RemoveBrackets));
     }
 }
