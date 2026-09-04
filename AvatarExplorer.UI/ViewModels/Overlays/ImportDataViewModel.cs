@@ -3,6 +3,7 @@ using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
@@ -53,7 +54,18 @@ public partial class ImportDataViewModel : ViewModelBase, IInitializable
     public async Task Initialize()
     {
         this.WhenAnyValue(x => x.SelectedImportSourceIndex)
-            .Subscribe(_ => CanImportThumbnails = SelectedImportSource != DataImportType.Folder);
+            .Subscribe(_ =>
+            {
+                CanImportThumbnails = SelectedImportSource != DataImportType.Folder;
+                if (SelectedImportSource == DataImportType.KonoAsset && TryGetKonoAssetFolderPath(out var path))
+                {
+                    FolderPath = path;
+                }
+                else
+                {
+                    FolderPath = string.Empty;
+                }
+            });
 
         Localizer.Instance.LanguageChanged += OnLanguageChanged;
         OnLanguageChanged();
@@ -133,6 +145,28 @@ public partial class ImportDataViewModel : ViewModelBase, IInitializable
                 NotificationType.Error
             );
         }
+    }
+
+    private static bool TryGetKonoAssetFolderPath(out string path)
+    {
+        path = string.Empty;
+
+        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var konoAssetFolderPath = Path.Combine(appDataPath, "dev.konoasset.app");
+        var preferenceFilePath = Path.Combine(konoAssetFolderPath, "preference.json");
+
+        if (!File.Exists(preferenceFilePath)) return false;
+
+        var reader = new JsonPathReader(preferenceFilePath);
+        var value = reader.Read();
+
+        if (value?.TryGetPathValue<string>("data.dataDirPath", out var dataDirPath) == true && !string.IsNullOrEmpty(dataDirPath))
+        {
+            path = dataDirPath;
+            return true;
+        }
+
+        return false;
     }
 
     private void Close() => IsVisible = false;
