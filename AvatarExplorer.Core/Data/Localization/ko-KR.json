@@ -122,7 +122,6 @@
     "Processing.Unitypackage.Status.Completed": "Unitypackage 생성이 완료되었습니다 {0}%",
     "Processing.Booth.Title": "Booth에서 가져오기",
     "Processing.Booth.Status.Fetching": "아이템 정보를 가져오는 중입니다...",
-    "Processing.DirectoryCopy.Title": "폴더 복사",
     "Processing.DirectoryCopy.Copying": "폴더를 복사하는 중입니다... {0}%",
     "Processing.Import.Title": "데이터 가져오기",
     "Processing.Import.Preparing": "가져오기 준비 중...",

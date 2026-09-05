@@ -207,7 +207,6 @@ public static class Loc
         }
         public static class DirectoryCopy
         {
-            public const string Title = "Processing.DirectoryCopy.Title";
             public const string Copying = "Processing.DirectoryCopy.Copying";
         }
         public static class Import

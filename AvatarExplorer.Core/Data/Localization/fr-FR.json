@@ -122,7 +122,6 @@
     "Processing.Unitypackage.Status.Completed": "Création du Unitypackage terminée {0}%",
     "Processing.Booth.Title": "Récupération depuis Booth",
     "Processing.Booth.Status.Fetching": "Récupération des informations de l'item...",
-    "Processing.DirectoryCopy.Title": "Copie du dossier",
     "Processing.DirectoryCopy.Copying": "Copie du dossier... {0}%",
     "Processing.Import.Title": "Importation des données",
     "Processing.Import.Preparing": "Préparation de l'importation...",

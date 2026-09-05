@@ -64,7 +64,7 @@ internal static class DataImporter
             var shouldCopyAsset = importRequest.CopyAssetData;
             var dataFolderPath = importRequest.DataFolderPath;
 
-            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 0));
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Preparing, 0));
 
             if (Directory.Exists(Path.Combine(dataFolderPath, V1DatasFolderName)))
                 dataFolderPath = Path.Combine(dataFolderPath, V1DatasFolderName);
@@ -191,7 +191,7 @@ internal static class DataImporter
             var shouldCopyAsset = importRequest.CopyAssetData;
             var dataFolderPath = importRequest.DataFolderPath;
 
-            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 0));
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Preparing, 0));
 
             List<AbstractKonoAssetItem> konoAssetItems =
             [
@@ -285,7 +285,7 @@ internal static class DataImporter
             var reportProgress = importRequest.ReportProgress;
             var shouldCopyAsset = importRequest.CopyAssetData;
 
-            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 0));
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Preparing, 0));
 
             var lastPercent = -1;
 
@@ -334,7 +334,7 @@ internal static class DataImporter
     {
         try
         {
-            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 0));
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Preparing, 0));
 
             if (Directory.Exists(Path.Combine(dataFolderPath, V1DatasFolderName)))
                 dataFolderPath = Path.Combine(dataFolderPath, V1DatasFolderName);
@@ -376,7 +376,7 @@ internal static class DataImporter
     {
         try
         {
-            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Copying, 0));
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Import.Preparing, 0));
 
             List<AbstractKonoAssetItem> konoAssetItems =
             [

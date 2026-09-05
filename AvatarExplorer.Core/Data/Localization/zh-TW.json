@@ -122,7 +122,6 @@
     "Processing.Unitypackage.Status.Completed": "Unitypackage 建立完成 {0}%",
     "Processing.Booth.Title": "從Booth獲取",
     "Processing.Booth.Status.Fetching": "正在取得項目資訊...",
-    "Processing.DirectoryCopy.Title": "複製資料夾",
     "Processing.DirectoryCopy.Copying": "正在複製資料夾... {0}%",
     "Processing.Import.Title": "匯入資料",
     "Processing.Import.Preparing": "正在準備匯入...",

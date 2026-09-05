@@ -101,7 +101,7 @@ internal static class DataExporter
             var imagesPath = KonoAssetPath.ThumbnailsPath(dataFolderPath);
             var avatarTitleMaps = ItemUtils.GetItemTitleMaps(exportContext.Items.Where(i => i.Category.Type == ItemType.Avatar), exportContext.TempAvatars);
 
-            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Export.Copying, 0));
+            if (reportProgress != null) await reportProgress.Invoke((Loc.Processing.Export.Preparing, 0));
 
             Directory.CreateDirectory(metadataPath);
             Directory.CreateDirectory(dataPath);
