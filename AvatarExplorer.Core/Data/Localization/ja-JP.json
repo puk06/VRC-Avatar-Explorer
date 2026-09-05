@@ -122,7 +122,6 @@
     "Processing.Unitypackage.Status.Completed": "Unitypackageの作成が完了しました {0}%",
     "Processing.Booth.Title": "Boothから取得",
     "Processing.Booth.Status.Fetching": "アイテム情報の取得中です...",
-    "Processing.DirectoryCopy.Title": "フォルダのコピー",
     "Processing.DirectoryCopy.Copying": "フォルダのコピー中です... {0}%",
     "Processing.Import.Title": "データのインポート",
     "Processing.Import.Preparing": "インポートの準備中です...",
