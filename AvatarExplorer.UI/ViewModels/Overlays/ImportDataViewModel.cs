@@ -151,22 +151,29 @@ public partial class ImportDataViewModel : ViewModelBase, IInitializable
     {
         path = string.Empty;
 
-        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var konoAssetFolderPath = Path.Combine(appDataPath, "dev.konoasset.app");
-        var preferenceFilePath = Path.Combine(konoAssetFolderPath, "preference.json");
-
-        if (!File.Exists(preferenceFilePath)) return false;
-
-        var reader = new JsonPathReader(preferenceFilePath);
-        var value = reader.Read();
-
-        if (value?.TryGetPathValue<string>("data.dataDirPath", out var dataDirPath) == true && !string.IsNullOrEmpty(dataDirPath))
+        try
         {
-            path = dataDirPath;
-            return true;
-        }
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var konoAssetFolderPath = Path.Combine(appDataPath, "dev.konoasset.app");
+            var preferenceFilePath = Path.Combine(konoAssetFolderPath, "preference.json");
 
-        return false;
+            if (!File.Exists(preferenceFilePath)) return false;
+
+            var reader = new JsonPathReader(preferenceFilePath);
+            var value = reader.Read();
+
+            if (value?.TryGetPathValue<string>("data.dataDirPath", out var dataDirPath) == true && !string.IsNullOrEmpty(dataDirPath))
+            {
+                path = dataDirPath;
+                return true;
+            }
+
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private void Close() => IsVisible = false;
