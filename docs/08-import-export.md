@@ -76,7 +76,7 @@ using AvatarExplorer.Core.Models.External;
 
 var request = new ImportRequest
 {
-    ImportType = DataImportType.V1 | DataImportType.Items,
+    ImportType = DataImportTypes.V1 | DataImportTypes.Items,
     DataFolderPath = @"C:\import\source",
     CopyAssetData = true,
     ReportProgress = p =>
@@ -98,11 +98,11 @@ else
 }
 ```
 
-### DataImportType
+### DataImportTypes
 
 ```csharp
 [Flags]
-public enum DataImportType
+public enum DataImportTypes
 {
     None = 0,
     V1 = 1,           // AvatarExplorer V1形式
@@ -119,7 +119,7 @@ public enum DataImportType
 ```csharp
 public class ImportRequest
 {
-    public DataImportType ImportType { get; set; }      // インポートタイプ
+    public DataImportTypes ImportType { get; set; }      // インポートタイプ
     public string DataFolderPath { get; set; }          // データフォルダのパス
     public bool CopyAssetData { get; set; }             // アセットデータをコピーするか
     public Func<(string Message, int Percent), Task>? ReportProgress { get; set; }  // 進捗報告
@@ -128,13 +128,13 @@ public class ImportRequest
 
 ### インポートの組み合わせ
 
-`DataImportType`はFlags列挙型なので、組み合わせが可能です。
+`DataImportTypes`はFlags列挙型なので、組み合わせが可能です。
 
 ```csharp
 // V1形式からアイテムとサムネイルをインポート
 var request = new ImportRequest
 {
-    ImportType = DataImportType.V1 | DataImportType.Items | DataImportType.Thumbnails,
+    ImportType = DataImportTypes.V1 | DataImportTypes.Items | DataImportTypes.Thumbnails,
     DataFolderPath = @"C:\import\source",
     CopyAssetData = true
 };
@@ -142,7 +142,7 @@ var request = new ImportRequest
 // KonoAsset形式からインポート
 var request2 = new ImportRequest
 {
-    ImportType = DataImportType.KonoAsset | DataImportType.Items,
+    ImportType = DataImportTypes.KonoAsset | DataImportTypes.Items,
     DataFolderPath = @"C:\konoasset\data",
     CopyAssetData = false  // リンクを作成
 };
@@ -150,7 +150,7 @@ var request2 = new ImportRequest
 // フォルダから直接インポート
 var request3 = new ImportRequest
 {
-    ImportType = DataImportType.Folder | DataImportType.Items,
+    ImportType = DataImportTypes.Folder | DataImportTypes.Items,
     DataFolderPath = @"C:\avatars\folder",
     CopyAssetData = true
 };
@@ -208,7 +208,7 @@ if (!result.IsError)
 ```csharp
 var request = new ImportRequest
 {
-    ImportType = DataImportType.KonoAsset | DataImportType.Items | DataImportType.Thumbnails,
+    ImportType = DataImportTypes.KonoAsset | DataImportTypes.Items | DataImportTypes.Thumbnails,
     DataFolderPath = @"C:\Users\username\AppData\Local\KonoAsset\data",
     CopyAssetData = true,
     ReportProgress = p =>
@@ -240,7 +240,7 @@ else
 // AvatarExplorer V1からのマイグレーション
 var request = new ImportRequest
 {
-    ImportType = DataImportType.V1 | DataImportType.Items | DataImportType.Thumbnails,
+    ImportType = DataImportTypes.V1 | DataImportTypes.Items | DataImportTypes.Thumbnails,
     DataFolderPath = @"C:\AvatarExplorer\v1\data",
     CopyAssetData = true,
     ReportProgress = p =>
@@ -280,7 +280,7 @@ if (!Directory.Exists(backupFolder))
 
 var request = new ImportRequest
 {
-    ImportType = DataImportType.V1 | DataImportType.Items | DataImportType.Thumbnails,
+    ImportType = DataImportTypes.V1 | DataImportTypes.Items | DataImportTypes.Thumbnails,
     DataFolderPath = backupFolder,
     CopyAssetData = true
 };

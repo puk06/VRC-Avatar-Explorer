@@ -22,30 +22,30 @@ internal static class DataImporter
     internal static async Task<ErrorOr<Success>> Import(ImportContext importContext, ImportRequest importRequest)
     {
         var type = importRequest.ImportType;
-        var source = type & DataImportType.SourceMask;
+        var source = type & DataImportTypes.SourceMask;
 
-        if (source == DataImportType.None)
+        if (source == DataImportTypes.None)
             return Error.Unexpected(description: "No import source type specified.");
 
-        if (type.HasFlag(DataImportType.Items))
+        if (type.HasFlag(DataImportTypes.Items))
         {
             var result = source switch
             {
-                DataImportType.V1 => await FromV1(importContext, importRequest),
-                DataImportType.KonoAsset => await FromKonoAsset(importContext, importRequest),
-                DataImportType.Folder => await FromFolder(importContext, importRequest),
+                DataImportTypes.V1 => await FromV1(importContext, importRequest),
+                DataImportTypes.KonoAsset => await FromKonoAsset(importContext, importRequest),
+                DataImportTypes.Folder => await FromFolder(importContext, importRequest),
                 _ => Error.Unexpected(description: $"Unexpected import source: {source}")
             };
             if (result.IsError) return result;
         }
 
-        if (type.HasFlag(DataImportType.Thumbnails))
+        if (type.HasFlag(DataImportTypes.Thumbnails))
         {
             var result = source switch
             {
-                DataImportType.V1 => await FromV1Thumbnail(importContext, importContext.Items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
-                DataImportType.KonoAsset => await FromKonoAssetThumbnail(importContext, importContext.Items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
-                DataImportType.Folder => Result.Success, // Folders do not have thumbnails to import
+                DataImportTypes.V1 => await FromV1Thumbnail(importContext, importContext.Items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
+                DataImportTypes.KonoAsset => await FromKonoAssetThumbnail(importContext, importContext.Items.GetAll(), importRequest.DataFolderPath, importRequest.ReportProgress),
+                DataImportTypes.Folder => Result.Success, // Folders do not have thumbnails to import
                 _ => Error.Unexpected(description: $"Unexpected import source: {source}")
             };
             if (result.IsError) return result;

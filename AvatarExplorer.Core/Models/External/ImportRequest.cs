@@ -8,7 +8,7 @@ public class ImportRequest
     /// <summary>
     /// インポート元の種類とインポート対象を組み合わせたフラグ。
     /// </summary>
-    public DataImportType ImportType { get; set; }
+    public DataImportTypes ImportType { get; set; }
 
     /// <summary>
     /// インポート元となるデータフォルダのパス。
