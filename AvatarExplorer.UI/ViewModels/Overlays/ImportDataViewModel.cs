@@ -25,18 +25,18 @@ public partial class ImportDataViewModel : ViewModelBase, IInitializable
     [Reactive] public partial bool ImportThumbnails { get; set; } = true;
     [Reactive] public partial bool CanImportThumbnails { get; set; } = true;
 
-    private List<(string LocKey, DataImportType Type)> ImportSourceOptions { get; } =
+    private List<(string LocKey, DataImportTypes Type)> ImportSourceOptions { get; } =
     [
-        (Loc.ImportData.ImportSourceOptions.V1, DataImportType.V1),
-        (Loc.ImportData.ImportSourceOptions.KonoAsset, DataImportType.KonoAsset),
-        (Loc.ImportData.ImportSourceOptions.Folder, DataImportType.Folder)
+        (Loc.ImportData.ImportSourceOptions.V1, DataImportTypes.V1),
+        (Loc.ImportData.ImportSourceOptions.KonoAsset, DataImportTypes.KonoAsset),
+        (Loc.ImportData.ImportSourceOptions.Folder, DataImportTypes.Folder)
     ];
 
     public List<string> ImportSourceNames => ImportSourceOptions.ConvertAll(o => Localizer.Instance[o.LocKey]);
 
-    private DataImportType SelectedImportSource => ImportSourceNames.IsValidIndex(SelectedImportSourceIndex)
+    private DataImportTypes SelectedImportSource => ImportSourceNames.IsValidIndex(SelectedImportSourceIndex)
         ? ImportSourceOptions[SelectedImportSourceIndex].Type
-        : DataImportType.None;
+        : DataImportTypes.None;
 
     public IReactiveCommand BrowseFolderCommand { get; }
     public IReactiveCommand ImportCommand { get; }
@@ -56,8 +56,8 @@ public partial class ImportDataViewModel : ViewModelBase, IInitializable
         this.WhenAnyValue(x => x.SelectedImportSourceIndex)
             .Subscribe(_ =>
             {
-                CanImportThumbnails = SelectedImportSource != DataImportType.Folder;
-                if (SelectedImportSource == DataImportType.KonoAsset && TryGetKonoAssetFolderPath(out var path))
+                CanImportThumbnails = SelectedImportSource != DataImportTypes.Folder;
+                if (SelectedImportSource == DataImportTypes.KonoAsset && TryGetKonoAssetFolderPath(out var path))
                 {
                     FolderPath = path;
                 }
@@ -99,8 +99,8 @@ public partial class ImportDataViewModel : ViewModelBase, IInitializable
         if (string.IsNullOrEmpty(FolderPath)) return;
 
         var type = SelectedImportSource;
-        if (ImportItems) type |= DataImportType.Items;
-        if (ImportThumbnails) type |= DataImportType.Thumbnails;
+        if (ImportItems) type |= DataImportTypes.Items;
+        if (ImportThumbnails) type |= DataImportTypes.Thumbnails;
 
         var copyAssetData = await InstanceRepository.MainWindow.ShowYesNoDialog(
             Localizer.Instance[Loc.Dialog.Confirmation.Default],

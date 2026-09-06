@@ -4,7 +4,7 @@ namespace AvatarExplorer.Core.Models.External;
 /// データのインポート元の種類と、インポートする対象を組み合わせて指定するフラグ列挙型。
 /// </summary>
 [Flags]
-public enum DataImportType
+public enum DataImportTypes
 {
     /// <summary>
     /// インポートなし / 未指定。
