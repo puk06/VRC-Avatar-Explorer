@@ -130,11 +130,11 @@ public class SearchManager
         AddField(parts, "Author", advancedSearch.Author);
         AddField(parts, "BoothId", advancedSearch.BoothId);
         AddField(parts, "SupportedAvatar", advancedSearch.SupportedAvatar);
-        AddField(parts, "Category", advancedSearch.Category, value => Localizer.Instance.GetKey(value) ?? value);
+        AddField(parts, "Category", advancedSearch.SelectedCategories.Select(category => category.DisplayName));
         AddField(parts, "Memo", advancedSearch.Memo);
         AddField(parts, "ImplementedAvatar", advancedSearch.ImplementedAvatar);
         AddField(parts, "NotImplementedAvatar", advancedSearch.NotImplementedAvatar);
-        AddField(parts, "Tag", advancedSearch.Tag);
+        AddField(parts, "Tag", advancedSearch.SelectedTags);
         AddField(parts, "CommonAvatar", advancedSearch.CommonAvatar);
 
         if (advancedSearch.IsOr)
@@ -146,7 +146,7 @@ public class SearchManager
         return string.Join(" ", parts);
     }
 
-    private static void AddField(List<string> parts, string fieldName, string value, Func<string, string>? transform = null)
+    private static void AddField(List<string> parts, string fieldName, string value)
     {
         if (string.IsNullOrWhiteSpace(value)) return;
 
@@ -155,10 +155,15 @@ public class SearchManager
         {
             var isNegation = token.StartsWith('~');
             var actualValue = isNegation ? token[1..] : token;
-            var transformed = transform?.Invoke(actualValue) ?? actualValue;
             var prefix = isNegation ? "~" : "";
-            parts.Add($"{prefix}{fieldName}=\"{transformed}\"");
+            parts.Add($"{prefix}{fieldName}=\"{actualValue}\"");
         }
+    }
+
+    private static void AddField(List<string> parts, string fieldName, IEnumerable<string> values)
+    {
+        foreach (var value in values)
+            AddField(parts, fieldName, value);
     }
 
     private static string FormatSearchQuery(string query)

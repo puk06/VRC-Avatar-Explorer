@@ -752,10 +752,16 @@ public static class Loc
         public const string BoothId = "AdvancedSearch.BoothId";
         public const string SupportedAvatar = "AdvancedSearch.SupportedAvatar";
         public const string Category = "AdvancedSearch.Category";
+        public const string AddCategory = "AdvancedSearch.AddCategory";
+        public const string SearchCategory = "AdvancedSearch.SearchCategory";
+        public const string SelectCategory = "AdvancedSearch.SelectCategory";
         public const string Memo = "AdvancedSearch.Memo";
         public const string ImplementedAvatar = "AdvancedSearch.ImplementedAvatar";
         public const string NotImplementedAvatar = "AdvancedSearch.NotImplementedAvatar";
         public const string Tag = "AdvancedSearch.Tag";
+        public const string AddTag = "AdvancedSearch.AddTag";
+        public const string SearchTag = "AdvancedSearch.SearchTag";
+        public const string SelectTag = "AdvancedSearch.SelectTag";
         public const string CommonAvatar = "AdvancedSearch.CommonAvatar";
         public const string IncludeHidden = "AdvancedSearch.IncludeHidden";
     }

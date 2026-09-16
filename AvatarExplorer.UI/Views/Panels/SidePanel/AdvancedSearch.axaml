@@ -1,7 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:AvatarExplorer.UI.ViewModels.Panels"
+    xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:sys="using:System"
     x:Class="AvatarExplorer.UI.Views.Panels.AdvancedSearch"
     x:DataType="vm:AdvancedSearchViewModel">
 
@@ -39,7 +41,25 @@
                 <StackPanel Spacing="6">
                     <TextBlock Text="{Binding [AdvancedSearch.Category], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                     <Separator Classes="separator"/>
-                    <TextBox Text="{Binding Category}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Category], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                    <ItemsControl ItemsSource="{Binding SelectedCategories}">
+                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel ItemSpacing="5" LineSpacing="5"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vmcomponent:ItemCategoryViewModel">
+                                <Border Classes="tag" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" PointerPressed="OnSelectedCategoryClick">
+                                    <TextBlock Classes="tag" Text="{Binding DisplayName}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="{Binding [AdvancedSearch.AddCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource Text.Secondary}"/>
+                    <TextBox Text="{Binding NewCategory}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.AddCategory], Source={x:Static loc:Localizer.Instance}}">
+                        <TextBox.KeyBindings>
+                            <KeyBinding Gesture="Enter" Command="{Binding AddCategoryCommand}"/>
+                        </TextBox.KeyBindings>
+                    </TextBox>
+                    <TextBlock Text="{Binding [AdvancedSearch.SearchCategory], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource Text.Secondary}"/>
+                    <TextBox Text="{Binding CategorySearchText}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.SearchCategory], Source={x:Static loc:Localizer.Instance}}"/>
+                    <ComboBox ItemsSource="{Binding FilteredCategories}" FontSize="14" DisplayMemberBinding="{Binding DisplayName}" PlaceholderText="{Binding [AdvancedSearch.SelectCategory], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedCategoryIndex}" SelectionChanged="OnCategorySelectionChanged"/>
                 </StackPanel>
                 <StackPanel Spacing="6">
                     <TextBlock Text="{Binding [AdvancedSearch.Memo], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
@@ -59,7 +79,25 @@
                 <StackPanel Spacing="6">
                     <TextBlock Text="{Binding [AdvancedSearch.Tag], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                     <Separator Classes="separator"/>
-                    <TextBox Text="{Binding Tag}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.Tag], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                    <ItemsControl ItemsSource="{Binding SelectedTags}">
+                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel ItemSpacing="5" LineSpacing="5"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="sys:String">
+                                <Border Classes="tag" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" PointerPressed="OnSelectedTagClick">
+                                    <TextBlock Classes="tag" Text="{Binding}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="{Binding [AdvancedSearch.AddTag], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource Text.Secondary}"/>
+                    <TextBox Text="{Binding NewTag}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.AddTag], Source={x:Static loc:Localizer.Instance}}">
+                        <TextBox.KeyBindings>
+                            <KeyBinding Gesture="Enter" Command="{Binding AddTagCommand}"/>
+                        </TextBox.KeyBindings>
+                    </TextBox>
+                    <TextBlock Text="{Binding [AdvancedSearch.SearchTag], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource Text.Secondary}"/>
+                    <TextBox Text="{Binding TagSearchText}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.SearchTag], Source={x:Static loc:Localizer.Instance}}"/>
+                    <ComboBox ItemsSource="{Binding ExistingTags}" FontSize="14" PlaceholderText="{Binding [AdvancedSearch.SelectTag], Source={x:Static loc:Localizer.Instance}}" SelectedIndex="{Binding SelectedTagIndex}" HorizontalAlignment="Stretch" SelectionChanged="OnTagSelectionChanged"/>
                 </StackPanel>
                 <StackPanel Spacing="6">
                     <TextBlock Text="{Binding [AdvancedSearch.CommonAvatar], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
