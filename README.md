@@ -40,9 +40,10 @@ Boothからの自動アイテム取得機能に対応していますが、本ア
 
 1. [最新のリリースページ](https://github.com/puk06/VRC-Avatar-Explorer/releases/latest)を開きます。
 2. 使用しているOSに対応したファイルをダウンロードします。
-3. Windows以外の場合は、解凍したフォルダ内にある `AvatarExplorer` を実行してください。
-4. Windowsの場合は、ダウンロードした `setup`（`.exe`）を実行してインストールしてください。
-5. WindowsでSmartScreenが表示された場合は、`詳細情報` → `実行` の順に選択して続行してください。
+3. macOS（Apple Silicon）の場合は、ZIPを解凍し、`VRC-Avatar-Explorer.app` をアプリケーションフォルダに移動して開いてください。.NETは同梱されているため、別途インストールする必要はありません。アドホック署名済みですがAppleの公証は行っていないため、初回起動後に「システム設定」→「プライバシーとセキュリティ」で実行を許可する必要がある場合があります。
+4. Linuxの場合は、解凍したフォルダ内にある `AvatarExplorer` を実行してください。
+5. Windowsの場合は、ダウンロードした `setup`（`.exe`）を実行してインストールしてください。
+6. WindowsでSmartScreenが表示された場合は、`詳細情報` → `実行` の順に選択して続行してください。
 
 リリースに関する注意事項は [RELEASE_NOTICES.md](RELEASE_NOTICES.md) を参照してください。
 貢献や PR の運用ルールは [CONTRIBUTING.md](CONTRIBUTING.md) にまとめています。
@@ -59,6 +60,20 @@ Boothからの自動アイテム取得機能に対応していますが、本ア
 
 - 開発には **.NET 10.0 SDK** を使用します。
 - 開発を始める前に、.NET 10.0 SDK をダウンロード・インストールしてください。
+
+### macOSアプリのビルド
+
+macOSでは、`dotnet build` と `dotnet publish` の完了時に、それぞれの出力フォルダへ `VRC-Avatar-Explorer.app` が自動生成されます。パッケージ化にはXcode Command Line Toolsが必要です。WindowsとLinuxのビルド動作は変わりません。
+
+```sh
+dotnet build AvatarExplorer.UI/AvatarExplorer.UI.csproj -c Debug
+# AvatarExplorer.UI/bin/Debug/net10.0/VRC-Avatar-Explorer.app（ローカルの.NET 10が必要）
+
+dotnet publish AvatarExplorer.UI/AvatarExplorer.UI.csproj -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=true -o ./publish
+# publish/VRC-Avatar-Explorer.app（.NET同梱）
+```
+
+対応するビルド出力が存在すれば、`dotnet publish --no-build` でもパッケージ化されます。無効にする場合は `-p:GenerateMacOSAppBundle=false` を指定してください。既存のアプリアイコンと `CurrentVersion` を使用し、アドホック署名を行います。Developer ID署名とAppleの公証は行いません。GitHubのmacOSリリースでは、従来と同じ名前のZIP内に `.app` が格納されます。
 
 ## プロジェクト構成
 

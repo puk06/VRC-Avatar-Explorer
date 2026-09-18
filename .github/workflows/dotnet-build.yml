@@ -28,3 +28,37 @@ jobs:
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
+
+      - name: Verify macOS app bundle
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          APP="AvatarExplorer.UI/bin/Release/net10.0/VRC-Avatar-Explorer.app"
+          plutil -lint "$APP/Contents/Info.plist"
+          test -x "$APP/Contents/MacOS/AvatarExplorer"
+          test -s "$APP/Contents/Resources/SoftwareIcon.icns"
+          test -s "$APP/Contents/MacOS/locales/ja-JP.json"
+          test -s "$APP/Contents/MacOS/LICENSE"
+          test -s "$APP/Contents/MacOS/THIRD_PARTY_LICENSES.md"
+          codesign --verify --deep --strict "$APP"
+
+      - name: Verify repeated macOS publish
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          OUTPUT="$RUNNER_TEMP/publish macos"
+          for MODE in build no-build; do
+            OPTIONS=()
+            if [ "$MODE" == "no-build" ]; then OPTIONS+=(--no-build); fi
+            dotnet publish AvatarExplorer.UI/AvatarExplorer.UI.csproj -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=true -o "$OUTPUT" "${OPTIONS[@]}"
+            APP="$OUTPUT/VRC-Avatar-Explorer.app"
+            test -x "$APP/Contents/MacOS/AvatarExplorer"
+            test -s "$APP/Contents/MacOS/locales/ja-JP.json"
+            test -s "$APP/Contents/MacOS/LICENSE"
+            test -s "$APP/Contents/MacOS/THIRD_PARTY_LICENSES.md"
+            test -s "$APP/Contents/MacOS/libAvaloniaNative.dylib"
+            test -s "$APP/Contents/MacOS/libSkiaSharp.dylib"
+            test -s "$APP/Contents/MacOS/libHarfBuzzSharp.dylib"
+            test -s "$APP/Contents/MacOS/libpdfium.dylib"
+            codesign --verify --deep --strict "$APP"
+          done

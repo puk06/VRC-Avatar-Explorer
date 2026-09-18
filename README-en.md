@@ -40,9 +40,10 @@ This application supports automatic item retrieval from Booth, but it was develo
 
 1. Open the [latest release page](https://github.com/puk06/VRC-Avatar-Explorer/releases/latest).
 2. Download the file for your operating system.
-3. For non-Windows platforms, run `AvatarExplorer` in the extracted folder.
-4. On Windows, run the downloaded `setup` (`.exe`) and complete the installation.
-5. If Windows SmartScreen appears, select `More info` and then `Run anyway` to continue.
+3. On macOS (Apple Silicon), extract the ZIP, move `VRC-Avatar-Explorer.app` to Applications, and open it. The app includes .NET; no separate runtime installation is needed. It is ad-hoc signed, not notarized by Apple; macOS may require allowing it in System Settings → Privacy & Security after the first launch attempt.
+4. On Linux, run `AvatarExplorer` in the extracted folder.
+5. On Windows, run the downloaded `setup` (`.exe`) and complete the installation.
+6. If Windows SmartScreen appears, select `More info` and then `Run anyway` to continue.
 
 For release-related notices, see [RELEASE_NOTICES.md](RELEASE_NOTICES.md).
 Contribution and PR rules are summarized in [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -57,6 +58,20 @@ For the licenses of third-party libraries used, see [THIRD_PARTY_LICENSES.md](TH
 
 - Development uses the **.NET 10.0 SDK**.
 - Download and install the .NET 10.0 SDK before starting development.
+
+### Building a macOS app
+
+On macOS, `dotnet build` and `dotnet publish` automatically create `VRC-Avatar-Explorer.app` in the respective build or publish output directory. Xcode Command Line Tools are required for packaging. Windows and Linux builds are unchanged.
+
+```sh
+dotnet build AvatarExplorer.UI/AvatarExplorer.UI.csproj -c Debug
+# AvatarExplorer.UI/bin/Debug/net10.0/VRC-Avatar-Explorer.app (requires local .NET 10)
+
+dotnet publish AvatarExplorer.UI/AvatarExplorer.UI.csproj -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=true -o ./publish
+# publish/VRC-Avatar-Explorer.app (includes .NET)
+```
+
+Packaging also runs with `dotnet publish --no-build` when the matching build outputs already exist. To skip packaging, pass `-p:GenerateMacOSAppBundle=false`. The bundle uses the existing application icon and `CurrentVersion`, and receives an ad-hoc signature; Developer ID signing and Apple notarization are not performed. GitHub macOS releases contain the `.app` inside the existing ZIP asset.
 
 ## Project Structure
 

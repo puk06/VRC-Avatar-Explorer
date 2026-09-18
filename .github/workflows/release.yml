@@ -93,10 +93,16 @@ jobs:
           EXTENSION="${{ matrix.extension }}"
           OUTPUT_NAME="${APP_NAME}_${VERSION}-${RUNTIME}.${EXTENSION}"
           cd publish
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            powershell -Command "Compress-Archive -Path * -DestinationPath '../${OUTPUT_NAME}'"
-          elif [ "${EXTENSION}" == "zip" ]; then
-            zip -r "../${OUTPUT_NAME}" .
+          if [ "$RUNNER_OS" == "macOS" ]; then
+            APP="${APP_NAME}.app"
+            plutil -lint "$APP/Contents/Info.plist"
+            test -x "$APP/Contents/MacOS/AvatarExplorer"
+            test -s "$APP/Contents/Resources/SoftwareIcon.icns"
+            test -s "$APP/Contents/MacOS/locales/ja-JP.json"
+            test -s "$APP/Contents/MacOS/LICENSE"
+            test -s "$APP/Contents/MacOS/THIRD_PARTY_LICENSES.md"
+            codesign --verify --deep --strict "$APP"
+            ditto -c -k --sequesterRsrc --keepParent "$APP" "../${OUTPUT_NAME}"
           else
             tar -czvf "../${OUTPUT_NAME}" .
           fi

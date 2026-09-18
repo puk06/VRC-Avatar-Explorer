@@ -51,4 +51,6 @@
 	<PropertyGroup Condition="'$(BuildTargetIsFlatpak)'=='true'">
 		<DefineConstants>$(DefineConstants);FLATPAK</DefineConstants>
 	</PropertyGroup>
+
+	<Import Project="../build/macos/MacOSAppBundle.targets" />
 </Project>

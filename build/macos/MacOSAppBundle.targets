@@ -1,0 +1,34 @@
+<Project>
+	<PropertyGroup>
+		<GenerateMacOSAppBundle Condition="'$(GenerateMacOSAppBundle)' == ''">true</GenerateMacOSAppBundle>
+		<_MacOSBundleScript>$(MSBuildThisFileDirectory)package-app.sh</_MacOSBundleScript>
+	</PropertyGroup>
+
+	<!--
+		Keep sidecar files in ResolvedFileToPublish even when the SDK skips its
+		incremental GenerateSingleFileBundle target. Otherwise its cleanup can
+		remove files reported only by GenerateBundle's ExcludedFiles output.
+	-->
+	<Target Name="PreserveMacOSBundleSidecarFiles"
+			BeforeTargets="_ComputeFilesToBundle"
+			DependsOnTargets="_HandleFileConflictsForPublish"
+			Condition="'$(GenerateMacOSAppBundle)' == 'true' and $([MSBuild]::IsOSPlatform('OSX')) and '$(DesignTimeBuild)' != 'true' and '$(PublishSingleFile)' == 'true' and ('$(RuntimeIdentifier)' == '' or $(RuntimeIdentifier.StartsWith('osx-')))">
+		<ItemGroup>
+			<ResolvedFileToPublish Update="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.RelativePath)' == 'LICENSE' or '%(ResolvedFileToPublish.RelativePath)' == 'THIRD_PARTY_LICENSES.md' or $([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').Replace('\', '/').StartsWith('locales/')) or ('%(ResolvedFileToPublish.Extension)' == '.dylib' and '$(IncludeNativeLibrariesForSelfExtract)' != 'true' and '$(IncludeAllContentForSelfExtract)' != 'true')">
+				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="BundleMacOSBuild"
+			AfterTargets="Build"
+			Condition="'$(GenerateMacOSAppBundle)' == 'true' and $([MSBuild]::IsOSPlatform('OSX')) and '$(DesignTimeBuild)' != 'true' and '$(UseAppHost)' == 'true' and ('$(RuntimeIdentifier)' == '' or $(RuntimeIdentifier.StartsWith('osx-')))">
+		<Exec Command="bash &quot;$(_MacOSBundleScript)&quot; &quot;$(TargetDir)&quot; &quot;$(PublishDir)&quot;" />
+	</Target>
+
+	<Target Name="BundleMacOSPublish"
+			AfterTargets="Publish"
+			Condition="'$(GenerateMacOSAppBundle)' == 'true' and $([MSBuild]::IsOSPlatform('OSX')) and '$(DesignTimeBuild)' != 'true' and '$(UseAppHost)' == 'true' and ('$(RuntimeIdentifier)' == '' or $(RuntimeIdentifier.StartsWith('osx-')))">
+		<Exec Command="bash &quot;$(_MacOSBundleScript)&quot; &quot;$(PublishDir)&quot;" />
+	</Target>
+</Project>
