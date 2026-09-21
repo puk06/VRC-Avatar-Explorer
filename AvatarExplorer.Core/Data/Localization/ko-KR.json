@@ -459,6 +459,8 @@
     "AdvancedSearch.SelectTag": "추가할 태그 선택",
     "AdvancedSearch.CommonAvatar": "공통 바디",
     "AdvancedSearch.IncludeHidden": "숨겨진 항목 포함",
+    "AdvancedSearch.ToggleNegation": "제외 전환",
+    "AdvancedSearch.Remove": "삭제",
 
     "BulkImport.Import": "일괄 가져오기",
     "BulkImport.ImportWithPathChange": "일괄 가져오기 - 경로 변경",

@@ -766,6 +766,8 @@ public static class Loc
         public const string SelectTag = "AdvancedSearch.SelectTag";
         public const string CommonAvatar = "AdvancedSearch.CommonAvatar";
         public const string IncludeHidden = "AdvancedSearch.IncludeHidden";
+        public const string ToggleNegation = "AdvancedSearch.ToggleNegation";
+        public const string Remove = "AdvancedSearch.Remove";
     }
     public static class BulkImport
     {

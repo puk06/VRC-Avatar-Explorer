@@ -459,6 +459,8 @@
     "AdvancedSearch.SelectTag": "Select a tag to add",
     "AdvancedSearch.CommonAvatar": "Common Avatar",
     "AdvancedSearch.IncludeHidden": "Include Hidden Items",
+    "AdvancedSearch.ToggleNegation": "Toggle Exclusion",
+    "AdvancedSearch.Remove": "Remove",
 
     "BulkImport.Import": "Bulk Import",
     "BulkImport.ImportWithPathChange": "Bulk Import - Change path to default",

@@ -98,6 +98,17 @@ public partial class AdvancedSearchViewModel : ViewModelBase, IInitializable
 
     public void RemoveSelectedCategory(ItemCategoryViewModel category) => SelectedCategories.Remove(category);
 
+    public void ToggleCategoryNegation(ItemCategoryViewModel category)
+    {
+        var index = SelectedCategories.IndexOf(category);
+        if (index < 0) return;
+
+        var isNegated = category.DisplayName.StartsWith('~');
+        var newName = isNegated ? category.DisplayName[1..] : "~" + category.DisplayName;
+        var toggled = new ItemCategoryViewModel(ItemCategory.Get(newName)).Update();
+        SelectedCategories[index] = toggled;
+    }
+
     public void AddNewCategory()
     {
         if (string.IsNullOrWhiteSpace(NewCategory)) return;
@@ -117,6 +128,15 @@ public partial class AdvancedSearchViewModel : ViewModelBase, IInitializable
     }
 
     public void RemoveSelectedTag(string tag) => SelectedTags.Remove(tag);
+
+    public void ToggleTagNegation(string tag)
+    {
+        var index = SelectedTags.IndexOf(tag);
+        if (index < 0) return;
+
+        var toggled = tag.StartsWith('~') ? tag[1..] : "~" + tag;
+        SelectedTags[index] = toggled;
+    }
 
     public void AddNewTag()
     {
