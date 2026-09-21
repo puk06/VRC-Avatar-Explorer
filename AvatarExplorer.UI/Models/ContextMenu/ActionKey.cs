@@ -4,6 +4,8 @@ public enum ActionKey
 {
     None,
 
+    ShowInMainView,
+
     CheckForUpdate,
     CopyBoothLink,
     OpenBoothLink,

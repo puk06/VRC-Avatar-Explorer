@@ -33,6 +33,7 @@ public static class ContextMenuHandlerService
 
     public static void Initialize()
     {
+        Register(ActionKey.ShowInMainView, ShowInMainView);
         Register(ActionKey.OpenFolder, OpenFolder);
         Register(ActionKey.RemoveFolder, RemoveFolder);
         Register(ActionKey.CheckForUpdate, CheckForUpdate);
@@ -105,6 +106,15 @@ public static class ContextMenuHandlerService
             result ? Localizer.Instance[successMessage ?? Loc.Success.ItemEdit] : Localizer.Instance[Loc.Error.ItemEditFailed],
             result ? NotificationType.Success : NotificationType.Error
         );
+    }
+
+    private static async void ShowInMainView(string identifier)
+    {
+        var item = GetByIdentifier(identifier);
+        if (item == null) return;
+
+        var mainVm = InstanceRepository.MainWindow.MainVM;
+        mainVm.SearchText = $"Identifier=\"{item.Identifier}\"";
     }
 
     private static async void OpenFolder(string path)

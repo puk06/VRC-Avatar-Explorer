@@ -235,6 +235,7 @@ public static class Loc
     {
         public static class Item
         {
+            public const string ShowInMainView = "ContextMenu.Item.ShowInMainView";
             public const string CheckForUpdate = "ContextMenu.Item.CheckForUpdate";
             public const string ShowOtherItemsByAuthor = "ContextMenu.Item.ShowOtherItemsByAuthor";
             public static class Add
@@ -312,6 +313,7 @@ public static class Loc
     public static class SearchFilter
     {
         public const string Default = "SearchFilter.Default";
+        public const string Identifier = "SearchFilter.Identifier";
         public const string Title = "SearchFilter.Title";
         public const string Author = "SearchFilter.Author";
         public const string Booth = "SearchFilter.Booth";

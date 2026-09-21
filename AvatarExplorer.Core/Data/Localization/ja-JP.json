@@ -133,6 +133,7 @@
     "Processing.SoftwareUpdate.Status.Downloading": "ダウンロード中です... {0}%",
     "Processing.SoftwareUpdate.Status.Validating": "整合性チェック中です...",
 
+    "ContextMenu.Item.ShowInMainView": "メイン画面で表示",
     "ContextMenu.Item.CheckForUpdate": "アイテムの更新を確認",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "この作者の他のアイテムを表示",
     "ContextMenu.Item.Add.BulkImportList": "一括インポートに追加する",
@@ -180,6 +181,7 @@
     "ContextMenu.ItemCategory.MergeWithOtherCategory": "他のカテゴリと統合する",
 
     "SearchFilter.Default": "検索中... - {0}",
+    "SearchFilter.Identifier": "識別子: {0}",
     "SearchFilter.Title": "タイトル: {0}",
     "SearchFilter.Author": "作者: {0}",
     "SearchFilter.Booth": "Booth: {0}",
