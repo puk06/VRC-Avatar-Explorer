@@ -4,14 +4,9 @@
     xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
     xmlns:sys="using:System"
-    xmlns:converters="using:AvatarExplorer.UI.Converters"
     xmlns:vmmain="using:AvatarExplorer.UI.ViewModels"
     x:Class="AvatarExplorer.UI.Views.Panels.AdvancedSearch"
     x:DataType="vm:AdvancedSearchViewModel">
-
-    <UserControl.Resources>
-        <converters:StartsWithConverter x:Key="StartsWithConverter"/>
-    </UserControl.Resources>
 
     <UserControl.Styles>
         <Style Selector="Border.negationtag">
