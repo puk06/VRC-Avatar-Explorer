@@ -189,6 +189,7 @@ foreach (var item in viewItems)
 ```
 
 ### 利用可能なフィールド
+
 | フィールド名 | 説明 |
 |---|---|
 | `identifier` | アイテムの識別子（アイテムのみ） |
