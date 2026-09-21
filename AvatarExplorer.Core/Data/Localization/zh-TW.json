@@ -133,6 +133,7 @@
     "Processing.SoftwareUpdate.Status.Downloading": "正在下載... {0}%",
     "Processing.SoftwareUpdate.Status.Validating": "正在檢查完整性...",
 
+    "ContextMenu.Item.ShowInMainView": "在主畫面中顯示",
     "ContextMenu.Item.CheckForUpdate": "檢查項目更新",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "顯示此作者的其他項目",
     "ContextMenu.Item.Add.BulkImportList": "加入批次匯入",
@@ -180,6 +181,7 @@
     "ContextMenu.ItemCategory.MergeWithOtherCategory": "與其他類別合併",
 
     "SearchFilter.Default": "搜尋中... - {0}",
+    "SearchFilter.Identifier": "識別碼: {0}",
     "SearchFilter.Title": "標題: {0}",
     "SearchFilter.Author": "作者: {0}",
     "SearchFilter.Booth": "Booth: {0}",

@@ -10,6 +10,11 @@ namespace AvatarExplorer.Core.Models.System;
 public record ItemSearchIndex : ISearchIndex
 {
     /// <summary>
+    /// アイテムの識別子（GUID 文字列）。
+    /// </summary>
+    public required string Identifier { get; init; }
+
+    /// <summary>
     /// アイテム名。
     /// </summary>
     public required string Title { get; init; }
@@ -96,6 +101,7 @@ public record ItemSearchIndex : ISearchIndex
     {
         return field?.ToLowerInvariant() switch
         {
+            "identifier" => [Identifier],
             "title" => [Title],
             "author" => [Author],
             "boothid" or "booth" => [BoothId],
@@ -137,6 +143,7 @@ public record ItemSearchIndex : ISearchIndex
 
         return new ItemSearchIndex
         {
+            Identifier = item.Identifier,
             Title = item.Title,
             Author = item.Author,
             BoothId = item.BoothId >= 0 ? item.BoothId.ToString() : string.Empty,

@@ -26,7 +26,7 @@ internal static class ContextMenuCreator
         // HandlerにはItemViewModelのActualValue ?? Identifierを渡すので、ここでは必要ない。
         return type switch
         {
-            ViewModelType.Avatar => CreateFromItem(viewModel.ActualValue ?? string.Empty),
+            ViewModelType.Avatar => CreateFromItem(viewModel.ActualValue ?? string.Empty, isAvatar: true),
             ViewModelType.Item => CreateFromItem(viewModel.Identifier),
             ViewModelType.Folder => CreateFromFolder(viewModel.ActualValue ?? string.Empty),
             ViewModelType.File => CreateFromItemFile(viewModel.ActualValue ?? string.Empty),
@@ -37,7 +37,7 @@ internal static class ContextMenuCreator
         };
     }
 
-    private static ContextMenuAction[] CreateFromItem(string identifier)
+    private static ContextMenuAction[] CreateFromItem(string identifier, bool isAvatar = false)
     {
         if (string.IsNullOrEmpty(identifier)) return [];
 
@@ -48,7 +48,14 @@ internal static class ContextMenuCreator
         var isHidden = item.IsHidden;
         var skipIndirectCommonAvatarCheck = item.SkipIndirectCommonAvatarCheck;
 
-        List<ContextMenuAction> contextMenuActions =
+        var contextMenuActions = new List<ContextMenuAction>();
+
+        if (isAvatar)
+        {
+            contextMenuActions.Add(new(Loc.ContextMenu.Item.ShowInMainView, ActionKey.ShowInMainView, ContextMenuIconType.Open, addSeparator: true));
+        }
+
+        contextMenuActions.AddRange(
         [
             new(Loc.ContextMenu.Item.CheckForUpdate, ActionKey.CheckForUpdate, ContextMenuIconType.Update, isEnabled: hasBoothId, addSeparator: true),
             new(Loc.ContextMenu.Item.ShowOtherItemsByAuthor, ActionKey.ShowOtherItemsByAuthor, ContextMenuIconType.Open, addSeparator: true),
@@ -112,7 +119,7 @@ internal static class ContextMenuCreator
             },
 
             new(Loc.ContextMenu.Item.Remove, ActionKey.RemoveItem, ContextMenuIconType.Delete)
-        ];
+        ]);
 
         return contextMenuActions.ToArray();
     }

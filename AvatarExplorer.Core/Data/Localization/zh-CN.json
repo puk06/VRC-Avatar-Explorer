@@ -133,6 +133,7 @@
     "Processing.SoftwareUpdate.Status.Downloading": "正在下载... {0}%",
     "Processing.SoftwareUpdate.Status.Validating": "正在检查完整性...",
 
+    "ContextMenu.Item.ShowInMainView": "在主画面中显示",
     "ContextMenu.Item.CheckForUpdate": "检查项目更新",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "显示该作者的其他项目",
     "ContextMenu.Item.Add.BulkImportList": "添加到批量导入",
@@ -180,6 +181,7 @@
     "ContextMenu.ItemCategory.MergeWithOtherCategory": "与其他类别合并",
 
     "SearchFilter.Default": "搜索中... - {0}",
+    "SearchFilter.Identifier": "标识符: {0}",
     "SearchFilter.Title": "标题: {0}",
     "SearchFilter.Author": "作者: {0}",
     "SearchFilter.Booth": "Booth: {0}",

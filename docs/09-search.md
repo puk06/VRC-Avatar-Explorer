@@ -192,6 +192,7 @@ foreach (var item in viewItems)
 
 | フィールド名 | 説明 |
 |---|---|
+| `identifier` | アイテムの識別子（アイテムのみ） |
 | `title` | アイテム名 |
 | `author` | 作者名 |
 | `category` | カテゴリ名（ItemTypeはLocalizationKey、CustomCategoryはそのままの文字列） |

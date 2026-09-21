@@ -133,6 +133,7 @@
     "Processing.SoftwareUpdate.Status.Downloading": "Téléchargement... {0}%",
     "Processing.SoftwareUpdate.Status.Validating": "Vérification de l'intégrité...",
 
+    "ContextMenu.Item.ShowInMainView": "Afficher dans la vue principale",
     "ContextMenu.Item.CheckForUpdate": "Vérifier les mises à jour de l'élément",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "Afficher les autres éléments de cet auteur",
     "ContextMenu.Item.Add.BulkImportList": "Ajouter à l'importation en masse",
@@ -180,6 +181,7 @@
     "ContextMenu.ItemCategory.MergeWithOtherCategory": "Fusionner avec une autre catégorie",
 
     "SearchFilter.Default": "Recherche... - {0}",
+    "SearchFilter.Identifier": "Identifiant : {0}",
     "SearchFilter.Title": "Titre : {0}",
     "SearchFilter.Author": "Auteur : {0}",
     "SearchFilter.Booth": "Booth : {0}",

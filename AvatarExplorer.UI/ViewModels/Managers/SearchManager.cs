@@ -186,6 +186,7 @@ public class SearchManager
 
                 var locKey = field switch
                 {
+                    "identifier" => Loc.SearchFilter.Identifier,
                     "title" => Loc.SearchFilter.Title,
                     "author" => Loc.SearchFilter.Author,
                     "boothid" or "booth" => Loc.SearchFilter.Booth,

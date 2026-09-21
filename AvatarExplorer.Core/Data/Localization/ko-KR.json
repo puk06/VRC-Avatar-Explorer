@@ -133,6 +133,7 @@
     "Processing.SoftwareUpdate.Status.Downloading": "다운로드 중... {0}%",
     "Processing.SoftwareUpdate.Status.Validating": "무결성 확인 중...",
 
+    "ContextMenu.Item.ShowInMainView": "메인 화면에 표시",
     "ContextMenu.Item.CheckForUpdate": "아이템 업데이트 확인",
     "ContextMenu.Item.ShowOtherItemsByAuthor": "이 작성자의 다른 아이템 보기",
     "ContextMenu.Item.Add.BulkImportList": "일괄 가져오기에 추가",
@@ -180,6 +181,7 @@
     "ContextMenu.ItemCategory.MergeWithOtherCategory": "다른 카테고리와 통합",
 
     "SearchFilter.Default": "검색 중... - {0}",
+    "SearchFilter.Identifier": "식별자: {0}",
     "SearchFilter.Title": "제목: {0}",
     "SearchFilter.Author": "작성자: {0}",
     "SearchFilter.Booth": "Booth: {0}",
