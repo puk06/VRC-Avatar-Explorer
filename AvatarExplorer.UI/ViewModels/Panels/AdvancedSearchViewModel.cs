@@ -60,7 +60,11 @@ public partial class AdvancedSearchViewModel : ViewModelBase, IInitializable
         this.WhenAnyValue(x => x.TagSearchText)
             .Subscribe(_ => ApplyTagFilter());
 
-        Localizer.Instance.LanguageChanged += ReloadSearchComponents;
+        Localizer.Instance.LanguageChanged += () =>
+        {
+            ReloadSearchComponents();
+            UpdateAllSelectedItems();
+        };
         InstanceRepository.Items.OnUpdated += ReloadSearchComponents;
 
         RefreshCategories();
@@ -70,6 +74,11 @@ public partial class AdvancedSearchViewModel : ViewModelBase, IInitializable
     {
         RefreshCategories();
         RefreshTags();
+    }
+    private void UpdateAllSelectedItems()
+    {
+        SelectedCategories.ForEach(category => category.Update());
+        SelectedTags.ForEach(tag => tag.Update());
     }
 
     public void RefreshCategories()
