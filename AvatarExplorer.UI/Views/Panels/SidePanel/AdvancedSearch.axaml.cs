@@ -28,25 +28,25 @@ public partial class AdvancedSearch : UserControl
 
     private void OnCategoryToggleNegationClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is MenuItem { DataContext: ItemCategoryViewModel category } && DataContext is AdvancedSearchViewModel vm)
+        if (sender is MenuItem { DataContext: AdvancedSearchTagViewModel category } && DataContext is AdvancedSearchViewModel vm)
             vm.ToggleCategoryNegation(category);
     }
 
     private void OnTagToggleNegationClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is MenuItem { DataContext: string tag } && DataContext is AdvancedSearchViewModel vm)
+        if (sender is MenuItem { DataContext: AdvancedSearchTagViewModel tag } && DataContext is AdvancedSearchViewModel vm)
             vm.ToggleTagNegation(tag);
     }
 
     private void OnCategoryRemoveClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is Control { DataContext: ItemCategoryViewModel category } && DataContext is AdvancedSearchViewModel vm)
+        if (sender is Control { DataContext: AdvancedSearchTagViewModel category } && DataContext is AdvancedSearchViewModel vm)
             vm.RemoveSelectedCategory(category);
     }
 
     private void OnTagRemoveClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is Control { DataContext: string tag } && DataContext is AdvancedSearchViewModel vm)
+        if (sender is Control { DataContext: AdvancedSearchTagViewModel tag } && DataContext is AdvancedSearchViewModel vm)
             vm.RemoveSelectedTag(tag);
     }
 }

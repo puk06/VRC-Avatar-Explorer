@@ -474,7 +474,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         {
             var tags = new List<TagViewModel>(item.Tags.Length + 1)
             {
-                new() { ValueRaw = status.CommonAvatarName, IsCommonAvatar = true }
+                new(status.CommonAvatarName) { IsCommonAvatar = true }
             };
             tags.AddRange(vm.Tags);
             vm.Tags = tags.ToArray();

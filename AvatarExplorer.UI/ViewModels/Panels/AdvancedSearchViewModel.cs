@@ -20,14 +20,14 @@ public partial class AdvancedSearchViewModel : ViewModelBase, IInitializable
     [Reactive] public partial string SupportedAvatar { get; set; } = string.Empty;
     [Reactive] public partial ObservableCollection<ItemCategoryViewModel> Categories { get; set; } = [];
     [Reactive] public partial IEnumerable<ItemCategoryViewModel> FilteredCategories { get; set; } = [];
-    [Reactive] public partial ObservableCollection<ItemCategoryViewModel> SelectedCategories { get; set; } = [];
+    [Reactive] public partial ObservableCollection<AdvancedSearchTagViewModel> SelectedCategories { get; set; } = [];
     [Reactive] public partial int SelectedCategoryIndex { get; set; } = -1;
     [Reactive] public partial string CategorySearchText { get; set; } = string.Empty;
     [Reactive] public partial string NewCategory { get; set; } = string.Empty;
     [Reactive] public partial string Memo { get; set; } = string.Empty;
     [Reactive] public partial string ImplementedAvatar { get; set; } = string.Empty;
     [Reactive] public partial string NotImplementedAvatar { get; set; } = string.Empty;
-    [Reactive] public partial ObservableCollection<string> SelectedTags { get; set; } = [];
+    [Reactive] public partial ObservableCollection<AdvancedSearchTagViewModel> SelectedTags { get; set; } = [];
     [Reactive] public partial IEnumerable<string> ExistingTags { get; set; } = [];
     [Reactive] public partial int SelectedTagIndex { get; set; } = -1;
     [Reactive] public partial string TagSearchText { get; set; } = string.Empty;
@@ -90,60 +90,70 @@ public partial class AdvancedSearchViewModel : ViewModelBase, IInitializable
     public void AddSelectedCategory()
     {
         if (!FilteredCategories.IsValidIndex(SelectedCategoryIndex)) return;
+
         var category = FilteredCategories.ElementAt(SelectedCategoryIndex);
-        if (!SelectedCategories.Any(selected => selected.Category.Equals(category.Category)))
-            SelectedCategories.Add(category);
+        if (!SelectedCategories.Any(selected => selected.ValueRaw == category.Category.ToString()))
+        {
+            SelectedCategories.Add(new AdvancedSearchTagViewModel(category.Category.ToString()) { IsLocalizable = category.Category.IsLocalizable }.Update());
+        }
+
         SelectedCategoryIndex = -1;
     }
 
-    public void RemoveSelectedCategory(ItemCategoryViewModel category) => SelectedCategories.Remove(category);
+    public void RemoveSelectedCategory(AdvancedSearchTagViewModel category) => SelectedCategories.Remove(category);
 
-    public void ToggleCategoryNegation(ItemCategoryViewModel category)
+    public void ToggleCategoryNegation(AdvancedSearchTagViewModel category)
     {
         var index = SelectedCategories.IndexOf(category);
         if (index < 0) return;
 
-        var isNegated = category.DisplayName.StartsWith('~');
-        var newName = isNegated ? category.DisplayName[1..] : "~" + category.DisplayName;
-        var toggled = new ItemCategoryViewModel(ItemCategory.Get(newName)).Update();
-        SelectedCategories[index] = toggled;
+        SelectedCategories[index].IsNegation = !SelectedCategories[index].IsNegation;
+        SearchPropertyChanged?.Invoke();
     }
 
     public void AddNewCategory()
     {
         if (string.IsNullOrWhiteSpace(NewCategory)) return;
 
-        var category = new ItemCategoryViewModel(ItemCategory.Get(NewCategory.Trim())).Update();
-        if (!SelectedCategories.Any(selected => selected.Category.Equals(category.Category)))
+        var category = new AdvancedSearchTagViewModel(NewCategory.Trim()).Update();
+        if (!SelectedCategories.Any(selected => selected.ValueRaw == category.ValueRaw))
+        {
             SelectedCategories.Add(category);
+        }
+
         NewCategory = string.Empty;
     }
 
     public void AddSelectedTag()
     {
         if (!ExistingTags.IsValidIndex(SelectedTagIndex)) return;
+
         var tag = ExistingTags.ElementAt(SelectedTagIndex);
-        if (!SelectedTags.Contains(tag)) SelectedTags.Add(tag);
+        if (!SelectedTags.Any(i => i.ValueRaw == tag))
+        {
+            SelectedTags.Add(new AdvancedSearchTagViewModel(tag).Update());
+        }
+    
         SelectedTagIndex = -1;
     }
 
-    public void RemoveSelectedTag(string tag) => SelectedTags.Remove(tag);
+    public void RemoveSelectedTag(AdvancedSearchTagViewModel tag) => SelectedTags.Remove(tag);
 
-    public void ToggleTagNegation(string tag)
+    public void ToggleTagNegation(AdvancedSearchTagViewModel tag)
     {
         var index = SelectedTags.IndexOf(tag);
         if (index < 0) return;
 
-        var toggled = tag.StartsWith('~') ? tag[1..] : "~" + tag;
-        SelectedTags[index] = toggled;
+        SelectedTags[index].IsNegation = !SelectedTags[index].IsNegation;
+        SearchPropertyChanged?.Invoke();
     }
 
     public void AddNewTag()
     {
         var tag = NewTag.Trim();
-        if (string.IsNullOrEmpty(tag) || SelectedTags.Contains(tag)) return;
+        if (string.IsNullOrEmpty(tag) || SelectedTags.Any(t => t.ValueRaw == tag)) return;
 
-        SelectedTags.Add(tag);
+        SelectedTags.Add(new AdvancedSearchTagViewModel(tag).Update());
         NewTag = string.Empty;
     }
 

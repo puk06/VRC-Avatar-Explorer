@@ -1,15 +1,16 @@
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Localization;
+using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Component;
 
-public class TagViewModel : ViewModelBase
+public partial class TagViewModel(string valueRaw) : ViewModelBase
 {
-    public string Label { get; private set; } = string.Empty;
-    public bool IsCommonAvatar { get; set; } = false;
-    public bool IsBoothId { get; set; } = false;
+    [Reactive] public partial string Label { get; private set; } = string.Empty;
+    [Reactive] public partial bool IsCommonAvatar { get; set; } = false;
+    [Reactive] public partial bool IsBoothId { get; set; } = false;
 
-    public string ValueRaw { get; set; } = string.Empty;
+    public string ValueRaw { get; } = valueRaw;
 
     public void Update()
     {
