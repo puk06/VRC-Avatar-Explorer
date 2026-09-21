@@ -5,6 +5,7 @@
     xmlns:loc="using:AvatarExplorer.UI.Localization"
     xmlns:sys="using:System"
     xmlns:converters="using:AvatarExplorer.UI.Converters"
+    xmlns:vmmain="using:AvatarExplorer.UI.ViewModels"
     x:Class="AvatarExplorer.UI.Views.Panels.AdvancedSearch"
     x:DataType="vm:AdvancedSearchViewModel">
 
@@ -66,9 +67,9 @@
                                 <Border Classes="tag" Classes.negationtag="{Binding IsNegation}" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Border.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="{Binding [AdvancedSearch.ToggleNegation], Source={x:Static loc:Localizer.Instance}}" Click="OnCategoryToggleNegationClick"/>
+                                            <MenuItem Header="{Binding [AdvancedSearch.ToggleNegation], Source={x:Static loc:Localizer.Instance}}" Click="OnCategoryToggleNegationClick" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
                                             <Separator/>
-                                            <MenuItem Header="{Binding [AdvancedSearch.Remove], Source={x:Static loc:Localizer.Instance}}" Click="OnCategoryRemoveClick"/>
+                                            <MenuItem Header="{Binding [AdvancedSearch.Remove], Source={x:Static loc:Localizer.Instance}}" Click="OnCategoryRemoveClick" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
                                         </ContextMenu>
                                     </Border.ContextMenu>
                                     <TextBlock Classes="tag" Classes.negationtag="{Binding IsNegation}" Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
@@ -115,9 +116,9 @@
                                 <Border Classes="tag" Classes.negationtag="{Binding IsNegation}" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Border.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="{Binding [AdvancedSearch.ToggleNegation], Source={x:Static loc:Localizer.Instance}}" Click="OnTagToggleNegationClick"/>
+                                            <MenuItem Header="{Binding [AdvancedSearch.ToggleNegation], Source={x:Static loc:Localizer.Instance}}" Click="OnTagToggleNegationClick" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
                                             <Separator/>
-                                            <MenuItem Header="{Binding [AdvancedSearch.Remove], Source={x:Static loc:Localizer.Instance}}" Click="OnTagRemoveClick"/>
+                                            <MenuItem Header="{Binding [AdvancedSearch.Remove], Source={x:Static loc:Localizer.Instance}}" Click="OnTagRemoveClick" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
                                         </ContextMenu>
                                     </Border.ContextMenu>
                                     <TextBlock Classes="tag" Classes.negationtag="{Binding IsNegation}" Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
