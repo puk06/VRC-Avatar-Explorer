@@ -60,6 +60,10 @@
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(43,120,191,1.0)"/>
                     <!-- タグの文字色 -->
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+                    <!-- 除外タグの背景 -->
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <!-- 除外タグの文字色 -->
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <!-- 実装済みボタンの背景 -->
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,169,0,0.2)"/>
@@ -96,6 +100,8 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(43,120,191,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,200,0,0.2)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,200,0,0.3)"/>
@@ -128,6 +134,8 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(209,127,168,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,247,250,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(255,247,250,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,160,80,0.18)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,160,80,0.28)"/>
@@ -160,6 +168,8 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(99,184,146,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(247,255,252,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(247,255,252,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,160,80,0.18)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,160,80,0.28)"/>
@@ -192,6 +202,8 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(143,118,221,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(251,249,255,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(251,249,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(60,170,80,0.18)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(60,170,80,0.28)"/>
@@ -224,6 +236,8 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(79,168,204,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,180,120,0.2)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,180,120,0.3)"/>
@@ -256,6 +270,8 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(217,144,79,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,251,248,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(255,251,248,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(80,160,60,0.18)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(80,160,60,0.28)"/>
@@ -288,6 +304,8 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(77,148,104,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(248,255,249,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(248,255,249,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(0,160,60,0.18)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(0,160,60,0.28)"/>
@@ -320,6 +338,8 @@
                     
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(178,125,98,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(80,140,60,0.18)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(80,140,60,0.28)"/>
@@ -352,6 +372,8 @@
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(124,146,173,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Background" Color="rgba(180,60,60,1.0)"/>
+                    <SolidColorBrush x:Key="NegationTag.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Implemented.Background" Color="rgba(60,160,100,0.2)"/>
                     <SolidColorBrush x:Key="Implemented.Background.PointerOver" Color="rgba(60,160,100,0.3)"/>

@@ -459,6 +459,8 @@
     "AdvancedSearch.SelectTag": "タグを選択して追加",
     "AdvancedSearch.CommonAvatar": "共通素体",
     "AdvancedSearch.IncludeHidden": "非表示アイテムを含める",
+    "AdvancedSearch.ToggleNegation": "除外の切り換え",
+    "AdvancedSearch.Remove": "削除",
 
     "BulkImport.Import": "一括インポート",
     "BulkImport.ImportWithPathChange": "一括インポート - パス変更あり",

@@ -459,6 +459,8 @@
     "AdvancedSearch.SelectTag": "選擇要新增的標籤",
     "AdvancedSearch.CommonAvatar": "共用基體",
     "AdvancedSearch.IncludeHidden": "包含隱藏項目",
+    "AdvancedSearch.ToggleNegation": "切換排除",
+    "AdvancedSearch.Remove": "刪除",
 
     "BulkImport.Import": "批次匯入",
     "BulkImport.ImportWithPathChange": "批次匯入 - 變更路徑",

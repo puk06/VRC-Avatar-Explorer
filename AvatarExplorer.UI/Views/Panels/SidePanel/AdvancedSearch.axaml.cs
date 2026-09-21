@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.ViewModels.Component;
 using AvatarExplorer.UI.ViewModels.Panels;
@@ -25,13 +26,25 @@ public partial class AdvancedSearch : UserControl
             vm.AddSelectedTag();
     }
 
-    private void OnSelectedCategoryClick(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+    private void OnCategoryToggleNegationClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem { DataContext: ItemCategoryViewModel category } && DataContext is AdvancedSearchViewModel vm)
+            vm.ToggleCategoryNegation(category);
+    }
+
+    private void OnTagToggleNegationClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem { DataContext: string tag } && DataContext is AdvancedSearchViewModel vm)
+            vm.ToggleTagNegation(tag);
+    }
+
+    private void OnCategoryRemoveClick(object? sender, RoutedEventArgs e)
     {
         if (sender is Control { DataContext: ItemCategoryViewModel category } && DataContext is AdvancedSearchViewModel vm)
             vm.RemoveSelectedCategory(category);
     }
 
-    private void OnSelectedTagClick(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+    private void OnTagRemoveClick(object? sender, RoutedEventArgs e)
     {
         if (sender is Control { DataContext: string tag } && DataContext is AdvancedSearchViewModel vm)
             vm.RemoveSelectedTag(tag);

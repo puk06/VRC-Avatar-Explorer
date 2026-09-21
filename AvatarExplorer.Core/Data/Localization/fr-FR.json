@@ -459,6 +459,8 @@
     "AdvancedSearch.SelectTag": "Sélectionner une étiquette à ajouter",
     "AdvancedSearch.CommonAvatar": "Avatar commun",
     "AdvancedSearch.IncludeHidden": "Inclure les éléments masqués",
+    "AdvancedSearch.ToggleNegation": "Basculer l'exclusion",
+    "AdvancedSearch.Remove": "Supprimer",
 
     "BulkImport.Import": "Importation en masse",
     "BulkImport.ImportWithPathChange": "Importation en masse - changement de chemin",

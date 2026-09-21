@@ -4,8 +4,22 @@
     xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
     xmlns:sys="using:System"
+    xmlns:converters="using:AvatarExplorer.UI.Converters"
     x:Class="AvatarExplorer.UI.Views.Panels.AdvancedSearch"
     x:DataType="vm:AdvancedSearchViewModel">
+
+    <UserControl.Resources>
+        <converters:StartsWithConverter x:Key="StartsWithConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="Border.negationtag">
+            <Setter Property="Background" Value="{DynamicResource NegationTag.Background}"/>
+        </Style>
+        <Style Selector="TextBlock.negationtag">
+            <Setter Property="Foreground" Value="{DynamicResource NegationTag.Text}"/>
+        </Style>
+    </UserControl.Styles>
 
     <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
         <StackPanel Spacing="3">
@@ -42,11 +56,22 @@
                     <TextBlock Text="{Binding [AdvancedSearch.Category], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                     <Separator Classes="separator"/>
                     <ItemsControl ItemsSource="{Binding SelectedCategories}">
-                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel ItemSpacing="5" LineSpacing="5"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemSpacing="5" LineSpacing="5"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="vmcomponent:ItemCategoryViewModel">
-                                <Border Classes="tag" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" PointerPressed="OnSelectedCategoryClick">
-                                    <TextBlock Classes="tag" Text="{Binding DisplayName}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
+                                <Border Classes="tag" Classes.negationtag="{Binding DisplayName, Converter={StaticResource StartsWithConverter}, ConverterParameter=~}" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{Binding [AdvancedSearch.ToggleNegation], Source={x:Static loc:Localizer.Instance}}" Click="OnCategoryToggleNegationClick"/>
+                                            <Separator/>
+                                            <MenuItem Header="{Binding [AdvancedSearch.Remove], Source={x:Static loc:Localizer.Instance}}" Click="OnCategoryRemoveClick"/>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+                                    <TextBlock Classes="tag" Classes.negationtag="{Binding DisplayName, Converter={StaticResource StartsWithConverter}, ConverterParameter=~}" Text="{Binding DisplayName}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -80,11 +105,22 @@
                     <TextBlock Text="{Binding [AdvancedSearch.Tag], Source={x:Static loc:Localizer.Instance}}" FontSize="14" Opacity="0.85" Foreground="{DynamicResource Text.Primary}"/>
                     <Separator Classes="separator"/>
                     <ItemsControl ItemsSource="{Binding SelectedTags}">
-                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel ItemSpacing="5" LineSpacing="5"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemSpacing="5" LineSpacing="5"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="sys:String">
-                                <Border Classes="tag" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" PointerPressed="OnSelectedTagClick">
-                                    <TextBlock Classes="tag" Text="{Binding}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
+                                <Border Classes="tag" Classes.negationtag="{Binding Converter={StaticResource StartsWithConverter}, ConverterParameter=~}" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{Binding [AdvancedSearch.ToggleNegation], Source={x:Static loc:Localizer.Instance}}" Click="OnTagToggleNegationClick"/>
+                                            <Separator/>
+                                            <MenuItem Header="{Binding [AdvancedSearch.Remove], Source={x:Static loc:Localizer.Instance}}" Click="OnTagRemoveClick"/>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+                                    <TextBlock Classes="tag" Classes.negationtag="{Binding Converter={StaticResource StartsWithConverter}, ConverterParameter=~}" Text="{Binding}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
