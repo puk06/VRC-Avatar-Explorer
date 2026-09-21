@@ -28,7 +28,7 @@ public static class NavigationItemFactory
         DescriptionRaw = new(Loc.Button.Description.Item.Author, [item.Author]),
         Identifier = identifier,
         ViewModelType = ViewModelType.Item,
-        Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
+        Tags = item.Tags.Select(t => new TagViewModel(t)).ToArray(),
         CreatedDate = item.CreatedDate,
         UpdatedDate = item.UpdatedDate,
         ItemMemo = item.ItemMemo
@@ -95,7 +95,7 @@ public static class NavigationItemFactory
         Identifier = avatar.Identifier,
         ActualValue = item.Identifier,
         ViewModelType = ViewModelType.Avatar,
-        Tags = item.Tags.Select(t => new TagViewModel { ValueRaw = t }).ToArray(),
+        Tags = item.Tags.Select(t => new TagViewModel(t)).ToArray(),
         CreatedDate = item.CreatedDate,
         UpdatedDate = item.UpdatedDate,
         ItemMemo = item.ItemMemo
@@ -127,7 +127,7 @@ public static class NavigationItemFactory
 
         if (tempAvatar.BoothId != -1)
         {
-            vm.Tags = [new() { ValueRaw = tempAvatar.BoothId.ToString(), IsBoothId = true }];
+            vm.Tags = [new(tempAvatar.BoothId.ToString()) { IsBoothId = true }];
         }
 
         return vm;

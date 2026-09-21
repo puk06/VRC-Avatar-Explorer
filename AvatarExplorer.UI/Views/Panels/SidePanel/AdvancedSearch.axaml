@@ -62,8 +62,8 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="vmcomponent:ItemCategoryViewModel">
-                                <Border Classes="tag" Classes.negationtag="{Binding DisplayName, Converter={StaticResource StartsWithConverter}, ConverterParameter=~}" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <DataTemplate x:DataType="vmcomponent:AdvancedSearchTagViewModel">
+                                <Border Classes="tag" Classes.negationtag="{Binding IsNegation}" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Border.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="{Binding [AdvancedSearch.ToggleNegation], Source={x:Static loc:Localizer.Instance}}" Click="OnCategoryToggleNegationClick"/>
@@ -71,7 +71,7 @@
                                             <MenuItem Header="{Binding [AdvancedSearch.Remove], Source={x:Static loc:Localizer.Instance}}" Click="OnCategoryRemoveClick"/>
                                         </ContextMenu>
                                     </Border.ContextMenu>
-                                    <TextBlock Classes="tag" Classes.negationtag="{Binding DisplayName, Converter={StaticResource StartsWithConverter}, ConverterParameter=~}" Text="{Binding DisplayName}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
+                                    <TextBlock Classes="tag" Classes.negationtag="{Binding IsNegation}" Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -111,8 +111,8 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="sys:String">
-                                <Border Classes="tag" Classes.negationtag="{Binding Converter={StaticResource StartsWithConverter}, ConverterParameter=~}" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <DataTemplate x:DataType="vmcomponent:AdvancedSearchTagViewModel">
+                                <Border Classes="tag" Classes.negationtag="{Binding IsNegation}" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Border.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="{Binding [AdvancedSearch.ToggleNegation], Source={x:Static loc:Localizer.Instance}}" Click="OnTagToggleNegationClick"/>
@@ -120,7 +120,7 @@
                                             <MenuItem Header="{Binding [AdvancedSearch.Remove], Source={x:Static loc:Localizer.Instance}}" Click="OnTagRemoveClick"/>
                                         </ContextMenu>
                                     </Border.ContextMenu>
-                                    <TextBlock Classes="tag" Classes.negationtag="{Binding Converter={StaticResource StartsWithConverter}, ConverterParameter=~}" Text="{Binding}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
+                                    <TextBlock Classes="tag" Classes.negationtag="{Binding IsNegation}" Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Padding="8,5"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

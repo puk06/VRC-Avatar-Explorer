@@ -130,11 +130,11 @@ public class SearchManager
         AddField(parts, "Author", advancedSearch.Author);
         AddField(parts, "BoothId", advancedSearch.BoothId);
         AddField(parts, "SupportedAvatar", advancedSearch.SupportedAvatar);
-        AddField(parts, "Category", advancedSearch.SelectedCategories.Select(category => category.DisplayName));
+        AddField(parts, "Category", advancedSearch.SelectedCategories.Select(category => category.GetSearchValue()));
         AddField(parts, "Memo", advancedSearch.Memo);
         AddField(parts, "ImplementedAvatar", advancedSearch.ImplementedAvatar);
         AddField(parts, "NotImplementedAvatar", advancedSearch.NotImplementedAvatar);
-        AddField(parts, "Tag", advancedSearch.SelectedTags);
+        AddField(parts, "Tag", advancedSearch.SelectedTags.Select(tag => tag.GetSearchValue()));
         AddField(parts, "CommonAvatar", advancedSearch.CommonAvatar);
 
         if (advancedSearch.IsOr)
