@@ -4,6 +4,7 @@
     xmlns:loc="using:AvatarExplorer.UI.Localization"
     xmlns:component="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:vmmain="using:AvatarExplorer.UI.ViewModels"
     x:Class="AvatarExplorer.UI.Views.Panels.BulkImport"
     x:DataType="vm:BulkImportViewModel">
 
@@ -73,8 +74,8 @@
                     Command="{Binding ImportCommand}">
                 <Button.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="{Binding [BulkImport.ImportWithPathChange], Source={x:Static loc:Localizer.Instance}}" Command="{Binding ImportWithPathChangeCommand}"/>
-                        <MenuItem Header="{Binding [BulkImport.ImportWithoutPathChange], Source={x:Static loc:Localizer.Instance}}" Command="{Binding ImportWithoutPathChangeCommand}"/>
+                        <MenuItem Header="{Binding [BulkImport.ImportWithPathChange], Source={x:Static loc:Localizer.Instance}}" Command="{Binding ImportWithPathChangeCommand}" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                        <MenuItem Header="{Binding [BulkImport.ImportWithoutPathChange], Source={x:Static loc:Localizer.Instance}}" Command="{Binding ImportWithoutPathChangeCommand}" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
