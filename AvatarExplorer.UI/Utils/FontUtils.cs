@@ -4,16 +4,23 @@ namespace AvatarExplorer.UI.Utils;
 
 internal static class FontUtils
 {
-    private const string DefaultFontFamily = "Noto Sans JP";
     private const string AvaloniaFontFamilyPrefix = "avares://AvatarExplorer/Assets/Fonts#";
+
+    private static readonly string DefaultFontFamily = ToInternalFontFamilyName("Noto Sans JP");
+    private static readonly string FallbackFontFamily = ToInternalFontFamilyName("Noto Sans");
 
     internal static FontFamily GetFontFamily(string? fontFamilyName = null)
     {
-        if (string.IsNullOrEmpty(fontFamilyName)) return new(AvaloniaFontFamilyPrefix + DefaultFontFamily);
+        // FontFamilyName, DefaultFontFamily, FallbackFontFamily の順
+        string[] families = string.IsNullOrEmpty(fontFamilyName)
+            ? [DefaultFontFamily, FallbackFontFamily]
+            : [ToInternalFontFamilyName(fontFamilyName), DefaultFontFamily, FallbackFontFamily];
 
-        if (fontFamilyName.StartsWith(AvaloniaFontFamilyPrefix))
-            return new(fontFamilyName);
-
-        return new(AvaloniaFontFamilyPrefix + fontFamilyName);
+        return new(string.Join(", ", families));
     }
+
+    private static string ToInternalFontFamilyName(string familyName)
+        => familyName.StartsWith(AvaloniaFontFamilyPrefix, StringComparison.Ordinal)
+            ? familyName
+            : AvaloniaFontFamilyPrefix + familyName;
 }
