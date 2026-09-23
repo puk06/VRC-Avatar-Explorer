@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Services.System;
 
@@ -19,11 +20,24 @@ public partial class App : Application
 
     private static void RegisterInputHandlers()
     {
-        // Prevent ComboBox from scrolling when mouse wheel is used over it
         InputElement.PointerWheelChangedEvent.AddClassHandler<ComboBox>(
-            (_, e) => e.Handled = true,
+            OnComboBoxPointerWheelChanged,
             RoutingStrategies.Tunnel
         );
+    }
+    private static void OnComboBoxPointerWheelChanged(ComboBox comboBox, PointerWheelEventArgs e)
+    {
+        // ComboBox自体のホイールでの選択切り替えだけを止める
+        e.Handled = true;
+
+        // 代わりに、祖先にScrollViewerがあれば代理でスクロールする
+        var scrollViewer = comboBox.FindAncestorOfType<ScrollViewer>();
+        if (scrollViewer is null) return;
+
+        if (e.Delta.Y < 0)
+            scrollViewer.LineDown();
+        else if (e.Delta.Y > 0)
+            scrollViewer.LineUp();
     }
 
     public async override void OnFrameworkInitializationCompleted()
