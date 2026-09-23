@@ -4,6 +4,7 @@
     xmlns:loc="using:AvatarExplorer.UI.Localization"
     xmlns:vmcomponent="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:vmmain="using:AvatarExplorer.UI.ViewModels"
     x:Class="AvatarExplorer.UI.Views.Overlays.ItemEditorOverlay"
     x:DataType="vm:ItemEditorViewModel"
     KeyDown="OnItemEditorKeyDown">
@@ -13,13 +14,13 @@
             <Grid ColumnDefinitions="350,500" Height="550" ColumnSpacing="20">
                 <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" RowSpacing="15">
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddFolderCommand}" ToolTip.Tip="{Binding [ItemEditor.AddFolder], Source={x:Static loc:Localizer.Instance}}">
+                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddFolderCommand}" ToolTip.Tip="{Binding [ItemEditor.AddFolder], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
                             <materialIcons:MaterialIcon Kind="FolderPlus" Width="20" Height="20"/>
                         </Button>
-                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddFileCommand}" ToolTip.Tip="{Binding [ItemEditor.AddFile], Source={x:Static loc:Localizer.Instance}}">
+                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddFileCommand}" ToolTip.Tip="{Binding [ItemEditor.AddFile], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
                             <materialIcons:MaterialIcon Kind="FilePlus" Width="20" Height="20"/>
                         </Button>
-                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddUrlCommand}" ToolTip.Tip="{Binding [ItemEditor.AddUrl], Source={x:Static loc:Localizer.Instance}}">
+                        <Button Classes="accentbutton" FontSize="12" Padding="10,6" Command="{Binding AddUrlCommand}" ToolTip.Tip="{Binding [ItemEditor.AddUrl], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
                             <materialIcons:MaterialIcon Kind="LinkPlus" Width="20" Height="20"/>
                         </Button>
                     </StackPanel>
@@ -35,7 +36,7 @@
 
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="vmcomponent:ItemContentViewModel">
-                                        <Border Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" ToolTip.Tip="{Binding FileName}">
+                                        <Border Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" ToolTip.Tip="{Binding FileName}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
                                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
                                                 <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
                                                     <Image Source="{Binding IconImage}" Width="40" Height="40" Stretch="Fill" VerticalAlignment="Top"/>

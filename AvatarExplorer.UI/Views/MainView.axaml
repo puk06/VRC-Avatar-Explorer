@@ -9,6 +9,7 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:i="clr-namespace:Availability.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
     xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+    xmlns:vmmain="using:AvatarExplorer.UI.ViewModels"
     x:Class="AvatarExplorer.UI.Views.MainView"
     x:DataType="vm:MainViewModel"
     PointerPressed="OnMainPointerPressed">
@@ -102,7 +103,7 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Classes="button" Grid.Column="6" Width="35" Height="35" CornerRadius="8" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip.Tip="{Binding [Main.SortOptions], Source={x:Static loc:Localizer.Instance}}">
+                    <Button Classes="button" Grid.Column="6" Width="35" Height="35" CornerRadius="8" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip.Tip="{Binding [Main.SortOptions], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
                         <materialIcons:MaterialIcon Kind="Tune" Width="20" Height="20"/>
                         <Button.Flyout>
                             <Flyout Placement="BottomEdgeAlignedRight">
@@ -201,6 +202,7 @@
                                                         ContextMenu="{Binding ContextMenu}"
                                                         ToolTip.Tip="{Binding ToolTip}"
                                                         ToolTip.ToolTipOpening="OnToolTipOpening"
+                                                        ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
                                                         HorizontalAlignment="Stretch"
                                                         VerticalAlignment="Top"
                                                         CornerRadius="8"
@@ -297,6 +299,8 @@
                                                             ContextMenu="{Binding ContextMenu}"
                                                             ToolTip.Tip="{Binding ToolTip}"
                                                             ToolTip.ToolTipOpening="OnToolTipOpening"
+                                                            ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                                            FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
                                                             HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                                             CornerRadius="8"
                                                             Padding="7"
@@ -360,6 +364,8 @@
                                                                         ContextMenu="{Binding ContextMenu}"
                                                                         ToolTip.Tip="{Binding ToolTip}"
                                                                         ToolTip.ToolTipOpening="OnToolTipOpening"
+                                                                        ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                                                        FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
                                                                         HorizontalAlignment="Stretch"
                                                                         VerticalAlignment="Stretch"
                                                                         CornerRadius="8"
@@ -418,9 +424,29 @@
                 <Panel Grid.Column="4" HorizontalAlignment="Stretch">
                     <Border Classes="panelbackground" IsVisible="{Binding !IsSidePanelVisible}" CornerRadius="12,0,0,12" Width="50">
                         <StackPanel Spacing="10">
-                            <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=TextSearch}" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" FontSize="17" Command="{Binding OpenSidePanelCommand}" CommandParameter="0"/>
-                            <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=DownloadMultiple}" ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" FontSize="17" Tag="1" Command="{Binding OpenSidePanelCommand}" CommandParameter="1"/>
-                            <Button Classes="button sidepanelbutton" Content="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}" ToolTip.Tip="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}" FontSize="17" Tag="2" Command="{Binding OpenSidePanelCommand}" CommandParameter="2"/>
+                            <Button Classes="button sidepanelbutton"
+                                    Content="{materialIcons:MaterialIconExt Kind=TextSearch}"
+                                    ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}"
+                                    ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                    FontSize="17"
+                                    Command="{Binding OpenSidePanelCommand}"
+                                    CommandParameter="0"/>
+                            <Button Classes="button sidepanelbutton"
+                                    Content="{materialIcons:MaterialIconExt Kind=DownloadMultiple}"
+                                    ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}"
+                                    ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                    FontSize="17"
+                                    Tag="1"
+                                    Command="{Binding OpenSidePanelCommand}"
+                                    CommandParameter="1"/>
+                            <Button Classes="button sidepanelbutton"
+                                    Content="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}"
+                                    ToolTip.Tip="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}"
+                                    ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                    FontSize="17"
+                                    Tag="2"
+                                    Command="{Binding OpenSidePanelCommand}"
+                                    CommandParameter="2"/>
                         </StackPanel>
                     </Border>
 
@@ -428,21 +454,21 @@
                         <Grid RowSpacing="10">
                             <Grid Grid.Row="2" ColumnSpacing="10">
                                 <TabControl x:Name="SidePanelTabControl" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedSidePanelTab}" FontSize="18" Margin="0,0,-10,0" TabStripPlacement="Right">
-                                    <TabItem ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" Tag="0">
+                                    <TabItem ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="0">
                                         <TabItem.Header>
                                             <materialIcons:MaterialIcon Kind="TextSearch" Width="16" Height="16"/>
                                         </TabItem.Header>
                                         <panels:AdvancedSearch/>
                                     </TabItem>
 
-                                    <TabItem ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" Tag="1">
+                                    <TabItem ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="1">
                                         <TabItem.Header>
                                             <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="16" Height="16"/>
                                         </TabItem.Header>
                                         <panels:BulkImport Margin="-10,0,-10,0"/>
                                     </TabItem>
 
-                                    <TabItem ToolTip.Tip="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}" Tag="2">
+                                    <TabItem ToolTip.Tip="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="2">
                                         <TabItem.Header>
                                             <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="16" Height="16"/>
                                         </TabItem.Header>
