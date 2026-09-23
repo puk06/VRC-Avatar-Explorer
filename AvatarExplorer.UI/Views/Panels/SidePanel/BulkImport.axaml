@@ -50,7 +50,7 @@
                                     <ComboBox ItemsSource="{Binding UnitypackageViewModels}" SelectedIndex="{Binding SelectedUnitypackage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" FontSize="14">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding ToolTipText}"/>
+                                                <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding ToolTipText}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
