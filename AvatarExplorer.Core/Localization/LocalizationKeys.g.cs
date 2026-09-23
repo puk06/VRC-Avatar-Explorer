@@ -40,7 +40,7 @@ public static class Loc
             public const string Placeholder = "Main.Path.Placeholder";
             public const string SearchResult = "Main.Path.SearchResult";
         }
-        public const string SortOptions = "Main.SortOptions";
+        public const string DisplayOptions = "Main.DisplayOptions";
     }
     public static class ItemCategory
     {

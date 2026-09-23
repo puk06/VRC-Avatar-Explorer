@@ -103,12 +103,12 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Classes="button" Grid.Column="6" Width="35" Height="35" CornerRadius="8" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip.Tip="{Binding [Main.SortOptions], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
+                    <Button Classes="button" Grid.Column="6" Width="35" Height="35" CornerRadius="8" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip.Tip="{Binding [Main.DisplayOptions], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
                         <materialIcons:MaterialIcon Kind="Tune" Width="20" Height="20"/>
                         <Button.Flyout>
                             <Flyout Placement="BottomEdgeAlignedRight">
                                 <StackPanel Orientation="Vertical" Spacing="10">
-                                    <TextBlock Text="{Binding [Main.SortOptions], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding [Main.DisplayOptions], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold"/>
                                     <Border Height="1" Background="{DynamicResource Panel.BorderBrush}"/>
 
                                     <Grid IsSharedSizeScope="True" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="10" MinWidth="250">
