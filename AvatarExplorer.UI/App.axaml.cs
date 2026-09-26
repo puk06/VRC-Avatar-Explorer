@@ -27,6 +27,9 @@ public partial class App : Application
     }
     private static void OnComboBoxPointerWheelChanged(ComboBox comboBox, PointerWheelEventArgs e)
     {
+        // ComboBoxのドロップダウンが開いている場合は、スクロールを許可する
+        if (comboBox.IsDropDownOpen) return;
+
         // ComboBox自体のホイールでの選択切り替えだけを止める
         e.Handled = true;
 
