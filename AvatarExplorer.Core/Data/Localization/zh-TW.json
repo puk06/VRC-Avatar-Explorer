@@ -75,6 +75,8 @@
     "Dialog.Confirmation.RenameTagAlreadyExist": "標籤「{0}」已存在。繼續的話，將被識別為同一標籤。要繼續嗎？",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "要為此暫時頭像設定 Booth ID 嗎？\n\n※設定 Booth ID 後，可透過 ID 搜尋或從 Booth 新增項目時進行連結。",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "找到了 Booth ID 一致的暫時頭像「{0}」。\n要將此暫時頭像連結為正式項目嗎？",
+    "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "已註冊 Booth ID 相同的暫時頭像「{0}」。\n要將暫時頭像「{1}」替換為已註冊的暫時頭像「{0}」並刪除它嗎？",
+    "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "已註冊 Booth ID 相同的暫時頭像「{0}」。\n要繼續建立嗎？",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "要將包含共用基體群組頭像的項目的支援頭像替換為共用基體群組嗎？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "要將將共用基體群組設定為支援頭像的項目的支援頭像替換為個別頭像嗎？",

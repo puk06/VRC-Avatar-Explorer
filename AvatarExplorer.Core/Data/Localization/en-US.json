@@ -75,6 +75,8 @@
     "Dialog.Confirmation.RenameTagAlreadyExist": "Tag \"{0}\" already exists. If you continue, it will be recognized as the same tag. Do you want to continue?",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "Set Booth ID for this temporary avatar?\n\n※Setting a Booth ID enables linking when adding items via ID search or from Booth.",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "A temporary avatar \"{0}\" with a matching Booth ID was found.\nWould you like to link this temporary avatar as a permanent item?",
+    "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "A temporary avatar \"{0}\" with the same Booth ID is already registered.\nReplace temporary avatar \"{1}\" with the registered avatar \"{0}\" and delete it?",
+    "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "A temporary avatar \"{0}\" with the same Booth ID is already registered.\nContinue creating it?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Replace the supported avatars of items containing avatars in the common avatar group with the common avatar group?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Replace the supported avatars of items that have the common avatar group set as supported avatars with individual avatars?",
