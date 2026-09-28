@@ -1,6 +1,7 @@
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
@@ -9,6 +10,7 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
@@ -110,7 +112,11 @@ public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
 
         _allAvatars = sortedAvatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
-            .Select(i => i.Update())
+            .Select(i => i.Update(
+                    userPreference.NormalIconSize,
+                    i.ViewModelType == ViewModelType.Item && userPreference.RemoveBrackets // アイテムのタイトルのみ対象とする
+                )
+            )
             .ToList();
 
         if (inheritSelection)

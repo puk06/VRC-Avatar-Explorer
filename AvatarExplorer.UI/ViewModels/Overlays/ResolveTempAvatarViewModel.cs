@@ -62,7 +62,7 @@ public partial class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
 
         _allAvatars = sortedAvatars
             .Select(NavigationItemFactory.CreateFromNavigationable)
-            .Select(i => i.Update())
+            .Select(i => i.Update(userPreference.NormalIconSize, userPreference.RemoveBrackets))
             .ToList();
 
         Avatars = _allAvatars;

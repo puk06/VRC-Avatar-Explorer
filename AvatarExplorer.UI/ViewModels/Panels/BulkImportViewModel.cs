@@ -49,7 +49,8 @@ public partial class BulkImportViewModel : ViewModelBase, IInitializable
 
     private void CopyItem(BulkImportItemViewModel item)
     {
-        Items.Add(item.Copy().Update());
+        var settings = InstanceRepository.UserPreferences;
+        Items.Add(item.Copy().Update(settings.NormalIconSize, settings.RemoveBrackets));
         OnItemsAdded?.Invoke();
     }
     private void RemoveItem(BulkImportItemViewModel item) => Items.Remove(item);

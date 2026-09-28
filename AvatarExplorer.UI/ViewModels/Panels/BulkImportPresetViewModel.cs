@@ -36,6 +36,7 @@ public partial class BulkImportPresetViewModel : ViewModelBase, IInitializable, 
 
     public void Reload()
     {
+        var settings = InstanceRepository.UserPreferences;
         Items = InstanceRepository.BulkImportPresets.GetAll()
             .Select(i => {
                 var vm = new ItemViewModel()
@@ -48,7 +49,7 @@ public partial class BulkImportPresetViewModel : ViewModelBase, IInitializable, 
                     ViewModelType = ViewModelType.BulkImportPreset,
                 };
                 vm.Actions = ContextMenuCreator.Create(vm.ViewModelType, vm);
-                return vm.Update();
+                return vm.Update(settings.NormalIconSize, false);
             });
     }
 
