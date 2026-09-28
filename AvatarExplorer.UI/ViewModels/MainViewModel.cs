@@ -180,7 +180,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             Refresh();
         };
         _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
-        AdvancedSearchVM.SearchPropertyChanged += _searchManager.RestartTimer;
+        AdvancedSearchVM.SearchPropertyChanged += _searchManager.ExecuteSearch;
         BulkImportVM.OnItemsAdded += () => OpenSidePanel(1);
     }
 
@@ -200,7 +200,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
 
         this.WhenAnyValue(x => x.SearchText)
             .Skip(1)
-            .Subscribe(_ => _searchManager.RestartTimer());
+            .Subscribe(_ => _searchManager.ExecuteSearch());
 
         this.WhenAnyValue(x => x.SidePanelWidth)
             .Subscribe(width => _sidePanelManager.OnWidthChanged(width.Value));

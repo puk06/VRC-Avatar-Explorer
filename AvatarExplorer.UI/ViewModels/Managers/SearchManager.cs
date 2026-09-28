@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Threading;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.Core.Services.System;
@@ -15,7 +14,6 @@ namespace AvatarExplorer.UI.ViewModels.Managers;
 
 public class SearchManager
 {
-    private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
     private readonly ItemGroupService _itemGroupService;
     private readonly Func<string> _getSearchText;
     private readonly Func<AdvancedSearchViewModel> _getAdvancedSearchVM;
@@ -48,14 +46,6 @@ public class SearchManager
         _getSearchText = getSearchText;
         _getAdvancedSearchVM = getAdvancedSearchVM;
         _onSearchExecuted = onSearchExecuted;
-
-        _searchTimer.Tick += OnTimerTick;
-    }
-
-    public void RestartTimer()
-    {
-        _searchTimer.Stop();
-        _searchTimer.Start();
     }
 
     public void ClearQuery()
@@ -105,13 +95,7 @@ public class SearchManager
             .Cast<Item>();
     }
 
-    private void OnTimerTick(object? sender, EventArgs e)
-    {
-        _searchTimer.Stop();
-        ExecuteSearch();
-    }
-
-    private void ExecuteSearch()
+    public void ExecuteSearch()
     {
         var query = BuildSearchString(_getSearchText(), _getAdvancedSearchVM());
         var parsed = SearchQueryParser.Parse(query);
