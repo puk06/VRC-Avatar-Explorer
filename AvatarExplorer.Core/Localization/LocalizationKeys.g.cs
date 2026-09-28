@@ -131,6 +131,8 @@ public static class Loc
             public const string RenameTagAlreadyExist = "Dialog.Confirmation.RenameTagAlreadyExist";
             public const string SetBoothIdForTempAvatar = "Dialog.Confirmation.SetBoothIdForTempAvatar";
             public const string ResolveSameBoothIdTempAvatar = "Dialog.Confirmation.ResolveSameBoothIdTempAvatar";
+            public const string ReplaceAndDeleteSameBoothIdTempAvatar = "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar";
+            public const string ContinueWithSameBoothIdTempAvatar = "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar";
             public static class EditCommonAvatars
             {
                 public const string ReplaceAvatarsToGroup = "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup";

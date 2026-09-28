@@ -150,6 +150,19 @@ public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
             }
         }
 
+        if (setBoothId && !parseBoothIdFailed)
+        {
+            var existingBoothIdTemp = InstanceRepository.TempAvatars.GetAll().FirstOrDefault(i => i.BoothId == boothId);
+            if (existingBoothIdTemp != null)
+            {
+                var continueProcessing = await InstanceRepository.MainWindow.ShowYesNoDialog(
+                    Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                    Localizer.Instance.Get(Loc.Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar, [existingBoothIdTemp.AvatarName])
+                );
+                if (!continueProcessing) return;
+            }
+        }
+
         if (parseBoothIdFailed)
         {
             NotificationManager.Show(

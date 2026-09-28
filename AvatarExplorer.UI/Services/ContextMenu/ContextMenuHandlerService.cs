@@ -619,6 +619,30 @@ public static class ContextMenuHandlerService
                 NotificationType.Warning
             );
         }
+        else
+        {
+            var existingBoothIdTemp = InstanceRepository.TempAvatars.GetAll().FirstOrDefault(i => i.BoothId == boothId);
+            if (existingBoothIdTemp != null)
+            {
+                var replaceAndDelete = await InstanceRepository.MainWindow.ShowYesNoDialog(
+                    Localizer.Instance[Loc.Dialog.Confirmation.Default],
+                    Localizer.Instance.Get(Loc.Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar, [existingBoothIdTemp.AvatarName, tempAvatar.AvatarName])
+                );
+                if (replaceAndDelete)
+                {
+                    // 仮アバターを仮アバターで解決して削除する。
+                    // 既に登録してた対応アバターが消えちゃう可能性があるので。
+                    InstanceRepository.ItemGroupService.ResolveTempAvatar(tempAvatar.Identifier, existingBoothIdTemp.Identifier);
+
+                    NotificationManager.Show(
+                        Localizer.Instance[Loc.Success.Default],
+                        Localizer.Instance[Loc.Success.Remove],
+                        NotificationType.Success
+                    );
+                    return;
+                }
+            }
+        }
 
         InstanceRepository.TempAvatars.UpdateBoothId(tempAvatar.Identifier, boothId);
 

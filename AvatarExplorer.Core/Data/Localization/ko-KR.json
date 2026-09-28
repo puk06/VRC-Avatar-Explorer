@@ -75,6 +75,8 @@
     "Dialog.Confirmation.RenameTagAlreadyExist": "태그 \"{0}\"은(는) 이미 존재합니다. 계속하면 같은 태그로 인식됩니다. 계속하시겠습니까?",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "이 임시 아바타에 Booth ID를 설정하시겠습니까?\n\n※Booth ID를 설정하면 ID 검색이나 Booth에서 항목 추가 시 연결에 이용됩니다.",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Booth ID가 일치하는 임시 아바타 \"{0}\"를 찾았습니다.\n이 임시 아바타를 정식 아이템으로 연결하시겠습니까?",
+    "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "같은 Booth ID의 임시 아바타 \"{0}\"가 이미 등록되어 있습니다.\n임시 아바타 \"{1}\"를 등록된 임시 아바타 \"{0}\"로 바꾸고 삭제하시겠습니까?",
+    "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "같은 Booth ID의 임시 아바타 \"{0}\"가 이미 등록되어 있습니다.\n계속 생성하시겠습니까?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "공통 바디 그룹에 포함된 아바타가 들어 있는 아이템의 대응 아바타를 공통 바디 그룹으로 바꾸시겠습니까?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "공통 바디 그룹이 대응 아바타로 설정된 아이템의 대응 아바타를 개별 아바타로 바꾸시겠습니까?",

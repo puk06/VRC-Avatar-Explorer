@@ -76,6 +76,9 @@
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "仮アバターにBooth IDを設定しますか？\n\n※Booth IDを設定すると、ID検索や該当アイテム追加時に自動で紐付けされるようになります。",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Booth IDが一致する仮アバター「{0}」が見つかりました。\nこの仮アバターを正式アイテムとして紐付けますか？",
 
+    "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "既に同じBooth IDの仮アバター「{0}」が登録されています。\n仮アバター「{1}」を登録済みの仮アバター「{0}」に置き換えて削除しますか？",
+    "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "既に同じBooth IDの仮アバター「{0}」が登録されています。\n作成を続行しますか？",
+
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "共通素体グループ内のアバターが含まれているアイテムの対応アバターを共通素体グループに置き換えますか？",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "共通素体グループが対応アバターとして設定されているアイテムの対応アバターを、個別のアバターに置き換えますか？",
 

@@ -75,6 +75,8 @@
     "Dialog.Confirmation.RemoveTag": "Supprimer le tag « {0} » ?\n※La suppression entraînera la suppression de ce tag de tous les éléments.",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "Définir l'ID Booth pour cet avatar temporaire ?\n\n※Définir un ID Booth permet la liaison lors de l'ajout d'éléments par recherche ID ou depuis Booth.",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Un avatar temporaire « {0} » avec un ID Booth correspondant a été trouvé.\nVoulez-vous lier cet avatar temporaire en tant qu'élément permanent ?",
+    "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "Un avatar temporaire « {0} » avec le même ID Booth est déjà enregistré.\nRemplacer l'avatar temporaire « {1} » par l'avatar enregistré « {0} » et le supprimer ?",
+    "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "Un avatar temporaire « {0} » avec le même ID Booth est déjà enregistré.\nVoulez-vous continuer la création ?",
 
     "Dialog.Confirmation.EditCommonAvatars.ReplaceAvatarsToGroup": "Remplacer les avatars pris en charge des éléments contenant des avatars du groupe d'avatars communs par le groupe d'avatars communs ?",
     "Dialog.Confirmation.EditCommonAvatars.ReplaceGroupToAvatars": "Remplacer les avatars pris en charge des éléments dont les avatars pris en charge sont définis sur le groupe d'avatars communs par des avatars individuels ?",
