@@ -24,7 +24,7 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="component:BulkImportItemViewModel">
-                            <Button Classes="button" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5">
+                            <Button Classes="button" ToolTip.Tip="{Binding ToolTip}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5">
                                 <StackPanel Spacing="5">
                                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                         <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">

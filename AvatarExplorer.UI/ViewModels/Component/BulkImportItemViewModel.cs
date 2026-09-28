@@ -30,13 +30,13 @@ public partial class BulkImportItemViewModel : ViewModelBase
     [Reactive] public partial Bitmap? Thumbnail { get; set; } = null;
     [Reactive] public partial string Title { get; private set; } = string.Empty;
     [Reactive] public partial string Description { get; private set; } = string.Empty;
+    [Reactive] public partial string? ToolTip { get; set; } = null;
 
     [Reactive] public partial double Width { get; set; } = 0;
     [Reactive] public partial double Height { get; set; } = 0;
 
     public ThumbnailSource ThumbnailSource { get; set; } = new();
     public string TitleRaw { get; set; } = string.Empty;
-    public bool TitleLocalizable { get; } = false;
 
     public LocalizableField DescriptionRaw { get; set; } = new();
 
@@ -65,16 +65,11 @@ public partial class BulkImportItemViewModel : ViewModelBase
             _ = ApplyThumbnailAsync(ImageService.GetAsync(ThumbnailSource.Primary), iconSize, cts.Token);
         }
 
-        Title = TitleLocalizable ? Localizer.Instance[TitleRaw] : TitleRaw;
-
+        Title = removeBrackets ? TextBracketsUtils.RemoveBrackets(TitleRaw) : TitleRaw;
         Description = DescriptionRaw.Args == null ? Localizer.Instance[DescriptionRaw.Key] : Localizer.Instance.Get(DescriptionRaw.Key, DescriptionRaw.Args);
+        ToolTip = TitleRaw;
 
         Width = Height = (Thumbnail != null) ? iconSize : 0;
-
-        if (removeBrackets)
-        {
-            Title = TextBracketsUtils.RemoveBrackets(TitleRaw);
-        }
 
         var previousSelectedPackage = SelectedUnitypackage;
         UnitypackageViewModels = UnitypackageFullPaths.Select(path => new UnitypackageViewModel(path));
