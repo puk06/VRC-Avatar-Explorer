@@ -93,8 +93,11 @@ public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
         Avatars = _allAvatars.Where(i => result.Contains(i.Identifier)).ToList();
     }
 
-    private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar)
+    private void RefleshAvatars(bool includeCommonAvatar, bool includeTempAvatar, bool inheritSelection = false)
     {
+        // 既に選択されてるものを保持しておく
+        var previousSelectedAvatars = _allAvatars.Where(i => i.IsSelected).Select(i => i.Identifier).ToArray();
+
         var avatars = InstanceRepository.ItemGroupService.GetAvatars(includeCommonAvatar, includeTempAvatar, rawIdentifier: true);
         var userPreference = InstanceRepository.UserPreferences;
         var sortedAvatars = ItemSortService.SortAvatars(
@@ -109,6 +112,11 @@ public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
             .Select(NavigationItemFactory.CreateFromNavigationable)
             .Select(i => i.Update())
             .ToList();
+
+        if (inheritSelection)
+        {
+            _allAvatars.ForEach(i => i.IsSelected = previousSelectedAvatars.Contains(i.Identifier));
+        }
 
         Avatars = _allAvatars;
     }
@@ -153,7 +161,7 @@ public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
             NotificationType.Success
         );
 
-        RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar);
+        RefleshAvatars(IncludeCommonAvatar, IncludeTempAvatar, inheritSelection: true);
         ApplySearchResult(SearchText);
     }
 
