@@ -171,14 +171,12 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
 
             _sortSkip.SkipNext(); // 最後にRefleshAllItems()が呼ばれるので、次のSortSettings()の更新は無視する
             UpdateSortSettings();
-
             RefreshAllItems();
         };
         InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ =>
         {
             _sortSkip.SkipNext(); // 最後にReflesh()が呼ばれるので、次のSortSettings()の更新は無視する
             UpdateSortSettings();
-
             UpdateViewSettings();
             UpdateItemsPerPage();
             Refresh();
