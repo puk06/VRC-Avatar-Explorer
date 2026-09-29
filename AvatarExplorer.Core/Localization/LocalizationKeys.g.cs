@@ -594,6 +594,11 @@ public static class Loc
             public const string Title = "Settings.Opacity.Title";
             public const string Description = "Settings.Opacity.Description";
         }
+        public static class BlurStrength
+        {
+            public const string Title = "Settings.BlurStrength.Title";
+            public const string Description = "Settings.BlurStrength.Description";
+        }
         public const string CommonAvatar = "Settings.CommonAvatar";
         public static class CommonAvatarManagement
         {

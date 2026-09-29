@@ -30,6 +30,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
 {
     [Reactive] public partial string WindowTitle { get; set; } = string.Empty;
     [Reactive] public partial ImageBrush? BackgroundImage { get; set; } = null;
+    [Reactive] public partial int BackgroundBlurRadius { get; set; } = 0;
     [Reactive] public partial IBrush? Background { get; set; } = null;
     [Reactive] public partial FontFamily FontFamily { get; set; } = FontUtils.GetFontFamily(null);
     [Reactive] public partial bool IsAnyOverlayVisible { get; set; }
@@ -297,6 +298,8 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
         Localizer.Instance.SetLanguage(settings.Language);
 
         ImageService.UpdateCompressedThumbnailMaxEdge(InstanceRepository.UserPreferences.ThumbnailCompressionMaxEdge);
+
+        BackgroundBlurRadius = settings.BackgroundBlurRadius;
 
         if (settings.UseBackgroundImage) SetBackgroundImage(settings.BackgroundImage, settings.BackgroundOpacity);
         else BackgroundImage = null;

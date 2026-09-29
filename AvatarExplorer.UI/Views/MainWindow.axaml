@@ -23,7 +23,12 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
-    <Panel Background="{Binding BackgroundImage}">
+    <Panel>
+        <Panel Background="{Binding BackgroundImage}">
+            <Panel.Effect>
+                <BlurEffect Radius="{Binding BackgroundBlurRadius}" />
+            </Panel.Effect>
+        </Panel>
 
         <views:MainView/>
 

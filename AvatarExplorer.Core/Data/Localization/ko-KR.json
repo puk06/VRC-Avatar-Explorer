@@ -359,6 +359,8 @@
     "Settings.BackgroundImage.Browse": "찾아보기",
     "Settings.Opacity.Title": "불투명도",
     "Settings.Opacity.Description": "배경 이미지의 불투명도입니다",
+    "Settings.BlurStrength.Title": "흐림 강도",
+    "Settings.BlurStrength.Description": "배경 이미지의 흐림 강도입니다",
 
     "Settings.CommonAvatar": "공통 바디",
     "Settings.CommonAvatarManagement.Title": "공통 바디 관리",

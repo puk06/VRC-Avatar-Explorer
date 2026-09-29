@@ -359,6 +359,8 @@
     "Settings.BackgroundImage.Browse": "Examinar",
     "Settings.Opacity.Title": "Opacidad",
     "Settings.Opacity.Description": "Opacidad de la imagen de fondo",
+    "Settings.BlurStrength.Title": "Intensidad del desenfoque",
+    "Settings.BlurStrength.Description": "Intensidad del desenfoque de la imagen de fondo",
 
     "Settings.CommonAvatar": "Avatar común",
     "Settings.CommonAvatarManagement.Title": "Gestión de avatares comunes",

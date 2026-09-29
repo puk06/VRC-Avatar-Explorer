@@ -359,6 +359,8 @@
     "Settings.BackgroundImage.Browse": "Parcourir",
     "Settings.Opacity.Title": "Opacité",
     "Settings.Opacity.Description": "Opacité de l'image d'arrière-plan",
+    "Settings.BlurStrength.Title": "Intensité du flou",
+    "Settings.BlurStrength.Description": "Intensité du flou de l'image d'arrière-plan",
 
     "Settings.CommonAvatar": "Avatar commun",
     "Settings.CommonAvatarManagement.Title": "Gestion des avatars communs",

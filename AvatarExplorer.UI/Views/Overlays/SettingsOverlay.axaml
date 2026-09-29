@@ -343,6 +343,18 @@
                                             <TextBlock Grid.Column="1" Text="{Binding BackgroundImageOpacity, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                         </Grid>
                                     </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" IsVisible="{Binding UseBackgroundImage}">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.BlurStrength.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.BlurStrength.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
+                                            <Slider Value="{Binding BackgroundBlurRadius}" Minimum="0" Maximum="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding BackgroundBlurRadius, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                        </Grid>
+                                    </Grid>
                                 </StackPanel>
                             </ScrollViewer>
                         </Panel>
