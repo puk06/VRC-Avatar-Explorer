@@ -195,7 +195,7 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="component:ItemViewModel">
                                                     <Button
-                                                        Classes="button"
+                                                        Classes="button appear"
                                                         Classes.accentbutton="{Binding IsSelected}"
                                                         Classes.implemented="{Binding IsImplemented}"
                                                         Classes.notimplemented="{Binding IsNotImplemented}"
@@ -293,7 +293,7 @@
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate x:DataType="component:ItemViewModel">
                                                         <Button
-                                                            Classes="button"
+                                                            Classes="button appear"
                                                             Classes.implemented="{Binding IsImplemented}"
                                                             Classes.notimplemented="{Binding IsNotImplemented}"
                                                             ContextMenu="{Binding ContextMenu}"
@@ -358,7 +358,7 @@
                                                             <ItemsControl.ItemTemplate>
                                                                 <DataTemplate x:DataType="component:ItemViewModel">
                                                                     <Button
-                                                                        Classes="button"
+                                                                        Classes="button appear"
                                                                         Classes.implemented="{Binding IsImplemented}"
                                                                         Classes.notimplemented="{Binding IsNotImplemented}"
                                                                         ContextMenu="{Binding ContextMenu}"

@@ -432,6 +432,19 @@
             <Setter Property="BorderBrush" Value="{DynamicResource Button.BorderBrush}"/>
         </Style>
 
+        <Style Selector="Button.appear">
+            <Style.Animations>
+                <Animation Duration="0:0:0.4" Easing="CubicEaseOut" FillMode="Both">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.Y" Value="12"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.Y" Value="0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+
         <Style Selector="Button.button:pointerover">
             <Setter Property="Background" Value="{DynamicResource Button.Background.PointerOver}"/>
             <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
