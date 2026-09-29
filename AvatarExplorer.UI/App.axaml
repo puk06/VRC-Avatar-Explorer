@@ -436,11 +436,9 @@
             <Style.Animations>
                 <Animation Duration="0:0:0.4" Easing="CubicEaseOut" FillMode="Both">
                     <KeyFrame Cue="0%">
-                        <Setter Property="Opacity" Value="0.45"/>
                         <Setter Property="TranslateTransform.Y" Value="12"/>
                     </KeyFrame>
                     <KeyFrame Cue="100%">
-                        <Setter Property="Opacity" Value="1"/>
                         <Setter Property="TranslateTransform.Y" Value="0"/>
                     </KeyFrame>
                 </Animation>
