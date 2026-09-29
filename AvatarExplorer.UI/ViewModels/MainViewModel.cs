@@ -13,12 +13,14 @@ using AvatarExplorer.Core.Services.Avatars;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
+using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
 using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Models.Sort;
+using AvatarExplorer.UI.Models.System;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.External;
 using AvatarExplorer.UI.Services.Sort;
@@ -97,7 +99,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     private readonly SidePanelManager _sidePanelManager;
     private readonly StateCacheManager _stateCacheManager;
     private readonly SearchManager _searchManager;
-    private IObservable<int>? _sortOrderObservable; // SortOrderのLocalization更新時などに、無駄にRefresh()が呼ばれないようにするためのObservable
+    private readonly SkipController _sortSkip = new(); // SortOrderのLocalization更新時などに、無駄にRefresh()が呼ばれないようにするためのObservable
 
     private List<ItemViewModel> _allLeftItems = [];
     private List<ItemViewModel> _allMainItems = [];
@@ -167,14 +169,16 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             MainGridItemSize = -1;
             MainGridItemSize = previousSize; // For localization of grid item size
 
-            _sortOrderObservable?.Skip(1); // 最後にRefleshAllItems()が呼ばれるので、次のSortSettings()の更新は無視する
-            UpdateSortSettings(); // For localization of sort order and direction
+            _sortSkip.SkipNext(); // 最後にRefleshAllItems()が呼ばれるので、次のSortSettings()の更新は無視する
+            UpdateSortSettings();
+
             RefreshAllItems();
         };
         InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ =>
         {
-            _sortOrderObservable?.Skip(1); // 最後にReflesh()が呼ばれるので、次のSortSettings()の更新は無視する
+            _sortSkip.SkipNext(); // 最後にReflesh()が呼ばれるので、次のSortSettings()の更新は無視する
             UpdateSortSettings();
+
             UpdateViewSettings();
             UpdateItemsPerPage();
             Refresh();
@@ -214,16 +218,15 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             .Throttle(TimeSpan.FromMilliseconds(100))
             .Subscribe(async _ => await Dispatcher.UIThread.InvokeAsync(() => Refresh()));
 
-        _sortOrderObservable = Observable
+        Observable
             .Merge(
                 this.WhenAnyValue(x => x.MainSortOrder),
                 this.WhenAnyValue(x => x.MainSortDirection),
                 this.WhenAnyValue(x => x.MainImplementedSort)
             )
-            .Throttle(TimeSpan.FromMilliseconds(100));
-
-        _sortOrderObservable
+            .Throttle(TimeSpan.FromMilliseconds(100))
             .Skip(1)
+            .SkipControlled(_sortSkip)
             .Subscribe(async _ => await Dispatcher.UIThread.InvokeAsync(() => Refresh()));
     }
     #endregion
