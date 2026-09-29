@@ -51,8 +51,21 @@ public partial class AdvancedSearchViewModel : ViewModelBase, IInitializable
 
     public async Task Initialize()
     {
-        this.WhenAnyPropertyChanged()
-            .Subscribe(_ => SearchPropertyChanged?.Invoke());
+        this.WhenAnyPropertyChanged(
+            nameof(Title),
+            nameof(Author),
+            nameof(BoothId),
+            nameof(SupportedAvatar),
+            nameof(SelectedCategories),
+            nameof(Memo),
+            nameof(ImplementedAvatar),
+            nameof(NotImplementedAvatar),
+            nameof(SelectedTags),
+            nameof(CommonAvatar),
+            nameof(IsOr),
+            nameof(IncludeHidden)
+        )
+        .Subscribe(_ => SearchPropertyChanged?.Invoke());
 
         this.WhenAnyValue(x => x.CategorySearchText)
             .Subscribe(_ => ApplyCategoryFilter());
