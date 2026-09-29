@@ -359,6 +359,8 @@
     "Settings.BackgroundImage.Browse": "瀏覽",
     "Settings.Opacity.Title": "不透明度",
     "Settings.Opacity.Description": "背景圖片的不透明度",
+    "Settings.BlurStrength.Title": "模糊強度",
+    "Settings.BlurStrength.Description": "背景圖片的模糊強度",
 
     "Settings.CommonAvatar": "共用基體",
     "Settings.CommonAvatarManagement.Title": "共用基體管理",

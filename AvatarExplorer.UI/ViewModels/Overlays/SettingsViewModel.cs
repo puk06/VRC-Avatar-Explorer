@@ -49,6 +49,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public partial bool UseBackgroundImage { get; set; }
     [Reactive] public partial string BackgroundImagePath { get; set; } = string.Empty;
     [Reactive] public partial double BackgroundImageOpacity { get; set; }
+    [Reactive] public partial double BackgroundBlurRadius { get; set; }
     [Reactive] public partial string ItemsFolderPath { get; set; } = string.Empty;
     [Reactive] public partial string AutoBackupFolderPath { get; set; } = string.Empty;
     [Reactive] public partial string AutoBackupInterval { get; set; } = string.Empty;
@@ -156,6 +157,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         UseBackgroundImage = preferences.UseBackgroundImage;
         BackgroundImagePath = preferences.BackgroundImage;
         BackgroundImageOpacity = preferences.BackgroundOpacity;
+        BackgroundBlurRadius = preferences.BackgroundBlurRadius;
         ItemsFolderPath = runtimeSettings.DataRootDirectory;
         AutoBackupFolderPath = runtimeSettings.AutoBackupRootDirectory;
         AutoBackupInterval = runtimeSettings.AutoBackupInterval.ToString();
@@ -469,6 +471,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
             UseBackgroundImage = UseBackgroundImage,
             BackgroundImage = BackgroundImagePath,
             BackgroundOpacity = (int)BackgroundImageOpacity,
+            BackgroundBlurRadius = (int)BackgroundBlurRadius,
             SortOrder = (ItemSortOrder)SelectedSortOrder,
             SortDirection = SelectedSortDirection,
             ImplementedSort = (ImplementedSort)SelectedImplementedSort,

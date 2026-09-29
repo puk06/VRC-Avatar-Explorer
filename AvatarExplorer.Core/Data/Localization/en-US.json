@@ -359,6 +359,8 @@
     "Settings.BackgroundImage.Browse": "Browse",
     "Settings.Opacity.Title": "Opacity",
     "Settings.Opacity.Description": "Opacity of the background image",
+    "Settings.BlurStrength.Title": "Blur Strength",
+    "Settings.BlurStrength.Description": "Blur strength of the background image",
 
     "Settings.CommonAvatar": "Common Avatar",
     "Settings.CommonAvatarManagement.Title": "Common Avatar Management",

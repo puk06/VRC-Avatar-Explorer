@@ -360,6 +360,8 @@
     "Settings.BackgroundImage.Browse": "参照",
     "Settings.Opacity.Title": "不透明度",
     "Settings.Opacity.Description": "背景画像の不透明度です",
+    "Settings.BlurStrength.Title": "ぼかしの強さ",
+    "Settings.BlurStrength.Description": "背景画像のぼかしの強さです",
 
     "Settings.CommonAvatar": "共通素体",
     "Settings.CommonAvatarManagement.Title": "共通素体の管理",

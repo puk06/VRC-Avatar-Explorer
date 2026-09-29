@@ -13,6 +13,7 @@ public record UserPreferences
     public bool UseBackgroundImage { get; init; } = false;
     public string BackgroundImage { get; init; } = string.Empty;
     public int BackgroundOpacity { get; init; } = 20;
+    public int BackgroundBlurRadius { get; init; } = 0;
     public Theme Theme { get; init; } = Theme.Dark;
     public int ItemsPerPage { get; init; } = 30;
     public BitmapAntiAliasingMode AntiAliasingMode { get; init; } = BitmapAntiAliasingMode.None;
