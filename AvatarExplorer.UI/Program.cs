@@ -15,7 +15,8 @@ static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        if (!ProcessUtils.IsWindows())
+        // シングルインスタンスはWindowsとLinuxのみ対応
+        if (ProcessUtils.IsWindows() || ProcessUtils.IsLinux())
         {
             // Linux では Windows とは違い、"Global\" とつけないとグローバルに Mutex が出来ない。
             var mutexName = ProcessUtils.IsLinux() ? "Global\\" + MutexName : MutexName;
