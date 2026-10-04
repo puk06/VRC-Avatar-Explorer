@@ -15,7 +15,7 @@ namespace AvatarExplorer.UI.ViewModels.Managers;
 
 public class SearchManager
 {
-    private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
+    private readonly DispatcherTimer _searchTimer = new() { Interval = TimeSpan.FromMilliseconds(120) };
     private readonly ItemGroupService _itemGroupService;
     private readonly Func<string> _getSearchText;
     private readonly Func<AdvancedSearchViewModel> _getAdvancedSearchVM;
