@@ -15,9 +15,7 @@ static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        // 管理者で実行された場合はそのまま起動する
-        // 多くの場合はカスタムスキーム登録時に実行される
-        if (!ProcessUtils.IsWindows() || !SchemeService.IsRunAsAdmin())
+        if (!ProcessUtils.IsWindows())
         {
             // Linux では Windows とは違い、"Global\" とつけないとグローバルに Mutex が出来ない。
             var mutexName = ProcessUtils.IsLinux() ? "Global\\" + MutexName : MutexName;

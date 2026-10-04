@@ -100,7 +100,6 @@
     "Dialog.SelectFilePath": "請選擇檔案",
 
     "Scheme.Register": "要註冊自訂 URL 協定嗎？\n\n註冊後可從瀏覽器等直接啟動。不註冊也可以手動啟動。",
-    "Scheme.RestartAsAdmin": "註冊需要管理員權限。要以管理員身分重新啟動嗎？",
     "Scheme.RegisterSuccess": "註冊完成。你可以隨時在設定畫面更改。",
     "Scheme.RegisterSkipped": "已略過註冊。你可以隨時在設定畫面進行註冊。",
 

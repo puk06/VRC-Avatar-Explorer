@@ -100,7 +100,6 @@
     "Dialog.SelectFilePath": "Selecciona un archivo",
 
     "Scheme.Register": "¿Registrar el esquema URL personalizado?\n\nEl registro permite iniciar directamente desde navegadores, etc. También es posible el inicio manual sin registrarlo.",
-    "Scheme.RestartAsAdmin": "Se requieren privilegios de administrador para registrar. ¿Reiniciar como administrador?",
     "Scheme.RegisterSuccess": "Registro completado. Puedes cambiarlo en cualquier momento desde la pantalla de configuración.",
     "Scheme.RegisterSkipped": "Se omitió el registro. Puedes registrarlo en cualquier momento desde la pantalla de configuración.",
 

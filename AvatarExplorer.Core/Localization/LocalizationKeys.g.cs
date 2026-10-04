@@ -161,7 +161,6 @@ public static class Loc
     public static class Scheme
     {
         public const string Register = "Scheme.Register";
-        public const string RestartAsAdmin = "Scheme.RestartAsAdmin";
         public const string RegisterSuccess = "Scheme.RegisterSuccess";
         public const string RegisterSkipped = "Scheme.RegisterSkipped";
     }

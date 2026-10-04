@@ -135,7 +135,7 @@ public static class SchemeService
 
     /// <summary>
     /// 指定したプロトコルを、現在のプロセスをハンドラとして登録します。
-    /// 既存の登録（自アプリ以外）がある場合はバックアップを保存します。Windows では管理者権限が必要です。
+    /// 既存の登録（自アプリ以外）がある場合はバックアップを保存します。
     /// </summary>
     /// <param name="protocol">登録する URL スキーム名。</param>
     public static void RegisterScheme(string protocol)
@@ -147,8 +147,6 @@ public static class SchemeService
 
             if (ProcessUtils.IsWindows())
             {
-                if (!IsRunAsAdmin()) return;
-
                 var currentCommand = GetRegisteredCommand(protocol);
                 if (!string.IsNullOrEmpty(currentCommand) && !currentCommand.Contains(processPath, StringComparison.OrdinalIgnoreCase))
                 {
@@ -189,8 +187,6 @@ public static class SchemeService
         {
             if (ProcessUtils.IsWindows())
             {
-                if (!IsRunAsAdmin()) return;
-
                 var backupPath = GetBackupPath(protocol);
                 if (File.Exists(backupPath))
                 {
@@ -203,9 +199,9 @@ public static class SchemeService
                     }
                 }
 
-                using var key = Registry.ClassesRoot.OpenSubKey(protocol, true);
+                using var key = Registry.CurrentUser.OpenSubKey($@"Software\Classes\{protocol}", true);
                 key?.DeleteSubKeyTree("shell", false);
-                Registry.ClassesRoot.DeleteSubKeyTree(protocol, false);
+                Registry.CurrentUser.DeleteSubKeyTree($@"Software\Classes\{protocol}", false);
             }
             else if (ProcessUtils.IsLinux())
             {
@@ -352,14 +348,14 @@ public static class SchemeService
         {
             if (!ProcessUtils.IsWindows()) return;
 
-            using (var key = Registry.ClassesRoot.CreateSubKey(protocol))
+            using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{protocol}"))
             {
                 key.SetValue(string.Empty, "URL:" + protocol + " Protocol");
                 key.SetValue("URL Protocol", string.Empty);
             }
 
-            var commandKey = $@"{protocol}\shell\open\command";
-            using (var key = Registry.ClassesRoot.CreateSubKey(commandKey))
+            var commandKey = $@"Software\Classes\{protocol}\shell\open\command";
+            using (var key = Registry.CurrentUser.CreateSubKey(commandKey))
             {
                 key.SetValue(string.Empty, $"\"{processPath}\" \"%1\"");
             }
@@ -407,8 +403,8 @@ public static class SchemeService
         {
             if (!ProcessUtils.IsWindows()) return;
 
-            var commandKey = $@"{protocol}\shell\open\command";
-            using var key = Registry.ClassesRoot.CreateSubKey(commandKey);
+            var commandKey = $@"Software\Classes\{protocol}\shell\open\command";
+            using var key = Registry.CurrentUser.CreateSubKey(commandKey);
             key.SetValue(string.Empty, command);
         }
         catch (Exception ex)

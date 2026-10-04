@@ -101,7 +101,6 @@
     "Dialog.SelectFilePath": "ファイルを選択してください",
 
     "Scheme.Register": "カスタムURLスキームを登録しますか？\n\n登録するとブラウザ等から直接起動できるようになります。登録しなくても、手動での起動は可能です。",
-    "Scheme.RestartAsAdmin": "登録には管理者権限が必要です。管理者として再起動しますか？",
     "Scheme.RegisterSuccess": "登録が完了しました。設定画面からいつでも変更可能です。",
     "Scheme.RegisterSkipped": "登録をスキップしました。設定画面からいつでも登録可能です。",
 

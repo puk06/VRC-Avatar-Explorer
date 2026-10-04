@@ -100,7 +100,6 @@
     "Dialog.SelectFilePath": "Please select a file",
 
     "Scheme.Register": "Register the custom URL scheme?\n\nRegistration allows direct launch from browsers, etc. Manual launch is still possible without registration.",
-    "Scheme.RestartAsAdmin": "Administrator privileges are required for registration. Restart as administrator?",
     "Scheme.RegisterSuccess": "Registration completed. You can change it anytime from the settings screen.",
     "Scheme.RegisterSkipped": "Registration skipped. You can register anytime from the settings screen.",
 

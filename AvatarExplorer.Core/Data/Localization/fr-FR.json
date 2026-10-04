@@ -100,7 +100,6 @@
     "Dialog.SelectFilePath": "Veuillez sélectionner un fichier",
 
     "Scheme.Register": "Enregistrer le schéma URL personnalisé ?\n\nL'enregistrement permet un lancement direct depuis les navigateurs, etc. Le lancement manuel reste possible sans enregistrement.",
-    "Scheme.RestartAsAdmin": "Les privilèges administrateur sont requis pour l'enregistrement. Redémarrer en tant qu'administrateur ?",
     "Scheme.RegisterSuccess": "Enregistrement terminé. Vous pouvez le modifier à tout moment depuis l'écran des paramètres.",
     "Scheme.RegisterSkipped": "Enregistrement ignoré. Vous pouvez l'enregistrer à tout moment depuis l'écran des paramètres.",
 

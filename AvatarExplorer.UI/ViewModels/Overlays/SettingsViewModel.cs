@@ -324,17 +324,6 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
             return;
         }
 
-        if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
-        {
-            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
-                Localizer.Instance[Loc.Dialog.Confirmation.Default],
-                Localizer.Instance[Loc.Scheme.RestartAsAdmin]
-            );
-            if (result) SchemeService.RestartAsAdmin();
-
-            return;
-        }
-
         if (SchemeService.IsAnySchemeRegistered(protocol) && !SchemeService.IsOwnSchemeRegistered(protocol))
         {
             var command = SchemeService.GetRegisteredCommand(protocol) ?? "";
@@ -357,17 +346,6 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
 
     private async Task UnregisterScheme(string protocol)
     {
-        if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
-        {
-            var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
-                Localizer.Instance[Loc.Dialog.Confirmation.Default],
-                Localizer.Instance[Loc.Scheme.RestartAsAdmin]
-            );
-            if (result) SchemeService.RestartAsAdmin();
-
-            return;
-        }
-
         if (!SchemeService.IsAnySchemeRegistered(protocol)) return;
 
         var confirm = await InstanceRepository.MainWindow.ShowYesNoDialog(
