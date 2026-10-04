@@ -14,7 +14,7 @@ public interface IProgressReporter
 public static class NotificationManager
 {
     private const double DefaultMessageDuration = 3.5;
-    private const double ImportantMessageDuration = 5.5;
+    private const double ImportantMessageDuration = 10.0;
 
     public static void Show(string title, string content, NotificationType type)
     {
