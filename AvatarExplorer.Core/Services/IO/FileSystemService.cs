@@ -584,8 +584,8 @@ public static class FileSystemService
 
         if (extractResult.IsError)
         {
-            lock (result.ProcessingFailedPathNames) result.ProcessingFailedPathNames.Add(fileName);
             ErrorManager.Instance.PostInternalError($"Failed to extract item: '{fileName}'.", tag: extractResult.FirstError.Description);
+            lock (result.ProcessingFailedPathNames) result.ProcessingFailedPathNames.Add(fileName);
             return;
         }
 
