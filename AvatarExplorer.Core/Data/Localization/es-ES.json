@@ -258,7 +258,7 @@
     "Error.UnitypackageAlreadyProcessing": "Este archivo ya se está importando",
     "Error.RetrieveBoothItemFailed": "Ocurrió un error al recuperar la información del elemento",
     "Error.FetchItemThumbnailFailed": "Ocurrió un error al obtener la miniatura del elemento",
-    "Error.FoundProcessingFailedPath": "Se encontraron {0} elementos que fallaron al procesarse. Consulta el registro de errores para más detalles.",
+    "Error.FoundProcessingFailedPath": "Se encontraron {0} elementos que fallaron al procesarse\n{1}\n\nConsulta el registro de errores para más detalles.",
     "Error.AddContentFailed": "Falló la agregación del contenido",
     "Error.TempAvatarNotFound": "Avatar temporal no encontrado",
     "Error.LicenseFileNotFound": "Archivo de licencia no encontrado",

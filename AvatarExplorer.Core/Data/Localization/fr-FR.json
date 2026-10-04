@@ -258,7 +258,7 @@
     "Error.UnitypackageAlreadyProcessing": "Ce fichier est déjà en cours d'importation",
     "Error.RetrieveBoothItemFailed": "Une erreur est survenue lors de la récupération des informations de l'élément",
     "Error.FetchItemThumbnailFailed": "Une erreur est survenue lors de la récupération de la vignette de l'élément",
-    "Error.FoundProcessingFailedPath": "{0} éléments en échec de traitement ont été trouvés. Consultez le journal d'erreurs pour plus de détails.",
+    "Error.FoundProcessingFailedPath": "{0} éléments en échec de traitement ont été trouvés\n{1}\n\nConsultez le journal d'erreurs pour plus de détails.",
     "Error.AddContentFailed": "L'ajout du contenu a échoué",
     "Error.TempAvatarNotFound": "Avatar temporaire introuvable",
     "Error.LicenseFileNotFound": "Fichier de licence introuvable",

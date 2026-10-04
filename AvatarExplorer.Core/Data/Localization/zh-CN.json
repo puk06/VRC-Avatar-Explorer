@@ -258,7 +258,7 @@
     "Error.UnitypackageAlreadyProcessing": "此文件正在导入中",
     "Error.RetrieveBoothItemFailed": "获取项目信息时发生错误",
     "Error.FetchItemThumbnailFailed": "获取项目缩略图时发生错误",
-    "Error.FoundProcessingFailedPath": "发现 {0} 个处理失败的项目。请查看错误日志了解详情。",
+    "Error.FoundProcessingFailedPath": "发现 {0} 个处理失败的项目\n{1}\n\n请查看错误日志了解详情。",
     "Error.AddContentFailed": "内容添加失败",
     "Error.TempAvatarNotFound": "未找到临时头像",
     "Error.LicenseFileNotFound": "未找到许可证文件",

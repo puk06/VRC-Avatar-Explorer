@@ -377,12 +377,21 @@ public partial class ItemEditorViewModel : ViewModelBase
                     Localizer.Instance[Loc.Error.AddContentFailed],
                     NotificationType.Error
                 );
+                return;
             }
-            else if (result.Value.Value.ProcessingFailedPaths.Count > 0)
+
+            var processingFailedPathNames = result.Value.Value.ProcessingFailedPathNames;
+            if (processingFailedPathNames.Count > 0)
             {
                 NotificationManager.Show(
                     Localizer.Instance[Loc.Error.Default],
-                    Localizer.Instance.Get(Loc.Error.FoundProcessingFailedPath, result.Value.Value.ProcessingFailedPaths.Count.ToString()),
+                    Localizer.Instance.Get(
+                        Loc.Error.FoundProcessingFailedPath,
+                        [
+                            processingFailedPathNames.Count.ToString(),
+                            string.Join("\n", processingFailedPathNames.Select(i => $"- {i}"))
+                        ]
+                    ),
                     NotificationType.Error
                 );
             }
