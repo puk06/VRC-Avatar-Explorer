@@ -91,17 +91,6 @@ public partial class InitialSetupViewModel : ViewModelBase, IInitializable, IPos
 
         if (result)
         {
-            if (ProcessUtils.IsWindows() && !SchemeService.IsRunAsAdmin())
-            {
-                var restartAsAdmin = await InstanceRepository.MainWindow.ShowYesNoDialog(
-                    Localizer.Instance[Loc.Dialog.Confirmation.Default],
-                    Localizer.Instance[Loc.Scheme.RestartAsAdmin]
-                );
-                if (restartAsAdmin) SchemeService.RestartAsAdmin();
-
-                return;
-            }
-
             SchemeService.RegisterScheme(SchemeService.ProtocolVRCAE);
             NotificationManager.Show(
                 Localizer.Instance[Loc.Success.Default],

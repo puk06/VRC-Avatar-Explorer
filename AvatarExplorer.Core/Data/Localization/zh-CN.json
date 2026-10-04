@@ -100,7 +100,6 @@
     "Dialog.SelectFilePath": "请选择文件",
 
     "Scheme.Register": "要注册自定义 URL 协议吗？\n\n注册后可从浏览器等直接启动。不注册也可以手动启动。",
-    "Scheme.RestartAsAdmin": "注册需要管理员权限。要以管理员身份重新启动吗？",
     "Scheme.RegisterSuccess": "注册完成。你可以随时在设置界面更改。",
     "Scheme.RegisterSkipped": "已跳过注册。你可以随时在设置界面进行注册。",
 

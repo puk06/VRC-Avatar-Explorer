@@ -100,7 +100,6 @@
     "Dialog.SelectFilePath": "파일을 선택해 주세요",
 
     "Scheme.Register": "사용자 지정 URL 스킴을 등록하시겠습니까?\n\n등록하면 브라우저 등에서 직접 실행할 수 있습니다. 등록하지 않아도 수동 실행은 가능합니다.",
-    "Scheme.RestartAsAdmin": "등록하려면 관리자 권한이 필요합니다. 관리자로 다시 시작하시겠습니까?",
     "Scheme.RegisterSuccess": "등록이 완료되었습니다. 설정 화면에서 언제든 변경할 수 있습니다.",
     "Scheme.RegisterSkipped": "등록을 건너뛰었습니다. 설정 화면에서 언제든 등록할 수 있습니다.",
 
