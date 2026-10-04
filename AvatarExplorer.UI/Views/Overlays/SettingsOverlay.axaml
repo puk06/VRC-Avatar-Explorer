@@ -131,7 +131,7 @@
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
-                                            <Slider Value="{Binding NormalIconSize}" Minimum="0" Maximum="200" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <Slider Value="{Binding NormalIconSize}" Minimum="0" Maximum="200" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                                             <TextBlock Grid.Column="1" Text="{Binding NormalIconSize, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                         </Grid>
                                     </Grid>
@@ -154,7 +154,7 @@
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
-                                            <Slider Value="{Binding HoverIconSize}" Minimum="0" Maximum="800" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <Slider Value="{Binding HoverIconSize}" Minimum="0" Maximum="800" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                                             <TextBlock Grid.Column="1" Text="{Binding HoverIconSize, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                         </Grid>
                                     </Grid>
@@ -222,7 +222,7 @@
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,45" ColumnSpacing="5">
-                                            <Slider Value="{Binding ThumbnailCompressionMaxSize}" Minimum="64" Maximum="1024" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <Slider Value="{Binding ThumbnailCompressionMaxSize}" Minimum="64" Maximum="1024" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                                             <TextBlock Grid.Column="1" Text="{Binding ThumbnailCompressionMaxSize, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                         </Grid>
                                     </Grid>
@@ -339,7 +339,7 @@
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
-                                            <Slider Value="{Binding BackgroundImageOpacity}" Minimum="0" Maximum="100" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <Slider Value="{Binding BackgroundImageOpacity}" Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                                             <TextBlock Grid.Column="1" Text="{Binding BackgroundImageOpacity, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                         </Grid>
                                     </Grid>
@@ -351,7 +351,7 @@
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,30" ColumnSpacing="5">
-                                            <Slider Value="{Binding BackgroundBlurRadius}" Minimum="0" Maximum="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <Slider Value="{Binding BackgroundBlurRadius}" Minimum="0" Maximum="10" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                                             <TextBlock Grid.Column="1" Text="{Binding BackgroundBlurRadius, StringFormat={}{0:0}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                         </Grid>
                                     </Grid>

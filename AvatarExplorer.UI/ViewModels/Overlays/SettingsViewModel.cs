@@ -33,9 +33,9 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public partial bool EnableSearchInFolder { get; set; }
     [Reactive] public partial int SelectedTheme { get; set; }
     [Reactive] public partial bool RemoveBrackets { get; set; }
-    [Reactive] public partial double NormalIconSize { get; set; }
+    [Reactive] public partial int NormalIconSize { get; set; }
     [Reactive] public partial bool EnableHoverIconSize { get; set; }
-    [Reactive] public partial double HoverIconSize { get; set; }
+    [Reactive] public partial int HoverIconSize { get; set; }
     [Reactive] public partial int SelectedAntiAliasing { get; set; }
     [Reactive] public partial string ItemsPerPage { get; set; } = string.Empty;
     [Reactive] public partial int SelectedViewMode { get; set; }
@@ -45,11 +45,11 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public partial bool LinkToOriginal { get; set; }
     [Reactive] public partial bool TreatEmptySupportedAvatarAsNone { get; set; }
     [Reactive] public partial bool HideAvatarCategoryWhenAvatarSelected { get; set; }
-    [Reactive] public partial double ThumbnailCompressionMaxSize { get; set; }
+    [Reactive] public partial int ThumbnailCompressionMaxSize { get; set; }
     [Reactive] public partial bool UseBackgroundImage { get; set; }
     [Reactive] public partial string BackgroundImagePath { get; set; } = string.Empty;
-    [Reactive] public partial double BackgroundImageOpacity { get; set; }
-    [Reactive] public partial double BackgroundBlurRadius { get; set; }
+    [Reactive] public partial int BackgroundImageOpacity { get; set; }
+    [Reactive] public partial int BackgroundBlurRadius { get; set; }
     [Reactive] public partial string ItemsFolderPath { get; set; } = string.Empty;
     [Reactive] public partial string AutoBackupFolderPath { get; set; } = string.Empty;
     [Reactive] public partial string AutoBackupInterval { get; set; } = string.Empty;
@@ -440,16 +440,16 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
             Language = SelectedLanguage,
             Theme = (Theme)SelectedTheme,
             RemoveBrackets = RemoveBrackets,
-            NormalIconSize = (int)NormalIconSize,
+            NormalIconSize = NormalIconSize,
             EnableHoverIconSize = EnableHoverIconSize,
-            HoverIconSize = (int)HoverIconSize,
+            HoverIconSize = HoverIconSize,
             AntiAliasingMode = (BitmapAntiAliasingMode)SelectedAntiAliasing,
             ItemsPerPage = ValueParser.Int(ItemsPerPage, 30),
-            ThumbnailCompressionMaxEdge = (int)ThumbnailCompressionMaxSize,
+            ThumbnailCompressionMaxEdge = ThumbnailCompressionMaxSize,
             UseBackgroundImage = UseBackgroundImage,
             BackgroundImage = BackgroundImagePath,
-            BackgroundOpacity = (int)BackgroundImageOpacity,
-            BackgroundBlurRadius = (int)BackgroundBlurRadius,
+            BackgroundOpacity = BackgroundImageOpacity,
+            BackgroundBlurRadius = BackgroundBlurRadius,
             SortOrder = (ItemSortOrder)SelectedSortOrder,
             SortDirection = SelectedSortDirection,
             ImplementedSort = (ImplementedSort)SelectedImplementedSort,
