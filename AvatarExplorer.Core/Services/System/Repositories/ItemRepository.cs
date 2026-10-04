@@ -73,7 +73,7 @@ public class ItemRepository : RepositoryBase<Item>
 
         var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
         var downloaded = await context.FetchThumbnailAsync(destPath, overwrite: true);
-        if (downloaded) item.UpdateThumbnailFileName(item.Id);
+        if (!downloaded.IsError) item.UpdateThumbnailFileName(item.Id);
 
         Add(item);
 
@@ -152,7 +152,7 @@ public class ItemRepository : RepositoryBase<Item>
 
         var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
         var downloaded = await context.FetchThumbnailAsync(destPath, overwrite: true);
-        if (downloaded) item.UpdateThumbnailFileName(item.Id);
+        if (!downloaded.IsError) item.UpdateThumbnailFileName(item.Id);
     }
 
     /// <summary>アイテムにコンテンツ（ファイル・フォルダ・URL）を追加します。</summary>
@@ -395,7 +395,7 @@ public class ItemRepository : RepositoryBase<Item>
 
         var destPath = Path.Combine(SystemPath.ItemThumbnailsFolderPath, item.Id);
         var downloaded = await Downloader.Fetch(thumbnailUrl, destPath, overwrite: true);
-        if (!downloaded) return Error.Failure(description: "Failed to download thumbnail.");
+        if (downloaded.IsError) return Error.Failure(description: downloaded.Errors.ToErrorString());
 
         item.UpdateThumbnailFileName(item.Id);
 

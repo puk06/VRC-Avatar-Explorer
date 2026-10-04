@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Security.Cryptography;
 using Avalonia.Controls.Notifications;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Updates;
 using AvatarExplorer.Core.Services.IO;
@@ -157,7 +158,7 @@ public partial class UpdateDialogViewModel : ViewModelBase
         var targetDir = FileSystemService.GetNewTempFolder();
         var targetPath = Path.Combine(targetDir, fileName);
 
-        var success = await Downloader.Fetch(
+        var downloadResult = await Downloader.Fetch(
             downloadUri.AbsoluteUri,
             targetPath,
             overwrite: true,
@@ -169,9 +170,9 @@ public partial class UpdateDialogViewModel : ViewModelBase
             }
         );
 
-        if (!success)
+        if (downloadResult.IsError)
         {
-            throw new InvalidOperationException("Download failed.");
+            throw new InvalidOperationException(downloadResult.Errors.ToErrorString());
         }
 
         reporter.Report(Localizer.Instance[Loc.Processing.SoftwareUpdate.Status.Validating], 90);

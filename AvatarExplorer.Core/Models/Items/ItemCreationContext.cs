@@ -1,4 +1,5 @@
 using AvatarExplorer.Core.Services.Network;
+using ErrorOr;
 
 namespace AvatarExplorer.Core.Models.Items;
 
@@ -35,10 +36,10 @@ public class ItemCreationContext
     /// <summary>指定した宛先にサムネイル画像をダウンロードします。</summary>
     /// <param name="destPath">ダウンロード先のファイルパス。</param>
     /// <param name="overwrite">既存ファイルを上書きする場合は true。</param>
-    /// <returns>ダウンロードに成功した、または ThumbnailUrl が空でスキップされた場合は true、それ以外は false。</returns>
-    public async Task<bool> FetchThumbnailAsync(string destPath, bool overwrite = false)
+    /// <returns>ダウンロード結果。ThumbnailUrl が空の場合はエラー。</returns>
+    public async Task<ErrorOr<Success>> FetchThumbnailAsync(string destPath, bool overwrite = false)
     {
-        if (string.IsNullOrEmpty(ThumbnailUrl)) return false;
+        if (string.IsNullOrEmpty(ThumbnailUrl)) return Error.Failure(description: "Thumbnail URL is empty.");
         return await Downloader.Fetch(ThumbnailUrl, destPath, overwrite);
     }
 }

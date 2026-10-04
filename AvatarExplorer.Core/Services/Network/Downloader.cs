@@ -1,5 +1,5 @@
 using AvatarExplorer.Core.Services.IO;
-using AvatarExplorer.Core.Services.System;
+using ErrorOr;
 
 namespace AvatarExplorer.Core.Services.Network;
 
@@ -18,11 +18,11 @@ public static class Downloader
     /// <param name="overwrite">既存ファイルを上書きするかどうか。false の場合、既存ファイルがあればそのまま成功とみなします。</param>
     /// <param name="reportProgress">進捗（パーセント）を報告するコールバック。省略可。</param>
     /// <param name="ct">キャンセルトークン。</param>
-    /// <returns>ダウンロードに成功した、または既存ファイルを再利用した場合は true。失敗またはキャンセル時は false。</returns>
-    public static async Task<bool> Fetch(string url, string filePath, bool overwrite = false, Func<int, Task>? reportProgress = null, CancellationToken ct = default)
+    /// <returns>ダウンロードに成功した、または既存ファイルを再利用した場合は Success。失敗またはキャンセル時はエラー。</returns>
+    public static async Task<ErrorOr<Success>> Fetch(string url, string filePath, bool overwrite = false, Func<int, Task>? reportProgress = null, CancellationToken ct = default)
     {
-        if (string.IsNullOrEmpty(filePath)) return false;
-        if (!overwrite && File.Exists(filePath)) return true;
+        if (string.IsNullOrEmpty(filePath)) return Error.Failure(description: "Download destination path is empty.");
+        if (!overwrite && File.Exists(filePath)) return Result.Success;
 
         try
         {
@@ -57,17 +57,15 @@ public static class Downloader
 
             await ReportProgress(reportProgress, 100, lastPercent);
 
-            return true;
+            return Result.Success;
         }
         catch (OperationCanceledException)
         {
-            return false;
+            return Error.Failure(description: "Download was canceled.");
         }
         catch (Exception ex)
         {
-            var host = Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri.Host : "unknown";
-            ErrorManager.Instance.PostInternalError($"Failed to download file from '{host}'.", ex);
-            return false;
+            return Error.Failure(description: $"Download failed: {ex}");
         }
     }
 
