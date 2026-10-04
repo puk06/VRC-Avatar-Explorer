@@ -350,11 +350,15 @@ public partial class MainView : UserControl
 
         var workingArea = screen.WorkingArea;
         var size = (int)(InstanceRepository.UserPreferences.HoverIconSize * screen.Scaling);
+
+        var x = position.X + HoverOffset + size > workingArea.Right
+            ? Math.Max(workingArea.X, position.X - size - HoverOffset)
+            : position.X + HoverOffset;
         var y = position.Y > workingArea.Y + (workingArea.Height / 2)
             ? Math.Max(workingArea.Y, position.Y - size - HoverOffset)
             : position.Y + HoverOffset;
 
-        return new PixelPoint(position.X + HoverOffset, y);
+        return new PixelPoint(x, y);
     }
 
     private async void OnItemButtonPointerPressed(object? sender, PointerPressedEventArgs e)
