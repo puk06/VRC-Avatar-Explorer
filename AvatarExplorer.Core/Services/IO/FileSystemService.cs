@@ -585,6 +585,7 @@ public static class FileSystemService
         if (extractResult.IsError)
         {
             lock (result.ProcessingFailedPathNames) result.ProcessingFailedPathNames.Add(fileName);
+            ErrorManager.Instance.PostInternalError($"Failed to extract item: '{fileName}'.", tag: extractResult.FirstError.Description);
             return;
         }
 
@@ -624,7 +625,7 @@ public static class FileSystemService
     private static async Task<ErrorOr<FileExtractResultInternal>> ExtractItemInternalAsync(string filePath, string destinationFolderPath, bool removeOriginal)
     {
         var extractResult = await FileExtractorInternalAsync(filePath, destinationFolderPath, removeOriginal);
-        if (extractResult.IsError) return Error.Failure(description: "Failed to process file.");
+        if (extractResult.IsError) return Error.Failure(description: extractResult.FirstError.Description);
 
         return extractResult.Value;
     }
