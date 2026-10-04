@@ -236,6 +236,7 @@
     "Warning.FetchAllItemThumbnailsCancelled": "サムネイル一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",
     "Warning.FetchAllVariationHashesCancelled": "ハッシュ一括取得をキャンセルしました。成功: {0}件 / 失敗: {1}件 / 合計: {2}件",
     "Warning.InvalidBoothId": "無効なBooth IDだったため、空のBooth IDが設定されました。",
+    "Warning.FoundProcessingFailedPath": "処理に失敗したアイテムが{0}件見つかりました\n{1}\n\n詳細はエラーログを参照してください。",
 
     "Error.Default": "エラー",
     "Error.Nothing": "アイテムが見つからないよっ！",
@@ -258,7 +259,6 @@
     "Error.UnitypackageAlreadyProcessing": "このファイルは既にインポート処理中です",
     "Error.RetrieveBoothItemFailed": "アイテム情報取得中にエラーが発生しました",
     "Error.FetchItemThumbnailFailed": "アイテムサムネイル取得中にエラーが発生しました",
-    "Error.FoundProcessingFailedPath": "処理に失敗したアイテムが{0}件見つかりました\n{1}\n\n詳細はエラーログを参照してください。",
     "Error.AddContentFailed": "コンテンツの追加に失敗しました",
     "Error.TempAvatarNotFound": "仮アバターが見つかりませんでした",
     "Error.LicenseFileNotFound": "ライセンスファイルが見つかりませんでした",

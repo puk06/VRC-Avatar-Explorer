@@ -373,6 +373,7 @@ public static class Loc
         public const string FetchAllItemThumbnailsCancelled = "Warning.FetchAllItemThumbnailsCancelled";
         public const string FetchAllVariationHashesCancelled = "Warning.FetchAllVariationHashesCancelled";
         public const string InvalidBoothId = "Warning.InvalidBoothId";
+        public const string FoundProcessingFailedPath = "Warning.FoundProcessingFailedPath";
     }
     public static class Error
     {
@@ -400,7 +401,6 @@ public static class Loc
         public const string UnitypackageAlreadyProcessing = "Error.UnitypackageAlreadyProcessing";
         public const string RetrieveBoothItemFailed = "Error.RetrieveBoothItemFailed";
         public const string FetchItemThumbnailFailed = "Error.FetchItemThumbnailFailed";
-        public const string FoundProcessingFailedPath = "Error.FoundProcessingFailedPath";
         public const string AddContentFailed = "Error.AddContentFailed";
         public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
         public const string LicenseFileNotFound = "Error.LicenseFileNotFound";
