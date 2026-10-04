@@ -235,6 +235,7 @@
     "Warning.FetchAllItemThumbnailsCancelled": "썸네일 일괄 가져오기를 취소했습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개",
     "Warning.FetchAllVariationHashesCancelled": "해시 일괄 가져오기를 취소했습니다. 성공: {0}개 / 실패: {1}개 / 전체: {2}개",
     "Warning.InvalidBoothId": "Booth ID가 유효하지 않습니다. Booth ID가 초기화되었습니다.",
+    "Warning.FoundProcessingFailedPath": "처리에 실패한 아이템이 {0}개 발견되었습니다\n{1}\n\n자세한 내용은 오류 로그를 참조해 주세요.",
 
     "Error.Default": "오류",
     "Error.Nothing": "아이템을 찾을 수 없어요!",
@@ -257,7 +258,6 @@
     "Error.UnitypackageAlreadyProcessing": "이 파일은 이미 가져오기 중입니다",
     "Error.RetrieveBoothItemFailed": "아이템 정보 가져오는 중 오류가 발생했습니다",
     "Error.FetchItemThumbnailFailed": "아이템 썸네일 가져오는 중 오류가 발생했습니다",
-    "Error.FoundProcessingFailedPath": "처리에 실패한 아이템이 {0}개 발견되었습니다\n{1}\n\n자세한 내용은 오류 로그를 참조해 주세요.",
     "Error.AddContentFailed": "콘텐츠 추가에 실패했습니다",
     "Error.TempAvatarNotFound": "임시 아바타를 찾을 수 없습니다",
     "Error.LicenseFileNotFound": "라이선스 파일을 찾을 수 없습니다",

@@ -380,7 +380,7 @@ public static class ContextMenuHandlerService
             NotificationManager.Show(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(
-                    Loc.Error.FoundProcessingFailedPath,
+                    Loc.Warning.FoundProcessingFailedPath,
                     [
                         processingFailedPathNames.Count.ToString(),
                         string.Join("\n", processingFailedPathNames.Select(i => $"- {i}"))

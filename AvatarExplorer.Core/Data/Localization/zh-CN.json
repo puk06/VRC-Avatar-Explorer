@@ -235,6 +235,7 @@
     "Warning.FetchAllItemThumbnailsCancelled": "批量获取缩略图已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",
     "Warning.FetchAllVariationHashesCancelled": "批量获取哈希已取消。成功: {0} 个 / 失败: {1} 个 / 总计: {2} 个",
     "Warning.InvalidBoothId": "Booth ID 无效，已清除 Booth ID。",
+    "Warning.FoundProcessingFailedPath": "发现 {0} 个处理失败的项目\n{1}\n\n请查看错误日志了解详情。",
 
     "Error.Default": "错误",
     "Error.Nothing": "没有找到项目！",
@@ -257,7 +258,6 @@
     "Error.UnitypackageAlreadyProcessing": "此文件正在导入中",
     "Error.RetrieveBoothItemFailed": "获取项目信息时发生错误",
     "Error.FetchItemThumbnailFailed": "获取项目缩略图时发生错误",
-    "Error.FoundProcessingFailedPath": "发现 {0} 个处理失败的项目\n{1}\n\n请查看错误日志了解详情。",
     "Error.AddContentFailed": "内容添加失败",
     "Error.TempAvatarNotFound": "未找到临时头像",
     "Error.LicenseFileNotFound": "未找到许可证文件",

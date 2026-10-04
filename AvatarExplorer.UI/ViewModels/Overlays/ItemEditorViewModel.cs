@@ -384,15 +384,15 @@ public partial class ItemEditorViewModel : ViewModelBase
             if (processingFailedPathNames.Count > 0)
             {
                 NotificationManager.Show(
-                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Warning.Default],
                     Localizer.Instance.Get(
-                        Loc.Error.FoundProcessingFailedPath,
+                        Loc.Warning.FoundProcessingFailedPath,
                         [
                             processingFailedPathNames.Count.ToString(),
                             string.Join("\n", processingFailedPathNames.Select(i => $"- {i}"))
                         ]
                     ),
-                    NotificationType.Error
+                    NotificationType.Warning
                 );
             }
             else
