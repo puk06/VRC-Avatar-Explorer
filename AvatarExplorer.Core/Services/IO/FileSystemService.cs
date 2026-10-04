@@ -545,10 +545,13 @@ public static class FileSystemService
 
             _lastUrlFetchTime = DateTime.Now;
             var downloadResult = await Downloader.Fetch(url, downloadedPath);
-            if (!downloadResult)
+            if (downloadResult.IsError)
             {
                 var host = Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri.Host : "unknown";
-                ErrorManager.Instance.PostInternalError($"Failed to download file from '{host}'.");
+                ErrorManager.Instance.PostInternalError(
+                    $"Failed to download file from '{host}'.",
+                    tag: downloadResult.Errors.ToErrorString()
+                );
                 lock (result.ProcessingFailedPathNames) result.ProcessingFailedPathNames.Add(entry.FileName);
             }
             else
