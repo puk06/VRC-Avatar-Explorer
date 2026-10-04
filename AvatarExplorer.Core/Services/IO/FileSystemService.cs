@@ -645,6 +645,10 @@ public static class FileSystemService
             extractResult.IsDirectory = true;
             return extractResult;
         }
+        else if (!File.Exists(filePath))
+        {
+            return Error.NotFound(description: $"Path not found: '{filePath}'.");
+        }
 
         var extractDirectoryFolderPath = GetUniquePath(extractDirectory, Path.GetFileNameWithoutExtension(filePath), true);
 
