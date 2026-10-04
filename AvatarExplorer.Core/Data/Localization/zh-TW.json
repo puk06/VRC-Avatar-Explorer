@@ -258,7 +258,7 @@
     "Error.UnitypackageAlreadyProcessing": "此檔案正在匯入中",
     "Error.RetrieveBoothItemFailed": "取得項目資訊時發生錯誤",
     "Error.FetchItemThumbnailFailed": "取得項目縮圖時發生錯誤",
-    "Error.FoundProcessingFailedPath": "找到 {0} 個處理失敗的項目。請參考錯誤日誌以取得詳細資訊。",
+    "Error.FoundProcessingFailedPath": "找到 {0} 個處理失敗的項目\n{1}\n\n請參考錯誤日誌以取得詳細資訊。",
     "Error.AddContentFailed": "內容新增失敗",
     "Error.TempAvatarNotFound": "找不到暫時頭像",
     "Error.LicenseFileNotFound": "找不到授權檔案",

@@ -51,8 +51,8 @@ public record ExtractResult
     public string ItemParentFolder { get; set; } = string.Empty;
     /// <summary>リンクとしてそのまま追加された（展開されなかった）フォルダパス一覧を取得します。</summary>
     public List<string> FolderPaths { get; } = [];
-    /// <summary>処理に失敗したパス一覧を取得します。</summary>
-    public List<string> ProcessingFailedPaths { get; init; } = [];
+    /// <summary>処理に失敗したパス名一覧を取得します。</summary>
+    public List<string> ProcessingFailedPathNames { get; init; } = [];
     internal Lock SyncRoot { get; } = new();
 }
 
@@ -549,11 +549,17 @@ public static class FileSystemService
             {
                 var host = Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri.Host : "unknown";
                 ErrorManager.Instance.PostInternalError($"Failed to download file from '{host}'.");
-                lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(downloadedPath);
+                lock (result.ProcessingFailedPathNames) result.ProcessingFailedPathNames.Add(entry.FileName);
             }
             else
             {
-                await ProcessExtractedPath(result, downloadedPath, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+                var downloadedEntry = new ItemContentEntry
+                {
+                    FileName = entry.FileName,
+                    Path = downloadedPath,
+                    IsUrl = false
+                };
+                await ProcessExtractedPath(result, downloadedEntry, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
             }
 
             if (reportEntryProgress != null) await reportEntryProgress.Invoke();
@@ -564,19 +570,21 @@ public static class FileSystemService
     {
         foreach (var entry in fileEntries)
         {
-            await ProcessExtractedPath(result, entry.Path, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+            await ProcessExtractedPath(result, entry, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
 
             if (reportEntryProgress != null) await reportEntryProgress.Invoke();
         }
     }
 
-    private static async Task ProcessExtractedPath(ExtractResult result, string targetPath, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism = 4)
+    private static async Task ProcessExtractedPath(ExtractResult result, ItemContentEntry entry, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism = 4)
     {
+        var targetPath = entry.Path;
+        var fileName = entry.FileName;
         var extractResult = await ExtractItemInternalAsync(targetPath, parentFolderPath, removeOriginal);
 
         if (extractResult.IsError)
         {
-            lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(targetPath);
+            lock (result.ProcessingFailedPathNames) result.ProcessingFailedPathNames.Add(fileName);
             return;
         }
 
@@ -599,13 +607,14 @@ public static class FileSystemService
                 if (copyResult.IsError)
                 {
                     ErrorManager.Instance.PostInternalError($"Failed to copy directory: {targetPath}");
-                    lock (result.ProcessingFailedPaths) result.ProcessingFailedPaths.Add(targetPath);
+                    lock (result.ProcessingFailedPathNames) result.ProcessingFailedPathNames.Add(fileName);
                     return;
                 }
 
                 if (copyResult.Value.Failures.Count > 0)
                 {
                     copyResult.Value.Failures.ForEach(i => ErrorManager.Instance.PostInternalError($"Failed to copy: {i.SourcePath}", tag: i.ErrorMessage));
+                    lock (result.ProcessingFailedPathNames) result.ProcessingFailedPathNames.Add(fileName);
                 }
 
                 lock (result.SyncRoot) result.ItemParentFolder = parentFolderPath;

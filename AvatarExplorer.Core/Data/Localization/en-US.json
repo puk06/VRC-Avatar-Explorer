@@ -258,7 +258,7 @@
     "Error.UnitypackageAlreadyProcessing": "This file is already being imported",
     "Error.RetrieveBoothItemFailed": "Error occurred while retrieving item information",
     "Error.FetchItemThumbnailFailed": "Error occurred while fetching item thumbnail",
-    "Error.FoundProcessingFailedPath": "Found {0} items that failed processing. Please refer to the error log for details.",
+    "Error.FoundProcessingFailedPath": "Found {0} items that failed processing\n{1}\n\nPlease refer to the error log for details.",
     "Error.AddContentFailed": "Content addition failed",
     "Error.TempAvatarNotFound": "Temp Avatar not found",
     "Error.LicenseFileNotFound": "License file not found",

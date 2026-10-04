@@ -371,14 +371,20 @@ public static class ContextMenuHandlerService
                 Localizer.Instance[Loc.Error.AddContentFailed],
                 NotificationType.Error
             );
+            return;
         }
-        else if (extractResult.Value.ProcessingFailedPaths.Count > 0)
+
+        var processingFailedPathNames = extractResult.Value.ProcessingFailedPathNames;
+        if (processingFailedPathNames.Count > 0)
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Warning.Default],
                 Localizer.Instance.Get(
                     Loc.Error.FoundProcessingFailedPath,
-                    extractResult.Value.ProcessingFailedPaths.Count.ToString()
+                    [
+                        processingFailedPathNames.Count.ToString(),
+                        string.Join("\n", processingFailedPathNames.Select(i => $"- {i}"))
+                    ]
                 ),
                 NotificationType.Warning
             );

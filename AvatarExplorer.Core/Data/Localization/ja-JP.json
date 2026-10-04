@@ -259,7 +259,7 @@
     "Error.UnitypackageAlreadyProcessing": "このファイルは既にインポート処理中です",
     "Error.RetrieveBoothItemFailed": "アイテム情報取得中にエラーが発生しました",
     "Error.FetchItemThumbnailFailed": "アイテムサムネイル取得中にエラーが発生しました",
-    "Error.FoundProcessingFailedPath": "処理に失敗したアイテムが{0}件見つかりました。詳細はエラーログを参照してください。",
+    "Error.FoundProcessingFailedPath": "処理に失敗したアイテムが{0}件見つかりました\n{1}\n\n詳細はエラーログを参照してください。",
     "Error.AddContentFailed": "コンテンツの追加に失敗しました",
     "Error.TempAvatarNotFound": "仮アバターが見つかりませんでした",
     "Error.LicenseFileNotFound": "ライセンスファイルが見つかりませんでした",
