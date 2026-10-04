@@ -13,27 +13,33 @@ public interface IProgressReporter
 
 public static class NotificationManager
 {
+    private const double DefaultMessageDuration = 3.5;
+    private const double ImportantMessageDuration = 5.5;
+
     public static void Show(string title, string content, NotificationType type)
     {
         var manager = MessageManager.Default;
         var messageOptions = new MessageOptions
         {
-            Title = title,
-            Duration = TimeSpan.FromSeconds(3.5)
+            Title = title
         };
 
         switch (type)
         {
             case NotificationType.Information:
+                messageOptions.Duration = TimeSpan.FromSeconds(DefaultMessageDuration);
                 manager.ShowInformationMessage(content, messageOptions);
                 break;
             case NotificationType.Success:
+                messageOptions.Duration = TimeSpan.FromSeconds(DefaultMessageDuration);
                 manager.ShowSuccessMessage(content, messageOptions);
                 break;
             case NotificationType.Warning:
+                messageOptions.Duration = TimeSpan.FromSeconds(ImportantMessageDuration);
                 manager.ShowWarningMessage(content, messageOptions);
                 break;
             case NotificationType.Error:
+                messageOptions.Duration = TimeSpan.FromSeconds(ImportantMessageDuration);
                 manager.ShowErrorMessage(content, messageOptions);
                 break;
         }
