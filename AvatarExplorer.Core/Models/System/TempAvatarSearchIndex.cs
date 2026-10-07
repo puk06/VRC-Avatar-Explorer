@@ -33,13 +33,14 @@ public record TempAvatarSearchIndex : ISearchIndex
     /// <returns>一致する場合は true。</returns>
     public bool IsMatch(SearchQueryToken token, Func<string, string>? locKeyProvider = null)
     {
+        var comparisonValue = token.Field is null ? token.Value.ToHiragana() : token.Value;
         var targets = GetTargets(token.Field);
         if (targets.Length == 0) return false;
 
         const StringComparison comparison = StringComparison.CurrentCultureIgnoreCase;
         return token.IsNegation
-            ? targets.All(t => !t.Contains(token.Value, comparison))
-            : targets.Any(t => t.Contains(token.Value, comparison));
+            ? targets.All(t => !t.Contains(comparisonValue, comparison))
+            : targets.Any(t => t.Contains(comparisonValue, comparison));
     }
 
     public int CountMatches(IReadOnlyList<SearchQueryToken> tokens, Func<string, string>? locKeyProvider = null)
@@ -70,9 +71,10 @@ public record TempAvatarSearchIndex : ISearchIndex
             tempAvatar.AvatarName,
             tempAvatar.BoothId >= 0 ? tempAvatar.BoothId.ToString() : string.Empty
         };
-        var romanFreeWordSources = freeWordSources.SelectMany(value => value.ToRomaji());
-        var allFreeWordSources = freeWordSources.Concat(romanFreeWordSources);
-        var freeWord = string.Join("\n", allFreeWordSources).ToLowerInvariant();
+        var freeWord = string.Join("\n",
+            freeWordSources.SelectMany(value => value.ToRomaji())
+                .Concat(freeWordSources.Select(value => value.ToHiragana()))
+        ).ToLowerInvariant();
 
         return new TempAvatarSearchIndex
         {
