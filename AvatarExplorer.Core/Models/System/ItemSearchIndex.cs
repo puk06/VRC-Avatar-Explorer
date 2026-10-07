@@ -1,3 +1,4 @@
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
@@ -130,16 +131,23 @@ public record ItemSearchIndex : ISearchIndex
     {
         var category = item.Category.ToString();
 
-        var freeWord = string.Join("\n",
+        var freeWordSources = new List<string>
+        {
             item.Title,
             item.Author,
             item.ItemMemo,
             item.BoothId >= 0 ? item.BoothId.ToString() : string.Empty,
-            string.Join("\n", item.Tags),
-            string.Join("\n", supportedAvatarNames),
-            string.Join("\n", implementedAvatarNames),
-            string.Join("\n", commonAvatarNames)
-        ).ToLowerInvariant();
+        };
+        freeWordSources.AddRange(item.Tags);
+        freeWordSources.AddRange(supportedAvatarNames);
+        freeWordSources.AddRange(implementedAvatarNames);
+        freeWordSources.AddRange(commonAvatarNames);
+
+        var romanFreeWordSources = freeWordSources
+            .SelectMany(value => value.ToRomaji())
+            .ToList();
+        var allFreeWordSources = freeWordSources.Concat(romanFreeWordSources);
+        var freeWord = string.Join("\n", allFreeWordSources).ToLowerInvariant();
 
         return new ItemSearchIndex
         {

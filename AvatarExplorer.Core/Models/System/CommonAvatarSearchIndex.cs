@@ -1,3 +1,4 @@
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
@@ -58,13 +59,18 @@ public record CommonAvatarSearchIndex : ISearchIndex
     /// <returns>構築された CommonAvatarSearchIndex。</returns>
     public static CommonAvatarSearchIndex Build(CommonAvatar commonAvatar, IEnumerable<ItemSearchIndex?> itemSearchIndices)
     {
+        var groupNameSources = new[] { commonAvatar.GroupName };
+        var romanGroupNameSources = groupNameSources.SelectMany(value => value.ToRomaji());
+        var itemFreeWords = itemSearchIndices.Select(i => i?.FreeWord ?? string.Empty);
+        var allFreeWordSources = groupNameSources
+            .Concat(romanGroupNameSources)
+            .Concat(itemFreeWords);
+        var freeWord = string.Join("\n", allFreeWordSources).ToLowerInvariant();
+
         return new CommonAvatarSearchIndex
         {
             GroupName = commonAvatar.GroupName,
-            FreeWord = string.Join("\n",
-                commonAvatar.GroupName,
-                string.Join("\n", itemSearchIndices.Select(i => i?.FreeWord ?? string.Empty))
-            ).ToLowerInvariant()
+            FreeWord = freeWord
         };
     }
 }

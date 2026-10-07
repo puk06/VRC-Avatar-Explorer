@@ -1,3 +1,4 @@
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Interfaces;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
@@ -64,10 +65,14 @@ public record TempAvatarSearchIndex : ISearchIndex
     /// <returns>構築された TempAvatarSearchIndex。</returns>
     public static TempAvatarSearchIndex Build(TempAvatar tempAvatar)
     {
-        var freeWord = string.Join("\n",
+        var freeWordSources = new[]
+        {
             tempAvatar.AvatarName,
             tempAvatar.BoothId >= 0 ? tempAvatar.BoothId.ToString() : string.Empty
-        ).ToLowerInvariant();
+        };
+        var romanFreeWordSources = freeWordSources.SelectMany(value => value.ToRomaji());
+        var allFreeWordSources = freeWordSources.Concat(romanFreeWordSources);
+        var freeWord = string.Join("\n", allFreeWordSources).ToLowerInvariant();
 
         return new TempAvatarSearchIndex
         {
