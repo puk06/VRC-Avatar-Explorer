@@ -83,6 +83,7 @@ public record ItemSearchIndex : ISearchIndex
             "category" when locKeyProvider != null => locKeyProvider(token.Value) ?? token.Value,
             _ => token.Value
         };
+        if (token.Field is null) comparisonValue = comparisonValue.ToHiragana();
 
         var targets = GetTargets(token.Field);
         if (targets.Length == 0) return false;
@@ -143,11 +144,10 @@ public record ItemSearchIndex : ISearchIndex
         freeWordSources.AddRange(implementedAvatarNames);
         freeWordSources.AddRange(commonAvatarNames);
 
-        var romanFreeWordSources = freeWordSources
-            .SelectMany(value => value.ToRomaji())
-            .ToList();
-        var allFreeWordSources = freeWordSources.Concat(romanFreeWordSources);
-        var freeWord = string.Join("\n", allFreeWordSources).ToLowerInvariant();
+        var freeWord = string.Join("\n",
+            freeWordSources.SelectMany(value => value.ToRomaji())
+                .Concat(freeWordSources.Select(value => value.ToHiragana()))
+        ).ToLowerInvariant();
 
         return new ItemSearchIndex
         {
