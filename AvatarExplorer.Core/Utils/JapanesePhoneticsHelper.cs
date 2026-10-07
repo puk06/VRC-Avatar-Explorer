@@ -1,7 +1,7 @@
 namespace AvatarExplorer.Core.Utils;
 
 /// <summary>
-/// かなをローマ字に変換するユーティリティを提供します。
+/// 日本語の音韻変換（ローマ字・ひらがな）関連のユーティリティを提供します。
 /// </summary>
 public static class JapanesePhoneticsHelper
 {
