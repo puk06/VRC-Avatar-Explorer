@@ -3,7 +3,7 @@ namespace AvatarExplorer.Core.Utils;
 /// <summary>
 /// かなをローマ字に変換するユーティリティを提供します。
 /// </summary>
-public static class KanaUtils
+public static class JapanesePhoneticsHelper
 {
     private static readonly Dictionary<string, string[]> RomajiMap = new()
     {
@@ -115,6 +115,29 @@ public static class KanaUtils
         return results.ToArray();
     }
 
+    /// <summary>
+    /// 指定された文字列のカタカナをひらがなに変換します。カタカナ以外の文字はそのまま返します。
+    /// 変換は Unicode のコードポイントの差を利用して行います。
+    /// </summary>
+    /// <param name="value">変換対象の文字列。</param>
+    /// <returns>変換されたひらがなの文字列。</returns>
+    public static string ToHiragana(string value)
+    {
+        // 3040..309F; Hiragana
+        // 30A0..30FF; Katakana
+        // https://www.unicode.org/Public/UNIDATA/Blocks.txt
+        return string.Concat(value.Select(character =>
+        {
+            if (character is >= '\u30A0' and <= '\u30FF')
+            {
+                // 伸ばし棒
+                if (character == '\u30FC') return '\u30FC';
+                return (char)(character - 0x60);
+            }
+            return character;
+        }));
+    }
+
     private static List<string> Append(IEnumerable<string> values, string suffix) =>
         values.Select(value => value + suffix).ToList();
 
@@ -122,13 +145,5 @@ public static class KanaUtils
     {
         if (spelling.Length == 0 || "aeiou".Contains(spelling[0])) return spelling;
         return spelling[0] + spelling;
-    }
-
-    private static string ToHiragana(string value)
-    {
-        return string.Concat(value.Select(character =>
-            character is >= '\u30A1' and <= '\u30F6'
-                ? (char)(character - ('\u30A1' - '\u3041'))
-                : character));
     }
 }

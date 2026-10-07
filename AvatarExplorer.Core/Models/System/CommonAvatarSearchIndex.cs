@@ -28,13 +28,14 @@ public record CommonAvatarSearchIndex : ISearchIndex
     /// <returns>一致する場合は true。</returns>
     public bool IsMatch(SearchQueryToken token, Func<string, string>? locKeyProvider = null)
     {
+        var comparisonValue = token.Field is null ? token.Value.ToHiragana() : token.Value;
         var targets = GetTargets(token.Field);
         if (targets.Length == 0) return false;
 
         const StringComparison comparison = StringComparison.CurrentCultureIgnoreCase;
         return token.IsNegation
-            ? targets.All(t => !t.Contains(token.Value, comparison))
-            : targets.Any(t => t.Contains(token.Value, comparison));
+            ? targets.All(t => !t.Contains(comparisonValue, comparison))
+            : targets.Any(t => t.Contains(comparisonValue, comparison));
     }
 
     public int CountMatches(IReadOnlyList<SearchQueryToken> tokens, Func<string, string>? locKeyProvider = null)
@@ -59,13 +60,13 @@ public record CommonAvatarSearchIndex : ISearchIndex
     /// <returns>構築された CommonAvatarSearchIndex。</returns>
     public static CommonAvatarSearchIndex Build(CommonAvatar commonAvatar, IEnumerable<ItemSearchIndex?> itemSearchIndices)
     {
-        var groupNameSources = new[] { commonAvatar.GroupName };
-        var romanGroupNameSources = groupNameSources.SelectMany(value => value.ToRomaji());
+        var groupName = commonAvatar.GroupName;
         var itemFreeWords = itemSearchIndices.Select(i => i?.FreeWord ?? string.Empty);
-        var allFreeWordSources = groupNameSources
-            .Concat(romanGroupNameSources)
-            .Concat(itemFreeWords);
-        var freeWord = string.Join("\n", allFreeWordSources).ToLowerInvariant();
+        var freeWord = string.Join("\n",
+            groupName.ToRomaji()
+                .Concat([groupName.ToHiragana()])
+                .Concat(itemFreeWords)
+        ).ToLowerInvariant();
 
         return new CommonAvatarSearchIndex
         {
