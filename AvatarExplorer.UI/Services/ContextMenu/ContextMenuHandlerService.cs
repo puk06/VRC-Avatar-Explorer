@@ -625,7 +625,7 @@ public static class ContextMenuHandlerService
                 NotificationType.Warning
             );
         }
-        else
+        else if (boothId != -1)
         {
             var existingBoothIdTemp = InstanceRepository.TempAvatars.GetAll().FirstOrDefault(i => i.BoothId == boothId);
             if (existingBoothIdTemp != null)
