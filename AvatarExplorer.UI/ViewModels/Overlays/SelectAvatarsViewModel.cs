@@ -150,7 +150,7 @@ public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
             }
         }
 
-        if (setBoothId && !parseBoothIdFailed)
+        if (setBoothId && !parseBoothIdFailed && boothId != -1)
         {
             var existingBoothIdTemp = InstanceRepository.TempAvatars.GetAll().FirstOrDefault(i => i.BoothId == boothId);
             if (existingBoothIdTemp != null)
