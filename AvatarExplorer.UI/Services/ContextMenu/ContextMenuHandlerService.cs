@@ -614,10 +614,10 @@ public static class ContextMenuHandlerService
             Localizer.Instance[Loc.Dialog.Title.SetBoothIdForTempAvatar],
             tempAvatar.BoothId == -1 ? string.Empty : tempAvatar.BoothId.ToString()
         );
-        if (string.IsNullOrEmpty(newBoothId)) return;
+        if (newBoothId == null) return;
 
         var boothId = ValueParser.Int(BoothUtils.ExtractBoothIdFromUrl(newBoothId), -1);
-        if (boothId == -1)
+        if (newBoothId != string.Empty && boothId == -1)
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Warning.Default],
