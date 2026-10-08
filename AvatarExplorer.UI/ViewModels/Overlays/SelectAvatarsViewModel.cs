@@ -143,7 +143,7 @@ public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
         if (setBoothId)
         {
             var boothIdInput = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.SetBoothIdForTempAvatar]);
-            if (boothIdInput != null)
+            if (!string.IsNullOrEmpty(boothIdInput))
             {
                 boothId = ValueParser.Int(BoothUtils.ExtractBoothIdFromUrl(boothIdInput), -1);
                 if (boothId < 0) parseBoothIdFailed = true;
