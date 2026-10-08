@@ -38,7 +38,7 @@ public static class TextParser
                 }
             }
 
-            if (c == ' ' && !inQuotes)
+            if ((c == ' ' || c == '　')&& !inQuotes)
             {
                 if (currentArg.Length > 0)
                 {
