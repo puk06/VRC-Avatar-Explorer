@@ -334,6 +334,8 @@
     "Settings.ItemsPerPage.Description": "Nombre maximal d'éléments affichés par page",
     "Settings.ThumbnailCompressionMaxSize.Title": "Taille maximale de compression des vignettes",
     "Settings.ThumbnailCompressionMaxSize.Description": "Taille maximale de bord (px) pour la compression, appliquée aux images nouvellement générées",
+    "Settings.EnableButtonAnimation.Title": "Activer l'animation des boutons",
+    "Settings.EnableButtonAnimation.Description": "Active l'animation lorsque les boutons s'affichent",
 
     "Settings.Item": "Élément",
     "Settings.AutoChangeUnitypackagePath.Title": "Changer auto. le chemin Unitypackage",

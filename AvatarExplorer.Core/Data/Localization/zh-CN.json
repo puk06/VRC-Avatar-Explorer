@@ -334,6 +334,8 @@
     "Settings.ItemsPerPage.Description": "每页最多显示的项目数量",
     "Settings.ThumbnailCompressionMaxSize.Title": "缩略图最大压缩尺寸",
     "Settings.ThumbnailCompressionMaxSize.Description": "应用于新生成图像的最大边长压缩尺寸(px)",
+    "Settings.EnableButtonAnimation.Title": "启用按钮动画",
+    "Settings.EnableButtonAnimation.Description": "启用按钮显示时的动画",
 
     "Settings.Item": "项目",
     "Settings.AutoChangeUnitypackagePath.Title": "自动更改Unitypackage路径",

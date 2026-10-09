@@ -334,6 +334,8 @@
     "Settings.ItemsPerPage.Description": "Maximum number of items displayed per page",
     "Settings.ThumbnailCompressionMaxSize.Title": "Thumbnail Max Compression Size",
     "Settings.ThumbnailCompressionMaxSize.Description": "Maximum edge size (px) for compression, applied to newly generated images",
+    "Settings.EnableButtonAnimation.Title": "Enable Button Animation",
+    "Settings.EnableButtonAnimation.Description": "Enable animation when buttons are displayed",
 
     "Settings.Item": "Item",
     "Settings.AutoChangeUnitypackagePath.Title": "Auto Change Unitypackage Path",

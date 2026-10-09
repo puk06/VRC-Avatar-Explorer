@@ -334,6 +334,8 @@
     "Settings.ItemsPerPage.Description": "Número máximo de elementos mostrados por página",
     "Settings.ThumbnailCompressionMaxSize.Title": "Tamaño máximo de compresión de miniatura",
     "Settings.ThumbnailCompressionMaxSize.Description": "Tamaño máximo de borde (px) para compresión, aplicado a las imágenes recién generadas",
+    "Settings.EnableButtonAnimation.Title": "Habilitar animación de botones",
+    "Settings.EnableButtonAnimation.Description": "Habilita la animación cuando se muestran los botones",
 
     "Settings.Item": "Elemento",
     "Settings.AutoChangeUnitypackagePath.Title": "Cambiar auto. ruta del Unitypackage",

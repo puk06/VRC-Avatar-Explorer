@@ -335,6 +335,8 @@
     "Settings.ItemsPerPage.Description": "1ページに表示する最大アイテム数です",
     "Settings.ThumbnailCompressionMaxSize.Title": "サムネイル最大圧縮サイズ",
     "Settings.ThumbnailCompressionMaxSize.Description": "新しく生成する画像に適用される、最大辺の圧縮サイズ(px)です",
+    "Settings.EnableButtonAnimation.Title": "ボタンアニメーションを有効化",
+    "Settings.EnableButtonAnimation.Description": "ボタンが表示される時のアニメーションを有効化します。",
 
     "Settings.Item": "アイテム",
     "Settings.AutoChangeUnitypackagePath.Title": "Unitypackageのパスを自動で変更する",

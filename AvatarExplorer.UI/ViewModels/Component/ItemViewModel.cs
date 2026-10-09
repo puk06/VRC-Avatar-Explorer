@@ -24,6 +24,7 @@ public partial class ItemViewModel : ViewModelBase, IDisposable
     [Reactive] public partial bool IsSelected { get; set; } = false;
     [Reactive] public partial bool IsImplemented { get; set; } = false;
     [Reactive] public partial bool IsNotImplemented { get; set; } = false;
+    [Reactive] public partial bool IsAnimated { get; set; } = false;
 
     [Reactive] public partial Bitmap? Thumbnail { get; set; } = null;
     [Reactive] public partial string Title { get; private set; } = string.Empty;

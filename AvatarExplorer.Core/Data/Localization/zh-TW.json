@@ -334,6 +334,8 @@
     "Settings.ItemsPerPage.Description": "每頁最多顯示的項目數量",
     "Settings.ThumbnailCompressionMaxSize.Title": "縮圖最大壓縮尺寸",
     "Settings.ThumbnailCompressionMaxSize.Description": "套用於新產生圖片的最大邊長壓縮尺寸(px)",
+    "Settings.EnableButtonAnimation.Title": "啟用按鈕動畫",
+    "Settings.EnableButtonAnimation.Description": "啟用按鈕顯示時的動畫",
 
     "Settings.Item": "項目",
     "Settings.AutoChangeUnitypackagePath.Title": "自動變更Unitypackage路徑",

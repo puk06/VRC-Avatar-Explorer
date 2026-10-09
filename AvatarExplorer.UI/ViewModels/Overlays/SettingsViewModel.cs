@@ -46,6 +46,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public partial bool TreatEmptySupportedAvatarAsNone { get; set; }
     [Reactive] public partial bool HideAvatarCategoryWhenAvatarSelected { get; set; }
     [Reactive] public partial int ThumbnailCompressionMaxSize { get; set; }
+    [Reactive] public partial bool EnableButtonAnimation { get; set; }
     [Reactive] public partial bool UseBackgroundImage { get; set; }
     [Reactive] public partial string BackgroundImagePath { get; set; } = string.Empty;
     [Reactive] public partial int BackgroundImageOpacity { get; set; }
@@ -168,6 +169,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         SelectedSortDirection = preferences.SortDirection;
         SelectedImplementedSort = (int)preferences.ImplementedSort;
         EnableSearchInFolder = preferences.EnableSearchInFolder;
+        EnableButtonAnimation = preferences.EnableButtonAnimation;
         SelectedViewMode = (int)preferences.MainViewMode;
         SelectedGridItemSize = (int)preferences.GridItemSize;
 
@@ -456,6 +458,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
             MainViewMode = (MainItemViewMode)SelectedViewMode,
             GridItemSize = (GridItemSize)SelectedGridItemSize,
             EnableSearchInFolder = EnableSearchInFolder,
+            EnableButtonAnimation = EnableButtonAnimation
         });
     }
     private void Close()
