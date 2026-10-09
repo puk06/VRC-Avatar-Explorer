@@ -358,12 +358,13 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         var sortOrder = (ItemSortOrder)MainSortOrder;
         var sortDirection = (SortDirection)MainSortDirection;
         var isFolderSearchEnabled = UserPreferences.EnableSearchInFolder && _itemNavigationService.GetCurrentItemId() != null;
+        var isAnimated = UserPreferences.EnableButtonAnimation;
 
         if (isFolderSearchEnabled)
         {
             DisposeItemViewModels(_allMainItems);
             _allMainItems = _itemNavigationService.SearchFilesForCurrentItem(searchQuery)
-                .Select(CreateItemViewModel)
+                .Select(i => CreateItemViewModel(i, isAnimated))
                 .ToList();
         }
         else
@@ -374,7 +375,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
                 _searchManager.SearchItems(searchQuery),
                 sortOrder, sortDirection, UserPreferences.RemoveBrackets
             )
-            .Select(CreateItemViewModel)
+            .Select(i => CreateItemViewModel(i, isAnimated))
             .ToList();
         }
 
@@ -414,9 +415,11 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         var sortedItems = SortNavigationItems(items, sortOrder, sortDirection, implementedSort, avatarId);
         var sortedNavigationables = sortedItems.Cast<IIdentifiable>().Concat(nonItems);
 
+        var isAnimated = UserPreferences.EnableButtonAnimation;
+
         DisposeItemViewModels(_allMainItems);
         _allMainItems = sortedNavigationables
-            .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars, implementedEnabled))
+            .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars, implementedEnabled, isAnimated))
             .ToList();
 
         RightPageInfo.TotalItems = _allMainItems.Count;
@@ -452,9 +455,9 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         return sorted.OrderByDescending(i => i.ImplementedAvatars.Contains(avatarId) == priority);
     }
 
-    private static ItemViewModel CreateItemViewModelWithStatus(IIdentifiable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled)
+    private static ItemViewModel CreateItemViewModelWithStatus(IIdentifiable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled, bool isAnimated)
     {
-        var vm = CreateItemViewModel(nav);
+        var vm = CreateItemViewModel(nav, isAnimated);
 
         if (nav is not Item item) return vm;
 
@@ -595,9 +598,10 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     #endregion
 
     #region Items
-    private static ItemViewModel CreateItemViewModel(IIdentifiable item)
+    private static ItemViewModel CreateItemViewModel(IIdentifiable item, bool isAnimated)
     {
         var navigationItem = NavigationItemFactory.CreateFromNavigationable(item);
+        if (isAnimated) navigationItem.IsAnimated = true;
         navigationItem.Actions = ContextMenuCreator.Create(navigationItem.ViewModelType, navigationItem);
 
         return navigationItem;
@@ -618,8 +622,10 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             queryItems = ItemSortService.SortAvatars(queryItems, sortOrder, sortDirection, removeBrackets);
         }
 
+        var isAnimated = UserPreferences.EnableButtonAnimation;
+
         DisposeItemViewModels(_allLeftItems);
-        _allLeftItems = queryItems.ConvertAll(CreateItemViewModel);
+        _allLeftItems = queryItems.ConvertAll(i => CreateItemViewModel(i, isAnimated));
 
         LeftPageInfo.TotalItems = _allLeftItems.Count;
         RefreshLeftItems();

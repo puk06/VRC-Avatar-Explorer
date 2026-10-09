@@ -334,6 +334,8 @@
     "Settings.ItemsPerPage.Description": "한 페이지에 표시할 최대 아이템 수입니다",
     "Settings.ThumbnailCompressionMaxSize.Title": "썸네일 최대 압축 크기",
     "Settings.ThumbnailCompressionMaxSize.Description": "새로 생성하는 이미지에 적용되는 최대 변 길이(px)입니다",
+    "Settings.EnableButtonAnimation.Title": "버튼 애니메이션 활성화",
+    "Settings.EnableButtonAnimation.Description": "버튼이 표시될 때 애니메이션을 활성화합니다",
 
     "Settings.Item": "아이템",
     "Settings.AutoChangeUnitypackagePath.Title": "Unitypackage 경로 자동 변경",

@@ -195,7 +195,8 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="component:ItemViewModel">
                                                     <Button
-                                                        Classes="button appear"
+                                                        Classes="button"
+                                                        Classes.appear="{Binding IsAnimated}"
                                                         Classes.accentbutton="{Binding IsSelected}"
                                                         Classes.implemented="{Binding IsImplemented}"
                                                         Classes.notimplemented="{Binding IsNotImplemented}"
@@ -293,7 +294,8 @@
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate x:DataType="component:ItemViewModel">
                                                         <Button
-                                                            Classes="button appear"
+                                                            Classes="button"
+                                                            Classes.appear="{Binding IsAnimated}"
                                                             Classes.implemented="{Binding IsImplemented}"
                                                             Classes.notimplemented="{Binding IsNotImplemented}"
                                                             ContextMenu="{Binding ContextMenu}"
@@ -358,7 +360,8 @@
                                                             <ItemsControl.ItemTemplate>
                                                                 <DataTemplate x:DataType="component:ItemViewModel">
                                                                     <Button
-                                                                        Classes="button appear"
+                                                                        Classes="button"
+                                                                        Classes.appear="{Binding IsAnimated}"
                                                                         Classes.implemented="{Binding IsImplemented}"
                                                                         Classes.notimplemented="{Binding IsNotImplemented}"
                                                                         ContextMenu="{Binding ContextMenu}"
