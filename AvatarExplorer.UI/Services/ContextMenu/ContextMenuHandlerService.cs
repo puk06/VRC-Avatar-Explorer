@@ -139,8 +139,8 @@ public static class ContextMenuHandlerService
 
         var rootPath = item.GetItemPath();
 
-        var isRootFolder = path == rootPath;
-        if (isRootFolder)
+        // ルートフォルダは削除できないようにする（削除したら他全てのアイテムが消えてしまうので）
+        if (path == rootPath)
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
