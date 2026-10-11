@@ -271,6 +271,7 @@
     "Error.InvalidReleaseUrl": "URL de version invalide",
     "Error.DownloadFailed": "Échec du téléchargement",
     "Error.ItemPathNotFound": "Chemin de l'élément introuvable",
+    "Error.CannotRemoveRootFolder": "Le dossier racine ne peut pas être supprimé",
     "Error.AvatarNotFound": "Avatar introuvable",
 
     "Settings.Basic": "Général",

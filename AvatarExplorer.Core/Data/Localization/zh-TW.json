@@ -271,6 +271,7 @@
     "Error.InvalidReleaseUrl": "無效的發布URL",
     "Error.DownloadFailed": "下載失敗",
     "Error.ItemPathNotFound": "找不到項目路徑",
+    "Error.CannotRemoveRootFolder": "無法刪除根資料夾",
     "Error.AvatarNotFound": "找不到頭像",
 
     "Settings.Basic": "基本",

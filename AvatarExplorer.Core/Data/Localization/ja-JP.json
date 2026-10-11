@@ -272,6 +272,7 @@
     "Error.InvalidReleaseUrl": "無効なリリースURLです",
     "Error.DownloadFailed": "ダウンロードに失敗しました",
     "Error.ItemPathNotFound": "アイテムパスが見つかりませんでした",
+    "Error.CannotRemoveRootFolder": "ルートフォルダは削除できません",
     "Error.AvatarNotFound": "アバターが見つかりませんでした",
 
     "Settings.Basic": "基本",
