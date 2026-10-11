@@ -414,6 +414,7 @@ public static class Loc
         public const string InvalidReleaseUrl = "Error.InvalidReleaseUrl";
         public const string DownloadFailed = "Error.DownloadFailed";
         public const string ItemPathNotFound = "Error.ItemPathNotFound";
+        public const string CannotRemoveRootFolder = "Error.CannotRemoveRootFolder";
         public const string AvatarNotFound = "Error.AvatarNotFound";
     }
     public static class Settings

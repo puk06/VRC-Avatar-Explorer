@@ -138,6 +138,18 @@ public static class ContextMenuHandlerService
         if (item == null) return;
 
         var rootPath = item.GetItemPath();
+
+        var isRootFolder = path == rootPath;
+        if (isRootFolder)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.CannotRemoveRootFolder],
+                NotificationType.Error
+            );
+            return;
+        }
+
         var isAppManaged = ItemUtils.IsAppManagedPath(rootPath, path);
         if (isAppManaged)
         {
