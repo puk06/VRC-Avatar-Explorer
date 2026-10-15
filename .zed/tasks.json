@@ -1,12 +1,20 @@
+// このファイルでは、AvatarExplorer.Core のビルドとローカライズキーの再生成などのタスクを実行できます。
 [
     {
         "label": "Build AvatarExplorer.Core",
         "command": "dotnet",
-        "args": ["build", "\"${ZED_WORKTREE_ROOT}/AvatarExplorer.Core/AvatarExplorer.Core.csproj\""]
+        "args": [
+            "build",
+            "\"${ZED_WORKTREE_ROOT}/AvatarExplorer.Core/AvatarExplorer.Core.csproj\"",
+        ],
     },
     {
         "label": "Regenerate Localization Keys",
         "command": "dotnet",
-        "args": ["run", "--project", "\"${ZED_WORKTREE_ROOT}/Tools/LocalizationKeyGenerator/LocalizationKeyGenerator.csproj\""]
-    }
+        "args": [
+            "run",
+            "--project",
+            "\"${ZED_WORKTREE_ROOT}/Tools/LocalizationKeyGenerator/LocalizationKeyGenerator.csproj\"",
+        ],
+    },
 ]
