@@ -1,12 +1,12 @@
 [
     {
         "label": "Build AvatarExplorer.Core",
-        "command": "dotnet build",
-        "args": ["\"${ZED_WORKTREE_ROOT}/AvatarExplorer.Core/AvatarExplorer.Core.csproj\""]
+        "command": "dotnet",
+        "args": ["build", "\"${ZED_WORKTREE_ROOT}/AvatarExplorer.Core/AvatarExplorer.Core.csproj\""]
     },
     {
         "label": "Regenerate Localization Keys",
-        "command": "dotnet run",
-        "args": ["--project", "\"${ZED_WORKTREE_ROOT}/Tools/LocalizationKeyGenerator/LocalizationKeyGenerator.csproj\""]
+        "command": "dotnet",
+        "args": ["run", "--project", "\"${ZED_WORKTREE_ROOT}/Tools/LocalizationKeyGenerator/LocalizationKeyGenerator.csproj\""]
     }
 ]

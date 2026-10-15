@@ -5,15 +5,14 @@
         "request": "launch",
         "build": {
             "command": "dotnet",
-            "args": ["build", "${ZED_WORKTREE_ROOT}/AvatarExplorer.UI/AvatarExplorer.UI.csproj", "-c", "Debug"]
+            "args": ["build", "\"${ZED_WORKTREE_ROOT}/AvatarExplorer.UI/AvatarExplorer.UI.csproj\"", "-c", "Debug"]
         },
         "program": "${ZED_WORKTREE_ROOT}/AvatarExplorer.UI/bin/Debug/net10.0/AvatarExplorer.exe",
         "args": [],
-        "cwd": "${ZED_WORKTREE_ROOT}/AvatarExplorer.UI",
         "env": {
             "ASPNETCORE_ENVIRONMENT": "Development",
-                "DOTNET_ENVIRONMENT": "Development"
-            },
+            "DOTNET_ENVIRONMENT": "Development"
+        },
         "stopAtEntry": false
     }
 ]
