@@ -36,6 +36,7 @@ public static class ContextMenuHandlerService
         Register(ActionKey.ShowInMainView, ShowInMainView);
         Register(ActionKey.OpenFolder, OpenFolder);
         Register(ActionKey.RemoveFolder, RemoveFolder);
+        Register(ActionKey.CreateUnitypackage, CreateUnitypackage);
         Register(ActionKey.CheckForUpdate, CheckForUpdate);
         Register(ActionKey.CopyBoothLink, CopyBoothLink);
         Register(ActionKey.OpenBoothLink, OpenBoothLink);
@@ -191,6 +192,44 @@ public static class ContextMenuHandlerService
             Localizer.Instance[Loc.Success.RemoveFolder],
             NotificationType.Success
         );
+    }
+    private static async void CreateUnitypackage(string path)
+    {
+        var currentItem = InstanceRepository.NavigationService.GetCurrentItemId();
+        if (string.IsNullOrEmpty(currentItem)) return;
+
+        var item = GetByIdentifier(currentItem);
+        if (item == null) return;
+
+        // 指定されたパスのファイル全てをUnitypackageに変換するか聞く
+        var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance.Get(Loc.Dialog.Confirmation.CreateUnitypackage, Path.GetFileName(path))
+        );
+        if (!result) return;
+
+        var isRootPath = path == item.GetItemPath(); // Rootの場合は直下のファイルのみなのでRecursive = false
+        var generationResult = await FileSystemService.CreateUnitypackageFromFolder(item, path, !isRootPath, (key) => Localizer.Instance[key]);
+
+        if (!generationResult.IsError)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Success.Default],
+                Localizer.Instance[Loc.Success.CreateUnitypackage],
+                NotificationType.Success
+            );
+
+            // メイン画面を読み込み直すためにアイテムを変更済みにする
+            InstanceRepository.Items.MarkAsChanged();
+        }
+        else
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Error.Default],
+                Localizer.Instance[Loc.Error.CreateUnitypackage],
+                NotificationType.Error
+            );
+        }
     }
     private static async void CheckForUpdate(string identifier)
     {

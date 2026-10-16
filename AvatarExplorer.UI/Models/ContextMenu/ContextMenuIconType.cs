@@ -68,5 +68,8 @@ public enum ContextMenuIconType
     AddFolder,
 
     [MaterialIcon(MaterialIconKind.LinkPlus)]
-    AddUrl
+    AddUrl,
+
+    [MaterialIcon(MaterialIconKind.Export)]
+    Export
 }

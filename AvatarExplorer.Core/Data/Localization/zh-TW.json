@@ -75,6 +75,7 @@
     "Dialog.Confirmation.RenameTagAlreadyExist": "標籤「{0}」已存在。繼續的話，將被識別為同一標籤。要繼續嗎？",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "要為此暫時頭像設定 Booth ID 嗎？\n\n※設定 Booth ID 後，可透過 ID 搜尋或從 Booth 新增項目時進行連結。",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "找到了 Booth ID 一致的暫時頭像「{0}」。\n要將此暫時頭像連結為正式項目嗎？",
+    "Dialog.Confirmation.CreateUnitypackage": "要將資料夾「{0}」中的所有檔案轉換為 Unitypackage 嗎？\n\n※轉換後不會刪除原始檔案。",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "已註冊 Booth ID 相同的暫時頭像「{0}」。\n要將暫時頭像「{1}」替換為已註冊的暫時頭像「{0}」並刪除它嗎？",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "已註冊 Booth ID 相同的暫時頭像「{0}」。\n要繼續建立嗎？",
 
@@ -167,6 +168,7 @@
     "ContextMenu.ItemFolder.OpenFolder": "開啟資料夾",
     "ContextMenu.ItemFolder.ShowInExplorer": "在檔案總管中顯示",
     "ContextMenu.ItemFolder.RemoveFolder": "刪除資料夾",
+    "ContextMenu.ItemFolder.CreateUnitypackage": "從資料夾建立 Unitypackage",
     "ContextMenu.ItemFile.CopyFilePath": "複製檔案路徑",
     "ContextMenu.ItemFile.OpenFile": "開啟檔案",
     "ContextMenu.ItemFile.BulkImportList": "加入批次匯入",
@@ -221,6 +223,7 @@
     "Success.SkipIndirectCommonAvatarCheck": "已設定跳過間接公共頭像檢查",
     "Success.CreateTempAvatar": "暫時頭像已建立",
     "Success.ResolveTempAvatar": "暫時頭像已連結為正式項目",
+    "Success.CreateUnitypackage": "Unitypackage 建立成功",
 
     "VariationUpdate.UpdateAvailable": "有可用的項目更新",
     "VariationUpdate.NoUpdatesAvailable": "沒有更新",
@@ -273,6 +276,7 @@
     "Error.ItemPathNotFound": "找不到項目路徑",
     "Error.CannotRemoveRootFolder": "無法刪除根資料夾",
     "Error.AvatarNotFound": "找不到頭像",
+    "Error.CreateUnitypackage": "建立 Unitypackage 失敗",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "語言",

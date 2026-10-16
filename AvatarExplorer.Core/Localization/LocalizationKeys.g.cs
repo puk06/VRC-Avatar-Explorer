@@ -131,6 +131,7 @@ public static class Loc
             public const string RenameTagAlreadyExist = "Dialog.Confirmation.RenameTagAlreadyExist";
             public const string SetBoothIdForTempAvatar = "Dialog.Confirmation.SetBoothIdForTempAvatar";
             public const string ResolveSameBoothIdTempAvatar = "Dialog.Confirmation.ResolveSameBoothIdTempAvatar";
+            public const string CreateUnitypackage = "Dialog.Confirmation.CreateUnitypackage";
             public const string ReplaceAndDeleteSameBoothIdTempAvatar = "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar";
             public const string ContinueWithSameBoothIdTempAvatar = "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar";
             public static class EditCommonAvatars
@@ -284,6 +285,7 @@ public static class Loc
             public const string OpenFolder = "ContextMenu.ItemFolder.OpenFolder";
             public const string ShowInExplorer = "ContextMenu.ItemFolder.ShowInExplorer";
             public const string RemoveFolder = "ContextMenu.ItemFolder.RemoveFolder";
+            public const string CreateUnitypackage = "ContextMenu.ItemFolder.CreateUnitypackage";
         }
         public static class ItemFile
         {
@@ -355,6 +357,7 @@ public static class Loc
         public const string SkipIndirectCommonAvatarCheck = "Success.SkipIndirectCommonAvatarCheck";
         public const string CreateTempAvatar = "Success.CreateTempAvatar";
         public const string ResolveTempAvatar = "Success.ResolveTempAvatar";
+        public const string CreateUnitypackage = "Success.CreateUnitypackage";
     }
     public static class VariationUpdate
     {
@@ -416,6 +419,7 @@ public static class Loc
         public const string ItemPathNotFound = "Error.ItemPathNotFound";
         public const string CannotRemoveRootFolder = "Error.CannotRemoveRootFolder";
         public const string AvatarNotFound = "Error.AvatarNotFound";
+        public const string CreateUnitypackage = "Error.CreateUnitypackage";
     }
     public static class Settings
     {

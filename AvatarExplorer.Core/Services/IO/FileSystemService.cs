@@ -6,6 +6,8 @@ using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
+using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.Network;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
@@ -485,12 +487,115 @@ public static class FileSystemService
 
         foreach (var filePath in EnumerateFiles(sourceFolder))
         {
-            var relativePath = Path.GetRelativePath(sourceFolder, filePath);
+            var relativePath = Path.GetRelativePath(sourceFolder, filePath).Replace('\\', '/');
             await archive.AddEntryAsync(relativePath, filePath);
         }
 
-        await using var fileStream = new FileStream(outputTarFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 1024 * 1024, FileOptions.SequentialScan);
-        await archive.SaveToAsync(fileStream, new TarWriterOptions(CompressionType.None));
+        await using var fileStream = new FileStream(outputTarFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: BufferSize, FileOptions.SequentialScan);
+        await archive.SaveToAsync(fileStream, new TarWriterOptions(CompressionType.GZip));
+    }
+    #endregion
+
+    #region Unitypackage Creator
+    public static async Task<ErrorOr<Success>> CreateUnitypackageFromFolder(Item item, string sourceFolder, bool recursive = true, Func<string, string>? fileCategoryLocalizer = null)
+    {
+        if (item == null)
+            return Error.Validation(description: "Item is null.");
+
+        if (string.IsNullOrWhiteSpace(sourceFolder) || !Directory.Exists(sourceFolder))
+            return Error.NotFound(description: $"Source folder not found: '{sourceFolder}'.");
+
+        var sourceFiles = EnumerateFiles(sourceFolder, recursive).ToList();
+        if (sourceFiles.Count == 0)
+            return Error.Failure(description: "Source folder contains no files.");
+
+        var workFolder = GetNewTempFolder();
+        var outputPath = Path.Combine(workFolder, Path.GetFileName(sourceFolder) + ".unitypackage");
+
+        try
+        {
+            var safeAuthor = FileNameUtils.GetSafeFileName(item.Author);
+            var safeTitle = FileNameUtils.GetSafeFileName(item.Title);
+
+            // アセット直下のパス
+            string assetRootPath;
+            if (safeAuthor == null || safeTitle == null)
+            {
+                // 作者、タイトルのどちらかが使えない場合は、フォルダ名をそのまま使うようにする
+                assetRootPath = $"Assets/{Path.GetFileName(sourceFolder)}";
+            }
+            else
+            {
+                assetRootPath = $"Assets/{safeAuthor}/{safeTitle}";
+            }
+
+            var usedAssetPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var filePath in sourceFiles)
+            {
+                var itemFile = new ItemFile(sourceFolder, filePath);
+                var category = FileCategorizer.Categorize(itemFile);
+                var categoryKey = category.GetLocalizationKey();
+                var categoryDisplayName = !string.IsNullOrWhiteSpace(categoryKey) && fileCategoryLocalizer != null
+                    ? fileCategoryLocalizer(categoryKey)
+                    : category.ToString();
+                var safeCategory = FileNameUtils.GetSafeFileName(categoryDisplayName) ?? category.ToString();
+
+                var assetPath = GetUniqueAssetPath($"{assetRootPath}/{safeCategory}/{itemFile.FileName}", usedAssetPaths);
+                usedAssetPaths.Add(assetPath);
+
+                var guid = Guid.NewGuid().ToString("N");
+                var assetFolder = Path.Combine(workFolder, guid);
+                Directory.CreateDirectory(assetFolder);
+
+                await File.WriteAllTextAsync(Path.Combine(assetFolder, "pathname"), assetPath, Encoding.UTF8);
+                File.Copy(filePath, Path.Combine(assetFolder, "asset"), overwrite: false);
+            }
+
+            await CreateTarArchive(workFolder, outputPath);
+
+            var finalOutputPath = Path.Combine(sourceFolder, Path.GetFileName(outputPath));
+            var copyResult = await CopyFileAsync(outputPath, finalOutputPath);
+            if (copyResult.IsError)
+            {
+                ErrorManager.Instance.PostInternalError($"Failed to copy unitypackage to source folder: '{finalOutputPath}'.", tag: copyResult.Errors.ToErrorString());
+                return Error.Failure(description: "Failed to copy unitypackage to source folder.");
+            }
+
+            return Result.Success;
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError("Error occurred while creating unitypackage from folder.", ex);
+            try { File.Delete(outputPath); } catch { /* Tempなので無視して大丈夫 */ }
+            return Error.Failure(description: "Failed to create unitypackage from folder.");
+        }
+        finally
+        {
+            DeleteDirectory(workFolder, true);
+        }
+    }
+
+    private static string GetUniqueAssetPath(string basePath, HashSet<string> usedPaths)
+    {
+        if (!usedPaths.Contains(basePath))
+            return basePath;
+
+        var directory = Path.GetDirectoryName(basePath)?.Replace('\\', '/') ?? string.Empty;
+        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(basePath);
+        var extension = Path.GetExtension(basePath);
+
+        var counter = 1;
+        string candidate;
+        do
+        {
+            candidate = string.IsNullOrEmpty(directory)
+                ? $"{fileNameWithoutExtension} ({counter}){extension}"
+                : $"{directory}/{fileNameWithoutExtension} ({counter}){extension}";
+            counter++;
+        } while (usedPaths.Contains(candidate));
+
+        return candidate;
     }
     #endregion
 

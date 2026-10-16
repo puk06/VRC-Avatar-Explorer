@@ -75,6 +75,7 @@
     "Dialog.Confirmation.RemoveTag": "Supprimer le tag « {0} » ?\n※La suppression entraînera la suppression de ce tag de tous les éléments.",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "Définir l'ID Booth pour cet avatar temporaire ?\n\n※Définir un ID Booth permet la liaison lors de l'ajout d'éléments par recherche ID ou depuis Booth.",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Un avatar temporaire « {0} » avec un ID Booth correspondant a été trouvé.\nVoulez-vous lier cet avatar temporaire en tant qu'élément permanent ?",
+    "Dialog.Confirmation.CreateUnitypackage": "Convertir tous les fichiers du dossier « {0} » en Unitypackage ?\n\n※Les fichiers d'origine ne seront pas supprimés après la conversion.",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "Un avatar temporaire « {0} » avec le même ID Booth est déjà enregistré.\nRemplacer l'avatar temporaire « {1} » par l'avatar enregistré « {0} » et le supprimer ?",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "Un avatar temporaire « {0} » avec le même ID Booth est déjà enregistré.\nVoulez-vous continuer la création ?",
 
@@ -167,6 +168,7 @@
     "ContextMenu.ItemFolder.OpenFolder": "Ouvrir le dossier",
     "ContextMenu.ItemFolder.ShowInExplorer": "Afficher dans l'Explorateur",
     "ContextMenu.ItemFolder.RemoveFolder": "Supprimer le dossier",
+    "ContextMenu.ItemFolder.CreateUnitypackage": "Créer un Unitypackage à partir du dossier",
     "ContextMenu.ItemFile.CopyFilePath": "Copier le chemin du fichier",
     "ContextMenu.ItemFile.OpenFile": "Ouvrir le fichier",
     "ContextMenu.ItemFile.BulkImportList": "Ajouter à l'importation en masse",
@@ -221,6 +223,7 @@
     "Success.SkipIndirectCommonAvatarCheck": "La vérification indirecte de l'avatar commun a été ignorée",
     "Success.CreateTempAvatar": "Avatar temporaire créé",
     "Success.ResolveTempAvatar": "Avatar temporaire lié en tant qu'élément permanent",
+    "Success.CreateUnitypackage": "Création du Unitypackage réussie",
 
     "VariationUpdate.UpdateAvailable": "Des mises à jour d'éléments sont disponibles",
     "VariationUpdate.NoUpdatesAvailable": "Aucune mise à jour disponible",
@@ -273,6 +276,7 @@
     "Error.ItemPathNotFound": "Chemin de l'élément introuvable",
     "Error.CannotRemoveRootFolder": "Le dossier racine ne peut pas être supprimé",
     "Error.AvatarNotFound": "Avatar introuvable",
+    "Error.CreateUnitypackage": "Échec de la création du Unitypackage",
 
     "Settings.Basic": "Général",
     "Settings.Language.Title": "Langue",
