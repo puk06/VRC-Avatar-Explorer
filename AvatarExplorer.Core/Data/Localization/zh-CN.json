@@ -75,6 +75,7 @@
     "Dialog.Confirmation.RenameTagAlreadyExist": "标签「{0}」已存在。继续的话，将被识别为同一标签。要继续吗？",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "要为此临时头像设置 Booth ID 吗？\n\n※设置 Booth ID 后，可通过 ID 搜索或从 Booth 添加项目时进行关联。",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "找到了 Booth ID 一致的临时头像「{0}」。\n要将此临时头像关联为正式项目吗？",
+    "Dialog.Confirmation.CreateUnitypackage": "要将文件夹「{0}」中的所有文件转换为 Unitypackage 吗？\n\n※转换后不会删除原始文件。",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "已注册 Booth ID 相同的临时头像「{0}」。\n要将临时头像「{1}」替换为已注册的临时头像「{0}」并删除它吗？",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "已注册 Booth ID 相同的临时头像「{0}」。\n要继续创建吗？",
 
@@ -167,6 +168,7 @@
     "ContextMenu.ItemFolder.OpenFolder": "打开文件夹",
     "ContextMenu.ItemFolder.ShowInExplorer": "在资源管理器中显示",
     "ContextMenu.ItemFolder.RemoveFolder": "删除文件夹",
+    "ContextMenu.ItemFolder.CreateUnitypackage": "从文件夹创建 Unitypackage",
     "ContextMenu.ItemFile.CopyFilePath": "复制文件路径",
     "ContextMenu.ItemFile.OpenFile": "打开文件",
     "ContextMenu.ItemFile.BulkImportList": "添加到批量导入",
@@ -221,6 +223,7 @@
     "Success.SkipIndirectCommonAvatarCheck": "已设置跳过间接公共头像检查",
     "Success.CreateTempAvatar": "临时头像已创建",
     "Success.ResolveTempAvatar": "临时头像已关联为正式项目",
+    "Success.CreateUnitypackage": "Unitypackage 创建成功",
 
     "VariationUpdate.UpdateAvailable": "有可用的项目更新",
     "VariationUpdate.NoUpdatesAvailable": "没有更新",
@@ -273,6 +276,7 @@
     "Error.ItemPathNotFound": "找不到项目路径",
     "Error.CannotRemoveRootFolder": "无法删除根文件夹",
     "Error.AvatarNotFound": "找不到头像",
+    "Error.CreateUnitypackage": "创建 Unitypackage 失败",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "语言",

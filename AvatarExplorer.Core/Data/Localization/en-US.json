@@ -75,6 +75,7 @@
     "Dialog.Confirmation.RenameTagAlreadyExist": "Tag \"{0}\" already exists. If you continue, it will be recognized as the same tag. Do you want to continue?",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "Set Booth ID for this temporary avatar?\n\n※Setting a Booth ID enables linking when adding items via ID search or from Booth.",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "A temporary avatar \"{0}\" with a matching Booth ID was found.\nWould you like to link this temporary avatar as a permanent item?",
+    "Dialog.Confirmation.CreateUnitypackage": "Convert all files in folder \"{0}\" to a Unitypackage?\n\n※The original files will not be deleted after conversion.",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "A temporary avatar \"{0}\" with the same Booth ID is already registered.\nReplace temporary avatar \"{1}\" with the registered avatar \"{0}\" and delete it?",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "A temporary avatar \"{0}\" with the same Booth ID is already registered.\nContinue creating it?",
 
@@ -167,6 +168,7 @@
     "ContextMenu.ItemFolder.OpenFolder": "Open Folder",
     "ContextMenu.ItemFolder.ShowInExplorer": "Show in Explorer",
     "ContextMenu.ItemFolder.RemoveFolder": "Remove Folder",
+    "ContextMenu.ItemFolder.CreateUnitypackage": "Create Unitypackage from Folder",
     "ContextMenu.ItemFile.CopyFilePath": "Copy File Path",
     "ContextMenu.ItemFile.OpenFile": "Open File",
     "ContextMenu.ItemFile.BulkImportList": "Add to Bulk Import",
@@ -221,6 +223,7 @@
     "Success.SkipIndirectCommonAvatarCheck": "Indirect common avatar check has been skipped",
     "Success.CreateTempAvatar": "Temporary avatar created",
     "Success.ResolveTempAvatar": "Temporary avatar linked as a permanent item",
+    "Success.CreateUnitypackage": "Unitypackage created successfully",
 
     "VariationUpdate.UpdateAvailable": "Item updates are available",
     "VariationUpdate.NoUpdatesAvailable": "No updates available",
@@ -273,6 +276,7 @@
     "Error.ItemPathNotFound": "Item path not found",
     "Error.CannotRemoveRootFolder": "The root folder cannot be removed",
     "Error.AvatarNotFound": "Avatar not found",
+    "Error.CreateUnitypackage": "Failed to create Unitypackage",
 
     "Settings.Basic": "Basic",
     "Settings.Language.Title": "Language",

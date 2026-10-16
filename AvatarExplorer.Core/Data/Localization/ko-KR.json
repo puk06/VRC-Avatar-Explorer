@@ -75,6 +75,7 @@
     "Dialog.Confirmation.RenameTagAlreadyExist": "태그 \"{0}\"은(는) 이미 존재합니다. 계속하면 같은 태그로 인식됩니다. 계속하시겠습니까?",
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "이 임시 아바타에 Booth ID를 설정하시겠습니까?\n\n※Booth ID를 설정하면 ID 검색이나 Booth에서 항목 추가 시 연결에 이용됩니다.",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Booth ID가 일치하는 임시 아바타 \"{0}\"를 찾았습니다.\n이 임시 아바타를 정식 아이템으로 연결하시겠습니까?",
+    "Dialog.Confirmation.CreateUnitypackage": "폴더 \"{0}\"의 모든 파일을 Unitypackage로 변환하시겠습니까?\n\n※변환 후에도 원본 파일은 삭제되지 않습니다.",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "같은 Booth ID의 임시 아바타 \"{0}\"가 이미 등록되어 있습니다.\n임시 아바타 \"{1}\"를 등록된 임시 아바타 \"{0}\"로 바꾸고 삭제하시겠습니까?",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "같은 Booth ID의 임시 아바타 \"{0}\"가 이미 등록되어 있습니다.\n계속 생성하시겠습니까?",
 
@@ -167,6 +168,7 @@
     "ContextMenu.ItemFolder.OpenFolder": "폴더 열기",
     "ContextMenu.ItemFolder.ShowInExplorer": "탐색기에서 보기",
     "ContextMenu.ItemFolder.RemoveFolder": "폴더 삭제",
+    "ContextMenu.ItemFolder.CreateUnitypackage": "폴더에서 Unitypackage 생성",
     "ContextMenu.ItemFile.CopyFilePath": "파일 경로 복사",
     "ContextMenu.ItemFile.OpenFile": "파일 열기",
     "ContextMenu.ItemFile.BulkImportList": "일괄 가져오기에 추가",
@@ -221,6 +223,7 @@
     "Success.SkipIndirectCommonAvatarCheck": "간접적인 공통 아바타 확인을 건너뛰도록 설정되었습니다",
     "Success.CreateTempAvatar": "임시 아바타가 생성되었습니다",
     "Success.ResolveTempAvatar": "임시 아바타가 정식 아이템으로 연결되었습니다",
+    "Success.CreateUnitypackage": "Unitypackage 생성이 완료되었습니다",
 
     "VariationUpdate.UpdateAvailable": "아이템 업데이트를 사용할 수 있습니다",
     "VariationUpdate.NoUpdatesAvailable": "사용 가능한 업데이트 없음",
@@ -273,6 +276,7 @@
     "Error.ItemPathNotFound": "아이템 경로를 찾을 수 없습니다",
     "Error.CannotRemoveRootFolder": "루트 폴더는 삭제할 수 없습니다",
     "Error.AvatarNotFound": "아바타를 찾을 수 없습니다",
+    "Error.CreateUnitypackage": "Unitypackage 생성에 실패했습니다",
 
     "Settings.Basic": "기본",
     "Settings.Language.Title": "언어",

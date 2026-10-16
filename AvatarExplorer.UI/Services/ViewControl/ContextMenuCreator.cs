@@ -140,7 +140,8 @@ internal static class ContextMenuCreator
             contextMenuActions.Add(new(Loc.ContextMenu.ItemFolder.ShowInExplorer, ActionKey.ShowInExplorer, ContextMenuIconType.Open, addSeparator: true));
         }
 
-        contextMenuActions.Add(new(Loc.ContextMenu.ItemFolder.CopyFolderPath, ActionKey.CopyPath, ContextMenuIconType.Copy, addSeparator: true));
+        contextMenuActions.Add(new(Loc.ContextMenu.ItemFolder.CopyFolderPath, ActionKey.CopyPath, ContextMenuIconType.Copy));
+        contextMenuActions.Add(new(Loc.ContextMenu.ItemFolder.CreateUnitypackage, ActionKey.CreateUnitypackage, ContextMenuIconType.Export, addSeparator: true));
         contextMenuActions.Add(new(Loc.ContextMenu.ItemFolder.RemoveFolder, ActionKey.RemoveFolder, ContextMenuIconType.Delete));
 
         return contextMenuActions.ToArray();

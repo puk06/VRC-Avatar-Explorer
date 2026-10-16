@@ -29,6 +29,16 @@ public static class FileCategorizer
         return result;
     }
 
+    /// <summary>
+    /// 指定したファイルのカテゴリ種別（<see cref="ItemFileCategoryType"/>）を判定します。
+    /// </summary>
+    /// <param name="file">判定対象のファイル。</param>
+    /// <returns>判定されたカテゴリ種別。</returns>
+    public static ItemFileCategoryType Categorize(ItemFile file)
+    {
+        return ResolveCategory(file);
+    }
+
     private static ItemFileCategoryType ResolveCategory(ItemFile file)
     {
         var extension = Path.GetExtension(file.FilePath).ToLowerInvariant();

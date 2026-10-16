@@ -31,6 +31,7 @@ public enum ActionKey
     OpenFolder,
     ShowInExplorer, // Fileにも使われる
     RemoveFolder,
+    CreateUnitypackage,
 
     OpenFile,
     AddFileToBulkImportList,
