@@ -497,6 +497,14 @@ public static class FileSystemService
     #endregion
 
     #region Unitypackage Creator
+    /// <summary>
+    /// 指定したフォルダの内容を Unitypackage にまとめ、同じフォルダに出力します。
+    /// </summary>
+    /// <param name="item">Unitypackage にまとめる対象のアイテム。</param>
+    /// <param name="sourceFolder">Unitypackage にまとめる対象のフォルダパス。</param>
+    /// <param name="recursive">フォルダ内のサブフォルダも含めるかどうかを指定します。</param>
+    /// <param name="fileCategoryLocalizer">ファイルカテゴリのローカライズ関数。null の場合はカテゴリ名をそのまま使用します。</param>
+    /// <returns>成功した場合は <see cref="Success"/>、失敗した場合はエラーを返します。</returns>
     public static async Task<ErrorOr<Success>> CreateUnitypackageFromFolder(Item item, string sourceFolder, bool recursive = true, Func<string, string>? fileCategoryLocalizer = null)
     {
         if (item == null)
