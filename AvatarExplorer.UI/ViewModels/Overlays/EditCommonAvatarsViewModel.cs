@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Models.Search;
 using AvatarExplorer.UI.Factories;
 using AvatarExplorer.UI.Interfaces;
@@ -9,7 +10,6 @@ using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.Sort;
 using AvatarExplorer.UI.Services.System;
-using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
@@ -215,14 +215,15 @@ public partial class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         );
 
         _allAvatars = sortedAvatars
-            .Select(NavigationItemFactory.CreateFromNavigationable)
-            .Select(i => i.Update(
+            .ToList()
+            .ConvertAll(i =>
+            {
+                var navigationable = NavigationItemFactory.CreateFromNavigationable(i);
+                return navigationable.Update(
                     userPreference.NormalIconSize,
-                    i.ViewModelType == ViewModelType.Item && userPreference.RemoveBrackets // アイテムのタイトルのみ対象とする
-                )
-            )
-            .ToList();
-
+                    i is Avatar { Type: AvatarType.Item } && userPreference.RemoveBrackets // アイテムのタイトルのみ対象とする
+                );
+            });
         Avatars = _allAvatars;
     }
 

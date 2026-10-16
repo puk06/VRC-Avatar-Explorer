@@ -111,13 +111,15 @@ public partial class SelectAvatarsViewModel : ViewModelBase, IInitializable
         );
 
         _allAvatars = sortedAvatars
-            .Select(NavigationItemFactory.CreateFromNavigationable)
-            .Select(i => i.Update(
+            .ToList()
+            .ConvertAll(i =>
+            {
+                var navigationable = NavigationItemFactory.CreateFromNavigationable(i);
+                return navigationable.Update(
                     userPreference.NormalIconSize,
-                    i.ViewModelType == ViewModelType.Item && userPreference.RemoveBrackets // アイテムのタイトルのみ対象とする
-                )
-            )
-            .ToList();
+                    i is Avatar { Type: AvatarType.Item } && userPreference.RemoveBrackets // アイテムのタイトルのみ対象とする
+                );
+            });
 
         if (inheritSelection)
         {
