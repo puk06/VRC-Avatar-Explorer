@@ -63,7 +63,7 @@ public record CommonAvatarSearchIndex : ISearchIndex
         var groupName = commonAvatar.GroupName;
         var itemFreeWords = itemSearchIndices.Select(i => i?.FreeWord ?? string.Empty);
         var freeWord = string.Join("\n",
-            groupName.ToRomaji()
+            new[] { groupName.ToCanonicalRomaji() }
                 .Concat([groupName.ToHiragana()])
                 .Concat(itemFreeWords)
         ).ToLowerInvariant();

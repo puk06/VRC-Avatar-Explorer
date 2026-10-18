@@ -20,4 +20,12 @@ public static class JapaneseTransliterationExtensions
     /// <param name="kana">変換対象のひらがなまたはカタカナの文字列。</param>
     /// <returns>変換されたひらがなの文字列。</returns>
     public static string ToHiragana(this string kana) => JapanesePhoneticsHelper.ToHiragana(kana);
+
+    /// <summary>
+    /// 指定されたかなを、表記揺れを展開しない代表的なローマ字へ変換します。
+    /// </summary>
+    /// <param name="kana">変換対象のかな。</param>
+    /// <returns>代表的なローマ字表記。</returns>
+    public static string ToCanonicalRomaji(this string kana) =>
+        JapanesePhoneticsHelper.ToCanonicalRomaji(kana);
 }
