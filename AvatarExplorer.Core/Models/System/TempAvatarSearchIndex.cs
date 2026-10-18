@@ -72,7 +72,7 @@ public record TempAvatarSearchIndex : ISearchIndex
             tempAvatar.BoothId >= 0 ? tempAvatar.BoothId.ToString() : string.Empty
         };
         var freeWord = string.Join("\n",
-            freeWordSources.SelectMany(value => value.ToRomaji())
+            freeWordSources.Select(value => value.ToCanonicalRomaji())
                 .Concat(freeWordSources.Select(value => value.ToHiragana()))
         ).ToLowerInvariant();
 

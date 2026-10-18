@@ -145,7 +145,7 @@ public record ItemSearchIndex : ISearchIndex
         freeWordSources.AddRange(commonAvatarNames);
 
         var freeWord = string.Join("\n",
-            freeWordSources.SelectMany(value => value.ToRomaji())
+            freeWordSources.Select(value => value.ToCanonicalRomaji())
                 .Concat(freeWordSources.Select(value => value.ToHiragana()))
         ).ToLowerInvariant();
 

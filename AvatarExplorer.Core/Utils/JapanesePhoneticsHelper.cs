@@ -116,6 +116,70 @@ public static class JapanesePhoneticsHelper
     }
 
     /// <summary>
+    /// かなを代表的なローマ字表記へ変換します。
+    /// 表記揺れの組み合わせを生成しないため、長い文字列でも候補数が増加しません。
+    /// </summary>
+    /// <param name="kana">変換対象の文字列。</param>
+    /// <returns>代表的なローマ字表記。</returns>
+    public static string ToCanonicalRomaji(string kana)
+    {
+        var result = new System.Text.StringBuilder(kana.Length);
+        bool sokuon = false;
+
+        int index = 0;
+        while (index < kana.Length)
+        {
+            var start = index;
+            var tokenLength = 1;
+            string? token = null;
+            if (index + 1 < kana.Length)
+            {
+                var digraph = ToHiragana(kana[index..(index + 2)]);
+                if (RomajiMap.ContainsKey(digraph))
+                {
+                    token = digraph;
+                    tokenLength = 2;
+                }
+            }
+
+            var source = kana[start..(start + tokenLength)];
+            index += tokenLength;
+
+            if (token is null)
+            {
+                var single = ToHiragana(source);
+                if (single == "っ")
+                {
+                    sokuon = true;
+                    continue;
+                }
+
+                if (single == "ー")
+                {
+                    result.Append('-');
+                    continue;
+                }
+
+                token = single;
+            }
+
+            if (!RomajiMap.TryGetValue(token, out var spellings))
+            {
+                result.Append(source);
+                sokuon = false;
+                continue;
+            }
+
+            var spelling = spellings[0];
+            result.Append(sokuon ? DoubleInitialConsonant(spelling) : spelling);
+            sokuon = false;
+        }
+
+        if (sokuon) result.Append('っ');
+        return result.ToString();
+    }
+
+    /// <summary>
     /// 指定された文字列のカタカナをひらがなに変換します。カタカナ以外の文字はそのまま返します。
     /// 変換は Unicode のコードポイントの差を利用して行います。
     /// </summary>
