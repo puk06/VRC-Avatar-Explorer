@@ -76,6 +76,7 @@
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "이 임시 아바타에 Booth ID를 설정하시겠습니까?\n\n※Booth ID를 설정하면 ID 검색이나 Booth에서 항목 추가 시 연결에 이용됩니다.",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Booth ID가 일치하는 임시 아바타 \"{0}\"를 찾았습니다.\n이 임시 아바타를 정식 아이템으로 연결하시겠습니까?",
     "Dialog.Confirmation.CreateUnitypackage": "폴더 \"{0}\"의 모든 파일을 Unitypackage로 변환하시겠습니까?\n\n※변환 후에도 원본 파일은 삭제되지 않습니다.",
+    "Dialog.Confirmation.ImportFromOtherTools": "다른 도구에서 데이터를 가져오시겠습니까?\n\n현재 가져오기를 지원하는 도구 목록\n- VRC Avatar Explorer V1.x.x\n- KonoAsset\n\n※가져오기 후에도 원본 데이터는 삭제되지 않습니다.",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "같은 Booth ID의 임시 아바타 \"{0}\"가 이미 등록되어 있습니다.\n임시 아바타 \"{1}\"를 등록된 임시 아바타 \"{0}\"로 바꾸고 삭제하시겠습니까?",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "같은 Booth ID의 임시 아바타 \"{0}\"가 이미 등록되어 있습니다.\n계속 생성하시겠습니까?",
 

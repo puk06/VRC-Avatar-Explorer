@@ -132,6 +132,7 @@ public static class Loc
             public const string SetBoothIdForTempAvatar = "Dialog.Confirmation.SetBoothIdForTempAvatar";
             public const string ResolveSameBoothIdTempAvatar = "Dialog.Confirmation.ResolveSameBoothIdTempAvatar";
             public const string CreateUnitypackage = "Dialog.Confirmation.CreateUnitypackage";
+            public const string ImportFromOtherTools = "Dialog.Confirmation.ImportFromOtherTools";
             public const string ReplaceAndDeleteSameBoothIdTempAvatar = "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar";
             public const string ContinueWithSameBoothIdTempAvatar = "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar";
             public static class EditCommonAvatars

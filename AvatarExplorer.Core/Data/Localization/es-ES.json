@@ -76,6 +76,7 @@
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "¿Establecer Booth ID para este avatar temporal?\n\n※Establecer un Booth ID permite la vinculación al agregar elementos mediante búsqueda de ID o desde Booth.",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Se encontró un avatar temporal \"{0}\" con un Booth ID coincidente.\n¿Desea vincular este avatar temporal como un elemento permanente?",
     "Dialog.Confirmation.CreateUnitypackage": "¿Convertir todos los archivos de la carpeta \"{0}\" en un Unitypackage?\n\n※Los archivos originales no se eliminarán después de la conversión.",
+    "Dialog.Confirmation.ImportFromOtherTools": "¿Importar datos desde otras herramientas?\n\nHerramientas actualmente compatibles con la importación\n- VRC Avatar Explorer V1.x.x\n- KonoAsset\n\n※Los datos originales no se eliminarán después de la importación.",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "Ya hay registrado un avatar temporal \"{0}\" con el mismo Booth ID.\n¿Desea reemplazar el avatar temporal \"{1}\" por el avatar temporal registrado \"{0}\" y eliminarlo?",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "Ya hay registrado un avatar temporal \"{0}\" con el mismo Booth ID.\n¿Desea continuar con la creación?",
 

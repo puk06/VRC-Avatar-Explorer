@@ -1,12 +1,8 @@
 using System.Reactive.Linq;
-using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
-using AvatarExplorer.Core.Services.System;
-using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
-using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -24,7 +20,7 @@ public partial class InitialSetupViewModel : ViewModelBase, IInitializable, IPos
 
     public InitialSetupViewModel()
     {
-        CloseCommand = ReactiveCommand.Create(Close);
+        CloseCommand = ReactiveCommand.CreateFromTask(Close);
 
         IInitializableRegistry.Register(0, (IInitializable)this);
         IInitializableRegistry.Register(int.MaxValue, (IPostInitializable)this);
@@ -58,7 +54,6 @@ public partial class InitialSetupViewModel : ViewModelBase, IInitializable, IPos
         }
 
         Open();
-        _ = ShowSchemeRegistrationDialog();
     }
 
     public void Open()
@@ -71,40 +66,20 @@ public partial class InitialSetupViewModel : ViewModelBase, IInitializable, IPos
         IsVisible = true;
     }
 
-    private void Close()
+    private async Task Close()
     {
-        MarkInitialSetupCompleted();
         IsVisible = false;
+
+        // 他のツールからデータをインポートするかどうか
+        var importFromOtherTools = await InstanceRepository.MainWindow.ShowYesNoDialog(
+            Localizer.Instance[Loc.Dialog.Confirmation.Default],
+            Localizer.Instance[Loc.Dialog.Confirmation.ImportFromOtherTools]
+        );
+        if (importFromOtherTools) InstanceRepository.MainWindow.ImportDataVM.Open();
+
+        MarkInitialSetupCompleted();
     }
 
     private static void MarkInitialSetupCompleted() =>
         InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with { InitialSetupCompleted = true });
-
-    private static async Task ShowSchemeRegistrationDialog()
-    {
-        if (SchemeService.IsOwnSchemeRegistered(SchemeService.ProtocolVRCAE)) return;
-
-        var result = await InstanceRepository.MainWindow.ShowYesNoDialog(
-            Localizer.Instance[Loc.Dialog.Confirmation.Default],
-            Localizer.Instance[Loc.Scheme.Register]
-        );
-
-        if (result)
-        {
-            SchemeService.RegisterScheme(SchemeService.ProtocolVRCAE);
-            NotificationManager.Show(
-                Localizer.Instance[Loc.Success.Default],
-                Localizer.Instance[Loc.Scheme.RegisterSuccess],
-                NotificationType.Success
-            );
-        }
-        else
-        {
-            NotificationManager.Show(
-                Localizer.Instance[Loc.Dialog.Confirmation.Default],
-                Localizer.Instance[Loc.Scheme.RegisterSkipped],
-                NotificationType.Information
-            );
-        }
-    }
 }

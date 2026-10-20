@@ -76,7 +76,7 @@
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "仮アバターにBooth IDを設定しますか？\n\n※Booth IDを設定すると、ID検索や該当アイテム追加時に自動で紐付けされるようになります。",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "Booth IDが一致する仮アバター「{0}」が見つかりました。\nこの仮アバターを正式アイテムとして紐付けますか？",
     "Dialog.Confirmation.CreateUnitypackage": "フォルダ「{0}」内の全てのファイルをUnitypackageに変換しますか？\n\n※変換後、元のファイルは削除されません。",
-
+    "Dialog.Confirmation.ImportFromOtherTools": "他のツールからデータをインポートしますか？\n\n現時点でインポートに対応しているツール一覧\n- VRC Avatar Explorer V1.x.x\n- KonoAsset\n\n※インポートしても元のデータは削除されません。",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "既に同じBooth IDの仮アバター「{0}」が登録されています。\n仮アバター「{1}」を登録済みの仮アバター「{0}」に置き換えて削除しますか？",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "既に同じBooth IDの仮アバター「{0}」が登録されています。\n作成を続行しますか？",
 
