@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using AvatarExplorer.UI.ViewModels;
 using Avalonia.Platform.Storage;
-using AvatarExplorer.Core.Services.System;
 using Avalonia.Threading;
 
 namespace AvatarExplorer.UI;
@@ -12,10 +11,14 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
+
+        // 引数の受信処理は MainWindowViewModel が購読する。
+        // ここではウィンドウの復帰・前面化のみを行う。
+        if (DataContext is MainWindowViewModel vm)
+            vm.PipeMessageReceived += OnPipeMessageReceived;
     }
 
-    private void OnPipeMessageReceived(string[] args)
+    private void OnPipeMessageReceived()
     {
         Dispatcher.UIThread.Post(() =>
         {

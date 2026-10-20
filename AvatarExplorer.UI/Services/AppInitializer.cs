@@ -1,4 +1,3 @@
-using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.UI.Data.Paths;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services.ContextMenu;
@@ -35,11 +34,6 @@ public static class AppInitializer
             .Where(p => !string.IsNullOrEmpty(p))
             .ToArray();
         ImageService.StartThumbnailCacheWarmupInBackground(thumbnailFileNames);
-    }
-
-    public static void StartSingleInstanceService()
-    {
-        SingleInstanceService.StartServer();
     }
 
     public static void RegisterBackupFiles()

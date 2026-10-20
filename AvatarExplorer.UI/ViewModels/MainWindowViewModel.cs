@@ -78,6 +78,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
 
     public event Action? WindowClosing;
     public event Action<KeyEventArgs>? KeyDown;
+    public event Action? PipeMessageReceived;
 
     public string[] ApplicationArgs { get; private set; } = [];
 
@@ -100,13 +101,12 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
         AppInitializer.RegisterBackupFiles();
         ImageService.UpdateCompressedThumbnailMaxEdge(InstanceRepository.UserPreferences.ThumbnailCompressionMaxEdge);
         AppInitializer.StartThumbnailCacheWarmup();
-        AppInitializer.StartSingleInstanceService();
 
         InstanceRepository.UserPreferencesRepository.OnSettingsChanged += ApplyPreferenceSettings;
         Localizer.Instance.LanguageChanged += OnLanguageUpdated;
         InstanceRepository.App.ArchivePasswordProvider = GetArchivePassword;
         UpdateChecker.UpdateAvailable += OnUpdateAvailable;
-        SingleInstanceService.OnPipeMessageReceived += OnPipeMessageReceived;
+        SingleInstanceService.Subscribe(OnPipeMessageReceived);
         InstanceRepository.App.BackupManager.OnBackupRestored += OnBackupRestored;
         ErrorManager.Instance.OnErrorOccured += OnErrorOccured;
 
@@ -212,7 +212,11 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
         IsUpdateDialogVisible = true;
     }
 
-    private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() => OnArgsReceived(args));
+    private void OnPipeMessageReceived(string[] args) => Dispatcher.UIThread.Post(() =>
+    {
+        PipeMessageReceived?.Invoke();
+        OnArgsReceived(args);
+    });
     public void SetApplicationArgs(string[] args)
     {
         ApplicationArgs = args;
