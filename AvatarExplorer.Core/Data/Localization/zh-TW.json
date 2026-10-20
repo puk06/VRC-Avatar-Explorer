@@ -76,6 +76,7 @@
     "Dialog.Confirmation.SetBoothIdForTempAvatar": "要為此暫時頭像設定 Booth ID 嗎？\n\n※設定 Booth ID 後，可透過 ID 搜尋或從 Booth 新增項目時進行連結。",
     "Dialog.Confirmation.ResolveSameBoothIdTempAvatar": "找到了 Booth ID 一致的暫時頭像「{0}」。\n要將此暫時頭像連結為正式項目嗎？",
     "Dialog.Confirmation.CreateUnitypackage": "要將資料夾「{0}」中的所有檔案轉換為 Unitypackage 嗎？\n\n※轉換後不會刪除原始檔案。",
+    "Dialog.Confirmation.ImportFromOtherTools": "要從其他工具匯入資料嗎？\n\n目前支援匯入的工具清單\n- VRC Avatar Explorer V1.x.x\n- KonoAsset\n\n※匯入後不會刪除原始資料。",
     "Dialog.Confirmation.ReplaceAndDeleteSameBoothIdTempAvatar": "已註冊 Booth ID 相同的暫時頭像「{0}」。\n要將暫時頭像「{1}」替換為已註冊的暫時頭像「{0}」並刪除它嗎？",
     "Dialog.Confirmation.ContinueWithSameBoothIdTempAvatar": "已註冊 Booth ID 相同的暫時頭像「{0}」。\n要繼續建立嗎？",
 
