@@ -29,6 +29,10 @@ static class Program
                 SingleInstanceService.SendToServer(args);
                 return;
             }
+
+            // DB読み込みなどの起動処理を待たずにパイプサーバーを立てる。
+            // 起動中に別インスタンスから転送された引数は保留され、購読時に通知される。
+            SingleInstanceService.StartServer();
         }
 
         BuildAvaloniaApp()
