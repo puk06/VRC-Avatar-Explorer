@@ -33,6 +33,10 @@ public partial class InitialSetupViewModel : ViewModelBase, IInitializable, IPos
             {
                 if (!IsVisible) return;
                 Localizer.Instance.SetLanguage(i);
+                InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with
+                {
+                    Language = Localizer.Instance.CurrentLanguageIndex
+                });
             });
 
         this.WhenAnyValue(x => x.ItemsFolder)
