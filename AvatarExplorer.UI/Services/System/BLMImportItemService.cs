@@ -6,7 +6,7 @@ namespace AvatarExplorer.UI.Services.System;
 
 public static class BLMImportItemService
 {
-    public static BLMImportItemInfo? GetBLMImportItemInfo(string uriString)
+    public static ImportItemInfo? GetImportItemInfo(string uriString)
     {
         if (!UriUtils.TryParse(uriString, out var uri)) return null;
 
@@ -26,7 +26,7 @@ public static class BLMImportItemService
         var variationID = query.Get("variation_id");
         if (variationID == null) return null;
 
-        return new BLMImportItemInfo()
+        return new ImportItemInfo()
         {
             DownloadURL = dlURL,
             DownloadableFilename = dlFileName,

@@ -151,25 +151,25 @@ public partial class ItemEditorViewModel : ViewModelBase
         await FetchBoothData();
     }
 
-    public async Task Open(BLMImportItemInfo launchInfo)
+    public async Task Open(ImportItemInfo itemInfo)
     {
-        if (IsVisible && BoothId == launchInfo.ItemID)
+        if (IsVisible && BoothId == itemInfo.ItemID)
         {
-            ItemContents.Add(new ItemContentViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemContentType.URL));
+            ItemContents.Add(new ItemContentViewModel(itemInfo.DownloadableFilename, itemInfo.DownloadURL, ItemContentType.URL));
             RemoveDuplicatePaths();
             return;
         }
 
         ResetFields();
-        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.ItemID);
-        BoothId = launchInfo.ItemID;
+        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], itemInfo.ItemID);
+        BoothId = itemInfo.ItemID;
 
         RefleshCategories();
         SelectedCategoryIndex = 0;
         UpdateCountField();
         IsVisible = true;
 
-        ItemContents.Add(new ItemContentViewModel(launchInfo.DownloadableFilename, launchInfo.DownloadURL, ItemContentType.URL));
+        ItemContents.Add(new ItemContentViewModel(itemInfo.DownloadableFilename, itemInfo.DownloadURL, ItemContentType.URL));
         RemoveDuplicatePaths();
 
         await FetchBoothData();
