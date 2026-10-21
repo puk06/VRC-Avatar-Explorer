@@ -235,10 +235,10 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
         }
         else if (VRCAEImportItemService.IsBulkImportUri(uri))
         {
-            var vrcaeImportItemInfos = VRCAEImportItemService.GetVRCAEImportItemInfos(uri);
-            if (vrcaeImportItemInfos != null)
+            var importItemInfos = VRCAEImportItemService.GetVRCAEImportItemInfos(uri);
+            if (importItemInfos != null)
             {
-                foreach (var importItemInfo in vrcaeImportItemInfos)
+                foreach (var importItemInfo in importItemInfos)
                     _ = ItemEditorVM.Open(importItemInfo);
             }
         }
