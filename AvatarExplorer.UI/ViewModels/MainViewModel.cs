@@ -370,13 +370,10 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         else
         {
             DisposeItemViewModels(_allMainItems);
-            _allMainItems = ItemSortService
-            .Sort(
-                _searchManager.SearchItems(searchQuery),
-                sortOrder, sortDirection, UserPreferences.RemoveBrackets
-            )
-            .Select(i => CreateItemViewModel(i, isAnimated))
-            .ToList();
+            _allMainItems = _searchManager
+                .SearchItems(searchQuery)
+                .Select(i => CreateItemViewModel(i, isAnimated))
+                .ToList();
         }
 
         RightPageInfo.TotalItems = _allMainItems.Count;

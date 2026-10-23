@@ -32,9 +32,9 @@ public class ItemGroupService
     private readonly TempAvatarRepository _tempAvatars;
     private readonly RuntimeSettingsRepository _runtimesettings;
 
-    private readonly ConcurrentDictionary<string, ItemSearchIndex> _itemSearchIndices = new();
-    private readonly ConcurrentDictionary<string, CommonAvatarSearchIndex> _commonAvatarSearchIndices = new();
-    private readonly ConcurrentDictionary<string, TempAvatarSearchIndex> _tempAvatarSearchIndices = new();
+    private readonly ConcurrentDictionary<string, IReadOnlyList<SearchIndex>> _itemSearchIndices = new();
+    private readonly ConcurrentDictionary<string, IReadOnlyList<SearchIndex>> _commonAvatarSearchIndices = new();
+    private readonly ConcurrentDictionary<string, IReadOnlyList<SearchIndex>> _tempAvatarSearchIndices = new();
     private bool _indicesBuilt;
     private readonly Lock _indicesLock = new();
 
@@ -430,22 +430,16 @@ public class ItemGroupService
             .ToArray();
     }
 
-    private static bool TryGetScore(ISearchIndex index, SearchQuery query, Func<string, string>? locKeyProvider, out int score)
-    {
-        score = index.CountMatches(query.Tokens, locKeyProvider);
-        return query.IsOr ? score > 0 : score == query.Tokens.Count;
-    }
-
-    private static void CollectMatches<TIndex>(
+    private static void CollectMatches(
         IEnumerable<string> identifiers,
-        IReadOnlyDictionary<string, TIndex> indices,
+        IReadOnlyDictionary<string, IReadOnlyList<SearchIndex>> indices,
         SearchQuery query,
         Func<string, string>? locKeyProvider,
-        List<(string Identifier, int Score)> results) where TIndex : ISearchIndex
+        List<(string Identifier, int Score)> results)
     {
         foreach (var id in identifiers)
         {
-            if (indices.TryGetValue(id, out var index) && TryGetScore(index, query, locKeyProvider, out var score))
+            if (indices.TryGetValue(id, out var index) && SearchIndex.TryGetScore(index, query, locKeyProvider, out var score))
                 results.Add((id, score));
         }
     }
@@ -475,12 +469,12 @@ public class ItemGroupService
         {
             var targetItemIndices = commonAvatar.Avatars
                 .Select(a => _itemSearchIndices.TryGetValue(a, out var index) ? index : null);
-            _commonAvatarSearchIndices[commonAvatar.Identifier] = CommonAvatarSearchIndex.Build(commonAvatar, targetItemIndices);
+            _commonAvatarSearchIndices[commonAvatar.Identifier] = SearchIndex.BuildCommonAvatar(commonAvatar, targetItemIndices);
         }
 
         foreach (var tempAvatar in _tempAvatars.GetAll())
         {
-            _tempAvatarSearchIndices[tempAvatar.Identifier] = TempAvatarSearchIndex.Build(tempAvatar);
+            _tempAvatarSearchIndices[tempAvatar.Identifier] = SearchIndex.BuildTempAvatar(tempAvatar);
         }
     }
 
@@ -510,7 +504,7 @@ public class ItemGroupService
             .Select(ca => ca.GroupName)
             .ToArray();
 
-        _itemSearchIndices[item.Identifier] = ItemSearchIndex.Build(
+        _itemSearchIndices[item.Identifier] = SearchIndex.BuildItem(
             item,
             supportedAvatarNames,
             implementedAvatarNames,
