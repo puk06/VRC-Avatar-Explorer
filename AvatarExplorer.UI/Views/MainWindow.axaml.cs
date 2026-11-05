@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
 using AvatarExplorer.UI.ViewModels;
@@ -9,10 +8,6 @@ namespace AvatarExplorer.UI;
 
 public partial class MainWindow : Window
 {
-    private const double BaseMinWidth = 1280;
-    private const double BaseMinHeight = 720;
-    private double _lastUiScale = 1.0;
-
     public MainWindow()
     {
         InitializeComponent();
@@ -20,32 +15,7 @@ public partial class MainWindow : Window
         // 引数の受信処理は MainWindowViewModel が購読する。
         // ここではウィンドウの復帰・前面化のみを行う。
         if (DataContext is MainWindowViewModel vm)
-        {
             vm.PipeMessageReceived += OnPipeMessageReceived;
-            vm.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(MainWindowViewModel.UiScale))
-                    ApplyUiScale(vm.UiScale);
-            };
-            ApplyUiScale(vm.UiScale);
-        }
-    }
-
-    private void ApplyUiScale(double scale)
-    {
-        var clampedScale = Math.Clamp(scale, MainWindowViewModel.MinUiScale, MainWindowViewModel.MaxUiScale);
-
-        MinWidth = BaseMinWidth * clampedScale;
-        MinHeight = BaseMinHeight * clampedScale;
-
-        if (WindowState == WindowState.Normal)
-        {
-            var ratio = clampedScale / _lastUiScale;
-            Width = Math.Max(MinWidth, Width * ratio);
-            Height = Math.Max(MinHeight, Height * ratio);
-        }
-
-        _lastUiScale = clampedScale;
     }
 
     private void OnPipeMessageReceived()
