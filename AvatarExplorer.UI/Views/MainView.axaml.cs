@@ -133,6 +133,14 @@ public partial class MainView : UserControl
     private void RegisterWindowClosingEvent()
     {
         InstanceRepository.MainWindow.WindowClosing += CloseHoverWindow;
+        InstanceRepository.MainWindow.WindowClosing += SaveDisplayOptions;
+    }
+
+    private void OnDisplayOptionsFlyoutClosed(object? sender, EventArgs e) => SaveDisplayOptions();
+
+    private void SaveDisplayOptions()
+    {
+        if (DataContext is MainViewModel vm) vm.SaveDisplayOptions();
     }
 
     private void RegisterPathScrollEvent()

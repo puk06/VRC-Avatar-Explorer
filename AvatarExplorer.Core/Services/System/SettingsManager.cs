@@ -27,6 +27,15 @@ public class SettingsManager<T>(string filePath) where T : class, new()
         SettingsChanged?.Invoke(newSettings);
     }
 
+    /// <summary>
+    /// 設定を新しいインスタンスに置き換えますが、<see cref="SettingsChanged"/> イベントは発火しません。
+    /// </summary>
+    /// <param name="newSettings">適用する新しい設定。</param>
+    public void UpdateWithoutNotify(T newSettings)
+    {
+        _settings = newSettings;
+    }
+
     /// <summary>設定ファイルから JSON を読み込み、設定を復元します。ファイルが存在しない、または読み込みに失敗した場合は既定のインスタンスで初期化されます。</summary>
     public void Load()
     {
