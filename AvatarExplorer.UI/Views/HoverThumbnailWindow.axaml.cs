@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using AvatarExplorer.UI.ViewModels;
 
 namespace AvatarExplorer.UI.Views;
 
@@ -17,7 +18,7 @@ public partial class HoverThumbnailWindow : Window
 
     public void SetSize(int size)
     {
-        Width = size;
-        Height = size;
+        var scale = MainWindowViewModel.Instance?.UiScale ?? 1.0;
+        Width = Height = size * scale;
     }
 }

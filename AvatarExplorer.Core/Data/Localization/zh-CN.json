@@ -343,6 +343,9 @@
     "Settings.EnableButtonAnimation.Title": "启用按钮动画",
     "Settings.EnableButtonAnimation.Description": "启用按钮显示时的动画",
 
+    "Settings.UiScale.Title": "UI 缩放",
+    "Settings.UiScale.Description": "调整窗口内整个 UI 的显示比例。使用 Ctrl +/- 切换，Ctrl+0 重置",
+
     "Settings.Item": "项目",
     "Settings.AutoChangeUnitypackagePath.Title": "自动更改Unitypackage路径",
     "Settings.AutoChangeUnitypackagePath.Description": "导入Unitypackage时，自动将资产的放置路径更改为\"Assets/{分类名}/原始路径\"。仅\"Assets\"下的路径会被修改。多个Unitypackage也可以合并为一个。也可以从右键菜单正常导入",

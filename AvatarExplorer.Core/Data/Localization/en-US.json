@@ -343,6 +343,9 @@
     "Settings.EnableButtonAnimation.Title": "Enable Button Animation",
     "Settings.EnableButtonAnimation.Description": "Enable animation when buttons are displayed",
 
+    "Settings.UiScale.Title": "UI Scale",
+    "Settings.UiScale.Description": "Adjusts the display scale of the entire UI inside the window. Use Ctrl +/- to change and Ctrl+0 to reset",
+
     "Settings.Item": "Item",
     "Settings.AutoChangeUnitypackagePath.Title": "Auto Change Unitypackage Path",
     "Settings.AutoChangeUnitypackagePath.Description": "When importing a Unitypackage, automatically changes the asset destination to \"Assets/{Category}/Original Path\". Only paths under \"Assets\" are affected. Multiple Unitypackages can also be merged into one. You can also import normally from the right-click menu",

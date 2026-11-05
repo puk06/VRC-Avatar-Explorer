@@ -357,7 +357,8 @@ public partial class MainView : UserControl
         if (screen is null) return new PixelPoint(position.X + HoverOffset, position.Y + HoverOffset);
 
         var workingArea = screen.WorkingArea;
-        var size = (int)(InstanceRepository.UserPreferences.HoverIconSize * screen.Scaling);
+        var uiScale = MainWindowViewModel.Instance?.UiScale ?? 1.0;
+        var size = (int)(InstanceRepository.UserPreferences.HoverIconSize * uiScale * screen.Scaling);
 
         var x = position.X + HoverOffset + size > workingArea.Right
             ? Math.Max(workingArea.X, position.X - size - HoverOffset)

@@ -555,6 +555,11 @@ public static class Loc
             public const string Title = "Settings.EnableButtonAnimation.Title";
             public const string Description = "Settings.EnableButtonAnimation.Description";
         }
+        public static class UiScale
+        {
+            public const string Title = "Settings.UiScale.Title";
+            public const string Description = "Settings.UiScale.Description";
+        }
         public const string Item = "Settings.Item";
         public static class AutoChangeUnitypackagePath
         {

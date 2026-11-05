@@ -25,5 +25,6 @@ public record UserPreferences
     public GridItemSize GridItemSize { get; init; } = GridItemSize.Medium;
     public bool EnableSearchInFolder { get; init; } = true;
     public bool EnableButtonAnimation { get; init; } = true;
+    public double UiScale { get; init; } = 1.0;
     public bool InitialSetupCompleted { get; init; } = false;
 }

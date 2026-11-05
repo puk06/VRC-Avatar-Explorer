@@ -343,6 +343,9 @@
     "Settings.EnableButtonAnimation.Title": "Habilitar animación de botones",
     "Settings.EnableButtonAnimation.Description": "Habilita la animación cuando se muestran los botones",
 
+    "Settings.UiScale.Title": "Escala de la interfaz",
+    "Settings.UiScale.Description": "Ajusta la escala de visualización de toda la interfaz dentro de la ventana. Se puede cambiar con Ctrl +/- y restablecer con Ctrl+0",
+
     "Settings.Item": "Elemento",
     "Settings.AutoChangeUnitypackagePath.Title": "Cambiar auto. ruta del Unitypackage",
     "Settings.AutoChangeUnitypackagePath.Description": "Al importar un Unitypackage, cambia automáticamente la ubicación de los assets a \"Assets/{Categoría}/Ruta original\". Solo se modifican las rutas bajo \"Assets\". También se pueden fusionar varios Unitypackages en uno. También puedes importar normalmente desde el menú contextual",
