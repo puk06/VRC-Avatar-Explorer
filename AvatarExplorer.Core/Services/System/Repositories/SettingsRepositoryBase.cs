@@ -31,6 +31,14 @@ public abstract class SettingsRepositoryBase<T> : ISettingsRepository<T> where T
         Manager.Save();
     }
 
+    /// <summary>指定した設定で現在の設定を更新して保存しますが、変更通知は発火しません。</summary>
+    /// <param name="settings">新しく適用する設定。</param>
+    public void UpdateWithoutNotify(T settings)
+    {
+        Manager.UpdateWithoutNotify(settings);
+        Manager.Save();
+    }
+
     /// <summary>現在の設定をファイルへ保存します。</summary>
     public void Save() => Manager.Save();
 

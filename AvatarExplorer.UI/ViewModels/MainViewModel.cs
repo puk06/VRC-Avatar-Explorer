@@ -331,6 +331,23 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         MainGridItemSize = (int)UserPreferences.GridItemSize;
     }
 
+    /// <summary>右上の表示オプションの設定をユーザー設定へ保存します。</summary>
+    public void SaveDisplayOptions()
+    {
+        var current = InstanceRepository.UserPreferences;
+        var updated = current with
+        {
+            MainViewMode = MainViewMode,
+            GridItemSize = (GridItemSize)MainGridItemSize,
+            SortOrder = (ItemSortOrder)MainSortOrder,
+            SortDirection = (SortDirection)MainSortDirection,
+            ImplementedSort = (ImplementedSort)MainImplementedSort
+        };
+
+        if (updated == current) return;
+        InstanceRepository.UserPreferencesRepository.UpdateWithoutNotify(updated);
+    }
+
     private void Refresh(bool refreshLeftPanelItems = true, Guid? restoreRightStateGuid = null)
     {
         if (refreshLeftPanelItems) UpdateLeftPanelItems();
