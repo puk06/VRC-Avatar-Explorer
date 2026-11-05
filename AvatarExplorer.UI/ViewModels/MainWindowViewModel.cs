@@ -33,6 +33,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     [Reactive] public partial int BackgroundBlurRadius { get; set; } = 0;
     [Reactive] public partial IBrush? Background { get; set; } = null;
     [Reactive] public partial FontFamily FontFamily { get; set; } = FontUtils.GetFontFamily(null);
+    [Reactive] public partial double UiScale { get; set; } = 1.0;
     [Reactive] public partial bool IsAnyOverlayVisible { get; set; }
 
     public static MainWindowViewModel Instance { get; private set; } = null!;
@@ -306,8 +307,14 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
         return password;
     }
 
+    public const double MinUiScale = 0.5;
+    public const double MaxUiScale = 1.5;
+    public const double UiScaleStep = 0.1;
+
     private void ApplyPreferenceSettings(UserPreferences settings)
     {
+        UiScale = Math.Clamp(settings.UiScale, MinUiScale, MaxUiScale);
+
         Localizer.Instance.SetLanguage(settings.Language);
 
         ImageService.UpdateCompressedThumbnailMaxEdge(InstanceRepository.UserPreferences.ThumbnailCompressionMaxEdge);
@@ -367,7 +374,55 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
 
     public void OnKeyDown(KeyEventArgs e)
     {
+        if (!e.Handled && (e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control)
+        {
+            if (e.Key is Key.OemPlus or Key.Add)
+            {
+                IncreaseUiScale();
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key is Key.OemMinus or Key.Subtract)
+            {
+                DecreaseUiScale();
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key is Key.D0 or Key.NumPad0)
+            {
+                SetUiScale(1.0);
+                e.Handled = true;
+                return;
+            }
+        }
+
         KeyDown?.Invoke(e);
+    }
+
+    public void IncreaseUiScale()
+    {
+        SetUiScale(UiScale + UiScaleStep);
+    }
+
+    public void DecreaseUiScale()
+    {
+        SetUiScale(UiScale - UiScaleStep);
+    }
+
+    public void SetUiScale(double scale)
+    {
+        var newScale = Math.Round(Math.Clamp(scale, MinUiScale, MaxUiScale), 1);
+        if (Math.Abs(newScale - UiScale) < 0.001) return;
+
+        UiScale = newScale;
+
+        var current = InstanceRepository.UserPreferences;
+        if (Math.Abs(current.UiScale - newScale) >= 0.001)
+        {
+            InstanceRepository.UserPreferencesRepository.UpdateWithoutNotify(current with { UiScale = newScale });
+        }
     }
 
     private bool CheckAnyOverlayVisible()

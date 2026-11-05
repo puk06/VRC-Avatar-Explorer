@@ -10,7 +10,6 @@
         WindowStartupLocation="CenterScreen"
         FontFamily="{Binding FontFamily}"
         Title="{Binding WindowTitle}"
-        MinWidth="1280" MinHeight="720"
         Width="1280" Height="720"
         Background="{Binding Background}"
         DragDrop.AllowDrop="True"
@@ -23,103 +22,109 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
-    <Panel>
-        <Panel Background="{Binding BackgroundImage}">
-            <Panel.Effect>
-                <BlurEffect Radius="{Binding BackgroundBlurRadius}" />
-            </Panel.Effect>
+    <LayoutTransformControl>
+        <LayoutTransformControl.LayoutTransform>
+            <ScaleTransform ScaleX="{Binding UiScale}" ScaleY="{Binding UiScale}" />
+        </LayoutTransformControl.LayoutTransform>
+
+        <Panel>
+            <Panel Background="{Binding BackgroundImage}">
+                <Panel.Effect>
+                    <BlurEffect Radius="{Binding BackgroundBlurRadius}" />
+                </Panel.Effect>
+            </Panel>
+
+            <views:MainView/>
+
+            <ContentControl IsVisible="{Binding SettingsVM.IsVisible}">
+                <overlays:SettingsOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding ItemEditorVM.IsVisible}">
+                <overlays:ItemEditorOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding SelectAvatarsVisible}">
+                <overlays:SelectAvatarsOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding ResolveTempAvatarVM.IsVisible}">
+                <overlays:ResolveTempAvatarOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding EditCommonAvatarsVM.IsVisible}">
+                <overlays:EditCommonAvatarsOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding IsEditMemoVisible}">
+                <overlays:EditMemoOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding IsEditTagsVisible}">
+                <overlays:EditTagsOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding ImportDataVM.IsVisible}">
+                <overlays:ImportDataOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding ResetDatabaseVM.IsVisible}">
+                <overlays:ResetDatabaseOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding ExportDataVM.IsVisible}">
+                <overlays:ExportDataOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding FetchAllThumbnailsVM.IsVisible}">
+                <overlays:FetchAllThumbnailsOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding FetchAllVariationHashesVM.IsVisible}">
+                <overlays:FetchAllVariationHashesOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding UnitypackageViewerVM.IsVisible}">
+                <overlays:UnitypackageViewerOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding PdfViewerVM.IsVisible}">
+                <overlays:PdfViewerOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding IsTextDialogVisible}">
+                <overlays:TextDialogOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding IsArchivePasswordDialogVisible}">
+                <overlays:ArchivePasswordDialogOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding UpdateDialogVM.IsVisible}">
+                <overlays:UpdateDialogOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding MergeCategoryVM.IsVisible}">
+                <overlays:MergeCategoryDialog/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding TagEditorVM.IsVisible}">
+                <overlays:TagEditorDialog/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding IsYesNoDialogVisible}">
+                <overlays:YesNoDialogOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding InitialSetupVM.IsVisible}">
+                <overlays:InitialSetupOverlay/>
+            </ContentControl>
+
+            <ContentControl IsVisible="{Binding ErrorLogVM.IsVisible}">
+                <overlays:ErrorLogOverlay/>
+            </ContentControl>
+
+            <msg:MessageHost Position="BottomRight"/>
         </Panel>
-
-        <views:MainView/>
-
-        <ContentControl IsVisible="{Binding SettingsVM.IsVisible}">
-            <overlays:SettingsOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding ItemEditorVM.IsVisible}">
-            <overlays:ItemEditorOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding SelectAvatarsVisible}">
-            <overlays:SelectAvatarsOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding ResolveTempAvatarVM.IsVisible}">
-            <overlays:ResolveTempAvatarOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding EditCommonAvatarsVM.IsVisible}">
-            <overlays:EditCommonAvatarsOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding IsEditMemoVisible}">
-            <overlays:EditMemoOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding IsEditTagsVisible}">
-            <overlays:EditTagsOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding ImportDataVM.IsVisible}">
-            <overlays:ImportDataOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding ResetDatabaseVM.IsVisible}">
-            <overlays:ResetDatabaseOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding ExportDataVM.IsVisible}">
-            <overlays:ExportDataOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding FetchAllThumbnailsVM.IsVisible}">
-            <overlays:FetchAllThumbnailsOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding FetchAllVariationHashesVM.IsVisible}">
-            <overlays:FetchAllVariationHashesOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding UnitypackageViewerVM.IsVisible}">
-            <overlays:UnitypackageViewerOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding PdfViewerVM.IsVisible}">
-            <overlays:PdfViewerOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding IsTextDialogVisible}">
-            <overlays:TextDialogOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding IsArchivePasswordDialogVisible}">
-            <overlays:ArchivePasswordDialogOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding UpdateDialogVM.IsVisible}">
-            <overlays:UpdateDialogOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding MergeCategoryVM.IsVisible}">
-            <overlays:MergeCategoryDialog/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding TagEditorVM.IsVisible}">
-            <overlays:TagEditorDialog/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding IsYesNoDialogVisible}">
-            <overlays:YesNoDialogOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding InitialSetupVM.IsVisible}">
-            <overlays:InitialSetupOverlay/>
-        </ContentControl>
-
-        <ContentControl IsVisible="{Binding ErrorLogVM.IsVisible}">
-            <overlays:ErrorLogOverlay/>
-        </ContentControl>
-
-        <msg:MessageHost Position="BottomRight"/>
-    </Panel>
+    </LayoutTransformControl>
 </Window>

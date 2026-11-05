@@ -343,6 +343,9 @@
     "Settings.EnableButtonAnimation.Title": "ボタンアニメーションを有効化",
     "Settings.EnableButtonAnimation.Description": "ボタンが表示される時のアニメーションを有効化します。",
 
+    "Settings.UiScale.Title": "UIスケール",
+    "Settings.UiScale.Description": "ウィンドウ内のUI全体の表示スケールを調整します。Ctrl + +/- で変更、Ctrl + 0 で100%に戻せます",
+
     "Settings.Item": "アイテム",
     "Settings.AutoChangeUnitypackagePath.Title": "Unitypackageのパスを自動で変更する",
     "Settings.AutoChangeUnitypackagePath.Description": "Unitypackageのインポート時、アセットの配置先を\"Assets/{カテゴリ名}/元のパス\"に自動で変更します。\"Assets\"以下のパスのみが対象です。複数のUnitypackageを1つにまとめることも可能です。右クリックメニューからは通常通りインポートすることもできます",
