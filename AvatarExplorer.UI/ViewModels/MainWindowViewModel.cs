@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using Avalonia.Themes.Fluent;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.Updates;
@@ -364,6 +365,17 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
         if (application == null) return;
 
         application.RequestedThemeVariant = theme;
+
+        if (!application.TryGetResource("Button.AccentBackground", application.ActualThemeVariant, out var resource) || resource is not ISolidColorBrush accentBrush)
+            return;
+
+        var palette = new ColorPaletteResources { Accent = accentBrush.Color };
+        foreach (var suffix in new[] { "", "Dark1", "Dark2", "Dark3", "Light1", "Light2", "Light3" })
+        {
+            var key = $"SystemAccentColor{suffix}";
+            if (palette.TryGetResource(key, null, out var color))
+                application.Resources[key] = color;
+        }
     }
 
     public void OnWindowClosing()
