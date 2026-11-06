@@ -100,10 +100,17 @@ public partial class UnitypackageViewerViewModel : ViewModelBase, IInitializable
             currentNode.MarkAsFile();
         }
 
-        var rootNodes = rootMap.Values.OrderBy(i => i.Name, StringComparer.OrdinalIgnoreCase);
+        var rootNodes = rootMap.Values.OrderBy(i => i.Name, StringComparer.OrdinalIgnoreCase).ToList();
         foreach (var node in rootNodes)
         {
             SortChildren(node);
+        }
+
+        var level = rootNodes;
+        while (level.Count == 1 && level[0].Children.Count > 0)
+        {
+            level[0].IsExpanded = true;
+            level = level[0].Children;
         }
 
         return rootNodes;
