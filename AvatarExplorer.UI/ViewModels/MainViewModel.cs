@@ -604,9 +604,6 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             segments.Add(new PathSegment { DisplayName = displayName, State = stateList[i] });
         }
 
-        if (segments.Count == 0)
-            segments.Add(new PathSegment { DisplayName = Localizer.Instance[Loc.Main.Path.Placeholder] });
-
         return segments;
     }
     #endregion
