@@ -50,6 +50,8 @@
 
                     <!-- パネル枠線の色 -->
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(128,128,128,0.416)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <!-- 共通素体アバターの背景 -->
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(0,128,0,1.0)"/>
@@ -94,6 +96,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(94,160,234,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(0,0,0,0.0)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(0,128,0,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -128,6 +132,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(213,123,230,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(178,127,145,0.42)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(194,79,123,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -162,6 +168,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(131,142,224,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(107,156,142,0.42)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(40,118,92,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -196,6 +204,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(131,104,209,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(134,116,176,0.42)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(91,69,178,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -230,6 +240,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(71,172,214,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(127,164,188,0.42)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(31,127,166,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -264,6 +276,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(235,143,109,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(185,133,102,0.42)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(201,93,61,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -298,6 +312,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(99,151,103,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(95,139,105,0.42)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(46,110,61,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -332,6 +348,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(200,148,120,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(193,154,135,0.42)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(135,87,70,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -366,6 +384,8 @@
                     <SolidColorBrush x:Key="Button.AccentBackground.PointerOver" Color="rgba(122,150,182,1.0)"/>
 
                     <SolidColorBrush x:Key="Panel.BorderBrush" Color="rgba(154,165,186,0.42)"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
                     <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(85,111,138,1.0)"/>
                     <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
@@ -416,6 +436,22 @@
             <Setter Property="Padding" Value="10"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="{DynamicResource Panel.BorderBrush}"/>
+        </Style>
+
+        <Style Selector="ContextMenu, MenuFlyoutPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
+        </Style>
+
+        <Style Selector="MenuItem:not(:disabled)">
+            <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
+        </Style>
+
+        <Style Selector="MenuItem:not(:disabled):pointerover /template/ Border#PART_LayoutRoot, MenuItem:not(:disabled):selected /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="{DynamicResource Button.Background.PointerOver}"/>
+        </Style>
+
+        <Style Selector="ContextMenu Separator, MenuFlyoutPresenter Separator, MenuItem Separator">
+            <Setter Property="Background" Value="{DynamicResource Separator.Background}"/>
         </Style>
 
         <Style Selector="FlyoutPresenter.displayoptions">
