@@ -25,11 +25,11 @@
     </UserControl.Styles>
 
     <DockPanel Margin="12">
-        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*" ColumnSpacing="12">
-            <Border Grid.Column="1" Classes="panelbackground">
-                <Grid ColumnDefinitions="Auto,Auto,2.3*,Auto,*,Auto,Auto" ColumnSpacing="10">
-                    <Button Classes="button" Grid.Column="0" Content="{materialIcons:MaterialIconExt Kind=ArrowLeft}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" FontSize="19" CornerRadius="8" Padding="15,0,15,0" Command="{Binding UndoCommand}"/>
-                    <Button Classes="button" Grid.Column="1" Content="{materialIcons:MaterialIconExt Kind=HomeOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" FontSize="19" CornerRadius="8" Padding="15,0,15,0" Command="{Binding HomeCommand}"/>
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <Border Grid.Column="0" Classes="panelbackground">
+                <Grid ColumnDefinitions="Auto,Auto,2.3*,Auto,*,Auto" ColumnSpacing="10">
+                    <Button Classes="button" Grid.Column="0" Content="{materialIcons:MaterialIconExt Kind=HomeOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" FontSize="19" CornerRadius="8" Padding="15,0,15,0" Command="{Binding HomeCommand}"/>
+                    <Button Classes="button" Grid.Column="1" Content="{materialIcons:MaterialIconExt Kind=ArrowLeft}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" FontSize="19" CornerRadius="8" Padding="15,0,15,0" Command="{Binding UndoCommand}"/>
                     
                     <Border Grid.Column="2" Classes="panelbackground" CornerRadius="8" Padding="8,0">
                         <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center">
@@ -103,7 +103,12 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Classes="button" Grid.Column="6" Width="35" Height="35" CornerRadius="8" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip.Tip="{Binding [Main.DisplayOptions], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Classes="panelbackground">
+                <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="10">
+                    <Button Classes="button" Grid.Column="0" Width="35" Height="35" CornerRadius="8" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip.Tip="{Binding [Main.DisplayOptions], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
                         <materialIcons:MaterialIcon Kind="Tune" Width="20" Height="20"/>
                         <Button.Flyout>
                             <Flyout Placement="BottomEdgeAlignedRight" Closed="OnDisplayOptionsFlyoutClosed">
@@ -155,11 +160,8 @@
                             </Flyout>
                         </Button.Flyout>
                     </Button>
+                    <Button Classes="button" Grid.Column="1" FontWeight="Bold" Content="{materialIcons:MaterialIconExt Kind=CogOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" Width="35" FontSize="19" CornerRadius="8" Command="{Binding OpenSettingsCommand}"/>
                 </Grid>
-            </Border>
-
-            <Border Classes="panelbackground">
-                <Button Classes="button" FontWeight="Bold" Content="{materialIcons:MaterialIconExt Kind=CogOutline}" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" Width="35" FontSize="19" CornerRadius="8" Command="{Binding OpenSettingsCommand}"/>
             </Border>
         </Grid>
 
