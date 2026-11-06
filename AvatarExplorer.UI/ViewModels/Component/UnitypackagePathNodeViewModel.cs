@@ -5,6 +5,7 @@ public sealed class UnitypackagePathNodeViewModel(string name, string fullPath)
     public string Name { get; } = name;
     public string FullPath { get; } = NormalizePath(fullPath);
     public bool IsFile { get; private set; }
+    public bool IsExpanded { get; set; }
     public List<UnitypackagePathNodeViewModel> Children { get; } = [];
 
     private readonly Dictionary<string, UnitypackagePathNodeViewModel> _childMap = new(StringComparer.OrdinalIgnoreCase);

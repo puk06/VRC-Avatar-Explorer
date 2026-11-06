@@ -16,9 +16,14 @@
                     <TextBlock Text="{Binding SelectedPath}" FontSize="12" Foreground="{DynamicResource Text.Secondary}" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
 
-                <Border Grid.Row="2" Classes="panelbackground" Background="{DynamicResource Background.Surface}">
+                <Border Grid.Row="2" Classes="panelbackground">
                     <ScrollViewer>
                         <TreeView ItemsSource="{Binding Nodes}" SelectedItem="{Binding SelectedNode}">
+                            <TreeView.Styles>
+                                <Style Selector="TreeViewItem" x:DataType="vmcomponent:UnitypackagePathNodeViewModel">
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                                </Style>
+                            </TreeView.Styles>
                             <TreeView.ItemTemplate>
                                 <TreeDataTemplate x:DataType="vmcomponent:UnitypackagePathNodeViewModel" ItemsSource="{Binding Children}">
                                     <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Text.Primary}"/>
