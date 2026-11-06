@@ -549,6 +549,15 @@
             <Setter Property="(ToolTip.BetweenShowDelay)" Value="-1"/>
         </Style>
 
+        <Style Selector="FlyoutPresenter.presetpicker">
+            <Setter Property="Background" Value="{DynamicResource Background.Overlay}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Panel.BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
         <Style Selector="TextBlock.settingslabel">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>

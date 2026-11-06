@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
+using AvatarExplorer.UI.ViewModels;
 using AvatarExplorer.UI.ViewModels.Panels;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Interfaces;
@@ -22,6 +23,11 @@ public partial class BulkImport : UserControl, IInitializable
         if (DataContext is BulkImportViewModel vm)
             vm.OnItemsAdded += ScrollToEnd;
     }
+
+    private void OnPresetPickerOpening(object? sender, EventArgs e)
+        => PresetPickerLayout.Width = Bounds.Width * MainWindowViewModel.Instance.UiScale;
+
+    private void OnPresetSelected(object? sender, EventArgs e) => PresetLoadButton.Flyout?.Hide();
 
     private void ScrollToEnd() => ItemsScrollViewer.ScrollToEnd();
 
