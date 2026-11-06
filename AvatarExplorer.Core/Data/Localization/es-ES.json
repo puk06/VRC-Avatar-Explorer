@@ -476,9 +476,13 @@
     "AdvancedSearch.ToggleNegation": "Alternar exclusión",
     "AdvancedSearch.Remove": "Eliminar",
 
+    "BulkImport.Hint": "Añade elementos o archivos desde su menú contextual.",
     "BulkImport.Import": "Importar masivamente",
     "BulkImport.ImportWithPathChange": "Importar masivamente - con cambio de ruta",
     "BulkImport.ImportWithoutPathChange": "Importar masivamente - sin cambio de ruta",
+    "BulkImport.Preset": "Ajustes preestablecidos",
+    "BulkImport.Load": "Cargar",
+    "BulkImport.LoadHint": "Añade los elementos del ajuste seleccionado a la lista actual.",
     "BulkImport.Save": "Guardar",
     "BulkImport.Reset": "Reiniciar",
 

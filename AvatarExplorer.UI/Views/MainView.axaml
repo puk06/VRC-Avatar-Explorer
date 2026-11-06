@@ -15,6 +15,45 @@
     PointerPressed="OnMainPointerPressed">
 
     <UserControl.Styles>
+        <Style Selector="TabControl#SidePanelTabControl">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <ContentPresenter x:Name="PART_SelectedContentHost" Content="{TemplateBinding SelectedContent}" ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+                                          IsVisible="{Binding IsSidePanelVisible}" Margin="0,0,10,0"/>
+                        <ItemsPresenter x:Name="PART_ItemsPresenter" Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" Width="35" VerticalAlignment="Top"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="TabItem.sidepaneltab">
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="{DynamicResource Button.Background}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Button.BorderBrush}"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                      Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
+                                      BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8"
+                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="TabItem.sidepaneltab:pointerover">
+            <Setter Property="Background" Value="{DynamicResource Button.Background.PointerOver}"/>
+        </Style>
+        <Style Selector="TabControl.expanded TabItem.sidepaneltab:selected">
+            <Setter Property="Background" Value="{DynamicResource Button.AccentBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text.Accent}"/>
+        </Style>
+        <Style Selector="TabControl.expanded TabItem.sidepaneltab:selected:pointerover">
+            <Setter Property="Background" Value="{DynamicResource Button.AccentBackground.PointerOver}"/>
+        </Style>
         <Style Selector="Button.PathSegment">
             <Setter Property="Padding" Value="6,2"/>
             <Setter Property="Height" Value="26"/>
@@ -424,64 +463,28 @@
 
                 <GridSplitter Grid.Column="3" Opacity="0" IsVisible="{Binding IsSidePanelVisible}"/>
 
-                <Panel Grid.Column="4" HorizontalAlignment="Stretch">
-                    <Border Classes="panelbackground" IsVisible="{Binding !IsSidePanelVisible}" CornerRadius="12,0,0,12" Width="50">
-                        <StackPanel Spacing="10">
-                            <Button Classes="button sidepanelbutton"
-                                    Content="{materialIcons:MaterialIconExt Kind=TextSearch}"
-                                    ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}"
-                                    ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
-                                    FontSize="17"
-                                    Command="{Binding OpenSidePanelCommand}"
-                                    CommandParameter="0"/>
-                            <Button Classes="button sidepanelbutton"
-                                    Content="{materialIcons:MaterialIconExt Kind=DownloadMultiple}"
-                                    ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}"
-                                    ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
-                                    FontSize="17"
-                                    Tag="1"
-                                    Command="{Binding OpenSidePanelCommand}"
-                                    CommandParameter="1"/>
-                            <Button Classes="button sidepanelbutton"
-                                    Content="{materialIcons:MaterialIconExt Kind=FolderStarMultipleOutline}"
-                                    ToolTip.Tip="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}"
-                                    ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
-                                    FontSize="17"
-                                    Tag="2"
-                                    Command="{Binding OpenSidePanelCommand}"
-                                    CommandParameter="2"/>
-                        </StackPanel>
-                    </Border>
+                <Border Grid.Column="4" Classes="panelbackground" CornerRadius="12,0,0,12" Padding="6,10">
+                    <TabControl x:Name="SidePanelTabControl" Classes.expanded="{Binding IsSidePanelVisible}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedSidePanelTab}" FontSize="18" TabStripPlacement="Right">
+                        <TabControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="10"/>
+                            </ItemsPanelTemplate>
+                        </TabControl.ItemsPanel>
+                        <TabItem Classes="sidepaneltab" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="0">
+                            <TabItem.Header>
+                                <materialIcons:MaterialIcon Kind="TextSearch" Width="17" Height="17"/>
+                            </TabItem.Header>
+                            <panels:AdvancedSearch/>
+                        </TabItem>
 
-                    <Border Classes="panelbackground" CornerRadius="12,0,0,12" IsVisible="{Binding IsSidePanelVisible}">
-                        <Grid RowSpacing="10">
-                            <Grid Grid.Row="2" ColumnSpacing="10">
-                                <TabControl x:Name="SidePanelTabControl" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedSidePanelTab}" FontSize="18" Margin="0,0,-10,0" TabStripPlacement="Right">
-                                    <TabItem ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="0">
-                                        <TabItem.Header>
-                                            <materialIcons:MaterialIcon Kind="TextSearch" Width="16" Height="16"/>
-                                        </TabItem.Header>
-                                        <panels:AdvancedSearch/>
-                                    </TabItem>
-
-                                    <TabItem ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="1">
-                                        <TabItem.Header>
-                                            <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="16" Height="16"/>
-                                        </TabItem.Header>
-                                        <panels:BulkImport Margin="-10,0,-10,0"/>
-                                    </TabItem>
-
-                                    <TabItem ToolTip.Tip="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="2">
-                                        <TabItem.Header>
-                                            <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="16" Height="16"/>
-                                        </TabItem.Header>
-                                        <panels:BulkImportPreset Margin="-10,0,-10,0"/>
-                                    </TabItem>
-                                </TabControl>
-                            </Grid>
-                        </Grid>
-                    </Border>
-                </Panel>
+                        <TabItem Classes="sidepaneltab" ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="1">
+                            <TabItem.Header>
+                                <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="17" Height="17"/>
+                            </TabItem.Header>
+                            <panels:BulkImport/>
+                        </TabItem>
+                    </TabControl>
+                </Border>
             </Grid>
         </Panel>
     </DockPanel>

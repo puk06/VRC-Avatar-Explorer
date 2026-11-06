@@ -30,10 +30,19 @@ public class SidePanelManager
 
     public void OnButtonPressed(int index)
     {
-        if (_vm.SelectedSidePanelTab != index) return;
-
-        _state = SidePanelState.Collapsed;
-        ApplyState();
+        if (_state == SidePanelState.Expanded && _vm.SelectedSidePanelTab == index)
+        {
+            _state = SidePanelState.Collapsed;
+            ApplyState();
+        }
+        else if (_state == SidePanelState.Expanded)
+        {
+            _vm.SelectedSidePanelTab = index;
+        }
+        else
+        {
+            Open(index);
+        }
     }
 
     public void OnWidthChanged(double newWidth)

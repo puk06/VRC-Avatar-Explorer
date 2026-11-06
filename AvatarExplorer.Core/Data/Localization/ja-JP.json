@@ -476,9 +476,13 @@
     "AdvancedSearch.ToggleNegation": "除外の切り換え",
     "AdvancedSearch.Remove": "削除",
 
-    "BulkImport.Import": "一括インポート",
+    "BulkImport.Hint": "アイテム・ファイルの右クリックメニューから追加できます。",
+    "BulkImport.Import": "インポート",
     "BulkImport.ImportWithPathChange": "一括インポート - パス変更あり",
     "BulkImport.ImportWithoutPathChange": "一括インポート - パス変更なし",
+    "BulkImport.Preset": "プリセット",
+    "BulkImport.Load": "読み込み",
+    "BulkImport.LoadHint": "選択したプリセットを現在のリストに追加します。",
     "BulkImport.Save": "保存",
     "BulkImport.Reset": "リセット",
 

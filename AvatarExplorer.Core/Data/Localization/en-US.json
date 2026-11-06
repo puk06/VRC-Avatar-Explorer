@@ -476,9 +476,13 @@
     "AdvancedSearch.ToggleNegation": "Toggle Exclusion",
     "AdvancedSearch.Remove": "Remove",
 
+    "BulkImport.Hint": "Add items or files from their right-click menu.",
     "BulkImport.Import": "Bulk Import",
     "BulkImport.ImportWithPathChange": "Bulk Import - Change path to default",
     "BulkImport.ImportWithoutPathChange": "Bulk Import - No path change",
+    "BulkImport.Preset": "Presets",
+    "BulkImport.Load": "Load",
+    "BulkImport.LoadHint": "Select a preset to add its items to the current list.",
     "BulkImport.Save": "Save",
     "BulkImport.Reset": "Reset",
 

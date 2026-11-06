@@ -476,9 +476,13 @@
     "AdvancedSearch.ToggleNegation": "切換排除",
     "AdvancedSearch.Remove": "刪除",
 
+    "BulkImport.Hint": "可透過項目或檔案的右鍵選單新增。",
     "BulkImport.Import": "批次匯入",
     "BulkImport.ImportWithPathChange": "批次匯入 - 變更路徑",
     "BulkImport.ImportWithoutPathChange": "批次匯入 - 不變更路徑",
+    "BulkImport.Preset": "預設",
+    "BulkImport.Load": "載入",
+    "BulkImport.LoadHint": "將所選預設中的項目加入目前的清單。",
     "BulkImport.Save": "儲存",
     "BulkImport.Reset": "重設",
 

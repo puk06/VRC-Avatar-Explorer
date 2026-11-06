@@ -5,15 +5,17 @@
     xmlns:component="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:vmmain="using:AvatarExplorer.UI.ViewModels"
+    xmlns:panels="using:AvatarExplorer.UI.Views.Panels"
     x:Class="AvatarExplorer.UI.Views.Panels.BulkImport"
     x:DataType="vm:BulkImportViewModel">
 
-    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
+    <Grid RowDefinitions="Auto,Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
         <TextBlock Text="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="{DynamicResource Text.Primary}"/>
+        <TextBlock Grid.Row="1" Text="{Binding [BulkImport.Hint], Source={x:Static loc:Localizer.Instance}}" FontSize="12" TextWrapping="Wrap" Margin="10,0" Foreground="{DynamicResource Text.Secondary}"/>
 
-        <Separator Classes="separator" Grid.Row="1"/>
+        <Separator Classes="separator" Grid.Row="2"/>
 
-        <Grid Grid.Row="2" RowDefinitions="*,Auto,Auto" RowSpacing="10" VerticalAlignment="Stretch">
+        <Grid Grid.Row="3" RowDefinitions="*,Auto,Auto" RowSpacing="10" VerticalAlignment="Stretch">
             <ScrollViewer x:Name="ItemsScrollViewer" DragDrop.AllowDrop="True" DragDrop.Drop="OnDrop">
                 <ItemsControl ItemsSource="{Binding Items}">
                     <ItemsControl.ItemsPanel>
@@ -60,29 +62,50 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <Button Grid.Row="1"
-                    Classes="accentbutton"
-                    FontWeight="Bold"
-                    Content="{Binding [BulkImport.Import], Source={x:Static loc:Localizer.Instance}}"
-                    FontSize="16"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Height="42"
-                    CornerRadius="8"
-                    Command="{Binding ImportCommand}">
-                <Button.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{Binding [BulkImport.ImportWithPathChange], Source={x:Static loc:Localizer.Instance}}" Command="{Binding ImportWithPathChangeCommand}" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
-                        <MenuItem Header="{Binding [BulkImport.ImportWithoutPathChange], Source={x:Static loc:Localizer.Instance}}" Command="{Binding ImportWithoutPathChangeCommand}" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
-                    </ContextMenu>
-                </Button.ContextMenu>
-            </Button>
-            <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="10">
-                <Button Grid.Column="0" Classes="accentbutton" FontWeight="Bold" Content="{Binding [BulkImport.Save], Source={x:Static loc:Localizer.Instance}}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Command="{Binding SaveCommand}"/>
-                <Button Grid.Column="1" Classes="button" FontWeight="Bold" Content="{Binding [BulkImport.Reset], Source={x:Static loc:Localizer.Instance}}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" CornerRadius="8" Command="{Binding ResetCommand}"/>
+            <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Classes="accentbutton"
+                        FontWeight="Bold"
+                        Content="{Binding [BulkImport.Import], Source={x:Static loc:Localizer.Instance}}"
+                        FontSize="16"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Height="42"
+                        CornerRadius="8"
+                        Command="{Binding ImportCommand}">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{Binding [BulkImport.ImportWithPathChange], Source={x:Static loc:Localizer.Instance}}" Command="{Binding ImportWithPathChangeCommand}" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                            <MenuItem Header="{Binding [BulkImport.ImportWithoutPathChange], Source={x:Static loc:Localizer.Instance}}" Command="{Binding ImportWithoutPathChangeCommand}" FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button Grid.Column="1" Classes="button" Content="{Binding [BulkImport.Reset], Source={x:Static loc:Localizer.Instance}}" FontSize="14" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" MinWidth="84" CornerRadius="8" Padding="12,0" Command="{Binding ResetCommand}"/>
             </Grid>
+            <StackPanel Grid.Row="2" Spacing="10" Margin="0,14,0,0">
+                <TextBlock Text="{Binding [BulkImport.Preset], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0" Classes="button" Content="{Binding [BulkImport.Save], Source={x:Static loc:Localizer.Instance}}" FontSize="14" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Height="35" CornerRadius="8" Command="{Binding SaveCommand}"/>
+                    <Button x:Name="PresetLoadButton" Grid.Column="1" Classes="button" Content="{Binding [BulkImport.Load], Source={x:Static loc:Localizer.Instance}}" FontSize="14" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Height="35" CornerRadius="8">
+                        <Button.Flyout>
+                            <Flyout Placement="TopEdgeAlignedRight" FlyoutPresenterClasses="presetpicker" Opening="OnPresetPickerOpening">
+                                <LayoutTransformControl x:Name="PresetPickerLayout">
+                                    <LayoutTransformControl.LayoutTransform>
+                                        <ScaleTransform ScaleX="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}" ScaleY="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                                    </LayoutTransformControl.LayoutTransform>
+                                    <StackPanel Spacing="8" Margin="10">
+                                        <TextBlock Text="{Binding [BulkImport.Preset], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding [BulkImport.LoadHint], Source={x:Static loc:Localizer.Instance}}" FontSize="12" TextWrapping="Wrap"/>
+                                        <panels:BulkImportPreset MaxHeight="180" SelectionInvoked="OnPresetSelected"/>
+                                    </StackPanel>
+                                </LayoutTransformControl>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>
