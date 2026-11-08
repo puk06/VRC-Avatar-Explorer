@@ -15,7 +15,6 @@
     "Main.Filter.Author": "作者",
     "Main.Filter.Category": "类别",
 
-    "Main.Path.Placeholder": "当前路径会显示在这里",
     "Main.Path.SearchResult": "搜索结果",
 
     "Main.DisplayOptions": "显示选项",
@@ -342,7 +341,6 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "应用于新生成图像的最大边长压缩尺寸(px)",
     "Settings.EnableButtonAnimation.Title": "启用按钮动画",
     "Settings.EnableButtonAnimation.Description": "启用按钮显示时的动画",
-
     "Settings.UiScale.Title": "UI 缩放",
     "Settings.UiScale.Description": "调整窗口内整个 UI 的显示比例。使用 Ctrl +/- 切换，Ctrl+0 重置",
 

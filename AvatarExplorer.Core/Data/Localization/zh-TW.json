@@ -15,7 +15,6 @@
     "Main.Filter.Author": "作者",
     "Main.Filter.Category": "類別",
 
-    "Main.Path.Placeholder": "目前路徑會顯示在這裡",
     "Main.Path.SearchResult": "搜尋結果",
 
     "Main.DisplayOptions": "顯示選項",
@@ -342,7 +341,6 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "套用於新產生圖片的最大邊長壓縮尺寸(px)",
     "Settings.EnableButtonAnimation.Title": "啟用按鈕動畫",
     "Settings.EnableButtonAnimation.Description": "啟用按鈕顯示時的動畫",
-
     "Settings.UiScale.Title": "UI 縮放",
     "Settings.UiScale.Description": "調整視窗內整個 UI 的顯示比例。使用 Ctrl +/- 切換，Ctrl+0 重置",
 

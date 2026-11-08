@@ -15,7 +15,6 @@
     "Main.Filter.Author": "작성자",
     "Main.Filter.Category": "카테고리",
 
-    "Main.Path.Placeholder": "현재 경로가 여기에 표시됩니다",
     "Main.Path.SearchResult": "검색 결과",
 
     "Main.DisplayOptions": "표시 옵션",
@@ -342,7 +341,6 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "새로 생성하는 이미지에 적용되는 최대 변 길이(px)입니다",
     "Settings.EnableButtonAnimation.Title": "버튼 애니메이션 활성화",
     "Settings.EnableButtonAnimation.Description": "버튼이 표시될 때 애니메이션을 활성화합니다",
-
     "Settings.UiScale.Title": "UI 스케일",
     "Settings.UiScale.Description": "창 안의 전체 UI 표시 배율을 조정합니다. Ctrl +/-로 변경하고 Ctrl+0으로 초기화할 수 있습니다",
 
