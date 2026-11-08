@@ -19,8 +19,12 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Grid ColumnDefinitions="*,Auto">
-                        <ContentPresenter x:Name="PART_SelectedContentHost" Content="{TemplateBinding SelectedContent}" ContentTemplate="{TemplateBinding SelectedContentTemplate}"
-                                          IsVisible="{Binding IsSidePanelVisible}" Margin="0,0,10,0"/>
+                        <ContentPresenter
+                            x:Name="PART_SelectedContentHost"
+                            Content="{TemplateBinding SelectedContent}"
+                            ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+                            IsVisible="{Binding IsSidePanelVisible}"
+                            Margin="0,0,10,0"/>
                         <ItemsPresenter x:Name="PART_ItemsPresenter" Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" Width="35" VerticalAlignment="Top"/>
                     </Grid>
                 </ControlTemplate>
@@ -37,10 +41,11 @@
             <Setter Property="BorderBrush" Value="{DynamicResource Button.BorderBrush}"/>
             <Setter Property="Template">
                 <ControlTemplate>
-                    <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                      Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
-                                      BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8"
-                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <ContentPresenter
+                        Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                        Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
+                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 </ControlTemplate>
             </Setter>
         </Style>
