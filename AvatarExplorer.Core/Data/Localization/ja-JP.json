@@ -476,7 +476,7 @@
     "AdvancedSearch.ToggleNegation": "除外の切り換え",
     "AdvancedSearch.Remove": "削除",
 
-    "BulkImport.Hint": "アイテム・ファイルの右クリックメニューから追加できます。",
+    "BulkImport.Hint": "アイテム・ファイルの右クリックメニュー、またはアイテムのドラッグ＆ドロップから追加できます。",
     "BulkImport.Import": "インポート",
     "BulkImport.ImportWithPathChange": "一括インポート - パス変更あり",
     "BulkImport.ImportWithoutPathChange": "一括インポート - パス変更なし",

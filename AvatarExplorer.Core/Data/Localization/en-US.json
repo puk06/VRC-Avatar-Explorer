@@ -476,7 +476,7 @@
     "AdvancedSearch.ToggleNegation": "Toggle Exclusion",
     "AdvancedSearch.Remove": "Remove",
 
-    "BulkImport.Hint": "Add items or files from their right-click menu.",
+    "BulkImport.Hint": "Add items or files from their right-click menu, or by dragging and dropping items.",
     "BulkImport.Import": "Bulk Import",
     "BulkImport.ImportWithPathChange": "Bulk Import - Change path to default",
     "BulkImport.ImportWithoutPathChange": "Bulk Import - No path change",
