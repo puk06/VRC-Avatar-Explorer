@@ -5,6 +5,8 @@ using AvatarExplorer.UI.ViewModels;
 using AvatarExplorer.UI.ViewModels.Panels;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Interfaces;
+using AvatarExplorer.UI.Models.ContextMenu;
+using AvatarExplorer.UI.Services.ContextMenu;
 
 namespace AvatarExplorer.UI.Views.Panels;
 
@@ -22,6 +24,8 @@ public partial class BulkImport : UserControl, IInitializable
     {
         if (DataContext is BulkImportViewModel vm)
             vm.OnItemsAdded += ScrollToEnd;
+
+        ContextMenuHandlerService.Register(ActionKey.RemovePreset, _ => PresetLoadButton.Flyout?.Hide());
     }
 
     private void OnPresetPickerOpening(object? sender, EventArgs e)
