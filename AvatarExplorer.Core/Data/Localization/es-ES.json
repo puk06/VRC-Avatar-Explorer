@@ -8,14 +8,13 @@
 
     "Title.AdministratorMode": "Modo administrador",
 
-    "Main.Search.Placeholder": "Escribe para buscar...",
+    "Main.Search.Placeholder": "Buscar...",
     "Main.AddItem": "Agregar elemento",
 
     "Main.Filter.Avatar": "Avatar",
     "Main.Filter.Author": "Autor",
     "Main.Filter.Category": "Categoría",
 
-    "Main.Path.Placeholder": "Aquí se muestra la ruta actual",
     "Main.Path.SearchResult": "Resultado de búsqueda",
 
     "Main.DisplayOptions": "Opciones de visualización",
@@ -342,7 +341,6 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "Tamaño máximo de borde (px) para compresión, aplicado a las imágenes recién generadas",
     "Settings.EnableButtonAnimation.Title": "Habilitar animación de botones",
     "Settings.EnableButtonAnimation.Description": "Habilita la animación cuando se muestran los botones",
-
     "Settings.UiScale.Title": "Escala de la interfaz",
     "Settings.UiScale.Description": "Ajusta la escala de visualización de toda la interfaz dentro de la ventana. Se puede cambiar con Ctrl +/- y restablecer con Ctrl+0",
 

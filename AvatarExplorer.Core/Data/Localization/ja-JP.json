@@ -8,14 +8,13 @@
 
     "Title.AdministratorMode": "管理者モード",
 
-    "Main.Search.Placeholder": "入力して検索...",
-    "Main.AddItem": "アイテムを追加する",
+    "Main.Search.Placeholder": "検索...",
+    "Main.AddItem": "アイテムを追加",
 
     "Main.Filter.Avatar": "アバター",
     "Main.Filter.Author": "作者",
     "Main.Filter.Category": "カテゴリ",
 
-    "Main.Path.Placeholder": "ここには現在のパスが表示されます",
     "Main.Path.SearchResult": "検索結果",
 
     "Main.DisplayOptions": "表示設定",
@@ -342,7 +341,6 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "新しく生成する画像に適用される、最大辺の圧縮サイズ(px)です",
     "Settings.EnableButtonAnimation.Title": "ボタンアニメーションを有効化",
     "Settings.EnableButtonAnimation.Description": "ボタンが表示される時のアニメーションを有効化します。",
-
     "Settings.UiScale.Title": "UIスケール",
     "Settings.UiScale.Description": "ウィンドウ内のUI全体の表示スケールを調整します。Ctrl + +/- で変更、Ctrl + 0 で100%に戻せます",
 

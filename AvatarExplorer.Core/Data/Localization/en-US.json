@@ -8,14 +8,13 @@
 
     "Title.AdministratorMode": "Administrator Mode",
 
-    "Main.Search.Placeholder": "Type to search...",
+    "Main.Search.Placeholder": "Search...",
     "Main.AddItem": "Add Item",
 
     "Main.Filter.Avatar": "Avatar",
     "Main.Filter.Author": "Author",
     "Main.Filter.Category": "Category",
 
-    "Main.Path.Placeholder": "The current path is displayed here",
     "Main.Path.SearchResult": "Search Result",
 
     "Main.DisplayOptions": "Display Options",
@@ -342,7 +341,6 @@
     "Settings.ThumbnailCompressionMaxSize.Description": "Maximum edge size (px) for compression, applied to newly generated images",
     "Settings.EnableButtonAnimation.Title": "Enable Button Animation",
     "Settings.EnableButtonAnimation.Description": "Enable animation when buttons are displayed",
-
     "Settings.UiScale.Title": "UI Scale",
     "Settings.UiScale.Description": "Adjusts the display scale of the entire UI inside the window. Use Ctrl +/- to change and Ctrl+0 to reset",
 
