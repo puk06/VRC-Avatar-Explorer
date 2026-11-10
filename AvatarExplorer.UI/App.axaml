@@ -26,7 +26,7 @@
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(220,220,220,1.0)"/>
 
                     <!-- 区切り線の色 -->
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(0,0,0,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(0,0,0,0.42)"/>
 
                     <!-- 主文言の色 -->
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(26,26,26,1.0)"/>
@@ -82,7 +82,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(51,51,51,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(30,30,30,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(255,255,255,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(255,255,255,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(242,242,242,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(176,176,176,1.0)"/>
@@ -118,7 +118,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(232,222,225,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(215,196,203,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(178,127,145,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(178,127,145,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(75,49,59,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(109,78,89,1.0)"/>
@@ -154,7 +154,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(220,231,225,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(198,216,208,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(107,156,142,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(107,156,142,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(37,59,53,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(69,100,89,1.0)"/>
@@ -190,7 +190,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(224,219,238,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(207,200,227,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(134,116,176,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(134,116,176,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(51,43,73,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(82,72,111,1.0)"/>
@@ -226,7 +226,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(64,88,107,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(51,71,89,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(127,164,188,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(127,164,188,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(244,250,255,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(199,216,228,1.0)"/>
@@ -262,7 +262,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(240,221,208,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(227,204,189,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(185,133,102,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(185,133,102,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(75,47,34,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(109,70,55,1.0)"/>
@@ -298,7 +298,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(214,226,213,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(194,210,192,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(95,139,105,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(95,139,105,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(34,51,39,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(61,88,67,1.0)"/>
@@ -334,7 +334,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(110,91,85,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(91,75,69,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(193,154,135,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(193,154,135,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(247,240,236,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(220,201,192,1.0)"/>
@@ -370,7 +370,7 @@
                     <SolidColorBrush x:Key="Background.Overlay" Color="rgba(87,94,110,1.0)"/>
                     <SolidColorBrush x:Key="Background.Surface" Color="rgba(69,76,90,1.0)"/>
 
-                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(154,165,186,0.133)"/>
+                    <SolidColorBrush x:Key="Separator.Background" Color="rgba(154,165,186,0.42)"/>
 
                     <SolidColorBrush x:Key="Text.Primary" Color="rgba(245,247,250,1.0)"/>
                     <SolidColorBrush x:Key="Text.Secondary" Color="rgba(202,210,220,1.0)"/>
@@ -448,6 +448,7 @@
 
         <Style Selector="ContextMenu Separator, MenuItem Separator">
             <Setter Property="Background" Value="{DynamicResource Separator.Background}"/>
+            <Setter Property="Height" Value="2"/>
         </Style>
 
         <Style Selector="FlyoutPresenter.displayoptions">
