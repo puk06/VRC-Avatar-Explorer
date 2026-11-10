@@ -84,7 +84,7 @@
                                 <Border Height="1" Background="{DynamicResource Panel.BorderBrush}"/>
                                 <panels:BulkImportPreset MaxHeight="220" SelectionInvoked="OnPresetSelected"/>
                                 <Border Height="1" Background="{DynamicResource Panel.BorderBrush}"/>
-                                <Button Classes="button presetsave" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" CornerRadius="8" Command="{Binding SaveCommand}">
+                                <Button Classes="button presetsave" IsEnabled="{Binding HasItems}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" CornerRadius="8" Command="{Binding SaveCommand}">
                                     <StackPanel Orientation="Horizontal" Spacing="6">
                                         <materialIcons:MaterialIcon Kind="ContentSaveOutline" Width="18" Height="18" VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding [BulkImport.Save], Source={x:Static loc:Localizer.Instance}}" FontSize="13" VerticalAlignment="Center"/>
