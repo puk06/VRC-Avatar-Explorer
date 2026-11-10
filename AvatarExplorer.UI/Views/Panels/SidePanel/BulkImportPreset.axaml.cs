@@ -8,7 +8,7 @@ namespace AvatarExplorer.UI.Views.Panels;
 
 public partial class BulkImportPreset : UserControl
 {
-    public event EventHandler? SelectionInvoked;
+    public event Action? SelectionInvoked;
 
     private void OnPresetClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
@@ -18,7 +18,7 @@ public partial class BulkImportPreset : UserControl
         if (vm.SelectItemCommand is not ICommand command || !command.CanExecute(item)) return;
 
         command.Execute(item);
-        SelectionInvoked?.Invoke(this, EventArgs.Empty);
+        SelectionInvoked?.Invoke();
     }
 
     public BulkImportPreset()

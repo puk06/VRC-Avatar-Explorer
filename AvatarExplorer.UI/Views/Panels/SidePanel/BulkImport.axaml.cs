@@ -34,7 +34,9 @@ public partial class BulkImport : UserControl, IInitializable
     private void OnPresetPickerOpening(object? sender, EventArgs e)
         => PresetPickerLayout.Width = PresetButton.Bounds.Width * (MainWindowViewModel.Instance?.UiScale ?? 1.0);
 
-    private void OnPresetSelected(object? sender, EventArgs e) => PresetButton.Flyout?.Hide();
+    #pragma warning disable IDE0051 // Remove unused private members (XAML側で使用されてる)
+    private void OnPresetSelected() => PresetButton.Flyout?.Hide();
+    #pragma warning restore IDE0051
 
     private void OnPresetSaveStarted() => PresetButton.Flyout?.Hide();
 
