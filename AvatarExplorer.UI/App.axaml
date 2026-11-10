@@ -448,6 +448,7 @@
 
         <Style Selector="ContextMenu Separator, MenuItem Separator">
             <Setter Property="Background" Value="{DynamicResource Separator.Background}"/>
+            <Setter Property="Height" Value="2"/>
         </Style>
 
         <Style Selector="FlyoutPresenter.displayoptions">
