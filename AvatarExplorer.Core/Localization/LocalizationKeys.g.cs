@@ -798,8 +798,7 @@ public static class Loc
         public const string ImportWithPathChange = "BulkImport.ImportWithPathChange";
         public const string ImportWithoutPathChange = "BulkImport.ImportWithoutPathChange";
         public const string Preset = "BulkImport.Preset";
-        public const string Load = "BulkImport.Load";
-        public const string LoadHint = "BulkImport.LoadHint";
+        public const string NoPresets = "BulkImport.NoPresets";
         public const string Save = "BulkImport.Save";
         public const string Reset = "BulkImport.Reset";
     }

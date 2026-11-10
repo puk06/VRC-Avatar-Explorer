@@ -481,8 +481,7 @@
     "BulkImport.ImportWithPathChange": "批量导入 - 更改路径",
     "BulkImport.ImportWithoutPathChange": "批量导入 - 不更改路径",
     "BulkImport.Preset": "预设",
-    "BulkImport.Load": "加载",
-    "BulkImport.LoadHint": "将所选预设中的项目添加到当前列表。",
+    "BulkImport.NoPresets": "没有已保存的预设",
     "BulkImport.Save": "保存",
     "BulkImport.Reset": "重置",
 

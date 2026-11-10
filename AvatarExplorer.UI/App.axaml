@@ -432,6 +432,10 @@
             <Setter Property="BorderBrush" Value="{DynamicResource Button.BorderBrush}"/>
         </Style>
 
+        <Style Selector="Button.presetsave:disabled">
+            <Setter Property="Opacity" Value="0.5"/>
+        </Style>
+
         <Style Selector="Button.appear">
             <Style.Animations>
                 <Animation Duration="0:0:0.4" Easing="CubicEaseOut" FillMode="Both">

@@ -481,8 +481,7 @@
     "BulkImport.ImportWithPathChange": "一括インポート - パス変更あり",
     "BulkImport.ImportWithoutPathChange": "一括インポート - パス変更なし",
     "BulkImport.Preset": "プリセット",
-    "BulkImport.Load": "読み込み",
-    "BulkImport.LoadHint": "選択したプリセットを現在のリストに追加します。",
+    "BulkImport.NoPresets": "保存されたプリセットはありません",
     "BulkImport.Save": "保存",
     "BulkImport.Reset": "リセット",
 

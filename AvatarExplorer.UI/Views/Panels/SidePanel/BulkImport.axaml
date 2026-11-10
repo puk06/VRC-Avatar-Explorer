@@ -9,60 +9,94 @@
     x:Class="AvatarExplorer.UI.Views.Panels.BulkImport"
     x:DataType="vm:BulkImportViewModel">
 
-    <Grid RowDefinitions="Auto,Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch" Margin="6,0,0,0">
-        <TextBlock Text="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0" Foreground="{DynamicResource Text.Primary}"/>
-        <TextBlock Grid.Row="1" Text="{Binding [BulkImport.Hint], Source={x:Static loc:Localizer.Instance}}" FontSize="12" TextWrapping="Wrap" Margin="10,0" Foreground="{DynamicResource Text.Secondary}"/>
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch" Margin="6,0,0,0">
+        <TextBlock Text="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0" Foreground="{DynamicResource Text.Primary}"/>
 
-        <Separator Classes="separator" Grid.Row="2"/>
+        <Separator Classes="separator" Grid.Row="1"/>
 
-        <Grid Grid.Row="3" RowDefinitions="*,Auto,Auto" RowSpacing="10" VerticalAlignment="Stretch">
-            <ScrollViewer x:Name="ItemsScrollViewer" DragDrop.AllowDrop="True" DragDrop.Drop="OnDrop">
-                <ItemsControl ItemsSource="{Binding Items}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Margin="0,0,10,0"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+        <Grid Grid.Row="2" RowDefinitions="*,Auto,Auto" RowSpacing="10" VerticalAlignment="Stretch">
+            <Panel DragDrop.AllowDrop="True" DragDrop.Drop="OnDrop">
+                <ScrollViewer x:Name="ItemsScrollViewer">
+                    <ItemsControl ItemsSource="{Binding Items}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Margin="0,0,10,0"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="component:BulkImportItemViewModel">
-                            <Button Classes="button" ToolTip.Tip="{Binding ToolTip}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5">
-                                <StackPanel Spacing="5">
-                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                        <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                            <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top"/>
-                                        </Border>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="component:BulkImportItemViewModel">
+                                <Button Classes="button" ToolTip.Tip="{Binding ToolTip}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="6" Margin="0,0,0,6">
+                                    <StackPanel Spacing="6">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                            <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top"/>
+                                            </Border>
 
-                                        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,5,*">
-                                            <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                                            <Panel Grid.Row="3">
-                                                <StackPanel Orientation="Horizontal" Spacing="5">
-                                                    <Button Background="Transparent" Command="{Binding $parent[UserControl].DataContext.CopyCommand}" CommandParameter="{Binding}">
-                                                        <materialIcons:MaterialIcon Kind="ContentCopy" Width="20" Height="20"/>
+                                            <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*">
+                                                <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="12" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Text.Secondary}"/>
+                                                <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="2" VerticalAlignment="Bottom">
+                                                    <Button Background="Transparent" Width="28" Height="28" Padding="0" CornerRadius="6" Command="{Binding $parent[UserControl].DataContext.CopyCommand}" CommandParameter="{Binding}">
+                                                        <materialIcons:MaterialIcon Kind="ContentCopy" Width="17" Height="17"/>
                                                     </Button>
-                                                    <Button Background="Transparent" Foreground="rgb(210,0,0)" Command="{Binding $parent[UserControl].DataContext.RemoveCommand}" CommandParameter="{Binding}">
-                                                        <materialIcons:MaterialIcon Kind="TrashCan" Width="20" Height="20"/>
+                                                    <Button Background="Transparent" Foreground="rgb(210,0,0)" Width="28" Height="28" Padding="0" CornerRadius="6" Command="{Binding $parent[UserControl].DataContext.RemoveCommand}" CommandParameter="{Binding}">
+                                                        <materialIcons:MaterialIcon Kind="TrashCan" Width="17" Height="17"/>
                                                     </Button>
                                                 </StackPanel>
-                                            </Panel>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
 
-                                    <ComboBox ItemsSource="{Binding UnitypackageViewModels}" SelectedIndex="{Binding SelectedUnitypackage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" FontSize="14">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding ToolTipText}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                </StackPanel>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                        <ComboBox ItemsSource="{Binding UnitypackageViewModels}" SelectedIndex="{Binding SelectedUnitypackage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="8" FontSize="13">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding ToolTipText}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <StackPanel IsVisible="{Binding !HasItems}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12" Margin="20">
+                    <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="44" Height="44" Opacity="0.35" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding [BulkImport.Hint], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" TextWrapping="Wrap" TextAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
+                </StackPanel>
+            </Panel>
+
+            <Button x:Name="PresetButton" Grid.Row="1" Classes="button" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="35" CornerRadius="8" Padding="10,0">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="7">
+                    <materialIcons:MaterialIcon Grid.Column="0" Kind="FolderStarMultipleOutline" Width="17" Height="17" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding [BulkImport.Preset], Source={x:Static loc:Localizer.Instance}}" FontSize="13" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    <materialIcons:MaterialIcon Grid.Column="2" Kind="ChevronDown" Width="16" Height="16" Opacity="0.6" VerticalAlignment="Center"/>
+                </Grid>
+                <Button.Flyout>
+                    <Flyout Placement="TopEdgeAlignedRight" FlyoutPresenterClasses="presetpicker" Opening="OnPresetPickerOpening">
+                        <LayoutTransformControl x:Name="PresetPickerLayout">
+                            <LayoutTransformControl.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}" ScaleY="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                            </LayoutTransformControl.LayoutTransform>
+                            <StackPanel Spacing="8" Margin="10">
+                                <TextBlock Text="{Binding [BulkImport.Preset], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold"/>
+                                <Border Height="1" Background="{DynamicResource Panel.BorderBrush}"/>
+                                <panels:BulkImportPreset MaxHeight="220" SelectionInvoked="OnPresetSelected"/>
+                                <Border Height="1" Background="{DynamicResource Panel.BorderBrush}"/>
+                                <Button Classes="button presetsave" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="35" CornerRadius="8" Command="{Binding SaveCommand}">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <materialIcons:MaterialIcon Kind="ContentSaveOutline" Width="18" Height="18" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding [BulkImport.Save], Source={x:Static loc:Localizer.Instance}}" FontSize="13" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </LayoutTransformControl>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+            <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="10">
                 <Button Grid.Column="0"
                         Classes="accentbutton"
                         FontWeight="Bold"
@@ -84,28 +118,6 @@
                 </Button>
                 <Button Grid.Column="1" Classes="button" Content="{Binding [BulkImport.Reset], Source={x:Static loc:Localizer.Instance}}" FontSize="14" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="42" MinWidth="84" CornerRadius="8" Padding="12,0" Command="{Binding ResetCommand}"/>
             </Grid>
-            <StackPanel Grid.Row="2" Spacing="10" Margin="0,14,0,0">
-                <TextBlock Text="{Binding [BulkImport.Preset], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                    <Button Grid.Column="0" Classes="button" Content="{Binding [BulkImport.Save], Source={x:Static loc:Localizer.Instance}}" FontSize="14" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Height="35" CornerRadius="8" Command="{Binding SaveCommand}"/>
-                    <Button x:Name="PresetLoadButton" Grid.Column="1" Classes="button" Content="{Binding [BulkImport.Load], Source={x:Static loc:Localizer.Instance}}" FontSize="14" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Height="35" CornerRadius="8">
-                        <Button.Flyout>
-                            <Flyout Placement="TopEdgeAlignedRight" FlyoutPresenterClasses="presetpicker" Opening="OnPresetPickerOpening">
-                                <LayoutTransformControl x:Name="PresetPickerLayout">
-                                    <LayoutTransformControl.LayoutTransform>
-                                        <ScaleTransform ScaleX="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}" ScaleY="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
-                                    </LayoutTransformControl.LayoutTransform>
-                                    <StackPanel Spacing="8" Margin="10">
-                                        <TextBlock Text="{Binding [BulkImport.Preset], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold"/>
-                                        <TextBlock Text="{Binding [BulkImport.LoadHint], Source={x:Static loc:Localizer.Instance}}" FontSize="12" TextWrapping="Wrap"/>
-                                        <panels:BulkImportPreset MaxHeight="180" SelectionInvoked="OnPresetSelected"/>
-                                    </StackPanel>
-                                </LayoutTransformControl>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                </Grid>
-            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

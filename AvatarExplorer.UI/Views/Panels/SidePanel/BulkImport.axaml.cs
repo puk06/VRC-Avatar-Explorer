@@ -23,15 +23,20 @@ public partial class BulkImport : UserControl, IInitializable
     public async Task Initialize()
     {
         if (DataContext is BulkImportViewModel vm)
+        {
             vm.OnItemsAdded += ScrollToEnd;
+            vm.OnPresetSaveStarted += OnPresetSaveStarted;
+        }
 
-        ContextMenuHandlerService.Register(ActionKey.RemovePreset, _ => PresetLoadButton.Flyout?.Hide());
+        ContextMenuHandlerService.Register(ActionKey.RemovePreset, _ => PresetButton.Flyout?.Hide());
     }
 
     private void OnPresetPickerOpening(object? sender, EventArgs e)
-        => PresetPickerLayout.Width = Bounds.Width * MainWindowViewModel.Instance.UiScale;
+        => PresetPickerLayout.Width = PresetButton.Bounds.Width * (MainWindowViewModel.Instance?.UiScale ?? 1.0);
 
-    private void OnPresetSelected(object? sender, EventArgs e) => PresetLoadButton.Flyout?.Hide();
+    private void OnPresetSelected(object? sender, EventArgs e) => PresetButton.Flyout?.Hide();
+
+    private void OnPresetSaveStarted() => PresetButton.Flyout?.Hide();
 
     private void ScrollToEnd() => ItemsScrollViewer.ScrollToEnd();
 

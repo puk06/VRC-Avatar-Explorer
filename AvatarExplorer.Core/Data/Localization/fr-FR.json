@@ -481,8 +481,7 @@
     "BulkImport.ImportWithPathChange": "Importation en masse - changement de chemin",
     "BulkImport.ImportWithoutPathChange": "Importation en masse - pas de changement de chemin",
     "BulkImport.Preset": "Préréglages",
-    "BulkImport.Load": "Charger",
-    "BulkImport.LoadHint": "Ajoute les éléments du préréglage sélectionné à la liste actuelle.",
+    "BulkImport.NoPresets": "Aucun préréglage enregistré",
     "BulkImport.Save": "Enregistrer",
     "BulkImport.Reset": "Réinitialiser",
 

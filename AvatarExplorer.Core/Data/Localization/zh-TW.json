@@ -481,8 +481,7 @@
     "BulkImport.ImportWithPathChange": "批次匯入 - 變更路徑",
     "BulkImport.ImportWithoutPathChange": "批次匯入 - 不變更路徑",
     "BulkImport.Preset": "預設",
-    "BulkImport.Load": "載入",
-    "BulkImport.LoadHint": "將所選預設中的項目加入目前的清單。",
+    "BulkImport.NoPresets": "沒有已儲存的預設",
     "BulkImport.Save": "儲存",
     "BulkImport.Reset": "重設",
 

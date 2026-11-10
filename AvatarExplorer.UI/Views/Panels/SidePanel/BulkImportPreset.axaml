@@ -1,31 +1,36 @@
 <UserControl xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:AvatarExplorer.UI.ViewModels.Panels"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
     xmlns:component="using:AvatarExplorer.UI.ViewModels.Component"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     x:Class="AvatarExplorer.UI.Views.Panels.BulkImportPreset"
     x:DataType="vm:BulkImportPresetViewModel">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding Items}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="component:ItemViewModel">
-                    <Button Classes="button" Click="OnPresetClick" ContextMenu="{Binding ContextMenu}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" CornerRadius="8" Padding="6" Margin="0,0,0,4">
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
-                            <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="20" Height="20" VerticalAlignment="Center"/>
-                            <StackPanel Grid.Column="1" Spacing="2">
-                                <TextBlock Text="{Binding Title}" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                                <TextBlock Text="{Binding Description}" FontSize="11" Foreground="{DynamicResource Text.Secondary}" TextTrimming="CharacterEllipsis"/>
-                            </StackPanel>
-                        </Grid>
-                    </Button>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+    <Panel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="component:ItemViewModel">
+                        <Button Classes="button" Click="OnPresetClick" ContextMenu="{Binding ContextMenu}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" CornerRadius="8" Padding="6" Margin="0,0,0,4">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="20" Height="20" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Spacing="2">
+                                    <TextBlock Text="{Binding Title}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Description}" FontSize="11" Foreground="{DynamicResource Text.Secondary}" TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <TextBlock IsVisible="{Binding !HasItems}" IsHitTestVisible="False" Text="{Binding [BulkImport.NoPresets], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,12" Foreground="{DynamicResource Text.Secondary}"/>
+    </Panel>
 </UserControl>

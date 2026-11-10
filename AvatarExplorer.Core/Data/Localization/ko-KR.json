@@ -481,8 +481,7 @@
     "BulkImport.ImportWithPathChange": "일괄 가져오기 - 경로 변경",
     "BulkImport.ImportWithoutPathChange": "일괄 가져오기 - 경로 변경 없음",
     "BulkImport.Preset": "프리셋",
-    "BulkImport.Load": "불러오기",
-    "BulkImport.LoadHint": "선택한 프리셋의 항목을 현재 목록에 추가합니다.",
+    "BulkImport.NoPresets": "저장된 프리셋이 없습니다",
     "BulkImport.Save": "저장",
     "BulkImport.Reset": "초기화",
 

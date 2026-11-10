@@ -13,6 +13,7 @@ namespace AvatarExplorer.UI.ViewModels.Panels;
 public partial class BulkImportPresetViewModel : ViewModelBase, IInitializable, IPostInitializable
 {
     [Reactive] public partial IEnumerable<ItemViewModel> Items { get; set; } = [];
+    [Reactive] public partial bool HasItems { get; set; }
 
     public IReactiveCommand SelectItemCommand { get; }
 
@@ -37,7 +38,7 @@ public partial class BulkImportPresetViewModel : ViewModelBase, IInitializable, 
     public void Reload()
     {
         var settings = InstanceRepository.UserPreferences;
-        Items = InstanceRepository.BulkImportPresets.GetAll()
+        var items = InstanceRepository.BulkImportPresets.GetAll()
             .Select(i => {
                 var vm = new ItemViewModel()
                 {
@@ -50,7 +51,11 @@ public partial class BulkImportPresetViewModel : ViewModelBase, IInitializable, 
                 };
                 vm.Actions = ContextMenuCreator.Create(vm.ViewModelType, vm);
                 return vm.Update(settings.NormalIconSize, false);
-            });
+            })
+            .ToArray();
+
+        Items = items;
+        HasItems = items.Length > 0;
     }
 
     public static void Select(ItemViewModel presetVm)

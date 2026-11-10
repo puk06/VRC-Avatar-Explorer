@@ -481,8 +481,7 @@
     "BulkImport.ImportWithPathChange": "Importar masivamente - con cambio de ruta",
     "BulkImport.ImportWithoutPathChange": "Importar masivamente - sin cambio de ruta",
     "BulkImport.Preset": "Ajustes preestablecidos",
-    "BulkImport.Load": "Cargar",
-    "BulkImport.LoadHint": "Añade los elementos del ajuste seleccionado a la lista actual.",
+    "BulkImport.NoPresets": "No hay ajustes preestablecidos guardados",
     "BulkImport.Save": "Guardar",
     "BulkImport.Reset": "Reiniciar",
 
