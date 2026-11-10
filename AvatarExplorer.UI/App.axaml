@@ -438,20 +438,16 @@
             <Setter Property="BorderBrush" Value="{DynamicResource Panel.BorderBrush}"/>
         </Style>
 
-        <Style Selector="ContextMenu, MenuFlyoutPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
-        </Style>
-
         <Style Selector="MenuItem:not(:disabled)">
             <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
         </Style>
 
-        <Style Selector="MenuItem:not(:disabled):pointerover /template/ Border#PART_LayoutRoot, MenuItem:not(:disabled):selected /template/ Border#PART_LayoutRoot">
+        <Style Selector="MenuItem:not(:disabled):selected /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="{DynamicResource Button.Background.PointerOver}"/>
         </Style>
 
-        <Style Selector="ContextMenu Separator, MenuFlyoutPresenter Separator, MenuItem Separator">
-            <Setter Property="Background" Value="{DynamicResource Separator.Background}"/>
+        <Style Selector="ContextMenu Separator, MenuItem Separator">
+            <Setter Property="Background" Value="{DynamicResource Panel.BorderBrush}"/>
         </Style>
 
         <Style Selector="FlyoutPresenter.displayoptions">
