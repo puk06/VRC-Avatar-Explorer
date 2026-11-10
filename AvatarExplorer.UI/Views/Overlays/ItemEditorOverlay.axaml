@@ -135,7 +135,7 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <Separator Classes="separator" Height="1"/>
+                            <Separator Classes="separator"/>
 
                             <StackPanel Spacing="10">
                                 <CheckBox x:Name="ShowInternalInfo" Content="{Binding [ItemEditor.ShowInternalInfo], Source={x:Static loc:Localizer.Instance}}" FontSize="13"/>

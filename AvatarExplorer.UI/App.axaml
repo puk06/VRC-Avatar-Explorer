@@ -575,8 +575,11 @@
             <Setter Property="Height" Value="35"/>
         </Style>
 
+        <!-- FluentのSeparatorはTemplate内のBorderのPaddingにMarginを渡すため、余白はMarginで調整する -->
         <Style Selector="Separator.separator">
             <Setter Property="Background" Value="{DynamicResource Separator.Background}"/>
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Margin" Value="0"/>
         </Style>
 
         <Style Selector="ScrollBar /template/ Rectangle#TrackRect">

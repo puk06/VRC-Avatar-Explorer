@@ -153,7 +153,7 @@
                             <Flyout Placement="BottomEdgeAlignedRight" FlyoutPresenterClasses="displayoptions" Closed="OnDisplayOptionsFlyoutClosed">
                                 <StackPanel Orientation="Vertical" Spacing="10">
                                     <TextBlock Text="{Binding [Main.DisplayOptions], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold"/>
-                                    <Border Height="1" Background="{DynamicResource Panel.BorderBrush}"/>
+                                    <Separator Classes="separator"/>
 
                                     <Grid IsSharedSizeScope="True" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="10" MinWidth="250">
                                         <Grid.ColumnDefinitions>
