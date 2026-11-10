@@ -629,6 +629,6 @@ class SettingsManager
 ### 参考リンク
 
 - [AvatarExplorer リポジトリ](https://github.com/puk06/VRC-Avatar-Explorer)
-- [AvatarExplorer.Core ソースコード](../AvatarExplorer.Core/)
+- [AvatarExplorer.Core ソースコード](../../AvatarExplorer.Core/)
 
 ご質問や問題があれば、Issueを作成してください。

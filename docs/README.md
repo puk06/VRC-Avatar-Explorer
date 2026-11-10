@@ -1,99 +1,41 @@
-# AvatarExplorer.Core クライアント開発チュートリアル
+# AvatarExplorer ドキュメント
 
-このチュートリアルでは、`AvatarExplorer.Core`ライブラリを使用して、独自のアバターエクスプローラークライアントアプリケーションを作成する方法を学びます。
+AvatarExplorer の開発者向けドキュメントです。目的別に以下の2つのセクションに分かれています。
 
-## 対象読者
+## クライアント開発（AvatarExplorer.Core）
 
-- C#/.NETの開発経験がある方
-- VRChatのアバター・アイテム管理ツールを作成したい方
-- Boothで購入したアイテムを効率的に管理するアプリケーションを作りたい方
+`AvatarExplorer.Core` ライブラリを使って、独自のアバターエクスプローラークライアントアプリケーションを作成する方法を学ぶチュートリアルです。
 
-## 目次
+- C#/.NET の開発経験がある方
+- VRChat のアバター・アイテム管理ツールを作成したい方
+- Booth で購入したアイテムを効率的に管理するアプリケーションを作りたい方
 
-| 章 | タイトル | 説明 |
-|---|---|---|
-| [01](./01-getting-started.md) | [基本的な概念とセットアップ](./01-getting-started.md) | プロジェクトの作成、初期化、基本的な概念 |
-| [02](./02-navigation-system.md) | [ナビゲーションシステム](./02-navigation-system.md) | Identifier、選択操作、ファイルオープン |
-| [03](./03-item-management.md) | [アイテムの管理](./03-item-management.md) | アイテムの作成・編集・削除 |
-| [04](./04-avatar-management.md) | [共通素体・仮アバターの管理](./04-avatar-management.md) | 共通素体グループ、仮アバター |
-| [05](./05-booth-integration.md) | [Booth連携](./05-booth-integration.md) | Booth APIを使ったアイテム情報取得 |
-| [06](./06-unitypackage-processing.md) | [Unitypackageの処理](./06-unitypackage-processing.md) | パス変更、マージ機能 |
-| [07](./07-runtime-settings.md) | [設定の管理](./07-runtime-settings.md) | RuntimeSettingsの読み書き |
-| [08](./08-import-export.md) | [データのインポート/エクスポート](./08-import-export.md) | CSV、KonoAsset形式など |
-| [09](./09-search.md) | [検索機能](./09-search.md) | 検索クエリ、フィルタリング |
-| [10](./10-complete-example.md) | [完全な実装例](./10-complete-example.md) | コンソールアプリの完全な例 |
-| [11](./11-json-utilities.md) | [JSONユーティリティ](./11-json-utilities.md) | JsonPathReader、JsonManager、JsonFileManager |
+**[クライアント開発チュートリアルを読む](./client-development/README.md)**
 
-## 基本的な概念
+| 章 | タイトル |
+|---|---|
+| [01](./client-development/01-getting-started.md) | [基本的な概念とセットアップ](./client-development/01-getting-started.md) |
+| [02](./client-development/02-navigation-system.md) | [ナビゲーションシステム](./client-development/02-navigation-system.md) |
+| [03](./client-development/03-item-management.md) | [アイテムの管理](./client-development/03-item-management.md) |
+| [04](./client-development/04-avatar-management.md) | [共通素体・仮アバターの管理](./client-development/04-avatar-management.md) |
+| [05](./client-development/05-booth-integration.md) | [Booth連携](./client-development/05-booth-integration.md) |
+| [06](./client-development/06-unitypackage-processing.md) | [Unitypackageの処理](./client-development/06-unitypackage-processing.md) |
+| [07](./client-development/07-runtime-settings.md) | [設定の管理](./client-development/07-runtime-settings.md) |
+| [08](./client-development/08-import-export.md) | [データのインポート/エクスポート](./client-development/08-import-export.md) |
+| [09](./client-development/09-search.md) | [検索機能](./client-development/09-search.md) |
+| [10](./client-development/10-complete-example.md) | [完全な実装例](./client-development/10-complete-example.md) |
+| [11](./client-development/11-json-utilities.md) | [JSONユーティリティ](./client-development/11-json-utilities.md) |
 
-AvatarExplorer.Coreの基本的な思想は**ナビゲーション**です。
+## UI開発（Avalonia Style / Template）
 
-ユーザーが以下のように段階的に選択していくことで、目的のファイルに辿り着く設計になっています：
+`AvatarExplorer.UI` のXAMLを読み書きするときに必要な、Avaloniaの **Style** と **Template** をこのリポジトリの実コードを例に解説したガイドです。
 
-```
-アバター選択 → カテゴリ選択 → アイテム選択 → フォルダ選択 → 拡張子選択 → ファイル選択
-```
+- C# は分かるが、Avalonia の XAML は雰囲気で読んでいる方
+- Style / ControlTemplate / DataTemplate の違いを整理したい方
+- このプロジェクトのUIルールを確認したい方
 
-### 主要なコンポーネント
-
-```
-AvatarExplorerApp (シングルトン)
-├── ItemRepository              # アイテムの管理
-├── CommonAvatarRepository      # 共通素体グループの管理
-├── TempAvatarRepository        # 仮アバターの管理
-├── BulkImportPresetRepository  # 一括インポートプリセット
-├── VariationHashRepository     # バリエーションハッシュ
-├── ItemGroupService            # 横断的な操作（検索、削除など）
-├── ItemNavigationService       # ナビゲーション管理
-├── RuntimeSettingsRepository   # 設定管理
-└── BackupManager               # バックアップ管理
-```
-
-## クイックスタート
-
-```csharp
-using AvatarExplorer.Core.Services.System;
-
-// 1. インスタンス取得と初期化
-var app = AvatarExplorerApp.Instance;
-app.Initialize();
-
-// 2. ナビゲーションサービスの取得
-var navigation = app.ItemNavigationService;
-
-// 3. 現在の選択可能なアイテム一覧を取得
-var viewItems = navigation.GetCurrentSelectionView();
-
-// 4. アイテムを選択
-navigation.Select("item:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-
-// 5. ファイル選択イベントの購読
-navigation.FileOpenRequested += path =>
-{
-    Console.WriteLine($"ファイルが選択されました: {path}");
-};
-```
-
-## 必要な環境
-
-- .NET 10.0 以降（標準で.NET 10を採用）
-- C# 14 以降
+**[Avalonia Style / Template 入門ガイドを読む](./ui-development/avalonia-style-guide.md)**
 
 ## ライセンス
 
-このプロジェクトは **GNU Affero General Public License v3.0 (AGPL-3.0)** のもとでライセンスされています。
-
-### AGPL-3.0について
-
-AGPL-3.0は、GPLにネットワークサービス条項を追加したコピーレフトなライセンスです。
-
-**主な特徴:**
-- ソースコードの開示が必要
-- 改変版も同じライセンスで提供する必要あり
-- **ネットワーク経由で利用される場合もソースコード開示義務が生じる**（GPLとの違い）
-
-### クライアント開発における注意
-
-AvatarExplorer.Coreを使用してクライアントアプリケーションを作成する場合、そのアプリケーションもAGPL-3.0の条件に従う必要があります。
-
-詳細については、[LICENSE](../LICENSE)ファイルおよび[GNU公式ウェブサイト](https://www.gnu.org/licenses/agpl-3.0.html)をご確認ください。
+このプロジェクトは **GNU Affero General Public License v3.0 (AGPL-3.0)** のもとでライセンスされています。詳細は [LICENSE](../LICENSE) を参照してください。
