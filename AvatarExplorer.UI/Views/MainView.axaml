@@ -42,7 +42,7 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <ContentPresenter
-                        Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                        Content="{TemplateBinding Icon}" ContentTemplate="{TemplateBinding IconTemplate}"
                         Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
                         BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8"
                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
@@ -476,16 +476,16 @@
                             </ItemsPanelTemplate>
                         </TabControl.ItemsPanel>
                         <TabItem Classes="sidepaneltab" ToolTip.Tip="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="0">
-                            <TabItem.Header>
+                            <TabItem.Icon>
                                 <materialIcons:MaterialIcon Kind="TextSearch" Width="17" Height="17"/>
-                            </TabItem.Header>
+                            </TabItem.Icon>
                             <panels:AdvancedSearch/>
                         </TabItem>
 
                         <TabItem Classes="sidepaneltab" ToolTip.Tip="{Binding [SidePanel.BulkImport], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="1">
-                            <TabItem.Header>
+                            <TabItem.Icon>
                                 <materialIcons:MaterialIcon Kind="DownloadMultiple" Width="17" Height="17"/>
-                            </TabItem.Header>
+                            </TabItem.Icon>
                             <panels:BulkImport/>
                         </TabItem>
                     </TabControl>
