@@ -17,9 +17,11 @@
         </Style>
     </UserControl.Styles>
 
-    <Grid RowDefinitions="Auto,Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch" Margin="6,0,0,0">
-        <TextBlock Text="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}" Margin="10,0"/>
-        <TextBlock Grid.Row="1" Text="{Binding [AdvancedSearch.NegationHint], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Secondary}" Margin="10,0"/>
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch" Margin="6,0,0,0">
+        <StackPanel Spacing="3" Margin="10,0">
+            <TextBlock Text="{Binding [SidePanel.AdvancedSearch], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+            <TextBlock Text="{Binding [AdvancedSearch.NegationHint], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
+        </StackPanel>
 
         <Separator Classes="separator" Grid.Row="1"/>
 
