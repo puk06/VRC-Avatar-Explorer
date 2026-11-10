@@ -447,7 +447,7 @@
         </Style>
 
         <Style Selector="ContextMenu Separator, MenuItem Separator">
-            <Setter Property="Background" Value="{DynamicResource Panel.BorderBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource Separator.Background}"/>
         </Style>
 
         <Style Selector="FlyoutPresenter.displayoptions">
