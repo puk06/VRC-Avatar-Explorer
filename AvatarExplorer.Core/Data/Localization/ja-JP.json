@@ -477,7 +477,7 @@
     "AdvancedSearch.Remove": "削除",
 
     "BulkImport.Hint": "アイテム・ファイルの右クリックメニュー、またはアイテムのドラッグ＆ドロップから追加できます。",
-    "BulkImport.Import": "インポート",
+    "BulkImport.Import": "一括インポート",
     "BulkImport.ImportWithPathChange": "一括インポート - パス変更あり",
     "BulkImport.ImportWithoutPathChange": "一括インポート - パス変更なし",
     "BulkImport.Preset": "プリセット",
