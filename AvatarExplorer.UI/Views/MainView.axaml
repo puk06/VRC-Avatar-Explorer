@@ -150,7 +150,7 @@
                     <Button Classes="button" Grid.Column="6" Width="35" Height="35" CornerRadius="8" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ToolTip.Tip="{Binding [Main.DisplayOptions], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
                         <materialIcons:MaterialIcon Kind="Tune" Width="20" Height="20"/>
                         <Button.Flyout>
-                            <Flyout Placement="BottomEdgeAlignedRight" Closed="OnDisplayOptionsFlyoutClosed">
+                            <Flyout Placement="BottomEdgeAlignedRight" FlyoutPresenterClasses="displayoptions" Closed="OnDisplayOptionsFlyoutClosed">
                                 <StackPanel Orientation="Vertical" Spacing="10">
                                     <TextBlock Text="{Binding [Main.DisplayOptions], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold"/>
                                     <Border Height="1" Background="{DynamicResource Panel.BorderBrush}"/>
