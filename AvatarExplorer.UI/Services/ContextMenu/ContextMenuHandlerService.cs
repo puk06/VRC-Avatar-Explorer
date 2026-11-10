@@ -15,20 +15,35 @@ namespace AvatarExplorer.UI.Services.ContextMenu;
 
 public static class ContextMenuHandlerService
 {
-    private static readonly Dictionary<ActionKey, Action<string>> _handlers = [];
+    private static readonly Dictionary<ActionKey, List<Action<string>>> _handlers = [];
 
     public static void Register(ActionKey key, Action<string> handler)
     {
-        _handlers[key] = handler;
+        if (!_handlers.TryGetValue(key, out var list))
+        {
+            list = [];
+            _handlers[key] = list;
+        }
+
+        list.Add(handler);
     }
 
     // valueはActualValueがあればActualValue（ファイルパスなど）、無ければIdentidier
     public static void Handle(ActionKey key, string value)
     {
-        if (_handlers.TryGetValue(key, out var handler))
+        if (!_handlers.TryGetValue(key, out var handler)) return;
+
+        handler.ForEach(h =>
         {
-            handler(value);
-        }
+            try
+            {
+                h(value);
+            }
+            catch (Exception ex)
+            {
+                ErrorManager.Instance.PostError($"Failed to handle context menu action '{key}' with value '{value}'", ex);
+            }
+        });
     }
 
     public static void Initialize()

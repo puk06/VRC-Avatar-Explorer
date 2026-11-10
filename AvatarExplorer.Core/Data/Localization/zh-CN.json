@@ -474,9 +474,12 @@
     "AdvancedSearch.ToggleNegation": "切换排除",
     "AdvancedSearch.Remove": "删除",
 
+    "BulkImport.Hint": "可通过项目或文件的右键菜单，或拖放项目来添加。",
     "BulkImport.Import": "批量导入",
     "BulkImport.ImportWithPathChange": "批量导入 - 更改路径",
     "BulkImport.ImportWithoutPathChange": "批量导入 - 不更改路径",
+    "BulkImport.Preset": "预设",
+    "BulkImport.NoPresets": "没有已保存的预设",
     "BulkImport.Save": "保存",
     "BulkImport.Reset": "重置",
 

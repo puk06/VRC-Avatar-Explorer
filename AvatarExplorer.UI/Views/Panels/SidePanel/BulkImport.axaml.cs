@@ -1,9 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
+using AvatarExplorer.UI.ViewModels;
 using AvatarExplorer.UI.ViewModels.Panels;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Interfaces;
+using AvatarExplorer.UI.Models.ContextMenu;
+using AvatarExplorer.UI.Services.ContextMenu;
 
 namespace AvatarExplorer.UI.Views.Panels;
 
@@ -20,8 +23,22 @@ public partial class BulkImport : UserControl, IInitializable
     public async Task Initialize()
     {
         if (DataContext is BulkImportViewModel vm)
+        {
             vm.OnItemsAdded += ScrollToEnd;
+            vm.OnPresetSaveStarted += OnPresetSaveStarted;
+        }
+
+        ContextMenuHandlerService.Register(ActionKey.RemovePreset, _ => PresetButton.Flyout?.Hide());
     }
+
+    private void OnPresetPickerOpening(object? sender, EventArgs e)
+        => PresetPickerLayout.Width = PresetButton.Bounds.Width * (MainWindowViewModel.Instance?.UiScale ?? 1.0);
+
+    #pragma warning disable IDE0051 // Remove unused private members (XAML側で使用されてる)
+    private void OnPresetSelected() => PresetButton.Flyout?.Hide();
+    #pragma warning restore IDE0051
+
+    private void OnPresetSaveStarted() => PresetButton.Flyout?.Hide();
 
     private void ScrollToEnd() => ItemsScrollViewer.ScrollToEnd();
 

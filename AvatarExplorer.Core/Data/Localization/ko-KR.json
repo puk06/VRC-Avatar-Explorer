@@ -474,9 +474,12 @@
     "AdvancedSearch.ToggleNegation": "제외 전환",
     "AdvancedSearch.Remove": "삭제",
 
+    "BulkImport.Hint": "아이템이나 파일의 우클릭 메뉴 또는 아이템 드래그 앤 드롭으로 추가할 수 있습니다.",
     "BulkImport.Import": "일괄 가져오기",
     "BulkImport.ImportWithPathChange": "일괄 가져오기 - 경로 변경",
     "BulkImport.ImportWithoutPathChange": "일괄 가져오기 - 경로 변경 없음",
+    "BulkImport.Preset": "프리셋",
+    "BulkImport.NoPresets": "저장된 프리셋이 없습니다",
     "BulkImport.Save": "저장",
     "BulkImport.Reset": "초기화",
 

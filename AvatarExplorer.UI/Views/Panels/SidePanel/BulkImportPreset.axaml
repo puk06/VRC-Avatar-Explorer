@@ -7,38 +7,30 @@
     x:Class="AvatarExplorer.UI.Views.Panels.BulkImportPreset"
     x:DataType="vm:BulkImportPresetViewModel">
 
-    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch">
-        <TextBlock Text="{Binding [SidePanel.BulkImportPreset], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="{DynamicResource Text.Primary}"/>
+    <Panel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="component:ItemViewModel">
+                        <Button Classes="button" Click="OnPresetClick" ContextMenu="{Binding ContextMenu}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" CornerRadius="8" Padding="6" Margin="0,0,0,4">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                <materialIcons:MaterialIcon Kind="FolderStarMultipleOutline" Width="20" Height="20" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Spacing="2">
+                                    <TextBlock Text="{Binding Title}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Description}" FontSize="11" Foreground="{DynamicResource Text.Secondary}" TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
-        <Separator Classes="separator" Grid.Row="1"/>
-
-        <Grid Grid.Row="2" RowDefinitions="*,Auto,Auto" RowSpacing="10" VerticalAlignment="Stretch">
-            <ScrollViewer Grid.Row="0" DragDrop.AllowDrop="True">
-                <ItemsControl ItemsSource="{Binding Items}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Margin="0,0,10,0"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="component:ItemViewModel">
-                            <Button Classes="button" ContextMenu="{Binding ContextMenu}" HorizontalAlignment="Stretch" VerticalAlignment="Top" CornerRadius="8" Padding="7" Margin="0,0,0,5" Command="{Binding $parent[UserControl].DataContext.SelectItemCommand}" CommandParameter="{Binding}">
-                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                    <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                        <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top"/>
-                                    </Border>
-
-                                    <Grid Grid.Column="1" RowDefinitions="Auto,Auto,5,*">
-                                        <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                                    </Grid>
-                                </Grid>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Grid>
-    </Grid>
+        <TextBlock IsVisible="{Binding !HasItems}" IsHitTestVisible="False" Text="{Binding [BulkImport.NoPresets], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,12" Foreground="{DynamicResource Text.Secondary}"/>
+    </Panel>
 </UserControl>

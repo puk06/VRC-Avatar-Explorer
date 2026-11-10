@@ -18,7 +18,9 @@ namespace AvatarExplorer.UI.ViewModels.Panels;
 public partial class BulkImportViewModel : ViewModelBase, IInitializable
 {
     public event Action? OnItemsAdded;
+    public event Action? OnPresetSaveStarted;
     [Reactive] public partial ObservableCollection<BulkImportItemViewModel> Items { get; set; } = [];
+    [Reactive] public partial bool HasItems { get; set; }
 
     public IReactiveCommand CopyCommand { get; }
     public IReactiveCommand RemoveCommand { get; }
@@ -45,6 +47,10 @@ public partial class BulkImportViewModel : ViewModelBase, IInitializable
     {
         InstanceRepository.Items.OnUpdated += RefreshItems;
         InstanceRepository.UserPreferencesRepository.OnSettingsChanged += _ => UpdateAllItems();
+
+        // Items の差し替え・追加・削除のいずれでも HasItems を更新する
+        this.WhenAnyValue(x => x.Items.Count)
+            .Subscribe(count => HasItems = count > 0);
     }
 
     private void CopyItem(BulkImportItemViewModel item)
@@ -57,6 +63,8 @@ public partial class BulkImportViewModel : ViewModelBase, IInitializable
 
     private async Task Import(bool? pathChange = null)
     {
+        if (!HasItems) return;
+
         var itemPathCategoryEntries = new List<UnitypackageImportEntry>();
 
         foreach (var bulkImportItem in Items)
@@ -103,6 +111,10 @@ public partial class BulkImportViewModel : ViewModelBase, IInitializable
 
     private async Task Save()
     {
+        if (!HasItems) return;
+
+        OnPresetSaveStarted?.Invoke();
+
         var presetName = await InstanceRepository.MainWindow.ShowTextDialog(Localizer.Instance[Loc.Dialog.Title.NewBulkImportPresetName]);
         if (string.IsNullOrEmpty(presetName)) return;
 
