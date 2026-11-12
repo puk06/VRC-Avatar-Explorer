@@ -30,6 +30,7 @@ public partial class ItemViewModel : ViewModelBase, IDisposable
     [Reactive] public partial string Title { get; private set; } = string.Empty;
     [Reactive] public partial string Description { get; private set; } = string.Empty;
     [Reactive] public partial TagViewModel[] Tags { get; set; } = [];
+    [Reactive] public partial bool HasTags { get; private set; } = false;
     [Reactive] public partial ContextMenu? ContextMenu { get; set; } = null;
     [Reactive] public partial string? ToolTip { get; set; } = null;
 
@@ -142,6 +143,7 @@ public partial class ItemViewModel : ViewModelBase, IDisposable
     private void UpdateTags()
     {
         Tags.ForEach(i => i.Update());
+        HasTags = Tags.Length > 0;
     }
 
     private void UpdateToolTip()

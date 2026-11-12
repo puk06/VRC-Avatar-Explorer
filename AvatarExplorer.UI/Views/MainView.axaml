@@ -66,6 +66,44 @@
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="CornerRadius" Value="6"/>
         </Style>
+
+        <!-- グリッドカード: ホバー時にサムネイル下端へ出すタグ -->
+        <Style Selector="Grid.gridtagsoverlay">
+            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>
+        <Style Selector="Button.gridcard:pointerover Grid.gridtagsoverlay">
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style Selector="Border.gridtagscrim">
+            <Setter Property="Background">
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                    <GradientStop Offset="0" Color="rgba(0,0,0,0)"/>
+                    <GradientStop Offset="1" Color="rgba(0,0,0,0.65)"/>
+                </LinearGradientBrush>
+            </Setter>
+        </Style>
+
+        <!--
+            タグが収まりきらない場合、ホバー中に自動スクロールする。
+            Offset は ScrollViewer 側で [0, 末尾] にクランプされるため、収まっているカードでは何も動かない。
+            速度は約50px/s（6000px / 120秒）。末尾に達した後はそのまま停止する。
+        -->
+        <Style Selector="ScrollViewer.gridtagscroll.scrolling">
+            <Style.Animations>
+                <Animation Duration="0:2:0" Easing="LinearEasing" FillMode="Forward">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Offset" Value="0,0"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="1%">
+                        <Setter Property="Offset" Value="0,0"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Offset" Value="6000,0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
     </UserControl.Styles>
 
     <DockPanel Margin="12">
@@ -404,7 +442,7 @@
                                                             <ItemsControl.ItemTemplate>
                                                                 <DataTemplate x:DataType="component:ItemViewModel">
                                                                     <Button
-                                                                        Classes="button"
+                                                                        Classes="button gridcard"
                                                                         Classes.appear="{Binding IsAnimated}"
                                                                         Classes.implemented="{Binding IsImplemented}"
                                                                         Classes.notimplemented="{Binding IsNotImplemented}"
@@ -423,8 +461,46 @@
                                                                         Loaded="OnItemButtonLoaded"
                                                                         Unloaded="OnItemButtonUnloaded">
                                                                         <Grid RowDefinitions="Auto,Auto,Auto">
-                                                                            <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                                                                <Image Source="{Binding Thumbnail}" Width="{Binding $parent[views:MainView].GridItemImageSize}" Height="{Binding $parent[views:MainView].GridItemImageSize}" Stretch="UniformToFill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>
+                                                                            <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                                                                    Width="{Binding $parent[views:MainView].GridItemImageSize}"
+                                                                                    Height="{Binding $parent[views:MainView].GridItemImageSize}">
+                                                                                <Panel>
+                                                                                    <Image Source="{Binding Thumbnail}" Width="{Binding $parent[views:MainView].GridItemImageSize}" Height="{Binding $parent[views:MainView].GridItemImageSize}" Stretch="UniformToFill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>
+
+                                                                                    <Grid Classes="gridtagsoverlay" IsVisible="{Binding HasTags}" VerticalAlignment="Bottom" ClipToBounds="True" MinHeight="46">
+                                                                                        <Grid.Transitions>
+                                                                                            <Transitions>
+                                                                                                <DoubleTransition Property="Opacity" Duration="0:0:0.15"/>
+                                                                                            </Transitions>
+                                                                                        </Grid.Transitions>
+
+                                                                                        <Border Classes="gridtagscrim"/>
+                                                                                        <ScrollViewer Classes="gridtagscroll"
+                                                                                                    Classes.scrolling="{Binding $parent[Button].IsPointerOver}"
+                                                                                                    HorizontalScrollBarVisibility="Hidden"
+                                                                                                    VerticalScrollBarVisibility="Disabled"
+                                                                                                    VerticalAlignment="Bottom"
+                                                                                                    Margin="6,0,6,6"
+                                                                                                    ClipToBounds="True"
+                                                                                                    IsHitTestVisible="False">
+                                                                                            <ItemsControl ItemsSource="{Binding Tags}">
+                                                                                                <ItemsControl.ItemsPanel>
+                                                                                                    <ItemsPanelTemplate>
+                                                                                                        <StackPanel Orientation="Horizontal" Spacing="4"/>
+                                                                                                    </ItemsPanelTemplate>
+                                                                                                </ItemsControl.ItemsPanel>
+
+                                                                                                <ItemsControl.ItemTemplate>
+                                                                                                    <DataTemplate x:DataType="component:TagViewModel">
+                                                                                                        <Border CornerRadius="10" Padding="6,2" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}">
+                                                                                                            <TextBlock Text="{Binding Label}" FontSize="11" FontWeight="Bold" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}"/>
+                                                                                                        </Border>
+                                                                                                    </DataTemplate>
+                                                                                                </ItemsControl.ItemTemplate>
+                                                                                            </ItemsControl>
+                                                                                        </ScrollViewer>
+                                                                                    </Grid>
+                                                                                </Panel>
                                                                             </Border>
 
                                                                             <TextBlock Grid.Row="1" Text="{Binding Title}" MaxLines="2" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" TextAlignment="Left" Margin="0,10,0,0"/>
