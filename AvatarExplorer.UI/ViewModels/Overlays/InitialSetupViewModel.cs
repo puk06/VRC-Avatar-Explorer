@@ -3,6 +3,7 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
+using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -22,8 +23,8 @@ public partial class InitialSetupViewModel : ViewModelBase, IInitializable, IPos
     {
         CloseCommand = ReactiveCommand.CreateFromTask(Close);
 
-        IInitializableRegistry.Register(0, (IInitializable)this);
-        IInitializableRegistry.Register(int.MaxValue, (IPostInitializable)this);
+        InitializableRegistry.Register(0, (IInitializable)this);
+        InitializableRegistry.Register(int.MaxValue, (IPostInitializable)this);
     }
 
     public async Task Initialize()

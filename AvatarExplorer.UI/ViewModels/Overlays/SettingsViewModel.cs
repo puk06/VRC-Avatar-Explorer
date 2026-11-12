@@ -119,7 +119,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         CloseCommand = ReactiveCommand.Create(Close);
         ApplyCommand = ReactiveCommand.Create(Apply);
 
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()

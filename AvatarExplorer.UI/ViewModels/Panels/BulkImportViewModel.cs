@@ -40,7 +40,7 @@ public partial class BulkImportViewModel : ViewModelBase, IInitializable
         ResetCommand = ReactiveCommand.Create(Reset);
         SaveCommand = ReactiveCommand.CreateFromTask(Save);
 
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()

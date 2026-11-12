@@ -3,6 +3,7 @@ using AvatarExplorer.Core.Localization;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
+using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -28,7 +29,7 @@ public partial class TagEditorViewModel : ViewModelBase, IInitializable
         RenameCommand = ReactiveCommand.CreateFromTask(Rename);
         RemoveCommand = ReactiveCommand.CreateFromTask(Remove);
 
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()

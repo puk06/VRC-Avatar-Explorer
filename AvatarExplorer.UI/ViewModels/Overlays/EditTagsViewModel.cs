@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Services;
+using AvatarExplorer.UI.Services.System;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
@@ -33,7 +34,7 @@ public partial class EditTagsViewModel : ViewModelBase, IInitializable
         ConfirmCommand = ReactiveCommand.Create(Confirm);
         CancelCommand = ReactiveCommand.Create(Cancel);
 
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()

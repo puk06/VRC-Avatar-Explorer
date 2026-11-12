@@ -4,6 +4,7 @@ using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.ViewModels.Component;
 using DynamicData;
 using DynamicData.Binding;
@@ -46,7 +47,7 @@ public partial class AdvancedSearchViewModel : ViewModelBase, IInitializable
         AddTagCommand = ReactiveCommand.Create(AddNewTag);
         SelectedCategories.CollectionChanged += (_, _) => SearchPropertyChanged?.Invoke();
         SelectedTags.CollectionChanged += (_, _) => SearchPropertyChanged?.Invoke();
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()

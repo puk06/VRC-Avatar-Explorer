@@ -30,7 +30,7 @@ public partial class ResolveTempAvatarViewModel : ViewModelBase, IInitializable
         CancelCommand = ReactiveCommand.Create(Close);
         SelectItemCommand = ReactiveCommand.CreateFromTask<ItemViewModel>(SelectItem);
 
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()
