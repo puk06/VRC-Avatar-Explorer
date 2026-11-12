@@ -127,7 +127,7 @@ public static class DatabaseMigrationService
         var backupPath = BuildBackupPath(filePath, fromVersion, toVersion);
         File.Copy(filePath, backupPath, overwrite: true);
         node["Version"] = toVersion;
-        File.WriteAllText(filePath, node.ToJsonString(JsonManager.JsonSerializerOptions));
+        FileSystemService.WriteAllTextAtomic(filePath, node.ToJsonString(JsonManager.JsonSerializerOptions));
     }
 
     private static string BuildBackupPath(string filePath, int fromVersion, int toVersion)
