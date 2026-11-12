@@ -7,6 +7,7 @@ using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Services.ContextMenu;
+using AvatarExplorer.UI.Services.System;
 
 namespace AvatarExplorer.UI.Views.Panels;
 
@@ -17,7 +18,7 @@ public partial class BulkImport : UserControl, IInitializable
         InitializeComponent();
         DataContext = InstanceRepository.MainView.BulkImportVM;
 
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()

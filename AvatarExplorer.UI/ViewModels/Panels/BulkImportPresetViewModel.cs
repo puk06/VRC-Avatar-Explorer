@@ -3,6 +3,7 @@ using AvatarExplorer.UI.Data;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Services;
+using AvatarExplorer.UI.Services.System;
 using AvatarExplorer.UI.Services.ViewControl;
 using AvatarExplorer.UI.ViewModels.Component;
 using ReactiveUI;
@@ -20,8 +21,8 @@ public partial class BulkImportPresetViewModel : ViewModelBase, IInitializable, 
     public BulkImportPresetViewModel()
     {
         SelectItemCommand = ReactiveCommand.Create<ItemViewModel>(Select);
-        IInitializableRegistry.Register(0, (IInitializable)this);
-        IInitializableRegistry.Register(0, (IPostInitializable)this);
+        InitializableRegistry.Register(0, (IInitializable)this);
+        InitializableRegistry.Register(0, (IPostInitializable)this);
     }
 
     public async Task Initialize()

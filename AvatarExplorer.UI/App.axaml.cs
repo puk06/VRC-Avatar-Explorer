@@ -5,7 +5,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
-using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Services.System;
 
 namespace AvatarExplorer.UI;
@@ -50,7 +49,7 @@ public partial class App : Application
             desktop.MainWindow = new MainWindow();
             TopLevelProvider.Current = TopLevel.GetTopLevel(desktop.MainWindow);
 
-            await IInitializableRegistry.Complete();
+            await InitializableRegistry.Complete();
 
             if (desktop.MainWindow is MainWindow mw)
                 mw.SetApplicationArgs(desktop.Args);

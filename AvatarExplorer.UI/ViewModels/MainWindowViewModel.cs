@@ -88,8 +88,8 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     {
         Instance = this;
 
-        IInitializableRegistry.Register(-1, (IInitializable)this);
-        IInitializableRegistry.Register(9999, (IPostInitializable)this);
+        InitializableRegistry.Register(-1, (IInitializable)this);
+        InitializableRegistry.Register(9999, (IPostInitializable)this);
     }
 
     public async Task Initialize()

@@ -49,7 +49,7 @@ public partial class EditCommonAvatarsViewModel : ViewModelBase, IInitializable
         ReplaceAvatarsToGroupCommand = ReactiveCommand.CreateFromTask(ReplaceAvatarsToGroup);
         CloseCommand = ReactiveCommand.Create(Close);
 
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()

@@ -1,6 +1,8 @@
-namespace AvatarExplorer.UI.Interfaces;
+using AvatarExplorer.UI.Interfaces;
 
-public static class IInitializableRegistry
+namespace AvatarExplorer.UI.Services.System;
+
+public static class InitializableRegistry
 {
     private static readonly List<(int, IInitializable)> _instances = [];
     private static readonly List<(int, IPostInitializable)> _postInstances = [];

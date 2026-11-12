@@ -153,8 +153,8 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             () => Refresh(false)
         );
 
-        IInitializableRegistry.Register(0, (IInitializable)this);
-        IInitializableRegistry.Register(0, (IPostInitializable)this);
+        InitializableRegistry.Register(0, (IInitializable)this);
+        InitializableRegistry.Register(0, (IPostInitializable)this);
     }
 
     public async Task Initialize()

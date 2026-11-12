@@ -48,7 +48,7 @@ public partial class ImportDataViewModel : ViewModelBase, IInitializable
         ImportCommand = ReactiveCommand.CreateFromTask(Import);
         CloseCommand = ReactiveCommand.Create(Close);
 
-        IInitializableRegistry.Register(0, this);
+        InitializableRegistry.Register(0, this);
     }
 
     public async Task Initialize()
