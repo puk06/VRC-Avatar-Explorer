@@ -163,6 +163,12 @@ public partial class ItemViewModel : ViewModelBase, IDisposable
             return TitleRaw;
         }
 
+        if (ViewModelType == ViewModelType.Folder && !string.IsNullOrEmpty(ActualValue))
+        {
+            // フォルダのパスからフォルダ名を抽出して表示する
+            return Path.GetFileName(ActualValue);
+        }
+
         if (ViewModelType == ViewModelType.File)
         {
             return Localizer.Instance.Get(Loc.Button.ToolTip.FilePath, ActualValue ?? string.Empty);
