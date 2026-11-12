@@ -115,7 +115,6 @@ public static class FileSystemService
                 File.WriteAllText(tempFilePath, contents);
             else
                 File.WriteAllText(tempFilePath, contents, encoding);
-
             File.Move(tempFilePath, filePath, overwrite: true);
         }
         catch
