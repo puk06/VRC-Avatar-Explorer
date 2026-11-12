@@ -17,7 +17,15 @@ public class ErrorLogWriter : IDisposable
 
     private ErrorLogWriter()
     {
-        FileSystemService.PrepareFileDirectory(LogFilePath);
+        try
+        {
+            FileSystemService.PrepareFileDirectory(LogFilePath);
+        }
+        catch (Exception ex)
+        {
+            // ログフォルダを用意できない場合でも、エラー記録自体は継続させる
+            Console.WriteLine(ex);
+        }
     }
 
     /// <summary>ログの書き出し先となるファイルパスを取得します。</summary>

@@ -277,6 +277,7 @@
     "Error.CannotRemoveRootFolder": "The root folder cannot be removed",
     "Error.AvatarNotFound": "Avatar not found",
     "Error.CreateUnitypackage": "Failed to create Unitypackage",
+    "Error.UnhandledException": "An unexpected error occurred. The application may be in an inconsistent state. Please report the error log to the developer and restart the application.",
 
     "Settings.Basic": "Basic",
     "Settings.Language.Title": "Language",

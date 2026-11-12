@@ -2,7 +2,6 @@ using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.External;
 using AvatarExplorer.Core.Models.System;
-using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Services.Items;
 using AvatarExplorer.Core.Services.System.Repositories;
 
@@ -83,9 +82,6 @@ public sealed class AvatarExplorerApp
 
         RuntimeSettingsRepository.OnSettingsChanged += OnRuntimeSettingsUpdated;
         BackupManager.StartAutoBackup(RuntimeSettings.AutoBackupInterval, RuntimeSettings.AutoBackupRootDirectory);
-
-        ErrorManager.Instance.OnErrorOccured += ErrorLogWriter.Instance.Write;
-        ErrorManager.Instance.OnInternalErrorOccured += ErrorLogWriter.Instance.InternalWrite;
 
         _initialized = true;
     }
