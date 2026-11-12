@@ -69,7 +69,6 @@ public class SettingsManager<T>(string filePath) where T : class, new()
     {
         try
         {
-            FileSystemService.PrepareFileDirectory(FilePath);
             var json = JsonManager.Serialize(_settings);
             var root = JsonNode.Parse(json);
             if (root is JsonObject obj)
@@ -77,7 +76,7 @@ public class SettingsManager<T>(string filePath) where T : class, new()
                 obj["Version"] = MigrationVersion;
                 json = obj.ToJsonString(JsonManager.JsonSerializerOptions);
             }
-            File.WriteAllText(FilePath, json);
+            FileSystemService.WriteAllTextAtomic(FilePath, json);
         }
         catch (Exception ex)
         {

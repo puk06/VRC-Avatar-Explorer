@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Security.Principal;
 using AvatarExplorer.Core.Data.Paths;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Utils;
 using Microsoft.Win32;
 
@@ -260,7 +261,7 @@ public static class SchemeService
         try
         {
             Directory.CreateDirectory(SystemPath.SchemeBackupFolderPath);
-            File.WriteAllText(GetBackupPath(protocol), command);
+            FileSystemService.WriteAllTextAtomic(GetBackupPath(protocol), command);
         }
         catch (Exception ex)
         {
@@ -387,7 +388,7 @@ public static class SchemeService
                 MimeType=x-scheme-handler/{protocol};
                 """;
 
-            File.WriteAllText(desktopPath, content);
+            FileSystemService.WriteAllTextAtomic(desktopPath, content);
             RunUpdateDesktopDatabase();
             SetLinuxMimeDefault(protocol);
         }
