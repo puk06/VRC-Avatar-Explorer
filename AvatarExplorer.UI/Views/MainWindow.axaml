@@ -28,7 +28,7 @@
         </LayoutTransformControl.LayoutTransform>
 
         <Panel>
-            <Panel Background="{Binding BackgroundImage}">
+            <Panel Background="{Binding BackgroundImage}" RenderOptions.BitmapInterpolationMode="HighQuality">
                 <Panel.Effect>
                     <BlurEffect Radius="{Binding BackgroundBlurRadius}" />
                 </Panel.Effect>
