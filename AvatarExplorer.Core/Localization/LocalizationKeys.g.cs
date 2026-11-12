@@ -420,6 +420,7 @@ public static class Loc
         public const string CannotRemoveRootFolder = "Error.CannotRemoveRootFolder";
         public const string AvatarNotFound = "Error.AvatarNotFound";
         public const string CreateUnitypackage = "Error.CreateUnitypackage";
+        public const string UnhandledException = "Error.UnhandledException";
     }
     public static class Settings
     {

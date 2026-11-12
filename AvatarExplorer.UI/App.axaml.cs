@@ -13,6 +13,8 @@ public partial class App : Application
 {
     public override void Initialize()
     {
+        GlobalExceptionHandler.RegisterDispatcherHandler();
+
         AvaloniaXamlLoader.Load(this);
         RegisterInputHandlers();
     }

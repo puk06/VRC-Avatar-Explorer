@@ -1,8 +1,9 @@
 using AvatarExplorer.Core.Models.Common;
+using AvatarExplorer.Core.Services.IO;
 
 namespace AvatarExplorer.Core.Services.System;
 
-/// <summary>アプリケーション内で発生したエラー（一般エラー・内部エラー）を収集し、イベントで通知するシングルトンマネージャー。</summary>
+/// <summary>アプリケーション内で発生したエラー（一般エラー・内部エラー）を収集し、ログファイルへの書き出しとイベント通知を行うシングルトンマネージャー。</summary>
 public sealed class ErrorManager
 {
     /// <summary>エラーマネージャーのシングルトンインスタンス。</summary>
@@ -29,7 +30,7 @@ public sealed class ErrorManager
         lock (_lock) return [.. _errors];
     }
 
-    /// <summary>内部エラーとして記録し、<see cref="OnInternalErrorOccured"/> および <see cref="OnErrorAdded"/> イベントを発火します。通常は予期しない処理失敗に使用します。</summary>
+    /// <summary>内部エラーとして記録し、ログファイルへ書き出したうえで <see cref="OnInternalErrorOccured"/> および <see cref="OnErrorAdded"/> イベントを発火します。通常は予期しない処理失敗に使用します。</summary>
     /// <param name="message">エラーメッセージ。</param>
     /// <param name="exception">関連する例外（任意）。</param>
     /// <param name="tag">エラーを分類するためのタグ（任意）。</param>
@@ -37,11 +38,12 @@ public sealed class ErrorManager
     {
         var context = new ErrorContext(true, message, exception, tag);
         lock (_lock) _errors.Add(context);
+        ErrorLogWriter.Instance.InternalWrite(message, exception, tag);
         OnErrorAdded?.Invoke(context);
         OnInternalErrorOccured?.Invoke(message, exception, tag);
     }
 
-    /// <summary>一般エラーとして記録し、<see cref="OnErrorOccured"/> および <see cref="OnErrorAdded"/> イベントを発火します。ユーザーへの通知対象となるエラーに使用します。</summary>
+    /// <summary>一般エラーとして記録し、ログファイルへ書き出したうえで <see cref="OnErrorOccured"/> および <see cref="OnErrorAdded"/> イベントを発火します。ユーザーへの通知対象となるエラーに使用します。</summary>
     /// <param name="message">エラーメッセージ。</param>
     /// <param name="exception">関連する例外（任意）。</param>
     /// <param name="tag">エラーを分類するためのタグ（任意）。</param>
@@ -49,6 +51,7 @@ public sealed class ErrorManager
     {
         var context = new ErrorContext(false, message, exception, tag);
         lock (_lock) _errors.Add(context);
+        ErrorLogWriter.Instance.Write(message, exception, tag);
         OnErrorAdded?.Invoke(context);
         OnErrorOccured?.Invoke(message, exception, tag);
     }

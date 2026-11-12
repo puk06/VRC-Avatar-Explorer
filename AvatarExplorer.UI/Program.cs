@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
+using AvatarExplorer.UI.Services.System;
 using ReactiveUI.Avalonia;
 
 namespace AvatarExplorer.UI;
@@ -15,6 +16,9 @@ static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        // 処理されなかった例外をログと通知で確認できるようにする
+        GlobalExceptionHandler.Register();
+
         // シングルインスタンスはWindowsとLinuxのみ対応
         if (ProcessUtils.IsWindows() || ProcessUtils.IsLinux())
         {

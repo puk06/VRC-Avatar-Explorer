@@ -277,6 +277,7 @@
     "Error.CannotRemoveRootFolder": "无法删除根文件夹",
     "Error.AvatarNotFound": "找不到头像",
     "Error.CreateUnitypackage": "创建 Unitypackage 失败",
+    "Error.UnhandledException": "发生意外错误。应用可能处于不稳定状态，建议将错误日志报告给开发者后重新启动应用。",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "语言",

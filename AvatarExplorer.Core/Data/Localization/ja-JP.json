@@ -277,6 +277,7 @@
     "Error.CannotRemoveRootFolder": "ルートフォルダは削除できません",
     "Error.AvatarNotFound": "アバターが見つかりませんでした",
     "Error.CreateUnitypackage": "Unitypackageの作成に失敗しました",
+    "Error.UnhandledException": "予期しないエラーが発生しました。状態が不安定になっている可能性があるため、エラーログを開発者に報告したうえで、ソフトを再起動することをおすすめします。",
 
     "Settings.Basic": "基本",
     "Settings.Language.Title": "言語",

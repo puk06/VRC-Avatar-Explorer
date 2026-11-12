@@ -277,6 +277,7 @@
     "Error.CannotRemoveRootFolder": "Le dossier racine ne peut pas être supprimé",
     "Error.AvatarNotFound": "Avatar introuvable",
     "Error.CreateUnitypackage": "Échec de la création du Unitypackage",
+    "Error.UnhandledException": "Une erreur inattendue s'est produite. L'application peut se trouver dans un état incohérent. Veuillez signaler le journal des erreurs au développeur et redémarrer l'application.",
 
     "Settings.Basic": "Général",
     "Settings.Language.Title": "Langue",
