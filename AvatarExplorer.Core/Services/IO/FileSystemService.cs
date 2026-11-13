@@ -97,6 +97,34 @@ public static class FileSystemService
 {
     private const int BufferSize = 1024 * 1024;
 
+    #region Safe Write
+    /// <summary>
+    /// 指定したテキストを一時ファイルに書き込んでから本来のファイルへ移動します。書き込み途中で失敗しても、既存のファイルが破損しません。
+    /// </summary>
+    /// <param name="filePath">書き込み先のファイルパス。</param>
+    /// <param name="contents">書き込むテキスト。</param>
+    /// <param name="encoding">使用する文字コード。省略した場合は <see cref="File.WriteAllText(string, string)"/> の既定値（BOM なしの UTF-8）を使用します。</param>
+    public static void WriteAllTextAtomic(string filePath, string contents, Encoding? encoding = null)
+    {
+        PrepareFileDirectory(filePath);
+
+        var tempFilePath = $"{filePath}.{Path.GetRandomFileName()}";
+        try
+        {
+            if (encoding is null)
+                File.WriteAllText(tempFilePath, contents);
+            else
+                File.WriteAllText(tempFilePath, contents, encoding);
+            File.Move(tempFilePath, filePath, overwrite: true);
+        }
+        catch
+        {
+            try { File.Delete(tempFilePath); } catch { /* 後始末の失敗よりも元の例外を優先する */ }
+            throw;
+        }
+    }
+    #endregion
+
     #region Serialize / Deserialize
     /// <summary>
     /// 指定したオブジェクトを JSON にシリアライズし、指定したファイルパスに書き込みます。
@@ -109,9 +137,8 @@ public static class FileSystemService
     {
         try
         {
-            PrepareFileDirectory(filePath);
             var json = JsonManager.Serialize(value);
-            File.WriteAllText(filePath, json);
+            WriteAllTextAtomic(filePath, json);
             return Result.Success;
         }
         catch (Exception ex)
