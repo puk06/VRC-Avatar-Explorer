@@ -69,11 +69,11 @@
 
         <!-- グリッドカード: ホバー時にサムネイル下端へ出すタグ -->
         <Style Selector="Grid.gridtagsoverlay">
-            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="IsVisible" Value="False"/>
             <Setter Property="IsHitTestVisible" Value="False"/>
         </Style>
-        <Style Selector="Button.gridcard:pointerover Grid.gridtagsoverlay">
-            <Setter Property="Opacity" Value="1"/>
+        <Style Selector="Button.gridcard:pointerover Grid.gridtagsoverlay.hastags">
+            <Setter Property="IsVisible" Value="True"/>
         </Style>
         <Style Selector="Border.gridtagscrim">
             <Setter Property="Background">
@@ -467,12 +467,7 @@
                                                                                 <Panel>
                                                                                     <Image Source="{Binding Thumbnail}" Width="{Binding $parent[views:MainView].GridItemImageSize}" Height="{Binding $parent[views:MainView].GridItemImageSize}" Stretch="UniformToFill" VerticalAlignment="Top" Loaded="OnItemImageLoaded" Unloaded="OnItemImageUnloaded"/>
 
-                                                                                    <Grid Classes="gridtagsoverlay" IsVisible="{Binding HasTags}" VerticalAlignment="Bottom" ClipToBounds="True" MinHeight="46">
-                                                                                        <Grid.Transitions>
-                                                                                            <Transitions>
-                                                                                                <DoubleTransition Property="Opacity" Duration="0:0:0.15"/>
-                                                                                            </Transitions>
-                                                                                        </Grid.Transitions>
+                                                                                    <Grid Classes="gridtagsoverlay" Classes.hastags="{Binding HasTags}" VerticalAlignment="Bottom" ClipToBounds="True" MinHeight="46">
 
                                                                                         <Border Classes="gridtagscrim"/>
                                                                                         <ScrollViewer Classes="gridtagscroll"
