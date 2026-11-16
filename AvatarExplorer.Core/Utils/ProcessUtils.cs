@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace AvatarExplorer.Core.Utils;
@@ -26,5 +25,5 @@ public static class ProcessUtils
     /// 現在のプロセスの実行可能ファイルのフルパスを取得します。
     /// </summary>
     /// <returns>現在のプロセスのファイル名（フルパス）。取得できない場合は null。</returns>
-    public static string? GetCurrentProcessPath() => Process.GetCurrentProcess()?.MainModule?.FileName;
+    public static string? GetCurrentProcessPath() => Environment.ProcessPath;
 }
