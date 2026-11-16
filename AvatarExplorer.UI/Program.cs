@@ -10,6 +10,11 @@ static class Program
 {
     private const string MutexName = "AvatarExplorerV2.SingleInstance";
 
+    // Mutex をローカル変数で保持すると、Release / ReadyToRun ビルドでは JIT が最後の使用以降を
+    // 不要とみなして GC 対象にし、ファイナライザが OS ハンドルを閉じて名前付き Mutex が消滅する。
+    // その結果、次のプロセスが新しい Mutex を作れてしまい多重起動を防げなくなるため、静的に保持する。
+    private static Mutex? _singleInstanceMutex;
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -26,7 +31,7 @@ static class Program
             var mutexName = ProcessUtils.IsLinux() ? "Global\\" + MutexName : MutexName;
 
             // Single Instance Check
-            Mutex _ = new(true, mutexName, out bool isNew);
+            _singleInstanceMutex = new(true, mutexName, out bool isNew);
 
             if (!isNew)
             {
