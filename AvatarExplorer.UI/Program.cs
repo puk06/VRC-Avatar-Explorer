@@ -27,15 +27,11 @@ static class Program
         // シングルインスタンスはWindowsとLinuxのみ対応
         if (ProcessUtils.IsWindows() || ProcessUtils.IsLinux())
         {
-            // Linux では Windows とは違い、"Global\" とつけないとグローバルに Mutex が出来ない。
-            var mutexName = ProcessUtils.IsLinux() ? "Global\\" + MutexName : MutexName;
-
             // Single Instance Check
-            _singleInstanceMutex = new(true, mutexName, out bool isNew);
-
-            if (!isNew)
+            if (!IsSingleInstance())
             {
                 SingleInstanceService.SendToServer(args);
+                _singleInstanceMutex?.Dispose();
                 return;
             }
 
@@ -46,6 +42,30 @@ static class Program
 
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
+    }
+
+    /// <summary>
+    /// シングルインスタンス用の Mutex を取得します。
+    /// 既に他のインスタンスが所有している場合は false を返します。
+    /// </summary>
+    private static bool IsSingleInstance()
+    {
+        // Linux では Windows とは違い、"Global\" とつけないとグローバルに Mutex が出来ない。
+        var mutexName = ProcessUtils.IsLinux() ? "Global\\" + MutexName : MutexName;
+
+        // 非所有で生成したうえで待機することで、Mutex の参照を確実に保持したまま所有判定を行う。
+        _singleInstanceMutex = new(false, mutexName);
+
+        try
+        {
+            return _singleInstanceMutex.WaitOne(0);
+        }
+        catch (AbandonedMutexException)
+        {
+            // 前回のインスタンスが Mutex を解放せずに終了した場合も、ここで所有権を引き継いでいるため
+            // 新しいインスタンスとして起動を続行する。
+            return true;
+        }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
