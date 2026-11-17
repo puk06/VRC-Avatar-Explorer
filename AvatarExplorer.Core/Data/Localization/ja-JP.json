@@ -280,6 +280,11 @@
     "Error.UnhandledException": "予期しないエラーが発生しました。状態が不安定になっている可能性があるため、エラーログを開発者に報告したうえで、ソフトを再起動することをおすすめします。",
 
     "Settings.Basic": "基本",
+    "Settings.DefaultCategory.Title": "デフォルトカテゴリ",
+    "Settings.DefaultCategory.Description": "起動時に左パネルで選択されるカテゴリです",
+    "Settings.DefaultCategory.Options.Category": "カテゴリ",
+    "Settings.DefaultCategory.Options.Author": "作者",
+    "Settings.DefaultCategory.Options.Avatar": "アバター",
     "Settings.Language.Title": "言語",
     "Settings.Language.Description": "ソフト内の言語です",
     "Settings.SortOrder.Title": "並び替え順",

@@ -425,6 +425,17 @@ public static class Loc
     public static class Settings
     {
         public const string Basic = "Settings.Basic";
+        public static class DefaultCategory
+        {
+            public const string Title = "Settings.DefaultCategory.Title";
+            public const string Description = "Settings.DefaultCategory.Description";
+            public static class Options
+            {
+                public const string Category = "Settings.DefaultCategory.Options.Category";
+                public const string Author = "Settings.DefaultCategory.Options.Author";
+                public const string Avatar = "Settings.DefaultCategory.Options.Avatar";
+            }
+        }
         public static class Language
         {
             public const string Title = "Settings.Language.Title";

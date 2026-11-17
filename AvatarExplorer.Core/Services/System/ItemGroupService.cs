@@ -16,12 +16,12 @@ namespace AvatarExplorer.Core.Services.System;
 /// <summary>ナビゲーション用のサイドパネルフィルタとして取得する対象の種別。</summary>
 public enum QueryType
 {
-    /// <summary>アバター一覧（共通素体・仮アバターを含む）。</summary>
-    Avatar,
+    /// <summary>カテゴリ一覧。</summary>
+    Category,
     /// <summary>作者一覧。</summary>
     Author,
-    /// <summary>カテゴリ一覧。</summary>
-    Category
+    /// <summary>アバター一覧（共通素体・仮アバターを含む）。</summary>
+    Avatar
 }
 
 /// <summary>

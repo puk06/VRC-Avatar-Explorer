@@ -18,6 +18,21 @@
                                 <StackPanel Spacing="20" Margin="0,0,10,0">
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                                         <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.DefaultCategory.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.DefaultCategory.Description], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,2.5*">
+                                            <ComboBox Name="DefaultCategoryComboBox" Grid.Column="1" SelectedIndex="{Binding SelectedDefaultCategoryTab}" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                                <ComboBoxItem Content="{Binding [Settings.DefaultCategory.Options.Category], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.DefaultCategory.Options.Author], Source={x:Static loc:Localizer.Instance}}"/>
+                                                <ComboBoxItem Content="{Binding [Settings.DefaultCategory.Options.Avatar], Source={x:Static loc:Localizer.Instance}}"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
                                             <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.Language.Title], Source={x:Static loc:Localizer.Instance}}"/>
                                             <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.Language.Description], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                                         </Grid>

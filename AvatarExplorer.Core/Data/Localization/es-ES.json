@@ -280,6 +280,11 @@
     "Error.UnhandledException": "Se ha producido un error inesperado. Es posible que la aplicación se encuentre en un estado inconsistente. Te recomendamos informar del registro de errores al desarrollador y reiniciar la aplicación.",
 
     "Settings.Basic": "Básico",
+    "Settings.DefaultCategory.Title": "Categoría predeterminada",
+    "Settings.DefaultCategory.Description": "Categoría seleccionada en el panel izquierdo al iniciar la aplicación",
+    "Settings.DefaultCategory.Options.Category": "Categoría",
+    "Settings.DefaultCategory.Options.Author": "Autor",
+    "Settings.DefaultCategory.Options.Avatar": "Avatar",
     "Settings.Language.Title": "Idioma",
     "Settings.Language.Description": "Idioma usado en el software",
     "Settings.SortOrder.Title": "Orden de clasificación",

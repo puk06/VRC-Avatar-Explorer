@@ -161,6 +161,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     {
         UpdateSortSettings();
         UpdateViewSettings();
+        UpdateDefaultCategoryTab();
         InitializeSubscriptions();
 
         Localizer.Instance.LanguageChanged += () =>
@@ -329,6 +330,17 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
 
         MainGridItemSize = -1;
         MainGridItemSize = (int)UserPreferences.GridItemSize;
+    }
+
+    /// <summary>起動時に表示するカテゴリタブをユーザー設定に合わせて選択します。</summary>
+    private void UpdateDefaultCategoryTab()
+    {
+        SelectedCategory = UserPreferences.DefaultCategoryTab switch
+        {
+            DefaultCategoryTab.Author => (int)QueryType.Author,
+            DefaultCategoryTab.Avatar => (int)QueryType.Avatar,
+            _ => (int)QueryType.Category
+        };
     }
 
     /// <summary>右上の表示オプションの設定をユーザー設定へ保存します。</summary>

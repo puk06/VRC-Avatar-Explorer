@@ -280,6 +280,11 @@
     "Error.UnhandledException": "发生意外错误。应用可能处于不稳定状态，建议将错误日志报告给开发者后重新启动应用。",
 
     "Settings.Basic": "基本",
+    "Settings.DefaultCategory.Title": "默认分类",
+    "Settings.DefaultCategory.Description": "启动应用时左侧面板选择的分类",
+    "Settings.DefaultCategory.Options.Category": "分类",
+    "Settings.DefaultCategory.Options.Author": "作者",
+    "Settings.DefaultCategory.Options.Avatar": "头像",
     "Settings.Language.Title": "语言",
     "Settings.Language.Description": "软件中使用的语言",
     "Settings.SortOrder.Title": "排序顺序",

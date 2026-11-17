@@ -263,9 +263,9 @@
                 <Border Grid.Column="0" Classes="panelbackground">
                     <Grid RowDefinitions="Auto,*">
                         <TabControl x:Name="CategoryTabControl" Grid.Row="0" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedCategory}" Margin="-5,-10,5,5" FontSize="18">
-                            <TabItem Header="{Binding [Main.Filter.Avatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
-                            <TabItem Header="{Binding [Main.Filter.Author], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                             <TabItem Header="{Binding [Main.Filter.Category], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                            <TabItem Header="{Binding [Main.Filter.Author], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                            <TabItem Header="{Binding [Main.Filter.Avatar], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                         </TabControl>
 
                         <Grid RowDefinitions="*,Auto" Grid.Row="1" RowSpacing="5">
