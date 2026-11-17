@@ -280,6 +280,11 @@
     "Error.UnhandledException": "An unexpected error occurred. The application may be in an inconsistent state. Please report the error log to the developer and restart the application.",
 
     "Settings.Basic": "Basic",
+    "Settings.DefaultCategory.Title": "Default Category",
+    "Settings.DefaultCategory.Description": "Category selected in the left panel when the application starts",
+    "Settings.DefaultCategory.Options.Category": "Category",
+    "Settings.DefaultCategory.Options.Author": "Author",
+    "Settings.DefaultCategory.Options.Avatar": "Avatar",
     "Settings.Language.Title": "Language",
     "Settings.Language.Description": "Language used in the software",
     "Settings.SortOrder.Title": "Sort Order",

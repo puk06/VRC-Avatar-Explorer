@@ -280,6 +280,11 @@
     "Error.UnhandledException": "Une erreur inattendue s'est produite. L'application peut se trouver dans un état incohérent. Veuillez signaler le journal des erreurs au développeur et redémarrer l'application.",
 
     "Settings.Basic": "Général",
+    "Settings.DefaultCategory.Title": "Catégorie par défaut",
+    "Settings.DefaultCategory.Description": "Catégorie sélectionnée dans le panneau de gauche au démarrage de l'application",
+    "Settings.DefaultCategory.Options.Category": "Catégorie",
+    "Settings.DefaultCategory.Options.Author": "Auteur",
+    "Settings.DefaultCategory.Options.Avatar": "Avatar",
     "Settings.Language.Title": "Langue",
     "Settings.Language.Description": "Langue utilisée dans le logiciel",
     "Settings.SortOrder.Title": "Ordre de tri",

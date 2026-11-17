@@ -12,6 +12,7 @@ using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.Common;
+using AvatarExplorer.UI.Models.Settings;
 using AvatarExplorer.UI.Models.Sort;
 using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.System;
@@ -26,6 +27,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public partial bool IsVisible { get; set; }
     [Reactive] public partial IEnumerable<string> Languages { get; set; } = [];
     [Reactive] public partial int SelectedLanguage { get; set; }
+    [Reactive] public partial int SelectedDefaultCategoryTab { get; set; }
 
     [Reactive] public partial int SelectedSortOrder { get; set; }
     [Reactive] public partial SortDirection SelectedSortDirection { get; set; }
@@ -141,6 +143,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
 
         SelectedLanguage = -1;
         SelectedLanguage = preferences.Language;
+        SelectedDefaultCategoryTab = (int)preferences.DefaultCategoryTab;
 
         SelectedTheme = (int)preferences.Theme;
         RemoveBrackets = preferences.RemoveBrackets;
@@ -440,6 +443,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with
         {
             Language = SelectedLanguage,
+            DefaultCategoryTab = (DefaultCategoryTab)SelectedDefaultCategoryTab,
             Theme = (Theme)SelectedTheme,
             RemoveBrackets = RemoveBrackets,
             NormalIconSize = NormalIconSize,

@@ -280,6 +280,11 @@
     "Error.UnhandledException": "發生未預期的錯誤。應用程式可能處於不穩定狀態，建議將錯誤記錄回報給開發者後重新啟動應用程式。",
 
     "Settings.Basic": "基本",
+    "Settings.DefaultCategory.Title": "預設分類",
+    "Settings.DefaultCategory.Description": "啟動應用程式時左側面板選取的分類",
+    "Settings.DefaultCategory.Options.Category": "分類",
+    "Settings.DefaultCategory.Options.Author": "作者",
+    "Settings.DefaultCategory.Options.Avatar": "頭像",
     "Settings.Language.Title": "語言",
     "Settings.Language.Description": "軟體中使用的語言",
     "Settings.SortOrder.Title": "排序順序",

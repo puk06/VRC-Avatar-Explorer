@@ -6,6 +6,7 @@ namespace AvatarExplorer.UI.Models.Settings;
 public record UserPreferences
 {
     public int Language { get; init; } = 0;
+    public DefaultCategoryTab DefaultCategoryTab { get; init; } = DefaultCategoryTab.Category;
     public int NormalIconSize { get; init; } = 70;
     public bool EnableHoverIconSize { get; init; } = true;
     public int HoverIconSize { get; init; } = 200;
