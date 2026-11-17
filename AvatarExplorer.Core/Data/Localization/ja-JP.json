@@ -514,7 +514,7 @@
     "ItemEditor.SupportsAllAvatars": "すべてのアバターに対応",
     "ItemEditor.SupportsAllAvatarsDescription": "すべてのアバターに対応します（個別の指定は不要です）",
     "ItemEditor.SupportedAvatarsAll": "全アバター対応",
-    "ItemEditor.SupportedAvatarsNone": "未選択（どのアバターにも対応しません）",
+    "ItemEditor.SupportedAvatarsNone": "対応アバターなし",
     "ItemEditor.SelectedAvatarsCount": "選択中: {0}アバター",
     "ItemEditor.ShowAdvancedSettings": "追加設定を表示する",
     "ItemEditor.ItemMemo": "アイテムメモ",

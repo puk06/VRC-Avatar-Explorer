@@ -514,7 +514,7 @@
     "ItemEditor.SupportsAllAvatars": "Support All Avatars",
     "ItemEditor.SupportsAllAvatarsDescription": "This item supports all avatars (no individual selection needed).",
     "ItemEditor.SupportedAvatarsAll": "All avatars supported",
-    "ItemEditor.SupportedAvatarsNone": "Not selected (no avatars supported)",
+    "ItemEditor.SupportedAvatarsNone": "No Supported Avatars",
     "ItemEditor.SelectedAvatarsCount": "Selected: {0} avatars",
     "ItemEditor.ShowAdvancedSettings": "Show Advanced Settings",
     "ItemEditor.ItemMemo": "Item Memo",

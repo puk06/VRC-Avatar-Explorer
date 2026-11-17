@@ -514,7 +514,7 @@
     "ItemEditor.SupportsAllAvatars": "모든 아바타 지원",
     "ItemEditor.SupportsAllAvatarsDescription": "모든 아바타를 지원합니다(개별 선택 불필요).",
     "ItemEditor.SupportedAvatarsAll": "모든 아바타 지원",
-    "ItemEditor.SupportedAvatarsNone": "선택 안 함(어떤 아바타도 지원하지 않음)",
+    "ItemEditor.SupportedAvatarsNone": "지원 아바타 없음",
     "ItemEditor.SelectedAvatarsCount": "선택 중: 아바타 {0}개",
     "ItemEditor.ShowAdvancedSettings": "추가 설정 표시",
     "ItemEditor.ItemMemo": "아이템 메모",

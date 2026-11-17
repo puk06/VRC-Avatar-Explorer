@@ -514,7 +514,7 @@
     "ItemEditor.SupportsAllAvatars": "Prendre en charge tous les avatars",
     "ItemEditor.SupportsAllAvatarsDescription": "Cet élément prend en charge tous les avatars (aucune sélection individuelle nécessaire).",
     "ItemEditor.SupportedAvatarsAll": "Tous les avatars pris en charge",
-    "ItemEditor.SupportedAvatarsNone": "Non sélectionné (aucun avatar pris en charge)",
+    "ItemEditor.SupportedAvatarsNone": "Aucun avatar pris en charge",
     "ItemEditor.SelectedAvatarsCount": "Sélectionnés : {0} avatars",
     "ItemEditor.ShowAdvancedSettings": "Afficher les paramètres avancés",
     "ItemEditor.ItemMemo": "Note de l'élément",

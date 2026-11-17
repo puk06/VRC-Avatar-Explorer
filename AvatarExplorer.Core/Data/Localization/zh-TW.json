@@ -514,7 +514,7 @@
     "ItemEditor.SupportsAllAvatars": "支援所有頭像",
     "ItemEditor.SupportsAllAvatarsDescription": "此物品支援所有頭像（無需個別選擇）。",
     "ItemEditor.SupportedAvatarsAll": "支援所有頭像",
-    "ItemEditor.SupportedAvatarsNone": "未選擇（不支援任何頭像）",
+    "ItemEditor.SupportedAvatarsNone": "不支援任何頭像",
     "ItemEditor.SelectedAvatarsCount": "已選取: {0} 個頭像",
     "ItemEditor.ShowAdvancedSettings": "顯示進階設定",
     "ItemEditor.ItemMemo": "項目備註",

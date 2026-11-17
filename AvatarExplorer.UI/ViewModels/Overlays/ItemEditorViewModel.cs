@@ -47,7 +47,12 @@ public partial class ItemEditorViewModel : ViewModelBase
         get => _supportsAllAvatars;
         set
         {
-            if (!this.RaiseAndSetIfChanged(ref _supportsAllAvatars, value)) return;
+            // NOTE: ReactiveUI の RaiseAndSetIfChanged は「変更されたか」ではなく新しい値を返すため、
+            // ここでは戻り値を判定に使わない。
+            if (_supportsAllAvatars == value) return;
+
+            _supportsAllAvatars = value;
+            this.RaisePropertyChanged(nameof(SupportsAllAvatars));
 
             if (value)
             {
@@ -60,7 +65,7 @@ public partial class ItemEditorViewModel : ViewModelBase
                 _supportedAvatarsBackup = [];
             }
 
-            UpdateCountField();
+            UpdateSupportedAvatarsText();
         }
     }
 
@@ -566,7 +571,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         if (avatars == null) return;
 
         SupportedAvatars = avatars;
-        UpdateCountField();
+        UpdateSupportedAvatarsText();
     }
     private int GetSupportedAvatarsCount()
     {
@@ -586,16 +591,18 @@ public partial class ItemEditorViewModel : ViewModelBase
         if (newTags == null) return;
 
         Tags = newTags;
-        UpdateCountField();
+        UpdateTagsText();
     }
 
     private void UpdateCountField()
     {
-        TagsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedTagsCount, Tags.Count().ToString());
-
-        if (SupportsAllAvatars)
-            SupportedAvatarsText = Localizer.Instance[Loc.ItemEditor.SupportedAvatarsAll];
-        else if (!SupportedAvatars.Any())
+        UpdateTagsText();
+        UpdateSupportedAvatarsText();
+    }
+    private void UpdateTagsText() => TagsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedTagsCount, Tags.Count().ToString());
+    private void UpdateSupportedAvatarsText()
+    {
+        if (!SupportedAvatars.Any())
             SupportedAvatarsText = Localizer.Instance[Loc.ItemEditor.SupportedAvatarsNone];
         else
             SupportedAvatarsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedAvatarsCount, GetSupportedAvatarsCount().ToString());

@@ -514,7 +514,7 @@
     "ItemEditor.SupportsAllAvatars": "Compatible con todos los avatares",
     "ItemEditor.SupportsAllAvatarsDescription": "Este elemento es compatible con todos los avatares (no se necesita selección individual).",
     "ItemEditor.SupportedAvatarsAll": "Todos los avatares compatibles",
-    "ItemEditor.SupportedAvatarsNone": "Sin seleccionar (ningún avatar compatible)",
+    "ItemEditor.SupportedAvatarsNone": "Ningún avatar compatible",
     "ItemEditor.SelectedAvatarsCount": "Seleccionados: {0} avatares",
     "ItemEditor.ShowAdvancedSettings": "Mostrar configuración avanzada",
     "ItemEditor.ItemMemo": "Nota del elemento",
