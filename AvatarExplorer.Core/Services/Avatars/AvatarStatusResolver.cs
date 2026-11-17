@@ -38,7 +38,10 @@ public static class AvatarStatusResolver
 
     private static void CheckDirectSupport(Item item, string avatarId, bool treatEmptySupportedAvatarAsNone, AvatarStatus result)
     {
-        if ((!treatEmptySupportedAvatarAsNone && !item.SupportedAvatars.Any()) || item.SupportedAvatars.Contains(avatarId))
+        var isSupportedAvatarNone = !item.SupportedAvatars.Any();
+        result.IsSupportedAvatarNone = isSupportedAvatarNone;
+
+        if ((!treatEmptySupportedAvatarAsNone && isSupportedAvatarNone) || item.SupportedAvatars.Contains(avatarId))
             result.IsSupported = true;
     }
 

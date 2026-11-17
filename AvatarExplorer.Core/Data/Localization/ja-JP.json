@@ -42,6 +42,7 @@
     "Button.Description.TempAvatar": "仮登録アバター",
 
     "Button.Tag.CommonAvatar": "共通素体: {0}",
+    "Button.Tag.SupportedAvatar.None": "対応アバター未設定",
     "Button.Tag.BoothId": "Booth: {0}",
 
     "Button.ToolTip.CommonAvatar": "共通素体: {0}",

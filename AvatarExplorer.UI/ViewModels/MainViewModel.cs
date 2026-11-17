@@ -510,6 +510,15 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             tags.AddRange(vm.Tags);
             vm.Tags = tags.ToArray();
         }
+        else if (status.IsSupportedAvatarNone)
+        {
+            var tags = new List<TagViewModel>(item.Tags.Length + 1)
+            {
+                new(string.Empty) { IsSupportedAvatarNone = true }
+            };
+            tags.AddRange(vm.Tags);
+            vm.Tags = tags.ToArray();
+        }
 
         return vm;
     }
