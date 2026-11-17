@@ -191,12 +191,11 @@ public class ItemGroupService
     {
         var items = ItemRepository.GetAll();
         var commonAvatars = CommonAvatarRepository.GetAll();
-        var treatEmptyAsNone = _runtimesettings.Settings.TreatEmptySupportedAvatarAsNone;
 
         return items
             .Where(i =>
             {
-                var result = AvatarStatusResolver.Resolve(i, id, commonAvatars, treatEmptyAsNone);
+                var result = AvatarStatusResolver.Resolve(i, id, commonAvatars);
                 return result.IsSupportedOrCommon;
             })
             .ToList();

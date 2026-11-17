@@ -157,6 +157,8 @@ internal static class DataImporter
         );
         item.SetCreationDates(v1Item.CreatedDate, v1Item.UpdatedDate);
         item.UpdateSupportedAvatars(v1Item.SupportedAvatar);
+        // 旧バージョンでは対応アバターが空の場合に全アバター対応として扱っていた
+        item.UpdateSupportsAllAvatars(item.SupportedAvatars.IsEmpty);
         item.UpdateImplementedAvatars(v1Item.ImplementedAvatars);
         item.UpdateTags(v1Item.Tags);
         return item;

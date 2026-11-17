@@ -13,7 +13,9 @@ public class AvatarStatus
     /// <summary>共通素体対応の場合に、その共通素体グループの名前が設定されます。</summary>
     public string CommonAvatarName { get; set; } = string.Empty;
 
-    /// <summary>このアイテムの対応アバターが未設定であるかどうかを示します。</summary>
+    /// <summary>このアイテムがすべてのアバターに対応しているかどうかを示します。</summary>
+    public bool IsSupportedAllAvatars { get; set; }
+    /// <summary>このアイテムがすべてのアバターに対応しておらず、対応アバターも未設定であるかどうかを示します。</summary>
     public bool IsSupportedAvatarNone { get; set; }
 
     /// <summary>直接対応または共通素体対応のいずれかであるかどうかを示します。</summary>

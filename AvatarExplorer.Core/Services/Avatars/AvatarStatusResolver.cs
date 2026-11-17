@@ -17,16 +17,13 @@ public static class AvatarStatusResolver
     /// <param name="item">判定対象のアイテム。</param>
     /// <param name="avatarId">現在表示中のアバターID。空の場合は未対応として扱います。</param>
     /// <param name="commonAvatars">共通素体グループの一覧。</param>
-    /// <param name="treatEmptySupportedAvatarAsNone">
-    /// <c>true</c> の場合、対応アバターが空のときのみ未対応とみなします（空でも対応ありと扱うかどうかの切り替え）。
-    /// </param>
     /// <returns>判定結果を保持する <see cref="AvatarStatus"/>。</returns>
-    public static AvatarStatus Resolve(Item item, string? avatarId, IEnumerable<CommonAvatar> commonAvatars, bool treatEmptySupportedAvatarAsNone = false)
+    public static AvatarStatus Resolve(Item item, string? avatarId, IEnumerable<CommonAvatar> commonAvatars)
     {
         var result = new AvatarStatus();
         if (string.IsNullOrEmpty(avatarId)) return result;
 
-        CheckDirectSupport(item, avatarId, treatEmptySupportedAvatarAsNone, result);
+        CheckDirectSupport(item, avatarId, result);
         CheckDirectCommonAvatarGroup(item, avatarId, commonAvatars, result);
 
         if (item.SkipIndirectCommonAvatarCheck) return result;
@@ -36,13 +33,11 @@ public static class AvatarStatusResolver
         return result;
     }
 
-    private static void CheckDirectSupport(Item item, string avatarId, bool treatEmptySupportedAvatarAsNone, AvatarStatus result)
+    private static void CheckDirectSupport(Item item, string avatarId, AvatarStatus result)
     {
-        var isSupportedAvatarNone = !item.SupportedAvatars.Any();
-        result.IsSupportedAvatarNone = isSupportedAvatarNone;
-
-        if ((!treatEmptySupportedAvatarAsNone && isSupportedAvatarNone) || item.SupportedAvatars.Contains(avatarId))
-            result.IsSupported = true;
+        result.IsSupportedAllAvatars = item.SupportsAllAvatars;
+        result.IsSupportedAvatarNone = !item.SupportsAllAvatars && item.SupportedAvatars.IsEmpty;
+        if (item.SupportsAllAvatars || item.SupportedAvatars.Contains(avatarId)) result.IsSupported = true;
     }
 
     private static void CheckDirectCommonAvatarGroup(Item item, string avatarId, IEnumerable<CommonAvatar> commonAvatars, AvatarStatus result)

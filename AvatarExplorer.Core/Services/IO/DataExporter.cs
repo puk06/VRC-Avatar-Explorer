@@ -36,7 +36,7 @@ internal static class DataExporter
             FileSystemService.PrepareFileDirectory(filePath);
 
             await using StreamWriter sw = new(filePath, false, Encoding.UTF8);
-            await sw.WriteLineAsync("Id,Title,AuthorName,ImagePath,Category,Memo,SupportedAvatars,ImplementedAvatars,BoothId,ItemPath,Tags");
+            await sw.WriteLineAsync("Id,Title,AuthorName,ImagePath,Category,Memo,SupportedAvatars,ImplementedAvatars,BoothId,ItemPath,Tags,SupportsAllAvatars");
 
             foreach (var item in exportContext.Items)
             {
@@ -72,12 +72,13 @@ internal static class DataExporter
                 var category = CsvUtils.EscapeCsv(categoryName);
                 var memo = CsvUtils.EscapeCsv(item.ItemMemo);
                 var supportedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, supportedAvatarNames));
+                var supportsAllAvatars = item.SupportsAllAvatars ? "true" : "false";
                 var implementedAvatarsList = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, implementedAvatarNames));
                 var boothId = CsvUtils.EscapeCsv(item.BoothId.ToString());
                 var itemPath = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.GetFolderPaths().NaturalSort(i => Path.GetFileName(i))));
                 var tags = CsvUtils.EscapeCsv(string.Join(Environment.NewLine, item.Tags));
 
-                await sw.WriteLineAsync($"{itemId},{itemTitle},{authorName},{imagePath},{category},{memo},{supportedAvatarsList},{implementedAvatarsList},{boothId},{itemPath},{tags}");
+                await sw.WriteLineAsync($"{itemId},{itemTitle},{authorName},{imagePath},{category},{memo},{supportedAvatarsList},{implementedAvatarsList},{boothId},{itemPath},{tags},{supportsAllAvatars}");
             }
 
             return Result.Success;
@@ -175,7 +176,9 @@ internal static class DataExporter
         }
 
         var supportedAvatarNames = new List<string>();
-        var allSupportedAvatarIds = AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatars, commonAvatars, includeCommonToSupported);
+        string[] allSupportedAvatarIds = item.SupportsAllAvatars
+            ? []
+            : AvatarService.GetAllSupportedAvatarIds(item.SupportedAvatars, commonAvatars, includeCommonToSupported);
         foreach (var avatarId in allSupportedAvatarIds)
         {
             var avatarTitle = ItemUtils.GetTitleFromDictionary(avatarTitleMaps, avatarId);

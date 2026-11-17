@@ -11,19 +11,51 @@ namespace AvatarExplorer.Core.Services.System.Repositories;
 
 public class ItemRepository : RepositoryBase<Item>
 {
+    /// <summary>読み込み前のアイテムデータベースのスキーマバージョンです。</summary>
+    public int PreviousMigrationVersion { get; private set; } = DatabaseMigrations.ItemVersion;
+
+    /// <summary>この読み込みで旧スキーマからマイグレーションされたかどうかを示します。</summary>
+    public bool WasMigratedFromPreviousVersion => PreviousMigrationVersion < DatabaseMigrations.ItemVersion;
+
     /// <summary>アイテムデータのリポジトリを初期化します。</summary>
     public ItemRepository() : base(SystemPath.ItemDatabasePath) { }
 
     /// <summary>アイテムデータベースを読み込み、必要に応じてマイグレーションを適用します。</summary>
     public override void Load()
     {
-        DatabaseMigrationService.MigrateDatabase(
+        var migrationResult = DatabaseMigrationService.MigrateDatabase(
             Db.DatabaseFilePath,
             DatabaseMigrations.ItemVersion,
             (items, version) => DatabaseMigrations.ApplyItemMigration(items, version, AvatarExplorerApp.Instance.RuntimeSettings.DataRootDirectory));
 
+        PreviousMigrationVersion = migrationResult.FromVersion;
+
         Db.Load();
         Db.MigrationVersion = DatabaseMigrations.ItemVersion;
+        InvokeUpdated();
+    }
+
+    /// <summary>対応アバターが未設定のアイテム数を取得します。</summary>
+    /// <returns>対応アバターが未設定のアイテム数。</returns>
+    public int CountItemsWithoutSupportedAvatars() => Db.Items.Count(i => i.SupportedAvatars.IsEmpty);
+
+    /// <summary>
+    /// 対応アバターが未設定のアイテムすべてに、全アバター対応かどうかのフラグを適用します。
+    /// 旧バージョンからマイグレーションした際の一括設定に使用します。
+    /// </summary>
+    /// <param name="supportsAllAvatars">全アバター対応として扱う場合は true。</param>
+    public void ApplySupportsAllAvatarsToItemsWithoutSupportedAvatars(bool supportsAllAvatars)
+    {
+        var targets = Db.Items
+            .Where(i => i.SupportedAvatars.IsEmpty && i.SupportsAllAvatars != supportsAllAvatars)
+            .ToList();
+
+        if (targets.Count == 0) return;
+
+        foreach (var item in targets)
+            item.UpdateSupportsAllAvatars(supportsAllAvatars);
+
+        Save();
         InvokeUpdated();
     }
 
@@ -66,7 +98,10 @@ public class ItemRepository : RepositoryBase<Item>
         );
         var now = DatetimeUtils.GetCurrentUnixTime();
         item.SetCreationDates(now, now);
-        item.UpdateSupportedAvatars(context.SupportedAvatars);
+        var supportedAvatars = context.SupportedAvatars.ToArray();
+        var supportsAllAvatars = context.SupportsAllAvatars && supportedAvatars.Length == 0;
+        item.UpdateSupportedAvatars(supportedAvatars);
+        item.UpdateSupportsAllAvatars(supportsAllAvatars);
         item.UpdateTags(context.Tags);
         item.UpdateIsHidden(context.IsHidden);
         item.UpdateSkipIndirectCommonAvatarCheck(context.SkipIndirectCommonAvatarCheck);
@@ -142,6 +177,7 @@ public class ItemRepository : RepositoryBase<Item>
     private static void ApplyCollectionUpdates(Item item, ItemEditContext context)
     {
         if (context.SupportedAvatars != null) item.UpdateSupportedAvatars(context.SupportedAvatars);
+        if (context.SupportsAllAvatars != null) item.UpdateSupportsAllAvatars(context.SupportsAllAvatars.Value);
         if (context.ImplementedAvatars != null) item.UpdateImplementedAvatars(context.ImplementedAvatars);
         if (context.Tags != null) item.UpdateTags(context.Tags);
     }

@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.IO;
@@ -9,7 +10,7 @@ namespace AvatarExplorer.Core.Services.IO;
 public static class DatabaseMigrations
 {
     /// <summary>アイテムデータベースの現在のスキーマバージョン。</summary>
-    public const int ItemVersion = 4;
+    public const int ItemVersion = 5;
     /// <summary>共通素体データベースの現在のスキーマバージョン。</summary>
     public const int CommonAvatarVersion = 1;
     /// <summary>一括インポートプリセットデータベースの現在のスキーマバージョン。</summary>
@@ -37,6 +38,7 @@ public static class DatabaseMigrations
             2 => MigrateV2ItemTypeOffset(items),
             3 => MigrateV3ItemRefactor(items, dataRootDirectory),
             4 => MigrateV4ConvertToRelativePath(items, dataRootDirectory),
+            5 => MigrateV5AddSupportsAllAvatars(items),
             _ => false
         };
     }
@@ -167,6 +169,28 @@ public static class DatabaseMigrations
 
             var newPath = ItemUtils.GetRelativePath(path, dataRootDirectory);
             item["ItemPath"] = JsonValue.Create(newPath);
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private static bool MigrateV5AddSupportsAllAvatars(JsonArray items)
+    {
+        // 旧バージョンでは対応アバターが空の場合に全アバター対応として扱っていたため、
+        // 既存の設定を引き継いでアイテムごとの明示的なフラグに変換する。
+        var treatEmptyAsAll = !AvatarExplorerApp.Instance.RuntimeSettings.TreatEmptySupportedAvatarAsNone;
+        var changed = false;
+
+        foreach (var itemNode in items)
+        {
+            if (itemNode is not JsonObject item) continue;
+            if (item.ContainsKey("SupportsAllAvatars")) continue;
+
+            var supportedAvatars = item["SupportedAvatars"] as JsonArray;
+            var isEmpty = supportedAvatars is null || supportedAvatars.Count == 0;
+
+            item["SupportsAllAvatars"] = treatEmptyAsAll && isEmpty;
             changed = true;
         }
 
