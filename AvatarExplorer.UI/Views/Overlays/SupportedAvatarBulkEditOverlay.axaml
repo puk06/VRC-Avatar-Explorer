@@ -31,7 +31,7 @@
                 <!-- 補足 -->
                 <TextBlock Text="{Binding [SupportedAvatarBulkEdit.Note], Source={x:Static loc:Localizer.Instance}}" FontSize="13" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Secondary}"/>
 
-                <Button Classes="button" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="24,6" Command="{Binding CancelCommand}"/>
+                <Button Classes="button" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10,7" Command="{Binding CancelCommand}"/>
             </StackPanel>
         </Border>
     </Border>
