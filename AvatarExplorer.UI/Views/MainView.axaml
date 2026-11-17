@@ -317,8 +317,8 @@
 
                                                                     <ItemsControl.ItemTemplate>
                                                                         <DataTemplate x:DataType="component:TagViewModel">
-                                                                            <Border CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}">
-                                                                                <TextBlock Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="8,5" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}" FontWeight="Bold"/>
+                                                                            <Border CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.supportedavatarnone="{Binding IsSupportedAvatarNone}" Classes.tag="{Binding IsNormalTag}">
+                                                                                <TextBlock Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="8,5" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.supportedavatarnone="{Binding IsSupportedAvatarNone}" Classes.tag="{Binding IsNormalTag}" FontWeight="Bold"/>
                                                                             </Border>
                                                                         </DataTemplate>
                                                                     </ItemsControl.ItemTemplate>
@@ -415,8 +415,8 @@
 
                                                                         <ItemsControl.ItemTemplate>
                                                                             <DataTemplate x:DataType="component:TagViewModel">
-                                                                                <Border CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}">
-                                                                                    <TextBlock Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="8,5" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}" FontWeight="Bold"/>
+                                                                                <Border CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Center" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.supportedavatarnone="{Binding IsSupportedAvatarNone}" Classes.tag="{Binding IsNormalTag}">
+                                                                                    <TextBlock Text="{Binding Label}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="8,5" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.supportedavatarnone="{Binding IsSupportedAvatarNone}" Classes.tag="{Binding IsNormalTag}" FontWeight="Bold"/>
                                                                                 </Border>
                                                                             </DataTemplate>
                                                                         </ItemsControl.ItemTemplate>
@@ -497,8 +497,8 @@
 
                                                                                                 <ItemsControl.ItemTemplate>
                                                                                                     <DataTemplate x:DataType="component:TagViewModel">
-                                                                                                        <Border CornerRadius="10" Padding="6,2" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}">
-                                                                                                            <TextBlock Text="{Binding Label}" FontSize="11" FontWeight="Bold" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.tag="{Binding !IsCommonAvatar}"/>
+                                                                                                        <Border CornerRadius="10" Padding="6,2" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.supportedavatarnone="{Binding IsSupportedAvatarNone}" Classes.tag="{Binding IsNormalTag}">
+                                                                                                            <TextBlock Text="{Binding Label}" FontSize="11" FontWeight="Bold" Classes.commonavatar="{Binding IsCommonAvatar}" Classes.supportedavatarnone="{Binding IsSupportedAvatarNone}" Classes.tag="{Binding IsNormalTag}"/>
                                                                                                         </Border>
                                                                                                     </DataTemplate>
                                                                                                 </ItemsControl.ItemTemplate>

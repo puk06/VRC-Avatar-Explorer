@@ -182,7 +182,7 @@ public partial class ItemViewModel : ViewModelBase, IDisposable
 
             var avatarTagLines = new List<string>();
             var commonAvatarTag = Tags.FirstOrDefault(t => t.IsCommonAvatar);
-            var otherTags = Tags.Where(t => !t.IsCommonAvatar).ToArray();
+            var otherTags = Tags.Where(t => !t.IsCommonAvatar && !t.IsSupportedAvatarNone).ToArray();
 
             if (commonAvatarTag != null)
                 avatarTagLines.Add(Localizer.Instance.Get(Loc.Button.ToolTip.CommonAvatar, commonAvatarTag.ValueRaw));

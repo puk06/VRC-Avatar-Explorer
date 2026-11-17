@@ -53,10 +53,10 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <!-- 共通素体アバターの背景 -->
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(0,128,0,1.0)"/>
-                    <!-- 共通素体アバターの文字色 -->
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <!-- 共通素体・対応アバター未設定タグの背景 -->
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(0,128,0,1.0)"/>
+                    <!-- 共通素体・対応アバター未設定タグの文字色 -->
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <!-- タグの背景 -->
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(43,120,191,1.0)"/>
@@ -99,8 +99,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(0,128,0,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(0,128,0,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(43,120,191,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
@@ -135,8 +135,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(194,79,123,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(194,79,123,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(209,127,168,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,247,250,1.0)"/>
@@ -171,8 +171,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(40,118,92,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(40,118,92,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(99,184,146,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(247,255,252,1.0)"/>
@@ -207,8 +207,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(91,69,178,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(91,69,178,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(143,118,221,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(251,249,255,1.0)"/>
@@ -243,8 +243,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(31,127,166,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(31,127,166,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(79,168,204,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
@@ -279,8 +279,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(201,93,61,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(201,93,61,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(217,144,79,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,251,248,1.0)"/>
@@ -315,8 +315,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(46,110,61,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(46,110,61,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(77,148,104,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(248,255,249,1.0)"/>
@@ -351,8 +351,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(135,87,70,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(135,87,70,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
                     
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(178,125,98,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
@@ -387,8 +387,8 @@
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="Background.Overlay"/>
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="Panel.BorderBrush"/>
 
-                    <SolidColorBrush x:Key="CommonAvatar.Background" Color="rgba(85,111,138,1.0)"/>
-                    <SolidColorBrush x:Key="CommonAvatar.Text" Color="rgba(255,255,255,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Background" Color="rgba(85,111,138,1.0)"/>
+                    <SolidColorBrush x:Key="Tag.Avatar.Text" Color="rgba(255,255,255,1.0)"/>
 
                     <SolidColorBrush x:Key="Tag.Background" Color="rgba(124,146,173,1.0)"/>
                     <SolidColorBrush x:Key="Tag.Text" Color="rgba(255,255,255,1.0)"/>
@@ -413,11 +413,11 @@
         </Style>
         
         <Style Selector="Border.commonavatar">
-            <Setter Property="Background" Value="{DynamicResource CommonAvatar.Background}"/>
+            <Setter Property="Background" Value="{DynamicResource Tag.Avatar.Background}"/>
         </Style>
 
         <Style Selector="TextBlock.commonavatar">
-            <Setter Property="Foreground" Value="{DynamicResource CommonAvatar.Text}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Tag.Avatar.Text}"/>
         </Style>
 
         <Style Selector="Border.tag">
@@ -426,6 +426,14 @@
 
         <Style Selector="TextBlock.tag">
             <Setter Property="Foreground" Value="{DynamicResource Tag.Text}"/>
+        </Style>
+
+        <Style Selector="Border.supportedavatarnone">
+            <Setter Property="Background" Value="{DynamicResource Tag.Avatar.Background}"/>
+        </Style>
+
+        <Style Selector="TextBlock.supportedavatarnone">
+            <Setter Property="Foreground" Value="{DynamicResource Tag.Avatar.Text}"/>
         </Style>
 
         <Style Selector="Border.panelbackground">
