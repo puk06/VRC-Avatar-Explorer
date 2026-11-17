@@ -429,11 +429,11 @@
         </Style>
 
         <Style Selector="Border.supportedavatarall">
-            <Setter Property="Background" Value="{DynamicResource Tag.Background}"/>
+            <Setter Property="Background" Value="{DynamicResource Tag.Avatar.Background}"/>
         </Style>
 
         <Style Selector="TextBlock.supportedavatarall">
-            <Setter Property="Foreground" Value="{DynamicResource Tag.Text}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Tag.Avatar.Text}"/>
         </Style>
 
         <Style Selector="Border.supportedavatarnone">
