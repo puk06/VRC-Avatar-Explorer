@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    x:Class="AvatarExplorer.UI.Views.Overlays.SupportedAvatarBulkEditOverlay"
+    x:DataType="vm:SupportedAvatarBulkEditViewModel">
+
+    <Border Classes="overlaybackground">
+        <Border Classes="overlay" Width="560">
+            <StackPanel Spacing="15">
+
+                <!-- タイトル -->
+                <TextBlock Text="{Binding [SupportedAvatarBulkEdit.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Left" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
+
+                <!-- 説明 -->
+                <TextBlock Text="{Binding [SupportedAvatarBulkEdit.Description], Source={x:Static loc:Localizer.Instance}}" FontSize="16" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Primary}"/>
+
+                <!-- 対象件数 -->
+                <TextBlock Text="{Binding AffectedItemsText}" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Secondary}"/>
+
+                <Separator Classes="separator"/>
+
+                <!-- 選択肢 -->
+                <Button Classes="accentbutton" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10,9" Command="{Binding UseAllCommand}">
+                    <TextBlock Text="{Binding [SupportedAvatarBulkEdit.UseAll], Source={x:Static loc:Localizer.Instance}}" FontSize="15" TextWrapping="Wrap" TextAlignment="Center"/>
+                </Button>
+                <Button Classes="button" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="10,9" Command="{Binding UseNoneCommand}">
+                    <TextBlock Text="{Binding [SupportedAvatarBulkEdit.UseNone], Source={x:Static loc:Localizer.Instance}}" FontSize="15" TextWrapping="Wrap" TextAlignment="Center"/>
+                </Button>
+
+                <!-- 補足 -->
+                <TextBlock Text="{Binding [SupportedAvatarBulkEdit.Note], Source={x:Static loc:Localizer.Instance}}" FontSize="13" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="{DynamicResource Text.Secondary}"/>
+
+                <Button Classes="button" Content="{Binding [Button.Cancel], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="24,6" Command="{Binding CancelCommand}"/>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

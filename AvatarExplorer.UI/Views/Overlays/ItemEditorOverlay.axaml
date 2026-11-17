@@ -105,7 +105,11 @@
 
                                 <StackPanel Spacing="8" Margin="10,0,0,0">
                                     <TextBlock Text="{Binding [ItemEditor.SupportedAvatars], Source={x:Static loc:Localizer.Instance}}" FontSize="13" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                    <Button Content="{Binding SupportedAvatarsText}" Classes="accentbutton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding SelectSupportedAvatarsCommand}"/>
+                                    <CheckBox IsChecked="{Binding SupportsAllAvatars}" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding [ItemEditor.SupportsAllAvatars], Source={x:Static loc:Localizer.Instance}}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{DynamicResource Text.Primary}"/>
+                                    </CheckBox>
+                                    <TextBlock IsVisible="{Binding SupportsAllAvatars}" Text="{Binding [ItemEditor.SupportsAllAvatarsDescription], Source={x:Static loc:Localizer.Instance}}" FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource Text.Secondary}"/>
+                                    <Button IsVisible="{Binding !SupportsAllAvatars}" Content="{Binding SupportedAvatarsText}" Classes="accentbutton" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Command="{Binding SelectSupportedAvatarsCommand}"/>
                                 </StackPanel>
                             </UniformGrid>
 

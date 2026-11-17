@@ -75,6 +75,8 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
     [Reactive] public partial bool IsYesNoDialogVisible { get; set; }
 
+    public SupportedAvatarBulkEditViewModel SupportedAvatarBulkEditVM { get; } = new();
+
     public ArchivePasswordDialogViewModel ArchivePasswordDialogVM { get; } = new();
     [Reactive] public partial bool IsArchivePasswordDialogVisible { get; set; }
 
@@ -140,6 +142,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
             this.WhenAnyValue(x => x.MergeCategoryVM.IsVisible),
             this.WhenAnyValue(x => x.TagEditorVM.IsVisible),
             this.WhenAnyValue(x => x.IsYesNoDialogVisible),
+            this.WhenAnyValue(x => x.SupportedAvatarBulkEditVM.IsVisible),
             this.WhenAnyValue(x => x.InitialSetupVM.IsVisible),
             this.WhenAnyValue(x => x.ErrorLogVM.IsVisible)
         };
@@ -149,8 +152,22 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     }
     public async Task OnInitialized()
     {
+        await ApplySupportedAvatarBulkEditMigrationIfNeeded();
         _ = CheckForUpdateOnStartup();
         CheckIfRunningAsAdmin();
+    }
+
+    private async Task ApplySupportedAvatarBulkEditMigrationIfNeeded()
+    {
+        if (!InstanceRepository.Items.WasMigratedFromPreviousVersion) return;
+
+        var affectedItemCount = InstanceRepository.Items.CountItemsWithoutSupportedAvatars();
+        if (affectedItemCount == 0) return;
+
+        var supportsAllAvatars = await ShowSupportedAvatarBulkEditDialog(affectedItemCount);
+        if (supportsAllAvatars == null) return;
+
+        InstanceRepository.Items.ApplySupportsAllAvatarsToItemsWithoutSupportedAvatars(supportsAllAvatars.Value);
     }
 
     public void OnLanguageUpdated()
@@ -291,6 +308,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
 
         return result;
     }
+    public Task<bool?> ShowSupportedAvatarBulkEditDialog(int affectedItemCount) => SupportedAvatarBulkEditVM.ShowAsync(affectedItemCount);
     public async Task<string?> ShowTextDialog(string title, string content = "")
     {
         IsTextDialogVisible = true;
@@ -461,6 +479,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
             || MergeCategoryVM.IsVisible
             || TagEditorVM.IsVisible
             || IsYesNoDialogVisible
+            || SupportedAvatarBulkEditVM.IsVisible
             || InitialSetupVM.IsVisible
             || ErrorLogVM.IsVisible;
     }

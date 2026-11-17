@@ -39,6 +39,31 @@ public partial class ItemEditorViewModel : ViewModelBase
     [Reactive] public partial string SupportedAvatarsText { get; set; } = string.Empty;
     public IEnumerable<string> SupportedAvatars { get; set; } = []; // 変更時、もしくはLocalizerの言語変更時にテキストを更新する
 
+    private bool _supportsAllAvatars = true;
+    private IEnumerable<string> _supportedAvatarsBackup = [];
+    /// <summary>すべてのアバターに対応するかどうか。ONの間は個別の対応アバターを退避し、OFFに戻すと復元します。</summary>
+    public bool SupportsAllAvatars
+    {
+        get => _supportsAllAvatars;
+        set
+        {
+            if (!this.RaiseAndSetIfChanged(ref _supportsAllAvatars, value)) return;
+
+            if (value)
+            {
+                _supportedAvatarsBackup = SupportedAvatars.ToArray();
+                SupportedAvatars = [];
+            }
+            else
+            {
+                SupportedAvatars = _supportedAvatarsBackup;
+                _supportedAvatarsBackup = [];
+            }
+
+            UpdateCountField();
+        }
+    }
+
     public string Memo { get; set; } = string.Empty;
 
     [Reactive] public partial string TagsText { get; set; } = string.Empty;
@@ -90,7 +115,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         BoothId = string.Empty;
         ThumbnailUrl = string.Empty;
         Memo = string.Empty;
-        SupportedAvatars = [];
+        SetSupportedAvatarsState(supportsAllAvatars: true, []);
         Tags = [];
         SkipIndirectCommonAvatarCheck = false;
         IsHidden = false;
@@ -113,7 +138,7 @@ public partial class ItemEditorViewModel : ViewModelBase
                 AuthorId = item.AuthorId;
                 if (item.BoothId != -1) BoothId = item.BoothId.ToString();
                 Memo = item.ItemMemo;
-                SupportedAvatars = item.SupportedAvatars;
+                SetSupportedAvatarsState(item.SupportsAllAvatars, item.SupportedAvatars);
                 Tags = item.Tags;
                 SkipIndirectCommonAvatarCheck = item.SkipIndirectCommonAvatarCheck;
                 IsHidden = item.IsHidden;
@@ -262,7 +287,8 @@ public partial class ItemEditorViewModel : ViewModelBase
             ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
             CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory : string.Empty,
             ThumbnailUrl = ThumbnailUrl,
-            SupportedAvatars = SupportedAvatars,
+            SupportedAvatars = SupportsAllAvatars ? [] : SupportedAvatars,
+            SupportsAllAvatars = SupportsAllAvatars,
             ItemMemo = Memo,
             Tags = Tags,
             IsHidden = IsHidden,
@@ -288,7 +314,8 @@ public partial class ItemEditorViewModel : ViewModelBase
             ItemType = SelectedCategory?.Category.Type ?? ItemType.Avatar,
             CustomCategory = SelectedCategory?.Category.Type == ItemType.Custom ? SelectedCategory.Category.CustomCategory ?? string.Empty : string.Empty,
             ThumbnailUrl = ThumbnailUrl,
-            SupportedAvatars = SupportedAvatars,
+            SupportedAvatars = SupportsAllAvatars ? [] : SupportedAvatars,
+            SupportsAllAvatars = SupportsAllAvatars,
             ItemMemo = Memo,
             Tags = Tags,
             IsHidden = IsHidden,
@@ -516,8 +543,19 @@ public partial class ItemEditorViewModel : ViewModelBase
         SelectedCategoryIndex = Categories.Count - 1;
     }
 
+    private void SetSupportedAvatarsState(bool supportsAllAvatars, IEnumerable<string> supportedAvatars)
+    {
+        _supportsAllAvatars = supportsAllAvatars;
+        this.RaisePropertyChanged(nameof(SupportsAllAvatars));
+
+        SupportedAvatars = supportsAllAvatars ? [] : supportedAvatars;
+        _supportedAvatarsBackup = supportsAllAvatars ? [] : supportedAvatars.ToArray();
+    }
+
     private async Task SelectSupportedAvatars()
     {
+        if (SupportsAllAvatars) return;
+
         var avatars = await InstanceRepository.MainWindow.ShowSelectAvatars(
             Localizer.Instance[Loc.SelectAvatars.Title.SupportedAvatars],
             SupportedAvatars.ToArray(),
@@ -554,7 +592,13 @@ public partial class ItemEditorViewModel : ViewModelBase
     private void UpdateCountField()
     {
         TagsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedTagsCount, Tags.Count().ToString());
-        SupportedAvatarsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedAvatarsCount, GetSupportedAvatarsCount().ToString());
+
+        if (SupportsAllAvatars)
+            SupportedAvatarsText = Localizer.Instance[Loc.ItemEditor.SupportedAvatarsAll];
+        else if (!SupportedAvatars.Any())
+            SupportedAvatarsText = Localizer.Instance[Loc.ItemEditor.SupportedAvatarsNone];
+        else
+            SupportedAvatarsText = Localizer.Instance.Get(Loc.ItemEditor.SelectedAvatarsCount, GetSupportedAvatarsCount().ToString());
     }
 
     private bool ValidateFields()
