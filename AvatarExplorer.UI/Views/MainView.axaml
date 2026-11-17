@@ -195,7 +195,7 @@
                                     <TextBlock Text="{Binding [Main.DisplayOptions], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold"/>
                                     <Separator Classes="separator"/>
 
-                                    <Grid IsSharedSizeScope="True" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="10" MinWidth="250">
+                                    <Grid IsSharedSizeScope="True" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="10" MinWidth="250">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
                                             <ColumnDefinition Width="Auto" SharedSizeGroup="ControlColumn"/>
@@ -234,6 +234,9 @@
                                             <ComboBoxItem Content="{Binding [Settings.GridItemSize.Options.Medium], Source={x:Static loc:Localizer.Instance}}"/>
                                             <ComboBoxItem Content="{Binding [Settings.GridItemSize.Options.Large], Source={x:Static loc:Localizer.Instance}}"/>
                                         </ComboBox>
+
+                                        <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding [Settings.UiScale.Title], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" FontSize="12"/>
+                                        <Slider Grid.Row="5" Grid.Column="1" Value="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Minimum="0.5" Maximum="1.5" TickFrequency="0.1" IsSnapToTickEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                                     </Grid>
                                 </StackPanel>
                             </Flyout>

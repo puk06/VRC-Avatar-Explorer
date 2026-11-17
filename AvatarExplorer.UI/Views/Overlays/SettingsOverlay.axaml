@@ -3,6 +3,7 @@
     xmlns:vm="using:AvatarExplorer.UI.ViewModels.Overlays"
     xmlns:loc="using:AvatarExplorer.UI.Localization"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:vmmain="using:AvatarExplorer.UI.ViewModels"
     x:Class="AvatarExplorer.UI.Views.Overlays.SettingsOverlay"
     x:DataType="vm:SettingsViewModel">
 
@@ -245,8 +246,8 @@
                                         </Grid>
 
                                         <Grid Grid.Column="1" ColumnDefinitions="*,45" ColumnSpacing="5">
-                                            <Slider Value="{Binding UiScale}" Minimum="0.5" Maximum="1.5" TickFrequency="0.1" IsSnapToTickEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding UiScale, StringFormat={}{0:0%}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                            <Slider Value="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Minimum="0.5" Maximum="1.5" TickFrequency="0.1" IsSnapToTickEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}, StringFormat={}{0:0%}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
                                         </Grid>
                                     </Grid>
                                 </StackPanel>

@@ -47,7 +47,6 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public partial bool HideAvatarCategoryWhenAvatarSelected { get; set; }
     [Reactive] public partial int ThumbnailCompressionMaxSize { get; set; }
     [Reactive] public partial bool EnableButtonAnimation { get; set; }
-    [Reactive] public partial double UiScale { get; set; }
     [Reactive] public partial bool UseBackgroundImage { get; set; }
     [Reactive] public partial string BackgroundImagePath { get; set; } = string.Empty;
     [Reactive] public partial int BackgroundImageOpacity { get; set; }
@@ -171,7 +170,6 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         SelectedImplementedSort = (int)preferences.ImplementedSort;
         EnableSearchInFolder = preferences.EnableSearchInFolder;
         EnableButtonAnimation = preferences.EnableButtonAnimation;
-        UiScale = preferences.UiScale;
         SelectedViewMode = (int)preferences.MainViewMode;
         SelectedGridItemSize = (int)preferences.GridItemSize;
 
@@ -461,11 +459,14 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
             GridItemSize = (GridItemSize)SelectedGridItemSize,
             EnableSearchInFolder = EnableSearchInFolder,
             EnableButtonAnimation = EnableButtonAnimation,
-            UiScale = UiScale
+            UiScale = MainWindowViewModel.ClampUiScale(InstanceRepository.MainWindow.UiScale)
         });
     }
     private void Close()
     {
+        // UiScale is applied live and only persisted on Apply, so discard it here.
+        InstanceRepository.MainWindow.UiScale = MainWindowViewModel.ClampUiScale(InstanceRepository.UserPreferences.UiScale);
+
         IsVisible = false;
     }
 }
