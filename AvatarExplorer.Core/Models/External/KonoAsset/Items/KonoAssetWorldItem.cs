@@ -25,6 +25,8 @@ public class KonoAssetWorldItem : AbstractKonoAssetItem
         var migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.UpdateItemPath(ItemUtils.RootFolderPrefix + Id);
         migratedItem.UpdateCategory(ItemCategory.Get(string.IsNullOrEmpty(Category) ? "Worlds (KonoAsset)" : $"{Category} (KonoAsset)"));
+        // KonoAsset では対応アバターの概念がないため、従来どおり全アバター対応として扱う
+        migratedItem.UpdateSupportsAllAvatars(true);
 
         return migratedItem;
     }
