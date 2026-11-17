@@ -26,6 +26,12 @@ public record SearchIndex
     public required int Weight { get; init; }
 
     /// <summary>
+    /// フィールド指定検索で任意の値に一致させるワイルドカードかどうかを示します。
+    /// フリーワード検索では <see cref="Weight"/> が 0 のため対象外になります。
+    /// </summary>
+    public bool IsWildcard { get; init; }
+
+    /// <summary>
     /// 検索クエリに対してインデックス一覧がマッチするかを判定し、検索ポイントを算出します。
     /// 各トークンのポイントは一致したエントリの重みの最大値とし、トークンごとの合計をスコアとします。
     /// </summary>
@@ -70,13 +76,27 @@ public record SearchIndex
         var targets = indices.Where(i => field is null ? i.Weight > 0 : i.FieldName == field).ToList();
         if (targets.Count == 0) return false;
 
+        var wildcardMatched = field != null && targets.Any(t => t.IsWildcard);
+
         const StringComparison comparison = StringComparison.CurrentCultureIgnoreCase;
         var matchedWeights = targets
             .Where(t => t.FieldValues.Any(v => v.Contains(comparisonValue, comparison)))
             .Select(t => t.Weight)
             .ToList();
 
-        if (token.IsNegation) return matchedWeights.Count == 0;
+        if (token.IsNegation)
+        {
+            // 全アバター対応アイテムは、否定検索の対象外（すべての値に一致する）として扱う
+            if (wildcardMatched) return false;
+            return matchedWeights.Count == 0;
+        }
+
+        if (wildcardMatched)
+        {
+            score = 1;
+            return true;
+        }
+
         if (matchedWeights.Count == 0) return false;
 
         score = matchedWeights.Max();
@@ -103,7 +123,7 @@ public record SearchIndex
             Create("category", [item.Category.ToString()], 0, expandKana: false),
             Create("memo", [item.ItemMemo], 3),
             Create("tag", item.Tags, 4),
-            Create("supportedavatar", supportedAvatarNames, 1),
+            item.SupportsAllAvatars ? CreateWildcard("supportedavatar") : Create("supportedavatar", supportedAvatarNames, 1),
             Create("implementedavatar", implementedAvatarNames, 1),
             Create("notimplementedavatar", notImplementedAvatarNames, 0),
             Create("commonavatar", commonAvatarNames, 1),
@@ -144,6 +164,14 @@ public record SearchIndex
             Create("boothid", [tempAvatar.BoothId >= 0 ? tempAvatar.BoothId.ToString() : string.Empty], 1),
         ];
     }
+
+    private static SearchIndex CreateWildcard(string fieldName) => new()
+    {
+        FieldName = fieldName,
+        FieldValues = [],
+        Weight = 0,
+        IsWildcard = true
+    };
 
     private static SearchIndex Create(string fieldName, IEnumerable<string> values, int weight, bool expandKana = true)
     {
