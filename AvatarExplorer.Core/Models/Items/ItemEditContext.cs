@@ -24,6 +24,8 @@ public class ItemEditContext
     public string? CustomCategory { get; set; }
     /// <summary>新しい対応アバター一覧。null の場合は変更されません。</summary>
     public IEnumerable<string>? SupportedAvatars { get; set; }
+    /// <summary>すべてのアバターに対応するかどうか。null の場合は変更されません。</summary>
+    public bool? SupportsAllAvatars { get; set; }
     /// <summary>新しい実装済みアバター一覧。null の場合は変更されません。</summary>
     public IEnumerable<string>? ImplementedAvatars { get; set; }
     /// <summary>新しいメモ。null の場合は変更されません。</summary>

@@ -17,6 +17,8 @@ public class KonoAssetAvatarItem : AbstractKonoAssetItem
         Item migratedItem = ItemCreator.FromKonoAssetDescription(Description);
         migratedItem.UpdateItemPath($"<sys>{Id}");
         migratedItem.UpdateCategory(ItemCategory.Get(ItemType.Avatar));
+        // KonoAsset では対応アバターの概念がないため、従来どおり全アバター対応として扱う
+        migratedItem.UpdateSupportsAllAvatars(true);
 
         return migratedItem;
     }

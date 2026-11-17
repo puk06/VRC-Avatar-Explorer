@@ -75,6 +75,8 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     public YesNoDialogViewModel YesNoDialogVM { get; } = new();
     [Reactive] public partial bool IsYesNoDialogVisible { get; set; }
 
+    public SupportedAvatarBulkEditViewModel SupportedAvatarBulkEditVM { get; } = new();
+
     public ArchivePasswordDialogViewModel ArchivePasswordDialogVM { get; } = new();
     [Reactive] public partial bool IsArchivePasswordDialogVisible { get; set; }
 
@@ -140,6 +142,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
             this.WhenAnyValue(x => x.MergeCategoryVM.IsVisible),
             this.WhenAnyValue(x => x.TagEditorVM.IsVisible),
             this.WhenAnyValue(x => x.IsYesNoDialogVisible),
+            this.WhenAnyValue(x => x.SupportedAvatarBulkEditVM.IsVisible),
             this.WhenAnyValue(x => x.InitialSetupVM.IsVisible),
             this.WhenAnyValue(x => x.ErrorLogVM.IsVisible)
         };
@@ -149,9 +152,45 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     }
     public async Task OnInitialized()
     {
+        await ApplySupportedAvatarBulkEditMigrationIfNeeded();
         _ = CheckForUpdateOnStartup();
         CheckIfRunningAsAdmin();
     }
+
+    private async Task ApplySupportedAvatarBulkEditMigrationIfNeeded()
+    {
+        var promptPending = InstanceRepository.UserPreferences.SupportedAvatarBulkEditPromptPending;
+        if (!InstanceRepository.Items.WasMigratedFromPreviousVersion && !promptPending) return;
+
+        var affectedItemCount = InstanceRepository.Items.CountItemsWithoutSupportedAvatars();
+        if (affectedItemCount == 0)
+        {
+            if (promptPending) ClearSupportedAvatarBulkEditPromptPending();
+            return;
+        }
+
+        // 回答前にアプリが終了しても次回起動時に再度表示できるよう、表示前に保留状態を保存する
+        if (!promptPending)
+        {
+            InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with
+            {
+                SupportedAvatarBulkEditPromptPending = true
+            });
+        }
+
+        var supportsAllAvatars = await ShowSupportedAvatarBulkEditDialog(affectedItemCount);
+        ClearSupportedAvatarBulkEditPromptPending();
+
+        if (supportsAllAvatars == null) return;
+
+        InstanceRepository.Items.ApplySupportsAllAvatarsToItemsWithoutSupportedAvatars(supportsAllAvatars.Value);
+    }
+
+    private static void ClearSupportedAvatarBulkEditPromptPending() =>
+        InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with
+        {
+            SupportedAvatarBulkEditPromptPending = false
+        });
 
     public void OnLanguageUpdated()
     {
@@ -176,6 +215,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     private void OnBackupRestored()
     {
         AppInitializer.InitializeUserPreferences();
+        Dispatcher.UIThread.Post(() => _ = ApplySupportedAvatarBulkEditMigrationIfNeeded());
     }
 
     private static void CheckIfRunningAsAdmin()
@@ -291,6 +331,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
 
         return result;
     }
+    public Task<bool?> ShowSupportedAvatarBulkEditDialog(int affectedItemCount) => SupportedAvatarBulkEditVM.ShowAsync(affectedItemCount);
     public async Task<string?> ShowTextDialog(string title, string content = "")
     {
         IsTextDialogVisible = true;
@@ -461,6 +502,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
             || MergeCategoryVM.IsVisible
             || TagEditorVM.IsVisible
             || IsYesNoDialogVisible
+            || SupportedAvatarBulkEditVM.IsVisible
             || InitialSetupVM.IsVisible
             || ErrorLogVM.IsVisible;
     }

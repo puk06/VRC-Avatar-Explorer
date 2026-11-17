@@ -24,6 +24,8 @@ public class ItemCreationContext
     public string CustomCategory { get; set; } = string.Empty;
     /// <summary>対応アバターの識別子（Identifier）一覧です。</summary>
     public IEnumerable<string> SupportedAvatars { get; set; } = [];
+    /// <summary>すべてのアバターに対応するかどうかです。true の場合は <see cref="SupportedAvatars"/> は使用されません。</summary>
+    public bool SupportsAllAvatars { get; set; } = true;
     /// <summary>アイテムのメモです。</summary>
     public string ItemMemo { get; set; } = string.Empty;
     /// <summary>タグの一覧です。</summary>

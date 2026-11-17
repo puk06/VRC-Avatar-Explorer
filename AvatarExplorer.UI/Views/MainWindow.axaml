@@ -116,6 +116,10 @@
                 <overlays:YesNoDialogOverlay/>
             </ContentControl>
 
+            <ContentControl IsVisible="{Binding SupportedAvatarBulkEditVM.IsVisible}">
+                <overlays:SupportedAvatarBulkEditOverlay/>
+            </ContentControl>
+
             <ContentControl IsVisible="{Binding InitialSetupVM.IsVisible}">
                 <overlays:InitialSetupOverlay/>
             </ContentControl>

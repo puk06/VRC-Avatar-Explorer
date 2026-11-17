@@ -88,6 +88,7 @@ public static class Loc
             public const string CommonAvatar = "Button.Tag.CommonAvatar";
             public static class SupportedAvatar
             {
+                public const string All = "Button.Tag.SupportedAvatar.All";
                 public const string None = "Button.Tag.SupportedAvatar.None";
             }
             public const string BoothId = "Button.Tag.BoothId";
@@ -426,6 +427,15 @@ public static class Loc
         public const string CreateUnitypackage = "Error.CreateUnitypackage";
         public const string UnhandledException = "Error.UnhandledException";
     }
+    public static class SupportedAvatarBulkEdit
+    {
+        public const string Title = "SupportedAvatarBulkEdit.Title";
+        public const string Description = "SupportedAvatarBulkEdit.Description";
+        public const string AffectedItems = "SupportedAvatarBulkEdit.AffectedItems";
+        public const string UseAll = "SupportedAvatarBulkEdit.UseAll";
+        public const string UseNone = "SupportedAvatarBulkEdit.UseNone";
+        public const string Note = "SupportedAvatarBulkEdit.Note";
+    }
     public static class Settings
     {
         public const string Basic = "Settings.Basic";
@@ -591,10 +601,13 @@ public static class Loc
             public const string Title = "Settings.LinkToOriginal.Title";
             public const string Description = "Settings.LinkToOriginal.Description";
         }
-        public static class TreatEmptySupportedAvatarAsNone
+        public static class SupportedAvatarBulkEdit
         {
-            public const string Title = "Settings.TreatEmptySupportedAvatarAsNone.Title";
-            public const string Description = "Settings.TreatEmptySupportedAvatarAsNone.Description";
+            public const string Title = "Settings.SupportedAvatarBulkEdit.Title";
+            public const string Description = "Settings.SupportedAvatarBulkEdit.Description";
+            public const string Open = "Settings.SupportedAvatarBulkEdit.Open";
+            public const string NoItems = "Settings.SupportedAvatarBulkEdit.NoItems";
+            public const string Applied = "Settings.SupportedAvatarBulkEdit.Applied";
         }
         public static class HideAvatarCategoryWhenAvatarSelected
         {
@@ -830,6 +843,10 @@ public static class Loc
         public const string Author = "ItemEditor.Author";
         public const string Category = "ItemEditor.Category";
         public const string SupportedAvatars = "ItemEditor.SupportedAvatars";
+        public const string SupportsAllAvatars = "ItemEditor.SupportsAllAvatars";
+        public const string SupportsAllAvatarsDescription = "ItemEditor.SupportsAllAvatarsDescription";
+        public const string SupportedAvatarsAll = "ItemEditor.SupportedAvatarsAll";
+        public const string SupportedAvatarsNone = "ItemEditor.SupportedAvatarsNone";
         public const string SelectedAvatarsCount = "ItemEditor.SelectedAvatarsCount";
         public const string ShowAdvancedSettings = "ItemEditor.ShowAdvancedSettings";
         public const string ItemMemo = "ItemEditor.ItemMemo";

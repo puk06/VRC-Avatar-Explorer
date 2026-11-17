@@ -45,7 +45,6 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public partial bool AutoChangeUnitypackagePath { get; set; }
     [Reactive] public partial bool RemoveOriginal { get; set; }
     [Reactive] public partial bool LinkToOriginal { get; set; }
-    [Reactive] public partial bool TreatEmptySupportedAvatarAsNone { get; set; }
     [Reactive] public partial bool HideAvatarCategoryWhenAvatarSelected { get; set; }
     [Reactive] public partial int ThumbnailCompressionMaxSize { get; set; }
     [Reactive] public partial bool EnableButtonAnimation { get; set; }
@@ -74,6 +73,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     public IReactiveCommand FetchAllVariationHashesCommand { get; }
     public IReactiveCommand RestoreFromBackupCommand { get; }
     public IReactiveCommand AutoFixDatabaseCommand { get; }
+    public IReactiveCommand OpenSupportedAvatarBulkEditCommand { get; }
     public IReactiveCommand ResetDatabaseCommand { get; }
     public IReactiveCommand ShowErrorLogCommand { get; }
     public IReactiveCommand RegisterVRCAESchemeCommand { get; }
@@ -104,6 +104,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         FetchAllThumbnailsCommand = ReactiveCommand.Create(FetchAllThumbnails);
         RestoreFromBackupCommand = ReactiveCommand.CreateFromTask(RestoreFromBackup);
         AutoFixDatabaseCommand = ReactiveCommand.CreateFromTask(AutoFixDatabase);
+        OpenSupportedAvatarBulkEditCommand = ReactiveCommand.CreateFromTask(OpenSupportedAvatarBulkEdit);
         ResetDatabaseCommand = ReactiveCommand.Create(ResetDatabase);
         ShowErrorLogCommand = ReactiveCommand.Create(ShowErrorLog);
         RegisterVRCAESchemeCommand = ReactiveCommand.CreateFromTask(() => RegisterScheme(SchemeService.ProtocolVRCAE));
@@ -155,7 +156,6 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         AutoChangeUnitypackagePath = runtimeSettings.AutoChangeUnitypackagePath;
         RemoveOriginal = runtimeSettings.RemoveOriginal;
         LinkToOriginal = runtimeSettings.ShouldLinkToOriginal;
-        TreatEmptySupportedAvatarAsNone = runtimeSettings.TreatEmptySupportedAvatarAsNone;
         HideAvatarCategoryWhenAvatarSelected = runtimeSettings.HideAvatarCategoryWhenAvatarSelected;
         ThumbnailCompressionMaxSize = preferences.ThumbnailCompressionMaxEdge;
         UseBackgroundImage = preferences.UseBackgroundImage;
@@ -271,6 +271,32 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
             await InstanceRepository.BackupManager.ExecuteBackup();
             InstanceRepository.Items.ValidateAndAutoFixItemType(false);
         }
+    }
+
+    private async Task OpenSupportedAvatarBulkEdit()
+    {
+        var affectedItemCount = InstanceRepository.Items.CountItemsWithoutSupportedAvatars();
+        if (affectedItemCount == 0)
+        {
+            NotificationManager.Show(
+                Localizer.Instance[Loc.Settings.SupportedAvatarBulkEdit.Title],
+                Localizer.Instance[Loc.Settings.SupportedAvatarBulkEdit.NoItems],
+                NotificationType.Information
+            );
+            return;
+        }
+
+        var supportsAllAvatars = await InstanceRepository.MainWindow.ShowSupportedAvatarBulkEditDialog(affectedItemCount);
+        if (supportsAllAvatars == null) return;
+
+        await InstanceRepository.BackupManager.ExecuteBackup();
+        InstanceRepository.Items.ApplySupportsAllAvatarsToItemsWithoutSupportedAvatars(supportsAllAvatars.Value);
+
+        NotificationManager.Show(
+            Localizer.Instance[Loc.Success.Default],
+            Localizer.Instance[Loc.Settings.SupportedAvatarBulkEdit.Applied],
+            NotificationType.Success
+        );
     }
 
     private void ResetDatabase()
@@ -429,7 +455,8 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
             RemoveOriginal = RemoveOriginal,
             ShouldLinkToOriginal = LinkToOriginal,
             AutoBackupInterval = ValueParser.Int(AutoBackupInterval, 5),
-            TreatEmptySupportedAvatarAsNone = TreatEmptySupportedAvatarAsNone,
+            // 旧バージョンから復元したデータベースのマイグレーション用に値を保持する
+            TreatEmptySupportedAvatarAsNone = InstanceRepository.RuntimeSettings.TreatEmptySupportedAvatarAsNone,
             HideAvatarCategoryWhenAvatarSelected = HideAvatarCategoryWhenAvatarSelected,
             MaxDegreeOfParallelism = ValueParser.Int(MaxDegreeOfParallelism, 4),
             AutoChangeUnitypackagePath = AutoChangeUnitypackagePath,

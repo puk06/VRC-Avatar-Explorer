@@ -32,6 +32,8 @@ public class KonoAssetWearableItem : AbstractKonoAssetItem
         migratedItem.UpdateItemPath(ItemUtils.RootFolderPrefix + Id);
         migratedItem.UpdateCategory(ItemCategory.Get(string.IsNullOrEmpty(Category) ? "Wearables (KonoAsset)" : $"{Category} (KonoAsset)" ));
         migratedItem.UpdateSupportedAvatars(SupportedAvatars);
+        // KonoAsset では「全アバター対応」を空の対応アバターとして扱う
+        migratedItem.UpdateSupportsAllAvatars(migratedItem.SupportedAvatars.IsEmpty);
 
         return migratedItem;
     }

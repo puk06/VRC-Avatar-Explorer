@@ -31,6 +31,8 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     [JsonInclude] public ItemCategory Category { get; private set; } = ItemCategory.Get(ItemType.None);
     /// <summary>対応アバターの識別子（Identifier）一覧です。</summary>
     [JsonInclude] public ImmutableArray<string> SupportedAvatars { get; private set; } = [];
+    /// <summary>すべてのアバターに対応しているかどうかを示します。true の場合、<see cref="SupportedAvatars"/> は空になります。</summary>
+    [JsonInclude] public bool SupportsAllAvatars { get; private set; } = false;
     /// <summary>実装済みアバターの識別子（Identifier）一覧です。</summary>
     [JsonInclude] public ImmutableArray<string> ImplementedAvatars { get; private set; } = [];
     /// <summary>タグの一覧です。</summary>
@@ -91,9 +93,20 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     /// <summary>サムネイルファイル名を更新します。</summary>
     /// <param name="fileName">新しいサムネイルファイル名。</param>
     public void UpdateThumbnailFileName(string fileName) => ThumbnailFileName = fileName;
-    /// <summary>対応アバター一覧を更新します。重複は除去されます。</summary>
+    /// <summary>対応アバター一覧を更新します。重複は除去され、一覧が空でない場合は全アバター対応フラグが解除されます。</summary>
     /// <param name="newList">新しい対応アバターの識別子一覧。</param>
-    public void UpdateSupportedAvatars(IEnumerable<string> newList) => SupportedAvatars = newList.Distinct().ToImmutableArray();
+    public void UpdateSupportedAvatars(IEnumerable<string> newList)
+    {
+        SupportedAvatars = newList.Distinct().ToImmutableArray();
+        if (!SupportedAvatars.IsEmpty) SupportsAllAvatars = false;
+    }
+    /// <summary>すべてのアバターに対応しているかどうかを更新します。true の場合は対応アバター一覧を空にします。</summary>
+    /// <param name="supportsAllAvatars">すべてのアバターに対応する場合は true。</param>
+    public void UpdateSupportsAllAvatars(bool supportsAllAvatars)
+    {
+        SupportsAllAvatars = supportsAllAvatars;
+        if (supportsAllAvatars) SupportedAvatars = [];
+    }
     /// <summary>実装済みアバター一覧を更新します。重複は除去されます。</summary>
     /// <param name="newList">新しい実装済みアバターの識別子一覧。</param>
     public void UpdateImplementedAvatars(IEnumerable<string> newList) => ImplementedAvatars = newList.Distinct().ToImmutableArray();

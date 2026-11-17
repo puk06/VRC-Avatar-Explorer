@@ -4,6 +4,18 @@ using AvatarExplorer.Core.Services.System;
 namespace AvatarExplorer.Core.Services.IO;
 
 /// <summary>
+/// データベースのマイグレーション結果を表します。
+/// </summary>
+/// <param name="FromVersion">マイグレーション前のスキーマバージョン。</param>
+/// <param name="ToVersion">マイグレーション後のスキーマバージョン。</param>
+/// <param name="Changed">データが変更されたかどうか。</param>
+public readonly record struct DatabaseMigrationResult(int FromVersion, int ToVersion, bool Changed)
+{
+    /// <summary>マイグレーションが必要な旧バージョンから読み込まれたかどうかを示します。</summary>
+    public bool WasMigrated => FromVersion < ToVersion;
+}
+
+/// <summary>
 /// データベースファイル（JSON）に対して、現在のバージョンまでのマイグレーションを実行し、バックアップを作成する静的クラスです。
 /// </summary>
 public static class DatabaseMigrationService
@@ -14,11 +26,12 @@ public static class DatabaseMigrationService
     /// <param name="filePath">マイグレーション対象のデータベースファイルのパス。</param>
     /// <param name="currentVersion">適用する最新のスキーマバージョン。</param>
     /// <param name="applyMigration">個々のバージョン番号に対してマイグレーションを実行するコールバック。</param>
-    public static void MigrateDatabase(string filePath, int currentVersion, Func<JsonArray, int, bool> applyMigration)
+    /// <returns>マイグレーション前後のバージョンと変更の有無を保持する結果。</returns>
+    public static DatabaseMigrationResult MigrateDatabase(string filePath, int currentVersion, Func<JsonArray, int, bool> applyMigration)
     {
         try
         {
-            if (!TryReadJson(filePath, out var root)) return;
+            if (!TryReadJson(filePath, out var root)) return new(currentVersion, currentVersion, false);
 
             JsonObject container;
             JsonArray items;
@@ -43,7 +56,7 @@ public static class DatabaseMigrationService
             }
             else
             {
-                return;
+                return new(currentVersion, currentVersion, false);
             }
 
             var changed = RunMigrations(items, appliedVersion, currentVersion, applyMigration);
@@ -52,10 +65,13 @@ public static class DatabaseMigrationService
                 WriteWithVersion(filePath, container, appliedVersion, currentVersion);
 
             DeleteLegacyVersionFile(filePath);
+
+            return new(appliedVersion, currentVersion, changed);
         }
         catch (Exception ex)
         {
             ErrorManager.Instance.PostInternalError($"Failed to migrate database: '{filePath}'.", ex);
+            return new(currentVersion, currentVersion, false);
         }
     }
 

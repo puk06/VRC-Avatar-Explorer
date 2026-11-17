@@ -37,7 +37,7 @@ public record RuntimeSettings
     // 自動バックアップの間隔（日数）
     public int AutoBackupInterval { get; init; }
 
-    // 対応アバターが空の場合に「なし」として扱うか
+    // 旧バージョン用。アイテムの SupportsAllAvatars へ移行済みで、DBマイグレーション時のみ参照される
     public bool TreatEmptySupportedAvatarAsNone { get; init; }
 
     // アバター選択時にアバターカテゴリを非表示にするか
@@ -66,7 +66,7 @@ public record RuntimeSettings
 | `RemoveOriginal` | `false` | 元ファイルを削除しない |
 | `ShouldLinkToOriginal` | `false` | コピーを作成 |
 | `AutoBackupInterval` | `5` | 5日ごと |
-| `TreatEmptySupportedAvatarAsNone` | `false` | 空は空として扱う |
+| `TreatEmptySupportedAvatarAsNone` | `false` | 旧バージョン用（DBマイグレーション時のみ参照） |
 | `MaxDegreeOfParallelism` | `4` | 4並列 |
 | `AutoChangeUnitypackagePath` | `true` | パスを自動変更 |
 | `CheckForUpdate` | `true` | アップデートをチェック |
@@ -229,9 +229,21 @@ var result = await FileSystemService.ModifyUnitypackageFilePathsAsync(new Unityp
 ### GetItemsFromAvatarでの使用
 
 ```csharp
-// TreatEmptySupportedAvatarAsNoneが参照される
+// 各アイテムの SupportsAllAvatars と SupportedAvatars が参照される
 var items = app.ItemGroupService.GetItemsFromAvatar("item:avatar-id");
 ```
+
+### 対応アバター未設定の扱い
+
+旧バージョンでは、アイテムの `SupportedAvatars` が空の場合に「全アバター対応」として扱っていました。
+現在はアイテムごとの `Item.SupportsAllAvatars` で明示的に管理します。
+
+- `SupportsAllAvatars = true` … 全アバター対応（`SupportedAvatars` は空）
+- `SupportsAllAvatars = false` かつ `SupportedAvatars` が空 … どのアバターにも未対応
+- `SupportsAllAvatars = false` かつ `SupportedAvatars` に値あり … 指定したアバターのみ対応
+
+アイテム作成時は `ItemCreationContext.SupportsAllAvatars`、更新時は `ItemEditContext.SupportsAllAvatars` を使用してください。
+`TreatEmptySupportedAvatarAsNone` は旧データベースの移行時のみ参照され、対応判定には使用されません。
 
 ## 設定のバリデーション
 
