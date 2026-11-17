@@ -28,4 +28,5 @@ public record UserPreferences
     public bool EnableButtonAnimation { get; init; } = true;
     public double UiScale { get; init; } = 1.0;
     public bool InitialSetupCompleted { get; init; } = false;
+    public bool SupportedAvatarBulkEditPromptPending { get; init; } = false;
 }

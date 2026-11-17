@@ -289,6 +289,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         var supportsAllAvatars = await InstanceRepository.MainWindow.ShowSupportedAvatarBulkEditDialog(affectedItemCount);
         if (supportsAllAvatars == null) return;
 
+        await InstanceRepository.BackupManager.ExecuteBackup();
         InstanceRepository.Items.ApplySupportsAllAvatarsToItemsWithoutSupportedAvatars(supportsAllAvatars.Value);
 
         NotificationManager.Show(

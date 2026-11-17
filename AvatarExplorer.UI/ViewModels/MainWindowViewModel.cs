@@ -159,16 +159,38 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
 
     private async Task ApplySupportedAvatarBulkEditMigrationIfNeeded()
     {
-        if (!InstanceRepository.Items.WasMigratedFromPreviousVersion) return;
+        var promptPending = InstanceRepository.UserPreferences.SupportedAvatarBulkEditPromptPending;
+        if (!InstanceRepository.Items.WasMigratedFromPreviousVersion && !promptPending) return;
 
         var affectedItemCount = InstanceRepository.Items.CountItemsWithoutSupportedAvatars();
-        if (affectedItemCount == 0) return;
+        if (affectedItemCount == 0)
+        {
+            if (promptPending) ClearSupportedAvatarBulkEditPromptPending();
+            return;
+        }
+
+        // 回答前にアプリが終了しても次回起動時に再度表示できるよう、表示前に保留状態を保存する
+        if (!promptPending)
+        {
+            InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with
+            {
+                SupportedAvatarBulkEditPromptPending = true
+            });
+        }
 
         var supportsAllAvatars = await ShowSupportedAvatarBulkEditDialog(affectedItemCount);
+        ClearSupportedAvatarBulkEditPromptPending();
+
         if (supportsAllAvatars == null) return;
 
         InstanceRepository.Items.ApplySupportsAllAvatarsToItemsWithoutSupportedAvatars(supportsAllAvatars.Value);
     }
+
+    private static void ClearSupportedAvatarBulkEditPromptPending() =>
+        InstanceRepository.UserPreferencesRepository.Update(InstanceRepository.UserPreferences with
+        {
+            SupportedAvatarBulkEditPromptPending = false
+        });
 
     public void OnLanguageUpdated()
     {
@@ -193,6 +215,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     private void OnBackupRestored()
     {
         AppInitializer.InitializeUserPreferences();
+        Dispatcher.UIThread.Post(() => _ = ApplySupportedAvatarBulkEditMigrationIfNeeded());
     }
 
     private static void CheckIfRunningAsAdmin()

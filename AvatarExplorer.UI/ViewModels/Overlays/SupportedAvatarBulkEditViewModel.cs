@@ -33,8 +33,11 @@ public partial class SupportedAvatarBulkEditViewModel : ViewModelBase
     /// <returns>全アバター対応として扱う場合は true、どのアバターにも対応しないものとして扱う場合は false、キャンセル時は null。</returns>
     public Task<bool?> ShowAsync(int affectedItemCount)
     {
-        AffectedItemsText = Localizer.Instance.Get(Loc.SupportedAvatarBulkEdit.AffectedItems, affectedItemCount.ToString());
+        if (IsVisible) return Task.FromResult<bool?>(null);
+
+        _tcs.TrySetResult(null);
         _tcs = new();
+        AffectedItemsText = Localizer.Instance.Get(Loc.SupportedAvatarBulkEdit.AffectedItems, affectedItemCount.ToString());
         IsVisible = true;
 
         return _tcs.Task;
