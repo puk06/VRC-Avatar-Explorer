@@ -312,9 +312,11 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
     public const double MaxUiScale = 1.5;
     public const double UiScaleStep = 0.1;
 
+    public static double ClampUiScale(double scale) => Math.Round(Math.Clamp(scale, MinUiScale, MaxUiScale), 1);
+
     private void ApplyPreferenceSettings(UserPreferences settings)
     {
-        UiScale = Math.Clamp(settings.UiScale, MinUiScale, MaxUiScale);
+        UiScale = ClampUiScale(settings.UiScale);
 
         Localizer.Instance.SetLanguage(settings.Language);
 
@@ -425,7 +427,7 @@ public partial class MainWindowViewModel : ViewModelBase, IInitializable, IPostI
 
     public void SetUiScale(double scale)
     {
-        var newScale = Math.Round(Math.Clamp(scale, MinUiScale, MaxUiScale), 1);
+        var newScale = ClampUiScale(scale);
         if (Math.Abs(newScale - UiScale) < 0.001) return;
 
         UiScale = newScale;

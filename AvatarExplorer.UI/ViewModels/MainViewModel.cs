@@ -341,7 +341,8 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             GridItemSize = (GridItemSize)MainGridItemSize,
             SortOrder = (ItemSortOrder)MainSortOrder,
             SortDirection = (SortDirection)MainSortDirection,
-            ImplementedSort = (ImplementedSort)MainImplementedSort
+            ImplementedSort = (ImplementedSort)MainImplementedSort,
+            UiScale = MainWindowViewModel.ClampUiScale(InstanceRepository.MainWindow.UiScale)
         };
 
         if (updated == current) return;
