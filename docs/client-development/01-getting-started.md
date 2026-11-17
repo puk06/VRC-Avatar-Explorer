@@ -187,6 +187,7 @@ public class Item : IIdentifiable
 
     // 対応アバター
     public ImmutableArray<string> SupportedAvatars { get; }   // 対応アバターID一覧
+    public bool SupportsAllAvatars { get; }                    // 全アバター対応フラグ（true の場合は SupportedAvatars は空）
     public ImmutableArray<string> ImplementedAvatars { get; } // 実装済みアバターID一覧
 
     // タグ・メモ

@@ -174,6 +174,7 @@ var context = new ItemCreationContext
     ItemType = boothItem.EstimatedCategory.Type,
     ThumbnailUrl = boothItem.ThumbnailUrl,
     SupportedAvatars = Array.Empty<string>(),
+    SupportsAllAvatars = true,           // 全アバター対応にする場合は true
     Tags = Array.Empty<string>(),
     ItemMemo = "",
     IsHidden = false,                    // 非表示フラグ（任意）

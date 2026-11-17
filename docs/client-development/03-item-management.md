@@ -33,6 +33,7 @@ var context = new ItemCreationContext
         "item:avatar-id-1",
         "item:avatar-id-2"
     },
+    SupportsAllAvatars = false,          // 全アバター対応にする場合は true（その場合 SupportedAvatars は空）
     Tags = new[] { "タグ1", "タグ2" },  // タグ一覧
     ItemMemo = "アイテムの説明",
     ThumbnailUrl = "https://example.com/thumb.png",  // サムネイルURL（任意）
@@ -132,6 +133,7 @@ var editContext = new ItemEditContext
     ItemMemo = "更新された説明",
     ItemPath = @"D:\new\path",
     SupportedAvatars = new[] { "item:new-avatar-id" },
+    SupportsAllAvatars = false, // 全アバター対応にする場合は true（その場合 SupportedAvatars は空になる）
     ImplementedAvatars = new[] { "item:implemented-id" },
     Tags = new[] { "新しいタグ" },
     IsHidden = false,
@@ -536,6 +538,7 @@ var context = new ItemCreationContext
     ItemType = boothItem.EstimatedCategory.Type,
     ThumbnailUrl = boothItem.ThumbnailUrl,
     SupportedAvatars = Array.Empty<string>(),
+    SupportsAllAvatars = true, // 全アバター対応にする場合は true
     Tags = Array.Empty<string>(),
     IsHidden = false,
     SkipIndirectCommonAvatarCheck = false
