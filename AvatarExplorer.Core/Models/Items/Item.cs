@@ -93,7 +93,7 @@ public class Item : AbstractDatabaseItem, IIdentifiable
     /// <summary>サムネイルファイル名を更新します。</summary>
     /// <param name="fileName">新しいサムネイルファイル名。</param>
     public void UpdateThumbnailFileName(string fileName) => ThumbnailFileName = fileName;
-    /// <summary>対応アバター一覧を更新します。重複は除去されます。</summary>
+    /// <summary>対応アバター一覧を更新します。重複は除去され、一覧が空でない場合は全アバター対応フラグが解除されます。</summary>
     /// <param name="newList">新しい対応アバターの識別子一覧。</param>
     public void UpdateSupportedAvatars(IEnumerable<string> newList)
     {

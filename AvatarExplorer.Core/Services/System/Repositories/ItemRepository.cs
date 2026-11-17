@@ -41,7 +41,7 @@ public class ItemRepository : RepositoryBase<Item>
 
     /// <summary>
     /// 対応アバターが未設定のアイテムすべてに、全アバター対応かどうかのフラグを適用します。
-    /// 旧バージョンからマイグレーションした際の一括設定に使用します。
+    /// 旧バージョンからのマイグレーション時や、設定画面からの一括設定に使用します。
     /// </summary>
     /// <param name="supportsAllAvatars">全アバター対応として扱う場合は true。</param>
     public void ApplySupportsAllAvatarsToItemsWithoutSupportedAvatars(bool supportsAllAvatars)
