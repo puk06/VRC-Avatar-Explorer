@@ -32,6 +32,9 @@
 		<PackageReference Include="Message.Avalonia" Version="2.0.0" />
 		<ProjectReference Include="..\AvatarExplorer.Core/AvatarExplorer.Core.csproj" />
 
+		<!-- libSkiaSharp library のバージョン都合の回避策 (Linux 環境向け) -->
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.150.1" />
+
 		<Content Include="..\AvatarExplorer.Core\Data\Localization\**\*.json">
 			<Link>locales\%(RecursiveDir)%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
