@@ -50,7 +50,7 @@
                                             <Grid Grid.Column="1" RowDefinitions="Auto,Auto,5,*">
                                                 <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                                                <ItemsControl Grid.Row="3" ItemsSource="{Binding Tags}">
+                                                <ItemsControl Grid.Row="3" ItemsSource="{Binding Tags}" MinHeight="30">
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
                                                             <WrapPanel Grid.Row="3" Orientation="Horizontal" ItemSpacing="5" LineSpacing="5"/>
