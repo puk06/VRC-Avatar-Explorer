@@ -29,7 +29,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     public ObservableCollection<ItemContentViewModel> ItemContents { get; set; } = [];
     [Reactive] public partial bool ShouldLinkToOriginal { get; set; } = false;
 
-    [Reactive] public partial string BoothUrl { get; set; } = string.Empty;
+    [Reactive] public partial string Url { get; set; } = string.Empty;
     [Reactive] public partial string Title { get; set; } = string.Empty;
     [Reactive] public partial string Author { get; set; } = string.Empty;
     [Reactive] public partial int SelectedCategoryIndex { get; set; } = 0;
@@ -84,7 +84,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     public IReactiveCommand AddFileCommand { get; }
     public IReactiveCommand AddUrlCommand { get; }
     public IReactiveCommand RemoveContentCommand { get; }
-    public IReactiveCommand FetchBoothDataCommand { get; }
+    public IReactiveCommand FetchDataCommand { get; }
     public IReactiveCommand AddCustomCategoryCommand { get; }
     public IReactiveCommand SelectSupportedAvatarsCommand { get; }
     public IReactiveCommand EditItemMemoCommand { get; }
@@ -99,7 +99,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         AddFileCommand = ReactiveCommand.CreateFromTask(SelectAndAddFiles);
         AddUrlCommand = ReactiveCommand.CreateFromTask(AddUrl);
         RemoveContentCommand = ReactiveCommand.Create<ItemContentViewModel>(RemoveContent);
-        FetchBoothDataCommand = ReactiveCommand.CreateFromTask(FetchBoothData);
+        FetchDataCommand = ReactiveCommand.CreateFromTask(FetchData);
         AddCustomCategoryCommand = ReactiveCommand.CreateFromTask(AddCustomCategory);
         SelectSupportedAvatarsCommand = ReactiveCommand.CreateFromTask(SelectSupportedAvatars);
         EditItemMemoCommand = ReactiveCommand.CreateFromTask(EditItemMemo);
@@ -112,7 +112,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     {
         Identifier = null;
         ItemContents.Clear();
-        BoothUrl = string.Empty;
+        Url = string.Empty;
         Title = string.Empty;
         Author = string.Empty;
         SelectedCategoryIndex = -1;
@@ -137,7 +137,8 @@ public partial class ItemEditorViewModel : ViewModelBase
             var item = InstanceRepository.Items.Get(itemId);
             if (item != null)
             {
-                if (item.BoothId != -1) BoothUrl = item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
+                // TODO: itemのソースがBooth以外も対応した場合、Itemデータベースにソースの種類を追加して、URLの生成をソースごとに分岐させる必要がある。
+                if (item.BoothId != -1) Url = item.GetBoothLink(Localizer.Instance[Loc.BoothLanguageCode]);
                 Title = item.Title;
                 Author = item.Author;
                 AuthorId = item.AuthorId;
@@ -169,7 +170,9 @@ public partial class ItemEditorViewModel : ViewModelBase
         }
 
         ResetFields();
-        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.BoothId);
+
+        // TODO: itemのソースがBooth以外も対応した場合、Itemデータベースにソースの種類を追加して、URLの生成をソースごとに分岐させる必要がある。
+        Url = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], launchInfo.BoothId);
         BoothId = launchInfo.BoothId;
 
         RefleshCategories();
@@ -178,7 +181,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         IsVisible = true;
 
         AddContents(launchInfo.AssetPaths);
-        await FetchBoothData();
+        await FetchData();
     }
 
     public async Task Open(ImportItemInfo itemInfo)
@@ -191,7 +194,9 @@ public partial class ItemEditorViewModel : ViewModelBase
         }
 
         ResetFields();
-        BoothUrl = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], itemInfo.ItemID);
+
+        // TODO: itemのソースがBooth以外も対応した場合、Itemデータベースにソースの種類を追加して、URLの生成をソースごとに分岐させる必要がある。
+        Url = string.Format(BoothLink.ItemURLWithoutAuthorFormat, Localizer.Instance[Loc.BoothLanguageCode], itemInfo.ItemID);
         BoothId = itemInfo.ItemID;
 
         RefleshCategories();
@@ -202,7 +207,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         ItemContents.Add(new ItemContentViewModel(itemInfo.DownloadableFilename, itemInfo.DownloadURL, ItemContentType.URL));
         RemoveDuplicatePaths();
 
-        await FetchBoothData();
+        await FetchData();
     }
 
     public void AddContents(string[] contents)
@@ -488,7 +493,22 @@ public partial class ItemEditorViewModel : ViewModelBase
         ItemContents.Add(new ItemContentViewModel(newFileName, url, ItemContentType.URL));
         RemoveDuplicatePaths();
     }
-    public async Task FetchBoothData()
+    public async Task FetchData()
+    {
+        if (Url.Contains("booth.pm", StringComparison.OrdinalIgnoreCase))
+        {
+            await FetchBoothData();
+            return;
+        }
+
+        NotificationManager.Show(
+            Localizer.Instance[Loc.Error.Default],
+            Localizer.Instance[Loc.Error.UnsupportedUrl],
+            NotificationType.Error
+        );
+    }
+
+    private async Task FetchBoothData()
     {
         ErrorOr<BoothItem>? fetchResult = null;
         await NotificationManager.ShowWithProgress(
@@ -496,7 +516,7 @@ public partial class ItemEditorViewModel : ViewModelBase
             async progress =>
             {
                 progress.Report(Localizer.Instance[Loc.Processing.Booth.Status.Fetching], 0);
-                fetchResult = await BoothService.Fetch(BoothUrl, waitCooldown: true);
+                fetchResult = await BoothService.Fetch(Url, waitCooldown: true);
                 progress.Report(Localizer.Instance[Loc.Processing.Booth.Status.Fetching], 100);
                 await Task.Delay(300); // To ensure the progress bar is visible for a short time
             }
@@ -513,7 +533,7 @@ public partial class ItemEditorViewModel : ViewModelBase
 
             NotificationManager.Show(
                 Localizer.Instance[Loc.Success.Default],
-                Localizer.Instance[Loc.Success.FetchBoothItemInfo],
+                Localizer.Instance[Loc.Success.FetchItemInfo],
                 NotificationType.Success
             );
         }
@@ -521,7 +541,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.Error.Default],
-                Localizer.Instance[Loc.Error.RetrieveBoothItemFailed],
+                Localizer.Instance[Loc.Error.RetrieveItemFailed],
                 NotificationType.Error
             );
         }

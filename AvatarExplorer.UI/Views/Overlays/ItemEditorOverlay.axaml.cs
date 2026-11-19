@@ -13,13 +13,13 @@ public partial class ItemEditorOverlay : UserControl
         DataContext = InstanceRepository.MainWindow.ItemEditorVM;
     }
 
-    private async void OnBoothUrlKeyDown(object sender, KeyEventArgs e)
+    private async void OnUrlKeyDown(object sender, KeyEventArgs e)
     {
         if (DataContext is not ItemEditorViewModel vm) return;
 
         if (!e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.Enter)
         {
-            await vm.FetchBoothData();
+            await vm.FetchData();
         }
     }
 

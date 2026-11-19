@@ -67,17 +67,17 @@
                     </Border>
                 </Grid>
 
-                <!-- Boothアイテム情報 -->
+                <!-- アイテム情報 -->
                 <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" RowSpacing="25">
-                    <TextBlock Grid.Row="0" Text="{Binding [ItemEditor.BoothItemInfo], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource Text.Primary}"/>
+                    <TextBlock Grid.Row="0" Text="{Binding [ItemEditor.ItemInfo], Source={x:Static loc:Localizer.Instance}}" FontWeight="Bold" FontSize="22" Foreground="{DynamicResource Text.Primary}"/>
 
                     <ScrollViewer Grid.Row="1">
                         <StackPanel Spacing="15" Margin="10">
                             <StackPanel Spacing="15">
                                 <Grid ColumnDefinitions="100,*,120" ColumnSpacing="12">
-                                    <TextBlock Grid.Column="0" Text="{Binding [ItemEditor.BoothUrl], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
-                                    <TextBox Text="{Binding BoothUrl}" Grid.Column="1" PlaceholderText="{Binding [ItemEditor.BoothUrlPlaceholder], Source={x:Static loc:Localizer.Instance}}" KeyDown="OnBoothUrlKeyDown"/>
-                                    <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [ItemEditor.FetchInfo], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding FetchBoothDataCommand}"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding [ItemEditor.Url], Source={x:Static loc:Localizer.Instance}}" VerticalAlignment="Center" Opacity="0.7" Foreground="{DynamicResource Text.Primary}"/>
+                                    <TextBox Text="{Binding Url}" Grid.Column="1" PlaceholderText="{Binding [ItemEditor.UrlPlaceholder], Source={x:Static loc:Localizer.Instance}}" KeyDown="OnUrlKeyDown"/>
+                                    <Button Grid.Column="2" Classes="accentbutton" Content="{Binding [ItemEditor.FetchInfo], Source={x:Static loc:Localizer.Instance}}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding FetchDataCommand}"/>
                                 </Grid>
 
                                 <Separator Classes="separator"/>

@@ -350,7 +350,7 @@ public static class Loc
         public const string RenameCustomCategory = "Success.RenameCustomCategory";
         public const string ClipboardSet = "Success.ClipboardSet";
         public const string FetchItemThumbnail = "Success.FetchItemThumbnail";
-        public const string FetchBoothItemInfo = "Success.FetchBoothItemInfo";
+        public const string FetchItemInfo = "Success.FetchItemInfo";
         public const string ItemFileAdd = "Success.ItemFileAdd";
         public const string ItemFolderAdd = "Success.ItemFolderAdd";
         public const string FetchAllItemThumbnails = "Success.FetchAllItemThumbnails";
@@ -407,7 +407,7 @@ public static class Loc
         public const string FailedToGetCurrentItem = "Error.FailedToGetCurrentItem";
         public const string ImportUnitypackageFailed = "Error.ImportUnitypackageFailed";
         public const string UnitypackageAlreadyProcessing = "Error.UnitypackageAlreadyProcessing";
-        public const string RetrieveBoothItemFailed = "Error.RetrieveBoothItemFailed";
+        public const string RetrieveItemFailed = "Error.RetrieveItemFailed";
         public const string FetchItemThumbnailFailed = "Error.FetchItemThumbnailFailed";
         public const string AddContentFailed = "Error.AddContentFailed";
         public const string TempAvatarNotFound = "Error.TempAvatarNotFound";
@@ -419,6 +419,7 @@ public static class Loc
         public const string FetchAllVariationHashesFailed = "Error.FetchAllVariationHashesFailed";
         public const string UnitypackageNotFound = "Error.UnitypackageNotFound";
         public const string InvalidUrl = "Error.InvalidUrl";
+        public const string UnsupportedUrl = "Error.UnsupportedUrl";
         public const string InvalidReleaseUrl = "Error.InvalidReleaseUrl";
         public const string DownloadFailed = "Error.DownloadFailed";
         public const string ItemPathNotFound = "Error.ItemPathNotFound";
@@ -832,12 +833,12 @@ public static class Loc
     }
     public static class ItemEditor
     {
-        public const string BoothItemInfo = "ItemEditor.BoothItemInfo";
+        public const string ItemInfo = "ItemEditor.ItemInfo";
         public const string AddFolder = "ItemEditor.AddFolder";
         public const string AddFile = "ItemEditor.AddFile";
         public const string AddUrl = "ItemEditor.AddUrl";
-        public const string BoothUrl = "ItemEditor.BoothUrl";
-        public const string BoothUrlPlaceholder = "ItemEditor.BoothUrlPlaceholder";
+        public const string Url = "ItemEditor.Url";
+        public const string UrlPlaceholder = "ItemEditor.UrlPlaceholder";
         public const string FetchInfo = "ItemEditor.FetchInfo";
         public const string Title = "ItemEditor.Title";
         public const string Author = "ItemEditor.Author";
