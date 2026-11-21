@@ -31,7 +31,7 @@ public sealed class AvatarExplorerApp
     public ItemNavigationService ItemNavigationService { get; }
     /// <summary>設定の管理を行うリポジトリ。</summary>
     public RuntimeSettingsRepository RuntimeSettingsRepository { get; } = new();
-    /// <summary>Booth バリエーションのハッシュ管理を行うリポジトリ。</summary>
+    /// <summary>バリエーションのハッシュ管理を行うリポジトリ。</summary>
     public VariationHashRepository VariationHashRepository { get; } = new();
 
     // Aliases for easier access

@@ -1,4 +1,6 @@
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 
@@ -17,6 +19,8 @@ public static class DatabaseMigrations
     public const int BulkImportPresetVersion = 1;
     /// <summary>ランタイム設定の現在のスキーマバージョン。</summary>
     public const int RuntimeSettingsVersion = 1;
+    /// <summary>バリエーションハッシュの現在のスキーマバージョン。</summary>
+    public const int VariationHashVersion = 1;
 
     private const string LegacyThumbnailKey = "ThumbnmailFileName";
     private const string ThumbnailKey = "ThumbnailFileName";
@@ -87,6 +91,60 @@ public static class DatabaseMigrations
             1 => false, // Obsolete fields remain for UI-side UserPreferences migration
             _ => false
         };
+    }
+
+    /// <summary>
+    /// バリエーションハッシュの JSON 配列に対して、指定したターゲットバージョンまでのマイグレーションを適用します。
+    /// </summary>
+    /// <param name="items">マイグレーション対象のバリエーションハッシュ JSON 配列。</param>
+    /// <param name="targetVersion">適用するスキーマバージョン。</param>
+    /// <returns>内容が変更された場合は <see langword="true"/>、それ以外は <see langword="false"/>。</returns>
+    public static bool ApplyVariationHashMigration(JsonArray items, int targetVersion)
+    {
+        return targetVersion switch
+        {
+            1 => MigrateVariationInfo(items),
+            _ => false
+        };
+    }
+
+    private static bool MigrateVariationInfo(JsonArray items)
+    {
+        var changed = false;
+
+        foreach (var itemNode in items)
+        {
+            if (itemNode is not JsonObject item) continue;
+
+            if (!item.TryGetPropertyValue("VariationFiles", out var variationFilesNode) || variationFilesNode is not JsonObject variationFiles)
+                continue;
+
+            var variationInfos = new JsonObject();
+
+            foreach (var kvp in variationFiles)
+            {
+                if (kvp.Value is not JsonArray filesArray) continue;
+
+                var filesList = new List<DownloadableFile>();
+                foreach (var fileNode in filesArray)
+                {
+                    if (fileNode is not JsonObject fileObj) continue;
+
+                    var fileName = fileObj["FileName"]?.GetValue<string>() ?? string.Empty;
+                    var hash = fileObj["Hash"]?.GetValue<string>() ?? string.Empty;
+                    filesList.Add(new DownloadableFile(fileName, hash));
+                }
+
+                var variationInfo = new VariationInfo(string.Empty, filesList);
+                variationInfos[kvp.Key] = JsonSerializer.SerializeToNode(variationInfo);
+            }
+
+            item["VariationInfos"] = variationInfos;
+            item.Remove("VariationFiles");
+            changed = true;
+        }
+
+        return changed;
     }
 
     private static bool MigrateV1RenameThumbnailKey(JsonArray items)
