@@ -1,24 +1,30 @@
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.Core.Services.IO;
 using AvatarExplorer.Core.Utils;
 
 namespace AvatarExplorer.Core.Services.System.Repositories;
 
 public class VariationHashRepository : RepositoryBase<VariationHash>
 {
-    /// <summary>Boothバリエーションのハッシュデータのリポジトリを初期化します。</summary>
+    /// <summary>バリエーションのハッシュデータのリポジトリを初期化します。</summary>
     public VariationHashRepository() : base(SystemPath.VariationHashDatabasePath) { }
 
     /// <summary>バリエーションハッシュデータベースを読み込みます。</summary>
     public override void Load()
     {
+        DatabaseMigrationService.MigrateDatabase(
+            Db.DatabaseFilePath,
+            DatabaseMigrations.VariationHashVersion,
+            DatabaseMigrations.ApplyVariationHashMigration);
+
         Db.Load();
         InvokeUpdated();
     }
 
-    /// <summary>指定したアイテムのBoothバリエーションを確認し、変更があればデータベースを更新して変更情報を返します。</summary>
-    /// <param name="itemId">確認対象のアイテム（Booth商品）ID。</param>
+    /// <summary>指定したアイテムのバリエーションを確認し、変更があればデータベースを更新して変更情報を返します。</summary>
+    /// <param name="itemId">確認対象のアイテムID。</param>
     /// <returns>変更があったバリエーションの更新情報の読み取り専用リスト。変更がない場合は空のリスト。</returns>
     public async Task<IReadOnlyList<VariationUpdateInfo>> CheckVariationAndNotify(string itemId)
     {
@@ -30,19 +36,8 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
         return updates;
     }
 
-    /// <summary>Boothから取得した1つのバリエーションのデータを表します。</summary>
-    public class VariationData
-    {
-        /// <summary>バリエーションのID。</summary>
-        public string VariationId { get; init; } = string.Empty;
-        /// <summary>バリエーション名。</summary>
-        public string VariationName { get; init; } = string.Empty;
-        /// <summary>バリエーションに含まれるダウンロード可能ファイルのリスト。</summary>
-        public List<DownloadableFile> Files { get; init; } = [];
-    }
-
     /// <summary>指定したアイテムのバリエーションハッシュを確実に存在させ（必要に応じて取得・保存し）、以降の差分チェックを可能にします。</summary>
-    /// <param name="itemId">対象のアイテム（Booth商品）ID。</param>
+    /// <param name="itemId">対象のアイテムID。</param>
     /// <returns>常にtrueを返します。</returns>
     public async Task<bool> EnsureVariationHash(string itemId)
     {
@@ -54,23 +49,22 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
     private async Task<List<VariationUpdateInfo>> CheckAndUpdate(string itemId)
     {
         var variationHash = GetOrCreate(itemId);
-        var fetchedData = await FetchVariationData(itemId);
-        if (fetchedData == null) return [];
+        var fetchedInfos = await FetchVariationInfos(itemId);
+        if (fetchedInfos == null) return [];
 
         var updates = new List<VariationUpdateInfo>();
-        foreach (var variationData in fetchedData)
+        foreach (var (variationId, info) in fetchedInfos)
         {
-            var oldFiles = variationHash.VariationFiles.GetValueOrDefault(variationData.VariationId) ?? [];
-            var newFiles = variationData.Files;
-            var diff = CalculateDiff(oldFiles, newFiles);
+            var oldFiles = variationHash.VariationInfos.GetValueOrDefault(variationId)?.Files ?? [];
+            var diff = CalculateDiff(oldFiles, info.Files);
 
             if (diff.HasChanges)
             {
-                updates.Add(new VariationUpdateInfo(variationData.VariationName, diff));
+                updates.Add(new VariationUpdateInfo(info.Name, diff));
             }
         }
 
-        variationHash.UpdateAllVariations(fetchedData.ToDictionary(kv => kv.VariationId, kv => kv.Files));
+        variationHash.UpdateAllVariations(fetchedInfos);
         return updates;
     }
 
@@ -84,7 +78,7 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
         return created;
     }
 
-    private static async Task<List<VariationData>?> FetchVariationData(string itemId)
+    private static async Task<Dictionary<string, VariationInfo>?> FetchVariationInfos(string itemId)
     {
         var result = await BoothService.Fetch(itemId, includeVariations: true);
         if (result.IsError)
@@ -96,15 +90,18 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
             return null;
         }
 
-        return result.Value.Variations.Select(v => new VariationData
-        {
-            VariationId = v.Id.ToString(),
-            VariationName = v.Name ?? string.Empty,
-            Files = v.Downloadables
-                .DistinctBy(d => d.Name)
-                .Select(d => new DownloadableFile(d.Name, HashUtils.CalculateStringHash(d.ToString()))).ToList()
-        }).ToList();
+        return result.Value.Variations.ToDictionary(
+            v => v.Id.ToString(),
+            v => new VariationInfo(
+                v.Name ?? string.Empty,
+                v.Downloadables
+                    .DistinctBy(d => d.Name)
+                    .Select(d => new DownloadableFile(d.Name, HashUtils.CalculateStringHash(d.ToString())))
+                    .ToList()
+            )
+        );
     }
+
     private static VariationDiff CalculateDiff(List<DownloadableFile> oldFiles, List<DownloadableFile> newFiles)
     {
         var oldDict = oldFiles.ToDictionary(f => f.FileName, f => f.Hash);

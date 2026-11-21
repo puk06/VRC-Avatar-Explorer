@@ -4,7 +4,7 @@ using AvatarExplorer.Core.Interfaces;
 namespace AvatarExplorer.Core.Models.Items;
 
 /// <summary>
-/// Boothのバリエーションごとのダウンロード可能ファイルのハッシュを保持するモデルクラスです。アイテムごとにバリエーションの更新差分を検出するために使用されます。
+/// バリエーションごとのダウンロード可能ファイルのハッシュを保持するモデルクラスです。アイテムごとにバリエーションの更新差分を検出するために使用されます。
 /// </summary>
 public class VariationHash(string itemId) : AbstractDatabaseItem, IIdentifiable
 {
@@ -13,22 +13,22 @@ public class VariationHash(string itemId) : AbstractDatabaseItem, IIdentifiable
     [JsonInclude] public string ItemId { get; private set; } = itemId;
 #pragma warning restore RCS1170
 
-    /// <summary>バリエーションIDをキーとし、各バリエーションに含まれるダウンロード可能ファイルのリストを値とする辞書です。</summary>
-    [JsonInclude] public Dictionary<string, List<DownloadableFile>> VariationFiles { get; private set; } = [];
+    /// <summary>バリエーションIDをキーとし、各バリエーションの情報（バリエーション名とそのバリエーションに含まれるダウンロード可能ファイルのリスト）を保持する辞書です。</summary>
+    [JsonInclude] public Dictionary<string, VariationInfo> VariationInfos { get; private set; } = [];
 
     /// <summary>指定したバリエーションのファイル一覧を更新（または追加）します。</summary>
     /// <param name="variationId">更新対象のバリエーションID。</param>
-    /// <param name="files">そのバリエーションに含まれるファイル一覧。</param>
-    public void UpdateVariationFiles(string variationId, List<DownloadableFile> files)
+    /// <param name="info">更新するバリエーション情報（バリエーション名とそのバリエーションに含まれるダウンロード可能ファイルのリスト）。</param>
+    public void UpdateVariationInfo(string variationId, VariationInfo info)
     {
-        VariationFiles[variationId] = files;
+        VariationInfos[variationId] = info;
     }
 
     /// <summary>すべてのバリエーションのファイル一覧を一括で上書きします。</summary>
-    /// <param name="allFiles">バリエーションIDをキーとしたファイル一覧の辞書。</param>
-    public void UpdateAllVariations(Dictionary<string, List<DownloadableFile>> allFiles)
+    /// <param name="allInfos">バリエーションIDをキーとしたバリエーション情報の辞書。既存のデータはすべて置き換えられます。</param>
+    public void UpdateAllVariations(Dictionary<string, VariationInfo> allInfos)
     {
-        VariationFiles = allFiles;
+        VariationInfos = allInfos;
     }
 
     /// <summary>このバリエーションハッシュを一意に識別する識別子（"variationHash:" + Id）です。</summary>
