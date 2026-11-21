@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
@@ -126,14 +127,14 @@ public static class DatabaseMigrations
                 if (kvp.Value is not JsonArray filesArray) continue;
 
                 var filesList = new List<DownloadableFile>();
-                foreach (var fileNode in filesArray)
+                filesArray.ForEach(fileNode =>
                 {
-                    if (fileNode is not JsonObject fileObj) continue;
+                    if (fileNode is not JsonObject fileObj) return;
 
                     var fileName = fileObj["FileName"]?.GetValue<string>() ?? string.Empty;
                     var hash = fileObj["Hash"]?.GetValue<string>() ?? string.Empty;
                     filesList.Add(new DownloadableFile(fileName, hash));
-                }
+                });
 
                 var variationInfo = new VariationInfo(string.Empty, filesList);
                 variationInfos[kvp.Key] = JsonSerializer.SerializeToNode(variationInfo);
