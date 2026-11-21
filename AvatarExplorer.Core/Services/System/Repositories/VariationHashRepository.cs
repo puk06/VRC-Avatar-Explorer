@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using AvatarExplorer.Core.Data.Paths;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
@@ -97,12 +98,12 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
                 v.Downloadables
                     .DistinctBy(d => d.Name)
                     .Select(d => new DownloadableFile(d.Name, HashUtils.CalculateStringHash(d.ToString())))
-                    .ToList()
+                    .ToImmutableArray()
             )
         );
     }
 
-    private static VariationDiff CalculateDiff(List<DownloadableFile> oldFiles, List<DownloadableFile> newFiles)
+    private static VariationDiff CalculateDiff(IEnumerable<DownloadableFile> oldFiles, IEnumerable<DownloadableFile> newFiles)
     {
         var oldDict = oldFiles.ToDictionary(f => f.FileName, f => f.Hash);
         var newDict = newFiles.ToDictionary(f => f.FileName, f => f.Hash);

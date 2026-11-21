@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using AvatarExplorer.Core.Models.Items;
@@ -125,14 +126,15 @@ public static class DatabaseMigrations
             {
                 if (kvp.Value is not JsonArray filesArray) continue;
 
-                var files = filesArray
-                    .OfType<JsonObject>()
-                    .Select(file => new DownloadableFile(
-                        file["FileName"]?.GetValue<string>() ?? string.Empty,
-                        file["Hash"]?.GetValue<string>() ?? string.Empty))
-                    .ToList();
-
-                var variationInfo = new VariationInfo(string.Empty, files);
+                var variationInfo = new VariationInfo(
+                    string.Empty,
+                    filesArray
+                        .OfType<JsonObject>()
+                        .Select(file => new DownloadableFile(
+                            file["FileName"]?.GetValue<string>() ?? string.Empty,
+                            file["Hash"]?.GetValue<string>() ?? string.Empty))
+                        .ToImmutableArray()
+                );
                 variationInfos[kvp.Key] = JsonSerializer.SerializeToNode(variationInfo);
             }
 
