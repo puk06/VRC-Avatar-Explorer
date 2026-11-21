@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
@@ -117,7 +116,7 @@ public static class DatabaseMigrations
         {
             if (itemNode is not JsonObject item) continue;
 
-            if (!item.TryGetPropertyValue("VariationFiles", out var variationFilesNode) || variationFilesNode is not JsonObject variationFiles)
+            if (item["VariationFiles"] is not JsonObject variationFiles)
                 continue;
 
             var variationInfos = new JsonObject();
@@ -126,17 +125,14 @@ public static class DatabaseMigrations
             {
                 if (kvp.Value is not JsonArray filesArray) continue;
 
-                var filesList = new List<DownloadableFile>();
-                filesArray.ForEach(fileNode =>
-                {
-                    if (fileNode is not JsonObject fileObj) return;
+                var files = filesArray
+                    .OfType<JsonObject>()
+                    .Select(file => new DownloadableFile(
+                        file["FileName"]?.GetValue<string>() ?? string.Empty,
+                        file["Hash"]?.GetValue<string>() ?? string.Empty))
+                    .ToList();
 
-                    var fileName = fileObj["FileName"]?.GetValue<string>() ?? string.Empty;
-                    var hash = fileObj["Hash"]?.GetValue<string>() ?? string.Empty;
-                    filesList.Add(new DownloadableFile(fileName, hash));
-                });
-
-                var variationInfo = new VariationInfo(string.Empty, filesList);
+                var variationInfo = new VariationInfo(string.Empty, files);
                 variationInfos[kvp.Key] = JsonSerializer.SerializeToNode(variationInfo);
             }
 
