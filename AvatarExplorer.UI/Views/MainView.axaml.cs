@@ -384,6 +384,10 @@ public partial class MainView : UserControl
             return;
         }
 
+        DoDragAndDrop(item, button, e);
+    }
+    private static async void DoDragAndDrop(ItemViewModel item, Button button, PointerPressedEventArgs e)
+    {
         var transferItem = new DataTransferItem();
         string? droppedPath = null;
 
