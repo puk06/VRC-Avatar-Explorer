@@ -473,13 +473,6 @@
     "SidePanel.BulkImport": "批次匯入",
     "SidePanel.BulkImportPreset": "批次匯入預設",
     "SidePanel.BoothFiles": "BOOTH 發佈檔案",
-    "BoothFiles.SelectItem": "請選擇與 BOOTH 商品連結的項目。",
-    "BoothFiles.Fetch": "取得",
-    "BoothFiles.Refresh": "重新整理",
-    "BoothFiles.OpenLink": "開啟連結",
-    "BoothFiles.Empty": "沒有可顯示的下載檔案。",
-    "BoothFiles.Variation": "規格",
-    "BoothFiles.NotAdded": "未加入",
 
     "AdvancedSearch.OrSearch": "全域 OR 搜尋",
     "AdvancedSearch.NegationHint": "前綴加 ~ 表示排除搜尋",
@@ -511,6 +504,14 @@
     "BulkImport.NoPresets": "沒有已儲存的預設",
     "BulkImport.Save": "儲存",
     "BulkImport.Reset": "重設",
+
+    "BoothFiles.SelectItem": "請選擇與 BOOTH 商品連結的項目。",
+    "BoothFiles.Fetch": "取得",
+    "BoothFiles.Refresh": "重新整理",
+    "BoothFiles.OpenLink": "開啟連結",
+    "BoothFiles.Empty": "沒有可顯示的下載檔案。",
+    "BoothFiles.Variation": "規格",
+    "BoothFiles.NotAdded": "未加入",
 
     "ItemEditor.ItemInfo": "項目資訊",
     "ItemEditor.AddFolder": "新增資料夾",

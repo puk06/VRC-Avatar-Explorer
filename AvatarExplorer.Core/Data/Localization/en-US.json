@@ -473,13 +473,6 @@
     "SidePanel.BulkImport": "Bulk Import",
     "SidePanel.BulkImportPreset": "Bulk Import Preset",
     "SidePanel.BoothFiles": "BOOTH Files",
-    "BoothFiles.SelectItem": "Select an item linked to a BOOTH product.",
-    "BoothFiles.Fetch": "Fetch",
-    "BoothFiles.Refresh": "Refresh",
-    "BoothFiles.OpenLink": "Open Link",
-    "BoothFiles.Empty": "No downloadable files to display.",
-    "BoothFiles.Variation": "Variation",
-    "BoothFiles.NotAdded": "Not added",
 
     "AdvancedSearch.OrSearch": "Overall OR Search",
     "AdvancedSearch.NegationHint": "Prefix with ~ to exclude",
@@ -511,6 +504,14 @@
     "BulkImport.NoPresets": "No saved presets",
     "BulkImport.Save": "Save",
     "BulkImport.Reset": "Reset",
+
+    "BoothFiles.SelectItem": "Select an item linked to a BOOTH product.",
+    "BoothFiles.Fetch": "Fetch",
+    "BoothFiles.Refresh": "Refresh",
+    "BoothFiles.OpenLink": "Open Link",
+    "BoothFiles.Empty": "No downloadable files to display.",
+    "BoothFiles.Variation": "Variation",
+    "BoothFiles.NotAdded": "Not added",
 
     "ItemEditor.ItemInfo": "Item Info",
     "ItemEditor.AddFolder": "Add Folder",

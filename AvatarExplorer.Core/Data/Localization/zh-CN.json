@@ -473,13 +473,6 @@
     "SidePanel.BulkImport": "批量导入",
     "SidePanel.BulkImportPreset": "批量导入预设",
     "SidePanel.BoothFiles": "BOOTH 分发文件",
-    "BoothFiles.SelectItem": "请选择关联到 BOOTH 商品的项目。",
-    "BoothFiles.Fetch": "获取",
-    "BoothFiles.Refresh": "刷新",
-    "BoothFiles.OpenLink": "打开链接",
-    "BoothFiles.Empty": "没有可显示的下载文件。",
-    "BoothFiles.Variation": "规格",
-    "BoothFiles.NotAdded": "未添加",
 
     "AdvancedSearch.OrSearch": "全局 OR 搜索",
     "AdvancedSearch.NegationHint": "前缀加 ~ 表示排除搜索",
@@ -511,6 +504,14 @@
     "BulkImport.NoPresets": "没有已保存的预设",
     "BulkImport.Save": "保存",
     "BulkImport.Reset": "重置",
+
+    "BoothFiles.SelectItem": "请选择关联到 BOOTH 商品的项目。",
+    "BoothFiles.Fetch": "获取",
+    "BoothFiles.Refresh": "刷新",
+    "BoothFiles.OpenLink": "打开链接",
+    "BoothFiles.Empty": "没有可显示的下载文件。",
+    "BoothFiles.Variation": "规格",
+    "BoothFiles.NotAdded": "未添加",
 
     "ItemEditor.ItemInfo": "项目信息",
     "ItemEditor.AddFolder": "添加文件夹",
