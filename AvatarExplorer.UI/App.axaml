@@ -574,6 +574,14 @@
             <Setter Property="Background" Value="{DynamicResource NotImplemented.Background.PointerOver}"/>
         </Style>
 
+        <Style Selector="Border.notadded">
+            <Setter Property="Background" Value="{DynamicResource NotImplemented.Background}"/>
+        </Style>
+
+        <Style Selector="Border.added">
+            <Setter Property="Background" Value="{DynamicResource Implemented.Background}"/>
+        </Style>
+
         <Style Selector="Button.pagebutton">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>

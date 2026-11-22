@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AvatarExplorer.UI.ViewModels.Panels"
+    xmlns:loc="using:AvatarExplorer.UI.Localization"
+    xmlns:vmmain="using:AvatarExplorer.UI.ViewModels"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    x:Class="AvatarExplorer.UI.Views.Panels.BoothFiles"
+    x:DataType="vm:BoothFilesViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch" Margin="6,0,0,0">
+        <TextBlock Text="{Binding [SidePanel.BoothFiles], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0" Foreground="{DynamicResource Text.Primary}"/>
+        <Separator Classes="separator" Grid.Row="1"/>
+
+        <StackPanel Grid.Row="2" IsVisible="{Binding !HasBoothItem}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12" Margin="20">
+            <materialIcons:MaterialIcon Kind="FileOutline" Width="44" Height="44" Opacity="0.35" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding [BoothFiles.SelectItem], Source={x:Static loc:Localizer.Instance}}" FontSize="12" Opacity="0.75" TextWrapping="Wrap" TextAlignment="Center" Foreground="{DynamicResource Text.Secondary}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="2" IsVisible="{Binding HasBoothItem}" RowDefinitions="Auto,Auto,*" RowSpacing="8" Margin="4,0,8,0">
+            <StackPanel Spacing="8" Margin="0,0,0,8">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                    <Button Classes="accentbutton" IsVisible="{Binding !HasCache}" FontSize="15" FontWeight="Bold" Padding="16,5" Command="{Binding FetchCommand}"
+                            Content="{Binding [BoothFiles.Fetch], Source={x:Static loc:Localizer.Instance}}"/>
+                    <Button Classes="accentbutton" IsVisible="{Binding HasCache}" FontSize="15" FontWeight="Bold" Padding="16,5" Command="{Binding FetchCommand}"
+                            Content="{Binding [BoothFiles.Refresh], Source={x:Static loc:Localizer.Instance}}"/>
+                    <Button Grid.Column="1" Classes="button" HorizontalAlignment="Right" FontSize="15" Padding="13,5" Command="{Binding OpenBoothLinkCommand}"
+                            Content="{Binding [BoothFiles.OpenLink], Source={x:Static loc:Localizer.Instance}}"/>
+                </Grid>
+                <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsFetching}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" IsVisible="{Binding ShowVariationPicker}">
+                <TextBlock Text="{Binding [BoothFiles.Variation], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                <ComboBox
+                    FontSize="14"
+                    ItemsSource="{Binding Variations}"
+                    SelectedItem="{Binding SelectedVariation, Mode=TwoWay}"
+                    HorizontalAlignment="Stretch"
+                    AutomationProperties.Name="{Binding [BoothFiles.Variation], Source={x:Static loc:Localizer.Instance}}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:BoothFilesVariation">
+                            <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Name}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Spacing="8">
+                    <Panel IsVisible="{Binding HasCache}">
+                        <ItemsControl ItemsSource="{Binding SelectedFiles}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="4"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:BoothFilesEntry">
+                                    <Border
+                                        Classes.notadded="{Binding IsNotAdded}"
+                                        Classes.added="{Binding !IsNotAdded}"
+                                        BorderBrush="{DynamicResource Panel.BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="8,6">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                            <materialIcons:MaterialIcon Kind="FileOutline" Width="16" Height="16" VerticalAlignment="Center"/>
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Text="{Binding Name}"
+                                                TextWrapping="Wrap"
+                                                FontSize="14"
+                                                VerticalAlignment="Center"
+                                                ToolTip.Tip="{Binding Name}"
+                                                ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock IsVisible="{Binding !HasSelectedFiles}"
+                                   Text="{Binding [BoothFiles.Empty], Source={x:Static loc:Localizer.Instance}}" TextWrapping="Wrap"/>
+                    </Panel>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

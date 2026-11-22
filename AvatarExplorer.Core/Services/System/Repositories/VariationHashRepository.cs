@@ -24,16 +24,17 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
         InvokeUpdated();
     }
 
-    /// <summary>指定したアイテムのバリエーションを確認し、変更があればデータベースを更新して変更情報を返します。</summary>
+    /// <summary>指定したアイテムのバリエーションを取得して保存し、ファイルの差分を返します。</summary>
     /// <param name="itemId">確認対象のアイテムID。</param>
-    /// <returns>変更があったバリエーションの更新情報の読み取り専用リスト。変更がない場合は空のリスト。</returns>
-    public async Task<IReadOnlyList<VariationUpdateInfo>> CheckVariationAndNotify(string itemId)
+    /// <returns>変更があったバリエーションの更新情報の読み取り専用リスト。取得に失敗した場合は null、変更がない場合は空のリスト。</returns>
+    public async Task<IReadOnlyList<VariationUpdateInfo>?> CheckVariationAndNotify(string itemId)
     {
         var updates = await CheckAndUpdate(itemId);
-        if (updates.Count == 0) return [];
+        if (updates == null) return null;
 
         Save();
-        InvokeUpdated();
+        if (updates.Count > 0)
+            InvokeUpdated();
         return updates;
     }
 
@@ -47,11 +48,11 @@ public class VariationHashRepository : RepositoryBase<VariationHash>
         return true;
     }
 
-    private async Task<List<VariationUpdateInfo>> CheckAndUpdate(string itemId)
+    private async Task<List<VariationUpdateInfo>?> CheckAndUpdate(string itemId)
     {
         var variationHash = GetOrCreate(itemId);
         var fetchedInfos = await FetchVariationInfos(itemId);
-        if (fetchedInfos == null) return [];
+        if (fetchedInfos == null) return null;
 
         var updates = new List<VariationUpdateInfo>();
         foreach (var (variationId, info) in fetchedInfos)

@@ -569,6 +569,13 @@
                             </TabItem.Icon>
                             <panels:BulkImport/>
                         </TabItem>
+
+                        <TabItem Classes="sidepaneltab" ToolTip.Tip="{Binding [SidePanel.BoothFiles], Source={x:Static loc:Localizer.Instance}}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}" Tag="2">
+                            <TabItem.Icon>
+                                <materialIcons:MaterialIcon Kind="FileOutline" Width="17" Height="17"/>
+                            </TabItem.Icon>
+                            <panels:BoothFiles/>
+                        </TabItem>
                     </TabControl>
                 </Border>
             </Grid>

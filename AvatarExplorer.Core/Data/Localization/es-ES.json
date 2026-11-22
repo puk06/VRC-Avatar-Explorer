@@ -472,6 +472,7 @@
     "SidePanel.AdvancedSearch": "Búsqueda avanzada",
     "SidePanel.BulkImport": "Importación masiva",
     "SidePanel.BulkImportPreset": "Ajuste preestablecido de importación masiva",
+    "SidePanel.BoothFiles": "Archivos de BOOTH",
 
     "AdvancedSearch.OrSearch": "Búsqueda OR global",
     "AdvancedSearch.NegationHint": "Prefija con ~ para excluir",
@@ -503,6 +504,14 @@
     "BulkImport.NoPresets": "No hay ajustes preestablecidos guardados",
     "BulkImport.Save": "Guardar",
     "BulkImport.Reset": "Reiniciar",
+
+    "BoothFiles.SelectItem": "Selecciona un artículo vinculado a un producto de BOOTH.",
+    "BoothFiles.Fetch": "Obtener",
+    "BoothFiles.Refresh": "Actualizar",
+    "BoothFiles.OpenLink": "Abrir enlace",
+    "BoothFiles.Empty": "No hay archivos descargables para mostrar.",
+    "BoothFiles.Variation": "Variante",
+    "BoothFiles.NotAdded": "Sin agregar",
 
     "ItemEditor.ItemInfo": "Información del elemento",
     "ItemEditor.AddFolder": "Agregar carpeta",

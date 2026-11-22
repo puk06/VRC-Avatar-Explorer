@@ -41,6 +41,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     public AdvancedSearchViewModel AdvancedSearchVM { get; } = new();
     public BulkImportViewModel BulkImportVM { get; } = new();
     public BulkImportPresetViewModel BulkImportPresetVM { get; } = new();
+    public BoothFilesViewModel BoothFilesVM { get; } = new();
 
     [Reactive] public partial ObservableCollection<PathSegment> PathSegments { get; set; } = [];
     [Reactive] public partial bool HasOverflow { get; set; }
