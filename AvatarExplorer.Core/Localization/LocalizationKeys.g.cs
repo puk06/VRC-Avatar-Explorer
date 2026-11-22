@@ -179,6 +179,7 @@ public static class Loc
         public const string Material = "FileCategory.Material";
         public const string UrlShortcut = "FileCategory.UrlShortcut";
         public const string Font = "FileCategory.Font";
+        public const string Archive = "FileCategory.Archive";
         public const string Unknown = "FileCategory.Unknown";
     }
     public static class Processing
@@ -596,6 +597,11 @@ public static class Loc
         {
             public const string Title = "Settings.RemoveOriginal.Title";
             public const string Description = "Settings.RemoveOriginal.Description";
+        }
+        public static class ExtractNestedArchives
+        {
+            public const string Title = "Settings.ExtractNestedArchives.Title";
+            public const string Description = "Settings.ExtractNestedArchives.Description";
         }
         public static class LinkToOriginal
         {

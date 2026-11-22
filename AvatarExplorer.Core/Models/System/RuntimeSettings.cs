@@ -24,6 +24,11 @@ public record RuntimeSettings
     public bool RemoveOriginal { get; init; } = false;
 
     /// <summary>
+    /// 圧縮ファイル内のネストされた圧縮ファイルを自動で展開するかどうか。
+    /// </summary>
+    public bool ExtractNestedArchives { get; init; } = true;
+
+    /// <summary>
     /// 元のファイルへのリンクを作成するかどうか（true でコピーせずリンク）。
     /// </summary>
     public bool ShouldLinkToOriginal { get; init; } = false;

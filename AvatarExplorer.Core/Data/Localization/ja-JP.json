@@ -113,6 +113,7 @@
     "FileCategory.Material": "マテリアル (Unitypackage)",
     "FileCategory.UrlShortcut": "URLショートカット",
     "FileCategory.Font": "フォント",
+    "FileCategory.Archive": "圧縮ファイル",
     "FileCategory.Unknown": "不明",
 
     "Processing.Default": "処理中です...",
@@ -364,6 +365,8 @@
     "Settings.AutoChangeUnitypackagePath.Description": "Unitypackageのインポート時、アセットの配置先を\"Assets/{カテゴリ名}/元のパス\"に自動で変更します。\"Assets\"以下のパスのみが対象です。複数のUnitypackageを1つにまとめることも可能です。右クリックメニューからは通常通りインポートすることもできます",
     "Settings.RemoveOriginal.Title": "インポート時に元ファイルを削除する",
     "Settings.RemoveOriginal.Description": "アイテムをインポートした時に、元ファイルを自動で削除するかどうかの設定です",
+    "Settings.ExtractNestedArchives.Title": "ネストされた圧縮ファイルを展開する",
+    "Settings.ExtractNestedArchives.Description": "圧縮ファイル内にある別の圧縮ファイルを自動で展開します。意図的に同梱されている場合に備え、元の圧縮ファイルは「インポート時に元ファイルを削除する」が有効な場合のみ削除します。",
     "Settings.LinkToOriginal.Title": "フォルダをそのまま使用する",
     "Settings.LinkToOriginal.Description": "フォルダ追加時、そのフォルダをコピーせずにそのまま使用します",
     "Settings.SupportedAvatarBulkEdit.Title": "対応アバター未設定のアイテム",

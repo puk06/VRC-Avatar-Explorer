@@ -45,6 +45,11 @@ public enum ItemFileCategoryType
     [LocalizationKey(Loc.FileCategory.UrlShortcut)]
     UrlShortcut,
 
+    /// <summary>圧縮ファイル（.zip/.rar/.7z/.tar/.gz 等）。</summary>
+    [ExtensionsFilter(".zip|.rar|.7z|.tar|.gz|.tgz")]
+    [LocalizationKey(Loc.FileCategory.Archive)]
+    Archive,
+
     /// <summary>分類不能なその他のファイル。</summary>
     [LocalizationKey(Loc.FileCategory.Unknown)]
     Unknown

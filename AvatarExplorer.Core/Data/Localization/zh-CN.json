@@ -113,6 +113,7 @@
     "FileCategory.Material": "材质 (Unitypackage)",
     "FileCategory.UrlShortcut": "URL 快捷方式",
     "FileCategory.Font": "字体",
+    "FileCategory.Archive": "压缩文件",
     "FileCategory.Unknown": "未知",
 
     "Processing.Default": "处理中...",
@@ -364,6 +365,8 @@
     "Settings.AutoChangeUnitypackagePath.Description": "导入Unitypackage时，自动将资产的放置路径更改为\"Assets/{分类名}/原始路径\"。仅\"Assets\"下的路径会被修改。多个Unitypackage也可以合并为一个。也可以从右键菜单正常导入",
     "Settings.RemoveOriginal.Title": "导入时删除原始文件",
     "Settings.RemoveOriginal.Description": "导入项目时是否自动删除原始文件",
+    "Settings.ExtractNestedArchives.Title": "解压嵌套的压缩文件",
+    "Settings.ExtractNestedArchives.Description": "自动解压其他压缩文件中包含的压缩文件。为保留有意包含的压缩文件，只有在启用“导入时删除原始文件”时，才会删除原始嵌套压缩文件。",
     "Settings.LinkToOriginal.Title": "直接使用文件夹",
     "Settings.LinkToOriginal.Description": "添加文件夹时，直接使用该文件夹而不进行复制",
     "Settings.SupportedAvatarBulkEdit.Title": "未设置支持头像的物品",

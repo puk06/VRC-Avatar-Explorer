@@ -113,6 +113,7 @@
     "FileCategory.Material": "Matériau (Unitypackage)",
     "FileCategory.UrlShortcut": "Raccourci URL",
     "FileCategory.Font": "Police",
+    "FileCategory.Archive": "Archive",
     "FileCategory.Unknown": "Inconnu",
 
     "Processing.Default": "Traitement en cours...",
@@ -364,6 +365,8 @@
     "Settings.AutoChangeUnitypackagePath.Description": "Lors de l'importation d'un Unitypackage, modifie automatiquement la destination des assets en \"Assets/{Catégorie}/Chemin d'origine\". Seuls les chemins sous \"Assets\" sont concernés. Plusieurs Unitypackages peuvent également être fusionnés en un seul. Vous pouvez aussi importer normalement depuis le menu contextuel",
     "Settings.RemoveOriginal.Title": "Supprimer le fichier d'origine à l'importation",
     "Settings.RemoveOriginal.Description": "Supprimer automatiquement le fichier d'origine lors de l'importation d'un élément",
+    "Settings.ExtractNestedArchives.Title": "Extraire les archives imbriquées",
+    "Settings.ExtractNestedArchives.Description": "Extrait automatiquement les archives contenues dans d'autres archives. Pour préserver les archives incluses intentionnellement, l'archive imbriquée d'origine n'est supprimée que si « Supprimer le fichier d'origine lors de l'importation » est activé.",
     "Settings.LinkToOriginal.Title": "Utiliser le dossier tel quel",
     "Settings.LinkToOriginal.Description": "Lors de l'ajout d'un dossier, l'utiliser directement sans le copier",
     "Settings.SupportedAvatarBulkEdit.Title": "Éléments sans avatar pris en charge",

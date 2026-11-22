@@ -113,6 +113,7 @@
     "FileCategory.Material": "Material (Unitypackage)",
     "FileCategory.UrlShortcut": "Acceso directo URL",
     "FileCategory.Font": "Fuente",
+    "FileCategory.Archive": "Archivo comprimido",
     "FileCategory.Unknown": "Desconocido",
 
     "Processing.Default": "Procesando...",
@@ -364,6 +365,8 @@
     "Settings.AutoChangeUnitypackagePath.Description": "Al importar un Unitypackage, cambia automáticamente la ubicación de los assets a \"Assets/{Categoría}/Ruta original\". Solo se modifican las rutas bajo \"Assets\". También se pueden fusionar varios Unitypackages en uno. También puedes importar normalmente desde el menú contextual",
     "Settings.RemoveOriginal.Title": "Eliminar archivo original al importar",
     "Settings.RemoveOriginal.Description": "Si eliminar automáticamente el archivo original al importar un elemento",
+    "Settings.ExtractNestedArchives.Title": "Extraer archivos comprimidos anidados",
+    "Settings.ExtractNestedArchives.Description": "Extrae automáticamente los archivos comprimidos que se encuentran dentro de otros archivos comprimidos. Para conservar los archivos comprimidos incluidos intencionadamente, el archivo anidado original solo se elimina si está activada la opción «Eliminar archivo original al importar».",
     "Settings.LinkToOriginal.Title": "Usar carpeta tal cual",
     "Settings.LinkToOriginal.Description": "Al agregar una carpeta, usarla directamente sin copiarla",
     "Settings.SupportedAvatarBulkEdit.Title": "Elementos sin avatares compatibles",
