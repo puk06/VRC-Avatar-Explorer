@@ -29,10 +29,7 @@ public partial class BoothFilesViewModel : ViewModelBase, IInitializable
     public BoothFilesViewModel()
     {
         FetchCommand = ReactiveCommand.CreateFromTask(Fetch, this.WhenAnyValue(i => i.HasBoothItem));
-        OpenBoothLinkCommand = ReactiveCommand.Create(() =>
-        {
-            if (_currentItem != null) ContextMenuHandlerService.Handle(ActionKey.OpenBoothLink, _currentItem.Identifier);
-        });
+        OpenBoothLinkCommand = ReactiveCommand.Create(OpenBoothLink, this.WhenAnyValue(i => i.HasBoothItem));
 
         InitializableRegistry.Register(0, this);
     }
@@ -52,11 +49,13 @@ public partial class BoothFilesViewModel : ViewModelBase, IInitializable
     {
         var selectedId = _currentItem?.Identifier == itemId ? SelectedVariation?.Id : null;
         var item = itemId == null ? null : InstanceRepository.Items.Get(itemId);
-        _currentItem = item is { BoothId: > 0 } ? item : null;
+
+        _currentItem = item is { BoothId: >= 0 } ? item : null;
         HasBoothItem = _currentItem != null;
 
         var boothId = _currentItem?.BoothId.ToString();
         var cache = boothId == null ? null : InstanceRepository.VariationHashes.GetAll().FirstOrDefault(v => v.ItemId == boothId);
+
         HasCache = cache != null;
         Variations = cache != null && itemId != null ? GetVariations(cache, itemId) : [];
         SelectedVariation = Variations.FirstOrDefault(v => v.Id == selectedId) ?? (Variations.Count > 0 ? Variations[0] : null);
@@ -69,16 +68,24 @@ public partial class BoothFilesViewModel : ViewModelBase, IInitializable
 
         var files = InstanceRepository.Items.EnumerateItemFiles(itemId);
         var fileNames = files.Select(file => file.FileName).ToHashSet(StringComparer.OrdinalIgnoreCase);
+
         // インポート時の展開先には、元ファイルの拡張子を除いた名前が使われる。
         var folderNames = files.Select(file => file.ParentFolderName).ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-        return cache.VariationInfos.OrderBy(v => v.Key).Select(v => new BoothFilesVariation(
-            v.Key,
-            string.IsNullOrEmpty(v.Value.Name) ? v.Key : v.Value.Name,
-            v.Value.Files.Select(file => new BoothFilesEntry(file.FileName,
-                !fileNames.Contains(file.FileName) && !folderNames.Contains(Path.GetFileNameWithoutExtension(file.FileName))))
-                .ToArray()
-        )).ToArray();
+        return cache.VariationInfos
+            .OrderBy(v => v.Key)
+            .Select(v =>
+                new BoothFilesVariation(
+                    v.Key,
+                    string.IsNullOrEmpty(v.Value.Name) ? v.Key : v.Value.Name,
+                    v.Value.Files.Select(file =>
+                        new BoothFilesEntry(
+                            file.FileName,
+                            !fileNames.Contains(file.FileName) && !folderNames.Contains(Path.GetFileNameWithoutExtension(file.FileName))
+                        )
+                    ).ToArray()
+                )
+            ).ToArray();
     }
 
     private async Task Fetch()
@@ -87,14 +94,19 @@ public partial class BoothFilesViewModel : ViewModelBase, IInitializable
 
         var boothId = item.BoothId.ToString();
         var hadCache = HasCache;
+
         IsFetching = true;
+
         try
         {
             var updates = await InstanceRepository.VariationHashes.CheckVariationAndNotify(boothId);
             if (updates == null)
             {
-                NotificationManager.Show(Localizer.Instance[Loc.Error.Default],
-                    Localizer.Instance[Loc.Error.RetrieveItemFailed], NotificationType.Error);
+                NotificationManager.Show(
+                    Localizer.Instance[Loc.Error.Default],
+                    Localizer.Instance[Loc.Error.RetrieveItemFailed],
+                    NotificationType.Error
+                );
                 return;
             }
 
@@ -106,6 +118,12 @@ public partial class BoothFilesViewModel : ViewModelBase, IInitializable
         {
             IsFetching = false;
         }
+    }
+
+    private void OpenBoothLink()
+    {
+        if (_currentItem == null) return;
+        ContextMenuHandlerService.Handle(ActionKey.OpenBoothLink, _currentItem.Identifier);
     }
 }
 
