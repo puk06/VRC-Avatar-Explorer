@@ -41,6 +41,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     public AdvancedSearchViewModel AdvancedSearchVM { get; } = new();
     public BulkImportViewModel BulkImportVM { get; } = new();
     public BulkImportPresetViewModel BulkImportPresetVM { get; } = new();
+    public BoothFilesViewModel BoothFilesVM { get; } = new();
 
     [Reactive] public partial ObservableCollection<PathSegment> PathSegments { get; set; } = [];
     [Reactive] public partial bool HasOverflow { get; set; }
@@ -97,6 +98,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     private readonly ItemNavigationService _itemNavigationService;
     private readonly HoverThumbnailManager _hoverThumbnailManager;
     private readonly SidePanelManager _sidePanelManager;
+    private const int BoothFilesTabIndex = 2;
     private readonly StateCacheManager _stateCacheManager;
     private readonly SearchManager _searchManager;
     private readonly SkipController _sortSkip = new(); // SortOrderのLocalization更新時などに、無駄にRefresh()が呼ばれないようにするためのObservable
@@ -207,6 +209,9 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
 
         this.WhenAnyValue(x => x.SidePanelWidth)
             .Subscribe(width => _sidePanelManager.OnWidthChanged(width.Value));
+
+        this.WhenAnyValue(x => x.IsSidePanelVisible, x => x.SelectedSidePanelTab)
+            .Subscribe(_ => RefreshBoothFiles());
 
         Observable
             .Merge(
@@ -361,8 +366,15 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         InstanceRepository.UserPreferencesRepository.UpdateWithoutNotify(updated);
     }
 
+    private void RefreshBoothFiles()
+    {
+        if (IsSidePanelVisible && SelectedSidePanelTab == BoothFilesTabIndex)
+            BoothFilesVM.SetCurrentItem(_itemNavigationService.GetCurrentItemId());
+    }
+
     private void Refresh(bool refreshLeftPanelItems = true, Guid? restoreRightStateGuid = null)
     {
+        RefreshBoothFiles();
         if (refreshLeftPanelItems) UpdateLeftPanelItems();
 
         if (!string.IsNullOrWhiteSpace(_searchManager.ActiveSearchQuery))
