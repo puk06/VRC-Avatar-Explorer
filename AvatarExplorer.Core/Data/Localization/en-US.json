@@ -113,6 +113,7 @@
     "FileCategory.Material": "Material (Unitypackage)",
     "FileCategory.UrlShortcut": "URL Shortcut",
     "FileCategory.Font": "Font",
+    "FileCategory.Archive": "Archive",
     "FileCategory.Unknown": "Unknown",
 
     "Processing.Default": "Processing...",
@@ -364,6 +365,8 @@
     "Settings.AutoChangeUnitypackagePath.Description": "When importing a Unitypackage, automatically changes the asset destination to \"Assets/{Category}/Original Path\". Only paths under \"Assets\" are affected. Multiple Unitypackages can also be merged into one. You can also import normally from the right-click menu",
     "Settings.RemoveOriginal.Title": "Delete Original File on Import",
     "Settings.RemoveOriginal.Description": "Whether to automatically delete the original file when importing an item",
+    "Settings.ExtractNestedArchives.Title": "Extract Nested Archives",
+    "Settings.ExtractNestedArchives.Description": "Automatically extracts archives contained within other archives. To preserve archives that were included intentionally, the original nested archive is only deleted when \"Delete Original File on Import\" is enabled.",
     "Settings.LinkToOriginal.Title": "Use Folder As-Is",
     "Settings.LinkToOriginal.Description": "When adding a folder, use it directly without copying",
     "Settings.SupportedAvatarBulkEdit.Title": "Items Without Supported Avatars",

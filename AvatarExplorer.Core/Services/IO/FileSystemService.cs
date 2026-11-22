@@ -643,7 +643,7 @@ public static class FileSystemService
         if (delay > TimeSpan.Zero) await Task.Delay(delay, ct);
     }
 
-    internal static async Task<ErrorOr<ExtractResult>> ExtractItemContents(string parentFolderPath, IEnumerable<ItemContentEntry> itemContents, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false, Func<(string Message, int Percent), Task>? reportProgress = null)
+    internal static async Task<ErrorOr<ExtractResult>> ExtractItemContents(string parentFolderPath, IEnumerable<ItemContentEntry> itemContents, bool shouldLinkToOriginal, int maxDegreeOfParallelism = 4, bool removeOriginal = false, bool extractNestedArchives = true, Func<(string Message, int Percent), Task>? reportProgress = null)
     {
         var result = new ExtractResult();
 
@@ -666,15 +666,15 @@ public static class FileSystemService
             await reportProgress.Invoke((Loc.Processing.AddContent.Status.Processing, percent));
         }
 
-        var urlTask = ProcessUrlEntriesAsync(result, urlEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism, ReportEntryProgressAsync);
-        var fileTask = ProcessFileEntriesAsync(result, fileEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism, ReportEntryProgressAsync);
+        var urlTask = ProcessUrlEntriesAsync(result, urlEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, extractNestedArchives, maxDegreeOfParallelism, ReportEntryProgressAsync);
+        var fileTask = ProcessFileEntriesAsync(result, fileEntries, parentFolderPath, shouldLinkToOriginal, removeOriginal, extractNestedArchives, maxDegreeOfParallelism, ReportEntryProgressAsync);
 
         await Task.WhenAll(urlTask, fileTask);
 
         return result;
     }
 
-    private static async Task ProcessUrlEntriesAsync(ExtractResult result, List<ItemContentEntry> urlEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
+    private static async Task ProcessUrlEntriesAsync(ExtractResult result, List<ItemContentEntry> urlEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, bool extractNestedArchives, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
     {
         foreach (var entry in urlEntries)
         {
@@ -702,28 +702,28 @@ public static class FileSystemService
                     Path = downloadedPath,
                     IsUrl = false
                 };
-                await ProcessExtractedPath(result, downloadedEntry, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+                await ProcessExtractedPath(result, downloadedEntry, parentFolderPath, shouldLinkToOriginal, removeOriginal, extractNestedArchives, maxDegreeOfParallelism);
             }
 
             if (reportEntryProgress != null) await reportEntryProgress.Invoke();
         }
     }
 
-    private static async Task ProcessFileEntriesAsync(ExtractResult result, List<ItemContentEntry> fileEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
+    private static async Task ProcessFileEntriesAsync(ExtractResult result, List<ItemContentEntry> fileEntries, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, bool extractNestedArchives, int maxDegreeOfParallelism, Func<Task>? reportEntryProgress)
     {
         foreach (var entry in fileEntries)
         {
-            await ProcessExtractedPath(result, entry, parentFolderPath, shouldLinkToOriginal, removeOriginal, maxDegreeOfParallelism);
+            await ProcessExtractedPath(result, entry, parentFolderPath, shouldLinkToOriginal, removeOriginal, extractNestedArchives, maxDegreeOfParallelism);
 
             if (reportEntryProgress != null) await reportEntryProgress.Invoke();
         }
     }
 
-    private static async Task ProcessExtractedPath(ExtractResult result, ItemContentEntry entry, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, int maxDegreeOfParallelism = 4)
+    private static async Task ProcessExtractedPath(ExtractResult result, ItemContentEntry entry, string parentFolderPath, bool shouldLinkToOriginal, bool removeOriginal, bool extractNestedArchives, int maxDegreeOfParallelism = 4)
     {
         var targetPath = entry.Path;
         var fileName = entry.FileName;
-        var extractResult = await ExtractItemInternalAsync(targetPath, parentFolderPath, removeOriginal);
+        var extractResult = await ExtractItemInternalAsync(targetPath, parentFolderPath, removeOriginal, extractNestedArchives);
 
         if (extractResult.IsError)
         {
@@ -765,9 +765,9 @@ public static class FileSystemService
             }
         }
     }
-    private static async Task<ErrorOr<FileExtractResultInternal>> ExtractItemInternalAsync(string filePath, string destinationFolderPath, bool removeOriginal)
+    private static async Task<ErrorOr<FileExtractResultInternal>> ExtractItemInternalAsync(string filePath, string destinationFolderPath, bool removeOriginal, bool extractNestedArchives)
     {
-        var extractResult = await FileExtractorInternalAsync(filePath, destinationFolderPath, removeOriginal);
+        var extractResult = await FileExtractorInternalAsync(filePath, destinationFolderPath, removeOriginal, extractNestedArchives);
         if (extractResult.IsError) return Error.Failure(description: extractResult.FirstError.Description);
 
         return extractResult.Value;
@@ -780,7 +780,35 @@ public static class FileSystemService
         public bool IsDirectory { get; set; } = false;
         public string ExtractedFolderPath { get; set; } = string.Empty;
     }
-    private static async Task<ErrorOr<FileExtractResultInternal>> FileExtractorInternalAsync(string filePath, string extractDirectory, bool removeOriginalFile)
+    private sealed class ArchiveExtractionBudget
+    {
+        private readonly long _maxBytes;
+        private long _remainingBytes;
+
+        public ArchiveExtractionBudget(long maxBytes)
+        {
+            _maxBytes = maxBytes;
+            _remainingBytes = maxBytes;
+        }
+
+        public void Consume(long bytes)
+        {
+            _remainingBytes -= bytes;
+            if (_remainingBytes < 0)
+                throw new InvalidDataException($"The archive exceeds the maximum extraction size of {_maxBytes} bytes.");
+        }
+    }
+
+    private const int MaxArchiveNestingDepth = 3;
+    private const long MaxArchiveExtractionSizeBytes = 8L * 1024 * 1024 * 1024;
+    private static readonly HashSet<string> ArchiveExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".zip", ".rar", ".7z", ".gz", ".tar", ".tgz"
+    };
+
+    private static bool IsSupportedArchive(string filePath) => ArchiveExtensions.Contains(Path.GetExtension(filePath));
+
+    private static async Task<ErrorOr<FileExtractResultInternal>> FileExtractorInternalAsync(string filePath, string extractDirectory, bool removeOriginalFile, bool extractNestedArchives, int nestedDepth = 0, ArchiveExtractionBudget? extractionBudget = null)
     {
         var extractResult = new FileExtractResultInternal();
 
@@ -796,15 +824,17 @@ public static class FileSystemService
 
         var extractDirectoryFolderPath = GetUniquePath(extractDirectory, Path.GetFileNameWithoutExtension(filePath), true);
 
-        var extension = Path.GetExtension(filePath).ToLower();
+        var extension = Path.GetExtension(filePath).ToLowerInvariant();
+        var isArchive = ArchiveExtensions.Contains(extension);
+        var budget = extractionBudget ?? new ArchiveExtractionBudget(MaxArchiveExtractionSizeBytes);
 
         Func<string?, Task> extractAction = extension switch
         {
-            ".zip" => password => ZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
-            ".rar" => password => RarExtractorAsync(filePath, extractDirectoryFolderPath, password),
-            ".7z" => password => SevenZipExtractorAsync(filePath, extractDirectoryFolderPath, password),
-            ".gz" => _ => GzipExtractorAsync(filePath, extractDirectoryFolderPath),
-            ".tar" => _ => TarExtractorAsync(filePath, extractDirectoryFolderPath),
+            ".zip" => password => ZipExtractorAsync(filePath, extractDirectoryFolderPath, budget, password),
+            ".rar" => password => RarExtractorAsync(filePath, extractDirectoryFolderPath, budget, password),
+            ".7z" => password => SevenZipExtractorAsync(filePath, extractDirectoryFolderPath, budget, password),
+            ".gz" or ".tgz" => _ => GzipExtractorAsync(filePath, extractDirectoryFolderPath, budget),
+            ".tar" => _ => TarExtractorAsync(filePath, extractDirectoryFolderPath, budget),
             _ => _ => CopyFileAsync(filePath, Path.Combine(extractDirectoryFolderPath, Path.GetFileName(filePath)))
         };
 
@@ -825,7 +855,41 @@ public static class FileSystemService
 
         extractResult.ExtractedFolderPath = extractDirectoryFolderPath;
 
+        if (extractNestedArchives && isArchive && nestedDepth < MaxArchiveNestingDepth)
+        {
+            await ExtractNestedArchivesAsync(extractDirectoryFolderPath, removeOriginalFile, extractNestedArchives, nestedDepth + 1, budget);
+        }
+
         return extractResult;
+    }
+
+    private static async Task ExtractNestedArchivesAsync(string folderPath, bool removeOriginalFile, bool extractNestedArchives, int nestedDepth, ArchiveExtractionBudget extractionBudget)
+    {
+        List<string> nestedArchivePaths;
+        try
+        {
+            nestedArchivePaths = EnumerateFiles(folderPath).Where(IsSupportedArchive).ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorManager.Instance.PostInternalError($"Failed to enumerate nested archives in: '{folderPath}'.", ex);
+            return;
+        }
+
+        foreach (var nestedArchivePath in nestedArchivePaths)
+        {
+            var destinationFolderPath = Path.GetDirectoryName(nestedArchivePath);
+            if (string.IsNullOrWhiteSpace(destinationFolderPath)) continue;
+
+            var result = await FileExtractorInternalAsync(nestedArchivePath, destinationFolderPath, removeOriginalFile, extractNestedArchives, nestedDepth, extractionBudget);
+            if (result.IsError)
+            {
+                ErrorManager.Instance.PostInternalError(
+                    $"Failed to extract nested archive: '{nestedArchivePath}'.",
+                    tag: result.FirstError.Description
+                );
+            }
+        }
     }
 
     private const int MaxPasswordAttempts = 3;
@@ -886,30 +950,39 @@ public static class FileSystemService
         return false;
     }
 
-    private static async Task ZipExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
+    private static async Task ZipExtractorAsync(string filePath, string extractDirectoryFolder, ArchiveExtractionBudget extractionBudget, string? password = null)
     {
         using var archive = SharpCompress.Archives.Zip.ZipArchive.OpenArchive(filePath, CreateReaderOptions(password));
-        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
+        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries, extractionBudget);
     }
-    private static async Task RarExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
+    private static async Task RarExtractorAsync(string filePath, string extractDirectoryFolder, ArchiveExtractionBudget extractionBudget, string? password = null)
     {
         using var archive = SharpCompress.Archives.Rar.RarArchive.OpenArchive(filePath, CreateReaderOptions(password));
-        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
+        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries, extractionBudget);
     }
-    private static async Task SevenZipExtractorAsync(string filePath, string extractDirectoryFolder, string? password = null)
+    private static async Task SevenZipExtractorAsync(string filePath, string extractDirectoryFolder, ArchiveExtractionBudget extractionBudget, string? password = null)
     {
         using var archive = SharpCompress.Archives.SevenZip.SevenZipArchive.OpenArchive(filePath, CreateReaderOptions(password));
-        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
+        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries, extractionBudget);
     }
-    private static async Task GzipExtractorAsync(string filePath, string extractDirectoryFolder)
+    private static async Task GzipExtractorAsync(string filePath, string extractDirectoryFolder, ArchiveExtractionBudget extractionBudget)
     {
         using var archive = SharpCompress.Archives.GZip.GZipArchive.OpenArchive(filePath);
-        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
+
+        // GZip は元のファイル名を保持しないことがあるため、拡張子から出力名を補う。
+        // .tgz は中身が tar なので、再帰展開で認識できるよう .tar を付ける。
+        var entryName = Path.GetFileNameWithoutExtension(filePath);
+        if (Path.GetExtension(filePath).Equals(".tgz", StringComparison.OrdinalIgnoreCase))
+        {
+            entryName += ".tar";
+        }
+
+        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries, extractionBudget, entryName);
     }
-    private static async Task TarExtractorAsync(string filePath, string extractDirectoryFolder)
+    private static async Task TarExtractorAsync(string filePath, string extractDirectoryFolder, ArchiveExtractionBudget extractionBudget)
     {
         using var archive = SharpCompress.Archives.Tar.TarArchive.OpenArchive(filePath);
-        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries);
+        await ExtractEntriesAsync(extractDirectoryFolder, archive.Entries, extractionBudget);
     }
     static ArchiveEncoding ArchiveEncoding
     {
@@ -1006,16 +1079,21 @@ public static class FileSystemService
             LeaveStreamOpen = false
         };
     }
-    private static async Task ExtractEntriesAsync<T>(string extractDirectoryFolder, IEnumerable<T> entries)
+    private static async Task ExtractEntriesAsync<T>(string extractDirectoryFolder, IEnumerable<T> entries, ArchiveExtractionBudget extractionBudget, string? fallbackEntryName = null)
         where T : IEntry, IArchiveEntry
     {
         var buffer = new byte[BufferSize];
 
         foreach (var entry in entries)
         {
+            var entryKey = string.IsNullOrWhiteSpace(entry.Key) ? fallbackEntryName : entry.Key;
+
             if (!entry.IsDirectory)
             {
-                string fullPath = Path.Combine(extractDirectoryFolder, entry.Key!);
+                if (string.IsNullOrWhiteSpace(entryKey))
+                    throw new InvalidDataException("Archive entry name is empty.");
+
+                string fullPath = GetArchiveEntryPath(extractDirectoryFolder, entryKey);
                 PrepareFileDirectory(fullPath);
 
                 await using var inStream = await entry.OpenEntryStreamAsync();
@@ -1024,14 +1102,30 @@ public static class FileSystemService
                 int read;
                 while ((read = await inStream.ReadAsync(buffer.AsMemory(0, buffer.Length))) > 0)
                 {
+                    extractionBudget.Consume(read);
                     await outStream.WriteAsync(buffer.AsMemory(0, read));
                 }
             }
-            else if (entry.Key != null)
+            else if (!string.IsNullOrWhiteSpace(entryKey))
             {
-                Directory.CreateDirectory(Path.Combine(extractDirectoryFolder, entry.Key));
+                Directory.CreateDirectory(GetArchiveEntryPath(extractDirectoryFolder, entryKey));
             }
         }
+    }
+
+    private static string GetArchiveEntryPath(string extractDirectoryFolder, string entryKey)
+    {
+        var normalizedEntryKey = entryKey.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
+        var rootPath = Path.GetFullPath(extractDirectoryFolder);
+        var fullPath = Path.GetFullPath(Path.Combine(rootPath, normalizedEntryKey));
+
+        var relativePath = Path.GetRelativePath(rootPath, fullPath);
+        if (relativePath == ".." || relativePath.StartsWith($"..{Path.DirectorySeparatorChar}", StringComparison.Ordinal) || Path.IsPathRooted(relativePath))
+        {
+            throw new InvalidDataException($"Archive entry path escapes the extraction directory: '{entryKey}'.");
+        }
+
+        return fullPath;
     }
     #endregion
 

@@ -226,7 +226,7 @@ public class ItemRepository : RepositoryBase<Item>
 
         var currentRootPath = item.GetItemPath();
         var defaultExtractPath = string.IsNullOrEmpty(currentRootPath) ? GetSafePath(item, settings.DataRootDirectory) : currentRootPath;
-        var result = await FileSystemService.ExtractItemContents(defaultExtractPath, contents, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal, reportProgress);
+        var result = await FileSystemService.ExtractItemContents(defaultExtractPath, contents, shouldLinkToOriginal, settings.MaxDegreeOfParallelism, removeOriginal ?? settings.RemoveOriginal, settings.ExtractNestedArchives, reportProgress);
         if (result.IsError) return Error.Failure(description: "Failed to extract item paths.");
 
         if (!string.IsNullOrEmpty(result.Value.ItemParentFolder)) item.UpdateItemPath(ItemUtils.GetRelativePath(result.Value.ItemParentFolder));

@@ -549,6 +549,7 @@ class SettingsManager
         Console.WriteLine($"バックアップ間隔: {settings.AutoBackupInterval}日");
         Console.WriteLine($"最大並列数: {settings.MaxDegreeOfParallelism}");
         Console.WriteLine($"元ファイルを削除: {settings.RemoveOriginal}");
+        Console.WriteLine($"ネストされた圧縮ファイルを展開: {settings.ExtractNestedArchives}");
         Console.WriteLine($"元ファイルへリンク: {settings.ShouldLinkToOriginal}");
         Console.WriteLine($"Unitypackageパス自動変更: {settings.AutoChangeUnitypackagePath}");
         Console.WriteLine($"アップデートチェック: {settings.CheckForUpdate}");
