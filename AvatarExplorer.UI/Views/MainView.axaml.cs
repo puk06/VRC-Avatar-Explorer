@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Extensions;
@@ -374,6 +375,14 @@ public partial class MainView : UserControl
     {
         if (sender is not Button button) return;
         if (button.DataContext is not ItemViewModel item) return;
+
+        // 行内のショートカットボタン上での押下は、行のドラッグ操作として扱わない
+        if (e.Source is Visual source &&
+            source.FindAncestorOfType<Button>(includeSelf: true) is { } sourceButton &&
+            sourceButton != button)
+        {
+            return;
+        }
 
         var transferItem = new DataTransferItem();
         string? droppedPath = null;

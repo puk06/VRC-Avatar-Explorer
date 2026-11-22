@@ -493,7 +493,7 @@
             <Setter Property="Opacity" Value="0.5"/>
         </Style>
 
-        <Style Selector="Button.appear, Panel.appear">
+        <Style Selector="Button.appear">
             <Style.Animations>
                 <Animation Duration="0:0:0.4" Easing="CubicEaseOut" FillMode="Both">
                     <KeyFrame Cue="0%">

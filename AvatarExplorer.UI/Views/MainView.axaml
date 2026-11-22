@@ -528,25 +528,29 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate x:DataType="component:ItemViewModel">
-                                                    <Panel Classes.appear="{Binding IsAnimated}" Margin="0,0,0,5"
-                                                           TextElement.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
-                                                        <Button
-                                                            Classes="button"
-                                                            ContextMenu="{Binding ContextMenu}"
-                                                            AutomationProperties.Name="{Binding Title}"
-                                                            ToolTip.Tip="{Binding ToolTip}"
-                                                            ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
-                                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                            CornerRadius="8"
-                                                            Command="{Binding $parent[UserControl].DataContext.SelectRightItemCommand}"
-                                                            CommandParameter="{Binding}"
-                                                            Loaded="OnItemButtonLoaded"
-                                                            Unloaded="OnItemButtonUnloaded"/>
-                                                        <Grid Margin="8" ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                                                            <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill"
-                                                                   VerticalAlignment="Top" IsHitTestVisible="False"/>
+                                                    <Button
+                                                        Classes="button"
+                                                        Classes.appear="{Binding IsAnimated}"
+                                                        ContextMenu="{Binding ContextMenu}"
+                                                        AutomationProperties.Name="{Binding Title}"
+                                                        ToolTip.Tip="{Binding ToolTip}"
+                                                        ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                                        FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                                        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                                        CornerRadius="8"
+                                                        Padding="7"
+                                                        Margin="0,0,0,5"
+                                                        Command="{Binding $parent[UserControl].DataContext.SelectRightItemCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Loaded="OnItemButtonLoaded"
+                                                        Unloaded="OnItemButtonUnloaded">
+                                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                                            <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill"
+                                                                       VerticalAlignment="Top" IsHitTestVisible="False"/>
+                                                            </Border>
                                                             <StackPanel Grid.Column="1" Spacing="4">
-                                                                <StackPanel IsHitTestVisible="False">
+                                                                <StackPanel>
                                                                     <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" TextWrapping="Wrap"/>
                                                                     <TextBlock Text="{Binding Description}" FontSize="13"/>
                                                                 </StackPanel>
@@ -571,7 +575,7 @@
                                                                 </ItemsControl>
                                                             </StackPanel>
                                                         </Grid>
-                                                    </Panel>
+                                                    </Button>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
