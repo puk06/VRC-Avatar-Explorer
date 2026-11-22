@@ -269,6 +269,8 @@ public async Task<ErrorOr<ExtractResult>> AddContents(
 | `removeOriginal` | `bool?` | アーカイブ展開後に元ファイルを削除するか。`null` で `RuntimeSettings.RemoveOriginal` を使用 |
 | `reportProgress` | `Func<(string, int), Task>?` | 進捗報告コールバック（省略可） |
 
+> 圧縮ファイル内のネストされた圧縮ファイルは、`RuntimeSettings.ExtractNestedArchives` が `true` の場合に再帰的に展開されます（最大3階層）。
+
 #### ItemContentEntry
 
 | プロパティ | 型 | 説明 |

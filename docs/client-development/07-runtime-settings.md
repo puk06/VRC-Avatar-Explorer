@@ -31,6 +31,9 @@ public record RuntimeSettings
     // インポート時に元のファイルを削除するか
     public bool RemoveOriginal { get; init; }
 
+    // 圧縮ファイル内のネストされた圧縮ファイルを展開するか
+    public bool ExtractNestedArchives { get; init; }
+
     // 元のファイルへのリンクを作成するか（コピーしない）
     public bool ShouldLinkToOriginal { get; init; }
 
@@ -64,6 +67,7 @@ public record RuntimeSettings
 | `DataRootDirectory` | `SystemPath.DefaultItemsFolderPath` | アイテムの保存先 |
 | `AutoBackupRootDirectory` | `SystemPath.BackupFolderPath` | バックアップの保存先 |
 | `RemoveOriginal` | `false` | 元ファイルを削除しない |
+| `ExtractNestedArchives` | `true` | ネストされた圧縮ファイルを展開する |
 | `ShouldLinkToOriginal` | `false` | コピーを作成 |
 | `AutoBackupInterval` | `5` | 5日ごと |
 | `TreatEmptySupportedAvatarAsNone` | `false` | 旧バージョン用（DBマイグレーション時のみ参照） |
@@ -162,6 +166,7 @@ var settings = app.RuntimeSettings;
 app.RuntimeSettingsRepository.Update(settings with
 {
     RemoveOriginal = true,          // インポート後に元ファイルを削除
+    ExtractNestedArchives = true,   // ネストされた圧縮ファイルも展開
     ShouldLinkToOriginal = false,   // コピーを作成
     AutoChangeUnitypackagePath = true  // Unitypackageパスを自動変更
 });
@@ -213,6 +218,7 @@ var result = await app.ItemRepository.AddContents(
 |------|------|
 | `ShouldLinkToOriginal` | `true`の場合、フォルダはコピーせず元フォルダへのリンクとなる |
 | `RemoveOriginal` | `true`の場合、アーカイブ展開後に元ファイルを削除する |
+| `ExtractNestedArchives` | `true`の場合、圧縮ファイル内の圧縮ファイルも再帰的に展開する（深さ上限: 3） |
 | `MaxDegreeOfParallelism` | ファイルコピー・URLダウンロードの並行処理数（既定値: 4） |
 
 ### ModifyUnitypackageFilePathsAsyncでの使用
