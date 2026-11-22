@@ -252,7 +252,7 @@ public static class ContextMenuHandlerService
         if (item == null) return;
 
         var updates = await InstanceRepository.VariationHashes.CheckVariationAndNotify(item.BoothId.ToString());
-        if (updates.Count == 0)
+        if (updates == null || updates.Count == 0)
         {
             NotificationManager.Show(
                 Localizer.Instance[Loc.VariationUpdate.NoUpdatesAvailable],
