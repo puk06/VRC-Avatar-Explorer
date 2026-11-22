@@ -29,20 +29,21 @@
                 <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsFetching}"/>
             </StackPanel>
 
-            <ComboBox
-                Grid.Row="1"
-                IsVisible="{Binding ShowVariationPicker}"
-                FontSize="14"
-                ItemsSource="{Binding Variations}"
-                SelectedItem="{Binding SelectedVariation, Mode=TwoWay}"
-                HorizontalAlignment="Stretch"
-                AutomationProperties.Name="{Binding [BoothFiles.Variation], Source={x:Static loc:Localizer.Instance}}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="vm:BoothFilesVariation">
-                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Name}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+            <StackPanel Grid.Row="1" IsVisible="{Binding ShowVariationPicker}">
+                <TextBlock Text="{Binding [BoothFiles.Variation], Source={x:Static loc:Localizer.Instance}}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}"/>
+                <ComboBox
+                    FontSize="14"
+                    ItemsSource="{Binding Variations}"
+                    SelectedItem="{Binding SelectedVariation, Mode=TwoWay}"
+                    HorizontalAlignment="Stretch"
+                    AutomationProperties.Name="{Binding [BoothFiles.Variation], Source={x:Static loc:Localizer.Instance}}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:BoothFilesVariation">
+                            <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Name}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
 
             <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Spacing="8">
