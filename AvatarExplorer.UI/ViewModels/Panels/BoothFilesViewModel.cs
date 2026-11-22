@@ -45,7 +45,7 @@ public partial class BoothFilesViewModel : ViewModelBase
         var cache = boothId == null ? null : InstanceRepository.VariationHashes.GetAll().FirstOrDefault(v => v.ItemId == boothId);
         HasCache = cache != null;
         Variations = cache != null && itemId != null ? GetVariations(cache, itemId) : [];
-        SelectedVariation = Variations.FirstOrDefault(v => v.Id == selectedId) ?? Variations.FirstOrDefault();
+        SelectedVariation = Variations.FirstOrDefault(v => v.Id == selectedId) ?? (Variations.Count > 0 ? Variations[0] : null);
         ShowVariationPicker = Variations.Count > 1;
     }
 
