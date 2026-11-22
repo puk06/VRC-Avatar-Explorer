@@ -19,19 +19,24 @@
         <Grid Grid.Row="2" IsVisible="{Binding HasBoothItem}" RowDefinitions="Auto,Auto,*" RowSpacing="8" Margin="4,0,8,0">
             <StackPanel Spacing="8" Margin="0,0,0,8">
                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
-                    <Button Classes="accentbutton" IsVisible="{Binding !HasCache}" Command="{Binding FetchCommand}"
+                    <Button Classes="accentbutton" IsVisible="{Binding !HasCache}" FontSize="15" FontWeight="Bold" Padding="16,5" Command="{Binding FetchCommand}"
                             Content="{Binding [BoothFiles.Fetch], Source={x:Static loc:Localizer.Instance}}"/>
-                    <Button Classes="accentbutton" IsVisible="{Binding HasCache}" Command="{Binding FetchCommand}"
+                    <Button Classes="accentbutton" IsVisible="{Binding HasCache}" FontSize="15" FontWeight="Bold" Padding="16,5" Command="{Binding FetchCommand}"
                             Content="{Binding [BoothFiles.Refresh], Source={x:Static loc:Localizer.Instance}}"/>
-                    <Button Grid.Column="1" Classes="button" HorizontalAlignment="Right" Command="{Binding OpenBoothLinkCommand}"
+                    <Button Grid.Column="1" Classes="button" HorizontalAlignment="Right" FontSize="15" Padding="13,5" Command="{Binding OpenBoothLinkCommand}"
                             Content="{Binding [BoothFiles.OpenLink], Source={x:Static loc:Localizer.Instance}}"/>
                 </Grid>
                 <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsFetching}"/>
             </StackPanel>
 
-            <ComboBox Grid.Row="1" IsVisible="{Binding ShowVariationPicker}"
-                      ItemsSource="{Binding Variations}" SelectedItem="{Binding SelectedVariation, Mode=TwoWay}" HorizontalAlignment="Stretch"
-                      AutomationProperties.Name="{Binding [BoothFiles.Variation], Source={x:Static loc:Localizer.Instance}}">
+            <ComboBox
+                Grid.Row="1"
+                IsVisible="{Binding ShowVariationPicker}"
+                FontSize="14"
+                ItemsSource="{Binding Variations}"
+                SelectedItem="{Binding SelectedVariation, Mode=TwoWay}"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="{Binding [BoothFiles.Variation], Source={x:Static loc:Localizer.Instance}}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="vm:BoothFilesVariation">
                         <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Name}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
@@ -44,16 +49,29 @@
                     <Panel IsVisible="{Binding HasCache}">
                         <ItemsControl ItemsSource="{Binding SelectedVariation.Files}">
                             <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate><StackPanel Spacing="4"/></ItemsPanelTemplate>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="4"/>
+                                </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="vm:BoothFilesEntry">
-                                    <Border BorderBrush="{DynamicResource Panel.BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="8,6">
-                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                    <Border
+                                        Classes.notadded="{Binding IsNotAdded}"
+                                        Classes.added="{Binding !IsNotAdded}"
+                                        BorderBrush="{DynamicResource Panel.BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="8,6">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
                                             <materialIcons:MaterialIcon Kind="FileOutline" Width="16" Height="16" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Center"
-                                                       ToolTip.Tip="{Binding Name}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
-                                            <Ellipse Grid.Column="2" IsVisible="{Binding IsNotAdded}" Width="7" Height="7" VerticalAlignment="Center" Fill="{DynamicResource Tag.Background}"/>
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Text="{Binding Name}"
+                                                TextWrapping="Wrap"
+                                                FontSize="14"
+                                                VerticalAlignment="Center"
+                                                ToolTip.Tip="{Binding Name}"
+                                                ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -62,10 +80,6 @@
                         <TextBlock IsVisible="{Binding !SelectedVariation.HasFiles, FallbackValue=True}"
                                    Text="{Binding [BoothFiles.Empty], Source={x:Static loc:Localizer.Instance}}" TextWrapping="Wrap"/>
                     </Panel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
-                        <TextBlock Text="{Binding [BoothFiles.NotAdded], Source={x:Static loc:Localizer.Instance}}"/>
-                        <Ellipse Width="7" Height="7" VerticalAlignment="Center" Fill="{DynamicResource Tag.Background}"/>
-                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
