@@ -367,10 +367,10 @@
                         </StackPanel>
 
                         <Grid RowDefinitions="*,Auto" RowSpacing="5">
-                            <Panel>
-                                <Border CornerRadius="8" ClipToBounds="True">
-                                    <ScrollViewer x:Name="RightPanelScrollViewer">
-                                        <Grid>
+                            <Border CornerRadius="8" ClipToBounds="True">
+                                <ScrollViewer x:Name="RightPanelScrollViewer">
+                                    <Panel>
+                                        <Grid IsVisible="{Binding !IsItemFolderView}">
                                             <ItemsControl ItemsSource="{Binding MainItems}" IsVisible="{Binding MainViewMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static common:MainItemViewMode.List}}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
@@ -519,9 +519,69 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                         </Grid>
-                                    </ScrollViewer>
-                                </Border>
-                            </Panel>
+
+                                        <ItemsControl ItemsSource="{Binding MainItems}" IsVisible="{Binding IsItemFolderView}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <VirtualizingStackPanel Margin="0,0,10,0"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="component:ItemViewModel">
+                                                    <Button
+                                                        Classes="button"
+                                                        Classes.appear="{Binding IsAnimated}"
+                                                        ContextMenu="{Binding ContextMenu}"
+                                                        AutomationProperties.Name="{Binding Title}"
+                                                        ToolTip.Tip="{Binding ToolTip}"
+                                                        ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                                        FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                                        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                                        CornerRadius="8"
+                                                        Padding="7"
+                                                        Margin="0,0,0,5"
+                                                        Command="{Binding $parent[UserControl].DataContext.SelectRightItemCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Loaded="OnItemButtonLoaded"
+                                                        Unloaded="OnItemButtonUnloaded">
+                                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                                            <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill"
+                                                                       VerticalAlignment="Top" IsHitTestVisible="False"/>
+                                                            </Border>
+                                                            <StackPanel Grid.Column="1" Spacing="4">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" TextWrapping="Wrap"/>
+                                                                    <TextBlock Text="{Binding Description}" FontSize="13"/>
+                                                                </StackPanel>
+                                                                <ItemsControl ItemsSource="{Binding FolderCategories}">
+                                                                    <ItemsControl.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <WrapPanel ItemSpacing="5" LineSpacing="4"/>
+                                                                        </ItemsPanelTemplate>
+                                                                    </ItemsControl.ItemsPanel>
+                                                                    <ItemsControl.ItemTemplate>
+                                                                        <DataTemplate x:DataType="component:FolderCategoryShortcut">
+                                                                            <Panel>
+                                                                                <Button Classes="accentbutton" IsVisible="{Binding IsAvailable}" FontSize="12" Padding="8,3" BorderThickness="1" CornerRadius="6"
+                                                                                        Command="{Binding $parent[UserControl].DataContext.OpenFolderCategoryCommand}" CommandParameter="{Binding}"
+                                                                                        Content="{Binding Label}"/>
+                                                                                <Border IsVisible="{Binding !IsAvailable}" IsHitTestVisible="False" Padding="8,3" BorderThickness="1" BorderBrush="Transparent">
+                                                                                    <TextBlock Text="{Binding Label}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
+                                                                                </Border>
+                                                                            </Panel>
+                                                                        </DataTemplate>
+                                                                    </ItemsControl.ItemTemplate>
+                                                                </ItemsControl>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Panel>
+                                </ScrollViewer>
+                            </Border>
 
                             <Border Grid.Row="2" Classes="panelbackground" CornerRadius="8" Padding="10,6">
                                 <Grid ColumnDefinitions="35,35,*,35,35" ColumnSpacing="8">

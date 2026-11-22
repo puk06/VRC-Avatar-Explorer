@@ -10,12 +10,14 @@ namespace AvatarExplorer.UI.Factories;
 
 public static class NavigationItemFactory
 {
-    public static ItemViewModel CreateFromNavigationable(IIdentifiable source) => source switch
+    public static ItemViewModel CreateFromNavigationable(IIdentifiable source) => CreateFromNavigationable(source, []);
+
+    public static ItemViewModel CreateFromNavigationable(IIdentifiable source, ItemFileCategoryType[] folderCategories) => source switch
     {
         Avatar avatar => FromAvatar(avatar),
         Item item => FromItem(item, source.Identifier),
         Author author => FromAuthor(author, source.Identifier),
-        Folder folder => FromFolder(folder),
+        Folder folder => FromFolder(folder, folderCategories),
         ItemFile file => FromItemFile(file),
         _ => CreateEmpty()
     };
@@ -44,7 +46,7 @@ public static class NavigationItemFactory
         ViewModelType = ViewModelType.None
     };
 
-    private static ItemViewModel FromFolder(Folder folder)
+    private static ItemViewModel FromFolder(Folder folder, ItemFileCategoryType[] folderCategories)
     {
         var isCategory = ItemCategory.IsCategoryIdentifier(folder.Identifier);
         var isHiddenCategory = isCategory && ItemCategory.FromIdentifier(folder.Identifier).Type == ItemType.Hidden;
@@ -57,7 +59,10 @@ public static class NavigationItemFactory
             DescriptionRaw = new(Loc.Button.Description.Item.Count, [folder.ItemCount.ToString()]),
             Identifier = folder.Identifier,
             ViewModelType = isCategory ? ViewModelType.ItemCategory : ViewModelType.Folder,
-            ActualValue = folder.Path
+            ActualValue = folder.Path,
+            FolderCategories = folderCategories
+                .Select(category => new FolderCategoryShortcut(folder.Identifier, category, folder.FileCategories.Contains(category)))
+                .ToArray()
         };
     }
 

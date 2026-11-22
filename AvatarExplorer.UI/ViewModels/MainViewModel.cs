@@ -51,6 +51,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     [Reactive] public partial IEnumerable<ItemViewModel> LeftItems { get; set; } = [];
     [Reactive] public partial IEnumerable<ItemViewModel> MainItems { get; set; } = [];
     [Reactive] public partial bool IsMainItemsEmpty { get; set; }
+    [Reactive] public partial bool IsItemFolderView { get; private set; }
 
     [Reactive] public partial MainItemViewMode MainViewMode { get; set; } = MainItemViewMode.List;
     [Reactive] public partial int MainGridItemSize { get; set; } = (int)GridItemSize.Medium;
@@ -81,6 +82,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     public IReactiveCommand SidePanelButtonPressedCommand { get; }
     public IReactiveCommand SelectLeftItemCommand { get; }
     public IReactiveCommand SelectRightItemCommand { get; }
+    public IReactiveCommand OpenFolderCategoryCommand { get; }
     public IReactiveCommand NavigateToSegmentCommand { get; }
 
     public IReactiveCommand LeftGoFirstCommand { get; }
@@ -129,6 +131,7 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         SidePanelButtonPressedCommand = ReactiveCommand.Create<int>(SidePanelButtonPressed);
         SelectLeftItemCommand = ReactiveCommand.Create<ItemViewModel>(OnLeftItemSelected);
         SelectRightItemCommand = ReactiveCommand.Create<ItemViewModel>(OnRightItemSelected);
+        OpenFolderCategoryCommand = ReactiveCommand.Create<FolderCategoryShortcut>(OpenFolderCategory);
         OpenSidePanelCommand = ReactiveCommand.Create<string>(i => OpenSidePanel(ValueParser.Int(i)));
         NavigateToSegmentCommand = ReactiveCommand.Create<string>(NavigateToSegment);
 
@@ -374,6 +377,8 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
 
     private void RefreshSearchResults(string searchQuery)
     {
+        IsItemFolderView = false;
+
         // 検索前の画面状態を保存
         // 通常画面から検索に入るところ（Lv0）: _preLevel0StateGuid に保存
         // アイテム表示中からファイル検索に入るところ（Lv1）: _preLevel1StateGuid に保存
@@ -429,6 +434,10 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
 
     private void RefreshNavigationView(Guid? restoreRightStateGuid = null)
     {
+        IsItemFolderView = _itemNavigationService.CurrentState?.Value is { } state
+            && ItemNavigationService.TryParseState(state, out var prefix, out _)
+            && prefix == ItemNavigationService.ItemPrefix;
+
         var avatarId = _itemNavigationService.GetCurrentAvatarId();
         var commonAvatars = InstanceRepository.CommonAvatars.GetAll();
         var sortOrder = (ItemSortOrder)MainSortOrder;
@@ -442,12 +451,15 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
 
         var sortedItems = SortNavigationItems(items, sortOrder, sortDirection, implementedSort, avatarId);
         var sortedNavigationables = sortedItems.Cast<IIdentifiable>().Concat(nonItems);
+        var folderCategories = IsItemFolderView
+            ? navigationables.OfType<Folder>().SelectMany(folder => folder.FileCategories).Distinct().Order().ToArray()
+            : [];
 
         var isAnimated = UserPreferences.EnableButtonAnimation;
 
         DisposeItemViewModels(_allMainItems);
         _allMainItems = sortedNavigationables
-            .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars, implementedEnabled, isAnimated))
+            .Select(nav => CreateItemViewModelWithStatus(nav, avatarId, commonAvatars, implementedEnabled, isAnimated, folderCategories))
             .ToList();
 
         RightPageInfo.TotalItems = _allMainItems.Count;
@@ -483,9 +495,9 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         return sorted.OrderByDescending(i => i.ImplementedAvatars.Contains(avatarId) == priority);
     }
 
-    private static ItemViewModel CreateItemViewModelWithStatus(IIdentifiable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled, bool isAnimated)
+    private static ItemViewModel CreateItemViewModelWithStatus(IIdentifiable nav, string? avatarId, IReadOnlyList<CommonAvatar> commonAvatars, bool implementedEnabled, bool isAnimated, ItemFileCategoryType[] folderCategories)
     {
-        var vm = CreateItemViewModel(nav, isAnimated);
+        var vm = CreateItemViewModel(nav, isAnimated, folderCategories);
 
         if (nav is not Item item) return vm;
 
@@ -641,9 +653,9 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     #endregion
 
     #region Items
-    private static ItemViewModel CreateItemViewModel(IIdentifiable item, bool isAnimated)
+    private static ItemViewModel CreateItemViewModel(IIdentifiable item, bool isAnimated, ItemFileCategoryType[]? folderCategories = null)
     {
-        var navigationItem = NavigationItemFactory.CreateFromNavigationable(item);
+        var navigationItem = NavigationItemFactory.CreateFromNavigationable(item, folderCategories ?? []);
         if (isAnimated) navigationItem.IsAnimated = true;
         navigationItem.Actions = ContextMenuCreator.Create(navigationItem.ViewModelType, navigationItem);
 
@@ -733,6 +745,15 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             _itemNavigationService.Select(item.Identifier);
         }
 
+        RightPageInfo.Reset();
+        Refresh(false);
+    }
+
+    private void OpenFolderCategory(FolderCategoryShortcut shortcut)
+    {
+        _stateCacheManager.SaveRightState(RightPageInfo);
+        _itemNavigationService.Select(shortcut.FolderIdentifier);
+        _itemNavigationService.Select(ItemNavigationService.GetPrefix(ItemNavigationService.ExtensionPrefix, ((int)shortcut.Category).ToString()));
         RightPageInfo.Reset();
         Refresh(false);
     }

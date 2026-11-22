@@ -13,6 +13,8 @@ public class Folder(string identifier, string? path = null) : IIdentifiable
     public bool TitleLocalizable { get; set; } = false;
     /// <summary>このフォルダに含まれるアイテム（またはファイル）の件数です。</summary>
     public int ItemCount { get; set; } = 0;
+    /// <summary>アイテム直下のフォルダに含まれるファイルのカテゴリです。</summary>
+    public ItemFileCategoryType[] FileCategories { get; init; } = [];
     /// <summary>このフォルダを一意に識別する識別子です。</summary>
     public string Identifier => identifier;
     /// <summary>このフォルダのフルパスです。パスが解決されていない場合は null になります。</summary>

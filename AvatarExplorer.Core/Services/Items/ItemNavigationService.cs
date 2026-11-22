@@ -240,7 +240,7 @@ public class ItemNavigationService
     }
     private IIdentifiable[] HandleItem(string state)
     {
-        var itemFiles = PopulatePathCache(state);
+        var filesByFolder = PopulatePathCache(state).ToLookup(file => file.ParentFolderPath);
         var allFolders = _items.ItemRepository.EnumerateItemFolders(GetCurrentItemId() ?? string.Empty);
 
         foreach (var folder in allFolders)
@@ -251,11 +251,13 @@ public class ItemNavigationService
             .Select(folder =>
             {
                 var hash = PathUtils.ComputeHash(folder);
+                var files = filesByFolder[folder];
                 return new Folder(GetPrefix(FolderPrefix, hash), folder)
                 {
                     Title = Path.GetFileName(folder),
                     TitleLocalizable = false,
-                    ItemCount = itemFiles.Count(f => f.ParentFolderPath == folder)
+                    ItemCount = files.Count(),
+                    FileCategories = files.Select(FileCategorizer.Categorize).Distinct().ToArray()
                 };
             })
             .ToArray<IIdentifiable>();

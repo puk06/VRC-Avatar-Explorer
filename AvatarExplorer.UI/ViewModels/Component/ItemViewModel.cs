@@ -4,6 +4,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvatarExplorer.Core.Extensions;
 using AvatarExplorer.Core.Localization;
+using AvatarExplorer.Core.Models.Items;
 using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Factories;
@@ -48,6 +49,7 @@ public partial class ItemViewModel : ViewModelBase, IDisposable
     public string ItemMemo { get; set; } = string.Empty;
 
     public ContextMenuAction[] Actions { get; set; } = [];
+    public FolderCategoryShortcut[] FolderCategories { get; init; } = [];
 
     private CancellationTokenSource? _thumbnailLoadCts;
     private Bitmap? _ownedThumbnail;
@@ -297,4 +299,9 @@ public partial class ItemViewModel : ViewModelBase, IDisposable
             ContextMenu = null;
         }
     }
+}
+
+public sealed record FolderCategoryShortcut(string FolderIdentifier, ItemFileCategoryType Category, bool IsAvailable)
+{
+    public string Label => Category.GetLocalizationKey() is { } key ? Localizer.Instance[key] : Category.ToString();
 }
