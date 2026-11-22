@@ -47,7 +47,7 @@
             <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Spacing="8">
                     <Panel IsVisible="{Binding HasCache}">
-                        <ItemsControl ItemsSource="{Binding SelectedVariation.Files}">
+                        <ItemsControl ItemsSource="{Binding SelectedFiles}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Spacing="4"/>
@@ -77,7 +77,7 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <TextBlock IsVisible="{Binding !SelectedVariation.HasFiles, FallbackValue=True}"
+                        <TextBlock IsVisible="{Binding !HasSelectedFiles}"
                                    Text="{Binding [BoothFiles.Empty], Source={x:Static loc:Localizer.Instance}}" TextWrapping="Wrap"/>
                     </Panel>
                 </StackPanel>

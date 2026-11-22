@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
@@ -21,6 +22,9 @@ public partial class BoothFilesViewModel : ViewModelBase, IInitializable
     [Reactive] public partial BoothFilesVariation? SelectedVariation { get; set; }
     [Reactive] public partial bool ShowVariationPicker { get; private set; }
 
+    public IReadOnlyList<BoothFilesEntry> SelectedFiles => SelectedVariation?.Files ?? [];
+    public bool HasSelectedFiles => SelectedVariation is { HasFiles: true };
+
     public IReactiveCommand FetchCommand { get; }
     public IReactiveCommand OpenBoothLinkCommand { get; }
 
@@ -36,6 +40,13 @@ public partial class BoothFilesViewModel : ViewModelBase, IInitializable
 
     public async Task Initialize()
     {
+        this.WhenAnyValue(i => i.SelectedVariation)
+            .Subscribe(_ =>
+            {
+                this.RaisePropertyChanged(nameof(SelectedFiles));
+                this.RaisePropertyChanged(nameof(HasSelectedFiles));
+            });
+
         InstanceRepository.NavigationService.SelectionChanged += RefreshCurrentItem;
         InstanceRepository.Items.OnUpdated += RefreshCurrentItem;
     }
