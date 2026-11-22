@@ -530,11 +530,18 @@
                                                 <DataTemplate x:DataType="component:ItemViewModel">
                                                     <Panel Classes.appear="{Binding IsAnimated}" Margin="0,0,0,5"
                                                            TextElement.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}">
-                                                        <Button Classes="button" CornerRadius="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                                ContextMenu="{Binding ContextMenu}" AutomationProperties.Name="{Binding Title}"
-                                                                ToolTip.Tip="{Binding ToolTip}" ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
-                                                                Command="{Binding $parent[UserControl].DataContext.SelectRightItemCommand}" CommandParameter="{Binding}"
-                                                                Loaded="OnItemButtonLoaded" Unloaded="OnItemButtonUnloaded"/>
+                                                        <Button
+                                                            Classes="button"
+                                                            ContextMenu="{Binding ContextMenu}"
+                                                            AutomationProperties.Name="{Binding Title}"
+                                                            ToolTip.Tip="{Binding ToolTip}"
+                                                            ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                            CornerRadius="8"
+                                                            Command="{Binding $parent[UserControl].DataContext.SelectRightItemCommand}"
+                                                            CommandParameter="{Binding}"
+                                                            Loaded="OnItemButtonLoaded"
+                                                            Unloaded="OnItemButtonUnloaded"/>
                                                         <Grid Margin="8" ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                                             <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill"
                                                                    VerticalAlignment="Top" IsHitTestVisible="False"/>
@@ -552,9 +559,9 @@
                                                                     <ItemsControl.ItemTemplate>
                                                                         <DataTemplate x:DataType="component:FolderCategoryShortcut">
                                                                             <Panel>
-                                                                                <Button IsVisible="{Binding IsAvailable}" Classes="accentbutton" Padding="8,3" BorderThickness="1" CornerRadius="6" FontSize="12"
-                                                                                        Content="{Binding Label}" Command="{Binding $parent[UserControl].DataContext.OpenFolderCategoryCommand}"
-                                                                                        CommandParameter="{Binding}"/>
+                                                                                <Button Classes="accentbutton" IsVisible="{Binding IsAvailable}" FontSize="12" Padding="8,3" BorderThickness="1" CornerRadius="6"
+                                                                                        Command="{Binding $parent[UserControl].DataContext.OpenFolderCategoryCommand}" CommandParameter="{Binding}"
+                                                                                        Content="{Binding Label}"/>
                                                                                 <Border IsVisible="{Binding !IsAvailable}" IsHitTestVisible="False" Padding="8,3" BorderThickness="1" BorderBrush="Transparent">
                                                                                     <TextBlock Text="{Binding Label}" FontSize="12" Foreground="{DynamicResource Text.Secondary}"/>
                                                                                 </Border>
