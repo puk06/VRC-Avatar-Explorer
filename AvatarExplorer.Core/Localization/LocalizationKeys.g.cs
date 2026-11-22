@@ -803,16 +803,6 @@ public static class Loc
         public const string BulkImportPreset = "SidePanel.BulkImportPreset";
         public const string BoothFiles = "SidePanel.BoothFiles";
     }
-    public static class BoothFiles
-    {
-        public const string SelectItem = "BoothFiles.SelectItem";
-        public const string Fetch = "BoothFiles.Fetch";
-        public const string Refresh = "BoothFiles.Refresh";
-        public const string OpenLink = "BoothFiles.OpenLink";
-        public const string Empty = "BoothFiles.Empty";
-        public const string Variation = "BoothFiles.Variation";
-        public const string NotAdded = "BoothFiles.NotAdded";
-    }
     public static class AdvancedSearch
     {
         public const string OrSearch = "AdvancedSearch.OrSearch";
@@ -847,6 +837,16 @@ public static class Loc
         public const string NoPresets = "BulkImport.NoPresets";
         public const string Save = "BulkImport.Save";
         public const string Reset = "BulkImport.Reset";
+    }
+    public static class BoothFiles
+    {
+        public const string SelectItem = "BoothFiles.SelectItem";
+        public const string Fetch = "BoothFiles.Fetch";
+        public const string Refresh = "BoothFiles.Refresh";
+        public const string OpenLink = "BoothFiles.OpenLink";
+        public const string Empty = "BoothFiles.Empty";
+        public const string Variation = "BoothFiles.Variation";
+        public const string NotAdded = "BoothFiles.NotAdded";
     }
     public static class ItemEditor
     {
