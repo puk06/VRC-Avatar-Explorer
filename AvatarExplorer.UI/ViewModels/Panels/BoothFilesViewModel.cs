@@ -90,7 +90,7 @@ public partial class BoothFilesViewModel : ViewModelBase, IInitializable
 
     private async Task Fetch()
     {
-        if (_currentItem is not { BoothId: > 0 } item) return;
+        if (_currentItem is not { BoothId: >= 0 } item) return;
 
         var boothId = item.BoothId.ToString();
         var hadCache = HasCache;
