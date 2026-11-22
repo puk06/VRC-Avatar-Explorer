@@ -1,6 +1,7 @@
 using Avalonia.Controls.Notifications;
 using AvatarExplorer.Core.Localization;
 using AvatarExplorer.Core.Models.Items;
+using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Localization;
 using AvatarExplorer.UI.Models.ContextMenu;
 using AvatarExplorer.UI.Services;
@@ -11,7 +12,7 @@ using ReactiveUI.SourceGenerators;
 
 namespace AvatarExplorer.UI.ViewModels.Panels;
 
-public partial class BoothFilesViewModel : ViewModelBase
+public partial class BoothFilesViewModel : ViewModelBase, IInitializable
 {
     [Reactive] public partial bool HasBoothItem { get; private set; }
     [Reactive] public partial bool HasCache { get; private set; }
@@ -32,6 +33,19 @@ public partial class BoothFilesViewModel : ViewModelBase
         {
             if (_currentItem != null) ContextMenuHandlerService.Handle(ActionKey.OpenBoothLink, _currentItem.Identifier);
         });
+
+        InitializableRegistry.Register(0, this);
+    }
+
+    public async Task Initialize()
+    {
+        InstanceRepository.NavigationService.SelectionChanged += RefreshCurrentItem;
+        InstanceRepository.Items.OnUpdated += RefreshCurrentItem;
+    }
+
+    private void RefreshCurrentItem()
+    {
+        SetCurrentItem(InstanceRepository.NavigationService.GetCurrentItemId());
     }
 
     public void SetCurrentItem(string? itemId)

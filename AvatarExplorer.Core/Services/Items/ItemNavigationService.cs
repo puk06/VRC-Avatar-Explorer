@@ -43,6 +43,15 @@ public class ItemNavigationService
     public event Action<string>? FileOpenRequested = null;
 
     /// <summary>
+    /// 選択状態が変更されたときに発火するイベントです。
+    /// </summary>
+    public event Action? SelectionChanged
+    {
+        add => _state.SelectionChanged += value;
+        remove => _state.SelectionChanged -= value;
+    }
+
+    /// <summary>
     /// プレフィックスと値から <c>"プレフィックス:値"</c> 形式のIdentifierを生成します。
     /// </summary>
     /// <param name="prefix">プレフィックス（<see cref="AvatarPrefix"/> 等）。</param>
