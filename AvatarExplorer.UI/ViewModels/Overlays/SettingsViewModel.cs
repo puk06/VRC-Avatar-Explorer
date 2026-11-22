@@ -44,6 +44,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
     [Reactive] public partial int SelectedGridItemSize { get; set; }
     [Reactive] public partial bool AutoChangeUnitypackagePath { get; set; }
     [Reactive] public partial bool RemoveOriginal { get; set; }
+    [Reactive] public partial bool ExtractNestedArchives { get; set; }
     [Reactive] public partial bool LinkToOriginal { get; set; }
     [Reactive] public partial bool HideAvatarCategoryWhenAvatarSelected { get; set; }
     [Reactive] public partial int ThumbnailCompressionMaxSize { get; set; }
@@ -155,6 +156,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
         ItemsPerPage = preferences.ItemsPerPage.ToString();
         AutoChangeUnitypackagePath = runtimeSettings.AutoChangeUnitypackagePath;
         RemoveOriginal = runtimeSettings.RemoveOriginal;
+        ExtractNestedArchives = runtimeSettings.ExtractNestedArchives;
         LinkToOriginal = runtimeSettings.ShouldLinkToOriginal;
         HideAvatarCategoryWhenAvatarSelected = runtimeSettings.HideAvatarCategoryWhenAvatarSelected;
         ThumbnailCompressionMaxSize = preferences.ThumbnailCompressionMaxEdge;
@@ -453,6 +455,7 @@ public partial class SettingsViewModel : ViewModelBase, IInitializable
             DataRootDirectory = ItemsFolderPath,
             AutoBackupRootDirectory = AutoBackupFolderPath,
             RemoveOriginal = RemoveOriginal,
+            ExtractNestedArchives = ExtractNestedArchives,
             ShouldLinkToOriginal = LinkToOriginal,
             AutoBackupInterval = ValueParser.Int(AutoBackupInterval, 5),
             // 旧バージョンから復元したデータベースのマイグレーション用に値を保持する

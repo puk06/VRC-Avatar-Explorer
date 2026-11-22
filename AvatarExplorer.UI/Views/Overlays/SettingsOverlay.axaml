@@ -298,6 +298,17 @@
 
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                                         <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
+                                            <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.ExtractNestedArchives.Title], Source={x:Static loc:Localizer.Instance}}"/>
+                                            <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.ExtractNestedArchives.Description], Source={x:Static loc:Localizer.Instance}}"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                            <ToggleSwitch IsChecked="{Binding ExtractNestedArchives}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Grid Grid.Column="0" RowDefinitions="Auto,*" RowSpacing="5">
                                             <TextBlock Classes="settingslabel title" Grid.Row="0" Text="{Binding [Settings.LinkToOriginal.Title], Source={x:Static loc:Localizer.Instance}}"/>
                                             <TextBlock Classes="settingslabel description" Grid.Row="1" Text="{Binding [Settings.LinkToOriginal.Description], Source={x:Static loc:Localizer.Instance}}"/>
                                         </Grid>
