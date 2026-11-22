@@ -72,6 +72,7 @@ public partial class BoothFilesViewModel : ViewModelBase
         if (_currentItem is not { BoothId: > 0 } item) return;
 
         var boothId = item.BoothId.ToString();
+        var hadCache = HasCache;
         IsFetching = true;
         try
         {
@@ -83,6 +84,7 @@ public partial class BoothFilesViewModel : ViewModelBase
                 return;
             }
 
+            if (hadCache && updates.Count > 0) VariationUpdateNotification.Show(updates);
             if (_currentItem is { } current && current.BoothId.ToString() == boothId)
                 SetCurrentItem(current.Identifier);
         }
