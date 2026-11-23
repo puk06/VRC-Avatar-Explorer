@@ -22,6 +22,7 @@ You are a **PR Contributor specialist** for the AvatarExplorer project. Your job
 4. ✅ Verify PR description includes: purpose, background, related issues, implementation notes
 5. ✅ New ViewModels inherit from `ViewModelBase` and use `[Reactive]` attributes
 6. ✅ New Views use compiled bindings (`x:DataType` declared)
+7. ✅ Startup initialization uses `IInitializable` / `InitializableRegistry`, not other-instance access in constructors
 
 ### Merge Strategy
 - **Only Squash merge** allowed on main

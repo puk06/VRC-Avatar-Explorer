@@ -849,6 +849,9 @@ dotnet build AvatarExplorer.UI/AvatarExplorer.UI.csproj
 | 状態による見た目 | `Classes.xxx="{Binding ...}"` ＋ 子孫セレクタ | `MainView.axaml:472` |
 | タブのアイコン | `TabItem.Icon`（Avalonia 12） | `MainView.axaml:479` |
 
+C# 側の初期化ルール（`IInitializable` / `InitializableRegistry`）や MVVM の習慣は
+[CONTRIBUTING.md](../../CONTRIBUTING.md#ui-コードの規約) を参照してください。
+
 ---
 
 ## 19. 用語集
