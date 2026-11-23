@@ -1,13 +1,17 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
-using AvatarExplorer.UI.ViewModels;
-using AvatarExplorer.UI.ViewModels.Panels;
-using AvatarExplorer.UI.Services;
+using AvatarExplorer.UI.Extensions;
 using AvatarExplorer.UI.Interfaces;
 using AvatarExplorer.UI.Models.ContextMenu;
+using AvatarExplorer.UI.Services;
 using AvatarExplorer.UI.Services.ContextMenu;
 using AvatarExplorer.UI.Services.System;
+using AvatarExplorer.UI.ViewModels;
+using AvatarExplorer.UI.ViewModels.Panels;
 
 namespace AvatarExplorer.UI.Views.Panels;
 
@@ -42,6 +46,15 @@ public partial class BulkImport : UserControl, IInitializable
     private void OnPresetSaveStarted() => PresetButton.Flyout?.Hide();
 
     private void ScrollToEnd() => ItemsScrollViewer.ScrollToEnd();
+
+    private void OnItemImageLoaded(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Image image) return;
+
+        var bitmapInterpolationMode = InstanceRepository.UserPreferences.AntiAliasingMode.GetInterpolationMode();
+        if (bitmapInterpolationMode != BitmapInterpolationMode.None && bitmapInterpolationMode != BitmapInterpolationMode.Unspecified)
+            RenderOptions.SetBitmapInterpolationMode(image, bitmapInterpolationMode);
+    }
 
     private void OnDrop(object? sender, DragEventArgs e)
     {
