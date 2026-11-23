@@ -30,7 +30,7 @@
                                     <StackPanel Spacing="6">
                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
                                             <Border CornerRadius="8" ClipToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top"/>
+                                                <Image Source="{Binding Thumbnail}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" VerticalAlignment="Top" Loaded="OnItemImageLoaded"/>
                                             </Border>
 
                                             <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*">
