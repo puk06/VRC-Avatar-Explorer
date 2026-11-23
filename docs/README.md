@@ -36,6 +36,8 @@ AvatarExplorer の開発者向けドキュメントです。目的別に以下�
 
 **[Avalonia Style / Template 入門ガイドを読む](./ui-development/avalonia-style-guide.md)**
 
+C# 側の初期化ルール（`IInitializable` / `InitializableRegistry`）や MVVM の習慣は [CONTRIBUTING.md](../CONTRIBUTING.md#ui-コードの規約) にまとめています。
+
 ## ライセンス
 
 このプロジェクトは **GNU Affero General Public License v3.0 (AGPL-3.0)** のもとでライセンスされています。詳細は [LICENSE](../LICENSE) を参照してください。

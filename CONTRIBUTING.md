@@ -94,6 +94,134 @@ PR 説明文には、目的や背景、関連 Issue、実装上の注意点を�
 PR 前の確認事項:
 - `AvatarExplorer.UI` または `AvatarExplorer.Core` をビルドして、エラーが出ないことを確認する
 - `Tools/LocalizationKeyGenerator` を実行して、`AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` を再生成する（変更がない場合でも実行する）
+- 新規に初期化処理を追加した場合、`IInitializable` / `InitializableRegistry` の規約に従っていることを確認する
+
+### UI コードの規約
+
+#### 初期化（IInitializable / InitializableRegistry）
+
+`AvatarExplorer.UI` では、ViewModel や View のコンストラクタで、起動順に依存する他のインスタンスを参照しないでください。
+インスタンス間の構築順は保証されておらず、`InstanceRepository.MainWindow` や `MainWindowViewModel.Instance` などの
+シングルトンがまだ `null` である可能性があります。また、`this.WhenAnyValue(...)` をコンストラクタで購読すると、
+オブジェクトが完全に構築される前に通知が走り、未初期化のフィールドや他インスタンスへアクセスして
+`NullReferenceException` の原因になります。
+
+初期化が必要なクラスは `IInitializable` を実装し、コンストラクタでは自分自身の登録と、自分だけで完結する初期化だけを行います。
+実際の初期化処理は `Initialize()` に書き、`InitializableRegistry` から起動時に実行します。
+
+```csharp
+public partial class ExampleViewModel : ViewModelBase, IInitializable
+{
+    public ExampleViewModel()
+    {
+        // コンストラクタでは、自分自身や、このクラスが所有するオブジェクトだけを触る
+        InitializableRegistry.Register(0, this);
+    }
+
+    public Task Initialize()
+    {
+        // 他インスタンスの参照・イベント購読・WhenAnyValue はここで行う
+        this.WhenAnyValue(x => x.SearchText)
+            .Subscribe(_ => ApplyFilter());
+
+        InstanceRepository.Items.OnUpdated += OnItemsUpdated;
+
+        return Task.CompletedTask;
+    }
+}
+```
+
+- `Initialize()` は `InitializableRegistry.Complete()` から優先度の小さい順に呼ばれます。
+  `Complete()` は `App.OnFrameworkInitializationCompleted()` で `MainWindow` を作成した後に一度だけ実行されます。
+  そのため、起動完了後に生成されるインスタンスを登録しても初期化されません。動的に生成する場合は、
+  生成直後に `Initialize()` を呼ぶなどの方法を使ってください。
+- すべての `Initialize()` が終わってから実行したい処理は `IPostInitializable` を実装し、`OnInitialized()` に書きます。
+  両方を実装する場合は、コンストラクタで両方を登録してください。
+
+  ```csharp
+  InitializableRegistry.Register(0, (IInitializable)this);
+  InitializableRegistry.Register(0, (IPostInitializable)this);
+  ```
+
+- 登録は `InitializableRegistry.Register(priority, this)` で行います。現在の目安は、基盤となる
+  `MainWindowViewModel` が `-1`、通常の ViewModel / View が `0`、最後に実行したい処理が大きい値（例: `9999`）です。
+- コンストラクタで安全に行えるのは、コマンド・コレクションの初期化、自分が所有する子オブジェクトの生成、
+  `Instance = this` のような自身のシングルトン登録、`InitializableRegistry` への登録です。
+
+参考実装:
+
+- `AvatarExplorer.UI/ViewModels/MainWindowViewModel.cs`
+- `AvatarExplorer.UI/ViewModels/Panels/AdvancedSearchViewModel.cs`
+- `AvatarExplorer.UI/Views/Panels/SidePanel/BulkImport.axaml.cs`
+
+#### 初期化後の処理（IPostInitializable / OnInitialized）
+
+`Initialize()` は他のインスタンスを参照しながら順番に実行されますが、すべての `Initialize()` が終わってから
+初めて成立する処理もあります。その場合は `IPostInitializable` を実装し、`OnInitialized()` に書きます。
+
+- `OnInitialized()` は、登録されたすべての `Initialize()` が完了した後に、`IPostInitializable` として
+  登録した優先度の小さい順で呼ばれます。そのため「他の ViewModel の初期化結果を使う」
+  「起動直後に一度だけ一覧を更新する」「初期セットアップを表示する」といった処理に向いています。
+- `IInitializable` と同様に、コンストラクタで両方のインターフェースを登録します。
+
+  ```csharp
+  public partial class ExampleViewModel : ViewModelBase, IInitializable, IPostInitializable
+  {
+      public ExampleViewModel()
+      {
+          InitializableRegistry.Register(0, (IInitializable)this);
+          InitializableRegistry.Register(0, (IPostInitializable)this);
+      }
+
+      public Task Initialize()
+      {
+          // 他インスタンスの参照やイベント購読
+          return Task.CompletedTask;
+      }
+
+      public Task OnInitialized()
+      {
+          // すべての Initialize() が終わった後に一度だけ実行したい処理
+          Refresh();
+          return Task.CompletedTask;
+      }
+  }
+  ```
+
+- `Complete()` は `OnInitialized()` を順番に `await` するため、ここで重い処理を書くと起動完了が遅れます。
+  起動をブロックしたくない処理は、`OnInitialized()` 内で `_ = SomeAsyncMethod();` のように明示的に開始し、
+  例外が握りつぶされないようにしてください。
+- `OnInitialized()` も起動時に一度だけ実行されます。起動完了後に生成されるインスタンスでは呼ばれないため、
+  その場合は生成側で明示的に呼び出してください。
+- `Complete()` の完了後、`App.OnFrameworkInitializationCompleted()` でアプリ引数が渡されます。
+  引数に依存する処理は `OnInitialized()` では実行しないでください。
+
+参考実装:
+
+- `AvatarExplorer.UI/ViewModels/MainViewModel.cs` … すべての初期化後に一覧を `Refresh()` する
+- `AvatarExplorer.UI/ViewModels/Overlays/InitialSetupViewModel.cs` … 初期セットアップが必要か判定して表示する
+- `AvatarExplorer.UI/ViewModels/MainWindowViewModel.cs` … 移行処理や更新チェックを起動後に実行する
+
+#### そのほかのUI実装の習慣
+
+現在の `AvatarExplorer.UI` で見られる代表的な習慣です。新規コードではこれらに合わせてください。
+
+| 項目 | 習慣 | 例 |
+|---|---|---|
+| ViewModel | `ViewModelBase`（`ReactiveObject`）を継承する | `MainViewModel` |
+| 初期化後の処理 | すべての `Initialize()` が終わった後に実行したい処理は `IPostInitializable.OnInitialized()` に書く | `InitialSetupViewModel` |
+| プロパティ | `[Reactive] public partial ...` を使い、手書きの `RaiseAndSetIfChanged` は避ける | `AdvancedSearchViewModel` |
+| コマンド | `IReactiveCommand` と `ReactiveCommand.Create` / `CreateFromTask` を使う | `MainViewModel` |
+| インスタンス参照 | DI コンテナは使わず、UI からは `InstanceRepository`、Core からは `AvatarExplorerApp.Instance` など各クラスの `static Instance` を使う。サービスは `sealed` + private コンストラクタの形が多い | `InstanceRepository` / `UserPreferencesService` |
+| ローカライゼーション | UI 文字列は `Loc.*` と `Localizer.Instance[...]` を使う。XAML では `Source={x:Static loc:Localizer.Instance}` | `BulkImport.axaml` |
+| 設定 | `UserPreferences` は `record` + `init`。`with` で複製し、`UserPreferencesRepository.Update` / `UpdateWithoutNotify` で保存する | `SettingsViewModel` |
+| オーバーレイ | `ViewModels/Overlays` と `Views/Overlays` をペアで作る。`ShowAsync` と `TaskCompletionSource` で結果を返す | `YesNoDialogViewModel` |
+| エラー | ユーザー通知が必要なものは `ErrorManager.Instance.PostError`、内部エラーは `PostInternalError` | `ErrorManager` |
+| スレッド | バックグラウンドから UI を更新するときは `Dispatcher.UIThread.Post` / `InvokeAsync` を使う | `MainWindowViewModel` |
+| 非同期処理 | イベントハンドラ以外は `async void` を避け、`Task` / `Task<T>` を返す | `MainViewModel.HandleUnitypackage` |
+| View のコードビハインド | イベントハンドラや View 固有の処理のみを書き、ロジックは ViewModel に置く | `MainView.axaml.cs` |
+| Core/UI 分離 | `AvatarExplorer.Core` は UI / Avalonia に依存させない | `AvatarExplorer.Core.csproj` |
+| XAML | コンパイル済みバインディング（`x:DataType`）、色は `DynamicResource`、状態は `Classes` を使う。詳細は [Avalonia Style / Template 入門ガイド](./docs/ui-development/avalonia-style-guide.md) | — |
 
 ### ローカライゼーション
 
@@ -186,6 +314,135 @@ Write the PR description briefly with the purpose, background, related issues, a
 Pre-PR checklist:
 - Build `AvatarExplorer.UI` or `AvatarExplorer.Core` and confirm there are no errors
 - Run `Tools/LocalizationKeyGenerator` to regenerate `AvatarExplorer.Core/Localization/LocalizationKeys.g.cs` (run even if there are no changes)
+- If you added startup initialization, confirm it follows the `IInitializable` / `InitializableRegistry` convention
+
+### UI Code Conventions
+
+#### Initialization (IInitializable / InitializableRegistry)
+
+In `AvatarExplorer.UI`, do not access other instances whose availability depends on startup order from a
+ViewModel or View constructor. The construction order of separate instances is not guaranteed, so singletons
+such as `InstanceRepository.MainWindow` or `MainWindowViewModel.Instance` may still be `null`. Subscribing with
+`this.WhenAnyValue(...)` in a constructor can also fire before the object is fully constructed, causing
+`NullReferenceException` when the handler touches uninitialized fields or other instances.
+
+Implement `IInitializable` on classes that need initialization. The constructor should only register the instance
+and perform initialization that is self-contained. Put the actual initialization in `Initialize()` and let
+`InitializableRegistry` run it during startup.
+
+```csharp
+public partial class ExampleViewModel : ViewModelBase, IInitializable
+{
+    public ExampleViewModel()
+    {
+        // In the constructor, only touch this object or objects it owns.
+        InitializableRegistry.Register(0, this);
+    }
+
+    public Task Initialize()
+    {
+        // Access other instances, subscribe to events, and set up WhenAnyValue here.
+        this.WhenAnyValue(x => x.SearchText)
+            .Subscribe(_ => ApplyFilter());
+
+        InstanceRepository.Items.OnUpdated += OnItemsUpdated;
+
+        return Task.CompletedTask;
+    }
+}
+```
+
+- `Initialize()` is called by `InitializableRegistry.Complete()` in ascending priority order.
+  `Complete()` runs once from `App.OnFrameworkInitializationCompleted()` after the `MainWindow` is created.
+  Instances created after startup completes will therefore not be initialized through the registry; when creating
+  them dynamically, call `Initialize()` directly or use another explicit initialization path.
+- If work must run after every `Initialize()` has completed, implement `IPostInitializable` and put it in `OnInitialized()`.
+  Register both when a class implements both interfaces.
+
+  ```csharp
+  InitializableRegistry.Register(0, (IInitializable)this);
+  InitializableRegistry.Register(0, (IPostInitializable)this);
+  ```
+
+- Register with `InitializableRegistry.Register(priority, this)`. The current guideline is `-1` for the foundational
+  `MainWindowViewModel`, `0` for normal ViewModels / Views, and a large value (e.g. `9999`) for work that should run last.
+- The constructor may safely initialize commands and collections, create child objects it owns, assign its own
+  singleton (`Instance = this`), and register with `InitializableRegistry`.
+
+Reference implementations:
+
+- `AvatarExplorer.UI/ViewModels/MainWindowViewModel.cs`
+- `AvatarExplorer.UI/ViewModels/Panels/AdvancedSearchViewModel.cs`
+- `AvatarExplorer.UI/Views/Panels/SidePanel/BulkImport.axaml.cs`
+
+#### Post-initialization (IPostInitializable / OnInitialized)
+
+`Initialize()` methods run in order while other instances are being initialized. Some work is only valid after
+every `Initialize()` has completed. Implement `IPostInitializable` and put that work in `OnInitialized()`.
+
+- `OnInitialized()` is called after all registered `Initialize()` methods have completed, in ascending order of
+  the `IPostInitializable` priority. It is suitable for work such as using the results of another ViewModel's
+  initialization, refreshing a list once at startup, or opening the initial setup dialog.
+- Register both interfaces in the constructor, just like `IInitializable`.
+
+  ```csharp
+  public partial class ExampleViewModel : ViewModelBase, IInitializable, IPostInitializable
+  {
+      public ExampleViewModel()
+      {
+          InitializableRegistry.Register(0, (IInitializable)this);
+          InitializableRegistry.Register(0, (IPostInitializable)this);
+      }
+
+      public Task Initialize()
+      {
+          // Access other instances and subscribe to events.
+          return Task.CompletedTask;
+      }
+
+      public Task OnInitialized()
+      {
+          // Work that should run once after every Initialize() has completed.
+          Refresh();
+          return Task.CompletedTask;
+      }
+  }
+  ```
+
+- `Complete()` awaits each `OnInitialized()` in order, so heavy work here delays startup completion. If work should
+  not block startup, start it explicitly with `_ = SomeAsyncMethod();` inside `OnInitialized()` and make sure
+  exceptions are not swallowed.
+- `OnInitialized()` also runs only once at startup. Instances created after startup completes will not receive the
+  call, so invoke it explicitly from the creation path in that case.
+- Application arguments are passed by `App.OnFrameworkInitializationCompleted()` after `Complete()` finishes.
+  Do not perform argument-dependent work in `OnInitialized()`.
+
+Reference implementations:
+
+- `AvatarExplorer.UI/ViewModels/MainViewModel.cs` … refreshes the item list after all initialization is done
+- `AvatarExplorer.UI/ViewModels/Overlays/InitialSetupViewModel.cs` … decides whether to show the initial setup dialog
+- `AvatarExplorer.UI/ViewModels/MainWindowViewModel.cs` … runs migrations and the startup update check
+
+#### Other UI implementation habits
+
+These are the representative habits found in the current `AvatarExplorer.UI`. Follow them for new code.
+
+| Area | Habit | Example |
+|---|---|---|
+| ViewModel | Inherit from `ViewModelBase` (`ReactiveObject`) | `MainViewModel` |
+| Post-initialization | Put work that must run after every `Initialize()` in `IPostInitializable.OnInitialized()` | `InitialSetupViewModel` |
+| Properties | Use `[Reactive] public partial ...`; avoid manual `RaiseAndSetIfChanged` | `AdvancedSearchViewModel` |
+| Commands | Use `IReactiveCommand` with `ReactiveCommand.Create` / `CreateFromTask` | `MainViewModel` |
+| Instance access | No DI container; use `InstanceRepository` from the UI and `AvatarExplorerApp.Instance` or another class's `static Instance` from Core. Services are often `sealed` with a private constructor | `InstanceRepository` / `UserPreferencesService` |
+| Localization | Use `Loc.*` and `Localizer.Instance[...]`; in XAML use `Source={x:Static loc:Localizer.Instance}` | `BulkImport.axaml` |
+| Settings | `UserPreferences` is a `record` with `init`; copy with `with` and save via `UserPreferencesRepository.Update` / `UpdateWithoutNotify` | `SettingsViewModel` |
+| Overlays | Create `ViewModels/Overlays` and `Views/Overlays` as a pair; return results through `ShowAsync` and `TaskCompletionSource` | `YesNoDialogViewModel` |
+| Errors | Use `ErrorManager.Instance.PostError` for user-facing errors and `PostInternalError` for internal errors | `ErrorManager` |
+| Threading | Use `Dispatcher.UIThread.Post` / `InvokeAsync` when updating UI from a background thread | `MainWindowViewModel` |
+| Async | Avoid `async void` outside event handlers; return `Task` / `Task<T>` | `MainViewModel.HandleUnitypackage` |
+| View code-behind | Keep only event handlers and view-specific work; put logic in the ViewModel | `MainView.axaml.cs` |
+| Core/UI separation | `AvatarExplorer.Core` must not depend on the UI / Avalonia | `AvatarExplorer.Core.csproj` |
+| XAML | Use compiled bindings (`x:DataType`), `DynamicResource` for colors, and `Classes` for state. See the [Avalonia Style / Template guide](./docs/ui-development/avalonia-style-guide.md) | — |
 
 ### Localization
 
