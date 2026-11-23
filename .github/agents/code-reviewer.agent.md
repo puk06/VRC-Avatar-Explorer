@@ -24,10 +24,11 @@ You are a **Code Reviewer specialist** for the AvatarExplorer project. Your job 
 
 ### Architecture Notes
 - **Project Structure**: `AvatarExplorer.Core` (UI-agnostic core) + `AvatarExplorer.UI` (Avalonia MVVM)
-- **MVVM Framework**: ReactiveUI with Fody (`[Reactive]` attributes for property change)
+- **MVVM Framework**: ReactiveUI with Source Generators (`[Reactive]` attributes for property change)
 - **Base Class**: All ViewModels inherit from `ViewModelBase : ReactiveObject`
 - **Commands**: Use `ReactiveCommand.Create` / `ReactiveCommand.CreateFromTask`
-- **Property Observation**: Use `this.WhenAnyValue(x => x.Prop)` for reactive subscriptions
+- **Property Observation**: Use `this.WhenAnyValue(x => x.Prop)` for reactive subscriptions, but set them up in `IInitializable.Initialize()`, not in constructors
+- **Startup Initialization**: Classes that need initialization implement `IInitializable` / `IPostInitializable` and register with `InitializableRegistry`; constructors must not access other instances
 - **Overlay Pattern**: Each overlay has a ViewModel in `ViewModels/Overlays/` and a View in `Views/Overlays/`
 - **Dialog Results**: Use `TaskCompletionSource`-style `WaitForResult()` async pattern
 - **Manager Pattern**: Complex logic extracted into `ViewModels/Managers/` (e.g., SidePanelManager, SearchManager)
@@ -106,6 +107,8 @@ You are a **Code Reviewer specialist** for the AvatarExplorer project. Your job 
 - [ ] Leverages `[Reactive]` attribute instead of manual INPC?
 - [ ] Uses `ReactiveCommand` for commands instead of `ICommand` implementations?
 - [ ] Doesn't introduce DI container (project uses singleton/direct instantiation pattern)?
+- [ ] Avoids other-instance access and `WhenAnyValue` setup in constructors?
+- [ ] Registers startup initialization via `InitializableRegistry` and performs it in `Initialize()` / `OnInitialized()`?
 
 ## Output Format
 
