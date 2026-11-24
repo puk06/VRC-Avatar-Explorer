@@ -512,6 +512,9 @@
     "BoothFiles.Empty": "沒有可顯示的下載檔案。",
     "BoothFiles.Variation": "規格",
     "BoothFiles.NotAdded": "未加入",
+    "BoothFiles.Info.Title": "關於檔案清單",
+    "BoothFiles.Info.Description": "BOOTH Library Manager 使用的 BOOTH API 包含所有檔案的檔名資訊，無論是否已購買該商品。此分頁顯示的是透過更新檢查功能所使用的同一 API 取得的檔案名稱。",
+    "BoothFiles.Info.Note": "僅顯示檔案名稱，不會取得或下載檔案本體。這並不代表可以下載未購買商品的檔案。",
 
     "ItemEditor.ItemInfo": "項目資訊",
     "ItemEditor.AddFolder": "新增資料夾",

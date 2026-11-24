@@ -512,6 +512,9 @@
     "BoothFiles.Empty": "Aucun fichier téléchargeable à afficher.",
     "BoothFiles.Variation": "Variante",
     "BoothFiles.NotAdded": "Non ajouté",
+    "BoothFiles.Info.Title": "À propos de la liste des fichiers",
+    "BoothFiles.Info.Description": "L'API BOOTH utilisée par BOOTH Library Manager contient les noms de tous les fichiers, que vous ayez acheté l'article ou non. Cet onglet affiche les noms de fichiers récupérés via la même API que la fonction de vérification des mises à jour.",
+    "BoothFiles.Info.Note": "Seuls les noms des fichiers sont affichés. Le contenu des fichiers n'est ni récupéré ni téléchargé ; cela ne permet pas de télécharger les fichiers d'articles non achetés.",
 
     "ItemEditor.ItemInfo": "Informations de l'élément",
     "ItemEditor.AddFolder": "Ajouter un dossier",

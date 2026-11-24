@@ -8,7 +8,37 @@
     x:DataType="vm:BoothFilesViewModel">
 
     <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10" VerticalAlignment="Stretch" Margin="6,0,0,0">
-        <TextBlock Text="{Binding [SidePanel.BoothFiles], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0" Foreground="{DynamicResource Text.Primary}"/>
+        <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="5" Margin="10,0">
+            <TextBlock Text="{Binding [SidePanel.BoothFiles], Source={x:Static loc:Localizer.Instance}}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+            <Button Grid.Column="1" Classes="button" Width="28" Height="28" CornerRadius="6" Padding="0"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    VerticalAlignment="Center"
+                    ToolTip.Tip="{Binding [BoothFiles.Info.Title], Source={x:Static loc:Localizer.Instance}}"
+                    ToolTip.FontFamily="{Binding FontFamily, Source={x:Static vmmain:MainWindowViewModel.Instance}}"
+                    AutomationProperties.Name="{Binding [BoothFiles.Info.Title], Source={x:Static loc:Localizer.Instance}}">
+                <materialIcons:MaterialIcon Kind="InformationOutline" Width="18" Height="18"/>
+                <Button.Flyout>
+                    <Flyout Placement="BottomEdgeAlignedLeft" FlyoutPresenterClasses="info">
+                        <LayoutTransformControl>
+                            <LayoutTransformControl.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}" ScaleY="{Binding UiScale, Source={x:Static vmmain:MainWindowViewModel.Instance}}"/>
+                            </LayoutTransformControl.LayoutTransform>
+                            <StackPanel Spacing="10" MaxWidth="320" Margin="16">
+                                <StackPanel Orientation="Horizontal" Spacing="7">
+                                    <materialIcons:MaterialIcon Kind="InformationOutline" Width="20" Height="20" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [BoothFiles.Info.Title], Source={x:Static loc:Localizer.Instance}}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Foreground="{DynamicResource Text.Primary}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding [BoothFiles.Info.Description], Source={x:Static loc:Localizer.Instance}}" TextWrapping="Wrap" FontSize="13" LineHeight="20" Foreground="{DynamicResource Text.Primary}"/>
+                                <Border Background="{DynamicResource Background.Window}" BorderBrush="{DynamicResource Panel.BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10">
+                                    <TextBlock Text="{Binding [BoothFiles.Info.Note], Source={x:Static loc:Localizer.Instance}}" TextWrapping="Wrap" FontSize="12" LineHeight="18" Foreground="{DynamicResource Text.Secondary}"/>
+                                </Border>
+                            </StackPanel>
+                        </LayoutTransformControl>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+
         <Separator Classes="separator" Grid.Row="1"/>
 
         <StackPanel Grid.Row="2" IsVisible="{Binding !HasBoothItem}" IsHitTestVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12" Margin="20">

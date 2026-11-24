@@ -512,6 +512,9 @@
     "BoothFiles.Empty": "表示できるファイルはありません。",
     "BoothFiles.Variation": "バリエーション",
     "BoothFiles.NotAdded": "未追加",
+    "BoothFiles.Info.Title": "ファイル一覧について",
+    "BoothFiles.Info.Description": "Booth Library Managerで使用されているBoothのAPIには、購入状態にかかわらず全てのファイル名情報が含まれています。このタブでは、更新確認機能と同じAPIを使って取得したファイル名を表示しています。",
+    "BoothFiles.Info.Note": "表示しているのはファイル名のみで、ファイル本体の取得やダウンロードは行いません。購入していない商品のファイルをダウンロードできるわけではありません。",
 
     "ItemEditor.ItemInfo": "アイテム情報",
     "ItemEditor.AddFolder": "フォルダを追加",

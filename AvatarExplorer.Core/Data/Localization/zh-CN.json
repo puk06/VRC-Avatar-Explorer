@@ -512,6 +512,9 @@
     "BoothFiles.Empty": "没有可显示的下载文件。",
     "BoothFiles.Variation": "规格",
     "BoothFiles.NotAdded": "未添加",
+    "BoothFiles.Info.Title": "关于文件列表",
+    "BoothFiles.Info.Description": "BOOTH Library Manager 使用的 BOOTH API 包含所有文件的名称信息，无论是否已购买该商品。此标签页显示的是通过更新检查功能所使用的同一 API 获取的文件名称。",
+    "BoothFiles.Info.Note": "仅显示文件名称，不会获取或下载文件本体。这并不意味着可以下载未购买商品的文件。",
 
     "ItemEditor.ItemInfo": "项目信息",
     "ItemEditor.AddFolder": "添加文件夹",
