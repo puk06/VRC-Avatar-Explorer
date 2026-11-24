@@ -512,6 +512,9 @@
     "BoothFiles.Empty": "표시할 다운로드 파일이 없습니다.",
     "BoothFiles.Variation": "옵션",
     "BoothFiles.NotAdded": "추가되지 않음",
+    "BoothFiles.Info.Title": "파일 목록 정보",
+    "BoothFiles.Info.Description": "BOOTH Library Manager에서 사용되는 BOOTH API에는 구매 여부와 관계없이 모든 파일 이름 정보가 포함되어 있습니다. 이 탭에서는 업데이트 확인 기능과 동일한 API로 가져온 파일 이름을 표시합니다.",
+    "BoothFiles.Info.Note": "파일 이름만 표시하며 파일 본체를 가져오거나 다운로드하지 않습니다. 구매하지 않은 상품의 파일을 다운로드할 수 있는 것은 아닙니다.",
 
     "ItemEditor.ItemInfo": "아이템 정보",
     "ItemEditor.AddFolder": "폴더 추가",

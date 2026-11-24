@@ -512,6 +512,9 @@
     "BoothFiles.Empty": "No downloadable files to display.",
     "BoothFiles.Variation": "Variation",
     "BoothFiles.NotAdded": "Not added",
+    "BoothFiles.Info.Title": "About the file list",
+    "BoothFiles.Info.Description": "The BOOTH API used by BOOTH Library Manager includes file name information for all files, regardless of whether you have purchased the item. This tab displays file names retrieved through the same API used by the update check feature.",
+    "BoothFiles.Info.Note": "Only file names are shown. File contents are not retrieved or downloaded; this does not allow you to download files from items you have not purchased.",
 
     "ItemEditor.ItemInfo": "Item Info",
     "ItemEditor.AddFolder": "Add Folder",

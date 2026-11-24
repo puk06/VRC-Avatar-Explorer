@@ -847,6 +847,12 @@ public static class Loc
         public const string Empty = "BoothFiles.Empty";
         public const string Variation = "BoothFiles.Variation";
         public const string NotAdded = "BoothFiles.NotAdded";
+        public static class Info
+        {
+            public const string Title = "BoothFiles.Info.Title";
+            public const string Description = "BoothFiles.Info.Description";
+            public const string Note = "BoothFiles.Info.Note";
+        }
     }
     public static class ItemEditor
     {

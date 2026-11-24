@@ -475,6 +475,15 @@
             <Setter Property="CornerRadius" Value="15"/>
         </Style>
 
+        <Style Selector="FlyoutPresenter.info">
+            <Setter Property="Background" Value="{DynamicResource Background.Overlay}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Panel.BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
         <Style Selector="Border.overlay">
             <Setter Property="Background" Value="{DynamicResource Background.Overlay}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
