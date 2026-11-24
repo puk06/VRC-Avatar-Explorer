@@ -118,6 +118,8 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     private const string _initialWindowState = "initial_window_state";
     private bool _isPreviousScreenSearch = false;
 
+    private readonly HashSet<Guid> _skippedGuids = [];
+
     private static UserPreferences UserPreferences => InstanceRepository.UserPreferences;
     #endregion
 
@@ -185,6 +187,12 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
             UpdateViewSettings();
             UpdateItemsPerPage();
             Refresh();
+        };
+        _itemNavigationService.SelectionChanged += () =>
+        {
+            // 履歴から消えたノードは Undo で二度と pop されないため、追跡対象から外す
+            var nodeIds = _itemNavigationService.GetCurrentSelectionNodes().Select(node => node.Id).ToHashSet();
+            _skippedGuids.RemoveWhere(guid => !nodeIds.Contains(guid));
         };
         _itemNavigationService.FileOpenRequested += OnFileOpenRequested;
         AdvancedSearchVM.SearchPropertyChanged += _searchManager.RestartTimer;
@@ -752,8 +760,13 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
     private void OpenFolderCategory(FolderCategoryShortcut shortcut)
     {
         _stateCacheManager.SaveRightState(RightPageInfo);
+
+        // フォルダーショートカット
         _itemNavigationService.Select(shortcut.FolderIdentifier);
-        _itemNavigationService.Select(ItemNavigationService.GetPrefix(ItemNavigationService.ExtensionPrefix, ((int)shortcut.Category).ToString()));
+
+        var selectedResult = _itemNavigationService.Select(ItemNavigationService.GetPrefix(ItemNavigationService.ExtensionPrefix, ((int)shortcut.Category).ToString()));
+        if (selectedResult != null) _skippedGuids.Add(selectedResult.Value);
+
         RightPageInfo.Reset();
         Refresh(false);
     }
@@ -774,7 +787,16 @@ public partial class MainViewModel : ViewModelBase, IInitializable, IPostInitial
         }
         else
         {
+            // Pop は SelectionChanged を先に発火して _skippedGuids を掃除するため、判定のみ Pop 前に済ませる
+            var wasSkipped = _itemNavigationService.CurrentState is { } current && _skippedGuids.Contains(current.Id);
             var popped = _itemNavigationService.Undo();
+
+            if (popped != null && wasSkipped)
+            {
+                // フォルダーショートカットのUndo: 1つ前の画面に戻る
+                popped = _itemNavigationService.Undo();
+            }
+
             if (popped != null)
             {
                 var currentState = _itemNavigationService.CurrentState;
