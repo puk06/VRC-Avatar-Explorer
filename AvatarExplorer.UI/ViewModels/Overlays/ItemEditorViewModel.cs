@@ -39,7 +39,7 @@ public partial class ItemEditorViewModel : ViewModelBase
     [Reactive] public partial string SupportedAvatarsText { get; set; } = string.Empty;
     public IEnumerable<string> SupportedAvatars { get; set; } = []; // 変更時、もしくはLocalizerの言語変更時にテキストを更新する
 
-    private bool _supportsAllAvatars = true;
+    private bool _supportsAllAvatars = false;
     private IEnumerable<string> _supportedAvatarsBackup = [];
     /// <summary>すべてのアバターに対応するかどうか。ONの間は個別の対応アバターを退避し、OFFに戻すと復元します。</summary>
     public bool SupportsAllAvatars
@@ -120,7 +120,7 @@ public partial class ItemEditorViewModel : ViewModelBase
         BoothId = string.Empty;
         ThumbnailUrl = string.Empty;
         Memo = string.Empty;
-        SetSupportedAvatarsState(supportsAllAvatars: true, []);
+        SetSupportedAvatarsState(supportsAllAvatars: false, []);
         Tags = [];
         SkipIndirectCommonAvatarCheck = false;
         IsHidden = false;
