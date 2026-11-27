@@ -48,6 +48,17 @@ internal static class ContextMenuCreator
         var isHidden = item.IsHidden;
         var skipIndirectCommonAvatarCheck = item.SkipIndirectCommonAvatarCheck;
 
+        // 全アバター対応の状態に応じて、トグル項目のラベルと動作を切り替える
+        ContextMenuAction supportsAllAvatarsAction;
+        if (item.SupportsAllAvatars)
+        {
+            supportsAllAvatarsAction = new(Loc.ContextMenu.Item.Edit.MarkItemAsNotSupportAllAvatar, ActionKey.MarkItemAsNotSupportAllAvatar, ContextMenuIconType.NotImplemented, addSeparator: true);
+        }
+        else
+        {
+            supportsAllAvatarsAction = new(Loc.ContextMenu.Item.Edit.MarkItemAsSupportAllAvatar, ActionKey.MarkItemAsSupportAllAvatar, ContextMenuIconType.Implemented, addSeparator: true);
+        }
+
         var contextMenuActions = new List<ContextMenuAction>();
 
         if (isAvatar)
@@ -78,13 +89,22 @@ internal static class ContextMenuCreator
             new(Loc.ContextMenu.Item.Edit.Tag, ActionKey.EditItemTag, ContextMenuIconType.Tag),
             new(Loc.ContextMenu.Item.Edit.Memo, ActionKey.EditItemMemo, ContextMenuIconType.NoteEdit),
 
-            new(Loc.ContextMenu.Item.Edit.Implemented, ActionKey.None, ContextMenuIconType.Avatars, addSeparator: true)
+            new(Loc.ContextMenu.Item.Edit.Implemented, ActionKey.None, ContextMenuIconType.Avatars)
             {
                 SubMenuItems =
                 {
                     new(Loc.ContextMenu.Item.Edit.MarkItemAsImplemented, ActionKey.MarkItemAsImplemented, ContextMenuIconType.Implemented),
                     new(Loc.ContextMenu.Item.Edit.MarkItemAsNotImplemented, ActionKey.MarkItemAsNotImplemented, ContextMenuIconType.NotImplemented, addSeparator: true),
                     new(Loc.ContextMenu.Item.Edit.ManageImplementedAvatars, ActionKey.ManageImplementedAvatars, ContextMenuIconType.Avatars)
+                }
+            },
+
+            new(Loc.ContextMenu.Item.Edit.SupportedAvatar, ActionKey.None, ContextMenuIconType.Avatars, addSeparator: true)
+            {
+                SubMenuItems =
+                {
+                    supportsAllAvatarsAction,
+                    new(Loc.ContextMenu.Item.Edit.ManageSupportedAvatars, ActionKey.ManageSupportedAvatars, ContextMenuIconType.Avatars, isEnabled: !item.SupportsAllAvatars)
                 }
             },
 

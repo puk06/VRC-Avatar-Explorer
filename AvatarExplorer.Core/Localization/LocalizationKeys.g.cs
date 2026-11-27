@@ -271,6 +271,10 @@ public static class Loc
                 public const string MarkItemAsImplemented = "ContextMenu.Item.Edit.MarkItemAsImplemented";
                 public const string MarkItemAsNotImplemented = "ContextMenu.Item.Edit.MarkItemAsNotImplemented";
                 public const string ManageImplementedAvatars = "ContextMenu.Item.Edit.ManageImplementedAvatars";
+                public const string SupportedAvatar = "ContextMenu.Item.Edit.SupportedAvatar";
+                public const string MarkItemAsSupportAllAvatar = "ContextMenu.Item.Edit.MarkItemAsSupportAllAvatar";
+                public const string MarkItemAsNotSupportAllAvatar = "ContextMenu.Item.Edit.MarkItemAsNotSupportAllAvatar";
+                public const string ManageSupportedAvatars = "ContextMenu.Item.Edit.ManageSupportedAvatars";
             }
             public static class Thumbnail
             {

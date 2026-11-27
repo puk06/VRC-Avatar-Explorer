@@ -69,6 +69,9 @@ public static class ContextMenuHandlerService
         Register(ActionKey.MarkItemAsImplemented, i => _ = ChangeImplementedStatusForCurrentAvatar(i, true));
         Register(ActionKey.MarkItemAsNotImplemented, i => _ = ChangeImplementedStatusForCurrentAvatar(i, false));
         Register(ActionKey.ManageImplementedAvatars, ManageImplementedAvatars);
+        Register(ActionKey.MarkItemAsSupportAllAvatar, i => _ = ChangeSupportsAllAvatars(i, true));
+        Register(ActionKey.MarkItemAsNotSupportAllAvatar, i => _ = ChangeSupportsAllAvatars(i, false));
+        Register(ActionKey.ManageSupportedAvatars, ManageSupportedAvatars);
         Register(ActionKey.EditItemDefaultPath, EditItemDefaultPath);
         Register(ActionKey.EditItemTag, EditItemTag);
         Register(ActionKey.RemoveItem, RemoveItem);
@@ -483,6 +486,29 @@ public static class ContextMenuHandlerService
         if (newAvatars == null) return;
 
         await EditItemInternal(identifier, new() { ImplementedAvatars = newAvatars });
+    }
+    private static async Task ChangeSupportsAllAvatars(string identifier, bool supportsAllAvatars)
+    {
+        var item = GetByIdentifier(identifier);
+        if (item == null || item.SupportsAllAvatars == supportsAllAvatars) return;
+
+        await EditItemInternal(identifier, new() { SupportsAllAvatars = supportsAllAvatars });
+    }
+    private static async void ManageSupportedAvatars(string identifier)
+    {
+        var item = GetByIdentifier(identifier);
+        if (item == null || item.SupportsAllAvatars) return;
+
+        var newAvatars = await InstanceRepository.MainWindow.ShowSelectAvatars(
+            Localizer.Instance[Loc.SelectAvatars.Title.SupportedAvatars],
+            item.SupportedAvatars.ToArray(),
+            includeCommonAvatar: true,
+            includeTempAvatar: true,
+            allowCreateTempAvatar: true
+        );
+        if (newAvatars == null) return;
+
+        await EditItemInternal(identifier, new() { SupportedAvatars = newAvatars });
     }
     private static async void EditItemDefaultPath(string identifier)
     {
