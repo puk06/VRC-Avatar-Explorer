@@ -312,12 +312,16 @@ public class ItemNavigationService
     }
     private void HandleFile(string hash)
     {
-        var itemid = GetCurrentItemId();
-        if (itemid == null) return;
-
-        PopulatePathCache(itemid);
+        var itemId = GetCurrentItemId();
+        if (itemId == null) return;
 
         var file = ResolvePathInternal(hash);
+        if (file == null)
+        {
+            PopulatePathCache(itemId);
+            file = ResolvePathInternal(hash);
+        }
+
         if (file == null) return;
 
         FileOpenRequested?.Invoke(file);
