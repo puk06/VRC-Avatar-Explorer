@@ -70,11 +70,16 @@ jobs:
       - name: Build Windows Installer
         if: runner.os == 'Windows'
         shell: powershell
+        env:
+          # Passing context values through env prevents them from being
+          # expanded directly into the script (script injection).
+          REF_NAME: ${{ github.ref_name }}
+          RUNTIME: ${{ matrix.runtime }}
         run: |
           $appName = "VRC-Avatar-Explorer"
-          $version = "${{ github.ref_name }}".TrimStart('v')
+          $version = "$env:REF_NAME".TrimStart('v')
           $version = $version -replace "-stable$", ""
-          $runtime = "${{ matrix.runtime }}"
+          $runtime = "$env:RUNTIME"
           $isccPath = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
 
           & $isccPath "/DMyAppVersion=$version" "/DMyAppRuntime=$runtime" "/DMySourceDir=publish" "/DMyOutputDir=." ".github/installer/windows.iss"
@@ -84,13 +89,17 @@ jobs:
       - name: Compress
         if: runner.os != 'Windows'
         shell: bash
+        env:
+          # Passing context values through env prevents them from being
+          # expanded directly into the script (script injection).
+          REF_NAME: ${{ github.ref_name }}
+          RUNTIME: ${{ matrix.runtime }}
+          EXTENSION: ${{ matrix.extension }}
         run: |
           APP_NAME="VRC-Avatar-Explorer"
-          VERSION="${{ github.ref_name }}"
+          VERSION="$REF_NAME"
           VERSION="${VERSION#v}"
           VERSION="${VERSION%-stable}"
-          RUNTIME="${{ matrix.runtime }}"
-          EXTENSION="${{ matrix.extension }}"
           OUTPUT_NAME="${APP_NAME}_${VERSION}-${RUNTIME}.${EXTENSION}"
           cd publish
           if [ "$RUNNER_OS" == "macOS" ]; then
