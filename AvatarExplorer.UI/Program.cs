@@ -3,12 +3,17 @@ using AvatarExplorer.Core.Services.System;
 using AvatarExplorer.Core.Utils;
 using AvatarExplorer.UI.Services.System;
 using ReactiveUI.Avalonia;
+using SkiaSharp;
 
 namespace AvatarExplorer.UI;
 
 static class Program
 {
     private const string MutexName = "AvatarExplorerV2.SingleInstance";
+
+    // 依存パッケージ更新時に managed SkiaSharp と native libSkiaSharp のバージョン不一致を
+    // 起動時に検出するためのスモークテスト用環境変数 (CI から使用)。
+    private const string SkiaSmokeTestEnvironmentVariable = "AVATAREXPLORER_SKIA_SMOKE_TEST";
 
     // Mutex をローカル変数で保持すると、Release / ReadyToRun ビルドでは JIT が最後の使用以降を
     // 不要とみなして GC 対象にし、ファイナライザが OS ハンドルを閉じて名前付き Mutex が消滅する。
@@ -21,6 +26,14 @@ static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        // ビルドだけでは検出できない native libSkiaSharp のバージョン不一致を早期に検出する。
+        // Avalonia は初期化しないため、ディスプレイのない CI 環境でも実行できる。
+        if (Environment.GetEnvironmentVariable(SkiaSmokeTestEnvironmentVariable) == "1")
+        {
+            RunSkiaSmokeTest();
+            return;
+        }
+
         // 処理されなかった例外をログと通知で確認できるようにする
         GlobalExceptionHandler.Register();
 
@@ -42,6 +55,21 @@ static class Program
 
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
+    }
+
+    /// <summary>
+    /// native libSkiaSharp を実際に読み込んでバージョン整合性を確認します。
+    /// </summary>
+    /// <remarks>
+    /// SKImageInfo の静的初期化時に SkiaSharp が native ライブラリのバージョンを検証するため、
+    /// 不一致の場合は TypeInitializationException が発生します。
+    /// </remarks>
+    private static void RunSkiaSmokeTest()
+    {
+        using var bitmap = new SKBitmap(1, 1);
+        bitmap.Erase(SKColors.Black);
+
+        Console.WriteLine($"SkiaSharp native: {SkiaSharpVersion.Native} (minimum required: {SkiaSharpVersion.NativeMinimum})");
     }
 
     /// <summary>

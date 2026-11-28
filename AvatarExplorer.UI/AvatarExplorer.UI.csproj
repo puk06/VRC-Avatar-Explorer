@@ -32,7 +32,13 @@
 		<PackageReference Include="Message.Avalonia" Version="2.0.0" />
 		<ProjectReference Include="..\AvatarExplorer.Core/AvatarExplorer.Core.csproj" />
 
-		<!-- libSkiaSharp library のバージョン都合の回避策 (Linux 環境向け) -->
+		<!--
+			Linux 向けの回避策。
+			Avalonia.Skia は SkiaSharp / SkiaSharp.NativeAssets.Linux 3.119.4 を要求するが、
+			PDFtoImage が SkiaSharp 4.150.1 を要求するため managed だけが 4.150.1 に統合され、
+			native libSkiaSharp (119.0) と不一致になって起動時にクラッシュする。
+			native も managed と同じバージョンに揃える。
+		-->
 		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.150.1" />
 
 		<Content Include="..\AvatarExplorer.Core\Data\Localization\**\*.json">
