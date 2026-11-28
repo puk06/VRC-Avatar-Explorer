@@ -29,6 +29,38 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
+      # managed SkiaSharp と native libSkiaSharp のバージョンはビルドでは検証されないため、
+      # 依存パッケージの変更時に不整合を検出する。project.assets.json は全 RID の情報を持つので、
+      # Linux ジョブ 1 回で Windows / macOS 向けの不整合も検出できる。
+      - name: Verify SkiaSharp native assets
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          ASSETS="AvatarExplorer.UI/obj/project.assets.json"
+          MANAGED=$(jq -r '.libraries | keys[] | select(test("^SkiaSharp/")) | split("/")[1]' "$ASSETS" | tr -d '\r')
+          echo "managed SkiaSharp: $MANAGED"
+
+          mapfile -t PROVIDERS < <(
+            jq -r '.targets[]
+              | to_entries[]
+              | select((.value.runtimeTargets // {}) | keys | any(test("libSkiaSharp[.](so|dylib|dll)$")))
+              | .key' "$ASSETS" | tr -d '\r' | sort -u
+          )
+
+          for PKG in "${PROVIDERS[@]}"; do
+            echo "native provider: $PKG"
+            if [ "${PKG#*/}" != "$MANAGED" ]; then
+              echo "::error::SkiaSharp native/assets mismatch: $PKG (managed SkiaSharp: $MANAGED)"
+              exit 1
+            fi
+          done
+
+      - name: SkiaSharp smoke test
+        if: runner.os == 'Linux'
+        shell: bash
+        run: AVATAREXPLORER_SKIA_SMOKE_TEST=1 ./AvatarExplorer.UI/bin/Release/net10.0/AvatarExplorer
+
       - name: Verify macOS app bundle
         if: runner.os == 'macOS'
         shell: bash
